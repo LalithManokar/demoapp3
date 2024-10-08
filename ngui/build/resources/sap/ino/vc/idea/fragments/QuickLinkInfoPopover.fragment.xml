@@ -1,9 +1,0 @@
-<core:FragmentDefinition xmlns:core="sap.ui.core"
-    xmlns="sap.m">
-    <ResponsivePopover placement="Right"
-        showHeader="false">
-        <content>
-            <Text text="{i18n>IDEA_QUCIK_LINK_INFO}" class="sapUiSmallMargin" />
-        </content>
-    </ResponsivePopover>
-</core:FragmentDefinition>

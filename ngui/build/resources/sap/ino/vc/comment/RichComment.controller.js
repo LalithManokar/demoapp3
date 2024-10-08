@@ -1,4 +1,0 @@
-/*!
- * SAP Innovation Management (c) Copyright 2014 SAP AG. All rights reserved.
- */
-sap.ui.define(["sap/ino/vc/commons/BaseObjectModifyController","sap/ino/vc/comment/RichCommentCntrlMixin","sap/ino/vc/comment/RichCommentMixin","sap/ino/vc/comment/RichCommentAttachmentMixin","sap/ino/commons/models/object/IdeaLatest","sap/ino/commons/formatters/BaseFormatter"],function(B,R,a,b,I,c){"use strict";return B.extend("sap.ino.vc.comment.RichComment",jQuery.extend({},R,a,b,{routes:"idea-display",formatter:c,sectionName:"sectionComments",onInit:function(){B.prototype.onInit.apply(this,arguments);this.getView().setModel(null,"comment");this.richCommentMixinInitRouterEvent();},onAfterRendering:function(){this.richCommentMixinInit();this.richAttachmentMixinInit();this.setAccessibilityProperty();}}));});

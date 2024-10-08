@@ -1,1 +1,0 @@
-$.import("sap.ino.setup.xslib", "driver").run($.request, $.response);

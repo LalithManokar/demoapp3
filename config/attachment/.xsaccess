@@ -1,8 +1,0 @@
-{
-    "exposed": true,
-    "prevent_xsrf": false,
-    "authentication": [ {"method": "Form"}, {"method": "Basic"} ],
-    "mime_mapping" : [ {"extension": "mp4",  "mimetype": "video/mp4"},
-                       {"extension": "less", "mimetype": "text/css"},
-                       {"extension": "htm", "mimetype": "text/html"}]
-}

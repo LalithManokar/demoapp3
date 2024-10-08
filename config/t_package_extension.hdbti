@@ -1,7 +1,0 @@
-import = [ {
-    hdbtable = "sap.ino.db.basis::t_package_extension";
-    file = "sap.ino.config:t_package_extension.csv";
-    header = false;
-    delimField = ";";
-    keys = [ "EXT_PACKAGE_ID" : "sap.ino.config"];
-} ];

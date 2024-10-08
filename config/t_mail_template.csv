@@ -1,3 +1,0 @@
-CODE;DEFAULT_TEXT;DEFAULT_LONG_TEXT
-sap.ino.config.SAP_INNOVATION_MANAGEMENT;SAP Innovation Management Template;"This template can be used as an E-Mail template for notifications."
-sap.ino.config.SAP_INNOVATION_MANAGEMENT_CAMPAIGN;SAP Innovation Management Campaign Template;"This template can be used as an E-Mail template for notifications. The campaign banner and color will be used as soon as the template is used in the context of a campaing."

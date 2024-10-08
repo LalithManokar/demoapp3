@@ -1,8 +1,0 @@
-{
-    "rewrite_rules" : [{
-        "source": "/index.html",
-        "target": "/index.xsjs"
-    }],
-    "default_file" : "index.xsjs",
-    "cache_control": "max-age=604800"
-}

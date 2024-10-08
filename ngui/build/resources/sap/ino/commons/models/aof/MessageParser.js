@@ -1,4 +1,0 @@
-/*!
- * SAP Innovation Management (c) Copyright 2014 SAP AG. All rights reserved.
- */
-sap.ui.define(["sap/ui/core/message/MessageParser","sap/ui/core/message/Message","sap/ui/core/MessageType"],function(M,a,b){"use strict";var m={'E':b.Error,'W':b.Warning,'I':b.Information,'S':b.Success};function c(A,p){var t=(A.REF_NODE===undefined||A.REF_NODE==="Root")?"/"+A.REF_FIELD:"/"+A.REF_NODE;return new a({type:m[A.TYPE]||b.None,code:A.MESSAGE,message:A.MESSAGE_TEXT,description:A.MESSAGE_TEXT,target:t,processor:p});}return M.extend("sap.ino.commons.models.aof.MessageParser",{constructor:function(){M.prototype.constructor.apply(this,arguments);this.aPreviousMessages=[];},parse:function(r){r=r||{};var p=this.getProcessor();var n=jQuery.map(r.MESSAGES||r.messages||[],function(o){return c(o,p);});this.getProcessor().fireMessageChange({oldMessages:this.aPreviousMessages,newMessages:n});this.aPreviousMessages=n;}});});

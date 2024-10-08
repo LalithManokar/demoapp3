@@ -1,5 +1,0 @@
-CODE;DEFAULT_TEXT;TYPE_CODE;MAX_STAR_NO
-sap.ino.config.LIKE;Like;LIKE;
-sap.ino.config.LIKE_DISLIKE;Like and Dislike;LIKE_DISLIKE;
-sap.ino.config.STAR_4;Star Voting (4);STAR;4
-sap.ino.config.STAR_5;Star Voting (5);STAR;5 

@@ -1,8 +1,0 @@
-<core:FragmentDefinition
-	xmlns:core="sap.ui.core"
-	xmlns="sap.m"
-	xmlns:ino="sap.ino.controls">
-	<VBox id="rteInternalContainer" class ="sapInoCommentRichTextContrainer" visible="{=${device>/system/desktop}}" height="220px"  width="100%">
-		
-	</VBox>
-</core:FragmentDefinition>

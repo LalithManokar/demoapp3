@@ -1,4 +1,0 @@
-/*!
- * SAP Innovation Management (c) Copyright 2014 SAP AG. All rights reserved.
- */
-jQuery.sap.declare("sap.ino.wall.DropUploadRenderer");(function(){"use strict";sap.ino.wall.DropUploadRenderer={};sap.ino.wall.DropUploadRenderer.render=function(r,c){var R=sap.ui.getCore().getLibraryResourceBundle("sap.ino.wall");r.write("<div");r.writeControlData(c);r.addClass("sapInoWallDropUpload");r.writeClasses();r.write(">");r.write('<div id="'+c.getId()+'-fileDrop" tabindex="0" class="sapInoWallDropUploadArea">');r.write('<div class="sapInoWallDropUploadAreaInner noflip" title="'+R.getText("WALL_DROPUPLOAD_STATUSMSG_DROP")+'">');r.renderControl(c._getIcon());r.write('</div>');r.write('</div>');r.write('<form><input name="'+c.getId()+'-fileUpload" id="'+c.getId()+'-fileUpload" class="sapInoWallDropUploadForm" type="file" accept="');r.writeEscaped(c.getAccept());r.write('"></form>');r.write("</div>");};})();

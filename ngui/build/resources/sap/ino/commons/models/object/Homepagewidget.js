@@ -1,1 +1,0 @@
-sap.ui.define(["sap/ino/commons/models/aof/ApplicationObject","sap/ino/commons/models/core/ReadSource"],function(A,R){"use strict";return A.extend('sap.ino.commons.models.object.Homepagewidget',{objectName:"sap.ino.xs.object.homepagewidget.Homepagewidget",readSource:R.getDefaultAOFSource()});});

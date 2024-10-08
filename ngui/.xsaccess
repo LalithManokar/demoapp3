@@ -1,5 +1,0 @@
-{
-    "exposed": true,
-    "prevent_xsrf": true,
-    "cache_control":"max-age=31111200"
-}

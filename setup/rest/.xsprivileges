@@ -1,5 +1,0 @@
-{
-    "privileges": [
-        { "name": "execute", "description": "execute setup - only needed for installation and upgrade" }
-    ]
-}

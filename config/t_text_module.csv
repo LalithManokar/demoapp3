@@ -1,5 +1,0 @@
-CODE;DEFAULT_TEXT;DEFAULT_LONG_TEXT
-sap.ino.config.PHASE_CHANGE;Phase Change Text Module;This module can be used for Old Notifications functionality to inform the contributor about a phase change of his/her idea. For New Notifications text module sample, please refer to application help in the text module section. 
-sap.ino.config.SUCCESS;Success Text Module;This module can be used to inform the contributor about the success of his/her idea for Old Notifications functionality. For New Notifications text module sample, please refer to application help in the text module section. 
-sap.ino.config.REJECTION;Rejection Text Module;This module can be used to inform the contributor about the rejection of his/her idea for Old Notifications functionality. For New Notifications text module sample, please refer to application help in the text module section. 
-sap.ino.config.SUMMARIZED_EMAIL_EXAMPLE;Sample for Summarized Email Text Module;This module can be used to inform users to receive the summarized email notification via New Notification functionality. For more, please refer to application help in the text module section.

@@ -1,5 +1,0 @@
-<core:FragmentDefinition
-    xmlns="sap.m"
-    xmlns:core="sap.ui.core" >
-    <Button press="onBackofficeSettings" class="sapInoCampaignSettingsButton" tooltip="{i18n>EXP_OPEN_OFFICE_SETTINGS}" icon="sap-icon://action-settings" visible="{=!${device>/system/phone}}" />
-</core:FragmentDefinition>

@@ -1,6 +1,0 @@
-role sap.ino.authorizations::innovation_user_manager extends role sap.ino.authorizations::backoffice_user
-{
-
-application privilege: "sap.ino.xs.rest.admin.application::user";
-
-}

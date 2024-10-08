@@ -1,1 +1,0 @@
-sap.ui.define(['sap/uxap/BlockBase'],function(B){"use strict";return B.extend("sap.ino.vc.idea.CommentBlock",{metadata:{views:{Collapsed:{viewName:"sap.ino.vc.comment.Comment",type:"XML"},Expanded:{viewName:"sap.ino.vc.comment.Comment",type:"XML"}}}});});
