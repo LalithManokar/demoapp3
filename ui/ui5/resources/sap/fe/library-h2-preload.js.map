@@ -1,9 +1,0 @@
-{
-"version":3,
-"file":"sap/fe/library-h2-preload.js",
-"sourceroot":".",
-"sources":["library-dbg.js","manifest.json"],
-"names":["TemplatedViewServiceFactory","ResourceModelServiceFactory","CacheHandlerServiceFactory","NamedBindingModelService","ServiceFactoryRegistry"],
-"mappings":";;;;;;AAgBA,gBAAa,kBACZ,CACC,8CACA,8CACA,6CACA,kDACA,4CACD,EACA,SACCA,CAA2B,CAC3BC,CAA2B,CAC3BC,CAA0B,CAC1BC,CAAwB,CACxBC,CACD,CAAE,CACD,aAaA,8BACC,KAAM,SACN,aAAc,gBACd,MAAO,6BACP,WAAY,GACZ,SAAU,GACV,SAAU,GACV,QAAS,QACV,GAEA,wBAAyB,CAAE,CAK1B,KAAM,OAMN,KAAM,OAMN,QAAS,SACV,EAEAA,CAAsB,iDAAkD,IAAIJ,CAA2B,IACvGI,CAAsB,iDAAkD,IAAIH,CAA2B,IACvGG,CAAsB,gDAAiD,IAAIF,CAA0B,IACrGE,CAAsB,qDAAsD,IAAID,CAAwB,IAExG,OAAO,OACR,EACe,KAChB;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",
-"x_com_sap_openui5_sections":[43,964,1013,2075]
-}
