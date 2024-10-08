@@ -1,0 +1,65 @@
+<core:FragmentDefinition
+	xmlns:template="http://schemas.sap.com/sapui5/extension/sap.ui.core.template/1"
+	xmlns:core="sap.ui.core" xmlns="sap.m"
+	template:require="{
+		ID: 'sap/fe/macros/StableIdHelper',
+		COMMON: 'sap/fe/macros/CommonHelper'
+	}"
+>
+
+		<template:if test="{= ${this>onCallAction} &amp;&amp; ${this>selectedContextsModel} &amp;&amp; (${this>namedBindingId} || ${this>id})}">
+			<template:repeat list="{presentation>}" var="dataField">
+				<template:if test="{= !(${dataField>./@com.sap.vocabularies.UI.v1.Hidden} === true) &amp;&amp; !(${dataField>Action@Org.OData.Core.V1.OperationAvailable} === false)}">
+					<template:if
+						test="{= ${dataField>$Type} === 'com.sap.vocabularies.UI.v1.DataFieldForAction' &amp;&amp; ${dataField>Inline} !== true &amp;&amp; !(${dataField>Determining} === true ) }">
+						<Button
+							id="{= ID.generate([${this>id}, ${dataField>Action}])}"
+							binding="{= (${this>navigationPath}) ? '{' + ${this>navigationPath} + '}' : undefined }"
+							text="{dataField>Label}"
+							press="{= ${this>onCallAction} + '(\'' + ${dataField>Action} + '\' , { contexts:
+							${' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/selectedContexts},
+							 invocationGrouping : \'' + (${dataField>InvocationGrouping/$EnumMember} === 'com.sap.vocabularies.UI.v1.OperationGroupingType/ChangeSet' ?'ChangeSet' : 'Isolated') + '\',
+							model: ${$source>/}.getModel(),
+							label: \'' + ${dataField>Label} + '\'})'}"
+							enabled="{= ${dataField>Action@Org.OData.Core.V1.OperationAvailable} === null
+							? (${dataField>Action/0/$IsBound} !== true
+							? 'true'
+							: '{= %{' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/' + ${dataField>Action} + '}
+							? %{' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/' + ${dataField>Action} + '}
+							:false}')
+							: ${dataField>Action/0/$IsBound} !== true
+							? 'true'
+							: '{= %{' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/numberOfSelectedContexts} > 0}' }"
+							visible="{= ${dataField>./@com.sap.vocabularies.UI.v1.Hidden} === false ? true : ${dataField>@@.FIELD.getHiddenPathExpression}}"
+							>
+						</Button>
+					</template:if>
+				</template:if>
+			</template:repeat>
+		</template:if>
+
+		<template:if test="{= ${this>onCreate} &amp;&amp; ${this>creationMode} !== 'CreationRow' &amp;&amp; (${this>showCreate} !== undefined &amp;&amp; ${this>showCreate} !== null) ? ${this>showCreate} : (${targetCollection>@com.sap.vocabularies.Session.v1.StickySessionSupported/NewAction} ? (${targetCollection>@com.sap.vocabularies.Session.v1.StickySessionSupported/NewAction@Org.OData.Core.V1.OperationAvailable} !== false) :  (${targetCollection>@com.sap.vocabularies.Common.v1.DraftRoot/NewAction} ? (${targetCollection>@com.sap.vocabularies.Common.v1.DraftRoot/NewAction@Org.OData.Core.V1.OperationAvailable} !== false) : (${targetCollection>@Org.OData.Capabilities.V1.InsertRestrictions/Insertable} !== false)))}">
+			<!-- temporary check to disable create document option in non-draft -->
+			<!-- template:if test="{= ${collection>@com.sap.vocabularies.Common.v1.DraftRoot} || ${collection>@com.sap.vocabularies.Common.v1.DraftNode} }" -->
+			<Button
+				id="{= ID.generate([${this>id},'Create'])}"
+				text="{this.i18n>table.CREATE}"
+				press="{= ${this>onCreate} + '(\'' + (${this>namedBindingId} || ${this>id}) +'\', {creationMode: ${$source>}.getParent().getParent().getParent().data(\'creationMode\'), createAtEnd: ${$source>}.getParent().getParent().getParent().data(\'createAtEnd\')})' }"
+				type="Transparent"
+				visible="{= ${this>showCreate} || true }"
+				/>
+				<!-- /template:if -->
+		</template:if>
+		<template:if test="{= (${this>showDelete} !== undefined &amp;&amp; ${this>showDelete} !== null) ? ${this>showDelete} : !(${targetCollection>@Org.OData.Capabilities.V1.DeleteRestrictions/Deletable} === false)}">
+			<template:if test="{= ${this>selectedContextsModel} &amp;&amp; (${this>namedBindingId} || ${this>id}) &amp;&amp; ${this>onDelete} }">
+				<Button
+					id="{= ID.generate([${this>id},'Delete'])}"
+					text="{this.i18n>table.DELETE}"
+					press="{= ${this>onDelete} + '(${' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/deletableContexts},{id:\'' + (${this>namedBindingId} || ${this>id}) +'\', numberOfSelectedContexts:${' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/selectedContexts}.length , unSavedContexts:${' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/unSavedContexts}, lockedContexts:${' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/lockedContexts}, controlId:${' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/controlId} })' }"
+					type="Transparent"
+					visible="{this>showDelete}"
+					enabled="{= '{= ((%{' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/deletableContexts} &amp;&amp; %{' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/deletableContexts}.length > 0) || (%{' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/unSavedContexts} &amp;&amp; %{' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/unSavedContexts}.length > 0)) ? %{' + ${this>selectedContextsModel} + '>/$contexts/' + (${this>namedBindingId} || ${this>id}) + '/deleteEnabled} : false}' }"
+				/>
+			</template:if>
+		</template:if>
+</core:FragmentDefinition>

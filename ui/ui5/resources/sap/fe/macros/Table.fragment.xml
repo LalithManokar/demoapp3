@@ -1,0 +1,148 @@
+<!--
+/**
+ * OData v4 Table
+
+ * mandatory parameters:
+ * @param metadataContext:collection mandatory context to a collection (entitySet or 1:n navigation)
+ * @param metadataContext:presentation mandatory context to a presentation (lineItem w or w/o qualifier / PV)
+ * optional parameters:
+ * @param [id] of the table
+ * @param [rowsBindingInfo] list binding information for mdc.Table (ui5object: true is needed to prevent this property being used as a binding).
+ 		If not specified it is created from the metadata information
+ * @param [navigationPath] for binding the the table to a navigation path.
+		So only the path is used for rows binding. If rows is given everything is used and this
+		property is ignored
+ * @param [editMode] edit mode of the table / fields (Display,Editable,ReadOnly,Disabled) / Default: Display
+ * @param [rowPress] event handler to react on row press
+ * @param [rowAction] Specifies the possible actions available on the table row (Navigation,null) / Default: null
+ * @param [selectionMode] Specifies the selection mode (None,Single,Multi,Auto) / Default: None - should be Auto
+ * @param [busy] the busy mode of table
+ * @param [onCallAction] event handler to be used to trigger actions. if specified all available actions in the
+             annotations are rendered, either in the toolbar or as inline actions. Toolbar actions require a
+             selectedContextsModel and an id as well as well
+ * @param [onCreate] event handler to be used to create new documents. if specified and if collection is creatable
+             a + button is rendered. the visibility of the button can be controlled via creatable property
+ * @param [creatable] boolean to decide if a create (+) button is rendered. onCreate needs to be specified / Default: true
+ * @param [selectedContextsModel] name of a model in which the selected contexts are stored (under /$contexts/)
+ * @param [groupId] of the table. It is added as parameter only if it is set by application developer, else model
+			takes it directly from binding.
+ * @param [showDelete]. Parameter which helps to not show the delete button on the table in display mode in object page.(Default value: false)
+ * @param [onDelete]. event handler to be used to delete the objects from the table. The delete button will not be rendered if this is not provided.
+ * @param [threshold] Parameter which sets the threshold for the mdc table (Default:undefined)
+ * @param [noDataText] Parameter which sets the noDataText for the mdc table
+ * @param [onDataReceived] event handler to react on dataReceived event of table.
+ * @param [creationMode] Creation Mode to be passed to the onCreate hanlder. Values: ["Inline", "NewPage"](Default: "Inline")
+ * @param [suspendBinding] If set the binding is created in suspended mode (Default: false)
+ * @param [macrodata:showCreate] Custom data to determine visibility of create button or creation row
+ * @param [macrodata:onCreate] Custom data to determine the create handler
+ * @param [macrodata:createAtEnd] Custom data to determine if the new row should be created at the end or beginning
+ * @param [macrodata:namedBindingId] Custom data to set a unique named binding ID for the table
+ */
+-->
+
+<core:FragmentDefinition xmlns:template="http://schemas.sap.com/sapui5/extension/sap.ui.core.template/1" xmlns="sap.m"
+						 xmlns:mdc="sap.ui.mdc"
+						 xmlns:log="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+						 xmlns:macrodata="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+						 xmlns:macro="sap.fe.macros"
+						 xmlns:core="sap.ui.core"
+						xmlns:dt="sap.ui.dt"
+						xmlns:fl="sap.ui.fl"
+						template:require="{
+							COMMON: 'sap/fe/macros/CommonHelper',
+							TABLE: 'sap/fe/macros/table/TableHelper'
+						}">
+	<template:with path="collection>" helper="COMMON.getTargetCollection" var="targetCollection">
+	<!-- macrodata has to be an expression binding if it needs to be set as attribute via change handler during templating -->
+	<mdc:Table
+			core:require="{TableRuntime: 'sap/fe/macros/table/TableRuntime'}"
+			fl:flexibility="{= ${this>fl:flexibility} || 'sap/fe/macros/flexibility/Table.flexibility'}"
+			dt:designtime="{= ${this>dt:designtime} || 'sap/fe/macros/designtime/Table.designtime'}"
+			log:kind="{collection>$kind}"
+			log:navigationPath="{this>navigationPath}"
+			id="{this>id}"
+			busy="{this>busy}"
+			metadataDelegate="sap/fe/macros/TableDelegate"
+			rowPress="{this>rowPress}"
+			height="100%"
+			rowAction="{this>rowAction}"
+			metadataInfo="{= '{collectionName: \'' + ${collection>@sapui.name} + '\'}'}"
+			rowsBindingInfo="{= ${this>rows} ||
+				'{ui5object: true, path:\''
+				+ (${collection>$kind} === 'EntitySet' ? '/' : '')
+				+ ( ${this>navigationPath} || ${collection>@sapui.name} )
+				+ '\',parameters:{id: \'' + (${this>namedBindingId} || ${this>id})
+				+ '\''
+				+ TABLE.getRestrictionsPath(${collection>@})
+				+ (${this>groupId} ? ', $$groupId : \'' + ${this>groupId} + '\'' : '')
+				+ ', $count : true }, suspended : '
+				+ ${this>suspendBinding}
+				+ ', events : {'
+				+ (${this>onDataReceived} ? 'dataReceived : \'' + ${this>onDataReceived} + '\'' : '')
+				+ '}}'
+			}"
+			selectionMode="{= ${this>selectionMode} || 'None'}"
+			selectionChange="{= ${this>selectedContextsModel} ? ('TableRuntime.setContexts(${$source>/}, \'' + ${this>selectedContextsModel} + '\', \'' + (${this>namedBindingId} || ${this>id}) + '\', \'' + ${collection>@Org.OData.Capabilities.V1.DeleteRestrictions/Deletable/$Path} + '\', \'' + ${collection>@com.sap.vocabularies.Common.v1.DraftRoot} + '\')') : undefined}"
+			showRowCount="true"
+			header="{collection>./@com.sap.vocabularies.UI.v1.HeaderInfo/TypeNamePlural}"
+			threshold="{this>threshold}"
+			noDataText="{this>noDataText}"
+			p13nMode="{this>p13nMode}"
+			macrodata:creationMode="{this>creationMode}"
+			macrodata:showCreate="{this>showCreate}"
+			macrodata:onCreate="{this>onCreate}"
+			macrodata:createAtEnd="{this>createAtEnd}"
+			macrodata:namedBindingId="{= ${this>namedBindingId} || ${this>id} }"
+	>
+		<mdc:type>
+			<template:if test="{= ${this>type} === 'ResponsiveTable' }">
+				<template:then>
+					<mdc:ResponsiveTableType growingMode="{= ${collection>$kind} === 'EntitySet' ? 'Scroll' : undefined }"/>
+				</template:then>
+				<template:elseif test="{= ${this>type} === 'Table' }"> <!-- GridTable -->
+					<mdc:GridTableType rowCountMode="Auto" rowCount="3"/>
+				</template:elseif>
+			</template:if>
+		</mdc:type>
+		<mdc:dependents>
+			<template:with path="presentation>@sapui.name" var="nameOfAnnotation">
+				<template:if test="{= ${collection>$kind} === 'NavigationProperty'}">
+					<template:then>
+					<template:with path="collection>" helper="COMMON.gotoTargetEntitySet" var="targetCollection">
+						<template:repeat list="{presentation>}" var="dataField">
+							<!-- <template:if test="{= (!${dataField>Action} &amp;&amp; !${dataField>SemanticObject} &amp;&amp; !${dataField>Inline}) &amp;&amp; ${dataField>@@.FIELD.isNotAlwaysHidden} }"> -->
+							<template:with path="dataField>Value" var="item">
+								<macro:ValueHelp idPrefix="{= ID.generate([${this>id}, 'TableVH']) }" metadataContexts="{model: 'targetCollection', path:'',  name: 'entitySet'},{model: 'item', path:'',  name: 'property'}" />
+							</template:with>
+							<!-- </template:if> -->
+						</template:repeat>
+					</template:with>
+					</template:then>
+					<template:else>
+						<template:repeat list="{presentation>}" var="dataField">
+							<!-- <template:if test="{= (!${dataField>Action} &amp;&amp; !${dataField>SemanticObject} &amp;&amp; !${dataField>Inline}) &amp;&amp; ${dataField>@@.FIELD.isNotAlwaysHidden} }"> -->
+							<template:with path="dataField>Value" var="item">
+								<macro:ValueHelp idPrefix="{= ID.generate([${this>id}, 'TableVH']) }" metadataContexts="{model: 'collection', path:'',  name: 'entitySet'},{model: 'item', path:'',  name: 'property'}" />
+							</template:with>
+							<!-- </template:if> -->
+						</template:repeat>
+					</template:else>
+				</template:if>
+			</template:with>
+		</mdc:dependents>
+		<mdc:actions>
+			<core:Fragment fragmentName="sap.fe.macros.table.Actions" type="XML"/>
+		</mdc:actions>
+		<mdc:columns>
+			<core:Fragment fragmentName="sap.fe.macros.table.Columns" type="XML"/>
+		</mdc:columns>
+
+		<template:if test="{= ${this>creationMode} === 'CreationRow'}">
+			<mdc:creationRow>
+				<core:Fragment fragmentName="sap.fe.macros.table.CreationRow" type="XML"/>
+			</mdc:creationRow>
+		</template:if>
+
+	</mdc:Table>
+</template:with>
+</core:FragmentDefinition>

@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:cdata="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<Dialog title="{= ${dm>/changeType} === 'changeTableType' ? ${i18n>TABLE_TABLETYPE_DIALOGTITLE} : ${i18n>TABLE_CREATIONMODE_DIALOGTITLE} }" showHeader="true">
+		<content>
+			<VBox>
+				<Text text="{= ${dm>/changeType} === 'changeTableType' ? ${i18n>TABLE_TABLETYPE_DIALOGMESSAGE} : ${i18n>TABLE_CREATIONMODE_DIALOGMESSAGE} }" />
+				<RadioButtonGroup id="options" selectedIndex="{dm>/selectedIndex}" buttons="{dm>/options}">
+					<RadioButton cdata:selectedOption="{dm>option}" text="{dm>text}" />
+				</RadioButtonGroup>
+				<CheckBox visible="{= ${dm>/checkOptions} !== undefined }" text="{i18n>TABLE_CREATIONMODE_CREATIONROW_CREATEATEND}" selected="{dm>/checkOptions/checked}" />
+			</VBox>
+		</content>
+		<buttons>
+			<Button text="{i18n>TABLE_CREATIONMODE_DIALOGAPPLY}" enabled="{= ${dm>/initialMode} !== ${dm>/options}[${dm>/selectedIndex}].option }" press=".apply" />
+			<Button text="{i18n>TABLE_CREATIONMODE_DIALOGCANCEL}" press=".cancel" />
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

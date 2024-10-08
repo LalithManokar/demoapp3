@@ -1,0 +1,46 @@
+<core:FragmentDefinition xmlns:template="http://schemas.sap.com/sapui5/extension/sap.ui.core.template/1"
+	xmlns="sap.m"
+	xmlns:macro="sap.fe.macros"
+	xmlns:core="sap.ui.core"
+	xmlns:unittest="http://schemas.sap.com/sapui5/preprocessorextension/sap.fe.unittesting/1"
+	template:require="{
+		ID: 'sap/fe/macros/StableIdHelper',
+		CORE: 'sap/fe/core/AnnotationHelper',
+		COMMON: 'sap/fe/macros/CommonHelper'
+	}">
+	<template:with path="collection>" helper="COMMON.getTargetCollection" var="targetCollection" >
+		<macro:Table
+				unittest:id="TablePropertyExpressionTest"
+				id="{= ID.generate(['fe', 'table', ${metaPath>/navigationPath}.get() || ${collection>@sapui.name}, ${annotationPath>@sapui.name}.replace(RegExp('.*\\.'), '')]) }"
+				metadataContexts="{ model: 'collection', path:'',  name: 'collection'}{model: 'presentation', path:'',  name: 'presentation'}"
+				navigationPath="{= ${metaPath>/navigationPath}.get() }"
+				editMode="{= (${collection>$kind} === 'EntitySet') ? 'Display' : '{ui>/editable}'}"
+				busy="{= ${collection>$kind} === 'EntitySet' ? '{ui>/busy}' : '{ui>/busyLocal/' + ID.generate(['fe', 'table', ${collection>@sapui.name}, ${annotationPath>@sapui.name}.replace(RegExp('.*\\.'), '')]) + '}' }"
+				type="ResponsiveTable"
+				rowPress="{=  ${viewData>/navigation} &amp;&amp; ${viewData>/navigation}[${metaPath>/navigationPath}.get() || ${collection>@sapui.name}] &amp;&amp; ${viewData>/navigation}[${metaPath>/navigationPath}.get() || ${collection>@sapui.name}]['detail']
+								? ${viewData>/navigation}[${metaPath>/navigationPath}.get() || ${collection>@sapui.name}]['detail']['outbound']
+									? '.routing.navigateOutbound(\'' + ${viewData>/navigation}[${metaPath>/navigationPath}.get() || ${collection>@sapui.name}]['detail']['outbound'] + '\', ${$parameters>bindingContext})'
+									: ( ${viewData>/navigation}[${metaPath>/navigationPath}.get() || ${collection>@sapui.name}]['detail']['route']
+										? ('.routing.navigateToContext(${$parameters>bindingContext}, { editable : ' + (${targetCollection>@com.sap.vocabularies.Common.v1.DraftRoot} || ${targetCollection>@com.sap.vocabularies.Common.v1.DraftNode} ? '!${$parameters>bindingContext}.getProperty(\'IsActiveEntity\')' : undefined) + '})')
+										: undefined )
+								: undefined }"
+				rowAction="{= ${viewData>/navigation} &amp;&amp; ${viewData>/navigation}[${metaPath>/navigationPath}.get() || ${collection>@sapui.name}] &amp;&amp; ${viewData>/navigation}[${metaPath>/navigationPath}.get() || ${collection>@sapui.name}]['detail'] ? 'Navigation' : undefined }"
+				selectionMode="{= CORE.checkForActions(${visualizationPath>}) ? 'Multi' : !(${targetCollection>@Org.OData.Capabilities.V1.DeleteRestrictions/Deletable} === false) ? (${collection>$kind} === 'EntitySet' ? 'Multi' : '{= ${ui>/editable} === \'Editable\' ? \'Multi\' : \'None\'}') : 'None'}"
+				onCallAction=".transaction.onCallAction"
+				onCreate=".editFlow.createDocument"
+				showCreate="{= (${collection>$kind} === 'EntitySet') ? undefined : (CORE.getNavigationInsertableRestrictions(${collection>@sapui.name}, ${entitySet>@Org.OData.Capabilities.V1.NavigationRestrictions/RestrictedProperties}, ${targetCollection>@Org.OData.Capabilities.V1.InsertRestrictions/Insertable}))}"
+				showDelete="{= (${collection>$kind} === 'EntitySet') ? undefined : (CORE.isNavigationPropertyDeletable(${collection>@sapui.name}, ${entitySet>@Org.OData.Capabilities.V1.NavigationRestrictions/RestrictedProperties}, ${targetCollection>@Org.OData.Capabilities.V1.DeleteRestrictions/Deletable}))}"
+				onDelete=".editFlow.deleteDocument"
+				selectedContextsModel="localUI"
+				groupId="$auto.associations"
+				threshold="{= ${collection>$kind} !== 'EntitySet' ? '10' : '30' }"
+				onDataReceived=".editFlow.handleErrorOfTable"
+				noDataText="{= ${collection>$kind} === 'EntitySet' ? ${sap.fe.i18n>TABLE_NO_DATA_TEXT} : undefined}"
+				creationMode="NewPage"
+				namedBindingId="{= ${collection>$kind} === 'EntitySet' ? ID.generate(['fe', 'table', ${collection>@sapui.name}, ${annotationPath>@sapui.name}.replace(RegExp('.*\\.'), '')]) : ID.generate(['fe', 'table', ${metaPath>/currentPath}.get()]) }"
+				suspendBinding="{= ${collection>$kind} === 'EntitySet' ? true : false}"
+				onChange=".handlers.onFieldValueChange"
+		>
+		</macro:Table>
+	</template:with>
+</core:FragmentDefinition>

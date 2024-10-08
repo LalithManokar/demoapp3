@@ -1,0 +1,14 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:template="http://schemas.sap.com/sapui5/extension/sap.ui.core.template/1">
+    <template:with path="entityType>@com.sap.vocabularies.UI.v1.HeaderInfo" var="headerInfo">
+    <VBox>
+		<Title text="{= '{= ${ui>/createMode} ' +  '&amp;&amp; ($' + ${headerInfo>Title/Value@@MODEL.value} + ' === \'\' || $' +  ${headerInfo>Title/Value@@MODEL.value} + ' === undefined  || $' +  ${headerInfo>Title/Value/@@MODEL.value} + ' === null )'
+         + (${headerInfo>} ? (' ? ${sap.fe.i18n>DEFAULT_OBJECT_PAGE_HEADER_TITLE} + \'  \' + \'' + ${headerInfo>TypeName} + '\' : $' + ${headerInfo>Title/Value@@MODEL.value}): '?  ${sap.fe.i18n>DEFAULT_OBJECT_PAGE_HEADER_TITLE_NO_HEADER_INFO} :  $' + ${headerInfo>Title/Value@@MODEL.value}) + '}' }"
+         binding="{= (${entitySet>@com.sap.vocabularies.Common.v1.DraftRoot} || ${entitySet>@com.sap.vocabularies.Common.v1.DraftNode}) ? '{path:\'\',parameters:{$select:\'HasActiveEntity\'}}' : undefined}"
+		 wrapping="true" />
+        <Label text="{headerInfo>Description/Value/@@MODEL.value}"/>
+    </VBox>
+    </template:with>
+</core:FragmentDefinition>

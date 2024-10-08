@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ui/core/mvc/Controller","sap/ui/core/mvc/ControllerExtension","sap/m/MessageToast","sap/ui/util/openWindow"],function(C,a,M,o){"use strict";return a.extend("{{controllerExtensionName}}",{});});

@@ -1,0 +1,77 @@
+<core:FragmentDefinition
+	xmlns:template="http://schemas.sap.com/sapui5/extension/sap.ui.core.template/1"
+	xmlns:mdc="sap.ui.mdc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:macro="sap.fe.macros"
+	template:require="{
+		MODEL: 'sap/ui/model/odata/v4/AnnotationHelper',
+		TABLE: 'sap/fe/macros/table/TableHelper',
+		FIELD: 'sap/fe/macros/field/FieldHelper',
+		COMMON: 'sap/fe/macros/CommonHelper',
+		ID: 'sap/fe/macros/StableIdHelper'
+	}"
+>
+
+	<!-- TODO: the isNotAlwaysHidden helper shall not be in the field but in the common helper so we can also get rid of
+	the dependency to the field helper -->
+	<template:with path="presentation>@sapui.name" var="nameOfAnnotation">
+	<template:repeat list="{presentation>}" var="dataField">
+					<template:if test="{= !(${dataField>./@com.sap.vocabularies.UI.v1.Hidden} === true)}">
+			<template:if
+				test="{= (!${dataField>Action} &amp;&amp; !${dataField>SemanticObject} &amp;&amp; !${dataField>Inline}) &amp;&amp; ${dataField>@@.FIELD.isNotAlwaysHidden} }">
+				<!-- TODO: Reevaluate MDC column width -->
+				<mdc:Column
+						width="{= TABLE.getColumnWidth(${dataField>Value/$Path@},${dataField>$Type},${dataField>Value/$Path/@@FIELD.fieldControl},(${collection>@com.sap.vocabularies.Common.v1.DraftRoot} || ${collection>@com.sap.vocabularies.Common.v1.DraftNode}), ${dataField>Value/$Path/$Type}, ${dataField>Value/$Path/$MaxLength}) }"
+						header="{= ${dataField>@@.MODEL.label} || ${dataField>@com.sap.vocabularies.Common.v1.Label} }"
+						dataProperties="{= ${dataField>Value/$Path} }"
+						hAlign="{= (['Edm.Decimal','Edm.DateTimeOffset','Edm.Date'].indexOf(${dataField>Value/$Path/$Type}) >= 0) ? 'End' : (${dataField>Criticality/$Path}) ? 'Center' : 'Begin' }">
+
+						<template:if test="{= (${dataField>$Type}.indexOf('DataFieldForAnnotation') > -1) &amp;&amp; (${dataField>Target/$AnnotationPath}.indexOf('FieldGroup') > -1)}">
+							<template:then>
+								<VBox >
+									<template:with path="dataField>Target/$AnnotationPath/Data/" var="dataFieldCollections">
+										<template:repeat list="{dataFieldCollections>}" var="dataField">
+											<macro:Field editMode="{= ${this>editMode} ? ${this>editMode} : 'Display'}"
+												vhIdPrefix="{= ID.generate([${this>id}, 'TableVH']) }"
+												metadataContexts="{ model: 'collection', path:'',  name: 'entitySet'},{ model: 'dataField', path:'',  name: 'dataField'}"
+												onCallAction="{= ${this>onCallAction} ? ${this>onCallAction} : null}"
+												parentControl="Table"
+												wrap="{= ${this>type} === 'ResponsiveTable' ? true : false }"
+												class="{= FIELD.getMarginClass( ${dataFieldCollections>}  , ${dataField>} ) }"
+												onChange="{= ${this>onChange}}"
+											></macro:Field>
+										</template:repeat>
+									</template:with>
+								</VBox>
+							</template:then>
+							<template:else>
+								<macro:Field editMode="{= ${this>editMode} ? ${this>editMode} : 'Display'}"
+										vhIdPrefix="{= ID.generate([${this>id}, 'TableVH']) }"
+										metadataContexts="{ model: 'collection', path:'',  name: 'entitySet'},{ model: 'dataField', path:'',  name: 'dataField'}"
+										onCallAction="{= ${this>onCallAction} ? ${this>onCallAction} : null}"
+										parentControl="Table"
+										wrap="{= ${this>type} === 'ResponsiveTable' ? true : false }"
+										onChange="{= ${this>onChange}}"
+								></macro:Field>
+
+								<mdc:creationTemplate>
+									<!-- TODO: for the first version we add it to every table later we will change it and will add it only in case creation row is active -->
+									<!-- the creation row shall use the form visualization (to be checked with UX)-->
+									<macro:Field editMode="{= ${this>editMode} ? ${this>editMode} : 'Display'}"
+												vhIdPrefix="{= ID.generate([${this>id}, 'TableVH']) }"
+												metadataContexts="{ model: 'collection', path:'',  name: 'entitySet'},{ model: 'dataField', path:'',  name: 'dataField'}"
+												parentControl="Table"
+												wrap="{= ${this>type} === 'ResponsiveTable' ? true : false }"
+												onChange="{= ${this>onChange}}"
+									></macro:Field>
+								</mdc:creationTemplate>
+							</template:else>
+						</template:if>
+				</mdc:Column>
+			</template:if>
+		</template:if>
+	</template:repeat>
+	</template:with>
+
+</core:FragmentDefinition>

@@ -1,0 +1,6 @@
+/*!
+ * SAP UI development toolkit for HTML5 (SAPUI5)
+        (c) Copyright 2009-2017 SAP SE. All rights reserved
+    
+ */
+sap.ui.define([],function(){"use strict";var r=sap.ui.getCore().getLibraryResourceBundle("sap.fe.macros.designtime");function c(t){var A=t.getActions().filter(function(o){return o.getVisible()&&(o.getId().indexOf("::Create")>-1||o.getId().indexOf("::Delete")>-1);});return A;}function C(t){var A=c(t);return A.some(function(b){return(b.getText()===r.getText("TABLE_ACTIONBUTTON_TEXT_CREATE")||b.getText()===r.getText("TABLE_ACTIONBUTTON_TEXT_DELETE"));});}function a(){return{icon:"sap-icon://text",name:function(s){return C(s)?r.getText("TABLE_CHANGE_ACTIONBUTTON_TEXT",[r.getText("TABLE_ACTIONBUTTON_TEXT_CREATE")+"/"+r.getText("TABLE_ACTIONBUTTON_TEXT_DELETE"),r.getText("TABLE_ACTIONBUTTON_TEXT_ADD")+"/"+r.getText("TABLE_ACTIONBUTTON_TEXT_REMOVE")]):r.getText("TABLE_CHANGE_ACTIONBUTTON_TEXT",[r.getText("TABLE_ACTIONBUTTON_TEXT_ADD")+"/"+r.getText("TABLE_ACTIONBUTTON_TEXT_REMOVE"),r.getText("TABLE_ACTIONBUTTON_TEXT_CREATE")+"/"+r.getText("TABLE_ACTIONBUTTON_TEXT_DELETE")]);},isEnabled:function(s){return c(s).length>0;},handler:function(s){return Promise.resolve().then(function(){return[{selectorControl:s,changeSpecificData:{changeType:"changeActionText",content:{isTextCreateDelete:C(s)}}}];});}};}return{changeActionTextHandler:a};});

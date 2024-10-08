@@ -1,0 +1,71 @@
+{
+  "_version": "1.9.0",
+  "sap.app": {
+    "id": "sap.ovp",
+    "type": "library",
+    "embeds": [
+      "app"
+    ],
+    "applicationVersion": {
+      "version": "1.71.23"
+    },
+    "title": "SAP library: sap.ovp",
+    "description": "SAP library: sap.ovp",
+    "resources": "resources.json",
+    "offline": true
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "supportedThemes": [
+      "base",
+      "sap_belize",
+      "sap_belize_hcb",
+      "sap_belize_hcw",
+      "sap_belize_plus",
+      "sap_bluecrystal",
+      "sap_fiori_3",
+      "sap_fiori_3_dark"
+    ]
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.71",
+      "libs": {
+        "sap.ui.core": {
+          "minVersion": "1.71.61"
+        },
+        "sap.ui.layout": {
+          "minVersion": "1.71.61"
+        },
+        "sap.ui.generic.app": {
+          "minVersion": "1.71.61"
+        },
+        "sap.m": {
+          "minVersion": "1.71.61"
+        },
+        "sap.f": {
+          "minVersion": "1.71.61"
+        },
+        "sap.ui.comp": {
+          "minVersion": "1.71.61"
+        },
+        "sap.viz": {
+          "minVersion": "1.71.61",
+          "lazy": true
+        },
+        "sap.suite.ui.microchart": {
+          "minVersion": "1.71.61"
+        }
+      }
+    },
+    "library": {
+      "i18n": "messagebundle.properties",
+      "content": {
+        "controls": [],
+        "elements": [],
+        "types": [],
+        "interfaces": []
+      }
+    }
+  }
+}
