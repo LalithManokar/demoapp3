@@ -1,0 +1,65 @@
+<core:FragmentDefinition
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:form="sap.ui.layout.form" >
+    <form:Form id="pageInfoForm" editable="false">
+        <form:layout>
+            <form:ResponsiveGridLayout
+                labelSpanXL="4"
+                labelSpanL= "4"
+                labelSpanM="4"
+                labelSpanS="12"
+                adjusLabelSpan="true"
+                emptySpanXL="0"
+                emptySpanL="0"
+                emptySpanM="0"
+                emptySpanS="0"
+                columnsXL="3"
+                columnsL="3"
+                columnsM="1"/>
+        </form:layout>
+        <form:formContainers>
+            <form:FormContainer class="sapUiNoContentPadding">
+                <form:formElements>
+                    <form:FormElement label="{i18n>Label.Description}">
+                        <Text text="{/page/content/description}" maxLines="2" id="pageInfoDescription"/>
+                    </form:FormElement>
+                </form:formElements>
+            </form:FormContainer>
+
+            <form:FormContainer>
+                <form:formElements>
+                    <form:FormElement label="{i18n>Label.CreatedBy}" >
+                        <Text text="{/page/content/createdBy}" id="pageInfoCreatedBy"/>
+                    </form:FormElement>
+                    <form:FormElement label="{i18n>Label.CreatedOn}" >
+                        <Text
+                            text="{
+                                path: '/page/content/createdOn',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: {style: 'medium'}
+                            }"
+                            id="pageDetailCreatedOn"/>
+                    </form:FormElement>
+                </form:formElements>
+            </form:FormContainer>
+
+            <form:FormContainer>
+                <form:formElements>
+                    <form:FormElement label="{i18n>Label.ChangedBy}">
+                        <Text text="{/page/content/modifiedBy}" id="pageInfoModifiedBy"/>
+                    </form:FormElement>
+                    <form:FormElement label="{i18n>Label.ChangedOn}">
+                        <Text
+                            text="{
+                                path: '/page/content/modifiedOn',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: {style: 'medium'}
+                            }"
+                            id="pageDetailModifiedOn"/>
+                    </form:FormElement>
+                </form:formElements>
+            </form:FormContainer>
+        </form:formContainers>
+    </form:Form>
+</core:FragmentDefinition>

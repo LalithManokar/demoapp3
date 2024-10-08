@@ -1,0 +1,10 @@
+description = "Http Destination Portfolio and Project Management";
+host = "";
+port = 80;
+pathPrefix = "";
+useProxy = false;
+authType = none;
+remoteSID = "";
+remoteClient = "000";
+useSSL = true;
+timeout = 10000;

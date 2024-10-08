@@ -1,0 +1,4 @@
+service namespace "sap.ino.rest.support" { 
+    "sap.ino.db.iam.ext::v_ext_user_number_per_campaign" as "NumberOfUsersPerCampaign" keys ("CAMPAIGN_ID");
+    "sap.ino.db.iam.ext::v_ext_user_number" as "NumberOfUsers" keys generate local "KEY";
+}

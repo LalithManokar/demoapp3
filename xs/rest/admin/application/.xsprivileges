@@ -1,0 +1,7 @@
+{
+    "privileges": [
+        { "name": "execute", "description": "execute administrative service, that require a xsrf-token (typically from the ui)" },
+        { "name": "campaign", "description": "user has the rights to administrate campaigns" },
+        { "name": "user", "description": "user has the rights to administrate user" }
+    ]
+}

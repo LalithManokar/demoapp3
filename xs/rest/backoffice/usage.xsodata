@@ -1,0 +1,30 @@
+service namespace "sap.ino.rest" {
+    //Views for analytical application functions like usages, similarity analysis
+    
+    "sap.ino.db.tag.ext::V_EXT_TAGS_USAGE" as "TagsUsage" keys generate local "SET_ID" aggregates always;
+    "sap.ino.db.integration.ext::V_EXT_SYSTEM_INTEGRATION_USAGE" as "IntegrationUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.basis.ext::V_EXT_VALUE_OPTION_LIST_USAGE" as "ValueOptionListUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.basis.ext::V_EXT_VALUE_OPTION_LIST_VOTE_TYPE_USAGE" as "ValueOptionListVoteTypeUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.basis.ext::V_EXT_VALUE_OPTION_LIST_STATUS_MODEL_USAGE" as "ValueOptionListStatusModelUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.evaluation.ext::V_EXT_MODEL_USAGE" as "EvaluationModelUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.basis.ext::V_EXT_UNIT_USAGE" as "UnitUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.campaign.ext::V_EXT_PHASE_USAGE" as "PhaseUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.notification.ext::V_EXT_MAIL_TEMPLATE_USAGE" as "MailTemplateUsage" key generate local "ID" aggregates always;
+    "sap.ino.db.basis.ext::V_EXT_TEXT_MODULE_USAGE" as "TextModuleUsage" key generate local "ID" aggregates always;
+    "sap.ino.db.ideaform.ext::V_EXT_FORM_USAGE" as "IdeaFormUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.status.ext::V_EXT_STATUS_MODEL_USAGE" as "StatusModelUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.status.ext::V_EXT_STATUS_USAGE" as "StatusUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.status.ext::V_EXT_STATUS_ACTION_USAGE" as "StatusActionUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.subresponsibility.ext::V_EXT_RESPONSIBILITY_USAGE" as "ResponsibilityUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.subresponsibility.ext::V_EXT_RESPONSIBILITY_VALUE_USAGE" as "ResponsibilityValueUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.campaign.ext::V_EXT_VOTE_TYPE_USAGE" as "VoteTypeUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.basis.ext::V_EXT_MILESTONE_TASK_USAGE" as "MilestoneTaskUsage" keys generate local "ID" aggregates always;
+    "sap.ino.db.basis.ext::V_EXT_VALUE_OPTION_LIST_IDEA_FORM_USAGE" as "ValueOptionListIdeaFormUsage" keys generate local "ID" aggregates always;
+}
+annotations {
+    enable OData4SAP;
+}
+settings {
+    support null;
+    metadata cache-control "max-age=3600";
+} 

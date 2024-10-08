@@ -1,0 +1,6 @@
+{
+    "privileges" : [
+        { "name" : "RunAPI", "description" : "Execute HANA REST API" },
+        { "name" : "IgnoreAuthCheck", "description" : "not make a check if the person has the authorization" }
+    ]
+} 

@@ -1,0 +1,8 @@
+{
+    "description" : "A job to add All user group to the completed Campaigns",
+    "action" : "sap.ino.xs.batch.jobs:completed_campaigns_to_all_users.xsjs::execute",
+    "schedules" : [{
+        "description" : "Execute when the system setting(Open Completed Campaigns for All Users) is ticked(every day)",
+        "xscron" : "* * * * 22 25 0"
+    }]
+}

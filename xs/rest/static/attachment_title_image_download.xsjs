@@ -1,0 +1,1 @@
+$.import("sap.ino.xs.xslib", "attachment").processRequest("sap.ino.db.attachment.ext::v_ext_attachment_title_image_data");

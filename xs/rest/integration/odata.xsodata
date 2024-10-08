@@ -1,0 +1,12 @@
+service namespace "sap.ino.rest.integration" { 
+    "sap.ino.db.idea.ext/V_EXT_IDEAS_PPM_SEARCH.calculationview" as "IdeaPPMSearch" keys generate local "KEY" 
+    parameters via entity "IdeaPPMSearchParams";
+    
+    "sap.ino.db.campaign.ext::v_ext_campaigns_ppm" as "CampaignPPM" keys ("ID");
+    
+    "sap.ino.db.idea.ext::v_idea_evaluation" as "Evaluation" keys ("CAMPAIGN_ID");
+}
+
+settings {
+	metadata cache-control "max-age=3600";
+}

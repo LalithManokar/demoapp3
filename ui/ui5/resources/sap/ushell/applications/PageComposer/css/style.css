@@ -1,0 +1,14 @@
+.sapUshellPageLayout .sapFDynamicPageTitleMainContent {
+    align-self: flex-end;
+}
+
+.sapUshellPageLayout .sapUiFormResGrid > div,
+.sapUshellPageLayout .sapUiFormResGridCont > div {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.sapUshellPage.sapUshellPageComposing {
+    margin-left: 3rem;
+    margin-right: 1rem;
+}

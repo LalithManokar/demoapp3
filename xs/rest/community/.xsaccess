@@ -1,0 +1,30 @@
+{
+    "rewrite_rules" : [{
+        "source": "/odata\\.xsodata/LeanIdentity",
+        "target": "/odata.xsodata/LeanIdentity/"
+    },{
+        "source": "/odata\\.xsodata/Locale",
+        "target": "/odata.xsodata/Locale/"
+    },{
+        "source": "/odata\\.xsodata/IdeaMediumCommunity",
+        "target": "/odata.xsodata/IdeaMediumCommunity/"
+    },{
+        "source": "/odata\\.xsodata/(IdeaSubmitter|IdeaContributor|IdeaCoach|IdeaAuthor|IdeaActivities|IdeaActivityFeed|IdeaEvents|IdeaTag|IdeaLink|IdeaRelation|IdeaRelatedIdeas)\\(?\\)?/?",
+        "target": "nofound.xsjs"
+    },{
+        "source": "/odata\\.xsodata/(IdeaCommentAttachments|IdeaInternalNoteAttachments|IdeaCommentators|IdeaDecision|IdeaStatusDecision|IdeaPhase|IdeaEvaluators|IdeaExtension)\\(?\\)?/?",
+        "target": "nofound.xsjs"
+    },{
+        "source": "/odata\\.xsodata/(RespExperts|RespTags|CampaignPrivilege|FormFields|RespValues)\\(?\\)?/?",
+        "target": "nofound.xsjs"
+    },{
+        "source": "/odata\\.xsodata/(CampaignTopContributors|CampaignTopCommentators)\\(?\\)?/?",
+        "target": "nofound.xsjs"
+    },{
+        "source": "/odata\\.xsodata[^/${(]+",
+        "target": "nofound.xsjs"
+    },{
+        "source": "/odata\\.xsodata/?",
+        "target": "odata.xsjs"
+    }]
+}

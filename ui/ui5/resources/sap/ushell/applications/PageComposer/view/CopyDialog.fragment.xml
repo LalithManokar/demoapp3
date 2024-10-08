@@ -1,0 +1,27 @@
+<core:FragmentDefinition
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core" >
+    <Dialog
+        title="{i18n>CopyDialog.Title}"
+        id="copyDialog"
+        afterClose="onAfterClose"
+        type="Message">
+        <content>
+            <VBox>
+                <Text text="{parts: ['i18n>CopyDialog.Message', '/page/content/id'], formatter: '.formatMessage'}" />
+                <Label text="{i18n>Label.PageID}" labelFor="copyId" />
+                <Input value="{parts: ['i18n>CopyDialog.NewID', '/page/content/id'], formatter: '.formatMessage'}"
+                       required="true"
+                       id="copyId"/>
+            </VBox>
+        </content>
+
+        <beginButton>
+            <Button text="{i18n>Button.Copy}" press="onConfirm" type="Emphasized"/>
+        </beginButton>
+
+        <endButton>
+            <Button text="{i18n>Button.Cancel}" press="onCancel" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

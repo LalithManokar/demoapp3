@@ -1,0 +1,9 @@
+{
+"version":3,
+"file":"sap/ushell/library-h2-preload.js",
+"sourceroot":".",
+"sources":["library-dbg.js","manifest.json"],
+"names":["coreLib","mLib"],
+"mappings":";;AAKA,gBAAa,sBAAC,CAGb,sBACA,eACD,EAAG,QAAS,CAACA,CAAO,CAAEC,CAAI,CAAE,CAC3B,aAYA,8BACC,KAAM,aACN,aAAc,eAAgB,SAC9B,MAAO,CACN,wCACA,2BACA,gCACA,iDACD,EACA,WAAY,GACZ,SAAU,CACT,uDACA,yDACA,6DACA,iCACA,sCACA,4CACA,+CACA,0CACA,2CACA,2CACA,yCACA,uCACA,yCACA,gDACA,qCACA,qCACA,8CACA,mDACA,sDACA,6CACA,wCACA,0CACA,wCACA,gCACA,mCACA,+BACA,wCACA,oCACA,iCACA,+BACA,gCACA,6BACD,EACA,SAAU,GACV,QAAS,UACT,WAAY,CACX,iBAAkB,CACjB,kBAAmB,CAClB,6DACD,CACD,CACD,CACD,GASA,qCAAsC,CAAE,CAKvC,KAAM,OAMN,OAAQ,SAMR,MAAO,QAMP,WAAY,aAMZ,WAAY,aAMZ,YAAa,cAMb,YAAa,aACd,EAaA,wBAAyB,CAAE,CAK1B,QAAS,UAMT,KAAM,OAMN,SAAU,WAMV,MAAO,QAMP,SAAU,WAMV,QAAS,UAMT,SAAU,WAMV,QAAS,SACV,EAcA,6BAA8B,CAAE,CAK/B,KAAM,OAMN,GAAI,KAMJ,KAAM,MACP,EAaA,+CAAgD,CAAE,CACjD,KAAM,OACN,OAAQ,SACR,GAAI,KACJ,IAAK,MACL,IAAK,MACL,IAAK,KACN,EAEA,OAAO,WACR,EAAkB;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",
+"x_com_sap_openui5_sections":[47,2500,2553,5206]
+}

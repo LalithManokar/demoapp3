@@ -1,0 +1,8 @@
+{
+    "privileges": [
+        { 
+            "name": "install",           
+            "description": "execute installation service" 
+        }
+    ]
+}

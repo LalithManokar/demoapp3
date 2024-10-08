@@ -1,0 +1,82 @@
+<Page
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:dnd="sap.ui.core.dnd"
+    id="tileSelector">
+    <layoutData><FlexItemData growFactor="1" /></layoutData> <!-- workaround for fragment used inside of a flex container -->
+    <customHeader>
+        <OverflowToolbar id="tileSelectorToolbar">
+            <SearchField
+                showRefreshButton="false"
+                width="auto"
+                liveChange=".TileSelector.onSearchTiles"
+                search=".TileSelector.onSearchTiles"
+                value="{/searchText}"
+                tooltip="{i18n>Tooltip.SearchForTiles}"
+                placeholder="{i18n>Placeholder.SearchForTiles}" />
+            <ToolbarSpacer />
+            <Button
+                id="tileSelectorAddButton"
+                type="Transparent"
+                press=".TileSelector.onAddTiles"
+                text="{i18n>Button.Add}" />
+            <OverflowToolbarButton
+                icon="sap-icon://sort"
+                press=".TileSelector.onSortCatalogsToggle"
+                text="{i18n>Button.SortCatalogs}"
+                tooltip="{i18n>Button.SortCatalogs}" />
+            <OverflowToolbarButton
+                icon="sap-icon://collapse-all"
+                press=".TileSelector.onCollapseAllCatalogs"
+                text="{i18n>Button.CollapseCatalogs}"
+                tooltip="{i18n>Button.CollapseCatalogs}" />
+            <OverflowToolbarButton
+                icon="sap-icon://expand-all"
+                press=".TileSelector.onExpandAllCatalogs"
+                text="{i18n>Button.ExpandCatalogs}"
+                tooltip="{i18n>Button.ExpandCatalogs}" />
+        </OverflowToolbar>
+    </customHeader>
+    <content>
+        <Tree
+            id="tileSelectorList"
+            mode="MultiSelect"
+            modeAnimationOn="false"
+            itemPress=".TileSelector.onCatalogItemPress"
+            items="{ path: 'catalogs>/catalogs', key: 'vizId' }"
+            noDataText="{i18n>Message.NoTiles}">
+            <items>
+                <CustomTreeItem
+                    class="sapUshellTileSelectorListItem"
+                    type="{=!!${catalogs>catalogTitle} ? 'Active' : 'Inactive'}"> <!-- only catalogs should fire "onCatalogItemPress" -->
+                    <FlexBox class="sapUiTinyMargin" width="100%">
+                        <items>
+                            <HBox justifyContent="SpaceBetween" alignItems="Center" width="100%">
+                                <!-- TODO: do not display tile icon until specification is ready -->
+                                <!-- <core:Icon visible="{=!${catalogs>catalogTitle}}" src="{catalogs>icon}" size="1.5rem" width="1.5rem" class="sapUiSmallMarginEnd" /> -->
+                                <VBox width="0">
+                                    <layoutData><FlexItemData growFactor="1" /></layoutData>
+                                    <Title visible="{=!!${catalogs>catalogTitle}}" text="{catalogs>catalogTitle}" />
+                                    <Title visible="{=!!${catalogs>title}}" text="{catalogs>title}" />
+                                    <Text visible="{=!!${catalogs>subtitle}}" text="{catalogs>subtitle}" />
+                                </VBox>
+                                <Button
+                                    visible="{=!${catalogs>catalogTitle}}"
+                                    type="Transparent"
+                                    press=".TileSelector.onAddTiles"
+                                    text="{i18n>Button.Add}">
+                                </Button>
+                            </HBox>
+                        </items>
+                    </FlexBox>
+                </CustomTreeItem>
+            </items>
+            <dragDropConfig>
+                <dnd:DragInfo
+                    groupName="Section"
+                    sourceAggregation="items"
+                    dragStart=".TileSelector.onDragStart" />
+            </dragDropConfig>
+        </Tree>
+    </content>
+</Page>

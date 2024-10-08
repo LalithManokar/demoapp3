@@ -1,0 +1,2 @@
+// Copyright (c) 2009-2017 SAP SE, All Rights Reserved
+sap.ui.define(["sap/ui/core/mvc/Controller"],function(C){"use strict";return C.extend("sap.ushell.components.shell.SubMenu.controller.MenuBar",{onMenuItemSelection:function(e){var s=e.getParameter("key");var u=sap.ushell.Container.getServiceAsync("URLParsing");var c=sap.ushell.Container.getServiceAsync("CrossApplicationNavigation");Promise.all([u,c]).then(function(S){u=S[0];c=S[1];var p=u.parseShellHash(s);c.toExternal({target:{semanticObject:p.semanticObject,action:p.action},params:p.params});});}});});

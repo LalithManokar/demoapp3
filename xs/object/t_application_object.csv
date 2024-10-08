@@ -1,0 +1,92 @@
+sap.ino.xs.object.analytics.Report;REPORT;STANDARD;/sap/ino/xs/rest/backoffice/report.xsjs;Report
+sap.ino.xs.object.analytics.ReportTemplate;REPORT_TEMPLATE;CONFIGURATION;;Report Template
+sap.ino.xs.object.analytics.ReportTemplateStage;REPORT_TEMPLATE_STAGE;STAGE;;Report Template Stage
+sap.ino.xs.object.attachment.Attachment;ATTACHMENT;STANDARD;/sap/ino/xs/rest/common/attachment.xsjs;Attachment
+sap.ino.xs.object.attachment.AttachmentFolder;ATTACHMENT_FOLDER;STANDARD;;Attachment Folder
+sap.ino.xs.object.attachment.AttachmentFolderShare;ATTACHMENT_FOLDER_SHARE;STANDARD;;Attachment Folder Share
+sap.ino.xs.object.attachment.AllowedFile;ATTACHMENT_ALLOWED_FILE;CONFIGURATION;;Attachment allowed file extensions
+sap.ino.xs.object.attachment.AllowedFileStage;ATTACHMENT_ALLOWED_FILE_STAGE;STAGE;;Attachment allowed file extensions stage
+sap.ino.xs.object.basis.Language;LANG;CONFIGURATION;;Language
+sap.ino.xs.object.basis.LanguageStage;LANG_STAGE;STAGE;;Language Stage
+sap.ino.xs.object.basis.SystemSetting;SYSTEM_SETTING;CONFIGURATION;;System Setting
+sap.ino.xs.object.basis.SystemSettingStage;SYSTEM_SETTING_STAGE;STAGE;;System Setting Stage
+sap.ino.xs.object.basis.TextModule;TEXT_MODULE;CONFIGURATION;;Text Module
+sap.ino.xs.object.basis.TextModuleStage;TEXT_MODULE_STAGE;STAGE;/sap/ino/xs/rest/admin/application/text_module_stage.xsjs;Text Module Stage
+sap.ino.xs.object.basis.Unit;UNIT;CONFIGURATION;;Unit
+sap.ino.xs.object.basis.UnitStage;UNIT_STAGE;STAGE;/sap/ino/xs/rest/admin/application/unit_stage.xsjs;Unit Stage
+sap.ino.xs.object.basis.ValueOptionListStage;VALUE_OPTION_LIST_STAGE;STAGE;/sap/ino/xs/rest/admin/application/value_option_list_stage.xsjs;Value Option List Stage
+sap.ino.xs.object.basis.ValueOptionList;VALUE_OPTION_LIST;CONFIGURATION;;Value Option List
+sap.ino.xs.object.campaign.Campaign;CAMPAIGN;STANDARD;/sap/ino/xs/rest/backoffice/campaign.xsjs;Campaign
+sap.ino.xs.object.campaign.Phase;PHASE;CONFIGURATION;;Phase
+sap.ino.xs.object.campaign.PhaseStage;PHASE_STAGE;STAGE;/sap/ino/xs/rest/admin/application/phase_stage.xsjs;Phase Stage
+sap.ino.xs.object.campaign.VoteType;VOTE_TYPE;CONFIGURATION;;Vote Type
+sap.ino.xs.object.campaign.VoteTypeStage;VOTE_TYPE_STAGE;STAGE;/sap/ino/xs/rest/admin/application/vote_type_stage.xsjs;Vote Type Stage
+sap.ino.xs.object.campaign.Comment;COMMENT;STANDARD;/sap/ino/xs/rest/common/campaign_comment.xsjs;Comment
+sap.ino.xs.object.evaluation.Evaluation;EVALUATION;STANDARD;/sap/ino/xs/rest/common/evaluation.xsjs;Evaluation
+sap.ino.xs.object.evaluation.ModelStage;MODEL_STAGE;STAGE;/sap/ino/xs/rest/admin/application/evaluation_model_stage.xsjs;Model Stage
+sap.ino.xs.object.evaluation.Model;MODEL;CONFIGURATION;;Evaluation Model
+sap.ino.xs.object.followup.FollowUp;FOLLOW_UP;STANDARD;/sap/ino/xs/rest/backoffice/follow_up.xsjs;Follow Up
+sap.ino.xs.object.iam.Identity;IDENTITY;STANDARD;;Identity
+sap.ino.xs.object.iam.Group;GROUP;STANDARD;/sap/ino/xs/rest/backoffice/group.xsjs;Group
+sap.ino.xs.object.iam.User;USER;STANDARD;/sap/ino/xs/rest/admin/application/user.xsjs;User
+sap.ino.xs.object.iam.UserSettings;USER_SETTINGS;STANDARD;/sap/ino/xs/rest/common/usersettings.xsjs;User Settings
+sap.ino.xs.object.idea.Idea;IDEA;STANDARD;/sap/ino/xs/rest/common/idea.xsjs;Idea
+sap.ino.xs.object.idea.Comment;COMMENT;STANDARD;/sap/ino/xs/rest/common/comment.xsjs;Comment
+sap.ino.xs.object.idea.IdeaRead;READ;STANDARD;/sap/ino/xs/rest/backoffice/idea_read.xsjs;Idea Read
+sap.ino.xs.object.tag.Tag;TAG;STANDARD;/sap/ino/xs/rest/admin/application/tag.xsjs;Tag
+sap.ino.xs.object.idea.Vote;VOTE;STANDARD;/sap/ino/xs/rest/common/vote.xsjs;Vote
+sap.ino.xs.object.notification.Notification;NOTIFICATION;STANDARD;/sap/ino/xs/rest/common/notification.xsjs;Notification
+sap.ino.xs.object.notification.EventRole;NOTIF_EVENT_ROLE;CONFIGURATION;;Notification Event Role
+sap.ino.xs.object.notification.EventRoleStage;NOTIF_EVENT_ROLE_STAGE;STAGE;;Notification Event Role Stage
+sap.ino.xs.object.notification.MailTemplate;MAIL_TEMPLATE;CONFIGURATION;;Mail Template
+sap.ino.xs.object.notification.MailTemplateStage;MAIL_TEMPLATE_STAGE;STAGE;/sap/ino/xs/rest/admin/application/mail_template_stage.xsjs;Mail Template Stage
+sap.ino.xs.object.status.Status;STATUS;CONFIGURATION;;Status
+sap.ino.xs.object.status.StatusStage;STATUS_STAGE;STAGE;/sap/ino/xs/rest/backoffice/statusnamestage.xsjs;Status Stage
+sap.ino.xs.object.status.AuthorizationForStatus;AUTHORIZATION_FOR_STATUS;STANDARD;/sap/ino/xs/rest/backoffice/authorization_for_status.xsjs;Authorization For Status
+sap.ino.xs.object.status.Action;STATUS_ACTION;CONFIGURATION;;Status Action
+sap.ino.xs.object.status.ActionStage;STATUS_ACTION_STAGE;STAGE;/sap/ino/xs/rest/backoffice/statusactionstage.xsjs;Status Action Stage
+sap.ino.xs.object.status.Model;STATUS_MODEL;CONFIGURATION;;Status Model
+sap.ino.xs.object.status.ModelStage;STATUS_MODEL_STAGE;STAGE;/sap/ino/xs/rest/backoffice/statusmodelstage.xsjs;Status Model Stage
+sap.ino.xs.object.wall.Wall;WALL;STANDARD;/sap/ino/xs/rest/common/wall.xsjs;Wall
+sap.ino.xs.object.wall.WallItem;WALL_ITEM;STANDARD;/sap/ino/xs/rest/common/wall_item.xsjs;WallItem
+sap.ino.xs.object.basis.LocalSystemSetting;LOCAL_SYSTEM_SETTING;STANDARD;/sap/ino/xs/rest/admin/application/local_system_setting.xsjs;Local System Setting
+sap.ino.xs.object.idea.InternalNote;INTERNAL_NOTE;STANDARD;/sap/ino/xs/rest/backoffice/internal_note.xsjs;Internal Note
+sap.ino.xs.object.ideaform.IdeaForm;IDEAFORM;CONFIGURATION;/sap/ino/xs/rest/common/ideaform.xsjs;IdeaForm
+sap.ino.xs.object.ideaform.IdeaFormStage;IDEAFORMSTAGE;STAGE;/sap/ino/xs/rest/admin/application/idea_form_stage.xsjs;IdeaFormStage
+sap.ino.xs.object.subresponsibility.ResponsibilityStage;RESPONSIBILITY;STANDARD;/sap/ino/xs/rest/backoffice/responsibility_stage.xsjs;Responsibility
+sap.ino.xs.object.tag.TagGroup;TAGGROUP;STANDARD;/sap/ino/xs/rest/admin/application/tag_group.xsjs;TagGroup
+sap.ino.xs.object.blog.Blog;BLOG;STANDARD;/sap/ino/xs/rest/common/blog.xsjs;Campaign Blog
+sap.ino.xs.object.follow.Follow;FOLLOW;STANDARD;/sap/ino/xs/rest/common/follow.xsjs;Follow
+sap.ino.xs.object.blog.Comment;COMMENT;STANDARD;/sap/ino/xs/rest/common/blog_comment.xsjs; Blog Comment
+sap.ino.xs.object.reward.RewardList;REWARD;STANDARD;/sap/ino/xs/rest/common/rewardlist.xsjs;Idea Reward List
+sap.ino.xs.object.campaign.Registration;REGISTRATION;STANDARD;/sap/ino/xs/rest/common/campaign_registration.xsjs;Registration
+sap.ino.xs.object.iam.IdentityAttribute;IDENTITY_ATTRIBUTE;STANDARD;/sap/ino/xs/rest/admin/application/identity_attribute.xsjs;Identity Attribute
+sap.ino.xs.object.iam.IdentityAttributeSetting;IDENTITY_ATTRIBUTE_SETTING;STANDARD;/sap/ino/xs/rest/admin/application/identity_attribute_setting.xsjs;Identity Attribute Setting
+sap.ino.xs.object.idea.Volunteer;Volunteer;STANDARD;/sap/ino/xs/rest/common/idea_volunteer.xsjs;Idea Volunteer
+sap.ino.xs.object.idea.IdeaLatest;IdeaLatest;STANDARD;/sap/ino/xs/rest/common/ideaLatest.xsjs;Idea Latest
+sap.ino.xs.object.evaluation.EvaluationRequest;EVALUATIONREQUEST;STANDARD;/sap/ino/xs/rest/backoffice/evalrequest.xsjs;Evaluation Request
+sap.ino.xs.object.evaluation.EvaluationRequestItem;EVALUATIONREQUESTITEM;STANDARD;/sap/ino/xs/rest/common/evalrequestitem.xsjs;Evaluation Request Item
+sap.ino.xs.object.evaluation.EvalReqComment;EVALUATIONREQUESTCOMMENT;STANDARD;/sap/ino/xs/rest/common/evalrequestcomment.xsjs;Evaluation Request Comment
+sap.ino.xs.object.iam.TermHistory;TERMHISTORY;STANDARD;;Term History
+sap.ino.xs.object.iam.IdentityMail;IDENTITYMAIL;STANDARD;;Identity Mail
+sap.ino.xs.object.basis.MilestoneTask;MILESTONE_TASK;CONFIGURATION;;Milestone Task
+sap.ino.xs.object.basis.MilestoneTaskStage;MILESTONE_TASK_STAGE;STAGE;/sap/ino/xs/rest/admin/application/milestone_task_stage.xsjs;Milestone Task Stage
+sap.ino.xs.object.basis.UrlWhitelist;URL_WHITELIST;CONFIGURATION;;Url Whitelist
+sap.ino.xs.object.basis.UrlWhitelistStage;URL_WHITELIST_STAGE;STAGE;/sap/ino/xs/rest/admin/application/url_whitelist_stage.xsjs;Url Whitelist Stage
+sap.ino.xs.object.iam.IdentityLogSetting;IDENTITY_LOG_SETTING;STANDARD;/sap/ino/xs/rest/admin/application/identity_log_setting.xsjs;Identity Log Setting
+sap.ino.xs.object.iam.IdentityLog;IDENTITY_LOG;STANDARD;/sap/ino/xs/rest/admin/application/identity_log.xsjs;Identity Log
+sap.ino.xs.object.iam.CommunityUserGroup;COMMUNITYUSER;STANDARD;/sap/ino/xs/rest/common/community_user.xsjs;Community User
+sap.ino.xs.object.iam.PersonalizeSetting;PERSONALIZE_SETTING;STANDARD;/sap/ino/xs/rest/common/personalize_setting.xsjs;Personalize Setting
+sap.ino.xs.object.notification.NotificationCodeMappingSetting;NOTIFICATIONCODEMAPPINGSETTING;CONFIGURATION;;NotificationCodeMappingSetting
+sap.ino.xs.object.notification.NotificationCodeMappingSettingStage;NOTIFICATIONCODEMAPPINGSETTING_STAGE;STAGE;;NotificationCodeMappingSetting
+sap.ino.xs.object.iam.GroupAssignment;GroupAssignment;STANDARD;/sap/ino/xs/rest/common/GroupAssignment.xsjs;Group assignment
+sap.ino.xs.object.homepagewidget.Homepagewidget;HOMEPAGEWIDGET;STANDARD;/sap/ino/xs/rest/common/homepagewidget.xsjs;Homepage Widget
+sap.ino.xs.object.integration.SystemIntegration;SYSTEMINTEGRATION;STANDARD;/sap/ino/xs/rest/common/systemIntegration.xsjs;System Integration
+sap.ino.xs.object.integration.CampaignIntegration;CAMPAIGNINTEGRATION;STANDARD;/sap/ino/xs/rest/common/campaignIntegration.xsjs;Campaign Integration
+sap.ino.xs.object.integration.MonitorIntegration;MONITORINTEGRATION;STANDARD;/sap/ino/xs/rest/common/monitorIntegration.xsjs;Monitor Integration
+sap.ino.xs.object.notification.MonitorNotification;MONITORNOTIFICATION;STANDARD;/sap/ino/xs/rest/common/monitorNotification.xsjs;Monitor Notification
+sap.ino.xs.object.integration.IdeaObjectIntegration;IDEAOBJECTINTEGRATION;STANDARD;/sap/ino/xs/rest/common/ideaObjectIntegration.xsjs;Idea Object Integration
+sap.ino.xs.object.idea.MergeConfig;MERGECONFIG;STANDARD;/sap/ino/xs/rest/common/mergeConfig.xsjs;Merge Config
+sap.ino.xs.object.newnotification.NotificationSystemSetting;NOTIFICATIONSYSTEMSETTING;STANDARD;/sap/ino/xs/rest/common/notificationSystemSetting.xsjs;Notification System Setting
+sap.ino.xs.object.gamification.Gamification;GAMIFICATION;STANDARD;/sap/ino/xs/rest/common/gamification.xsjs;gamification
+sap.ino.xs.object.gamification.Dimension;DIMENSION;STANDARD;/sap/ino/xs/rest/common/dimension.xsjs;dimension

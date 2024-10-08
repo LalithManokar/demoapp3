@@ -1,0 +1,8 @@
+{
+    "description" : "A job to update external objects for the corresponding ideas",
+    "action" : "sap.ino.xs.batch.jobs:integration_update_external_object.xsjs::execute",
+    "schedules" : [{
+        "description" : "Execute when the external objects need update",
+        "xscron" : "* * * * * 20 0"
+    }]
+}

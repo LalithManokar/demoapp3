@@ -1,0 +1,8 @@
+{
+    "description" : "Cron Job to delete the logs of personal data change",
+    "action" : "sap.ino.xs.batch.jobs:delete_pers_data_change_logs.xsjs::execute",
+    "schedules" : [{
+        "description" : "Execute every day",
+        "xscron" : "* * * * 22 00 00"
+    }]
+}

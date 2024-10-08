@@ -1,0 +1,4 @@
+/*!
+ * Copyright (c) 2009-2017 SAP SE, All Rights Reserved
+ */
+sap.ui.define(["sap/base/Log","sap/ushell/appRuntime/ui5/plugins/baseRta/AppLifeCycleUtils"],function(L,A){"use strict";var R={getRenderer:function(c){var C=A.getContainer();return new Promise(function(r,a){var o=C.getRenderer();if(o){c.oRenderer=o;r(o);}else{c._onRendererCreated=function(e){o=e.getParameter("renderer");if(o){c.oRenderer=o;r(o);}else{a("Illegal state: shell renderer not available after recieving 'rendererCreated' event.");}};C.attachRendererCreatedEvent(c._onRendererCreated,c);}});},createActionButton:function(c,o,i){return this.getRenderer(c).then(function(r){r.addActionButton("sap.ushell.ui.launchpad.ActionItem",{id:c.mConfig.id,text:c.mConfig.i18n.getText(c.mConfig.text),icon:c.mConfig.icon,press:o,visible:i},true,false,[r.LaunchpadState.app]);}).catch(function(e){L.error(e,undefined,c.mConfig.sComponentName);});},exit:function(){}};return R;},true);

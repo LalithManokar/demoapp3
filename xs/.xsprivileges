@@ -1,0 +1,6 @@
+{
+    "privileges": [
+        { "name": "develop", "description": "developer access" },
+        { "name": "read",    "description": "read access" }
+    ]
+}

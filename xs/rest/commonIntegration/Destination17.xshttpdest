@@ -1,0 +1,11 @@
+description = "Http Destination 17";
+host = "";
+port = 443;
+pathPrefix = "";
+proxyType = none;
+authType = basic;
+remoteSID = "";
+remoteClient = "";
+useSSL = true;
+timeout = 10000;
+sslAuth = client;

@@ -1,0 +1,118 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+          xmlns="sap.m"
+          height="100%"
+          controllerName="sap.ushell.applications.PageComposer.controller.PageOverview">
+
+    <Page id="pageOverview">
+        <customHeader>
+            <Bar>
+                <contentLeft>
+                    <Title text="{i18n>PageOverview.Title}" class="sapUiMediumMarginBegin" />
+                </contentLeft>
+            </Bar>
+        </customHeader>
+        <content>
+            <Table
+                class="sapUiMediumMarginBeginEnd sapUiTinyMarginTopBottom sapUiForceWidthAuto"
+                id="table"
+                busy="{/busy}"
+                items="{
+                    path: '/pages',
+                    key: 'id',
+                    sorter : {
+                        path : 'content/modifiedOn',
+                        descending: 'true'
+                    }
+                }"
+                itemPress=".onItemPress"
+                selectionChange=".onSelectionChange"
+                updateFinished=".onTableUpdate"
+                mode="SingleSelectLeft"
+                sticky="ColumnHeaders">
+                <headerToolbar>
+                    <OverflowToolbar design="Solid">
+                        <ToolbarSpacer/>
+                        <SearchField
+                            showRefreshButton="false"
+                            tooltip="{i18n>Tooltip.Search}"
+                            search=".onSearch"
+                            width="auto">
+                        </SearchField>
+                        <Button
+                            id="addButton"
+                            text="{i18n>Button.Create}"
+                            type="Transparent"
+                            press=".onAdd"/>
+                        <Button
+                            id="deleteButton"
+                            text="{i18n>Button.Delete}"
+                            type="Transparent"
+                            enabled="{buttonStates>/isDeleteEnabled}"
+                            press=".onDelete"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column>
+                        <Text text="{i18n>Column.PageID} / {i18n>Column.PageTitle}"/>
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>Column.PageDescription}"/>
+                    </Column>
+                    <Column width="10%">
+                        <Text text="{i18n>Column.PageCreatedBy}" class="sapUiSmallMarginBegin"/>
+                    </Column>
+                    <Column hAlign="End" width="10%">
+                        <Text text="{i18n>Column.PageCreatedOn}" class="sapUiSmallMarginEnd"/>
+                    </Column>
+                    <Column width="10%">
+                        <Text text="{i18n>Column.PageChangedBy}" class="sapUiSmallMarginBegin"/>
+                    </Column>
+                    <Column hAlign="End" width="10%">
+                        <Text text="{i18n>Column.PageChangedOn}" class="sapUiSmallMarginEnd"/>
+                    </Column>
+                    <Column hAlign="End" width="5%">
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem  type="Navigation">
+                        <cells>
+                            <ObjectIdentifier title="{content/id}" text="{content/title}"/>
+                        </cells>
+                        <cells>
+                            <Text text="{content/description}"/>
+                        </cells>
+                        <cells>
+                            <Text text="{content/createdBy}" class="sapUiSmallMarginBegin"/>
+                        </cells>
+                        <cells>
+                            <Text
+                                text="{
+                                    path: 'content/createdOn',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: {style: 'medium'}
+                                }"
+                                class="sapUiSmallMarginEnd"/>
+                        </cells>
+                        <cells>
+                            <Text text="{content/modifiedBy}" class="sapUiSmallMarginBegin"/>
+                        </cells>
+                        <cells>
+                            <Text
+                                text="{
+                                    path: 'content/modifiedOn',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: {style: 'medium'}
+                                }"
+                                class="sapUiSmallMarginEnd"/>
+                        </cells>
+                        <cells>
+                            <Button press=".onEdit" icon="sap-icon://edit" type="Transparent"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+
+    </Page>
+
+</mvc:View>

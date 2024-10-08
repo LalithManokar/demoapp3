@@ -1,0 +1,8 @@
+{
+    "description" : "Cron Job to delete notification history data",
+    "action" : "sap.ino.xs.batch.jobs:notification_deletion.xsjs::execute",
+    "schedules" : [{
+        "description" : "Execute every day ",
+        "xscron" : "* * * * 22 15 0"
+    }]
+}

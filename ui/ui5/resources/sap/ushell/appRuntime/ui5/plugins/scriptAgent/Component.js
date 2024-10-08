@@ -1,0 +1,2 @@
+// Copyright (c) 2009-2017 SAP SE, All Rights Reserved
+sap.ui.define(["sap/ui/core/Component","sap/ui/thirdparty/jquery","sap/base/Log"],function(C,q,L){"use strict";return C.extend("sap.ushell.appRuntime.ui5.plugins.scriptAgent.Component",{metadata:{version:"1.0.0",dependencies:{libs:["sap.m"],components:[]}},init:function(){var c=this.getComponentData();try{q.getScript(c.config.url);}catch(e){L.error(e);}}});});

@@ -1,0 +1,11 @@
+{
+    "exposed": true,
+    "prevent_xsrf": false,
+    "authentication" :                                            
+    {
+    "method": "Basic"
+    },
+    "authorization": [
+        "sap.ino.xs.rest.transport::execute"
+    ]
+} 

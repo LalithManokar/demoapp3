@@ -1,0 +1,8 @@
+{
+    "description" : "Cron Job to sent feed email",
+    "action" : "sap.ino.xs.batch.jobs:feed_email.xsjs::execute",
+    "schedules" : [{
+        "description" : "Execute every day",
+        "xscron" : "* * * * 23 30 0"
+    }]
+}

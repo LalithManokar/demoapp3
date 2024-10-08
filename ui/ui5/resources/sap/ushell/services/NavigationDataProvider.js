@@ -1,0 +1,2 @@
+// Copyright (c) 2009-2017 SAP SE, All Rights Reserved
+sap.ui.define([],function(){"use strict";function N(){this._init.apply(this,arguments);}N.prototype._init=function(a,s){this.oAdapter=a;};N.prototype.getNavigationData=function(){return new Promise(function(r,a){var s=(this.oAdapter.getSystemAliases&&this.oAdapter.getSystemAliases())||{};this.oAdapter.getInbounds().then(function(i){r({systemAliases:s,inbounds:i});}).fail(a);}.bind(this));};N.hasNoAdapter=false;return N;});

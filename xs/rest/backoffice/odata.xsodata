@@ -1,0 +1,1150 @@
+service namespace "sap.ino.rest" {
+ 
+// ************************
+// *                      *
+// *  Backoffice services *
+// *                      *
+// ************************
+    "sap.ino.db.status.ext::v_ext_status" as "StatusNameCode" keys ("CODE");
+    "sap.ino.db.status.ext::v_ext_status_stage" as "StagingStatusNameCode" keys ("ID");
+    "sap.ino.db.status.ext::v_ext_status_authorization_stage" as "StatusAuthorizationStage" keys ("ID_OF_STATUS_STAGE") navigates ("AuthorizationForStatus" as "AuthorizationForStatus");
+    "sap.ino.db.status.ext::v_ext_status_action" as "StatusActionCode" keys ("CODE");
+    "sap.ino.db.status.ext::v_ext_status_action_stage" as "StagingStatusActionCode" keys ("ID");
+    "sap.ino.db.status.ext::v_ext_status_model" as "StatusModelCode" keys ("CODE") navigates ("StatusModelCode_Transitions" as "Transitions");
+    "sap.ino.db.status.ext::v_ext_status_model_stage" as "StagingStatusModelCode" keys ("ID") navigates ("StagingStatusModelCode_Transitions" as "Transitions");
+    "sap.ino.db.status.ext::v_ext_status_model_transition" as "StatusModelTransitionCode" keys ("CODE");
+    "sap.ino.db.status.ext::v_ext_status_authorization" as "StatusAuthorization" keys ("ID_OF_STATUS_STAGE");
+    "sap.ino.db.status.ext::v_ext_status_object_action_role_code" as "StatusActionRoleCode" keys ("STATUS_TYPE","ACTION_CODE");
+    "sap.ino.db.status.ext::v_ext_status_model_transition_stage" as "StagingStatusModelTransitionCode" keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_my_followed_ideas" as "MyFollowedCompletedIdeaMediumCommunity" keys ("ID");
+    association "StatusModelCode_Transitions" principal "StatusModelCode"("CODE")   
+    	multiplicity "1" dependent "StatusModelTransitionCode"("STATUS_MODEL_CODE") multiplicity "*";
+    	
+    association "AuthorizationForStatus" principal "StatusAuthorizationStage"("ID")
+    	multiplicity "1" dependent "StatusAuthorization"("ID_OF_STATUS_STAGE") multiplicity "*";
+    	
+    association "StagingStatusModelCode_Transitions" principal "StagingStatusModelCode"("ID")
+    	multiplicity "1" dependent "StagingStatusModelTransitionCode"("MODEL_ID") multiplicity "*";	
+
+    "sap.ino.db.campaign.ext::v_ext_campaign_biz_events" as "CampaignBusinessEvents"  keys ("CAMPAIGN_ID", "HISTORY_AT") navigates ("CampaignBusinessEvents_BusinessEventDetails" as "Details");
+    "sap.ino.db.campaign.ext::v_ext_campaign_events"     as "BusinessEventDetails"    keys ("CAMPAIGN_ID", "CHANGED_AT", "CHANGE_EVENT") navigates ("BusinessEventDetails_NewProcess"      as "NewProcess",
+                                                                                                                                                    "BusinessEventDetails_OldProcess"      as "OldProcess",
+                                                                                                                                                    "BusinessEventDetails_NewManagers"     as "NewManagers",
+                                                                                                                                                    "BusinessEventDetails_OldManagers"     as "OldManagers",
+                                                                                                                                                    "BusinessEventDetails_NewParticipants" as "NewParticipants",
+                                                                                                                                                    "BusinessEventDetails_OldParticipants" as "OldParticipants",
+                                                                                                                                                    "BusinessEventDetails_NewExperts"      as "NewExperts",
+                                                                                                                                                    "BusinessEventDetails_OldExperts"      as "OldExperts",
+                                                                                                                                                    "BusinessEventDetails_NewCoaches"      as "NewCoaches",
+                                                                                                                                                    "BusinessEventDetails_OldCoaches"      as "OldCoaches");
+    "sap.ino.db.campaign.ext::v_ext_campaign_phase_events"            as "NewProcess"          keys generate local "KEY";
+    "sap.ino.db.campaign.ext::v_ext_campaign_phase_events_pre"        as "OldProcess"          keys generate local "KEY";
+    "sap.ino.db.campaign.ext::v_ext_campaign_manager_events"          as "NewManagers"         keys generate local "KEY";
+    "sap.ino.db.campaign.ext::v_ext_campaign_manager_events_pre"      as "OldManagers"         keys generate local "KEY";
+    "sap.ino.db.campaign.ext::v_ext_campaign_participant_events"      as "NewParticipants"     keys generate local "KEY";
+    "sap.ino.db.campaign.ext::v_ext_campaign_participant_events_pre"  as "OldParticipants"     keys generate local "KEY";
+    "sap.ino.db.campaign.ext::v_ext_campaign_expert_events"           as "NewExperts"          keys generate local "KEY";
+    "sap.ino.db.campaign.ext::v_ext_campaign_expert_events_pre"       as "OldExperts"          keys generate local "KEY";
+    "sap.ino.db.campaign.ext::v_ext_campaign_coach_events"            as "NewCoaches"          keys generate local "KEY";
+    "sap.ino.db.campaign.ext::v_ext_campaign_coach_events_pre"        as "OldCoaches"          keys generate local "KEY";
+    "sap.ino.db.campaign.ext::v_ext_campaign_report"                  as "CampaignReports"     keys ("ID"); 
+    "sap.ino.db.campaign.ext::v_ext_auth_campaign_report"             as "AuthCampaignReports"    keys ("CAMPAIGN_ID"); 
+    "sap.ino.db.campaign.ext::v_ext_campaign_entity_count"            as "CampaignEntityCount" keys ("CAMPAIGN_ID");
+    "sap.ino.db.campaign.ext::v_ext_campaign_community_entity_count"  as "CampaignCommunityEntityCount" keys ("CAMPAIGN_ID");
+    "sap.ino.db.campaign.ext::v_ext_campaign_feed"                    as "CampaignFeed"        keys ("ID");
+    "sap.ino.db.campaign.ext::v_ext_campaign_task"                    as "CampaignTask"        keys ("ID") navigates ("CampaignTask_Milestone" as "Milestones");
+    
+    "sap.ino.db.campaign.ext::v_ext_campaign_milestone"               as "CampaignMilestone"   keys ("ID") navigates ("CampaignMilestone_Attachment" as "Attachment");
+    
+    association "CampaignFull_EntityCount" principal "CampaignFull"("ID")
+    multiplicity "1" dependent "CampaignEntityCount"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_BusinessEvents" principal "CampaignFull"("ID")
+    multiplicity "1" dependent "CampaignBusinessEvents"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Reports" principal "CampaignFull"("ID")
+    multiplicity "1" dependent "CampaignReports"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignBusinessEvents_BusinessEventDetails" principal "CampaignBusinessEvents"("CAMPAIGN_ID", "HISTORY_AT")
+    multiplicity "1" dependent "BusinessEventDetails"("CAMPAIGN_ID", "CHANGED_AT") multiplicity "*";
+    association "BusinessEventDetails_NewProcess" principal "BusinessEventDetails"("CAMPAIGN_ID", "CHANGED_AT")
+    multiplicity "1" dependent "NewProcess"("CAMPAIGN_ID", "EDIT_TIMESTAMP") multiplicity "*";
+    association "BusinessEventDetails_OldProcess" principal "BusinessEventDetails"("CAMPAIGN_ID", "CHANGED_AT")
+    multiplicity "1" dependent "OldProcess"("CAMPAIGN_ID", "EDIT_TIMESTAMP_NEW") multiplicity "*";
+    association "BusinessEventDetails_NewManagers" principal "BusinessEventDetails"("CAMPAIGN_ID", "CHANGED_AT")
+    multiplicity "1" dependent "NewManagers"("CAMPAIGN_ID", "EDIT_TIMESTAMP") multiplicity "*";
+    association "BusinessEventDetails_OldManagers" principal "BusinessEventDetails"("CAMPAIGN_ID", "CHANGED_AT")
+    multiplicity "1" dependent "OldManagers"("CAMPAIGN_ID", "EDIT_TIMESTAMP_NEW") multiplicity "*";
+    association "BusinessEventDetails_NewParticipants" principal "BusinessEventDetails"("CAMPAIGN_ID", "CHANGED_AT")
+    multiplicity "1" dependent "NewParticipants"("CAMPAIGN_ID", "EDIT_TIMESTAMP") multiplicity "*";
+    association "BusinessEventDetails_OldParticipants" principal "BusinessEventDetails"("CAMPAIGN_ID", "CHANGED_AT")
+    multiplicity "1" dependent "OldParticipants"("CAMPAIGN_ID", "EDIT_TIMESTAMP_NEW") multiplicity "*";
+    association "BusinessEventDetails_NewExperts" principal "BusinessEventDetails"("CAMPAIGN_ID", "CHANGED_AT")
+    multiplicity "1" dependent "NewExperts"("CAMPAIGN_ID", "EDIT_TIMESTAMP") multiplicity "*";
+    association "BusinessEventDetails_OldExperts" principal "BusinessEventDetails"("CAMPAIGN_ID", "CHANGED_AT")
+    multiplicity "1" dependent "OldExperts"("CAMPAIGN_ID", "EDIT_TIMESTAMP_NEW") multiplicity "*";
+    association "BusinessEventDetails_NewCoaches" principal "BusinessEventDetails"("CAMPAIGN_ID", "CHANGED_AT")
+    multiplicity "1" dependent "NewCoaches"("CAMPAIGN_ID", "EDIT_TIMESTAMP") multiplicity "*";
+    association "BusinessEventDetails_OldCoaches" principal "BusinessEventDetails"("CAMPAIGN_ID", "CHANGED_AT")
+    multiplicity "1" dependent "OldCoaches"("CAMPAIGN_ID", "EDIT_TIMESTAMP_NEW") multiplicity "*";
+    
+    
+   "sap.ino.db.idea.ext::V_EXT_IDEAS_MEDIUM_OPT_SEARCH_COUNT_V1" as "IdeaMediumBackofficeSearchCount" keys("ID")
+                                                   parameters via key and entity "IdeaMediumBackofficeSearchParamsCount";
+   "sap.ino.db.idea.ext::V_EXT_IDEAS_MEDIUM_OPT_SEARCH_V1" as "IdeaMediumBackofficeSearch" keys("ID") navigates ("IdeaMediumSearch_Contributors"   as "Contributors",
+                                                                                                          "IdeaMediumSearch_Authors"        as "Authors", 
+   																					 	  				  "IdeaMediumSearch_Tags"           as "Tags",
+                                                                                                          "IdeaMediumSearch_IdeaLastPublEvaluationValuesOverall" as "LastPublEvaluationOverallCriterionValue",
+                                                                                                          "IdeaMediumSearch_CS"             as "ContributionShare")
+                                                                parameters via key and entity "IdeaMediumBackofficeSearchParams";
+                                                                
+    association "IdeaMediumSearch_Contributors" principal "IdeaMediumBackofficeSearch"("ID")
+    multiplicity "1" dependent "IdeaContributor"("IDEA_ID") multiplicity "*"; 
+    association "IdeaMediumSearch_Authors" principal "IdeaMediumBackofficeSearch"("ID")
+    multiplicity "1" dependent "IdeaAuthor"("IDEA_ID") multiplicity "*";
+    association "IdeaMediumSearch_Tags" principal "IdeaMediumBackofficeSearch"("ID")
+    multiplicity "1" dependent "IdeaTag"("IDEA_ID") multiplicity "*";
+    association "IdeaMediumSearch_IdeaLastPublEvaluationValuesOverall" principal "IdeaMediumBackofficeSearch"("LAST_PUBL_EVAL_ID")
+    multiplicity "1" dependent "IdeaEvaluationCriterionValuesOverall"("EVALUATION_ID") multiplicity "0..1";
+    association "IdeaMediumSearch_CS" principal "IdeaMediumBackofficeSearch"("ID")
+    multiplicity "1" dependent "ContributionShare"("IDEA_ID") multiplicity "*";
+
+    "sap.ino.db.idea.ext::V_EXT_IDEAS_MEDIUM_OPT_SEARCH" as "IdeaMediumBackofficeSearchOpt" keys("ID")
+                                                                parameters via key and entity "IdeaMediumBackofficeSearchParamsOpt";
+
+	"sap.ino.db.iam.ext::v_ext_static_roles" as "StaticRoles" keys ("ROLE_CODE");
+
+    // Value Option Staging
+    "sap.ino.db.basis.ext::v_ext_value_option_list_stage" as "StagingValueOptionList"
+        keys ("ID")
+        navigates ("StagingValueOptionList_ValueOptions" as "ValueOptions");
+    "sap.ino.db.basis.ext::v_ext_value_option_stage" as "StagingValueOptions" 
+        keys ("ID");
+
+    association "StagingValueOptionList_ValueOptions"
+        principal "StagingValueOptionList"("ID")
+        multiplicity "1"
+        dependent "StagingValueOptions"("LIST_ID")
+        multiplicity "*";
+
+    "sap.ino.db.basis.ext::V_EXT_VALUE_OPTION_LIST_STAGE_SEARCH" as "StagingValueOptionListSearch"
+        key("ID")
+        navigates ("StagingValueOptionListSearch_ValueOptions" as "ValueOptions")
+        parameters via key and entity "StagingValueOptionListSearchParams";
+
+    association "StagingValueOptionListSearch_ValueOptions"
+        principal "StagingValueOptionListSearch"("ID")
+        multiplicity "1"
+        dependent "StagingValueOptions"("LIST_ID")
+        multiplicity "*";
+
+
+    // Evaluation Model Staging
+    "sap.ino.db.evaluation.ext::v_ext_model_stage" as "StagingEvaluationModel"
+        keys ("ID")
+        navigates ("StagingEvaluationModel_Criterion" as "Criterion",
+                   "StagingEvaluationModel_RootCriterion" as "RootCriterion");
+    "sap.ino.db.evaluation.ext::v_ext_criterion_stage" as "StagingEvaluationModelCriterion"
+        keys ("ID")
+        navigates ("StagingEvaluationModelCriterion_ParentCriterion" as "ParentCriterion" from dependent,
+                   "StagingEvaluationModelCriterion_ParentCriterion" as "ChildrenCriterion" from principal);
+    association "StagingEvaluationModel_Criterion"
+        principal "StagingEvaluationModel"("ID")
+        multiplicity "1"
+        dependent "StagingEvaluationModelCriterion"("MODEL_ID")
+        multiplicity "*";
+    association "StagingEvaluationModel_RootCriterion"
+        principal "StagingEvaluationModel"("ID")
+        multiplicity "1"
+        dependent "StagingEvaluationModelCriterion"("ID")
+        multiplicity "*"
+        over "sap.ino.db.evaluation.ext::v_ext_model_stage_criterion_stage_root_association"
+        principal ("MODEL_ID")
+        dependent ("CRITERION_ID");
+    association "StagingEvaluationModelCriterion_ParentCriterion"
+        principal "StagingEvaluationModelCriterion"("ID")
+        multiplicity "1"
+        dependent "StagingEvaluationModelCriterion"("PARENT_CRITERION_ID")
+        multiplicity "*";
+
+    "sap.ino.db.evaluation.ext::V_EXT_MODEL_STAGE_SEARCH" as "StagingEvaluationModelSearch"
+        key("ID")
+        navigates ("StagingEvaluationModelSearch_Criterion" as "Criterion",
+                   "StagingEvaluationModelSearch_RootCriterion" as "RootCriterion")
+        parameters via key and entity "StagingEvaluationModelSearchParams";
+    association "StagingEvaluationModelSearch_Criterion"
+        principal "StagingEvaluationModelSearch"("ID")
+        multiplicity "1"
+        dependent "StagingEvaluationModelCriterion"("MODEL_ID")
+        multiplicity "*";
+    association "StagingEvaluationModelSearch_RootCriterion"
+        principal "StagingEvaluationModelSearch"("ID")
+        multiplicity "1"
+        dependent "StagingEvaluationModelCriterion"("ID")
+        multiplicity "*"
+        over "sap.ino.db.evaluation.ext::v_ext_model_stage_criterion_stage_root_association"
+        principal ("MODEL_ID")
+        dependent ("CRITERION_ID");
+        
+     // Unit Staging
+     "sap.ino.db.basis.ext::v_ext_unit_stage" as "StagingUnit"
+        keys ("ID");
+     "sap.ino.db.basis.ext::V_EXT_UNIT_STAGE_SEARCH" as "StagingUnitSearch"
+        key("ID")
+        parameters via key and entity "StagingUnitSearchParams";
+
+     // Phase Staging
+     "sap.ino.db.campaign.ext::v_ext_phase_stage" as "StagingPhase"
+        keys ("ID");
+     "sap.ino.db.campaign.ext::V_EXT_PHASE_STAGE_SEARCH" as "StagingPhaseSearch"
+        key("ID")
+        parameters via key and entity "StagingPhaseSearchParams";
+        
+    // MailTemplate Staging
+    "sap.ino.db.notification.ext::v_ext_mail_template_stage" as "StagingMailTemplate"
+        keys ("ID")
+        navigates ("StagingMailTemplate_Text" as "MailTemplateText");
+    "sap.ino.db.notification.ext::v_ext_mail_template_t_stage" as "MailTemplateText"
+        keys ("ID");
+    association "StagingMailTemplate_Text"
+        principal "StagingMailTemplate"("ID")
+        multiplicity "1"
+        dependent "MailTemplateText"("MAIL_TEMPLATE_ID")
+        multiplicity "*";
+        
+    "sap.ino.db.notification.ext::V_EXT_MAIL_TEMPLATE_STAGE_SEARCH" as "StagingMailTemplateSearch"
+        key("ID")
+        parameters via key and entity "StagingMailTemplateSearchParams";
+
+    // MailTemplate
+    "sap.ino.db.notification.ext::v_ext_mail_template" as "MailTemplate"
+        keys ("CODE")
+        navigates ("MailTemplate_Text" as "MailTemplateText");
+    "sap.ino.db.notification.ext::v_ext_mail_template_t" as "TemplateText"
+        keys ("CODE");
+    association "MailTemplate_Text"
+        principal "MailTemplate"("CODE")
+        multiplicity "1"
+        dependent "TemplateText"("MAIL_TEMPLATE_CODE")
+        multiplicity "*";
+
+    // TextModule Staging
+    "sap.ino.db.basis.ext::v_ext_text_module_stage" as "StagingTextModule"
+        keys ("ID")
+        navigates ("StagingTextModule_Text" as "TextModuleText");
+    "sap.ino.db.basis.ext::v_ext_text_module_t_stage" as "StagingTextModuleText"
+        keys ("ID");
+    association "StagingTextModule_Text"
+        principal "StagingTextModule"("ID")
+        multiplicity "1"
+        dependent "StagingTextModuleText"("TEXT_MODULE_ID")
+        multiplicity "*";
+
+    // TextModule
+    "sap.ino.db.basis.ext::v_ext_text_module" as "TextModule"
+        keys ("CODE")
+        navigates ("TextModule_Text" as "TextModuleText");
+    "sap.ino.db.basis.ext::v_ext_text_module_t" as "TextModuleText"
+        keys ("CODE");
+    association "TextModule_Text"
+        principal "TextModule"("CODE")
+        multiplicity "1"
+        dependent "TextModuleText"("TEXT_MODULE_CODE")
+        multiplicity "*";
+        
+    "sap.ino.db.basis.ext::V_EXT_TEXT_MODULE_STAGE_SEARCH" as "StagingTextModuleSearch"
+        key("ID")
+        parameters via key and entity "StagingTextModuleSearchParams";
+
+    "sap.ino.db.attachment.ext::v_ext_repository_attachment" as "RepositoryAttachment"
+        keys ("PATH");
+
+    "sap.ino.db.analytics.ext::v_ext_report" as "Reports" keys ("ID");
+    "sap.ino.db.analytics.ext::v_ext_report_template" as "ReportTemplates" keys ("CODE");
+    "sap.ino.db.analytics.ext::v_ext_custom_report" as "MyReports" keys ("ID");
+    "sap.ino.db.config.ext::v_ext_activation_history" as "ActivationHistory" keys ("ID");
+    
+     // Vote Type Staging
+     "sap.ino.db.campaign.ext::v_ext_vote_type_stage" as "StagingVoteType" keys ("ID"); 
+     
+     // Vote Type Search
+     "sap.ino.db.campaign.ext::V_EXT_VOTE_TYPE_STAGE_SEARCH" as "StagingVoteTypeSearch"
+        key("ID")
+        parameters via key and entity "StagingVoteTypeSearchParams";
+     
+     // Local settings
+     "sap.ino.db.basis.ext::v_ext_local_system_setting" as "LocalSystemSetting" 
+        keys ("CODE");
+    
+    //MileStone Task Configuration
+    "sap.ino.db.basis.ext::v_ext_milestone_task" as "MilestoneTask" keys ("CODE");
+    "sap.ino.db.basis.ext::v_ext_milestone_task_stage" as "StagingMilestoneTask" keys ("ID");
+    
+    "sap.ino.db.basis.ext::V_EXT_MILESTONE_TASK_STAGE_SEARCH" as "StagingMilestoneTaskSearch"
+        key("ID")
+        parameters via key and entity "StagingMilestoneTaskSearchParams";
+        
+    //URL Whitelist Staging
+    "sap.ino.db.basis.ext::v_ext_url_whitelist_stage" as "StagingUrlWhitelist"
+        keys ("ID");
+     "sap.ino.db.basis.ext::V_EXT_URL_WHITELIST_STAGE_SEARCH" as "StagingUrlWhitelistSearch"
+        key("ID")
+        parameters via key and entity "StagingUrlWhitelistSearchParams";
+
+// *************************************************************
+// *                                                           *
+// * Community services                                        *
+// * (equal to /sap/ino/xs/rest/community/odata.xsodata)       *
+// * (except additional navigates, marked as "Backoffice Only" *
+// *                                                           *
+// *************************************************************
+
+    "sap.ino.db.idea.ext::v_ext_ideas_small"  as "IdeaSmall"  keys ("ID") navigates ("IdeaSmall_Contributors"          as "Contributors",
+                                                                                     "IdeaSmall_EvalPhases"            as "EvalPhases");
+    "sap.ino.db.idea.ext::v_ext_idea_community" as "IdeaMediumCommunity" keys ("ID") navigates ("IdeaMediumCommunity_Contributors" as "Contributors");
+    association "IdeaMediumCommunity_Contributors" principal "IdeaMediumCommunity"("ID") 
+    multiplicity "1" dependent "IdeaContributor"("IDEA_ID") multiplicity "*";
+    
+    "sap.ino.db.idea.ext::v_ext_idea_my_ideas" as "MyIdeaMediumCommunity" keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_ideas_medium" as "IdeaMedium" keys ("ID") navigates ("IdeaMedium_Contributors"         as "Contributors",
+                                                                                     "IdeaMedium_Tags"                 as "Tags");
+    "sap.ino.db.idea.ext::v_ext_ideas_full"   as "IdeaFull"   keys ("ID") navigates ("IdeaFull_Submitter"              as "Submitter",
+                                                                                     "IdeaFull_Contributors"           as "Contributors",
+                                                                                     "IdeaFull_Authors"                as "Authors", 
+                                                                                     "IdeaFull_Coach"                  as "Coach", 
+                                                                                     "IdeaFull_Comments"               as "Comments",
+                                                                                     "IdeaFull_InternalNotes"          as "InternalNotes",
+                                                                                     "IdeaFull_Commentators"           as "Commentators",
+                                                                                     "IdeaFull_Activities"             as "Activities",
+                                                                                     "IdeaFull_ActivityFeed"           as "ActivityFeed",
+                                                                                     "IdeaFull_Events"                 as "Events",
+                                                                                     "IdeaFull_Tags"                   as "Tags",
+                                                                                     "IdeaFull_Links"                  as "Links",
+                                                                                     "IdeaFull_Relations"              as "Relations",
+                                                                                     "IdeaFull_RelatedIdeas"           as "RelatedIdeas",
+                                                                                     "IdeaFull_Decision"               as "Decisions",
+                                                                                     "IdeaFull_StatusDecision"         as "StatusDecisions",
+                                                                                     "IdeaFull_Phase"                  as "Phases",
+                                                                                     "IdeaFull_Evaluations"            as "Evaluations",
+                                                                                     "IdeaFull_PublishedEvaluations"   as "PublishedEvaluations",
+                                                                                     "IdeaFull_MyEvaluations"          as "MyEvaluations",
+                                                                                     "IdeaFull_Evaluators"             as "Evaluators",
+                                                                                     "IdeaFull_EvaluationTemplate"     as "EvaluationTemplate",
+                                                                                     "IdeaFull_Attachments"            as "Attachments",
+                                                                                     "IdeaFull_Content_Attachments"    as "ContentAttachments",
+                                                                                     "IdeaFull_InternalAttachments"    as "InternalAttachments",
+                                                                                     "IdeaFull_Walls"        		   as "Walls",
+                                                                                     "IdeaFull_InternalWalls"    	   as "InternalWalls",
+                                                                                     "IdeaFull_Extension"              as "Extension",
+                                                                                     "IdeaFull_Experts"                as "Experts",
+                                                                                     "IdeaFull_CampaignExperts"        as "CampaignExperts",
+                                                                                     "IdeaFull_AllStakeholders"        as "AllStakeholders",
+                                                                                     "IdeaFull_ReassignCampaigns"      as "ReassignCampaigns",
+                                                                                     "IdeaFull_FieldsValue"            as "FieldsValue",
+                                                                                     "IdeaFull_Votes"                  as "Votes",
+                                                                                     "IdeaFull_GroupVotes"             as "GroupVotes",
+                                                                                     "IdeaFull_RespExperts"            as "RespExperts",
+                                                                                     "IdeaFull_ContributionShare"      as "ContributionShare",
+                                                                                     "IdeaFull_Rewards"                as "Rewards",
+                                                                                     "IdeaFull_Volunteers"             as "Volunteers",
+                                                                                     "IdeaFull_EvaluationRequests"     as "EvaluationRequests",
+                                                                                     "IdeaFull_EvaluationRequestItems" as "EvaluationRequestItems",
+                                                                                     "IdeaFull_IdeaRead"               as "IdeaRead",
+                                                                                     "IdeaFull_AnonymousFor"           as "AnonymousFor",
+                                                                                     "IdeaFull_CampaignManagers"       as "CampaignManagers",
+                                                                                     "IdeaFull_EvaluationRequests_Number" as "EvaluationRequestsNumber",
+                                                                                     "IdeaFull_AdminFieldsValue"        as "AdminFieldsValue",
+                                                                                     "IdeaFull_RewardSelfevaluationCount"        as "RewardSelfevaluationCount");
+ 
+    "sap.ino.db.idea::v_auth_idea_submitter"              as "IdeaSubmitter"            keys ("ID");            
+    "sap.ino.db.idea.ext::v_ext_idea_contributors"           as "IdeaContributor"          keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_idea_coach"                  as "IdeaCoach"                keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_idea_author"                 as "IdeaAuthor"               keys ("IDEA_ID", "IDENTITY_ID");
+    "sap.ino.db.idea.ext::v_ext_idea_activities"             as "IdeaActivities"           keys generate local "FEED_ID";
+   //"sap.ino.db.idea.ext::v_ext_idea_activities"             as "IdeaActivities"           keys ("ID", "CHANGED_AT", "CHANGE_EVENT");
+    "sap.ino.db.idea.ext::v_ext_idea_activity_feed"          as "IdeaActivityFeed"         keys generate local "FEED_ID";
+    "sap.ino.db.idea.ext::v_ext_idea_events"                 as "IdeaEvents"               keys generate local "KEY";
+    "sap.ino.db.idea.ext::v_ext_idea_tag"                    as "IdeaTag"                  keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_idea_link"                   as "IdeaLink"                 keys ("ID");
+	"sap.ino.db.idea.ext::v_ext_idea_relation"               as "IdeaRelation"             keys ("ID");
+	"sap.ino.db.idea.ext::v_ext_idea_related_ideas"          as "IdeaRelatedIdeas"         keys ("ID", "SEMANTIC", "SOURCE");    
+    "sap.ino.db.idea.ext::v_ext_idea_comment"                as "IdeaComment"              keys ("ID") navigates ("IdeaComment_Attchment" as "CommentAttachments",
+                                                                                                                "IdeaComment_ChildrenComments" as "ChildrenComments");  
+    "sap.ino.db.idea.ext::v_ext_idea_comment_attachment"     as "IdeaCommentAttachments"   keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_idea_children_comment"       as "IdeaChildrenComment"      keys ("ID") navigates ("IdeaChildrenComment_Attchment" as "CommentAttachments");
+    "sap.ino.db.idea.ext::v_ext_idea_internal_note"          as "IdeaInternalNote"         keys ("ID")  navigates ("IdeaInternalNote_Attchment" as "CommentAttachments",
+                                                                                                                "IdeaInternalNote_ChildrenComments" as "ChildrenComments");
+    "sap.ino.db.idea.ext::v_ext_idea_comment_attachment"     as "IdeaInternalNoteAttachments"   keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_idea_internal_notes_children_comment"       as "IdeaInternalNoteChildrenComment"      keys ("ID") navigates ("IdeaInternalNoteChildrenComment_Attchment" as "CommentAttachments");  
+    "sap.ino.db.idea.ext::v_ext_idea_recent_idea"            as "IdeaRecentIdea"           keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_idea_recent_comment"         as "IdeaRecentComment"        keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_idea_commentators"           as "IdeaCommentators"         keys generate local "ID";
+    "sap.ino.db.idea.ext::v_ext_idea_decision"               as "IdeaDecision"             keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_idea_status_decision"        as "IdeaStatusDecision"       keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_idea_phase"                  as "IdeaPhase"                keys ("IDEA_ID","PHASE_CODE");
+    "sap.ino.db.idea.ext::v_ext_idea_evaluators"             as "IdeaEvaluators"           keys generate local "ID";
+    "sap.ino.db.idea.ext::v_ext_idea_extension"              as "IdeaExtension"            keys ("_ID");
+    "sap.ino.db.idea.ext::v_ext_idea_experts"                as "IdeaExperts"              keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_idea_campaign_experts"       as "IdeaCampaignExperts"      keys generate local "ID";
+    "sap.ino.db.idea.ext::v_ext_idea_all_stakeholders"       as "IdeaAllStakeholders"      keys generate local "ID";
+    "sap.ino.db.idea.ext::v_ext_idea_campaign_reassign"      as "IdeaReassignCampaigns"    keys generate local "KEY";
+    "sap.ino.db.ideaform.ext::v_ext_field_value"             as "FieldsValue"              keys ("ID");
+    "sap.ino.db.ideaform.ext::v_ext_admin_field_value"       as "AdminFieldsValue"         keys ("ID");  
+    "sap.ino.db.idea.ext::v_ext_idea_vote"                   as "IdeaVote"                 keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_idea_group_vote"             as "IdeaGroupVote"            keys generate local "ID";
+    "sap.ino.db.idea.ext::v_ext_idea_volunteer"              as "IdeaVolunteers"           keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_idea_phase_for_eval"         as "IdeaEvalPhase"            keys ("IDEA_ID","PHASE_CODE");
+    "sap.ino.db.idea.ext::v_ext_idea_read"                   as "IdeaRead"                 key ("IDEA_ID");
+    "sap.ino.db.idea.ext::v_ext_idea_setting"               as "IdeaAnonymousFor"         key ("IDEA_ID");
+    "sap.ino.db.idea.ext::v_ext_idea_reward_and_selfevaluation_count"   as "IdeaRewardSelfevaluationCount"   keys("ID");
+    "sap.ino.db.idea.ext::V_EXT_CAMPAIGN_MANAGER"       as "CampaignManagers"           keys generate local "ID";
+    
+    "sap.ino.db.idea.ext::v_ext_idea_contribution_share"     as "ContributionShare"        keys ("ID");
+    
+    "sap.ino.db.tag.ext::v_ext_tag" as "Tags" keys ("ID") navigates ("Tags_SimilarTags" as "SimilarTags",
+                                                                     "Tags_TagGroups"   as "MemberOf");
+                                                                     
+    "sap.ino.db.tag.ext::V_EXT_TAGS_SEARCH" as "SearchTags" keys("ID") parameters via key and entity "SearchTagsParams";
+    "sap.ino.db.tag.ext::V_EXT_TAGS_ALL_FULL_SEARCH" as "SearchTagsAllFull" keys("ID") parameters via key and entity "SearchTagsAllFullParams";
+    "sap.ino.db.tag.ext::V_EXT_TAGS_ALL_SEARCH" as "SearchTagsAll" keys("ID") parameters via key and entity "SearchTagsAllParams"; 
+    "sap.ino.db.tag.ext::V_EXT_TAG_GROUPS_SEARCH" as "SearchTagGroups" keys("ID") parameters via key and entity "SearchTagGroupsParams";
+    "sap.ino.db.tag.ext::V_EXT_TAGS_GROUPS_SEARCH" as "SearchTagsGroups" keys("ID","OBJECT_TYPE_CODE") parameters via key and entity "SearchTagsGroupsParams";      
+    "sap.ino.db.tag.ext::v_ext_tag_similarity" as "SimilarTags" keys ("SOURCE_ID", "ID");
+    "sap.ino.db.tag.ext::v_ext_assignment_tag" as "AssignmentTags" keys ("ID");
+    "sap.ino.db.tag.ext::v_ext_assignment_tag_group" as "AssignmentTagGroups" keys ("ID");
+    "sap.ino.db.tag.ext::v_ext_group_tag" as "TagGroups" keys ("ID")navigates ("TagGroup_AssignmentTags" as "AssignmentTags");
+    "sap.ino.db.tag.ext::v_ext_group_assigned_to_group" as "GroupAssigned" keys("ID");
+    
+    association "Tags_SimilarTags" principal "Tags"("ID")
+    multiplicity "1" dependent "SimilarTags"("SOURCE_ID") multiplicity "*";
+    association "Tags_TagGroups" principal "Tags"("ID")
+    multiplicity "1" dependent "AssignmentTagGroups"("TAG_ID") multiplicity "*";
+    association "TagGroup_AssignmentTags" principal "TagGroups"("ID")
+    multiplicity "1" dependent "AssignmentTags"("TAG_GROUP_ID") multiplicity "*";
+
+    "sap.ino.db.evaluation.ext::v_ext_criterion_value" as "IdeaEvaluationCriterionValues" keys ("ID");
+    "sap.ino.db.evaluation.ext::v_ext_criterion_value_overall" as "IdeaEvaluationCriterionValuesOverall" keys ("ID");
+
+    "sap.ino.db.evaluation.ext::v_ext_status_transition" as "IdeaEvaluationStatusTransition" keys ("ID", "CODE");
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_attachments" as "IdeaEvaluationAttachments" keys("ID");
+
+    "sap.ino.db.evaluation.ext::v_ext_evaluation" as "IdeaEvaluation" keys ("ID") navigates ("Evaluation_CriterionValues" as "CriterionValues",
+                                                                                             "Evaluation_CriterionValuesOverall" as "OverallCriterionValue",
+                                                                                             "Evaluation_StatusTransition" as "StatusTransitions",
+                                                                                             "Evaluation_EvalAttachments" as "EvalAttachments");
+    association "Evaluation_CriterionValues" principal "IdeaEvaluation"("ID") 
+    multiplicity "1" dependent "IdeaEvaluationCriterionValues"("EVALUATION_ID") multiplicity "*";
+    association "Evaluation_CriterionValuesOverall" principal "IdeaEvaluation"("ID") 
+    multiplicity "1" dependent "IdeaEvaluationCriterionValuesOverall"("EVALUATION_ID") multiplicity "1";
+    association "Evaluation_StatusTransition" principal "IdeaEvaluation"("ID") 
+    multiplicity "1" dependent "IdeaEvaluationStatusTransition"("ID") multiplicity "*";
+    association "Evaluation_EvalAttachments" principal "IdeaEvaluation"("ID") 
+    multiplicity "1" dependent "IdeaEvaluationAttachments"("IDEA_ID") multiplicity "*";
+
+    "sap.ino.db.evaluation.ext::v_ext_published_evaluation" as "IdeaPublishedEvaluation" keys ("ID") navigates ("PublishedEvaluation_CriterionValues" as "CriterionValues",
+                                                                                                                "PublishedEvaluation_CriterionValuesOverall" as "OverallCriterionValue",
+                                                                                                                "PublishedEvaluation_EvalAttachments" as "EvalAttachments");
+    association "PublishedEvaluation_CriterionValues" principal "IdeaPublishedEvaluation"("ID") 
+    multiplicity "1" dependent "IdeaEvaluationCriterionValues"("EVALUATION_ID") multiplicity "*";
+    association "PublishedEvaluation_CriterionValuesOverall" principal "IdeaPublishedEvaluation"("ID") 
+    multiplicity "1" dependent "IdeaEvaluationCriterionValuesOverall"("EVALUATION_ID") multiplicity "1";
+    association "PublishedEvaluation_EvalAttachments" principal "IdeaPublishedEvaluation"("ID") 
+    multiplicity "1" dependent "IdeaEvaluationAttachments"("IDEA_ID") multiplicity "*";
+
+    "sap.ino.db.evaluation.ext::v_ext_my_evaluation" as "IdeaMyEvaluation" keys ("ID") navigates ("MyEvaluation_CriterionValues" as "CriterionValues",
+                                                                                                  "MyEvaluation_CriterionValuesOverall" as "OverallCriterionValue",
+                                                                                                "MyEvaluation_EvalAttachments" as "EvalAttachments");
+    association "MyEvaluation_CriterionValues" principal "IdeaMyEvaluation"("ID") 
+    multiplicity "1" dependent "IdeaEvaluationCriterionValues"("EVALUATION_ID") multiplicity "*";
+    association "MyEvaluation_CriterionValuesOverall" principal "IdeaMyEvaluation"("ID") 
+    multiplicity "1" dependent "IdeaEvaluationCriterionValuesOverall"("EVALUATION_ID") multiplicity "1";
+    association "MyEvaluation_EvalAttachments" principal "IdeaMyEvaluation"("ID") 
+    multiplicity "1" dependent "IdeaEvaluationAttachments"("IDEA_ID") multiplicity "*";
+
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_template" as "IdeaEvaluationTemplate"  
+        keys generate local "KEY" 
+        navigates ("EvaluationTemplate_CriterionValueTemplates" as "CriterionValues");
+
+    "sap.ino.db.evaluation.ext::v_ext_criterion_value_template" as "IdeaEvaluationCriterionValueTemplates" 
+        keys generate local "KEY";
+
+    association "EvaluationTemplate_CriterionValueTemplates" 
+        principal "IdeaEvaluationTemplate"("MODEL_CODE") multiplicity "1" 
+        dependent "IdeaEvaluationCriterionValueTemplates"("MODEL_CODE") multiplicity "*";
+
+    association "IdeaSmall_Contributors" principal "IdeaSmall"("ID") 
+    multiplicity "1" dependent "IdeaContributor"("IDEA_ID") multiplicity "*";
+    
+    association "IdeaSmall_EvalPhases" principal "IdeaSmall"("ID") 
+    multiplicity "1" dependent "IdeaEvalPhase"("IDEA_ID") multiplicity "*";
+    
+    association "IdeaMedium_Contributors" principal "IdeaMedium"("ID") 
+    multiplicity "1" dependent "IdeaContributor"("IDEA_ID") multiplicity "*";
+    association "IdeaMedium_Tags" principal "IdeaMedium"("ID") 
+    multiplicity "1" dependent "IdeaTag"("IDEA_ID") multiplicity "*";
+
+    association "IdeaFull_Submitter" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaSubmitter"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Contributors" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaContributor"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Authors" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaAuthor"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Coach" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaCoach"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Comments" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaComment"("OBJECT_ID") multiplicity "*";
+    association "IdeaComment_Attchment" principal "IdeaComment"("ID") 
+    multiplicity "1" dependent "IdeaCommentAttachments"("IDEA_ID") multiplicity "*";
+    association "IdeaComment_ChildrenComments" principal "IdeaComment"("ID") 
+    multiplicity "1" dependent "IdeaChildrenComment"("PARENT_ID") multiplicity "*";
+    association "IdeaChildrenComment_Attchment" principal "IdeaChildrenComment"("ID") 
+    multiplicity "1" dependent "IdeaCommentAttachments"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_InternalNotes" principal "IdeaFull"("ID")
+    multiplicity "1" dependent "IdeaInternalNote"("OBJECT_ID") multiplicity "*";
+    association "IdeaInternalNote_Attchment" principal "IdeaInternalNote"("ID") 
+    multiplicity "1" dependent "IdeaInternalNoteAttachments"("IDEA_ID") multiplicity "*";
+    association "IdeaInternalNote_ChildrenComments" principal "IdeaInternalNote"("ID") 
+    multiplicity "1" dependent "IdeaInternalNoteChildrenComment"("PARENT_ID") multiplicity "*";
+    association "IdeaInternalNoteChildrenComment_Attchment" principal "IdeaInternalNoteChildrenComment"("ID") 
+    multiplicity "1" dependent "IdeaInternalNoteAttachments"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Commentators" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaCommentators"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Activities" principal "IdeaFull"("ID")
+    multiplicity "1" dependent "IdeaActivities"("ID") multiplicity "*";
+    association "IdeaFull_ActivityFeed" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaActivityFeed"("ID") multiplicity "*";
+    association "IdeaFull_Events" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaEvents"("ID") multiplicity "*";
+    association "IdeaFull_Tags" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaTag"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Links" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaLink"("IDEA_ID") multiplicity "*";
+	association "IdeaFull_Relations" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaRelation"("IDEA_ID") multiplicity "*";
+	association "IdeaFull_RelatedIdeas" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaRelatedIdeas"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Evaluations" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaEvaluation"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_PublishedEvaluations" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaPublishedEvaluation"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_MyEvaluations" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaMyEvaluation"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Evaluators" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaEvaluators"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Attachments" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaAttachment"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Content_Attachments" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaContentAttachment"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_InternalAttachments" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaInternalAttachment"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Walls" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaWall"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_InternalWalls" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaInternalWall"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Decision" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaDecision"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_StatusDecision" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaStatusDecision"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Phase" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaPhase"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_Extension" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaExtension"("_OBJECT_ID") multiplicity "*";
+    association "IdeaFull_Experts" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaExperts"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_CampaignExperts" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaCampaignExperts"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_AllStakeholders" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaAllStakeholders"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_ReassignCampaigns" principal "IdeaFull"("ID")
+    multiplicity "1" dependent "IdeaReassignCampaigns"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_FieldsValue" principal "IdeaFull"("ID")
+    multiplicity "1" dependent "FieldsValue"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_RespExperts" principal "IdeaFull"("RESP_VALUE_CODE")
+    multiplicity "1" dependent "RespExperts"("RESP_VALUE_CODE") multiplicity "*";
+    association "IdeaFull_Votes" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaVote"("IDEA_ID") multiplicity "*";
+    association "IdeaFull_GroupVotes" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaGroupVote"("IDEA_ID") multiplicity "*";
+    
+    association "IdeaFull_ContributionShare" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "ContributionShare"("IDEA_ID") multiplicity "*";
+    
+    association "IdeaFull_Rewards" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaReward"("IDEA_ID") multiplicity "*";
+    
+    association "IdeaFull_EvaluationTemplate"
+        principal "IdeaFull"("ID") multiplicity "1"
+        dependent "IdeaEvaluationTemplate"("IDEA_ID") multiplicity "1";
+        
+    association "IdeaFull_Volunteers" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "IdeaVolunteers"("IDEA_ID") multiplicity "*";
+    
+    association "IdeaFull_EvaluationRequests" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "EvaluationRequestFull"("IDEA_ID") multiplicity "*";    
+    
+    association "IdeaFull_EvaluationRequests_Number" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "EvaluationRequestFullNumber"("IDEA_ID") multiplicity "*";
+    
+    association "IdeaFull_EvaluationRequestItems" principal "IdeaFull"("ID") 
+    multiplicity "1" dependent "EvaluationRequestFullItem"("IDEA_ID") multiplicity "*";
+    
+    association "IdeaFull_IdeaRead" principal "IdeaFull"("ID")
+    multiplicity "1" dependent "IdeaRead"("IDEA_ID") multiplicity "*";
+    
+      association "IdeaFull_AnonymousFor" principal "IdeaFull"("ID")
+    multiplicity "1" dependent "IdeaAnonymousFor"("IDEA_ID") multiplicity "*";
+    
+      association "IdeaFull_RewardSelfevaluationCount" principal "IdeaFull"("ID")
+    multiplicity "1" dependent "IdeaRewardSelfevaluationCount"("ID") multiplicity "1";
+    
+      association "IdeaFull_CampaignManagers" principal "IdeaFull"("CAMPAIGN_ID")
+    multiplicity "1" dependent "CampaignManagers"("OBJECT_ID") multiplicity "*";
+    
+        association "IdeaFull_AdminFieldsValue" principal "IdeaFull"("ID")
+    multiplicity "1" dependent "AdminFieldsValue"("IDEA_ID") multiplicity "*";
+    
+    "sap.ino.db.idea.ext::v_ext_status"   as "IdeaStatusCode" keys ("CODE");
+
+    "sap.ino.db.idea.ext::V_EXT_IDEA_FILTER_STATUS" as "AuthIdeasStatus" keys ("STATUS")
+                                parameters via key and entity "AuthIdeasStatusParams";
+    
+    "sap.ino.db.attachment.ext::v_ext_attachment" as "Attachment" keys ("ID");
+    "sap.ino.db.attachment.ext::v_ext_attachment_title_image" as "AttachmentTitleImage" keys ("ID");
+    "sap.ino.db.attachment.ext::v_ext_attachment_idea" as "IdeaAttachment" keys ("ID");
+    "sap.ino.db.attachment.ext::v_ext_content_attachment_idea" as "IdeaContentAttachment" keys ("ID");
+    "sap.ino.db.attachment.ext::v_ext_attachment_idea_internal" as "IdeaInternalAttachment" keys ("ID");
+    "sap.ino.db.attachment.ext::v_ext_attachment_campaign" as "CampaignAttachment" keys ("ID");
+    "sap.ino.db.attachment.ext::v_ext_attachment_identity" as "IdentityAttachment" keys ("ID");
+    "sap.ino.db.attachment.ext::v_ext_attachment_blog" as "BlogAttachment" keys ("ID");
+    "sap.ino.db.attachment.ext::v_ext_content_attachment_blog" as "BlogContentAttachment" keys ("ID");
+    
+    "sap.ino.db.attachment.ext::v_ext_attachment_campaign_milestone" as "CampaignMilestoneAttachment" keys ("ID");
+    
+
+    "sap.ino.db.wall.ext::v_ext_wall_idea" as "IdeaWall" keys ("ID") navigates ("IdeaWall_Items" as "Items");
+    "sap.ino.db.wall.ext::v_ext_wall_item_idea" as "IdeaWallItems" keys ("ID", "WALL_ID");
+    "sap.ino.db.wall.ext::v_ext_wall_idea_internal" as "IdeaInternalWall" keys ("ID")  navigates ("IdeaInternalWall_Items" as "Items");
+    "sap.ino.db.wall.ext::v_ext_wall_item_idea_internal" as "IdeaInternalWallItems" keys ("ID", "WALL_ID");
+    
+    association "IdeaWall_Items" principal "IdeaWall"("ID") 
+    multiplicity "1" dependent "IdeaWallItems"("WALL_ID") multiplicity "*";
+    association "IdeaInternalWall_Items" principal "IdeaInternalWall"("ID") 
+    multiplicity "1" dependent "IdeaInternalWallItems"("WALL_ID") multiplicity "*";
+    
+    "sap.ino.db.attachment.folder.ext::v_ext_attachment_folder_share" as "AttachmentFolderShare" keys ("ID");
+
+    "sap.ino.db.attachment.folder.ext::v_ext_attachment_folder" as "AttachmentFolder" keys ("ID") 
+        navigates ("AttachmentFolder_Attachments" as "Attachments",
+                   "AttachmentFolder_Shares" as "Shares");
+ 
+    association "AttachmentFolder_Attachments" principal "AttachmentFolder"("ID")  
+    multiplicity "1" dependent "Attachment"("FOLDER_ID") multiplicity "*";
+    association "AttachmentFolder_Shares" principal "AttachmentFolder"("ID") 
+    multiplicity "1" dependent "AttachmentFolderShare"("FOLDER_ID") multiplicity "*";
+
+    "sap.ino.db.attachment.folder.ext::v_ext_attachment_folder" as "IdentityAttachmentFolder" keys ("ID");
+
+    "sap.ino.db.iam.ext::v_ext_logon_user" as "LogonUser" keys ("ID") navigates ("LogonUser_AttachmentFolders" as "AttachmentFolders",
+                                                                                 "LogonUser_Attachments" as "Attachments");
+
+    association "LogonUser_AttachmentFolders" principal "LogonUser"("USER_ID") 
+    multiplicity "1" dependent "IdentityAttachmentFolder"("IDENTITY_ID") multiplicity "*";
+    association "LogonUser_Attachments" principal "LogonUser"("USER_ID") 
+    multiplicity "1" dependent "IdentityAttachment"("IDENTITY_ID") multiplicity "*";
+ 
+    "sap.ino.db.campaign.ext::v_ext_campaigns_small" as "CampaignSmall" keys ("ID") navigates ("CampaignSmall_Phase"      as "Phases",
+    																						   "CampaignSmall_Status"     as "Status",
+    																						   "CampaignSmall_FormFields" as "FormFields",
+    																						   "CampaignSmall_RespValues" as "RespValues",
+    																						   "CampaignSmall_AdminFormFields" as "AdminFormFields");
+    association "CampaignSmall_Phase" principal "CampaignSmall"("ID")
+    multiplicity "1" dependent "CampaignPhase"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignSmall_Status" principal "CampaignSmall"("ID")
+    multiplicity "1" dependent "CampaignStatus"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignSmall_FormFields" principal "CampaignSmall"("FORM_CODE")
+    multiplicity "1" dependent "FormFields"("FORM_CODE") multiplicity "*";
+    association "CampaignSmall_RespValues" principal "CampaignSmall"("RESP_CODE")
+    multiplicity "1" dependent "RespValues"("RESP_CODE") multiplicity "*";
+    association "CampaignSmall_AdminFormFields" principal "CampaignSmall"("ADMIN_FORM_CODE")
+    multiplicity "1" dependent "FormFields"("FORM_CODE") multiplicity "*";
+    
+    "sap.ino.db.ideaform.ext::v_ext_field" as "FormFields" keys ("CODE");
+        
+    "sap.ino.db.idea::v_idea_anonymous" as "IdeaAnonymous" keys("ID");
+    "sap.ino.db.campaign.ext::v_ext_campaigns_small_idea_assign" as "CampaignSmallIdeaAssign" keys generate local "KEY";
+    "sap.ino.db.campaign.ext::v_ext_campaigns_small_idea_filter" as "CampaignSmallIdeaFilter" keys generate local "KEY"; 
+    "sap.ino.db.campaign.ext::v_ext_campaigns_small_blog_filter" as "CampaignSmallBlogFilter" keys generate local "KEY";
+    "sap.ino.db.campaign.ext::v_ext_campaign_suggestion_list_search_params" as "CampaignSuggestionFilter" keys("ID")
+                                                                            parameters via key and entity "CampaignSuggestionParams";
+    "sap.ino.db.campaign.ext::v_ext_campaigns_full"  as "CampaignFull" keys ("ID") navigates ("Campaign_Attachments"        as "Attachments",
+                                                                                              "CampaignFull_LanguageTexts"  as "LanguageTexts",
+                                                                                              "CampaignFull_Manager"        as "Managers",
+                                                                                              "CampaignFull_Coach"          as "Coaches",
+                                                                                              "CampaignFull_Expert"         as "Experts",
+                                                                                              "CampaignFull_Participant"    as "Participants",
+                                                                                              "CampaignFull_Registers"      as "Registers",
+                                                                                              "CampaignFull_AnonymousText"  as "AnonymousText",
+                                                                                              "CampaignFull_Integration"    as "CampaignIntegration",
+                                                                                              "CampaignFull_Notification"   as "CampaignNotification",
+                                                                                              "CampaignFull_GamificationDimension"   as "GamificationDimension",
+                                                                                              "CampaignFull_IdeaReader"     as "IdeaReaders",
+                                                                                              "CampaignFull_LanguagePage"   as "LanguagePages",
+                                                                                              "CampaignFull_Page"           as "Pages",
+                                                                                              "CampaignFull_Phase"          as "Phases",
+                                                                                              "CampaignFull_Extension"      as "Extension",
+                                                                                              "CampaignFull_Tags"           as "Tags",
+                                                                                              "CampaignFull_Blog"           as "Blogs",
+                                                                                              "CampaignFull_Comments" 	    as "Comments",
+                                                                                              "CampaignFull_TopContributorsCampaign" as "TopContributors",
+                                                                                              "CampaignFull_TopCommentatorsCampaign" as "TopCommentators",
+                                                                                              "CampaignFull_UnchangedIdeasCampaign" as "UnchangedIdeas",
+                                                                                              "CampaignFull_Activities"     as "Activities",
+                                                                                              "CampaignFull_Reports"        as "Reports", // Backoffice Only 
+                                                                                              "CampaignFull_BusinessEvents" as "BusinessEvents", // Backoffice Only
+                                                                                              "CampaignFull_EntityCount"    as "EntityCount", // Backoffice Only
+                                                                                              "CampaignFull_Feed"           as "Feeds",
+                                                                                              "CampaignFull_Task"           as "Tasks",
+                                                                                              "CampaignFull_InstanceRoles"  as "InstanceRoles");
+
+    "sap.ino.db.campaign.ext::v_ext_campaign_t_lang"               as "CampaignLanguageTexts"   keys ("CAMPAIGN_ID", "LANG");
+    "sap.ino.db.campaign.ext::v_ext_campaign_manager_identity"     as "CampaignManager"         keys ("CAMPAIGN_ID", "IDENTITY_ID") navigates ("CampaignAction_LimitationMgr" as "LimitOfCampaignManagers");
+    "sap.ino.db.campaign.ext::v_ext_campaign_coach"                as "CampaignCoach"           keys ("CAMPAIGN_ID", "IDENTITY_ID");
+    "sap.ino.db.campaign.ext::v_ext_campaign_expert"               as "CampaignExpert"          keys ("CAMPAIGN_ID", "IDENTITY_ID");
+    "sap.ino.db.campaign.ext::v_ext_campaign_participate_identity" as "CampaignParticipant"     keys ("CAMPAIGN_ID", "IDENTITY_ID") navigates ("CampaignAction_Limitation" as "LimitOfParticipants");
+    "sap.ino.db.campaign.ext::v_ext_campaign_register_setting_read" as "CampaignRegister"     keys ("CAMPAIGN_ID", "IDENTITY_ID");
+    "sap.ino.db.campaign.ext::v_ext_campaign_anonymous_text" as "CampaignAnonymousText"     keys ("CAMPAIGN_ID");
+    "sap.ino.db.integration::v_campaign_integration" as "CampaignIntegration"     keys ("ID") navigates ("CampaignIntegration_AttributesLayout" as "AttributesLayout");
+    "sap.ino.db.newnotification::v_notification_campaign_setting" as "CampaignNotification"     keys ("CAMPAIGN_ID") navigates("CampaignNotification_Receivers" as "CampaignNotificationReceiver");
+    "sap.ino.db.campaign::v_campaign_gamification_dimension" as "CampaignGamificationDimension"    keys ("CAMPAIGN_ID");
+    "sap.ino.db.integration::v_campaign_integration_api_attributes_layout" as "CampaignApiAttributesLayout"     keys ("API_ID");   
+    "sap.ino.db.newnotification::v_notification_campaign_status_setting" as "CampaignNotificationStatus"     keys ("CAMPAIGN_PHASE_ID");  
+    "sap.ino.db.newnotification::v_notification_campaign_setting_receiver" as "CampaignNotificationReceiver"     keys ("ACTION_ID"); 
+    "sap.ino.db.campaign.ext::v_ext_campaign_idea_reader"          as "CampaignIdeaReader"      keys ("CAMPAIGN_ID", "IDENTITY_ID");
+    "sap.ino.db.campaign.ext::v_ext_campaign_page_t_lang"          as "CampaignLanguagePages"   keys ("CAMPAIGN_ID", "LANG", "PAGE_NO");
+    "sap.ino.db.campaign.ext::v_ext_campaign_page_t_locale"        as "CampaignPages"           keys ("CAMPAIGN_ID", "PAGE_NO");
+    "sap.ino.db.campaign.ext::v_ext_campaign_phases_idea_count"    as "CampaignPhasesIdeaCount" keys ("CAMPAIGN_ID", "SEQUENCE_NO");
+    "sap.ino.db.campaign.ext::v_ext_campaign_phase"                as "CampaignPhases"          keys ("CAMPAIGN_ID", "SEQUENCE_NO") navigates ("CampaignNotification_Status" as "CampaignNotificationStatus");
+    "sap.ino.db.campaign.ext::v_ext_campaign_instance_roles"       as "CampaignInstanceRoles"   keys ("CAMPAIGN_ID");
+    "sap.ino.db.campaign.ext::v_ext_campaign_tag"                  as "CampaignTag"             keys ("ID");
+    "sap.ino.db.campaign.ext::v_ext_campaign_comment"              as "CampaignComment"         keys ("ID");
+    "sap.ino.db.campaign.ext::v_ext_campaign_extension"            as "CampaignExtension"       keys ("_ID");
+    "sap.ino.db.idea.ext::v_ext_status_by_campaign"                as "CampaignStatus"          keys ("CAMPAIGN_ID", "CODE");
+    "sap.ino.db.campaign.ext::v_ext_phase_by_campaign"             as "CampaignPhase"           keys ("CAMPAIGN_ID", "CODE");
+    "sap.ino.db.analytics.ext::v_ext_analytics_static_top_contributors_campaign" as "CampaignTopContributors" keys ("CAMPAIGN_ID", "IDENTITY_ID");
+    "sap.ino.db.analytics.ext::v_ext_analytics_static_top_commentators_campaign" as "CampaignTopCommentators" keys ("CAMPAIGN_ID", "IDENTITY_ID");
+    "sap.ino.db.analytics.ext::v_ext_analytics_static_unchanged_ideas_campaign" as "CampaignUnchangedIdeas" keys generate local "ID";
+    "sap.ino.db.analytics.ext::v_ext_analytics_static_campaign_activities" as "CampaignActivities" keys generate local "ID";
+
+    association "CampaignAction_Limitation" principal "CampaignParticipant"("CAMPAIGN_ID", "IDENTITY_ID")
+    multiplicity "1" dependent "CampaignParticipantsAction"("OBJECT_ID", "IDENTITY_ID") multiplicity "*";
+    
+    association "CampaignAction_LimitationMgr" principal "CampaignManager"("CAMPAIGN_ID", "IDENTITY_ID")
+    multiplicity "1" dependent "CampaignParticipantsAction"("OBJECT_ID", "IDENTITY_ID") multiplicity "*";    
+    association "Campaign_Attachments" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignAttachment"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_LanguageTexts" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignLanguageTexts"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Manager" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignManager"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Coach" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignCoach"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Expert" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignExpert"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Participant" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignParticipant"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Registers" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignRegister"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_AnonymousText" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignAnonymousText"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Integration" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignIntegration"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Notification" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignNotification"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_GamificationDimension" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignGamificationDimension"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_IdeaReader" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignIdeaReader"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_LanguagePage" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignLanguagePages"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Page" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignPages"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Phase" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignPhases"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Tags" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignTag"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Comments" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignComment"("OBJECT_ID") multiplicity "*";
+    association "CampaignFull_Extension" principal "CampaignFull"("ID") 
+    multiplicity "1" dependent "CampaignExtension"("_OBJECT_ID") multiplicity "*";
+    association "CampaignFull_TopContributorsCampaign" principal "CampaignFull"("ID")
+    multiplicity "1" dependent "CampaignTopContributors"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_TopCommentatorsCampaign" principal "CampaignFull"("ID")
+    multiplicity "1" dependent "CampaignTopCommentators"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_UnchangedIdeasCampaign" principal "CampaignFull"("ID")
+    multiplicity "1" dependent "CampaignUnchangedIdeas"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Activities" principal "CampaignFull"("ID")
+    multiplicity "1" dependent "CampaignActivities"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Blog" principal "CampaignFull"("ID")
+    multiplicity "1" dependent "CampaignBlogsFull"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignFull_Feed" principal "CampaignFull"("ID")
+    multiplicity "1" dependent "CampaignFeed"("OBJECT_ID") multiplicity "*";
+    association "CampaignFull_Task" principal "CampaignFull"("ID")
+    multiplicity "1" dependent "CampaignTask"("CAMPAIGN_ID") multiplicity "*";
+   
+    association "CampaignFull_InstanceRoles" principal "CampaignFull"("ID")
+    multiplicity "1" dependent "CampaignInstanceRoles"("CAMPAIGN_ID") multiplicity "*";
+    
+    association "CampaignTask_Milestone" principal "CampaignTask"("ID")
+    multiplicity "1" dependent "CampaignMilestone"("CAMPAIGN_TASK_ID") multiplicity "*";
+    
+    association "CampaignMilestone_Attachment" principal "CampaignMilestone"("ID")
+    multiplicity "1" dependent "CampaignMilestoneAttachment"("MILESTONE_ID") multiplicity "*";
+    
+    association "CampaignIntegration_AttributesLayout" principal "CampaignIntegration"("ID") 
+    multiplicity "1" dependent "CampaignApiAttributesLayout"("API_ID") multiplicity "*";
+    
+    association "CampaignNotification_Status" principal "CampaignPhases"("ID") 
+    multiplicity "1" dependent "CampaignNotificationStatus"("CAMPAIGN_PHASE_ID") multiplicity "*"; 
+    
+    association "CampaignNotification_Receivers" principal "CampaignNotification"("ID") 
+    multiplicity "1" dependent "CampaignNotificationReceiver"("ACTION_ID") multiplicity "*"; 
+    
+    "sap.ino.db.idea.ext::V_EXT_IDEAS_COMMUNITY_SEARCH" as "IdeaMediumSearch" keys("ID")
+                                                   parameters via key and entity "IdeaMediumSearchParams";    
+    "sap.ino.db.idea.ext::V_EXT_IDEAS_COMMUNITY_SEARCH_COUNT" as "IdeaMediumSearchCount" keys("ID")
+                                                   parameters via key and entity "IdeaMediumSearchParamsCount";  
+
+    "sap.ino.db.campaign.ext::V_EXT_CAMPAIGN_SEARCH" as "CampaignSearch" key("ID") navigates ("CampaignSearch_Page" as "Pages",
+    																										 "CampaignSearch_Phases" as "Phases", 
+                                                                                                             "CampaignSearch_Tags" as "Tags")
+                                                   parameters via key and entity "CampaignSearchParams";
+                                                    
+    association "CampaignSearch_Page" principal "CampaignSearch"("ID") 
+    multiplicity "1" dependent "CampaignPages"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignSearch_Tags" principal "CampaignSearch"("ID")
+    multiplicity "1" dependent "CampaignTag"("CAMPAIGN_ID") multiplicity "*";
+    association "CampaignSearch_Phases" principal "CampaignSearch"("ID")
+    multiplicity "1" dependent "CampaignPhasesIdeaCount"("CAMPAIGN_ID") multiplicity "*";
+    
+    "sap.ino.db.campaign::v_campaign_register" as "Registers" key("REGISTER_ID");
+    
+    "sap.ino.db.iam.ext::V_EXT_IDENTITY_SEARCH" as "SearchIdentities" key("ID") navigates ("SearchIdentities_IdentityGroupNames" as "Groups")
+                                                   parameters via key and entity "SearchIdentity";
+    
+    "sap.ino.db.iam.ext::V_EXT_LEAN_IDENTITY_SEARCH_COMMUNITY_PEOPLE_LIST" as "SearchIdentitiesPeopleList" key("ID") 
+                                                   parameters via key and entity "SearchIdentityPeopleList";
+                                                
+     "sap.ino.db.iam.ext::V_EXT_LEAN_IDENTITY_SEARCH_WALL_PERSON" as "SearchIdentitiesWallItemPerson" key("ID")  
+                                                   parameters via key and entity "SearchIdentityWallItemPerson";
+                                                   
+    "sap.ino.db.iam.ext::V_EXT_IDENTITY_SEARCH_ORG_COMPANY" as "SearchIdentitiesOrgCompany"  key("COMPANY","ORGANIZATION")
+                                                   parameters via key and entity "SearchIdentityOrgCompanyParams";
+                                                  
+    "sap.ino.db.campaign.ext::V_EXT_CAMPAIGN_PARTICIPANTS_SEARCH" as "SearchCampaignParticipants" key("ID")
+                                                   parameters via key and entity "SearchCampaignParticipantsParams";
+                                           
+    "sap.ino.db.idea.ext::V_EXT_IDEA_PROPOSED_EXPERTS_SEARCH" as "SearchProposedExpert" key("ID") 
+                                                   parameters via key and entity "SearchProposedExpertParams";                                                  
+
+    "sap.ino.db.iam.ext::V_EXT_IDENTITY_SEARCH" as "SearchIdentityGroups" key("ID")
+                                                   parameters via key and entity "SearchIdentityGroup";
+
+    "sap.ino.db.campaign.ext::V_EXT_COACH_SEARCH" as "SearchCoaches" key("ID") 
+                                                   parameters via key and entity "SearchCoach";
+
+    "sap.ino.db.iam.ext::V_EXT_IDENTITY_STATIC_ROLES" as "IdentityStaticRoles" key("ID") 
+                                                   parameters via key and entity "IdentityStaticRole";
+    
+    "sap.ino.db.iam.ext::v_ext_identity" as "Identity" keys ("ID") navigates ("Identity_IdentityGroups" as "MemberOf",
+                                                                              "Identity_GroupMembers" as "Members",
+                                                                              "Identity_NotificationRoles" as "NotificationRoles",
+                                                                              "Identity_Settings" as "Settings",
+                                                                              "Identity_Attachments" as "Attachments",
+                                                                              "Identity_DataViewLog" as "UserDiscloseDataViewLog",
+                                                                              "Identity_DiscloseData" as "UserDiscloseData",
+                                                                              "Identity_ChangeHistory" as "IdentityLog",
+                                                                              "Identity_GroupAttribute" as "GroupAttribute");
+                                                                              
+    "sap.ino.db.iam.ext::v_ext_groups" as "Groups" keys ("GROUP_ID", "GROUP_NAME") navigates ("Group_GroupMembers" as "Members");
+
+    "sap.ino.db.iam.ext::v_ext_identity_groups" as "IdentityGroups" keys ("ID", "MEMBER_ID");
+    "sap.ino.db.iam.ext::v_ext_identity_groups" as "IdentityGroupNames" keys ("ID", "GROUP_NAME", "MEMBER_ID");
+
+    "sap.ino.db.iam.ext::v_ext_group_member" as "GroupMembers" keys ("ID");
+    "sap.ino.db.iam.ext::v_ext_identity_data_view_log" as "IdentityDataViewLog" keys("ID");    
+    "sap.ino.db.iam.ext::v_ext_identity_disclose_data_view" as "IdentityDiscloseData" keys generate local "ID" aggregates always;
+    "sap.ino.db.iam::v_group_attribute" as "GroupAttribute" keys("ID","GROUP_ID"); 
+    "sap.ino.db.iam::v_object_identity_role_action" as "CampaignParticipantsAction" keys ("OBJECT_ID", "IDENTITY_ID");
+
+    association "Identity_IdentityGroups" principal "Identity"("ID")
+    multiplicity "1" dependent "IdentityGroups"("MEMBER_ID") multiplicity "*";
+    association "Identity_GroupMembers" principal "Identity"("ID")
+    multiplicity "1" dependent "GroupMembers"("GROUP_ID") multiplicity "*"; 
+    association "Group_GroupMembers" principal "Groups"("GROUP_ID")
+    multiplicity "1" dependent "GroupMembers"("GROUP_ID") multiplicity "*"; 
+    association "Identity_NotificationRoles" principal "Identity"("ID") 
+    multiplicity "1" dependent "NotificationRoles"("USER_ID") multiplicity "*";
+    association "Identity_Settings" principal "Identity"("ID")
+    multiplicity "1" dependent "IdentitySettings"("IDENTITY_ID") multiplicity "1";
+    association "Identity_Attachments" principal "Identity"("ID") 
+    multiplicity "1" dependent "IdentityAttachment"("IDENTITY_ID") multiplicity "*";
+    association "Identity_DataViewLog" principal "Identity"("ID") 
+    multiplicity "1" dependent "IdentityDataViewLog"("IDENTITY_ID") multiplicity "*";
+    association "Identity_DiscloseData" principal "Identity"("ID") 
+    multiplicity "1" dependent "IdentityDiscloseData"("IDENTITY_ID") multiplicity "*";  
+    association "Identity_ChangeHistory" principal "Identity"("ID") 
+    multiplicity "1" dependent "IdentityChangeHistory"("IDENTITY_ID") multiplicity "*";  
+    association "Identity_GroupAttribute" principal "Identity"("ID")
+    multiplicity "1" dependent "GroupAttribute"("GROUP_ID") multiplicity "*"; 
+    
+    association "SearchIdentities_IdentityGroupNames" principal "SearchIdentities"("ID")
+    multiplicity "1" dependent "IdentityGroupNames"("MEMBER_ID") multiplicity "*";
+
+    "sap.ino.db.notification.ext::v_ext_notification_count" as "NotificationCount" keys ("NO");
+    "sap.ino.db.notification.ext::v_ext_notification" as "Notification" keys ("ID");
+
+    "sap.ino.db.notification.ext::v_ext_notification_logonuser_roles" as "NotificationRoles" key ("ROLE_CODE") navigates ("NotificationRoles_ActionSettings" as "MailNotificationSettings");
+    "sap.ino.db.notification.ext::v_ext_notification_logonuser_settings" as "NotificationActionSettings" key ("ROLE_CODE", "BIZ_EVENT");
+
+    association "NotificationRoles_ActionSettings" principal "NotificationRoles"("ROLE_CODE") 
+    multiplicity "1" dependent "NotificationActionSettings"("ROLE_CODE") multiplicity "*";
+
+    "sap.ino.db.iam.ext::v_ext_identity_settings" as "IdentitySettings" key ("IDENTITY_ID");
+
+    "sap.ino.db.basis.ext::v_ext_entity_count" as "EntityCount" keys ("NO");
+    "sap.ino.db.basis.ext::v_ext_entity_count_backoffice" as "BackofficeEntityCount" keys ("NO");
+
+    "sap.ino.db.expert.ext::V_EXT_EXPERT_TAGS_SEARCH" as "SearchExpertTags" key("ID") 
+                                                   parameters via key and entity "SearchExpertTag";
+    "sap.ino.db.idea.ext::V_EXT_IDEA_TAG_SEARCH" as "SearchIdeaTags" keys("ID") parameters via key and entity "SearchIdeaTagsParams";
+                                                           
+    //small views for analytics in widgets
+    "sap.ino.db.mashup.ext::V_EXT_MASHUP_TOP_COMMENTATORS_SMALL" as "MashupCommentators" keys generate local "ID" aggregates always;
+    "sap.ino.db.mashup.ext::V_EXT_MASHUP_TOP_CONTRIBUTORS_SMALL" as "MashupContributors" keys generate local "ID" aggregates always;
+   
+    //follow
+    "sap.ino.db.campaign.ext::v_ext_campaign_follow" as "MyCampaignFollow" keys ("ID"); 
+    "sap.ino.db.idea.ext::v_ext_idea_follow" as "MyIdeaFollow" keys ("ID"); 
+    "sap.ino.db.tag.ext::v_ext_tag_follow" as "MyTagFollow" keys ("ID"); 
+    
+    // WALL
+    "sap.ino.db.wall.ext::v_ext_wall_read" as "Wall" keys ("ID")  navigates ("Wall_Items" as "Items");
+    "sap.ino.db.wall.ext::v_ext_wall_item_read" as "WallItems" keys ("ID", "WALL_ID");
+    
+    association "Wall_Items" principal "Wall"("ID") 
+    multiplicity "1" dependent "WallItems"("WALL_ID") multiplicity "*";
+  
+    "sap.ino.db.wall.ext::V_EXT_WALL_SEARCH" as "WallSearch" keys("ID") navigates ("WallSearch_Items" as "Items")
+                                                                parameters via key and entity "WallSearchParams";
+    association "WallSearch_Items" principal "WallSearch"("ID") 
+    multiplicity "1" dependent "WallItems"("WALL_ID") multiplicity "*";
+    
+    "sap.ino.db.wall.ext::v_ext_my_walls" as "MyWalls" keys("ID") navigates ("MyWalls_Items" as "Items");
+    association "MyWalls_Items" principal "MyWalls"("ID") 
+    multiplicity "1" dependent "WallItems"("WALL_ID") multiplicity "*";
+        
+    "sap.ino.db.basis.ext::v_ext_locale" as "Locale" keys ("CODE");
+    
+    "sap.ino.db.analytics.ext::v_ext_analytics_static_unchanged_ideas" as "UnchangedIdeas" keys generate local "ID";
+    "sap.ino.db.analytics.ext::v_ext_analytics_static_top_contributors" as "TopContributors" keys("IDENTITY_ID");
+    "sap.ino.db.analytics.ext::v_ext_analytics_static_idea_votes" as "IdeaVotes" keys generate local "ID";
+    
+    "sap.ino.db.ideaform.ext::v_ext_form_stage" as "StagingIdeaForm" keys ("ID") navigates ("StagingIdeaForm_Fields" as "Fields");
+    "sap.ino.db.ideaform.ext::v_ext_field_stage" as "StagingFormFields" keys ("ID");
+    association "StagingIdeaForm_Fields" principal "StagingIdeaForm"("ID")
+    multiplicity "1" dependent "StagingFormFields"("FORM_ID") multiplicity "*";
+    
+    "sap.ino.db.ideaform.ext::V_EXT_IDEA_FORM_SEARCH" as "StagingIdeaFormSearch"
+        key("ID")
+        parameters via key and entity "StagingIdeaFormSearchParams";
+    "sap.ino.db.ideaform.ext::v_ext_ideaform_suggestion_list_search_params" as "CampaignFormSuggestionFilter" keys("ID") parameters via key and entity "CampaignFormSuggestionParams";
+    "sap.ino.db.ideaform.ext::v_ext_ideaform_field_suggestion_list_search_params"  as "IdeaFormFieldSuggestionFilter" keys("CODE") parameters via key and entity "IdeaFormFieldSuggestionParams";
+    
+    "sap.ino.db.status.ext::V_EXT_STATUS_STAGE_SEARCH" as "SearchStagingStatusName" key("ID") 
+                                                   parameters via key and entity "SearchStagingStatusNameParams";
+    "sap.ino.db.status.ext::V_EXT_STATUS_ACTION_STAGE_SEARCH" as "SearchStagingStatusAction" key("ID") 
+                                                   parameters via key and entity "SearchStagingStatusActionParams";
+    "sap.ino.db.status.ext::V_EXT_STATUS_MODEL_STAGE_SEARCH" as "SearchStagingStatusModel" key("ID") 
+                                                   parameters via key and entity "SearchStagingStatusModelParams";
+    
+     //Sub-responsibility
+   "sap.ino.db.subresponsibility.ext::v_ext_responsibility_stage"       as "StagingSubresponsibility"      keys ("ID") navigates("StagingSubresponsibility_Value" as "RespValues");
+   "sap.ino.db.subresponsibility.ext::v_ext_responsibility_value_stage" as "StagingRespValues"                    keys ("ID") navigates ("Resp_Coaches"   as "Coaches",
+                                                                                                                                  "Resp_Experts"   as "Experts",
+                                                                                                                                  "Resp_Tags"      as "Tags");
+   "sap.ino.db.subresponsibility.ext::v_ext_responsibility_value"       as "RespValues"      keys ("CODE") navigates ("RespValues_Tags"  as "RespTags");
+   
+    
+   "sap.ino.db.subresponsibility.ext::v_ext_responsibility_value_coach"   as "RespCoaches"   keys ("ID");
+   "sap.ino.db.subresponsibility.ext::v_ext_responsibility_value_expert"  as "RespExperts"   keys ("ID");
+   "sap.ino.db.subresponsibility.ext::v_ext_responsibility_value_tag"     as "RespTags"      keys ("ID");
+   association "RespValues_Tags" principal "RespValues"("ID") 
+    multiplicity "1" dependent "RespTags"("RESP_VALUE_ID") multiplicity "*";
+   association "Resp_Coaches" principal "StagingRespValues"("ID") 
+    multiplicity "1" dependent "RespCoaches"("RESP_VALUE_ID") multiplicity "*";
+   association "Resp_Experts" principal "StagingRespValues"("ID") 
+    multiplicity "1" dependent "RespExperts"("RESP_VALUE_ID") multiplicity "*";
+   association "Resp_Tags" principal "StagingRespValues"("ID") 
+    multiplicity "1" dependent "RespTags"("RESP_VALUE_ID") multiplicity "*";
+   association "StagingSubresponsibility_Value" principal "StagingSubresponsibility"("ID") 
+    multiplicity "1" dependent "StagingRespValues"("RESP_ID") multiplicity "*";
+    
+  // Sub-responsibility search
+      "sap.ino.db.subresponsibility.ext::V_EXT_RESPONSIBILITY_STAGE_SEARCH" as "StagingSubResponsibilitySearch"
+        key("ID")
+        parameters via key and entity "StagingSubResponsibilitySearchParams";
+        
+    
+   "sap.ino.db.blog.ext::V_EXT_BLOGS_SEARCH" as "BlogSearch" keys("ID") navigates ("BlogSearch_Tags"  as "Tags")
+                                                                parameters via key and entity "BlogSearchParams";
+
+    association "BlogSearch_Tags" principal "BlogSearch"("ID") 
+    multiplicity "1" dependent "BlogTag"("BLOG_ID") multiplicity "*";
+        
+    "sap.ino.db.blog.ext::v_ext_blog_campaign_small" as "CampaignBlogsSmall" keys ("ID") navigates("CampaignBlogsSmall_Author"      as "Author",
+                                                                                                   "CampaignBlogsSmall_Tags"        as "Tags",
+                                                                                                   "CampaignBlogsSmall_Attachments" as "Attachments",
+                                                                                                   "CampaignBlogsSmall_ContentAttachments"     as "ContentAttachments");
+    "sap.ino.db.blog.ext::v_ext_blog_campaign_full"  as "CampaignBlogsFull"  keys ("ID") navigates("CampaignBlogsFull_Author"       as "Author",
+                                                                                                   "CampaignBlogsFull_Tags"         as "Tags",
+                                                                                                   "CampaignBlogsFull_Attachments"  as "Attachments",
+                                                                                                   "CampaignBlogsFull_Comments"     as "Comments",
+                                                                                                   "CampaignBlogsFull_ContentAttachments"     as "ContentAttachments");
+    "sap.ino.db.blog.ext::v_ext_blog_tag"            as "BlogTag"      keys ("ID");
+    "sap.ino.db.blog.ext::v_ext_blog_author"         as "BlogAuthor"   keys ("ID"); 
+    "sap.ino.db.blog.ext::v_ext_blog_comment"        as "BlogComment"  keys ("ID");
+    
+    association "CampaignBlogsSmall_Tags"        principal "CampaignBlogsSmall"("ID") 
+                    multiplicity "1" dependent "BlogTag"("BLOG_ID")        multiplicity "*";
+    association "CampaignBlogsSmall_Author"      principal "CampaignBlogsSmall"("ID") 
+                    multiplicity "1" dependent "BlogAuthor"("BLOG_ID")     multiplicity "*";                    
+    association "CampaignBlogsSmall_Attachments" principal "CampaignBlogsSmall"("ID") 
+                    multiplicity "1" dependent "BlogAttachment"("BLOG_ID") multiplicity "*";                  
+    association "CampaignBlogsSmall_ContentAttachments" principal "CampaignBlogsSmall"("ID") 
+                    multiplicity "1" dependent "BlogContentAttachment"("BLOG_ID") multiplicity "*";
+                    
+    association "CampaignBlogsFull_Tags"         principal "CampaignBlogsFull"("ID") 
+                    multiplicity "1" dependent "BlogTag"("BLOG_ID")        multiplicity "*";
+    association "CampaignBlogsFull_Author"      principal "CampaignBlogsFull"("ID") 
+                    multiplicity "1" dependent "BlogAuthor"("BLOG_ID")     multiplicity "*";                     
+    association "CampaignBlogsFull_Attachments"  principal "CampaignBlogsFull"("ID") 
+                    multiplicity "1" dependent "BlogAttachment"("BLOG_ID") multiplicity "*";
+                            
+    association "CampaignBlogsFull_ContentAttachments"  principal "CampaignBlogsFull"("ID") 
+                    multiplicity "1" dependent "BlogContentAttachment"("BLOG_ID") multiplicity "*";
+                    
+    association "CampaignBlogsFull_Comments"  principal "CampaignBlogsFull"("ID") 
+                    multiplicity "1" dependent "BlogComment"("OBJECT_ID") multiplicity "*";
+                    
+    "sap.ino.db.reward.ext::V_EXT_REWARDS_SEARCH" as "RewardSearch"  keys ("ID")  
+              parameters via key and entity "RewardSearchParams";
+    "sap.ino.db.reward.ext::v_ext_reward"        as "IdeaReward"  keys ("ID");
+    "sap.ino.db.reward.ext::v_ext_reward_list"   as "IdeaRewardList"  keys ("ID") navigates("List_IdeaReward" as "Rewards");
+    
+    association "List_IdeaReward"  principal "IdeaRewardList"("ID") 
+                    multiplicity "1" dependent "IdeaReward"("REWARD_LIST_ID") multiplicity "*"; 
+    // feeds
+    "sap.ino.db.feed.ext::v_ext_all_feeds"          as "Feeds"  keys ("KEY"); 
+                    
+    //Identity Attributes
+    "sap.ino.db.iam.ext::v_ext_identity_attribute" as "IdentityAttributes" keys("CODE");
+    //Identity Log Setting
+    "sap.ino.db.iam.ext::v_ext_identity_log_setting" as "IdentityLogSetting" keys("CODE");
+    //Identity Log 
+    "sap.ino.db.iam.ext::v_ext_identity_log" as "IdentityChangeHistory" key ("ID");
+    //Identity view report
+    "sap.ino.db.iam.ext::v_ext_identity_view_report" as "IdentityViewReport" keys generate local "KEY";
+    "sap.ino.db.campaign.ext::v_ext_campaigns_privilege"   as "CampaignPrivilege"  keys ("ID"); 
+     //Responsibility value search
+    "sap.ino.db.subresponsibility.ext::V_EXT_RESPONSIBILITY_VALUE_SEARCH" as "ResponsibilityValueSearch"
+        key("ID") parameters via key and entity "ResponsibilityValueSearchParams";
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_request" as "EvaluationRequest" keys ("ID") navigates("EvaluationRequest_Items" as "EvaluationRequestItems",
+                                                                                                       "EvaluationRequest_Owner" as "Owner",
+                                                                                                       "EvaluationRequest_Experts" as "Experts",
+                                                                                                       "EvaluationRequest_Comments" as "Comments",
+                                                                                                       "EvaluationRequest_Forwards" as "Forwards",
+                                                                                                       "EvaluationRequest_Clarifications" as "Clarifications",
+                                                                                                       "EvaluationRequest_RespExperts" as "RespExperts",
+                                                                                                       "EvaluationRequest_IdeaExperts" as "IdeaExperts",
+                                                                                                       "EvaluationRequest_CampaignExperts" as "CampExperts");
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_request_item"         as "EvaluationRequestItem" keys ("ID") navigates("EvaluationRequestItem_Expert" as "Expert",
+                                                                                                                        "EvaluationRequestItem_Comments" as "Comments",
+                                                                                                                        "EvaluationRequestItem_Forwards" as "Forwards",
+                                                                                                                        "EvaluationRequestItem_Clarifications" as "Clarifications");
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_request_item_lite"    as "EvaluationRequestItemLite" keys ("ID") navigates("EvaluationRequest_Expert" as "Expert");
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_request_expert"       as "EvaluationRequestExpert" keys ("ID");
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_request_owner"        as "EvaluationRequestOwner"   keys ("ID");
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_request_experts"      as "EvaluationRequestExpers" keys ("ID");
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_request_full"         as "EvaluationRequestFull" keys ("ID");
+    "sap.ino.db.idea.ext::v_ext_idea_evaluationrequest_count"          as "EvaluationRequestFullNumber"     keys ("IDEA_ID");
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_request_full_item"    as "EvaluationRequestFullItem" keys ("ID");
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_request_comment"      as "EvaluationRequestComment"  keys ("ID");
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_request_item_forward"      as "EvaluationRequestForward"  keys ("ID");
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_request_item_clarification"      as "EvaluationRequestClarification"  keys ("ID");
+    "sap.ino.db.evaluation.ext::v_ext_evaluation_request_item_clarification_for_expert"      as "EvaluationRequestClarificationForExpert"  keys ("ID");
+    association "EvaluationRequest_Items" principal "EvaluationRequest"("ID")
+       multiplicity "1" dependent "EvaluationRequestItemLite"("EVAL_REQ_ID") multiplicity "*";
+    association "EvaluationRequest_Owner" principal "EvaluationRequest"("ID")
+       multiplicity "1" dependent "EvaluationRequestOwner"("EVAL_REQ_ID") multiplicity "*";
+    association "EvaluationRequest_Expert" principal "EvaluationRequestItemLite"("ID")
+       multiplicity "1" dependent "EvaluationRequestExpert"("EVAL_REQ_ITEM_ID") multiplicity "*";
+    association "EvaluationRequestItem_Expert" principal "EvaluationRequestItem"("ID")
+       multiplicity "1" dependent "EvaluationRequestExpert"("EVAL_REQ_ITEM_ID") multiplicity "*";
+    association "EvaluationRequestItem_Comments" principal "EvaluationRequestItem"("EVAL_REQ_ID")
+       multiplicity "1" dependent "EvaluationRequestComment"("OBJECT_ID") multiplicity "*";   
+    association "EvaluationRequest_Experts" principal "EvaluationRequest"("ID")
+       multiplicity "1" dependent "EvaluationRequestExpers"("EVAL_REQ_ID") multiplicity "*";
+    association "EvaluationRequest_Comments" principal "EvaluationRequest"("ID")
+       multiplicity "1" dependent "EvaluationRequestComment"("OBJECT_ID") multiplicity "*";
+    association "EvaluationRequest_Forwards" principal "EvaluationRequest"("ID")
+       multiplicity "1" dependent "EvaluationRequestForward"("EVAL_REQ_ID") multiplicity "*";
+    association "EvaluationRequestItem_Forwards" principal "EvaluationRequestItem"("ID")
+       multiplicity "1" dependent "EvaluationRequestForward"("EVAL_REQ_ITEM_ID") multiplicity "*";
+    association "EvaluationRequest_Clarifications" principal "EvaluationRequest"("ID")
+       multiplicity "1" dependent "EvaluationRequestClarification"("EVAL_REQ_ID") multiplicity "*";
+    association "EvaluationRequestItem_Clarifications" principal "EvaluationRequestItem"("ID")
+       multiplicity "1" dependent "EvaluationRequestClarificationForExpert"("EVAL_REQ_ITEM_ID") multiplicity "*";
+       
+    association "EvaluationRequest_RespExperts" principal "EvaluationRequest"("RESP_VALUE_CODE")
+    multiplicity "1" dependent "RespExperts"("RESP_VALUE_CODE") multiplicity "*";
+    association "EvaluationRequest_IdeaExperts" principal "EvaluationRequest"("IDEA_ID") 
+    multiplicity "1" dependent "IdeaExperts"("IDEA_ID") multiplicity "*";
+    association "EvaluationRequest_CampaignExperts" principal "EvaluationRequest"("IDEA_ID") 
+    multiplicity "1" dependent "IdeaCampaignExperts"("IDEA_ID") multiplicity "*";
+    
+    //integration
+    "sap.ino.db.integration::v_system_integration" as "SystemIntegration" keys("ID");
+    "sap.ino.db.integration::v_monitor_integration" as "MonitorIntegration" keys("ID");
+    "sap.ino.db.evaluation.ext::V_EXT_EVAL_REQ_SEARCH" as "SearchEvaluationRequest" keys ("ID") parameters via key and entity "SearchEvaluationRequestParams";
+    "sap.ino.db.integration.ext::V_EXT_MONITOR_SEARCH" as "SearchMonitorFull" keys("ID") parameters via key and entity "SearchMonitorFullParams";
+    //Monitor Email Notification
+    "sap.ino.db.integration::v_monitor_email" as "MonitorEmail" keys("ID");
+    "sap.ino.db.integration.ext::V_EXT_MONITOR_EMAIL_SEARCH" as "SearchMonitorEmail" keys("ID") parameters via key and entity "SearchMonitorEmailParams";
+    //Notification System Setting
+    "sap.ino.db.newnotification.ext::v_ext_notification_system_setting" as "NotificationSystemSetting" keys ("ID") navigates("NotificationSetting_Receivers" as "Receivers") ; 
+    "sap.ino.db.newnotification.ext::v_ext_notification_system_setting_receiver"  as "NotificationSystemSettingReceivers" keys ("ACTION_CODE");
+
+    //dimension
+    "sap.ino.db.gamification::v_dimension_full" as "Dimension" keys("ID")  navigates ("Dimension_Activity" as "Activity","Dimension_Badge" as "Badge");
+    "sap.ino.db.gamification::v_dimension_activity" as "DimensionActivity" keys("ID");
+    "sap.ino.db.gamification::v_dimension_badge" as "DimensionBadge" keys("ID") navigates ("Dimension_Badge_Attachment" as "Attachment");
+    "sap.ino.db.gamification::v_dimension_badge_attachment" as "DimensionBadgeAttachment" keys("ID");
+    "sap.ino.db.gamification.ext::V_EXT_DIMENSION_SEARCH" as "SearchDimensionFull" keys("ID") parameters via key and entity "SearchDimensionFullParams";
+    
+    association "Dimension_Activity" principal "Dimension"("ID")
+    multiplicity "1" dependent "DimensionActivity"("DIMENSION_ID") multiplicity "*";
+    association "Dimension_Badge" principal "Dimension"("ID")
+    multiplicity "1" dependent "DimensionBadge"("DIMENSION_ID") multiplicity "*";
+    association "Dimension_Badge_Attachment" principal "DimensionBadge"("ID")
+    multiplicity "1" dependent "DimensionBadgeAttachment"("BADGE_ID") multiplicity "*";
+    
+    
+    association "NotificationSetting_Receivers" principal "NotificationSystemSetting"("ACTION_CODE")
+       multiplicity "1" dependent "NotificationSystemSettingReceivers"("ACTION_CODE") multiplicity "*";
+       
+    "sap.ino.db.newnotification.ext::V_EXT_NOTIFICATION_SETTING_SEARCH" as "SearchNotification" keys("ID") parameters via key and entity "SearchNotificationParams";
+   //"sap.ino.db.newnotification.ext::V_EXT_NOTIFICATION_SETTING_SEARCH" as "SearchnNotification" keys generate local "KEY";
+    "sap.ino.db.gamification.ext::V_EXT_REPORT_GAMIFICATION_USER_PARTICIPATES" as "UserParticipatingGamificationReport"  keys("DIMENSION_ID","IDENTITY_ID") parameters via  key and entity "SearchGamificationReportParams";
+    "sap.ino.db.gamification.ext::V_EXT_REPORT_GAMIFICATION_DETAIL" as "UserParticipatingGamificationReportDetail" keys("DIMENSION_ID","IDENTITY_ID","ACTIVITY_ID","ID") parameters via key and entity "SearchGamificationReportDetailParams";
+}
+settings {
+    support null; 
+    metadata cache-control "max-age=3600";
+} 

@@ -1,0 +1,8 @@
+{
+  "undef" : true,
+  "predef": ["$", "Uint16Array", "Uint8Array", "ArrayBuffer", "xsruntime"],
+  "noempty" : true,
+  "laxbreak" : true,
+  "esnext" : true,
+  "multistr": true
+}

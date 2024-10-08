@@ -1,0 +1,8 @@
+{
+    "description" : "Cron Job to cleanup attachments and unneeded text index entries",
+    "action" : "sap.ino.xs.batch.jobs:attachment_delete_orphans.xsjs::execute",
+    "schedules" : [{
+        "description" : "Execute every day 22:20:00",
+        "xscron" : "* * * * 22 20 0"
+    }]
+}

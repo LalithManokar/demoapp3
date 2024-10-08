@@ -1,0 +1,25 @@
+{
+	"_version": "1.1.0",
+	"resources": [
+		{
+			"name": "Component-dbg.js",
+			"isDebug": true
+		},
+		{
+			"name": "Component.js"
+		},
+		{
+			"name": "controller/MenuBar-dbg.controller.js",
+			"isDebug": true
+		},
+		{
+			"name": "controller/MenuBar.controller.js"
+		},
+		{
+			"name": "manifest.json"
+		},
+		{
+			"name": "view/MenuBar.view.xml"
+		}
+	]
+}

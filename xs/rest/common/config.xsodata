@@ -1,0 +1,61 @@
+service {
+    "sap.ino.db.attachment.ext::v_ext_attachment_allowed_file" as "sap.ino.xs.object.attachment.AllowedFile.Root" keys ("CODE");
+
+    "sap.ino.db.basis.ext::v_ext_unit" as "sap.ino.xs.object.basis.Unit.Root" keys ("CODE");
+    "sap.ino.db.basis.ext::v_ext_value_option_list" as "sap.ino.xs.object.basis.ValueOptionList.Root" keys ("CODE");
+    "sap.ino.db.basis.ext::v_ext_value_option" as "sap.ino.xs.object.basis.ValueOptionList.ValueOptions" keys ("CODE");
+    "sap.ino.db.basis.ext::v_ext_datatype" as "sap.ino.xs.object.basis.Datatype.Root" keys ("CODE");
+    "sap.ino.db.basis.ext::v_ext_datetype" as "sap.ino.xs.object.basis.Datetype.Root" keys ("CODE");
+    "sap.ino.db.basis.ext::v_ext_language" as "sap.ino.xs.object.basis.Language.Root" keys ("CODE");
+    "sap.ino.db.basis.ext::v_ext_milestone_task" as "sap.ino.xs.object.basis.MilestoneTask.Root" keys ("CODE");
+    "sap.ino.db.basis.ext::v_ext_milestone" as "sap.ino.xs.object.basis.Milestone.Root" keys ("CODE");
+
+    "sap.ino.db.basis.ext::v_ext_system_setting" as  "sap.ino.xs.object.basis.SystemSetting.Root" keys ("CODE");
+
+    "sap.ino.db.campaign.ext::v_ext_phase" as "sap.ino.xs.object.campaign.Phase.Root" keys ("CODE");
+    "sap.ino.db.campaign.ext::v_ext_vote_type" as "sap.ino.xs.object.campaign.VoteType.Root" keys ("CODE");
+    
+    "sap.ino.db.iam.ext::v_ext_type_code" as "sap.ino.xs.object.iam.TypeCode.Root" keys ("CODE");
+    "sap.ino.db.iam.ext::v_ext_source_type_code" as "sap.ino.xs.object.iam.SourceTypeCode.Root" keys ("CODE");
+    "sap.ino.db.iam.ext::v_ext_role" as "sap.ino.xs.object.iam.RoleCode.Root" keys ("CODE");
+    
+    "sap.ino.db.analytics.ext::v_ext_report_template" as "sap.ino.xs.object.analytics.ReportTemplate.Root" keys ("CODE");
+
+    "sap.ino.db.evaluation.ext::v_ext_model" as "sap.ino.xs.object.evaluation.Model.Root" keys ("CODE");
+    "sap.ino.db.evaluation.ext::v_ext_criterion" as "sap.ino.xs.object.evaluation.Model.Criterion" keys ("CODE");
+    "sap.ino.db.evaluation.ext::v_ext_aggregation_type" as "sap.ino.xs.object.evaluation.AggregationType.Root" keys ("CODE");
+
+    "sap.ino.db.status.ext::v_ext_status" as "sap.ino.xs.object.status.Status.Root" keys ("CODE");
+    "sap.ino.db.status.ext::v_ext_status_stage" as "sap.ino.xs.object.status.StatusStage.Root" keys ("CODE");
+    
+    "sap.ino.db.notification.ext::v_ext_mail_template" as "sap.ino.xs.object.notification.MailTemplate.Root" keys ("CODE");
+    "sap.ino.db.basis.ext::v_ext_text_module" as "sap.ino.xs.object.basis.TextModule.Root" keys ("CODE");
+    "sap.ino.db.basis.ext::v_ext_company_view" as "sap.ino.xs.object.basis.CompanyView.Root" keys ("CODE");
+
+    // This is the trick to filter out irrelevant status for ideas, evaluations, etc. Due to the same name (after the package name) 
+    // as the original table the texts will still be found
+    "sap.ino.db.evaluation.ext::v_ext_status" as "sap.ino.xs.object.evaluation.Status.Root" keys ("CODE");
+    "sap.ino.db.idea.ext::v_ext_status" as "sap.ino.xs.object.idea.Status.Root" keys ("CODE");
+	"sap.ino.db.campaign.ext::v_ext_status" as "sap.ino.xs.object.campaign.Status.Root" keys ("CODE");    
+    "sap.ino.db.status.ext::v_ext_status_action" as "sap.ino.xs.object.status.Action.Root" keys ("CODE");
+    "sap.ino.db.status.ext::v_ext_status_action_stage" as "sap.ino.xs.object.status.ActionStage.Root" keys ("CODE");
+    // only idea specific models
+    "sap.ino.db.campaign.ext::v_ext_status_model" as "sap.ino.xs.object.status.Model.Root" keys ("CODE");
+    
+    "sap.ino.db.link.ext::v_ext_link_semantic" as "sap.ino.xs.object.link.LinkSemantic.Root" keys ("CODE");
+    
+    "sap.ino.db.evaluation.ext::v_ext_auto_publication" as "sap.ino.xs.object.evaluation.AutoPublication.Root" keys ("CODE");
+    
+    "sap.ino.db.ideaform.ext::v_ext_form" as "sap.ino.xs.object.ideaform.IdeaForm.Root" keys ("CODE");
+
+    
+    "sap.ino.db.subresponsibility.ext::v_ext_responsibility" as "sap.ino.xs.object.subresponsibility.ResponsibilityStage.Root" keys ("CODE");
+    "sap.ino.db.subresponsibility.ext::v_ext_responsibility_value" as "sap.ino.xs.object.subresponsibility.ResponsibilityStage.RespValues" keys ("CODE");
+    
+    "sap.ino.db.iam.ext::v_ext_identity_attribute" as  "sap.ino.xs.object.iam.IdentityAttributeSetting.Root" keys ("CODE");
+    "sap.ino.db.iam.ext::v_ext_identity_log_setting" as  "sap.ino.xs.object.iam.IdentityLogSetting.Root" keys ("CODE");
+}
+
+settings {
+	metadata cache-control "max-age=3600";
+}

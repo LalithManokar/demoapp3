@@ -1,0 +1,8 @@
+{
+    "description" : "Cron Job to aggregate user views for web analytics",
+    "action" : "sap.ino.xs.batch.jobs:tracker.xsjs::aggregateEvents",
+    "schedules" : [{
+        "description" : "Execute every day",
+        "xscron" : "* * * * 3 0 0" 
+    }]
+} 

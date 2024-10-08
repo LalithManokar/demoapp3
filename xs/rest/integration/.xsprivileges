@@ -1,0 +1,5 @@
+{
+    "privileges": [
+        { "name": "execute",       "description": "execute integration service" }
+    ]
+}

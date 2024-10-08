@@ -1,0 +1,8 @@
+{
+    "description" : "Cron Job to generate report data to local report or metering service",
+    "action" : "sap.ino.xs.batch.jobs:consumptionReportService.xsjs::execute",
+    "schedules" : [{
+        "description" : "Execute every day",
+        "xscron" : "* * * * 3 10 00"
+    }]
+}

@@ -1,0 +1,33 @@
+<core:FragmentDefinition
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core" >
+    <Dialog
+        id="sapUshellPagesErrorDialog"
+        title="{i18n>ErrorDialog.Title}"
+        type="Message"
+        afterClose=".onAfterClose"
+        contentWidth="30rem"
+        state="Error">
+        <content>
+            <VBox>
+                <Text
+                    text="{/message}"
+                    class="sapUiSmallMarginBottom" />
+                <Link
+                    text="{i18n>Button.ShowDetails}"
+                    visible="{=!${/showDetails}}"
+                    press=".onShowDetails" />
+            </VBox>
+            <VBox visible="{/showDetails}">
+                <Text text="{i18n>Label.ResponseCode} {/statusCode} - {/statusText}" class="sapUiSmallMarginBottom" />
+                <Text text="{i18n>Label.Details}" />
+                <Text text="{/description}" renderWhitespace="true" />
+            </VBox>
+        </content>
+
+        <buttons>
+            <Button text="{i18n>Button.Ok}" press=".onConfirm" />
+            <Button text="{i18n>Button.Copy}" press=".onCopy" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>
