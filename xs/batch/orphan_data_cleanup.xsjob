@@ -1,8 +1,0 @@
-{
-    "description" : "Cron Job to cleanup data in our system",
-    "action" : "sap.ino.xs.batch.jobs:orphan_data_cleanup.xsjs::execute",
-    "schedules" : [{
-        "description" : "Execute every day 22:20:00",
-        "xscron" : "* * * * 22 30 0"
-    }]
-}

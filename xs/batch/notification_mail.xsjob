@@ -1,8 +1,0 @@
-{
-    "description" : "Cron Job to send Mails",
-    "action" : "sap.ino.xs.batch.jobs:notification_mail.xsjs::execute",
-    "schedules" : [{
-        "description" : "Execute every 5 munites",
-        "xscron" : "* * * * * */5 35"
-    }]
-}

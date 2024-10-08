@@ -1,6 +1,0 @@
-import = [ {
-    hdbtable   = "sap.ino.db.aof::t_application_object";
-    file       = "sap.ino.xs.object:t_application_object.csv";
-    header     = false;
-    delimField = ";";
-}];

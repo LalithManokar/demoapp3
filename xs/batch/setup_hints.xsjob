@@ -1,8 +1,0 @@
-{
-    "description" : "Cron Job to setup query hints for important queries",
-    "action" : "sap.ino.xs.batch.jobs:setup_hints.xsjs::execute",
-    "schedules" : [{
-        "description" : "Execute every day",
-        "xscron" : "* * * */1 0 0 0"
-    }]
-}

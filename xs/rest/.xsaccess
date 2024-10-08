@@ -1,7 +1,0 @@
-{
-    "exposed": true,
-    "prevent_xsrf": true,
-    "authorization": [
-        "sap.ino.xs.rest::execute"
-    ]
-}

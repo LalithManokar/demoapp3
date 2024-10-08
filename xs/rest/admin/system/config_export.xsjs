@@ -1,1 +1,0 @@
-$.import("sap.ino.xs.aof.config", "export").handleRequest();

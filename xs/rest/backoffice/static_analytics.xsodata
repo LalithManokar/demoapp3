@@ -1,9 +1,0 @@
-service namespace "sap.ino.rest" {
-    //the main views for the integrated analytics
-    "sap.ino.db.analytics.ext::v_ext_analytics_static_campaign_activities" as "CampaignActivitiesStatic" keys generate local "ID";
-    "sap.ino.db.analytics.ext::v_ext_analytics_static_unchanged_ideas" as "UnchangedIdeasStatic" keys generate local "ID";
-}
-settings {
-    support null;
-    metadata cache-control "max-age=3600";
-} 

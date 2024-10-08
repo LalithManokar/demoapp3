@@ -1,8 +1,0 @@
-{
-    "description" : "Cron Job to delete integration history data",
-    "action" : "sap.ino.xs.batch.jobs:integration_deletion.xsjs::execute",
-    "schedules" : [{
-        "description" : "Execute every day",
-        "xscron" : "* * * * 22 10 0"
-    }]
-}

@@ -1,7 +1,0 @@
-{
-    "rewrite_rules" : [{
-        "source": "/(\\S*).xml",
-        "target": "/gadget.xsjs?OBJECT=$1"
-    }],
-    "authorization": null
-}

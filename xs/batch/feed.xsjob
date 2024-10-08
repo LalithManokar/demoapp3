@@ -1,8 +1,0 @@
-{
-    "description" : "Cron Job to create Feeds",
-    "action" : "sap.ino.xs.batch.jobs:feed.xsjs::execute",
-    "schedules" : [{
-        "description" : "Execute every 4 hours",
-        "xscron" : "* * * * */4 30 0"
-    }]
-}

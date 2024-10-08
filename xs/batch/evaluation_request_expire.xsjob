@@ -1,8 +1,0 @@
-{
-    "description" : "Cron Job to delete expired evaluation request item",
-    "action" : "sap.ino.xs.batch.jobs:evaluation_request_expire.xsjs::execute",
-    "schedules" : [{
-        "description" : "Execute every day",
-        "xscron" : "* * * * 20 00 00"
-    }]
-} 

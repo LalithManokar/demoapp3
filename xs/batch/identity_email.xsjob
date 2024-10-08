@@ -1,8 +1,0 @@
-{
-    "description" : "Cron Job to Send Identity Email",
-    "action" : "sap.ino.xs.batch.jobs:identity_email.xsjs::execute",
-    "schedules" : [{
-        "description" : "Execute every 2 minutes",
-        "xscron" : "* * * * * */2 0"
-    }]
-}

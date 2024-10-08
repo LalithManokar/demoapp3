@@ -1,5 +1,0 @@
-{
-    "authorization": [
-        "sap.ino.xs.rest.backoffice::execute"
-    ]
-}

@@ -1,9 +1,0 @@
-{
-    "exposed": true,
-    "prevent_xsrf": false,
-    "authorization": [
-        "sap.ino.xs.rest.integration::execute"
-    ],
-    "authentication":[{"method":"LogonTicket"}],
-    "force_ssl":true
-}
