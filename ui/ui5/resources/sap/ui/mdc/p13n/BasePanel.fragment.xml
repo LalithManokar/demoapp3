@@ -1,0 +1,40 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:drag="sap.ui.core.dnd"
+	xmlns:core="sap.ui.core">
+	<Table id="idList" mode="MultiSelect" rememberSelections="false" itemPress="_onItemPressed" selectionChange="_onSelectionChange" sticky="HeaderToolbar,ColumnHeaders">
+		<headerToolbar>
+			<OverflowToolbar>
+				<SearchField id="idSearchField" liveChange="_onSearchFieldLiveChange" width="100%">
+					<layoutData>
+						<OverflowToolbarLayoutData shrinkable="true" moveToOverflow="true" priority="High" maxWidth="8rem"/>
+					</layoutData>
+				</SearchField>
+				<Button text="Show Selected" press="_onPressShowSelected"/>
+				<OverflowToolbarButton id="IDButtonMoveToTop" type="Transparent" icon="sap-icon://collapse-group" press="_onPressButtonMoveToTop">
+					<layoutData>
+						<OverflowToolbarLayoutData moveToOverflow="true" priority="Low" group="2"/>
+					</layoutData>
+				</OverflowToolbarButton>
+				<OverflowToolbarButton id="IDButtonMoveUp" type="Transparent" icon="sap-icon://slim-arrow-up" press="_onPressButtonMoveUp">
+					<layoutData>
+						<OverflowToolbarLayoutData moveToOverflow="true" priority="High" group="1"/>
+					</layoutData>
+				</OverflowToolbarButton>
+				<OverflowToolbarButton id="IDButtonMoveDown" type="Transparent" icon="sap-icon://slim-arrow-down" press="_onPressButtonMoveDown">
+					<layoutData>
+						<OverflowToolbarLayoutData moveToOverflow="true" priority="High" group="1"/>
+					</layoutData>
+				</OverflowToolbarButton>
+				<OverflowToolbarButton id="IDButtonMoveToBottom" type="Transparent" icon="sap-icon://expand-group" press="_onPressButtonMoveToBottom">
+					<layoutData>
+						<OverflowToolbarLayoutData moveToOverflow="true" priority="Low" group="2"/>
+					</layoutData>
+				</OverflowToolbarButton>
+			</OverflowToolbar>
+		</headerToolbar>
+		<dragDropConfig>
+			<drag:DragDropInfo sourceAggregation="items" targetAggregation="items" dropPosition="Between" drop="_onRearrange"/>
+		</dragDropConfig>
+	</Table>
+</core:FragmentDefinition>

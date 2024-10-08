@@ -1,0 +1,7 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+	<ColumnListItem type="Active" selected="{selected}" class="sapUiSmallMarginBegin">
+		<cells>
+			<Label wrapping="true" text="{label}" tooltip="{tooltip}"/>
+		</cells>
+	</ColumnListItem>
+</core:FragmentDefinition>

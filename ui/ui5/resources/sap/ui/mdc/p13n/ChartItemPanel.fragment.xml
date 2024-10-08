@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+	<ColumnListItem type="Active" selected="{selected}" class="sapUiSmallMarginBegin">
+		<cells>
+			<Label wrapping="true" text="{label}" tooltip="{tooltip}"/>
+			<Text wrapping="true" text="{kind}"/>
+			<Select width="100%" selectedKey="{role}" change="onChangeOfRole" forceSelection="false" items="{path:'availableRoles', templateShareable:false}" enabled="{selected}">
+				<items>
+					<core:Item key="{key}" text="{text}"/>
+				</items>
+			</Select>
+		</cells>
+	</ColumnListItem>
+</core:FragmentDefinition>
