@@ -1,0 +1,15 @@
+schema = "SAP_INO_EXT";
+query = "select 
+        id,
+        idea_id,
+        identity_id, 
+        name,
+        role_code,
+        image_id,
+        type_code,
+        is_valid_email
+            from \"sap.ino.db.idea::v_idea_lean_experts\" as experts
+            where experts.idea_id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")
+            with read only";
+
+depends_on_view = ["sap.ino.db.idea::v_idea_lean_experts", "sap.ino.db.idea::v_auth_ideas_read"];

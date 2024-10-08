@@ -1,0 +1,30 @@
+schema = "SAP_INO";
+query = "select identity_role.role_code,
+            identity_role.identity_id,
+           status_role.ACTION_CODE,
+           status_role.CAN_DO_ACTION,
+           status_role.SETTING_CODE,
+           status_role.VALUE,
+            idea.STATUS_CODE,
+            idea.id as idea_id,
+            idea.campaign_id
+    from\"sap.ino.db.iam::v_object_identity_role_transitive\" as identity_role
+    inner join\"sap.ino.db.idea::t_idea\" as idea
+    on identity_role.object_id = idea.id
+    inner join (select authorization.role_code,
+            authorization.action_code,
+            authorization.CAN_DO_ACTION,
+            authorization.SETTING_CODE,
+            authorization.VALUE,
+           authorization.CODE
+    from\"sap.ino.db.status::v_status_authorization\" as authorization
+    ) as status_role
+    on status_role.role_code = identity_role.role_code and idea.status_code = status_role.CODE
+    where identity_role.object_type_code = 'IDEA'";
+
+depends_on_table = ["sap.ino.db.idea::t_idea"];
+
+depends_on_view = [ 
+                 
+                    "sap.ino.db.iam::v_object_identity_role_transitive",
+                    "sap.ino.db.status::v_status_authorization"];

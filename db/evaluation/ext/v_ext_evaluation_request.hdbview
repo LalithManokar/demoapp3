@@ -1,0 +1,24 @@
+schema = "SAP_INO_EXT";
+query = "
+select 
+    evaluation_request.id,
+    evaluation_request.idea_id,
+    evaluation_request.idea_phase_code,
+    evaluation_request.description,
+    evaluation_request.accept_date,
+    evaluation_request.complete_date,
+    evaluation_request.created_at,
+    evaluation_request.comment_count,
+    evaluation_request.idea_name, 
+    evaluation_request.campaign_id,
+    evaluation_request.resp_value_code,
+    evaluation_request.campaign_submit_to,
+    evaluation_request.owner_id,
+    evaluation_request.owner_name
+from \"sap.ino.db.evaluation::v_evaluation_request\" as evaluation_request
+where evaluation_request.id in (select eval_req_id from \"sap.ino.db.evaluation::v_auth_evaluation_request_read\" )
+with read only 
+";
+
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request",
+                   "sap.ino.db.evaluation::v_auth_evaluation_request_read"];

@@ -1,0 +1,53 @@
+<mvc:View
+        controllerName="sap.ino.vc.wall.remote.WallRemoteItemPerson"
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:f="sap.ui.layout.form"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns:ino="sap.ino.controls"
+        xmlns:u="sap.ui.unified">
+    <Page>
+        <customHeader>
+            <core:Fragment fragmentName="sap.ino.vc.wall.fragments.WallRemoteItemHeader" type="XML" />
+        </customHeader>
+        <f:SimpleForm 
+            class="sapUiWallRemoteItem"
+            layout="{view>/Layouts/SimpleFormLayout/layout}"
+            labelSpanL="{view>/Layouts/SimpleFormLayout/labelSpanL}"
+            labelSpanM="{view>/Layouts/SimpleFormLayout/labelSpanM}"
+            emptySpanL="{view>/Layouts/SimpleFormLayout/emptySpanL}"
+            emptySpanM="{view>/Layouts/SimpleFormLayout/emptySpanM}">
+            <f:content>
+                <Label text="{i18n>WALL_ITEM_NAME}"/>
+                <Input id="name" value="{object>CONTENT/NAME}" change="onChange" maxLength="500" 
+                		suggestionItemSelected="onSuggestionItemSelected" showSuggestion="true" suggest="onSuggest"
+                		enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }" />
+                <Label text="{i18n>WALL_ITEM_EMAIL}"/>
+                <Input id="email" value="{object>CONTENT/EMAIL}" change="onChange" maxLength="500"
+                    enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }" />
+                <Label text="{i18n>WALL_ITEM_PHONE}"/>
+                <Input id="phone" value="{object>CONTENT/PHONE}" change="onChange" maxLength="500"
+                    enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }" />
+                <Label text="{i18n>WALL_ITEM_PERSON_IMAGE}"/>
+                <HBox justifyContent="SpaceBetween" alignItems="Center">
+                    <u:FileUploader 
+                        id="imageUploader"
+                        uploadUrl="{view>/ATTACHMENT_UPLOAD_URL}" multiple="false"
+                        buttonOnly="true" buttonText="{i18n>WALL_ITEM_IMAGE_SELECT}" icon="sap-icon://upload"
+                        change="onFileUploaderChange" uploadComplete="onImageUploaderComplete" uploadOnChange="true"
+                        useMultipart="false" sendXHR="true"
+                        visible="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }" 
+                        mimeType="image/*"/>
+                    <Button enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }"  
+                        text="{i18n>WALL_ITEM_PERSON_CLEAR}" press="onClear"/>
+                </HBox>
+                <VBox alignItems="Center">
+                    <Image class="sapInoWallRemotePersonImage" id="imagePreview"/> 
+                </VBox>
+            </f:content>
+        </f:SimpleForm>
+        <footer>  
+            <core:Fragment fragmentName="sap.ino.vc.wall.fragments.WallRemoteItemFooter" type="XML" />
+        </footer>
+    </Page>
+</mvc:View>

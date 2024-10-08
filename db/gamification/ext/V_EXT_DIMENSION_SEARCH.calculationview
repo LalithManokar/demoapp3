@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_DIMENSION_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_DIMENSION_SEARCH"/>
+  <metadata changedAt="2020-09-02 17:39:43.064"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="searchToken"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="true" defaultValue="undefined">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="128"/>
+        <viewAttribute datatype="NVARCHAR" id="UNIT" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="TECHNICAL_NAME" length="128"/>
+        <viewAttribute datatype="VARCHAR" id="SCOPE" length="16"/>
+        <viewAttribute datatype="TINYINT" id="STATUS"/>
+        <viewAttribute datatype="NVARCHAR" id="DESCRIPTION" length="512"/>
+        <viewAttribute datatype="TINYINT" id="REDEEM"/>
+      
+        <viewAttribute id="CREATED_AT" datatype="TIMESTAMP"/>
+        <viewAttribute id="CREATED_BY_ID" datatype="INTEGER"/>
+        <viewAttribute id="CREATED_BY" datatype="NVARCHAR" length="100"/>
+        <viewAttribute id="CHANGED_AT" datatype="TIMESTAMP"/>
+        <viewAttribute id="CHANGED_BY_ID" datatype="INTEGER"/>
+        <viewAttribute id="CHANGED_BY" datatype="NVARCHAR" length="100"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+   search_result =
+        select
+            id,
+            1 as search_score
+        from
+            &quot;sap.ino.db.gamification::v_dimension_full&quot; 
+        where
+            length(:searchToken) = 0 
+        union all
+        select
+            id,
+            1 as search_score
+        from
+            &quot;sap.ino.db.gamification::v_dimension_full&quot; 
+        where
+            length(:searchToken) &gt; 0 and length(ltrim(:searchToken,'0123456789')) &lt;=0 and
+            cast(id as nvarchar) = :searchToken
+        union all    
+        select
+            id,
+            score() as search_score
+        from
+            &quot;sap.ino.db.gamification::v_dimension_full&quot; 
+        where length(:searchToken) &gt; 0 and (
+            contains(NAME, :searchToken, fuzzy(0.8), weight(1.0)));
+
+    var_out = 
+        select 
+            sr.search_score,	
+            sr.id,
+        	dimension.NAME,
+        	dimension.UNIT,
+        	dimension.TECHNICAL_NAME,
+        	dimension.SCOPE,
+        	dimension.STATUS,
+        	dimension.DESCRIPTION,
+        	dimension.REDEEM,
+        	dimension.CREATED_AT,
+        	dimension.CREATED_BY_ID,
+        	dimension.CREATED_BY,
+        	dimension.CHANGED_AT,
+        	dimension.CHANGED_BY_ID,
+        	dimension.CHANGED_BY
+        from 
+            &quot;sap.ino.db.gamification::v_dimension_full&quot; as dimension
+        inner join
+            :search_result as sr
+        on
+            dimension.id = sr.id; 
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="3">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="UNIT" order="4">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="UNIT"/>
+      </attribute>
+      <attribute id="TECHNICAL_NAME" order="5">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="TECHNICAL_NAME"/>
+      </attribute>
+      <attribute id="SCOPE" order="6">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SCOPE"/>
+      </attribute>
+      <attribute id="STATUS" order="7">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS"/>
+      </attribute>
+      <attribute id="DESCRIPTION" order="8">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="DESCRIPTION"/>
+      </attribute>
+      <attribute id="REDEEM" order="9">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="REDEEM"/>
+      </attribute>
+    
+      <attribute id="CREATED_AT" order="10">
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CREATED_BY_ID" order="11">
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="CREATED_BY" order="12">
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="13">
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="14">
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_BY" order="15">
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

@@ -1,0 +1,79 @@
+schema = "SAP_INO";
+query = "
+    select form.code                           as form_code,
+           campaign.id                         as campaign_id,
+           case 
+             when campaign_auth.campaign_id is null then not_authorized.content
+             else txt.name
+           end                                 as campaign_name,
+           idea.id                             as idea_id,
+           case 
+             when idea_auth.idea_id is null then not_authorized.content
+             else idea.name
+           end                                 as idea_name,
+           count(distinct idea_form.form_code) as form_count
+    from                \"sap.ino.db.ideaform::v_form_stage_union\"  as form
+        left outer join \"sap.ino.db.ideaform::v_idea_form\"         as idea_form     
+                            on form.code = idea_form.form_code
+        left outer join \"sap.ino.db.idea::t_idea\"                  as idea 
+                            on idea.id   = idea_form.idea_id
+        left outer join \"sap.ino.db.campaign::t_campaign\"          as campaign
+                            on idea.CAMPAIGN_ID = campaign.id
+        left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as txt
+                            on idea.CAMPAIGN_ID      = txt.CAMPAIGN_ID 
+        left outer join \"sap.ino.db.campaign::v_auth_campaigns\"    as campaign_auth
+                            on campaign_auth.campaign_id = campaign.id       
+        left outer join \"sap.ino.db.idea::v_auth_ideas_read\"       as idea_auth
+                            on idea.id = idea_auth.idea_id,                   
+        (select content from \"sap.ino.db.basis::v_resolved_text\" where object_name = 'uitexts' and text_id = 'BO_COMMON_NOT_AUTHORIZED') as not_authorized
+    where idea_form.idea_id is not null
+    group by 
+        form.code,
+        campaign.id, 
+        txt.name, 
+        idea.id,
+        idea.name,
+        campaign_auth.campaign_id,
+        idea_auth.idea_id,
+        not_authorized.content
+    union all    
+    select form.code                           as form_code,
+           campaign.id                         as campaign_id,
+           case 
+             when campaign_auth.campaign_id is null then not_authorized.content
+             else txt.name
+           end                                 as campaign_name,
+           null                                as idea_id,
+           null                                as idea_name,
+           count(distinct form.code)           as form_count
+    from   \"sap.ino.db.ideaform::v_form_stage_union\"                  as form 
+           inner join \"sap.ino.db.campaign::t_campaign\"               as campaign 
+                  on form.code = campaign.form_code
+           left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as txt
+                  on campaign.id = txt.CAMPAIGN_ID 
+           left outer join \"sap.ino.db.campaign::v_auth_campaigns\"    as campaign_auth
+                  on campaign_auth.campaign_id = campaign.id,
+          (select content from \"sap.ino.db.basis::v_resolved_text\" where object_name = 'uitexts' and text_id = 'BO_COMMON_NOT_AUTHORIZED') as not_authorized
+    where campaign.id not in (
+            select distinct form_campaign.id 
+                     from \"sap.ino.db.ideaform::v_idea_form\"         as idea_form inner join 
+                          \"sap.ino.db.idea::t_idea\"                  as idea 
+                              on idea.id = idea_form.idea_id inner join
+                          \"sap.ino.db.campaign::t_campaign\"          as form_campaign
+                              on idea.campaign_id = form_campaign.id where idea_form.form_code = form.code )
+       group by 
+        form.code,
+        campaign.id, 
+        txt.name, 
+        campaign_auth.campaign_id,
+        not_authorized.content  
+    with read only ";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.idea::t_idea"];
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale",
+                   "sap.ino.db.ideaform::v_form_stage_union",
+                   "sap.ino.db.ideaform::v_idea_form",
+                   "sap.ino.db.idea::v_auth_ideas_read",
+                   "sap.ino.db.basis::v_resolved_text",
+                   "sap.ino.db.campaign::v_auth_campaigns"];

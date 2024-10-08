@@ -1,0 +1,54 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_get_groups_transitive" (
+    in  it_member_id SAP_INO."sap.ino.db.iam::tt_id_set_input",
+    out ot_group_id  SAP_INO."sap.ino.db.iam::tt_group_id_set"
+)
+language sqlscript
+sql security invoker
+default schema SAP_INO
+reads sql data as
+begin
+    declare cnt_prev integer := 0;
+    declare cnt_closure integer;
+
+    -- remove all ids that are not relevant anymore,
+    -- this is relevant during delete scenarios
+    lt_member_id =
+        select it.id from :it_member_id as it
+        inner join "sap.ino.db.iam::t_identity" as ident
+        on it.id = ident.id
+        where ident.erased = 0;
+
+    -- starting point for the closure computation
+    ot_group_id =
+        -- all relevant ids from outside
+        select m.id as member_id, m.id as group_id from
+            :lt_member_id as m
+        union all
+        -- the transitive closure of their parent relations
+        select m.id as member_id, group_id as group_id from
+            :lt_member_id as m
+        join
+            "sap.ino.db.iam::t_identity_group_member" as tm
+        on
+            m.id = tm.member_id;
+
+    -- determine the total number of group IDs for the closure
+    select count(group_id) into cnt_closure from :ot_group_id;
+
+    -- repeat until size of the determined transitive closure 
+    -- of the parent relation does not grow any more
+    while cnt_prev < cnt_closure do
+        ot_group_id =
+            -- keep what we have found so far
+            select member_id, group_id from :ot_group_id 
+            union distinct
+            -- add entries one level up the hierarchy
+            select curr.member_id, next.group_id 
+                from :ot_group_id as curr 
+                join "sap.ino.db.iam::t_identity_group_member" as next
+                on curr.group_id = next.member_id;
+
+        cnt_prev := cnt_closure;
+        select count(group_id) into cnt_closure from :ot_group_id;
+    end while;
+end;

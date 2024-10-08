@@ -1,0 +1,15 @@
+FUNCTION "SAP_INO"."sap.ino.db.evaluation::f_check_overdue" (iv_status_code varchar(500), iv_accept_date date, iv_complete_date date) 
+	RETURNS ov_true tinyint
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER AS
+BEGIN
+  ov_true = 0;
+  if( (:iv_status_code = 'sap.ino.config.EVAL_REQ_REQUESTED' or :iv_status_code = 'sap.ino.config.EVAL_REQ_IN_CLARIFICATION') and 
+    current_date > :iv_accept_date ) then
+    ov_true = 1;
+  end if;
+  if ((:iv_status_code = 'sap.ino.config.EVAL_REQ_ACCEPTED' or :iv_status_code = 'sap.ino.config.EVAL_REQ_IN_PROCESS') and
+     current_date > :iv_complete_date ) then
+     ov_true = 1;
+  end if;
+END;

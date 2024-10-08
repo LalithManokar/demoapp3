@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Tag Assignment for Group";
+table.columns = [
+    {name = "ID";                    sqlType = INTEGER;                 nullable = false; comment = "Human readable identifier";},
+    {name = "TAG_ID";                sqlType = INTEGER;                 nullable = true; comment = "Tag identitier";},
+    {name = "TAG_GROUP_ID";          sqlType = INTEGER;                 nullable = true; comment = "Tag Group identitier";},
+    {name = "OBJECT_TYPE_CODE";      sqlType = VARCHAR;  length = 100;  nullable = true; comment = "Type Code for mark Tag/Tag Group";},
+    {name = "SEQUENCE_NO";           sqlType = INTEGER;                 nullable = true; comment = "Sequence order for Display";}    
+];
+table.primaryKey.pkcolumns = ["ID"];

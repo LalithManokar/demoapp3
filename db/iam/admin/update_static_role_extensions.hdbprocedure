@@ -1,0 +1,20 @@
+procedure "SAP_INO"."sap.ino.db.iam.admin::update_static_role_extensions"() 
+    language sqlscript
+    sql security definer 
+    default schema SAP_INO
+    as
+begin
+    declare cursor c_roles for select 
+        source_roles.user_name,
+        source_roles.qualified_role_name as source_role_name, 
+        target_roles.qualified_role_name as target_role_name
+    from "sap.ino.db.iam::v_identity_all_static_roles" as source_roles
+        inner join "sap.ino.db.iam::v_static_roles" as target_roles
+            on source_roles.logical_role_name = target_roles.logical_role_name
+    where source_roles.qualified_role_name <> target_roles.qualified_role_name;
+
+    for role as c_roles do
+        call "sap.ino.db.iam::p_restricted_grant_activated_role"(role.target_role_name, role.user_name);
+        call "sap.ino.db.iam::p_restricted_revoke_activated_role"(role.source_role_name, role.user_name);
+    end for;
+end;

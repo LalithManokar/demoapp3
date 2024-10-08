@@ -1,0 +1,8 @@
+schema="SAP_INO";
+query = "
+            select 'sap.ino.config.COMPLETED' as status_code from dummy
+            union 
+            select code as status_code from \"sap.ino.db.status::t_status\" where status_type = 'COMPLETED'
+        with read only";
+        
+depends_on_table = ["sap.ino.db.status::t_status"];

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_EVAL_REQ_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_EVAL_REQ_SEARCH"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables>
+    <variable id="filterName" parameter="true">
+      <descriptions defaultDescription="filterName"/>
+      <variableProperties datatype="VARCHAR" defaultValue="undefined" length="20" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="INTEGER" id="EVAL_REQ_ID"/>
+        <viewAttribute datatype="DATE" id="ACCEPT_DATE"/>
+        <viewAttribute datatype="DATE" id="COMPLETE_DATE"/>
+        <viewAttribute datatype="NVARCHAR" id="STATUS_TEXT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="IDEA_TITLE" length="100"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="EXPERT_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="OWNER_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="CAMPAIGN_TITLE" length="100"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#filterName</localVariable>
+      <definition> 
+ /********* Begin Procedure Script ************/ 
+ BEGIN 
+     call &quot;SAP_INO&quot;.&quot;sap.ino.db.evaluation::p_eval_req_filter&quot;(:filterName, :lt_filter_eval_req);
+ 	 var_out = select
+ 	              filtered_item.id, 	              
+ 	              eval_request_item.eval_req_id,
+ 	              eval_request_item.accept_date,
+ 	              eval_request_item.complete_date,
+ 	              coalesce(status_text.content, status.default_text)                  as status_text,
+ 	              eval_request_item.status_code,
+ 	              eval_request_item.idea_id, 	   
+ 	              idea.name                            as idea_title,
+ 	              idea.campaign_id,           
+ 	              expert.name                          as expert_name,
+ 	              owner.name                           as owner_name,
+ 	              camp.name                             as campaign_title
+ 	           from :lt_filter_eval_req                                           as filtered_item
+ 	           inner join &quot;sap.ino.db.evaluation::v_auth_evaluation_request_item_read&quot; as auth_item
+ 	              on auth_item.eval_req_item_id = filtered_item.id
+ 	           inner join &quot;sap.ino.db.evaluation::v_evaluation_request_item&quot;      as eval_request_item
+ 	              on filtered_item.id = eval_request_item.id
+ 	           inner join &quot;sap.ino.db.idea::t_idea&quot;                               as idea
+                  on  idea.id = eval_request_item.idea_id
+               inner join &quot;sap.ino.db.status::t_status&quot;                           as status
+                  on eval_request_item.status_code = status.code
+               left outer join &quot;sap.ino.db.basis::v_resolved_text&quot;                as status_text
+                  on status_text.text_id = status.code
+                left outer join &quot;sap.ino.db.campaign::v_campaign_t_locale&quot;      as camp
+                    on camp.campaign_id = idea.campaign_id
+ 	           left outer join &quot;sap.ino.db.iam::t_identity&quot;                       as owner
+ 	              on owner.id = eval_request_item.owner_id
+ 	           left outer join &quot;sap.ino.db.iam::t_identity&quot;                       as expert
+ 	              on expert.id = eval_request_item.expert_id
+               where (eval_request_item.owner_id in ( select id from &quot;sap.ino.db.iam::v_auth_application_user&quot;) or
+                      eval_request_item.expert_id in ( select id from &quot;sap.ino.db.iam::v_auth_application_user&quot;));
+                                    
+               
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="ID" order="1">
+        <descriptions defaultDescription="Human readable identifier"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="EVAL_REQ_ID" order="2">
+        <descriptions defaultDescription="Evaluation Request ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="EVAL_REQ_ID"/>
+      </attribute>
+      <attribute id="ACCEPT_DATE" order="3">
+        <descriptions defaultDescription="Accept date "/>
+        <keyMapping columnObjectName="Script_View" columnName="ACCEPT_DATE"/>
+      </attribute>
+      <attribute id="COMPLETE_DATE" order="4">
+        <descriptions defaultDescription="Complete date"/>
+        <keyMapping columnObjectName="Script_View" columnName="COMPLETE_DATE"/>
+      </attribute>
+      <attribute id="STATUS_TEXT" order="5">
+        <descriptions defaultDescription="Default Text"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_TEXT"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="6">
+        <descriptions defaultDescription="Status Code"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="7">
+        <descriptions defaultDescription="Idea ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_TITLE" order="8">
+        <descriptions defaultDescription="Name of the idea"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_TITLE"/>
+      </attribute>
+      <attribute id="EXPERT_NAME" order="10">
+        <descriptions defaultDescription="Display name"/>
+        <keyMapping columnObjectName="Script_View" columnName="EXPERT_NAME"/>
+      </attribute>
+      <attribute id="OWNER_NAME" order="11">
+        <descriptions defaultDescription="OWNER_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="OWNER_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_TITLE" order="12">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_TITLE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="CAMPAIGN_ID" order="9" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="CAMPAIGN_ID"/>
+        <measureMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

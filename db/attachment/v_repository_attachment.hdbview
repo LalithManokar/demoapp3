@@ -1,0 +1,23 @@
+schema = "SAP_INO";
+query = " 
+    select * from (
+        select 
+            repo.package_id,
+            repo.object_name as file_name,
+            concat('image/', repo.object_suffix) as media_type,
+            concat(concat(concat(concat(replace(repo.package_id, '.', '/'), '/'), repo.object_name), '.'), repo.object_suffix) as path,
+            row_number() over (partition by repo.object_name order by config_package.layer desc) as rank
+        from 
+        	_sys_repo.active_object as repo
+    	inner join
+    	    ( select layer, concat(ext_package_id, '.attachment') as package_id from \"sap.ino.db.basis::t_package_extension\" where base_package_id = 'sap.ino.config') as config_package
+    	    on repo.package_id = config_package.package_id
+    	inner join
+    	    \"sap.ino.db.attachment.ext::v_ext_attachment_allowed_file\" as allowed_file
+    	    on UCASE(repo.object_suffix) = UCASE(allowed_file.file_ext)
+    	    and allowed_file.media_type like 'image/%'
+    ) where rank = 1
+with read only";
+
+depends_on_table = ["sap.ino.db.basis::t_package_extension"];
+depends_on_view = ["sap.ino.db.attachment.ext::v_ext_attachment_allowed_file"];

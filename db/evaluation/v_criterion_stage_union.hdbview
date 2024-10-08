@@ -1,0 +1,33 @@
+schema = "SAP_INO";
+query = "
+    select
+      criterion_code.code,
+      coalesce(criterion_stage.model_code, criterion.model_code) as model_code,
+      coalesce(criterion_stage.datatype_code, criterion.datatype_code) as datatype_code,
+      coalesce(criterion_stage.parent_criterion_code, criterion.parent_criterion_code) as parent_criterion_code,
+      coalesce(criterion_stage.sequence_no, criterion.sequence_no) as sequence_no,
+      coalesce(criterion_stage.is_overall_result, criterion.is_overall_result) as is_overall_result,
+      coalesce(criterion_stage.uom_code, criterion.uom_code) as uom_code,
+      coalesce(criterion_stage.value_option_list_code, criterion.value_option_list_code) as value_option_list_code,
+      coalesce(criterion_stage.aggregation_type, criterion.aggregation_type) as aggregation_type,
+      coalesce(criterion_stage.num_value_min, criterion.num_value_min) as num_value_min,
+      coalesce(criterion_stage.num_value_max, criterion.num_value_max) as num_value_max,
+      coalesce(criterion_stage.x_axis_criterion_code, criterion.x_axis_criterion_code) as x_axis_criterion_code,
+      coalesce(criterion_stage.x_axis_segment_no, criterion.x_axis_segment_no) as x_axis_segment_no,
+      coalesce(criterion_stage.y_axis_criterion_code, criterion.y_axis_criterion_code) as y_axis_criterion_code,
+      coalesce(criterion_stage.y_axis_segment_no, criterion.y_axis_segment_no) as y_axis_segment_no,
+      coalesce(criterion_stage.vis_param_1_criterion_code, criterion.vis_param_1_criterion_code) as vis_param_1_criterion_code,
+      coalesce(criterion_stage.vis_param_2_criterion_code, criterion.vis_param_2_criterion_code) as vis_param_2_criterion_code,
+      coalesce(criterion_stage.default_text, criterion.default_text) as default_text,
+      coalesce(criterion_stage.default_long_text, criterion.default_long_text) as default_long_text
+    from (select code from \"sap.ino.db.evaluation::t_criterion\"
+          union
+          select code from \"sap.ino.db.evaluation::t_criterion_stage\") as criterion_code
+    left outer join \"sap.ino.db.evaluation::t_criterion\" as criterion 
+          on criterion_code.code = criterion.code
+    left outer join \"sap.ino.db.evaluation::t_criterion_stage\" as criterion_stage 
+          on criterion_code.code = criterion_stage.code
+    with read only ";
+
+depends_on_table = ["sap.ino.db.evaluation::t_criterion",
+                    "sap.ino.db.evaluation::t_criterion_stage"];

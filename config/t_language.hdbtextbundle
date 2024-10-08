@@ -1,0 +1,37 @@
+# TRANSLATE
+# XTXT, 100
+sap.ino.config.EN=English
+# XTXT, 100
+sap.ino.config.DE=Deutsch
+# XTXT, 100
+sap.ino.config.FR=French
+# XTXT, 100
+sap.ino.config.JA=にほんご
+# XTXT, 100
+sap.ino.config.PT=Português
+# XTXT, 100
+sap.ino.config.RU=Русский
+# XTXT, 100
+sap.ino.config.ZH=简体中文
+# XTXT, 100
+sap.ino.config.AR=اللغة العربية
+# XTXT, 100
+sap.ino.config.ES=Español
+# XTXT, 300
+sap.ino.config.EN_LONG=English
+# XTXT, 300
+sap.ino.config.DE_LONG=Deutsch
+# XTXT, 300
+sap.ino.config.FR_LONG=French
+# XTXT, 300
+sap.ino.config.JA_LONG=にほんご
+# XTXT, 300
+sap.ino.config.PT_LONG=Português
+# XTXT, 300
+sap.ino.config.RU_LONG=Русский
+# XTXT, 300
+sap.ino.config.ZH_LONG=简体中文
+# XTXT, 300
+sap.ino.config.ES_LONG=Español
+# XTXT, 300
+sap.ino.config.AR_LONG=اللغة العربية

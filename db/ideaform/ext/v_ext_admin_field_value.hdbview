@@ -1,0 +1,12 @@
+schema = "SAP_INO_EXT";
+query = "
+    select 
+        field_value.* from 
+    \"sap.ino.db.ideaform::v_field_value\"  as field_value 
+    inner join \"sap.ino.db.ideaform::v_auth_admin_field_value\" as auth_field
+        on field_value.id = auth_field.id
+    where field_value.idea_id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.ideaform::v_field_value","sap.ino.db.ideaform::v_auth_admin_field_value"];

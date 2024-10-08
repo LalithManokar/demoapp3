@@ -1,0 +1,48 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout">
+    <Panel
+        visible="{= !${device>/system/phone} }">
+        <content>
+            <FlexBox
+                alignItems="Start"
+                justifyContent="Start">
+                <items>
+                    <l:VerticalLayout
+                        class="sapUiSmallMarginBegin sapUiMediumMarginEnd">
+                        <Label text="{i18n>LIST_TIT_SORT_HEADER}"/>
+                        <l:HorizontalLayout>
+                            <Select 
+                                width="250px"
+                                items="{
+                                    path: 'list>/Sorter/Values'
+                                }"
+                                selectedKey="{view>/List/SORT}"
+                                change="onSorterChange">
+                                <core:Item
+                                    text="{path : 'list>TEXT', formatter : '.formatter.text'}"
+                                    key="{list>ACTION}">
+                            	</core:Item>
+                            </Select>
+                            <core:Icon
+                                class="sapUiSmallMarginBegin sapInoSelectItemMarginTop"
+                			    src="sap-icon://sort"
+                				alt="{i18n>LIST_TIT_FILTER_SORT_REVERSE}"
+                				press="onSortReverse"/>
+                        </l:HorizontalLayout>
+                    </l:VerticalLayout>
+                    <l:VerticalLayout
+                        class="sapUiMediumMarginBegin sapUiSmallMarginEnd">
+                        <Label text="{i18n>WALL_LBL_WALL_PICKER_SEARCH}"/>
+                        <SearchField 
+                            id="searchFieldPicker"
+                            search="onSearchPicker"
+                            showSearchButton="true">
+                        </SearchField>
+                    </l:VerticalLayout>
+                </items>
+            </FlexBox>
+		</content>
+    </Panel>
+</core:FragmentDefinition>

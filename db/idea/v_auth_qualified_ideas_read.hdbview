@@ -1,0 +1,7 @@
+schema = "SAP_INO";
+query  = "
+          select object_role.object_id as campaign_id from \"sap.ino.db.iam::v_auth_application_user_role_transitive\"  as object_role
+                             where object_role.object_type_code = 'CAMPAIGN'                and
+                                   object_role.role_code        = 'CAMPAIGN_MANAGER'
+          with read only";
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];          

@@ -1,0 +1,12 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Attachment Assignment";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+	{name = "ATTACHMENT_ID"; sqlType = INTEGER; nullable = false; comment = "Attachment of the data. Foreign key t_attachment.ID";}, 
+	{name = "OWNER_ID"; sqlType = INTEGER; nullable = false; comment = "Owner of attachment. Foreign key t_idea.ID, t_campaign.ID or t_identity.ID";},
+	{name = "OWNER_TYPE_CODE"; sqlType = VARCHAR; length = 100; nullable = false; },
+	{name = "ROLE_TYPE_CODE"; sqlType = VARCHAR; length = 50; nullable = true; comment = "Role of attachment. Foreign key t_attachment_role_type.CODE";},
+	{name = "FILTER_TYPE_CODE"; sqlType = VARCHAR; length = 20; nullable = true; comment = "Filter for attachment. Foreign key t_attachment_filter_type.CODE";}
+];  
+table.primaryKey.pkcolumns = ["ID"];

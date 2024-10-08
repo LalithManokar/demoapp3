@@ -1,0 +1,46 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_identity_check" (
+    in  it_identities         SAP_INO."sap.ino.db.iam::t_identity",
+    out ot_messages           SAP_INO."sap.ino.db.basis::tt_message",
+    out ot_checked_identities SAP_INO."sap.ino.db.iam::t_identity"
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+reads sql data as
+begin
+    ot_messages =
+        select 'E' as type, 'MSG_IDENTITY_NAME_MANDATORY' as message, id as ref_id, 'NAME' as ref_field, null as param_0, null as param_1, null as param_2, null as param_3 
+            from :it_identities
+            where name = '' or name is null
+        union all
+        
+        select 'E' as type, 'MSG_IDENTITY_TYPE_MANDATORY' as message, id as ref_id, 'TYPE_CODE' as ref_field, null as param_0, null as param_1, null as param_2, null as param_3 
+            from :it_identities
+            where type_code = '' or type_code is null
+        union all
+        
+        select 'E' as type, 'MSG_IDENTITY_WRONG_TYPE' as message, id as ref_id, 'TYPE_CODE' as ref_field, null as param_0, null as param_1, null as param_2, null as param_3 
+            from :it_identities
+            where not (type_code = 'USER' or type_code = 'GROUP')
+        union all
+        
+        select 'E' as type, 'MSG_IDENTITY_USER_NAME_MANDATORY' as message, id as ref_id, 'USER_NAME' as ref_field, null as param_0, null as param_1, null as param_2, null as param_3 
+            from :it_identities
+            where type_code = 'USER' and (user_name = '' or user_name is null)
+        union all
+        
+        select 'E' as type, 'MSG_IDENTITY_NAME_UNIQUE' as message, ident_input.id as ref_id, 'NAME' as ref_field, null as param_0, null as param_1, null as param_2, null as param_3
+            from :it_identities as ident_input
+            inner join "sap.ino.db.iam::t_identity" as ident
+            on ident.name = ident_input.name 
+            where ident_input.type_code = 'GROUP' and not ident.id = ident_input.id
+        union all
+        
+        select 'E' as type, 'MSG_IDENTITY_USER_NAME_UNIQUE' as message, ident_input.id as ref_id, 'USER_NAME' as ref_field, ident_input.user_name as param_0, null as param_1, null as param_2, null as param_3
+            from :it_identities as ident_input
+            inner join "sap.ino.db.iam::t_identity" as ident
+            on ident.user_name = ident_input.user_name 
+            where not ident.id = ident_input.id and not ident_input.user_name = '';
+
+    ot_checked_identities = select * from :it_identities where id not in (select ref_id from :ot_messages); 
+end;

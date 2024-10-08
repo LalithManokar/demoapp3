@@ -1,0 +1,10 @@
+schema = "SAP_INO";
+query = "
+select ext.ext_package_id as package_id
+    from \"sap.ino.db.basis::t_package_extension\" as ext
+    left outer join _sys_repo.package_catalog repo_ext 
+        on repo_ext.package_id = ext.ext_package_id 
+    where repo_ext.package_id is null
+with read only";
+
+depends_on_table = ["sap.ino.db.basis::t_package_extension"];

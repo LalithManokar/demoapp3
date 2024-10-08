@@ -1,0 +1,32 @@
+procedure "SAP_INO"."sap.ino.db.wall::p_wall_search" (
+     in  iv_search_term nvarchar(1024),
+     out ot_wall_score  SAP_INO."sap.ino.db.basis::tt_object_score"
+ )
+ language sqlscript
+ sql security invoker
+ default schema SAP_INO
+ reads sql data as
+begin
+    ot_wall_score = select id, sum(score) / count(score) as score from (
+                        select id, score
+                            from (
+                                select id, 1 as score
+                                    from "sap.ino.db.wall::t_wall"
+                                    where length(:iv_search_term) = 0
+                                 union all
+                                 select id as id, score()
+                                     from "sap.ino.db.wall::t_wall"
+                                     where (length(:iv_search_term) > 0 and 
+                                     		contains(name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=search'), weight(1.0)))
+                                  )
+                        union all
+                        select id, score 
+                            from (
+                                 select wall_id as id, score() as score
+                                     from "sap.ino.db.wall::t_wall_item"
+                                     where (length(:iv_search_term) > 0 and ( 
+                                         	contains(name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=search'), weight(1.0)) or
+                                         	contains(description, :iv_search_term, fuzzy(0.8,'similarCalculationMode=search'), weight(0.5))))
+                                  )
+                    ) group by id;
+end;

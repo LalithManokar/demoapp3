@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "select distinct role.object_id as id
+	from \"sap.ino.db.iam::t_object_identity_role\" as role
+	inner join \"sap.ino.db.iam::v_auth_application_user\" as cur_user 
+		on role.identity_id = cur_user.id
+	inner join \"sap.ino.db.wall::t_wall\" as wall
+		on wall.id = role.object_id and
+		   wall.wall_type_code = 'sap.ino.config.TEMPLATE'
+	where role.object_type_code = 'WALL' and role.role_code = 'WALL_OWNER'";
+
+depends_on_table = ["sap.ino.db.iam::t_object_identity_role",
+					"sap.ino.db.wall::t_wall"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user"];

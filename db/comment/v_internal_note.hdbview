@@ -1,0 +1,6 @@
+schema = "SAP_INO";
+query = "select *
+	from \"sap.ino.db.comment::t_comment\" as comment 
+	where comment.type_code = 'INTERNAL_NOTE'";
+
+depends_on_table = ["sap.ino.db.comment::t_comment"];

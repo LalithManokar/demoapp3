@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "INSTALLATION SETTING";
+table.columns = [
+    {name = "ID";       sqlType = INTEGER; nullable = false; comment = "Human readable Identifier";},
+    {name = "VALUE";    sqlType = NVARCHAR; length = 4096; nullable = false; comment = "SETTING";},
+    {name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";}
+];
+table.primaryKey.pkcolumns = ["ID"];

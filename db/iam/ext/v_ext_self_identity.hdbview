@@ -1,0 +1,38 @@
+schema = "SAP_INO_EXT";
+query = "
+    select
+        identity.id,
+        identity.name,
+        identity.first_name,
+        identity.last_name,
+        identity.user_name,
+        identity.email,
+        identity.is_external,
+        identity.type_code,
+        identity.members,
+        identity.phone,
+        identity.mobile,
+        identity.cost_center,
+        identity.organization,
+        identity.office,
+        identity.description,
+        identity.company,
+        identity.street,
+        identity.city,
+        identity.country,
+        identity.zip_code,
+        identity.source_type_code,
+        identity.image_assign_id,
+        identity.image_id,
+        identity.identity_image_id,
+        identity.identity_image_media_type,
+        identity.is_valid_email,
+        identity.validation_to,
+    	CASE WHEN identity.validation_to < CURRENT_TIMESTAMP THEN 0 ELSE 1 END AS IS_VALID
+    from
+        \"sap.ino.db.iam::v_identity_full\" as identity
+    inner join \"sap.ino.db.iam::v_auth_application_user\" as suser 
+        on suser.id = identity.id
+    with read only 
+";
+depends_on_view = ["sap.ino.db.iam::v_identity_full"];

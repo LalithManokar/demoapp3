@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = "
+    select 
+        campaign.mail_template_code as mail_template_code,
+        campaign.id as campaign_id,
+        campaign_locale.name as campaign_name,
+        campaign.status_code as campaign_status_code,
+        count(campaign.id) as campaign_count
+    from \"sap.ino.db.campaign::t_campaign\" as campaign
+        left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign_locale on campaign.id = campaign_locale.campaign_id
+    group by 
+        campaign.mail_template_code,
+        campaign.id, 
+        campaign_locale.name, 
+        campaign.status_code
+    with read only ";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign"];
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale"];

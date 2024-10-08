@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.status::t_status_object_action_role_code";
+    file       = "sap.ino.db.status:t_status_object_action_role_code.csv";
+    header     = true;
+    delimField = ";";
+}];         

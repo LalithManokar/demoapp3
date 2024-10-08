@@ -1,0 +1,65 @@
+schema = "SAP_INO";
+query = " select 
+				relation.idea_id,
+				relation.semantic as semantic, 
+				relation.source as source, 
+				case relation.source when 0 then relation.semantic || '_target' else relation.semantic || '_source' end as semantic_source,
+                idea.id,
+                idea.name,
+                idea.ANONYMOUS_FOR,
+                idea.created_at,
+                idea.changed_at,
+                to_date(idea.changed_at) as changed_at_dt,
+                idea.submitted_at,
+                to_date(idea.submitted_at) as submitted_at_dt,
+               
+     
+                idea.campaign_id,
+                idea.campaign_name,
+                idea.campaign_short_name,
+                idea.campaign_color,
+        
+                idea.phase,
+                idea.step,
+                idea.steps,
+                idea.status,
+                idea.status_code,
+                idea.status_color,
+                idea.status_type,
+    
+                idea.vote_type_type_code,
+                idea.voted_by_group,
+                idea.max_star_no,
+                idea.public_vote,
+                idea.publish_vote,
+                idea.auto_follow,
+                idea.vote_comment_type,
+                idea.vote_reason_code,
+                idea.score,
+                idea.vote_count,
+
+
+
+    
+                idea.user_score,
+                idea.vote_id,
+    
+                idea.comment_has_privilege,
+                idea.voting_has_privilege,
+                idea.voting_active,
+    
+                idea.comment_count,
+                idea.view_count,
+                
+                idea.follow,
+                idea.is_open_for_contributors,
+                idea.volunteer_id
+
+
+            from \"sap.ino.db.idea::v_idea_relation\" as relation
+            inner join \"sap.ino.db.idea::v_idea_community\" as idea
+           		on relation.other_idea_id = idea.id 
+    with read only";
+
+depends_on_view = ["sap.ino.db.idea::v_idea_relation",
+				   "sap.ino.db.idea::v_idea_community"];

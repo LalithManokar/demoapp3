@@ -1,0 +1,572 @@
+{
+	"_version": "1.0.0",
+	"start_url": "index.html",
+	"sap.app": {
+		"_version": "1.0.0",
+		"id": "sap.ino.apps.ino",
+		"type": "application",
+		"title": "SAP Innovation Management",
+		"applicationVersion": {
+			"version": "2.4.16"
+		},
+		"tags": {
+			"keywords": ["innovation"]
+		},
+		"ach": "PLM-INM",
+		"openSourceComponents": [{
+			"name": "NicEdit",
+			"packagedWithMySelf": true
+        }]
+	},
+	"sap.ui": {
+		"_version": "1.0.0",
+		"technology": "UI5",
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+            "sap_bluecrystal",
+            "sap_hcb"
+        ],
+		"icons": {
+			"icon": "sap-icon://lightbulb",
+			"favIcon": "/sap/ino/assets/img/SAP_Innovation_Management.ico"
+		}
+	},
+	"sap.ui5": {
+		"_version": "1.5.0",
+		"rootView": "sap.ino.vc.app.App",
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"dependencies": {
+			"minUI5Version": "1.38.0",
+			"libs": {
+				"sap.m": {
+					"lazy": false
+				},
+				"sap.ui.layout": {
+					"lazy": false
+				},
+				"sap.ui.unified": {
+					"lazy": true
+				},
+				"sap.uxap": {
+					"lazy": true
+				},
+				"sap.ui.richtexteditor": {
+					"lazy": true
+				},
+				"sap.tnt": {
+					"lazy": true
+				},
+				"sap.ino.commons": {
+					"lazy": true
+				},
+				"sap.ino.vc": {
+					"lazy": true
+				},
+				"sap.ino.controls": {
+					"lazy": true
+				},
+				"sap.ino.wall": {
+					"lazy": true
+				},
+				"sap.viz": {
+					"lazy": true
+				},
+				"sap.suite.ui.microchart": {
+					"lazy": true
+				},
+				"sap.ui.comp": {
+					"lazy": true
+				}
+			}
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"uri": "/sap/ino/xs/rest/static/textBundle/nguii18n.properties"
+			}
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.ino.commons.application.Router",
+				"viewType": "XML",
+				"viewPath": "sap.ino.vc",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"transition": "show",
+				"bypassed": {
+					"target": "notFound"
+				},
+				"async": true
+			},
+			"routes": [{
+					"pattern": "",
+					"name": "home",
+					"target": "home"
+             }, {
+					"pattern": "home",
+					"name": "home-explicit",
+					"target": "home"
+             }, {
+					"pattern": "ideas:?query:",
+					"name": "idealist",
+					"target": "idealist"
+             }, {
+					"pattern": "ideas-{variant}:?query:",
+					"name": "idealistvariant",
+					"target": "idealist"
+             }, {
+					"pattern": "walls:?query:",
+					"name": "walllist",
+					"target": "walllist"
+             }, {
+					"pattern": "walls-{variant}:?query:",
+					"name": "walllistvariant",
+					"target": "walllist"
+			 }, {
+					"pattern": "wall/{id}",
+					"name": "wall",
+					"target": "wall"
+             }, {
+					"pattern": "wallremote/{id}",
+					"name": "wallremote",
+					"target": "wallremote"
+             }, {
+					"pattern": "wallremote/{wallid}/headline/{id}",
+					"name": "wallremoteitem-headline",
+					"target": "wallremoteitem-headline"
+             }, {
+					"pattern": "wallremote/{wallid}/sticker/{id}",
+					"name": "wallremoteitem-sticker",
+					"target": "wallremoteitem-sticker"
+             }, {
+					"pattern": "wallremote/{wallid}/link/{id}",
+					"name": "wallremoteitem-link",
+					"target": "wallremoteitem-link"
+             }, {
+					"pattern": "wallremote/{wallid}/image/{id}",
+					"name": "wallremoteitem-image",
+					"target": "wallremoteitem-image"
+             }, {
+					"pattern": "wallremote/{wallid}/text/{id}",
+					"name": "wallremoteitem-text",
+					"target": "wallremoteitem-text"
+             }, {
+					"pattern": "wallremote/{wallid}/sprite/{id}",
+					"name": "wallremoteitem-sprite",
+					"target": "wallremoteitem-sprite"
+             }, {
+					"pattern": "wallremote/{wallid}/person/{id}",
+					"name": "wallremoteitem-person",
+					"target": "wallremoteitem-person"
+             }, {
+					"pattern": "wallremote/{wallid}/video/{id}",
+					"name": "wallremoteitem-video",
+					"target": "wallremoteitem-video"
+             }, {
+					"pattern": "wallremote/{wallid}/attachment/{id}",
+					"name": "wallremoteitem-attachment",
+					"target": "wallremoteitem-attachment"
+             }, {
+					"pattern": "wallremote/{wallid}/group/{id}",
+					"name": "wallremoteitem-group",
+					"target": "wallremoteitem-group"
+             }, {
+					"pattern": "wallremote/{wallid}/line/{id}",
+					"name": "wallremoteitem-line",
+					"target": "wallremoteitem-line"
+             }, {
+					"pattern": "wallremote/{wallid}/arrow/{id}",
+					"name": "wallremoteitem-arrow",
+					"target": "wallremoteitem-arrow"
+             }, {
+					"pattern": "campaigns:?query:",
+					"name": "campaignlist",
+					"target": "campaignlist"
+             }, {
+					"pattern": "campaigns-{variant}:?query:",
+					"name": "campaignlistvariant",
+					"target": "campaignlist"
+             }, {
+					"pattern": "people:?query:",
+					"name": "peoplelist",
+					"target": "peoplelist"
+             }, {
+					"pattern": "people-{variant}:?query:",
+					"name": "peoplelistvariant",
+					"target": "peoplelist"
+             }, {
+					"pattern": "expertfinder",
+					"name": "expertfinder",
+					"target": "expertfinder"
+             }, {
+					"pattern": "idea/{id}:?query:",
+					"name": "idea-display",
+					"target": "idea-display"
+             }, {
+					"pattern": "idea-edit/{id}:?query:",
+					"name": "idea-edit",
+					"target": "idea-modify"
+             }, {
+					"pattern": "idea-create:?query:",
+					"name": "idea-create",
+					"target": "idea-modify"
+              }, {
+					"pattern": "campaign/{id}:?query:",
+					"name": "campaign",
+					"target": "campaign"
+             }, {
+					"pattern": "campaign/{id}/comment:?query:",
+					"name": "campaign-comment",
+					"target": "campaign-comment"
+             }, {
+					"pattern": "campaign/{id}/feeds:?query:",
+					"name": "campaign-feeds",
+					"target": "campaign-feeds"
+             }, {
+					"pattern": "campaign/{id}/ideas:?query:",
+					"name": "campaign-idealist",
+					"target": "campaign-idealist"
+             }, {
+					"pattern": "campaign/{id}/ideas-{variant}:?query:",
+					"name": "campaign-idealistvariant",
+					"target": "campaign-idealist"
+             }, {
+					"pattern": "campaign/{id}/managers:?query:",
+					"name": "campaign-managerlist",
+					"target": "campaign-managerlist"
+             }, {
+					"pattern": "global:?query:",
+					"name": "search",
+					"target": "search"
+             }, {
+					"pattern": "searchcategory:?query:",
+					"name": "searchcategory",
+					"target": "searchcategory"
+             }, {
+					"pattern": "message",
+					"name": "message",
+					"target": "message"
+             }, {
+					"pattern": "vote",
+					"name": "vote",
+					"target": "vote"
+             }, {
+					"pattern": "identitycard",
+					"name": "identitycard",
+					"target": "identitycard"
+             }, {
+					"pattern": "processindicator",
+					"name": "processindicator",
+					"target": "processindicator"
+             }, {
+					"pattern": "ideacard",
+					"name": "ideacard",
+					"target": "ideacard"
+             }, {
+					"pattern": "campaigncard",
+					"name": "campaigncard",
+					"target": "campaigncard"
+             }, {
+					"pattern": "votedisplay",
+					"name": "votedisplay",
+					"target": "votedisplay"
+             }, {
+					"pattern": "reports:?query:",
+					"name": "reportlist",
+					"target": "reportlist"
+             }, {
+					"pattern": "reports-{variant}:?query:",
+					"name": "reportlistvariant",
+					"target": "reportlist"
+             }, {
+					"pattern": "report/{code}:?query:",
+					"name": "report",
+					"target": "report"
+             }, {
+					"pattern": "evaluation/{id}",
+					"name": "evaluation-display",
+					"target": "evaluation-display"
+             }, {
+					"pattern": "evaluation-edit/{id}",
+					"name": "evaluation-edit",
+					"target": "evaluation-modify"
+             },
+				{
+					"pattern": "welcomepage",
+					"name": "welcomepage",
+					"target": "welcomepage"
+             }, {
+					"pattern": "evaluation-create:?query:",
+					"name": "evaluation-create",
+					"target": "evaluation-modify"
+             }, {
+					"pattern": "feeds",
+					"name": "feedlist",
+					"target": "feedlist"
+             }, {
+					"pattern": "tags:?query:",
+					"name": "taglist",
+					"target": "taglist"
+             }, {
+					"pattern": "tags-{variant}:?query:",
+					"name": "taglistvariant",
+					"target": "taglist"
+             }, {
+					"pattern": "follows:?query:",
+					"name": "followlist",
+					"target": "followlist"
+			 }, {
+					"pattern": "follows-{variant}:?query:",
+					"name": "followlistvariant",
+					"target": "followlist"
+			 }, {
+					"pattern": "register:?query:",
+					"name": "registerapprovallist",
+					"target": "registerapprovallist"
+			 }, {
+					"pattern": "register-{variant}:?query:",
+					"name": "registerapprovallistvariant",
+					"target": "registerapprovallist"
+			 }, {
+					"pattern": "campaign/{id}/register-{variant}:?query:",
+					"name": "campaign-registerapprovallistvariant",
+					"target": "campaign-registerapprovallist"
+             },			 
+			 {
+					"pattern": "blogs:?query:",
+					"name": "bloglist",
+					"target": "bloglist"
+             }, {
+					"pattern": "blogs-{variant}:?query:",
+					"name": "bloglistvariant",
+					"target": "bloglist"
+             }, {
+					"pattern": "campaign/{id}/blogs:?query:",
+					"name": "campaign-bloglist",
+					"target": "campaign-bloglist"
+             }, {
+					"pattern": "campaign/{id}/blogs-{variant}:?query:",
+					"name": "campaign-bloglistvariant",
+					"target": "campaign-bloglist"
+             }, {
+					"pattern": "blog-edit/{id}:?query:",
+					"name": "blog-edit",
+					"target": "blog-modify"
+             }, {
+					"pattern": "blog-create:?query:",
+					"name": "blog-create",
+					"target": "blog-modify"
+              }, {
+					"pattern": "blog/{id}:?query:",
+					"name": "blog-display",
+					"target": "blog-display"
+              }, {
+					"pattern": "evaluationrequest-create:?query:",
+					"name": "evaluationrequest-create",
+					"target": "evaluationrequestmodify"
+             }, {
+					"pattern": "evaluationrequest-edit/{id}",
+					"name": "evaluationrequest-edit",
+					"target": "evaluationrequestmodify"
+             }, {
+					"pattern": "evaluationrequest-display/{id}:?query:",
+					"name": "evaluationrequest-display",
+					"target": "evaluationrequestdisplay"
+             }, {
+					"pattern": "evaluationrequest-item/{id}:?query:",
+					"name": "evaluationrequest-item",
+					"target": "evaluationrequestitem"
+             }, {
+					"pattern": "rewards:?query:",
+					"name": "rewardlist",
+					"target": "rewardlist"
+             }, {
+					"pattern": "rewards-{variant}:?query:",
+					"name": "rewardlistvariant",
+					"target": "rewardlist"
+             }, {
+					"pattern": "evaluation-requests:?query:",
+					"name": "evalreqlist",
+					"target": "evalreqlist"
+             }, {
+					"pattern": "evaluation-requests-{variant}:?query:",
+					"name": "evalreqlistvariant",
+					"target": "evalreqlist"
+             }, {
+					"pattern": "my-setting",
+					"name": "mySetting",
+					"target": "mySetting"
+             }, {
+					"pattern": "notices",
+					"name": "noticelist",
+					"target": "noticelist"
+             },{
+                 	"pattern": "leaderboard",
+					"name": "leaderboard",
+					"target": "leaderboard"
+             }],
+			"targets": {
+				"home": {
+					"viewName": "home.Homepage"
+				},
+				"idealist": {
+					"viewName": "idea.ListPage"
+				},
+				"feedlist": {
+					"viewName": "follow.FeedList"
+				},
+				"walllist": {
+					"viewName": "wall.List"
+				},
+				"followlist": {
+					"viewName": "follow.List"
+				},
+				"registerapprovallist": {
+					"viewName": "home.RegisterApprovalList"
+				},
+				"campaign-registerapprovallist":{
+				   "viewName": "home.RegisterApprovalList" 
+				},
+				"campaignlist": {
+					"viewName": "campaign.List"
+				},
+				"peoplelist": {
+					"viewName": "iam.List"
+				},
+				"taglist": {
+					"viewName": "tag.List"
+				},
+				"expertfinder": {
+					"viewName": "expertfinder.ExpertFinder"
+				},
+				"idea-display": {
+					"viewName": "idea.Display"
+				},
+				"idea-modify": {
+					"viewName": "idea.Modify"
+				},
+				"notFound": {
+					"viewName": "home.Homepage"
+				},
+				"campaign": {
+					"viewName": "campaign.Homepage"
+				},
+				"campaign-comment": {
+					"viewName": "campaign.CampaignCommentList"
+				},
+				"campaign-feeds": {
+					"viewName": "campaign.CampaignFeedList"
+				},
+				"campaign-idealist": {
+					"viewName": "campaign.CampaignIdeaList"
+				},
+				"campaign-managerlist": {
+					"viewName": "campaign.CampaignManagerList"
+				},
+				"wall": {
+					"viewName": "wall.Wall"
+				},
+				"wallremote": {
+					"viewName": "wall.remote.WallRemote"
+				},
+				"wallremoteitem-headline": {
+					"viewName": "wall.remote.WallRemoteItemHeadline"
+				},
+				"wallremoteitem-sticker": {
+					"viewName": "wall.remote.WallRemoteItemSticker"
+				},
+				"wallremoteitem-link": {
+					"viewName": "wall.remote.WallRemoteItemLink"
+				},
+				"wallremoteitem-image": {
+					"viewName": "wall.remote.WallRemoteItemImage"
+				},
+				"wallremoteitem-text": {
+					"viewName": "wall.remote.WallRemoteItemText"
+				},
+				"wallremoteitem-sprite": {
+					"viewName": "wall.remote.WallRemoteItemSprite"
+				},
+				"wallremoteitem-person": {
+					"viewName": "wall.remote.WallRemoteItemPerson"
+				},
+				"wallremoteitem-video": {
+					"viewName": "wall.remote.WallRemoteItemVideo"
+				},
+				"wallremoteitem-attachment": {
+					"viewName": "wall.remote.WallRemoteItemAttachment"
+				},
+				"wallremoteitem-group": {
+					"viewName": "wall.remote.WallRemoteItemGroup"
+				},
+				"wallremoteitem-line": {
+					"viewName": "wall.remote.WallRemoteItemLine"
+				},
+				"wallremoteitem-arrow": {
+					"viewName": "wall.remote.WallRemoteItemArrow"
+				},
+				"search": {
+					"viewName": "search.Global"
+				},
+				"searchcategory": {
+					"viewName": "search.Global"
+				},
+				"evaluation-display": {
+					"viewName": "evaluation.Display"
+				},
+				"evaluation-modify": {
+					"viewName": "evaluation.Modify"
+				},
+				"reportlist": {
+					"viewName": "analytics.List"
+				},
+				"report": {
+					"viewName": "analytics.Display"
+				},
+				"bloglist": {
+					"viewName": "blog.ListPage"
+				},
+				"campaign-bloglist": {
+					"viewName": "campaign.CampaignBlogList"
+				},
+				"blog-modify": {
+					"viewName": "blog.Modify"
+				},
+				"blog-display": {
+					"viewName": "blog.Display"
+				},
+				"evaluationrequestmodify": {
+					"viewName": "evaluation.RequestsModify"
+				},
+				"evaluationrequestdisplay": {
+					"viewName": "evaluation.RequestsDisplay"
+				},
+				"evaluationrequestitem": {
+					"viewName": "evaluation.RequestsItem"
+				},
+				"rewardlist": {
+					"viewName": "reward.List"
+				},
+				"evalreqlist": {
+					"viewName": "evaluation.RequestsList"
+				},
+				"mySetting": {
+					"viewName": "iam.mySetting"
+				},
+				"noticelist": {
+					"viewName": "notice.NoticeList"
+				},
+				"leaderboard":{
+				    "viewName": "gamification.LeaderBoard"
+				}
+			}
+		}
+	}
+}

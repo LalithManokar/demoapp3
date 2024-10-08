@@ -1,0 +1,29 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Wall History";
+table.columns = [
+    {name = "HISTORY_DB_EVENT"; sqlType = VARCHAR; length = 8; nullable = false;comment = "Database event: CREATED, UPDATED, DELETED";},
+    {name = "HISTORY_BIZ_EVENT"; sqlType = VARCHAR; length = 600; nullable = false;comment = "Business events";},
+    {name = "HISTORY_AT"; sqlType = TIMESTAMP; nullable = false;comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID"; sqlType = INTEGER; nullable = false;comment = "Actor who did the changes";},
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+	{name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";},
+	{name = "WALL_TYPE_CODE"; sqlType = NVARCHAR; length = 5000; nullable = false; comment = "Wall Type";},
+	{name = "NAME"; sqlType = NVARCHAR; length = 5000; nullable = false; comment = "Wall Name";},
+	{name = "BACKGROUND_IMAGE_URL"; sqlType = NVARCHAR; length = 5000; nullable = true; comment = "Background Image URL";},
+	{name = "BACKGROUND_IMAGE_ZOOM"; sqlType = DOUBLE; nullable = true; comment = "Background Image Zoom";},
+	{name = "BACKGROUND_IMAGE_POSITION_X"; sqlType = DOUBLE; nullable = true; comment = "Background Image Position X";},
+	{name = "BACKGROUND_IMAGE_POSITION_Y"; sqlType = DOUBLE; nullable = true; comment = "Background Image Position Y";},
+	{name = "BACKGROUND_IMAGE_WIDTH"; sqlType = DOUBLE; nullable = true; comment = "Background Image Width";},
+	{name = "BACKGROUND_IMAGE_HEIGHT"; sqlType = DOUBLE; nullable = true; comment = "Background Image Height";},
+	{name = "BACKGROUND_IMAGE_REPEAT"; sqlType = TINYINT; nullable = true; comment = "Does Background Image Repeat";},
+	{name = "BACKGROUND_COLOR"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Background Color";},
+	{name = "WALL_SESSION_UUID"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Wall Session UUID";},
+	{name = "VIEW_COUNT"; sqlType = INTEGER; nullable = true; comment = "View count";}
+];
+table.indexes = [
+	{name="LOGKEY_WALL_H"; unique = false; indexColumns = ["ID","HISTORY_AT"];}
+];

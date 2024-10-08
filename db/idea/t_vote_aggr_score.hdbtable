@@ -1,0 +1,16 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Aggregated Vote Score Per Idea";
+table.columns = [
+    {name = "IDEA_ID"; sqlType = INTEGER; nullable = false; comment = "Idea ID";},
+    {name = "SCORE"; sqlType = DOUBLE; nullable = true; comment = "Overall Score";},
+    {name = "POS_SCORE"; sqlType = DOUBLE; nullable = true; comment = "Only Positive Scores";},
+    {name = "NEG_SCORE"; sqlType = DOUBLE; nullable = true; comment = "Only Negative Scores";},
+    {name = "VOTE_COUNT"; sqlType = INTEGER; nullable = true; comment = "Number of Votes";},
+    {name = "EXP_SCORE"; sqlType = DOUBLE; nullable = true; comment = "Expert Score";},
+    {name = "EXP_POS_SCORE"; sqlType = DOUBLE; nullable = true; comment = "Only Positive Expert Scores";},
+    {name = "EXP_NEG_SCORE"; sqlType = DOUBLE; nullable = true; comment = "Only Negative Expert Scores";},
+    {name = "EXP_VOTE_COUNT"; sqlType = INTEGER; nullable = true; comment = "Number of Expert Votes";},
+    {name = "GROUP_SCORE"; sqlType = DOUBLE; nullable = true; comment = "Overall score for all groups";} 
+]; 
+table.primaryKey.pkcolumns = ["IDEA_ID"]; 

@@ -1,0 +1,7 @@
+schema = "SAP_INO";
+query = "select *
+	from \"sap.ino.db.comment::t_comment_h\" as comment 
+	where comment.type_code is null or 
+		  comment.type_code = 'COMMUNITY_COMMENT'";
+
+depends_on_table = ["sap.ino.db.comment::t_comment_h"];

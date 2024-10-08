@@ -1,0 +1,14 @@
+function "SAP_INO"."sap.ino.db.idea::f_test_table" ( in_input varchar(2048)) 
+    returns table ( id int)
+    language sqlscript
+    sql security definer as
+begin
+  declare ot_number int;
+  ot_number := length(ltrim(in_input,'0123456789'));
+  IF ot_number > 0
+  then return select id from "sap.ino.db.idea::t_idea" where id = 250470;
+  
+  Else return select id from "sap.ino.db.idea::t_idea" where id = 250471;
+  END IF;
+ 
+end;

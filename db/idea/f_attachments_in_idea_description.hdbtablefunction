@@ -1,0 +1,24 @@
+FUNCTION "SAP_INO"."sap.ino.db.idea::f_attachments_in_idea_description" ( ) 
+	RETURNS TABLE (idea_id integer, attachment_id integer )
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER AS
+BEGIN
+/***************************** 
+	Write your function logic
+ *****************************/
+ declare lv_regex nvarchar(100) := '<img\s+src="[^"''\s]+\.xsjs\/(\d+)".+?\s*\/?>';
+ declare lv_description nclob;
+ declare lv_idea_id integer;
+ declare cursor c_idea_description for
+     select id as idea_id, description from "sap.ino.db.idea::t_idea" as idea where OCCURRENCES_REGEXPR(:lv_regex IN idea.description) > 0;
+ lt_id = SELECT CAST(NULL AS INTEGER) AS idea_id, CAST(NULL AS INTEGER) AS attachment_id FROM DUMMY;
+ for cur_row as c_idea_description do
+   lv_idea_id        := cur_row.idea_id;
+   lv_description    := cur_row.description;
+   lt_attachment      = select id as attachment_id from "sap.ino.db.basis::f_substr_regexpr"(:lv_regex, 1, :lv_description);
+   lt_idea_id         = select :lv_idea_id as idea_id from dummy;
+   lt_idea_attachment = select idea_id, attachment_id from :lt_attachment, :lt_idea_id;
+   lt_id              = select * from :lt_id union select * from :lt_idea_attachment;
+ end for;
+ return select idea_id, attachment_id from :lt_id where idea_id is not null;
+END;

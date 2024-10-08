@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Language codes according to ISO 639-1";
+table.columns = [
+    {name = "CODE";              sqlType = VARCHAR;  length = 500; nullable = false; comment = "Technical Code Value";},
+    {name = "ISO_CODE";          sqlType = VARCHAR;  length = 14;  nullable = false; comment = "Language ISO 639-1 Code Value";},
+    {name = "IS_HIDDEN";         sqlType = TINYINT;                nullable = true;  comment = "Language code is hidden";},
+    {name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default Text for Language";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true;  comment = "Default Long Text for Language";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

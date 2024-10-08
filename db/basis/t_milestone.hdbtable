@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Date types";
+table.columns = [
+    {name = "CODE";              sqlType = VARCHAR;  length = 50;  nullable = false; comment = "Milestone code";},
+    {name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default Text for Milestone";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true;  comment = "Default Long Text for Milestone";},
+    {name = "REF_ATTRIBUTE";     sqlType = VARCHAR;  length = 100; nullable = true;  comment = "Reference attribute in campaign model";}
+   ];
+table.primaryKey.pkcolumns = ["CODE"];

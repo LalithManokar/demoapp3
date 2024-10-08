@@ -1,0 +1,346 @@
+role sap.ino.authorizations::technical_user extends role sap.hana.xs.admin.roles::HTTPDestViewer
+{
+system privilege: CATALOG READ;
+system privilege: OPTIMIZER ADMIN;
+system privilege: USER ADMIN;
+
+catalog schema "_SYS_BI": SELECT;
+schema sap.ino.db.basis.ext:SAP_INO_EXT.hdbschema: EXECUTE, SELECT, INSERT, UPDATE, DELETE;
+schema sap.ino.db.basis:SAP_INO.hdbschema: EXECUTE, SELECT, INSERT, UPDATE, DELETE, CREATE ANY, ALTER, INDEX, DROP;
+catalog sql object "_SYS_REPO"."GRANT_ACTIVATED_ROLE": //Objecttype: PROCEDURE
+	EXECUTE;
+catalog sql object "_SYS_REPO"."REVOKE_ACTIVATED_ROLE": //Objecttype: PROCEDURE
+	EXECUTE;
+catalog sql object "SYS"."M_DATABASE": //Objecttype: VIEW
+	SELECT;
+catalog sql object "_SYS_REPO"."DELIVERY_UNITS": //Objecttype: TABLE
+	SELECT;
+catalog sql object "_SYS_REPO"."PACKAGE_CATALOG": //Objecttype: TABLE
+	SELECT;
+catalog sql object "HANA_XS_BASE"."sap.hana.xs.admin.jobs.server.db::SCHEDULES": //Objecttype: VIEW
+	SELECT;
+catalog sql object "_SYS_REPO"."ACTIVE_CONTENT_TEXT": //Objecttype: TABLE
+	SELECT;
+catalog sql object "_SYS_REPO"."ACTIVE_CONTENT_TEXT_CONTENT": //Objecttype: TABLE
+	SELECT;
+sql object sap.ino.db.campaign.ext:V_EXT_CAMPAIGN_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign.ext:V_EXT_COACH_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.iam.ext:V_EXT_IDENTITY_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext:V_EXT_IDEAS_MEDIUM_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext:V_EXT_IDEAS_COMMUNITY_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.tag.ext:V_EXT_TAGS_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.tag.ext:V_EXT_TAGS_ALL_FULL_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.wall.ext:V_EXT_WALL_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.mashup.ext:V_EXT_MASHUP_TOP_COMMENTATORS_SMALL.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.mashup.ext:V_EXT_MASHUP_TOP_CONTRIBUTORS_SMALL.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.iam.ext:V_EXT_IDENTITY_STATIC_ROLES.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext:V_EXT_IDEAS_PPM_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.expert.ext:V_EXT_EXPERT_TAGS_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.basis.ext:V_EXT_UNIT_STAGE_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.basis.ext:V_EXT_VALUE_OPTION_LIST_STAGE_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.evaluation.ext:V_EXT_MODEL_STAGE_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign.ext:V_EXT_PHASE_STAGE_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.notification.ext:V_EXT_MAIL_TEMPLATE_STAGE_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.basis.ext:V_EXT_TEXT_MODULE_STAGE_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.basis.ext:V_EXT_UNIT_USAGE.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.basis.ext:V_EXT_VALUE_OPTION_LIST_USAGE.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.evaluation.ext:V_EXT_MODEL_USAGE.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign.ext:V_EXT_PHASE_USAGE.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.notification.ext:V_EXT_MAIL_TEMPLATE_USAGE.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.basis.ext:V_EXT_TEXT_MODULE_USAGE.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.tag.ext:V_EXT_TAGS_USAGE.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext:V_EXT_IDEA_TAG_SEARCH.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_IDEAS_TIME_IN_PHASE.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_IDEAS_TIME_STATUS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_IDEAS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_IDEAS_EVALUATIONS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_PARTICIPANTS_SHARE.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_PARTICIPANTS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_TOP_PARTICIPANTS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_TOP_CONTRIBUTORS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_TOP_COMMENTATORS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_TOP_TAGS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_UNCHANGED_IDEAS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_CAMPAIGN_ACTIVITY.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_CAMPAIGN_IDEA_OVERVIEW.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_CAMPAIGN_RETURN.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_APPLICATION_VIEWS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_EVALUATIONS_PER_EXPERT.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_CAMPAIGN_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_IDEA_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_COMMENT_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_CRITERION_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_GROUP_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_IDENTITY_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_PHASE_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_STATUS_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_TAG_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_UNIT_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.subresponsibility.ext::V_EXT_RESPONSIBILITY_STAGE_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.ideaform.ext::V_EXT_IDEA_FORM_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.ideaform.ext::V_EXT_FORM_USAGE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.status.ext::V_EXT_STATUS_MODEL_USAGE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.status.ext::V_EXT_STATUS_MODEL_STAGE_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.subresponsibility.ext::V_EXT_RESPONSIBILITY_USAGE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.subresponsibility.ext::V_EXT_RESPONSIBILITY_VALUE_USAGE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_IDEA_RESPONSIBILITY: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.tag.ext::V_EXT_TAG_GROUPS_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign.ext::V_EXT_VOTE_TYPE_STAGE_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign.ext::V_EXT_VOTE_TYPE_USAGE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.blog.ext::V_EXT_BLOGS_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.reward.ext::V_EXT_REWARDS_SEARCH: //Objecttype: VIEW
+	SELECT;
+catalog sql object "_SYS_XS"."RUNTIME_CONFIGURATION": //Objecttype: TABLE
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_IDEA_STATUS_REASON: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_IDEA_REWARD: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.basis.ext::V_EXT_VALUE_OPTION_LIST_VOTE_TYPE_USAGE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.basis.ext::V_EXT_VALUE_OPTION_LIST_STATUS_MODEL_USAGE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_CAMPAIGN_REGISTRATION_PARTICIPANT: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.iam.ext::V_EXT_LEAN_IDENTITY_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.tag.ext::V_EXT_TAGS_ALL_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.subresponsibility.ext::V_EXT_RESPONSIBILITY_VALUE_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.evaluation.ext::V_EXT_EVAL_REQ_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_IDEA_GROUP_VOTE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_IDEA_VOTE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_TERM_AND_CONDITION: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.status.ext::V_EXT_STATUS_STAGE_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.status.ext::V_EXT_STATUS_ACTION_STAGE_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.status.ext::V_EXT_STATUS_USAGE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.status.ext::V_EXT_STATUS_ACTION_USAGE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.basis.ext::V_EXT_MILESTONE_TASK_STAGE_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.basis.ext::V_EXT_MILESTONE_TASK_USAGE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign.ext::v_ext_campaign_suggestion_list_search_params: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext::V_EXT_IDEA_PROPOSED_EXPERTS_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_EVALUATION_REQUEST_RESPONSE_TIME: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext::V_EXT_IDEA_FILTER_STATUS: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext::V_EXT_IDEAS_MEDIUM_OPT_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.basis.ext::V_EXT_URL_WHITELIST_STAGE_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.iam.ext::v_ext_identity_disclose_data_view: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.iam::cv_personalize_setting: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign.ext::v_campaign_filter_count: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea::v_auth_idea_feeds: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea::v_idea_feeds: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign::v_auth_campaign_feeds: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign.ext::v_ext_campaign_feed: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.tag::v_auth_tag_feeds: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign::v_campaign_feeds: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign::v_campaign_global_search: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea::v_idea_global_search: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.wall::v_wall_global_search: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign.ext::v_ext_campaign_search_count: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext::v_ext_idea_search_count: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.blog::v_blogs_global_search: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign.ext::V_EXT_CAMPAIGN_SEARCH_TEST: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign::cv_campaign_all_data: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign::cv_campaign_blog_data: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.campaign::cv_campaign_search_data: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext::V_EXT_CAMPAIGN_MANAGER: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.basis.ext::V_EXT_VALUE_OPTION_LIST_IDEA_FORM_USAGE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.tag.ext::v_ext_group_assigned_to_group: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.tag.ext::V_EXT_TAGS_GROUPS_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.ideaform.ext::v_ext_ideaform_suggestion_list_search_params: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.ideaform.ext::v_ext_ideaform_field_suggestion_list_search_params: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext::f_idea_form_concat_filter: //Objecttype: FUNCTION
+	ALTER, EXECUTE;
+sql object sap.ino.db.campaign.ext::V_EXT_CAMPAIGN_PARTICIPANTS_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.integration::V_SYSTEMS_INTEGRATION_USAGE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.integration.ext::V_EXT_SYSTEM_INTEGRATION_USAGE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.integration.ext::V_EXT_MONITOR_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.newnotification.ext::V_EXT_NOTIFICATION_SETTING_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.integration.ext::V_EXT_MONITOR_EMAIL_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea::v_session_user_role_transitive: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext::V_EXT_IDEAS_COMMUNITY_SEARCH_COUNT: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext::V_EXT_IDEAS_MEDIUM_OPT_SEARCH_COUNT: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.optimize::v_idea_search_count_for_quicklink: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.gamification.ext::V_EXT_DIMENSION_SEARCH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.gamification.ext::V_EXT_REPORT_GAMIFICATION_DETAIL: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.gamification.ext::V_EXT_REPORT_GAMIFICATION_USER_PARTICIPATES: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.iam.ext::V_EXT_IDENTITY_SEARCH_ORG_COMPANY: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext::V_EXT_IDEAS_MEDIUM_OPT_SEARCH_V1: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext::CV_OBJECT_IDENTITY_ROLE_TRANSITIVE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.cv::cv_idea_responsiblity_read: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.cv::CV_MY_BACKOFFICE_CAMPAIGN: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.optimize::v_evaluation_v1: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.optimize::v_idea_anonymous_submitter_v1: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea::v_idea_medium_opt_v1: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.cv::CV_AUTH_APPLICATION_USER_ROLE_TRANSITIVE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.cv::CV_MY_BACKOFFICE_RESPONSIBILITY_IDEA: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea::v_decision_latest_v1: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea::v_auth_ideas_read_V1: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.cv::CV_CAMPAIGN_MANAGER_TRANSITIVE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.cv::CV_CAMPAIGN_PARTICIPANTS_USER_TRANSITIVE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.cv::CV_FOLLOW: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.cv::CV_FOLLOW_UP: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.cv::CV_IDEA_LAST_PUBLISH_EVALUATION: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.cv::CV_IDENTITY_ROLE_IDEA_COACH: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.idea.ext::V_EXT_IDEAS_MEDIUM_OPT_SEARCH_COUNT_V1: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_CRITERION_DIMENSIONS_ADDTIONAL: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics::V_ANALYTICS_IDEAS_EVALUATIONS_RESULT: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_IDEAS_EVALUATIONS_RESULTS: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_NUM_OF_IDEAS: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.iam.ext::V_EXT_LEAN_IDENTITY_SEARCH_COMMUNITY_PEOPLE_LIST: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.iam.ext::V_EXT_LEAN_IDENTITY_SEARCH_WALL_PERSON: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.iam.ext::V_EXT_LEAN_IDENTITY_SEARCH_COMMUNITY: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.tag.ext::V_EXT_TAGS_SEARCH_COMMUNITY: //Objecttype: VIEW
+	SELECT;
+
+analytic privilege : sap.ino.db.analytics.ext:ap_ext_analytics_privilege.analyticprivilege;
+
+package sap.ino.config.attachment: REPO.READ;
+package sap.ino.ngui.build.resources.sap.ino.corelib: REPO.READ, REPO.EDIT_NATIVE_OBJECTS, REPO.ACTIVATE_NATIVE_OBJECTS;
+
+}

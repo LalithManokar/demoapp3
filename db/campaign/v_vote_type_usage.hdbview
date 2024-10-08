@@ -1,0 +1,21 @@
+schema = "SAP_INO";
+query = "
+select 
+    votetype.code as vote_type_code,
+    campaign.id as campaign_id,
+    campaign_text.short_name as  campaign_name,
+    count(campaign.id) as usage_count
+from \"sap.ino.db.campaign::t_vote_type_stage\" as votetype
+inner join \"sap.ino.db.campaign::t_campaign\" as campaign 
+                on  campaign.vote_type_code = votetype.code
+left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign_text 
+            on campaign.id = campaign_text.campaign_id
+group by 
+    votetype.code,
+    campaign.id,
+    campaign_text.short_name
+with read only";
+
+depends_on_table = [ "sap.ino.db.campaign::t_vote_type_stage",
+                     "sap.ino.db.campaign::t_campaign" ];
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale"];

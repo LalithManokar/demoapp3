@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_CAMPAIGN_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="Search for Campaigns"/>
+  <metadata changedAt="2019-08-07 15:26:53.436"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Token for Free Text Search"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken" parameter="true">
+      <descriptions defaultDescription="Tag List (Comma Separated)"/>
+      <variableProperties datatype="NVARCHAR" length="2048" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="filterName" parameter="true">
+      <descriptions defaultDescription="Filter Condition"/>
+      <variableProperties datatype="VARCHAR" length="20" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="filterBackoffice" parameter="true">
+      <descriptions defaultDescription="Filter for Innovation Office"/>
+      <variableProperties datatype="TINYINT" defaultValue="0" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken1" parameter="true">
+      <descriptions defaultDescription="tagsToken1"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken2" parameter="true">
+      <descriptions defaultDescription="tagsToken2"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken3" parameter="true">
+      <descriptions defaultDescription="tagsToken3"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken4" parameter="true">
+      <descriptions defaultDescription="tagsToken4"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="SHORT_NAME" length="40"/>
+        <viewAttribute datatype="NVARCHAR" id="DESCRIPTION" length="5000"/>
+        <viewAttribute datatype="VARCHAR" id="LANG" length="2"/>
+        <viewAttribute datatype="TIMESTAMP" id="VALID_FROM"/>
+        <viewAttribute datatype="TIMESTAMP" id="VALID_TO"/>
+        <viewAttribute datatype="TIMESTAMP" id="SUBMIT_FROM"/>
+        <viewAttribute datatype="INTEGER" id="COMPLETED_IDEAS_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="UNASSIGNED_IDEAS_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="DISCONTINUED_IDEAS_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="ALL_IDEAS_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="PARTICIPANTS_COUNT"/>
+        <viewAttribute datatype="TIMESTAMP" id="SUBMIT_TO"/>
+        <viewAttribute datatype="TIMESTAMP" id="REGISTER_FROM"/>
+        <viewAttribute datatype="TIMESTAMP" id="REGISTER_TO"/>
+        <viewAttribute datatype="TINYINT" id="IS_OPEN_FOR_SUBMISSION"/>
+        <viewAttribute datatype="INTEGER" id="IS_OPEN_FOR_REGISTRATION"/>
+        <viewAttribute datatype="VARCHAR" id="COLOR_CODE" length="6"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS_CODE" length="100"/>
+        <viewAttribute datatype="TINYINT" id="IS_BLACK_BOX"/>
+        <viewAttribute datatype="INTEGER" id="VIEW_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="ACTIVE_PARTICIPANT_COUNT"/>
+        <viewAttribute datatype="VARCHAR" id="RESP_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="BLOG_COUNTS"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_IMAGE_ASSIGN_ID"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_IMAGE_ID"/>
+        <viewAttribute datatype="INTEGER" id="SUBMITTABLE"/>
+        <viewAttribute datatype="INTEGER" id="FOLLOW"/>
+        <viewAttribute datatype="INTEGER" id="REGISTER_ID"/>
+        <viewAttribute datatype="INTEGER" id="REGISTER_STATUS"/>
+        <viewAttribute datatype="INTEGER" id="IS_REGIST_DISABLED"/>
+        <viewAttribute datatype="INTEGER" id="IS_OPEN_REGISTER_SETTING"/>
+      
+        <viewAttribute id="CAMPAIGN_LIST_IMAGE_ASSIGN_ID" datatype="INTEGER"/>
+        <viewAttribute id="CAMPAIGN_LIST_IMAGE_ID" datatype="INTEGER"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <localVariable>#tagsToken</localVariable>
+      <localVariable>#filterName</localVariable>
+      <localVariable>#filterBackoffice</localVariable>
+      <localVariable>#tagsToken1</localVariable>
+      <localVariable>#tagsToken2</localVariable>
+      <localVariable>#tagsToken3</localVariable>
+      <localVariable>#tagsToken4</localVariable>
+      <definition>begin
+   
+    if length(:tagsToken) = 0 then
+     
+        lt_tags_campaigns = 
+        select id 
+        from &quot;sap.ino.db.campaign::t_campaign&quot; 
+        where length(:tagsToken) = 0;
+        else
+        --                 union all
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken, ',', :lt_tag_id_strings);
+        lt_tags_campaigns=
+        select tag.object_id as id
+        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+        where  tag.tag_id in (select STRING from :lt_tag_id_strings) and
+              tag.object_type_code = 'CAMPAIGN'
+              group by tag.object_id;
+    end if;
+    
+    if length(:tagsToken1) = 0 then
+     
+        lt_tags_campaigns1 = 
+        select id 
+        from &quot;sap.ino.db.campaign::t_campaign&quot; 
+        where length(:tagsToken1) = 0;
+        else
+        --                 union all
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken1, ',', :lt_tag_id_strings1);
+        lt_tags_campaigns1=
+        select tag.object_id as id
+        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+        where  tag.tag_id in (select STRING from :lt_tag_id_strings1) and
+              tag.object_type_code = 'CAMPAIGN'
+              group by tag.object_id;
+    end if;
+    
+    if length(:tagsToken2) = 0 then
+     
+        lt_tags_campaigns2 = 
+        select id 
+        from &quot;sap.ino.db.campaign::t_campaign&quot; 
+        where length(:tagsToken2) = 0;
+        else
+        --                 union all
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken2, ',', :lt_tag_id_strings2);
+        lt_tags_campaigns2=
+        select tag.object_id as id
+        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+        where  tag.tag_id in (select STRING from :lt_tag_id_strings2) and
+              tag.object_type_code = 'CAMPAIGN'
+              group by tag.object_id;
+    end if;
+    
+    if length(:tagsToken3) = 0 then
+     
+        lt_tags_campaigns3 = 
+        select id 
+        from &quot;sap.ino.db.campaign::t_campaign&quot; 
+        where length(:tagsToken3) = 0;
+        else
+        --                 union all
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken3, ',', :lt_tag_id_strings3);
+        lt_tags_campaigns3=
+        select tag.object_id as id
+        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+        where  tag.tag_id in (select STRING from :lt_tag_id_strings3) and
+              tag.object_type_code = 'CAMPAIGN'
+              group by tag.object_id;
+    end if;
+    
+    if length(:tagsToken4) = 0 then
+     
+        lt_tags_campaigns4 = 
+        select id 
+        from &quot;sap.ino.db.campaign::t_campaign&quot; 
+        where length(:tagsToken4) = 0;
+        else
+        --                 union all
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken4, ',', :lt_tag_id_strings4);
+        lt_tags_campaigns4=
+        select tag.object_id as id
+        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+        where  tag.tag_id in (select STRING from :lt_tag_id_strings4) and
+              tag.object_type_code = 'CAMPAIGN'
+              group by tag.object_id;
+    end if;
+    
+    final_tags_campaign = select distinct res_0.id from:lt_tags_campaigns as res_0
+    						inner join :lt_tags_campaigns1 as res_1
+    						on res_0.id = res_1.id
+    						inner join :lt_tags_campaigns2 as res_2
+    						on res_0.id = res_2.id
+    						inner join :lt_tags_campaigns3 as res_3
+    						on res_0.id = res_3.id
+    						inner join :lt_tags_campaigns4 as res_4
+    						on res_0.id = res_4.id;
+    						
+    
+    if length(:searchToken) = 0 then
+    lt_search_campaigns =  select id,1 as score
+        from &quot;sap.ino.db.campaign::t_campaign&quot; ;
+    else 
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.campaign::p_campaign_search_full&quot;(:searchToken, :lt_search_campaigns);
+    end if;
+   
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.campaign::p_campaign_filter&quot;(:filterName, :lt_filter_campaigns);
+    
+if :filterBackoffice = 0 then
+    lt_filter_backoffice = 
+    select id 
+        from &quot;sap.ino.db.campaign::t_campaign&quot; ;
+            -- union all 
+    elseif :filterBackoffice = 1 then
+     lt_filter_backoffice=   select distinct id  from &quot;sap.ino.db.campaign::v_managed_campaign&quot;;
+     end if;
+     
+    var_out = select
+                 search.score as search_score, 
+                 campaign.id,
+                 campaign.name,
+                 campaign.short_name,
+                 campaign.description as description,
+                 campaign.lang,
+                 campaign.valid_from,
+                 campaign.valid_to,
+                 campaign.submit_from,
+                 campaign.completed_ideas_count,
+                 campaign.unassigned_ideas_count,
+                 campaign.discontinued_ideas_count,
+                 campaign.all_ideas_count,
+                 campaign.participants_count,
+                 campaign.submit_to,
+                 campaign.register_from,
+                 campaign.register_to,
+                 campaign.is_open_for_submission,
+                 campaign.is_open_for_registration,
+                 campaign.color_code,
+                 campaign.status_code,
+                 campaign.is_black_box,
+                 campaign.view_count,
+                 campaign.active_participant_count,
+                 campaign.resp_code,
+                 camp_blog.blog_counts,
+                 campaign.changed_at,
+                 campaign.created_at,
+                 campaign.campaign_image_assign_id,
+                 campaign.campaign_image_id,
+                 campaign.submittable,
+                 campaign.follow,
+                 campaign.register_id,
+                 campaign.register_status,
+                 campaign.is_regist_disabled,
+                 campaign.IS_OPEN_REGISTER_SETTING,
+                 attachment.id as campaign_list_image_assign_id,
+                 attachment.attachment_id as campaign_list_image_id
+             from &quot;sap.ino.db.campaign.ext::v_ext_campaign_full_test&quot; as campaign 
+                inner join &quot;sap.ino.db.campaign::v_auth_campaigns_and_registrable&quot; as auth
+                    on campaign.id = auth.campaign_id
+                inner join :lt_search_campaigns as search   
+                    on campaign.id = search.id
+                inner join :lt_filter_campaigns as filter
+                    on campaign.id = filter.id
+                inner join :lt_filter_backoffice as backoffice_filter
+                    on campaign.id = backoffice_filter.id
+                inner join :final_tags_campaign as tags 
+                    on campaign.id = tags.id
+                left outer join &quot;sap.ino.db.campaign::V_CAMPAIGN_BLOG_COUNTS&quot; as camp_blog
+                    on  camp_blog.campaign_id = campaign.id AND camp_blog.status_code ='sap.ino.config.BLOG_PUBLISHED'
+                left outer join &quot;sap.ino.db.attachment::t_attachment_assignment&quot; as attachment 
+                    on attachment.owner_id = campaign.id and
+                       attachment.owner_type_code = 'CAMPAIGN' and
+                       attachment.role_type_code = 'CAMPAIGN_LIST_IMG';
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions defaultDescription="Search Score"/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="3">
+        <descriptions defaultDescription="Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="SHORT_NAME" order="4">
+        <descriptions defaultDescription="Short Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="SHORT_NAME"/>
+      </attribute>
+      <attribute id="DESCRIPTION" order="5">
+        <descriptions defaultDescription="Description"/>
+        <keyMapping columnObjectName="Script_View" columnName="DESCRIPTION"/>
+      </attribute>
+      <attribute id="LANG" order="6">
+        <descriptions defaultDescription="Language"/>
+        <keyMapping columnObjectName="Script_View" columnName="LANG"/>
+      </attribute>
+      <attribute id="VALID_FROM" order="7">
+        <descriptions defaultDescription="Valid From"/>
+        <keyMapping columnObjectName="Script_View" columnName="VALID_FROM"/>
+      </attribute>
+      <attribute id="VALID_TO" order="8">
+        <descriptions defaultDescription="Valid To"/>
+        <keyMapping columnObjectName="Script_View" columnName="VALID_TO"/>
+      </attribute>
+      <attribute id="SUBMIT_FROM" order="9">
+        <descriptions defaultDescription="Submit From"/>
+        <keyMapping columnObjectName="Script_View" columnName="SUBMIT_FROM"/>
+      </attribute>
+      <attribute id="COMPLETED_IDEAS_COUNT" order="10">
+        <descriptions defaultDescription="COMPLETED_IDEAS_COUNT"/>
+        <keyMapping columnObjectName="Script_View" columnName="COMPLETED_IDEAS_COUNT"/>
+      </attribute>
+      <attribute id="UNASSIGNED_IDEAS_COUNT" order="11">
+        <descriptions defaultDescription="UNASSIGNED_IDEAS_COUNT"/>
+        <keyMapping columnObjectName="Script_View" columnName="UNASSIGNED_IDEAS_COUNT"/>
+      </attribute>
+      <attribute id="DISCONTINUED_IDEAS_COUNT" order="12">
+        <descriptions defaultDescription="DISCONTINUED_IDEAS_COUNT"/>
+        <keyMapping columnObjectName="Script_View" columnName="DISCONTINUED_IDEAS_COUNT"/>
+      </attribute>
+      <attribute id="ALL_IDEAS_COUNT" order="13">
+        <descriptions defaultDescription="ALL_IDEAS_COUNT"/>
+        <keyMapping columnObjectName="Script_View" columnName="ALL_IDEAS_COUNT"/>
+      </attribute>
+      <attribute id="PARTICIPANTS_COUNT" order="14">
+        <descriptions defaultDescription="PARTICIPANTS_COUNT"/>
+        <keyMapping columnObjectName="Script_View" columnName="PARTICIPANTS_COUNT"/>
+      </attribute>
+      <attribute id="SUBMIT_TO" order="15">
+        <descriptions defaultDescription="SUBMIT_TO"/>
+        <keyMapping columnObjectName="Script_View" columnName="SUBMIT_TO"/>
+      </attribute>
+      <attribute id="REGISTER_FROM" order="16">
+        <descriptions defaultDescription="REGISTER_FROM"/>
+        <keyMapping columnObjectName="Script_View" columnName="REGISTER_FROM"/>
+      </attribute>
+      <attribute id="REGISTER_TO" order="17">
+        <descriptions defaultDescription="REGISTER_TO"/>
+        <keyMapping columnObjectName="Script_View" columnName="REGISTER_TO"/>
+      </attribute>
+      <attribute id="IS_OPEN_FOR_SUBMISSION" order="18">
+        <descriptions defaultDescription="IS_OPEN_FOR_SUBMISSION"/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_OPEN_FOR_SUBMISSION"/>
+      </attribute>
+      <attribute id="IS_OPEN_FOR_REGISTRATION" order="19">
+        <descriptions defaultDescription="IS_OPEN_FOR_REGISTRATION"/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_OPEN_FOR_REGISTRATION"/>
+      </attribute>
+      <attribute id="COLOR_CODE" order="20">
+        <descriptions defaultDescription="COLOR_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="COLOR_CODE"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="21">
+        <descriptions defaultDescription="STATUS_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="IS_BLACK_BOX" order="22">
+        <descriptions defaultDescription="IS_BLACK_BOX"/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_BLACK_BOX"/>
+      </attribute>
+      <attribute id="VIEW_COUNT" order="23">
+        <descriptions defaultDescription="VIEW_COUNT"/>
+        <keyMapping columnObjectName="Script_View" columnName="VIEW_COUNT"/>
+      </attribute>
+      <attribute id="ACTIVE_PARTICIPANT_COUNT" order="24">
+        <descriptions defaultDescription="ACTIVE_PARTICIPANT_COUNT"/>
+        <keyMapping columnObjectName="Script_View" columnName="ACTIVE_PARTICIPANT_COUNT"/>
+      </attribute>
+      <attribute id="RESP_CODE" order="25">
+        <descriptions defaultDescription="RESP_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="RESP_CODE"/>
+      </attribute>
+      <attribute id="BLOG_COUNTS" order="26">
+        <descriptions defaultDescription="BLOG_COUNTS"/>
+        <keyMapping columnObjectName="Script_View" columnName="BLOG_COUNTS"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="27">
+        <descriptions defaultDescription="CHANGED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="28">
+        <descriptions defaultDescription="CREATED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CAMPAIGN_IMAGE_ASSIGN_ID" order="29">
+        <descriptions defaultDescription="CAMPAIGN_IMAGE_ASSIGN_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_IMAGE_ASSIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_IMAGE_ID" order="30">
+        <descriptions defaultDescription="CAMPAIGN_IMAGE_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_IMAGE_ID"/>
+      </attribute>
+      <attribute id="SUBMITTABLE" order="31">
+        <descriptions defaultDescription="SUBMITTABLE"/>
+        <keyMapping columnObjectName="Script_View" columnName="SUBMITTABLE"/>
+      </attribute>
+      <attribute id="FOLLOW" order="32">
+        <descriptions defaultDescription="FOLLOW"/>
+        <keyMapping columnObjectName="Script_View" columnName="FOLLOW"/>
+      </attribute>
+      <attribute id="REGISTER_ID" order="33">
+        <descriptions defaultDescription="REGISTER_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="REGISTER_ID"/>
+      </attribute>
+      <attribute id="REGISTER_STATUS" order="34">
+        <descriptions defaultDescription="REGISTER_STATUS"/>
+        <keyMapping columnObjectName="Script_View" columnName="REGISTER_STATUS"/>
+      </attribute>
+      <attribute id="IS_REGIST_DISABLED" order="35">
+        <descriptions defaultDescription="IS_REGIST_DISABLED"/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_REGIST_DISABLED"/>
+      </attribute>
+      <attribute id="IS_OPEN_REGISTER_SETTING" order="36">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_OPEN_REGISTER_SETTING"/>
+      </attribute>
+    
+      <attribute id="CAMPAIGN_LIST_IMAGE_ASSIGN_ID" order="37">
+        <descriptions defaultDescription="CAMPAIGN_LIST_IMAGE_ASSIGN_ID"/>
+    
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_LIST_IMAGE_ASSIGN_ID"/>
+    
+      </attribute>
+      <attribute id="CAMPAIGN_LIST_IMAGE_ID" order="38">
+        <descriptions defaultDescription="CAMPAIGN_LIST_IMAGE_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_LIST_IMAGE_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

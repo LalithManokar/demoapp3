@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query  = "
+          select idea.* from \"sap.ino.db.idea::v_idea_medium\"               as idea
+                        inner join \"sap.ino.db.campaign::t_campaign_phase\"  as phase
+                          on idea.phase = phase.phase_code and idea.campaign_id = phase.campaign_id
+                        where phase.reward = cast(1 as TINYINT) and 
+                              idea.status <> 'sap.ino.config.MERGED' and 
+                              (idea.reward_dismissed != 1 or idea.reward_dismissed is null) and 
+                              not exists(select * from \"sap.ino.db.reward::t_reward_list\" as reward_list 
+                                                 where reward_list.idea_id = idea.id and reward_list.idea_phase_code = idea.phase )  and
+                              exists( select * from \"sap.ino.db.reward::t_contribution_share\" as contribution_share where contribution_share.idea_id = idea.id )
+          with read only";
+depends_on_table = ["sap.ino.db.campaign::t_campaign_phase","sap.ino.db.reward::t_contribution_share","sap.ino.db.reward::t_reward_list"];
+depends_on_view  = ["sap.ino.db.idea::v_idea_medium"];

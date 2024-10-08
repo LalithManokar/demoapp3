@@ -1,0 +1,12 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Wall Assignment";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+	{name = "WALL_ID"; sqlType = INTEGER; nullable = false; comment = "Wall. Foreign key t_wall.ID";}, 
+	{name = "OWNER_ID"; sqlType = INTEGER; nullable = false; comment = "Owner of wall. Foreign key t_idea.ID, t_campaign.ID or t_identity.ID";},
+	{name = "OWNER_TYPE_CODE"; sqlType = VARCHAR; length = 100; nullable = false; },
+	{name = "ROLE_TYPE_CODE"; sqlType = VARCHAR; length = 20; nullable = true; comment = "Role of wall. Foreign key t_wall_role_type.CODE";},
+	{name = "FILTER_TYPE_CODE"; sqlType = VARCHAR; length = 20; nullable = true; comment = "Filter for wall. Foreign key t_wall_filter_type.CODE";}
+];  
+table.primaryKey.pkcolumns = ["ID"];

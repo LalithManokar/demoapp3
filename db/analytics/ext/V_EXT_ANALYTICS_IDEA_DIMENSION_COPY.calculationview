@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:AccessControl="http://www.sap.com/ndb/SQLCoreModelAccessControl.ecore" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_IDEA_DIMENSION_COPY" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="Idea Dimension"/>
+  <metadata changedAt="2021-07-05 16:14:06.769"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="25"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.basis::v_ino_system_settings" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_ino_system_settings"/>
+    </DataSource>
+    <DataSource id="V_ANALYTICS_IDEAS_FULL" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEAS_FULL</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="VALUE"/>
+        <viewAttribute id="KEY">
+          <filter xsi:type="AccessControl:SingleValueFilter" including="true" value="host"/>
+        </viewAttribute>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="LINK_STRING" length="300" expressionLanguage="COLUMN_ENGINE">
+          <formula>'/sap/ino/#/idea/'</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.basis::v_ino_system_settings">
+        <mapping xsi:type="Calculation:AttributeMapping" target="VALUE" source="VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="KEY" source="KEY"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" joinOrder="OUTSIDE_IN">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="HOST_VALUE"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="IDEA_NAME"/>
+        <viewAttribute id="COACH_ID"/>
+        <viewAttribute id="COACH_NAME"/>
+        <viewAttribute id="SUBMITTER_ID"/>
+        <viewAttribute id="SUBMITTER_NAME"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="PHASE_SEQUENCE_NUMBER"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="STATUS_CODE_TEXT"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT"/>
+        <viewAttribute id="IDEA_RESPONSIBILITY_CODE"/>
+        <viewAttribute id="IDEA_CHANGED_AT"/>
+        <viewAttribute id="LINK_STRING"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#V_ANALYTICS_IDEAS_FULL">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_NAME" source="IDEA_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COACH_ID" source="COACH_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COACH_NAME" source="COACH_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMITTER_ID" source="SUBMITTER_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMITTER_NAME" source="SUBMITTER_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_SEQUENCE_NUMBER" source="PHASE_SEQUENCE_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE_TEXT" source="STATUS_CODE_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT" source="IDEA_SUBMITTED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_RESPONSIBILITY_CODE" source="IDEA_RESPONSIBILITY_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT" source="IDEA_CHANGED_AT"/>
+      </input>
+      <input node="#Projection_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="HOST_VALUE" source="VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="LINK_STRING" source="LINK_STRING"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_1">
+    <descriptions/>
+    <attributes>
+      <attribute id="IDEA_ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea ID"/>
+        <keyMapping columnObjectName="Join_1" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_NAME" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Name"/>
+        <keyMapping columnObjectName="Join_1" columnName="IDEA_NAME"/>
+      </attribute>
+      <attribute id="IDEA_COACH_ID" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Coach ID"/>
+        <keyMapping columnObjectName="Join_1" columnName="COACH_ID"/>
+      </attribute>
+      <attribute id="IDEA_COACH_NAME" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Coach Name"/>
+        <keyMapping columnObjectName="Join_1" columnName="COACH_NAME"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTER_ID" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Author ID"/>
+        <keyMapping columnObjectName="Join_1" columnName="SUBMITTER_ID"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTER_NAME" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Author Name"/>
+        <keyMapping columnObjectName="Join_1" columnName="SUBMITTER_NAME"/>
+      </attribute>
+      <attribute id="IDEA_PHASE_CODE" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Phase"/>
+        <keyMapping columnObjectName="Join_1" columnName="PHASE_CODE"/>
+      </attribute>
+      <attribute id="IDEA_PHASE_SEQUENCE_NUMBER" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Phase Sequence Number"/>
+        <keyMapping columnObjectName="Join_1" columnName="PHASE_SEQUENCE_NUMBER"/>
+      </attribute>
+      <attribute id="IDEA_STATUS_CODE" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Status Code"/>
+        <keyMapping columnObjectName="Join_1" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="IDEA_STATUS_CODE_TEXT" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Status"/>
+        <keyMapping columnObjectName="Join_1" columnName="STATUS_CODE_TEXT"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Submitted at"/>
+        <keyMapping columnObjectName="Join_1" columnName="IDEA_SUBMITTED_AT"/>
+      </attribute>
+      <attribute id="IDEA_RESPONSIBILITY_CODE" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Responsibility List Value "/>
+        <keyMapping columnObjectName="Join_1" columnName="IDEA_RESPONSIBILITY_CODE"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT" order="13" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Changed at"/>
+        <keyMapping columnObjectName="Join_1" columnName="IDEA_CHANGED_AT"/>
+      </attribute>
+      <attribute id="HOST_VALUE" order="14" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Host Value"/>
+        <keyMapping columnObjectName="Join_1" columnName="HOST_VALUE"/>
+      </attribute>
+      <attribute id="LINK_STRING" order="15" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="LINK_STRING"/>
+        <keyMapping columnObjectName="Join_1" columnName="LINK_STRING"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes>
+      <calculatedAttribute id="IDEA_LINK" hidden="false" order="16" semanticType="empty" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Link"/>
+        <keyCalculation datatype="VARCHAR" expressionLanguage="SQL" length="500">
+          <formula>concat( concat(&quot;HOST_VALUE&quot;, &quot;LINK_STRING&quot;),&quot;IDEA_ID&quot;)</formula>
+        </keyCalculation>
+      </calculatedAttribute>
+    </calculatedAttributes>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="30" y="390"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="270"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

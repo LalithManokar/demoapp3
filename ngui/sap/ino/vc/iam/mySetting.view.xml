@@ -1,0 +1,10 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:core="sap.ui.core" controllerName="sap.ino.vc.iam.mySetting">
+    <Page title="{i18n>SEARCH_TIT_PAGENAME}"  enableScrolling="false">
+        <customHeader>
+            <core:Fragment fragmentName="sap.ino.vc.iam.fragments.MySettingToolbar" type="XML"/>
+        </customHeader>
+        <content>
+            <core:Fragment fragmentName="sap.ino.vc.iam.fragments.MySettingContent" type="XML" />
+        </content>
+    </Page>
+</mvc:View>

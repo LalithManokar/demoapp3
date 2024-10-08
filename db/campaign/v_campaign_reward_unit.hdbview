@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "
+    select 
+        campaign.id as campaign_id,
+        case campaign.reward_unit_code
+            when campaign.reward_unit_code then campaign.reward_unit_code
+            else (select value from \"sap.ino.db.basis::t_local_system_setting\"
+                where code = \'sap.ino.config.REWARD_UNIT_CODE\') end as campaign_reward_unit_code
+    from \"sap.ino.db.campaign::t_campaign\" as campaign
+    with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.basis::t_local_system_setting"];

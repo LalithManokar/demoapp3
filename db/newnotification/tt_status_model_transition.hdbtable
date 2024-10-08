@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Status Models";
+table.columns = [
+    {name = "CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Status Model Transition Code";},
+    {name = "INCLUDE_RESPONSE"; sqlType = TINYINT; nullable = true; comment = "Response will be sent to Author";},
+    {name = "NEXT_STATUS_CODE"; sqlType = VARCHAR; length = 500; nullable = true; comment = "Next Status Code";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Application Object";
+table.columns = [
+    {name = "NAME";        sqlType = NVARCHAR; length = 200; nullable = true;  comment = "Application Object name";},
+    {name = "CODE";        sqlType = VARCHAR;  length = 100; nullable = false; comment = "Human readable identifier";},
+    {name = "TYPE_CODE";   sqlType = VARCHAR;  length = 100; nullable = false; comment = "Application Object Type code";},
+    {name = "PATH";        sqlType = NVARCHAR; length = 200; nullable = true;  comment = "Application Object REST path";},
+    {name = "DESCRIPTION"; sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Name of object";}
+]; 
+table.primaryKey.pkcolumns = ["NAME"];

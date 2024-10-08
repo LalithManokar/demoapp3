@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Auto Publication of Evaluations";
+table.columns = [
+	{name = "CODE"; sqlType = VARCHAR; length = 40; nullable = false; comment = "Link Type Code";},
+	{name = "DESCRIPTION"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Description of the role";},
+	{name = "DEFAULT_TEXT"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Default Text";}
+];
+table.primaryKey.pkcolumns = ["CODE"]; 

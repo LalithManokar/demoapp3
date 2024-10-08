@@ -1,0 +1,33 @@
+schema = "SAP_INO";
+query = "
+SELECT CAMPAIGN_ID, 
+	NAME, 
+	SHORT_NAME, 
+	DESCRIPTION, 
+	IDEA_DESCRIPTION_TEMPLATE, 
+	LANG
+FROM (
+        SELECT ROW_NUMBER() OVER (PARTITION BY CAMP.CAMPAIGN_ID  ORDER BY LAN.SEQ ASC) ROW_ORDER,
+        CAMP.*
+		FROM (
+				SELECT txt_user_locale.LOCALE AS LANG, 
+					1 AS SEQ
+				FROM \"sap.ino.db.basis::v_user_locale\" AS txt_user_locale
+					INNER JOIN \"sap.ino.db.iam::t_identity\" AS iden
+					ON iden.id = txt_user_locale.user_id
+				WHERE user_name = session_context('APPLICATIONUSER')
+
+				UNION ALL
+
+				SELECT iso_code AS LANG, 
+					2 AS SEQ
+				FROM \"sap.ino.db.basis::v_sys_default_language\"
+			) AS LAN
+			INNER JOIN \"sap.ino.db.campaign::t_campaign_t\" AS CAMP
+			ON CAMP.LANG = LAN.LANG
+	)
+WHERE ROW_ORDER = 1
+with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_t","sap.ino.db.iam::t_identity"];
+depends_on_view = ["sap.ino.db.basis::v_sys_default_language","sap.ino.db.basis::v_user_locale"];

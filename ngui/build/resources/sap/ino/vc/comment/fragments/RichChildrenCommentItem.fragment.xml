@@ -1,0 +1,78 @@
+<core:FragmentDefinition
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:u="sap.ui.unified"
+	xmlns:ino="sap.ino.controls"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<HBox width="100%" >
+		<FlexBox alignItems="Start" width="100%" height="100%" class="sapInoChildrenCommentList">
+			<items>
+				<HBox width="100%">
+					<ino:IdentityCard
+                        visible="{= !!${data>CHANGED_BY_ID} &amp;&amp;!${device>/system/phone} }"
+                        userImageUrl="{ path: 'data>CHANGED_BY_IMAGE_ID', formatter: '.formatter.userImage' }"
+                        identityId="{data>CHANGED_BY_ID}"
+                        identityPress="richCommentMixinOnUserPressed"
+                        imageSize="S" />
+					<VBox height="100%"  width="100%" class="sapInoChildrenCommentContent">
+						<l:HorizontalLayout class="sapUiSmallMarginTop" />
+						<Toolbar>
+							<Link text="{data>CHANGED_BY_NAME}" press="richCommentMixinOnUserPressed" />
+							<Label text="{path: 'data>CHANGED_AT', type: 'sap.ui.model.type.DateTime', formatOptions: { relative: false }}" class="sapInoTimestamp"/>
+							<ToolbarSpacer/>
+							<Button icon="sap-icon://edit"  visible="{= ${data>CAN_UPDATE} > 0 &amp;&amp; ${object>/STATUS_CODE} !=='sap.ino.config.MERGED' }" press="richCommentMixinOnEdit" type="Transparent">
+								<customData>
+									<core:CustomData value="{data>ID}" />
+									<core:CustomData value="{data>PARENT_ID}" />
+								</customData>
+							</Button>
+							<Button icon="sap-icon://delete" visible="{= ${data>CAN_DELETE} > 0}" press="richCommentMixinOnRemoveComments" type="Transparent">
+								<customData>
+									<core:CustomData value="{data>ID}" />
+									<core:CustomData value="{data>PARENT_ID}" />
+								</customData>
+							</Button>
+						</Toolbar>
+						<core:HTML content="{path: 'data>COMMENT', formatter: '.formatter.wrapToHTML'}" preferDOM="false"  sanitizeContent="true" />
+						<UploadCollection
+						    class="sapInoIdeaCommentChildrenUploadList"
+                            multiple="false"
+                            fileDeleted="onRichAttachmentFileDeleted"
+                            items="{path : 'data>CommentAttachments', sorter:[{path: 'CREATED_AT', descending: true}], templateShareable:'false'}"
+                            showSeparators="true"
+                            noDataText="{i18n>EMPTY_FLD_TEXT}"
+                            visible="{= ${data>HAS_ATTACHMENTS} > 0}"
+                            uploadEnabled="false"
+                            uploadButtonInvisible="false">
+							<toolbar>
+								<OverflowToolbar />
+							</toolbar>
+							<items>
+								<UploadCollectionItem
+                              		documentId="{data>ATTACHMENT_ID}"
+                              		fileName="{data>FILE_NAME}"
+                              		mimeType="{data>MEDIA_TYPE}"
+                              		thumbnailUrl="{ parts:[{path:'data>MEDIA_TYPE'}, {path:'data>ATTACHMENT_ID'}], formatter:'.formatter.previewUrl' }"
+                              		url="{ path:'data>ATTACHMENT_ID', formatter:'.formatter.downloadUrl' }"
+                              		visibleEdit="false"
+                              		visibleDelete="{= ${data>CAN_DELETE_ATTACHMENT} > 0}">
+									<customData>
+										<core:CustomData  value="{data>IDEA_ID}" />
+									</customData>
+								</UploadCollectionItem>
+							</items>
+						</UploadCollection>
+						<l:HorizontalLayout class="sapUiSmallMarginTop" />
+					</VBox>
+					<customData>
+						<core:CustomData 
+                key="style-manager-class" 
+                value="{parts:[{path:'view>/IDEA_COMMENT'},{path:'data>CREATED_BY_ID'},{path:'object>/Coach'},{path:'object>/CampaignManagers'}],formatter:'.formatter.setMgrCoachBackGroundColor'}" 
+                writeToDom="true"/>
+					</customData>
+				</HBox>
+			</items>
+		</FlexBox>
+	</HBox>
+</core:FragmentDefinition>

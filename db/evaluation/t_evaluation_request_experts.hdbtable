@@ -1,0 +1,10 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Evaluation Request: Experts";
+table.columns = [
+    {name = "ID";	           sqlType = INTEGER;	nullable = false;               comment = "Human readable identifier";},
+    {name = "EVAL_REQ_ID";     sqlType = INTEGER;   nullable = false;               comment = "Evaluation Request ID";},
+    {name = "IDENTITY_ID";     sqlType = INTEGER;   nullable = false;               comment = "Identity ID";}
+];
+table.primaryKey.pkcolumns = ["ID"];
+ 

@@ -1,0 +1,18 @@
+procedure "SAP_INO"."sap.ino.db.feed::p_feed_cleanup" () 
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+
+    -- delete all orphaned feeds which do not have any idea reference any more
+    lt_orphaned_feed_id = select id from "sap.ino.db.feed::t_feed_update" 
+        where ( object_id not in (select id from "sap.ino.db.idea::t_idea") and object_type_code = 'IDEA' )
+         and ( object_id not in (select id from "sap.ino.db.campaign::t_campaign") and object_type_code = 'CAMPAIGN' );
+    delete from "sap.ino.db.feed::t_feed_update" where id in (select id from :lt_orphaned_feed_id);
+    delete from "sap.ino.db.feed::t_feed_status" where feed_id in (select id from :lt_orphaned_feed_id);
+
+    -- delete all feed status which do not have any identity reference any more
+    lt_orphaned_feed_id = select id from "sap.ino.db.feed::t_feed_status" where user_id not in (select id from "sap.ino.db.iam::t_identity");
+    delete from "sap.ino.db.feed::t_feed_status" where id in (select id from :lt_orphaned_feed_id);
+end;

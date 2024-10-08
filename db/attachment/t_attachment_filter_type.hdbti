@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.attachment::t_attachment_filter_type";
+    file       = "sap.ino.db.attachment:t_attachment_filter_type.csv";
+    header     = false;
+    delimField = ";";
+}];

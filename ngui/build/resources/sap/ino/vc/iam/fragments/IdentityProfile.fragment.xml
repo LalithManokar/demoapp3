@@ -1,0 +1,127 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:ino="sap.ino.controls"
+    xmlns:l="sap.ui.layout">
+    <VBox
+        class="sapInoIdentityProfile indentityProfile"
+        id="identityProfile"
+        alignItems="Stretch"
+        fitContainer="true">
+        <ino:IdentityCard 
+            id="identityBox" 
+            identityPress="onOpenIdentityQuickView"
+            identityId="{user>/data/USER_ID}"
+            userName="{user>/data/NAME}"
+            userOrganization="{user>/data/ORGANIZATION}"
+            userImageUrl="{ path: 'user>/data/IDENTITY_IMAGE_ID', formatter: '.formatter.userImage' }"
+            orientation="Vertical"
+            imageSize="L"/>
+        <ino:ColorBar
+            class="sapInoIdentityProfileHeadline sapUiSmallMarginTop"
+            visible="{= !!${IdentityProfile>/HEADLINE}}"
+            backgroundColor="{IdentityProfile>/HEADLINE_BACKGROUND}"
+            enablePhone="true">
+            <Text 
+                text="{IdentityProfile>/HEADLINE}"
+                textAlign="Center"
+                maxLines="2"
+                width="100%"
+                class="sapUiNoMarginBegin"/>
+        </ino:ColorBar>
+        <VBox
+            id="identityProfileButtons"
+            alignItems="Stretch"
+            fitContainer="true">
+            <HBox
+                id="identityProfileSeparator"
+                class="sapUiSmallMarginTopBottom sapInoIdentityProfileBtns"
+                wrap="Wrap"
+                justifyContent="Center"
+                fitContainer="true"
+                visible="{= !(${IdentityProfile>/SHOW_BUTTONS} === true || (${IdentityProfile>/SHOW_BUTTONS_AUTH} === true &amp;&amp; ${data>IS_OPEN_FOR_SUBMISSION} + ${data>SUBMITTABLE} === 2)
+                || (${IdentityProfile>/SHOW_CRTBLOG_AUTH} === true &amp;&amp; ${data>IS_OPEN_FOR_BLOG_CREATE} === 1))}">
+                <ino:Follow onlyIcon="false" type="CAMPAIGN" value="{data>FOLLOW}" objectId="{data>ID}" visible="{= !!${data>ID} }" enabled="true" styleType="campaignHomeFollow" follow="onFollow" />
+            </HBox>
+            
+            
+            <HBox
+                id="identityProfileButton"
+                class="sapInoIdentityProfileBtns sapUiSmallMarginTopBottom"
+                wrap="Wrap"
+                justifyContent="Center"
+                fitContainer="true"
+                visible="{= ${IdentityProfile>/SHOW_BUTTONS} === true || (${IdentityProfile>/SHOW_BUTTONS_AUTH} === true &amp;&amp; ${data>IS_OPEN_FOR_SUBMISSION} + ${data>SUBMITTABLE} === 2)
+                || (${IdentityProfile>/SHOW_CRTBLOG_AUTH} === true &amp;&amp; ${data>IS_OPEN_FOR_BLOG_CREATE} === 1)}">
+                <Button
+                    id="createIdea"
+                    class="createIdeaButton"
+                    text="{i18n>PROFILE_BTN_CREATE_IDEA}"
+                    tooltip="{i18n>PROFILE_BTN_CREATE_IDEA}"    
+                    icon="sap-icon://InoIcons/idea-add"
+                    visible="{= !(${IdentityProfile>/SHOW_CRTBLOG_AUTH} === true)}"
+                    type="Emphasized"
+                    press="onIdentityProfileCreateIdea"/>
+                <ino:Follow onlyIcon="false" type="CAMPAIGN" value="{data>FOLLOW}" objectId="{data>ID}" visible="{= !!${data>ID} }" enabled="true" styleType="campaignHomeFollow" follow="onFollow" />
+                <Button
+                    class="createWallButton"
+                    text="{i18n>PROFILE_BTN_CREATE_WALL}"
+                    tooltip="{i18n>PROFILE_BTN_CREATE_WALL}"                    
+                    icon="sap-icon://InoIcons/wall-add"
+                    press="onIdentityProfileCreateWall"
+                    visible="{= !${data>ID} }" />
+                <Button
+                    id="createBlog"
+                    class="createBlogButton"
+                    text="{i18n>PROFILE_BTN_CREATE_BLOG}"
+                    tooltip="{i18n>PROFILE_BTN_CREATE_BLOG}"
+                    visible="{= ${IdentityProfile>/SHOW_CRTBLOG_AUTH} === true &amp;&amp; ${data>IS_OPEN_FOR_BLOG_CREATE} === 1}"
+                    icon="sap-icon://InoIcons/wall-add"
+                    type="Emphasized"
+                    press="onIdentityProfileCreateBlog"/>    
+                
+            </HBox>
+        </VBox>
+        <List
+            id="identityProfileList"
+            width="100%"
+            class="sapInoIdentityProfileCounts"
+            items="{IdentityProfile>/Binding}"
+            showSeparators="None">
+            <CustomListItem
+                ariaLabelledBy="identityProfileAccText"
+                visible="{= ${ parts : [{ path : 'IdentityProfile>COUNT' }, { path : 'IdentityProfile>Route/QUERY/variant' }, {path: 'IdentityProfile>EXPERT'}, { path: 'data>NO' }, { path: 'IdentityProfile>ROLES'},{ path : 'IdentityProfile>VISIBLE' }], formatter : '.formatIdentityProfileCountVisibility' }}">
+                <content>
+                    <HBox
+                        width="100%"
+                        fitContainer="true"
+                        class="sapInoIdentityProfileCountItem sapUiSmallMarginBottom"
+                        wrap="Wrap">
+                        <core:Icon
+                            class="sapInoIdentityProfileCountItemIcon"
+                            useIconTooltip="false"
+                            src="{IdentityProfile>ICON}">
+                        </core:Icon>
+                        <Link
+                            class="sapInoIdentityProfileCountItemLink"
+                            wrapping="true"
+                            press="navigateToList"
+                            text="{path : 'IdentityProfile>LINK_TEXT', formatter : '.formatIdentityProfileText'}">
+                        </Link>
+                        <Text
+                            class="sapInoIdentityProfileCountItemText"
+                            wrapping="false"
+                            text="{ parts : [{ path : 'IdentityProfile>COUNT' }, { path : 'data>NO' }], formatter : '.formatIdentityProfileCount' }"
+                            width="100%"
+                            textAlign="End">
+                        </Text>
+                    </HBox>
+                    <core:InvisibleText
+                        class="sapInoItemAriaLabel"
+                        text="{parts: [{path: 'IdentityProfile>LINK_TEXT'}], formatter: '.formatIdentityProfileText'}">
+                    </core:InvisibleText>
+                </content>
+            </CustomListItem>
+        </List>
+    </VBox>
+</core:FragmentDefinition>

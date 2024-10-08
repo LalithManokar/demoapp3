@@ -1,0 +1,11 @@
+schema = "SAP_INO";
+query = "
+select
+    campaign_role_history.*
+from
+    \"sap.ino.db.campaign::v_campaign_role_events_pre\" as campaign_role_history
+where
+    campaign_role_history.history_db_event<>'DELETED'
+with read only";
+
+depends_on_view = ["sap.ino.db.campaign::v_campaign_role_events_pre"];

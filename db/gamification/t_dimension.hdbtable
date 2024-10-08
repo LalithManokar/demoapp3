@@ -1,0 +1,18 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "dimension 0f  system setting table";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";},
+	{name = "NAME"; sqlType = NVARCHAR ;length=128 ;nullable = false ; comment = "Dimension name";},
+	{name = "UNIT"; sqlType = NVARCHAR ;length=500 ;nullable = false;  comment = "The unit of indicated dimension";},
+	{name = "TECHNICAL_NAME"; sqlType = VARCHAR ;length=128 ;nullable = false; comment = "Technical name for unique";},
+	{name = "SCOPE"; sqlType = VARCHAR ;length=16 ;nullable = false;  comment = "default value system";},
+	{name = "STATUS";sqlType = TINYINT;  nullable = true; comment = "Enable indicated dimension or not";},
+	{name = "DESCRIPTION"; sqlType = NVARCHAR ;length = 512;nullable = true; comment = "describe indicated dimension";},
+	{name = "REDEEM"; sqlType = TINYINT ;nullable = false;  comment = "Open for redeen";}
+];
+table.primaryKey.pkcolumns = ["ID"];

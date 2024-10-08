@@ -1,0 +1,17 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "External Object need to update";
+table.columns = [
+    {name = "ID";                sqlType = BIGINT;  nullable = false; comment = "Human readable Identifier";},
+    {name = "INTEGRATION_OBJECT_UUID";  sqlType = VARCHAR;   length = 32;             nullable = false;                     comment = "uuid for assignment object on idea";},    
+    {name = "HOST";              sqlType = NVARCHAR;  length = 256;                 nullable = false; comment = "Host name e.g. www.sap.com";},
+    {name = "DESTINATION_NAME";   sqlType = NVARCHAR; length = 100;              nullable = false; comment = "Destination Name(Destination1....)";},
+    {name = "OBJECT_KEY";        sqlType = NVARCHAR; length=200;               nullable = false; comment = "External Object Key";},
+    {name = "CREATED_AT";   sqlType = TIMESTAMP;               nullable = false; comment = "Timestamp when event occurred";},
+    {name = "NEED_UPDATE"; sqlType = TINYINT;  nullable = true;  comment = "";},
+    {name = "RECEIVE_BODY"; sqlType = NCLOB;               nullable = true; comment = "Receive Body from 3rd system";}, 
+    {name = "IDEA_ID"; sqlType = INTEGER; nullable = false; comment = "Idea ID";},   
+    {name = "CAMPAIGN_ID"; sqlType = INTEGER; nullable = false; comment = "Idea ID";},     
+    {name = "API_TECHNICAL_NAME";       sqlType = NVARCHAR; length = 128; nullable = false;                 comment = "Using For identify API ";}
+];
+table.primaryKey.pkcolumns = ["ID"];

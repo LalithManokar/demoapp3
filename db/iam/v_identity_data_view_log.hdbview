@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "select log.id, log.disclosed_at,log.disclosed_by_id,Identity.name as disclosed_by_name,log.identity_id from 
+        \"sap.ino.db.iam::t_identity_data_view_log\" as log
+        left outer join \"sap.ino.db.iam::v_identity\" as identity 
+        on (log.DISCLOSED_BY_ID = identity.ID) with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity_data_view_log"];
+depends_on_view = ["sap.ino.db.iam::v_identity"];

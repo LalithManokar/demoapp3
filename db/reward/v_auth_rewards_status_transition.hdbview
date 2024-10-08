@@ -1,0 +1,20 @@
+schema = "SAP_INO";
+query = 
+"
+select reward_list.id as reward_list_id, role_camp.identity_id
+from \"sap.ino.db.reward::t_reward_list\" as reward_list
+inner join \"sap.ino.db.idea::t_idea\" as idea
+    on  idea.id = reward_list.idea_id 
+inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as role_camp
+    on  role_camp.object_id = idea.campaign_id and role_camp.object_type_code = 'CAMPAIGN'
+inner join \"sap.ino.db.iam::t_role_privilege\" as role_privilege
+    on  role_privilege.role_code = role_camp.role_code 
+where role_privilege.privilege = 'IDEA_REWARD_STATUS_TRANS'
+with read only
+";
+
+depends_on_table = ["sap.ino.db.idea::t_idea",
+                    "sap.ino.db.iam::t_role_privilege",
+                    "sap.ino.db.reward::t_reward_list"];
+
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];

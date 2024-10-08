@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_IDEA_FILTER_STATUS" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_IDEA_FILTER_STATUS"/>
+  <localVariables>
+    <variable id="campaignId" parameter="true">
+      <descriptions defaultDescription="Campaidn Id"/>
+      <variableProperties datatype="INTEGER" mandatory="false" defaultValue="undefined">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="VARCHAR" id="STATUS" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="TEXT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS_TYPE" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="BASE_PACKAGE" length="14"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#campaignId</localVariable>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+   var_out = select distinct code as status, text, status_type, base_package from (
+        select 
+            status.code, 
+            status.default_text as text, 
+            case when status.status_type is null then ''
+                else status.status_type
+            end as status_type, 
+            SUBSTRING (status.code,1,14) as base_package
+        from 
+            &quot;sap.ino.db.idea::v_auth_ideas_read&quot; as auth_ideas
+        inner join
+            &quot;sap.ino.db.idea::t_idea&quot; as idea
+        on
+            auth_ideas.idea_id = idea.id
+        inner join
+            &quot;sap.ino.db.status::t_status&quot; as status
+        on
+            idea.status_code = status.code
+        where idea.campaign_id = :campaignId   
+        union all 
+        select 
+            status.code, 
+            status.default_text as text, 
+            case when status.status_type is null then ''
+                else status.status_type
+            end as status_type, 
+            SUBSTRING (status.code,1,14) as base_package
+        from 
+            &quot;sap.ino.db.idea::v_auth_ideas_read&quot; as auth_ideas
+        inner join
+            &quot;sap.ino.db.idea::t_idea&quot; as idea
+        on
+            auth_ideas.idea_id = idea.id
+        inner join
+            &quot;sap.ino.db.status::t_status&quot; as status
+        on
+            idea.status_code = status.code
+        where :campaignId = 0
+   );
+
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="STATUS" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS"/>
+      </attribute>
+      <attribute id="TEXT" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="TEXT"/>
+      </attribute>
+      <attribute id="STATUS_TYPE" order="3">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_TYPE"/>
+      </attribute>
+      <attribute id="BASE_PACKAGE" order="4">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="BASE_PACKAGE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

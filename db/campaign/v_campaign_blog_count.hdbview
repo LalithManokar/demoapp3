@@ -1,0 +1,5 @@
+schema = "SAP_INO";
+query  = "select object_id as campaign_id, count(id) as number from \"sap.ino.db.blog::v_blog_campaign_small\" 
+        group by object_id 
+     with read only";
+depends_on_view = ["sap.ino.db.blog::v_blog_campaign_small"];

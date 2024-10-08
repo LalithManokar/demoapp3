@@ -1,0 +1,885 @@
+schema = "SAP_INO";
+query = "
+select * from (
+    select
+        history.history_biz_event as biz_event,
+	    'ACTION_VALID_FROM_CHANGED' as change_event,
+        4 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'date' as changed_attribute_type,
+        valid_from as date_new_value,
+        valid_from_old as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        null as int_new_value,
+        null as int_old_value
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.valid_from is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+        
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_VALID_TO_CHANGED' as change_event,
+        5 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'date' as changed_attribute_type,
+        valid_to as date_new_value,
+        valid_to_old as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        null as int_new_value,
+        null as int_old_value
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.valid_to is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_SUBMIT_FROM_CHANGED' as change_event,
+        6 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'date' as changed_attribute_type,
+        submit_from as date_new_value,
+        submit_from_old as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        null as int_new_value,
+        null as int_old_value
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.submit_from is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_SUBMIT_TO_CHANGED' as change_event,
+        7 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'date' as changed_attribute_type,
+        submit_to as date_new_value,
+        submit_to_old as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        null as int_new_value,
+        null as int_old_value        
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.submit_to is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+        
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_BLACK_BOX_CHANGED' as change_event,
+        8 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'int' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        is_black_box as int_new_value,
+        is_black_box_old as int_old_value        
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.is_black_box is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_VOTE_TYPE_CODE_CHANGED' as change_event,
+        9 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'string' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        vote_type_code as string_new_value,
+        vote_type_code_old as string_old_value,
+        null as int_new_value,
+        null as int_old_value        
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.vote_type_code is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id        
+
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_CAMPAIGN_SUBMITTED' as change_event,
+        2 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'string' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        status_code as string_new_value,
+        status_code_old as string_old_value,
+        null as int_new_value,
+        null as int_old_value        
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.status_code = 'sap.ino.config.CAMP_PUBLISHED'
+               and
+               history.history_biz_event = 'CAMP_SUBMITTED'
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_COLOR_CODE_CHANGED' as change_event,
+        1 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'string' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        color_code as string_new_value,
+        color_code_old as string_old_value,
+        null as int_new_value,
+        null as int_old_value        
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.color_code is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_TITLE_CHANGED' as change_event,
+        0 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'string' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        campaign_text.name as string_new_value,
+        campaign_text.name_old as string_old_value,
+        null as int_new_value,
+        null as int_old_value        
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_t_h\" as campaign_text
+            on history.id = campaign_text.campaign_id
+               and
+               history.history_at=campaign_text.history_at
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+    where
+        campaign_text.name is not null
+        
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_SHORT_TITLE_CHANGED' as change_event,
+        26 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'string' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        campaign_text.short_name as string_new_value,
+        campaign_text.short_name_old as string_old_value,
+        null as int_new_value,
+        null as int_old_value        
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_t_h\" as campaign_text
+            on history.id = campaign_text.campaign_id
+               and
+               history.history_at=campaign_text.history_at
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+    where
+        campaign_text.short_name is not null 
+        
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_DESCRIPTION_CHANGED' as change_event,
+        27 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'string' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        campaign_text.description as string_new_value,
+        campaign_text.description_old as string_old_value,
+        null as int_new_value,
+        null as int_old_value        
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_t_h\" as campaign_text
+            on history.id = campaign_text.campaign_id
+               and
+               history.history_at=campaign_text.history_at
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+    where
+        campaign_text.description is not null         
+        
+union all
+        
+    select distinct
+        history.history_biz_event as biz_event,
+	    'ACTION_PROCESS_CHANGED' as change_event,
+        10 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'PHASE' as change_object,
+        campaign.campaign_id as changed_object_id,
+        '' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        null as int_new_value,
+        null as int_old_value        
+    from \"sap.ino.db.campaign::v_campaign_phase_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.campaign_id = campaign.campaign_id
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+    where
+    (    
+      ( 
+        history.history_biz_event in ('CAMP_UPDATED', 'CAMP_MAJOR_PUBLISH')
+      )
+      and
+      (
+        (
+            history.sequence_no is not null
+          and
+            history.sequence_no_old is not null
+        )
+          or
+        (
+            history.voting_active is not null
+          and
+            history.voting_active_old is not null
+        )
+          or
+        (
+            history.idea_content_editable is not null
+          and
+            history.idea_content_editable_old is not null
+        )
+          or
+        (
+            history.show_idea_in_community is not null
+          and
+            history.show_idea_in_community_old is not null
+        )
+          or
+        (
+            history.evaluation_model_code is not null
+          and
+            history.evaluation_model_code_old is not null
+        )
+          or
+        (
+            history.status_model_code is not null
+          and
+            history.status_model_code_old is not null
+        ) or
+        (
+            history.self_evaluation_active is not null
+          and
+            history.self_evaluation_active_old is not null
+        ) or
+        (
+            history.auto_eval_pub_code is not null
+          and
+            history.auto_eval_pub_code_old is not null
+        )
+      )
+    )    
+        or
+    (
+        history.sequence_no is not null
+    and
+        history.history_biz_event = 'CAMP_SUBMITTED_PHASE_DELETED'
+    )
+        or
+    (
+        history.sequence_no_old is null
+    and
+        history.history_biz_event in ('CAMP_CREATED', 'CAMP_UPDATED', 'CAMP_MAJOR_PUBLISH')
+    )
+        or
+    (
+        history.phase_code <> history.phase_code_old
+    and
+        history.history_biz_event = 'CAMP_SUBMITTED_PHASE_CODE_REPLACED'
+    )  
+        or
+    (
+        history.history_biz_event = 'CAMP_SUBMITTED_STATUS_CODE_REPLACED'
+    )
+    
+union all
+ 	
+    select distinct
+        history.history_biz_event as biz_event,
+	    'ACTION_MANAGERS_CHANGED' as change_event,
+        11 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    history.role_code as change_object,
+        campaign.campaign_id as changed_object_id,
+        '' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        null as int_new_value,
+        null as int_old_value        
+    from \"sap.ino.db.iam::t_object_identity_role_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.object_id = campaign.campaign_id
+               and
+               history.object_type_code = 'CAMPAIGN'
+               and 
+               history.role_code = 'CAMPAIGN_MANAGER'
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+
+union all
+ 	
+    select distinct
+        history.history_biz_event as biz_event,
+	    'ACTION_PARTICIPANTS_CHANGED' as change_event,
+        12 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    history.role_code as change_object,
+        campaign.campaign_id as changed_object_id,
+        '' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        null as int_new_value,
+        null as int_old_value        
+    from \"sap.ino.db.iam::t_object_identity_role_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.object_id = campaign.campaign_id
+               and
+               history.object_type_code = 'CAMPAIGN'
+               and 
+               history.role_code = 'CAMPAIGN_USER'
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+
+union all
+ 	
+    select distinct
+        history.history_biz_event as biz_event,
+	    'ACTION_COACHES_CHANGED' as change_event,
+        13 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    history.role_code as change_object,
+        campaign.campaign_id as changed_object_id,
+        '' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        null as int_new_value,
+        null as int_old_value        
+    from \"sap.ino.db.iam::t_object_identity_role_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.object_id = campaign.campaign_id
+               and
+               history.object_type_code = 'CAMPAIGN'
+               and 
+               history.role_code = 'CAMPAIGN_COACH'
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+
+union all
+ 	
+    select distinct
+        history.history_biz_event as biz_event,
+	    'ACTION_EXPERTS_CHANGED' as change_event,
+        14 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    history.role_code as change_object,
+        campaign.campaign_id as changed_object_id,
+        '' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        null as int_new_value,
+        null as int_old_value        
+    from \"sap.ino.db.iam::t_object_identity_role_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.object_id = campaign.campaign_id
+               and
+               history.object_type_code = 'CAMPAIGN'
+               and 
+               history.role_code = 'CAMPAIGN_EXPERT'
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+
+union all
+
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_MAIL_TEMPLATE_CHANGED' as change_event,
+        15 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'string' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        mail_template_code.default_text as string_new_value,
+        mail_template_code_old.default_text as string_old_value,
+        null as int_new_value,
+        null as int_old_value
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.valid_to is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+        left outer join \"sap.ino.db.notification::t_mail_template\" as mail_template_code
+            on history.mail_template_code = mail_template_code.code
+        left outer join \"sap.ino.db.notification::t_mail_template\" as mail_template_code_old
+            on history.mail_template_code_old = mail_template_code_old.code
+    where mail_template_code.default_text <> mail_template_code_old.default_text        
+
+union all
+
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_MAIL_SUCCESS_TEXT_CHANGED' as change_event,
+        16 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'string' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        text_module.default_text as string_new_value,
+        text_module_old.default_text as string_old_value,
+        null as int_new_value,
+        null as int_old_value
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.valid_to is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+        left outer join \"sap.ino.db.basis::t_text_module\" as text_module
+            on history.mail_success_code = text_module.code
+        left outer join \"sap.ino.db.basis::t_text_module\" as text_module_old
+            on history.mail_success_code_old = text_module_old.code
+    where text_module.default_text <> text_module_old.default_text        
+
+union all
+
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_MAIL_REJECTION_TEXT_CHANGED' as change_event,
+        17 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'string' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        text_module.default_text as string_new_value,
+        text_module_old.default_text as string_old_value,
+        null as int_new_value,
+        null as int_old_value
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.valid_to is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+        left outer join \"sap.ino.db.basis::t_text_module\" as text_module
+            on history.mail_rejection_code = text_module.code
+        left outer join \"sap.ino.db.basis::t_text_module\" as text_module_old
+            on history.mail_rejection_code_old = text_module_old.code
+    where text_module.default_text <> text_module_old.default_text        
+
+union all
+
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_MAIL_PHASE_CHANGE_TEXT_CHANGED' as change_event,
+        18 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'string' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        text_module.default_text as string_new_value,
+        text_module_old.default_text as string_old_value,
+        null as int_new_value,
+        null as int_old_value
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.valid_to is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+        left outer join \"sap.ino.db.basis::t_text_module\" as text_module
+            on history.mail_phase_change_code = text_module.code
+        left outer join \"sap.ino.db.basis::t_text_module\" as text_module_old
+            on history.mail_phase_change_code_old = text_module_old.code
+    where text_module.default_text <> text_module_old.default_text         
+            
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_REGISTER_FROM_CHANGED' as change_event,
+        19 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'date' as changed_attribute_type,
+        register_from as date_new_value,
+        register_from_old as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        null as int_new_value,
+        null as int_old_value
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.register_from is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id   
+            
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_REGISTER_TO_CHANGED' as change_event,
+        20 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'date' as changed_attribute_type,
+        register_to as date_new_value,
+        register_to_old as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        null as int_new_value,
+        null as int_old_value
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.register_to is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id  
+            
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_IS_REGISTER_AUTO_APPROVE_CHANGED' as change_event,
+        21 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'int' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        is_register_auto_approve as int_new_value,
+        is_register_auto_approve_old as int_old_value 
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.is_register_auto_approve is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+            
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_REWARD_CHANGED' as change_event,
+        22 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'int' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        reward as int_new_value,
+        reward_old as int_old_value 
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.reward is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+            
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_FORM_CODE_CHANGED' as change_event,
+        23 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'string' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        form_code as string_new_value,
+        form_code_old as string_old_value,
+        null as int_new_value,
+        null as int_old_value 
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.form_code is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+            
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_RESP_CODE_CHANGED' as change_event,
+        24 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'string' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        resp_code as string_new_value,
+        resp_code_old as string_old_value,
+        null as int_new_value,
+        null as int_old_value 
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.resp_code is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+            
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_REWARD_UNIT_CODE_CHANGED' as change_event,
+        25 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'string' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        reward_unit_code as string_new_value,
+        reward_unit_code_old as string_old_value,
+        null as int_new_value,
+        null as int_old_value 
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.reward_unit_code is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id 
+            
+            
+            
+union all
+ 	
+ 	select
+        history.history_biz_event as biz_event,
+	    'ACTION_GAMIFICATION_ENABLE_CHANGED' as change_event,
+        28 as order_number,
+	    history.history_at as changed_at,
+	    identity.name as changed_by,
+        campaign.campaign_id as campaign_id,
+	    campaign.name as campaign_name,
+	    'CAMPAIGN' as change_object,
+        history.id as changed_object_id,
+        'int' as changed_attribute_type,
+        null as date_new_value,
+        null as date_old_value,
+        null as string_new_value,
+        null as string_old_value,
+        IS_GAMIFICATION_ACTIVE as int_new_value,
+        IS_GAMIFICATION_ACTIVE_OLD as int_old_value 
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on history.id = campaign.campaign_id
+               and
+               history.IS_GAMIFICATION_ACTIVE is not null
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on history.history_actor_id = identity.id
+) with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity",
+                    "sap.ino.db.iam::t_object_identity_role_h",
+                    "sap.ino.db.notification::t_mail_template",
+                    "sap.ino.db.basis::t_text_module"];
+
+depends_on_view =  ["sap.ino.db.campaign::v_campaign_h",
+                    "sap.ino.db.campaign::v_campaign_phase_h",
+                    "sap.ino.db.campaign::v_campaign_t_locale",
+                    "sap.ino.db.campaign::v_campaign_t_h"];

@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Order of Report Tiles in Tile Container";
+table.columns = [
+    {name = "ID";          sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "REPORT_ID";   sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "IDENTITY_ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "ORDER_NR";    sqlType = INTEGER; nullable = false; comment = "Position of Tile in Tile Container";}
+];
+table.primaryKey.pkcolumns = ["ID"];

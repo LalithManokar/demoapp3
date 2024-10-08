@@ -1,0 +1,130 @@
+schema = "SAP_INO";
+query = "
+    select feed.*,
+           campaign.name as object_text
+    from (
+		--Idea submit
+        select
+            idea.campaign_id as object_id, 
+            'CAMPAIGN' as object_type_code,
+             case 
+            when setting.IS_ANONYMOUS = 'true' then  cast(0 as INTEGER) 
+            else idea.history_actor_id
+            end as actor_id, 
+             case 
+            when setting.IS_ANONYMOUS = 'true' then  cast('Anonymity' as VARCHAR) 
+            else  actor.name
+            end as actor_name, 
+            case 
+            when setting.IS_ANONYMOUS = 'true' then  cast(0 as INTEGER) 
+            else actor.identity_image_id
+            end as actor_image_id, 
+            idea.id as involved_id,
+            'IDEA' as involved_obj_type_code,
+            idea.name as involved_obj_text,
+            idea.history_at as event_at, 
+            idea.history_biz_event as feed_code, 
+            idea.campaign_id as campaign_id, 
+            null as campaign_date,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            null as field2_name,
+            null as field2_text,
+            null as field2_value,
+            null as field2_value_option,
+            'FRONTOFFICE' as filter_type_code,
+            idea.SHORT_DESCRIPTION as content,
+            idea.campaign_id || 'CAMPAIGN' || idea.history_at || idea.history_biz_event as id
+        from
+            \"sap.ino.db.notification::v_notification_latest_time\" as c_time,
+            \"sap.ino.db.idea::t_idea_h\" as idea
+        inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on idea.history_actor_id = actor.id
+         left outer join \"sap.ino.db.idea::v_idea_settings_test\" as setting
+                on setting.idea_id = idea.id
+        where 
+            idea.history_biz_event = 'STATUS_ACTION_SUBMIT'  and idea.history_at > c_time.latest  
+            
+        --campaign blog publish
+        union all
+        select
+            blog.object_id, 
+            blog.object_type_code,
+            blog.history_actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            blog.id as involved_id,
+            'BLOG' as involved_obj_type_code,
+            blog.title as involved_obj_text,
+            blog.history_at as event_at, 
+            blog.history_biz_event as feed_code,
+            blog.object_id as campaign_id, 
+            null as campaign_date,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            null as field2_name,
+            null as field2_text,
+            null as field2_value,
+            null as field2_value_option,
+            'FRONTOFFICE' as filter_type_code,
+            blog.SHORT_DESCRIPTION as content,
+            blog.object_id || 'CAMPAIGN' || blog.history_at || blog.history_biz_event as id
+        from
+            \"sap.ino.db.notification::v_notification_latest_time\" as c_time,
+            \"sap.ino.db.blog::t_blog_h\" as blog
+        inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on blog.history_actor_id = actor.id
+        where
+            blog.history_biz_event = 'BLOG_MAJORPUBLISH' and blog.object_type_code = 'CAMPAIGN'      and blog.history_at > c_time.latest  
+            
+        --campaign date notifications
+        union all
+        select 
+            feed.object_id as object_id, 
+            feed.object_type_code as object_type_code,
+            feed.actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            null as involved_id,
+            null as involved_obj_type_code,
+            null as involved_obj_text,
+            feed.event_at as event_at, 
+            feed.feed_code as feed_code,
+            feed.campaign_id as campaign_id, 
+            feed.campaign_date as campaign_date,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            null as field2_name,
+            null as field2_text,
+            null as field2_value,
+            null as field2_value_option,
+            feed.filter_type_code as filter_type_code,
+            null as content,
+            feed.campaign_id || 'CAMPAIGN' || feed.event_at || feed.feed_code as id
+        from
+            \"sap.ino.db.notification::v_notification_latest_time\" as c_time,
+            \"sap.ino.db.feed::t_feed\" as feed
+        inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on feed.actor_id = actor.id       
+            where feed.event_at > c_time.latest  ) as feed
+    inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on feed.object_id = campaign.campaign_id 
+    "; 
+depends_on_table = ["sap.ino.db.notification::t_notification",
+                    "sap.ino.db.feed::t_feed",
+                    "sap.ino.db.blog::t_blog_h",
+                    "sap.ino.db.idea::t_idea_h"];
+depends_on_view = ["sap.ino.db.notification::v_notification_latest_time",
+"sap.ino.db.campaign::v_campaign_t_locale",
+"sap.ino.db.iam::v_identity",
+"sap.ino.db.idea::v_idea_settings_test"];
+

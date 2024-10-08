@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_CAMPAIGN_ACTIVITIY" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED">
+  <descriptions defaultDescription="Campaign Activity"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="V_ANALYTICS_CAMPAIGN_VIEWS" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_CAMPAIGN_VIEWS</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.idea::t_idea" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_idea"/>
+    </DataSource>
+    <DataSource id="V_ANALYTICS_IDEA_VIEWS" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_VIEWS</resourceUri>
+    </DataSource>
+    <DataSource id="V_ANALYTICS_IDEA_DATES" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_DATES</resourceUri>
+    </DataSource>
+    <DataSource id="Idea_Changes$$$$V_ANALYTICS_IDEA_DATES$$" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_DATES</resourceUri>
+    </DataSource>
+    <DataSource id="Idea_Completions$$$$V_ANALYTICS_IDEA_DATES$$" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_DATES</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:AggregationView" id="Campaign_Views">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_VIEWS"/>
+        <viewAttribute id="VIEW_DATE_YEAR"/>
+        <viewAttribute id="VIEW_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="VIEW_DATE_DAY"/>
+        <viewAttribute id="VIEW_DATE_YEAR_MONTH"/>
+        <viewAttribute id="VIEW_DATE_MONTH"/>
+        <viewAttribute id="VIEW_DATE"/>
+        <viewAttribute id="VIEW_TIME"/>
+        <viewAttribute id="VIEW_DATETIME"/>
+        <viewAttribute id="APPLICATION"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="VIEW_DATE_YEAR_WEEK"/>
+        <viewAttribute id="VIEW_DATE_WEEK"/>
+      
+        <viewAttribute id="CAMPAIGN_USER_NAME"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#V_ANALYTICS_CAMPAIGN_VIEWS">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VIEWS" source="VIEWS"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR" source="VIEW_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH_NUMBER" source="VIEW_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_DAY" source="VIEW_DATE_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_MONTH" source="VIEW_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH" source="VIEW_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE" source="VIEW_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_TIME" source="VIEW_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATETIME" source="VIEW_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="APPLICATION" source="APPLICATION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_WEEK" source="VIEW_DATE_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_WEEK" source="VIEW_DATE_WEEK"/>
+      
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_USER_NAME" source="USER_NAME"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.idea::t_idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="ID"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_2">
+      <viewAttributes>
+        <viewAttribute id="VIEWS"/>
+        <viewAttribute id="VIEW_DATE_YEAR"/>
+        <viewAttribute id="VIEW_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="VIEW_DATE_DAY"/>
+        <viewAttribute id="VIEW_DATE_YEAR_MONTH"/>
+        <viewAttribute id="VIEW_DATE_MONTH"/>
+        <viewAttribute id="VIEW_DATE"/>
+        <viewAttribute id="VIEW_TIME"/>
+        <viewAttribute id="VIEW_DATETIME"/>
+        <viewAttribute id="APPLICATION"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="VIEW_DATE_WEEK"/>
+        <viewAttribute id="VIEW_DATE_YEAR_WEEK"/>
+        <viewAttribute id="IDEA_USER_NAME"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#V_ANALYTICS_IDEA_VIEWS">
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEWS" source="VIEWS"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR" source="VIEW_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH_NUMBER" source="VIEW_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_DAY" source="VIEW_DATE_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_MONTH" source="VIEW_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH" source="VIEW_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE" source="VIEW_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_TIME" source="VIEW_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATETIME" source="VIEW_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="APPLICATION" source="APPLICATION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_WEEK" source="VIEW_DATE_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_WEEK" source="VIEW_DATE_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_USER_NAME" source="USER_NAME"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Idea_Views" cardinality="C1_N">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="IDEA_VIEWS"/>
+        <viewAttribute id="VIEW_DATE_YEAR"/>
+        <viewAttribute id="VIEW_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="VIEW_DATE_DAY"/>
+        <viewAttribute id="VIEW_DATE_YEAR_MONTH"/>
+        <viewAttribute id="VIEW_DATE_MONTH"/>
+        <viewAttribute id="VIEW_DATE"/>
+        <viewAttribute id="VIEW_TIME"/>
+        <viewAttribute id="VIEW_DATETIME"/>
+        <viewAttribute id="APPLICATION"/>
+        <viewAttribute id="VIEW_DATE_WEEK"/>
+        <viewAttribute id="VIEW_DATE_YEAR_WEEK"/>
+        <viewAttribute id="IDEA_USER_NAME"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Projection_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+      </input>
+      <input node="#Aggregation_2">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_VIEWS" source="VIEWS"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR" source="VIEW_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH_NUMBER" source="VIEW_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_DAY" source="VIEW_DATE_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_MONTH" source="VIEW_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH" source="VIEW_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE" source="VIEW_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_TIME" source="VIEW_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATETIME" source="VIEW_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="APPLICATION" source="APPLICATION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_WEEK" source="VIEW_DATE_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_WEEK" source="VIEW_DATE_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_USER_NAME" source="IDEA_USER_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+      </input>
+      <joinAttribute name="IDEA_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:AggregationView" id="Idea_Submissions">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_YEAR_MONTH"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_YEAR"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_MONTH_NUMBER"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_MONTH"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_DATE"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_TIME"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_DATETIME"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_YEAR_WEEK"/>
+        <viewAttribute id="IDEA_COUNT"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_WEEK"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_DAY"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#V_ANALYTICS_IDEA_DATES">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_YEAR_MONTH" source="IDEA_SUBMITTED_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_YEAR" source="IDEA_SUBMITTED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_MONTH_NUMBER" source="IDEA_SUBMITTED_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_MONTH" source="IDEA_SUBMITTED_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_DATE" source="IDEA_SUBMITTED_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_TIME" source="IDEA_SUBMITTED_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_DATETIME" source="IDEA_SUBMITTED_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_YEAR_WEEK" source="IDEA_SUBMITTED_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_COUNT" source="IDEA_COUNT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_WEEK" source="IDEA_SUBMITTED_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_DAY" source="IDEA_SUBMITTED_AT_DAY"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:AggregationView" id="Idea_Changes">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_CHANGED_AT_YEAR_MONTH"/>
+        <viewAttribute id="IDEA_CHANGED_AT_YEAR"/>
+        <viewAttribute id="IDEA_CHANGED_AT_MONTH_NUMBER"/>
+        <viewAttribute id="IDEA_CHANGED_AT_MONTH"/>
+        <viewAttribute id="IDEA_CHANGED_AT_DATE"/>
+        <viewAttribute id="IDEA_CHANGED_AT_TIME"/>
+        <viewAttribute id="IDEA_CHANGED_AT_DATETIME"/>
+        <viewAttribute id="IDEA_CHANGED_AT_YEAR_WEEK"/>
+        <viewAttribute id="IDEA_CHANGED_AT_WEEK"/>
+        <viewAttribute id="IDEA_CHANGED_AT_DAY"/>
+        <viewAttribute id="IDEA_COUNT"/>
+        <viewAttribute id="IDEA_CHANGED_INDICATOR"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Idea_Changes$$$$V_ANALYTICS_IDEA_DATES$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_YEAR_MONTH" source="IDEA_CHANGED_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_YEAR" source="IDEA_CHANGED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_MONTH_NUMBER" source="IDEA_CHANGED_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_MONTH" source="IDEA_CHANGED_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_DATE" source="IDEA_CHANGED_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_TIME" source="IDEA_CHANGED_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_DATETIME" source="IDEA_CHANGED_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_YEAR_WEEK" source="IDEA_CHANGED_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_WEEK" source="IDEA_CHANGED_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_DAY" source="IDEA_CHANGED_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_COUNT" source="IDEA_COUNT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_INDICATOR" source="IDEA_CHANGED_INDICATOR"/>
+      </input>
+      <filter>&quot;IDEA_CHANGED_INDICATOR&quot; = 1</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:AggregationView" id="Idea_Completions">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="FINAL_STATUS_AT_YEAR_MONTH"/>
+        <viewAttribute id="FINAL_STATUS_AT_YEAR"/>
+        <viewAttribute id="FINAL_STATUS_AT_MONTH_NUMBER"/>
+        <viewAttribute id="FINAL_STATUS_AT_MONTH"/>
+        <viewAttribute id="FINAL_STATUS_AT_DAY"/>
+        <viewAttribute id="FINAL_STATUS_AT_DATE"/>
+        <viewAttribute id="FINAL_STATUS_AT_TIME"/>
+        <viewAttribute id="FINAL_STATUS_AT_DATETIME"/>
+        <viewAttribute id="FINAL_STATUS_AT_YEAR_WEEK"/>
+        <viewAttribute id="FINAL_STATUS_AT_WEEK"/>
+        <viewAttribute id="IDEA_COUNT"/>
+        <viewAttribute id="FINAL_STATUS_INDICATOR"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Idea_Completions$$$$V_ANALYTICS_IDEA_DATES$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_YEAR_MONTH" source="FINAL_STATUS_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_YEAR" source="FINAL_STATUS_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_MONTH_NUMBER" source="FINAL_STATUS_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_MONTH" source="FINAL_STATUS_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_DAY" source="FINAL_STATUS_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_DATE" source="FINAL_STATUS_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_TIME" source="FINAL_STATUS_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_DATETIME" source="FINAL_STATUS_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_YEAR_WEEK" source="FINAL_STATUS_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_WEEK" source="FINAL_STATUS_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_COUNT" source="IDEA_COUNT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_INDICATOR" source="FINAL_STATUS_INDICATOR"/>
+      </input>
+      <filter>&quot;FINAL_STATUS_INDICATOR&quot; = 1</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:UnionView" id="Union_1">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_VIEWS"/>
+        <viewAttribute id="VIEW_DATE_YEAR"/>
+        <viewAttribute id="VIEW_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="VIEW_DATE_DAY"/>
+        <viewAttribute id="VIEW_DATE_YEAR_MONTH"/>
+        <viewAttribute id="VIEW_DATE_MONTH"/>
+        <viewAttribute id="VIEW_DATE"/>
+        <viewAttribute id="VIEW_TIME"/>
+        <viewAttribute id="VIEW_DATETIME"/>
+        <viewAttribute id="APPLICATION"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_VIEWS"/>
+        <viewAttribute id="VIEW_DATE_YEAR_WEEK"/>
+        <viewAttribute id="VIEW_DATE_WEEK"/>
+        <viewAttribute id="IDEA_SUBMISSION_COUNT"/>
+        <viewAttribute id="IDEA_CHANGE_COUNT"/>
+        <viewAttribute id="IDEA_COMPLETION_COUNT"/>
+        <viewAttribute id="IDEA_USER_NAME"/>
+        <viewAttribute id="CAMPAIGN_USER_NAME"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input emptyUnionBehavior="NO_ROW" node="#Campaign_Views">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VIEWS" source="CAMPAIGN_VIEWS"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR" source="VIEW_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH_NUMBER" source="VIEW_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_DAY" source="VIEW_DATE_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_MONTH" source="VIEW_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH" source="VIEW_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE" source="VIEW_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_TIME" source="VIEW_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATETIME" source="VIEW_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="APPLICATION" source="APPLICATION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_VIEWS" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_WEEK" source="VIEW_DATE_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_WEEK" source="VIEW_DATE_WEEK"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_SUBMISSION_COUNT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_CHANGE_COUNT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_COMPLETION_COUNT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_USER_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_USER_NAME" source="CAMPAIGN_USER_NAME"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Idea_Views">
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CAMPAIGN_VIEWS" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR" source="VIEW_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH_NUMBER" source="VIEW_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_DAY" source="VIEW_DATE_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_MONTH" source="VIEW_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH" source="VIEW_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE" source="VIEW_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_TIME" source="VIEW_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATETIME" source="VIEW_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="APPLICATION" source="APPLICATION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_VIEWS" source="IDEA_VIEWS"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_WEEK" source="VIEW_DATE_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_WEEK" source="VIEW_DATE_WEEK"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_SUBMISSION_COUNT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_CHANGE_COUNT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_COMPLETION_COUNT" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_USER_NAME" source="IDEA_USER_NAME"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CAMPAIGN_USER_NAME" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Idea_Submissions">
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CAMPAIGN_VIEWS" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR" source="IDEA_SUBMITTED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH_NUMBER" source="IDEA_SUBMITTED_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_DAY" source="IDEA_SUBMITTED_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_MONTH" source="IDEA_SUBMITTED_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH" source="IDEA_SUBMITTED_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE" source="IDEA_SUBMITTED_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_TIME" source="IDEA_SUBMITTED_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATETIME" source="IDEA_SUBMITTED_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="APPLICATION" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_VIEWS" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_WEEK" source="IDEA_SUBMITTED_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_WEEK" source="IDEA_SUBMITTED_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMISSION_COUNT" source="IDEA_COUNT"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_CHANGE_COUNT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_COMPLETION_COUNT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_USER_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CAMPAIGN_USER_NAME" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Idea_Changes">
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CAMPAIGN_VIEWS" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR" source="IDEA_CHANGED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH_NUMBER" source="IDEA_CHANGED_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_DAY" source="IDEA_CHANGED_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_MONTH" source="IDEA_CHANGED_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH" source="IDEA_CHANGED_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE" source="IDEA_CHANGED_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_TIME" source="IDEA_CHANGED_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATETIME" source="IDEA_CHANGED_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="APPLICATION" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_VIEWS" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_WEEK" source="IDEA_CHANGED_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_WEEK" source="IDEA_CHANGED_AT_WEEK"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_SUBMISSION_COUNT" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGE_COUNT" source="IDEA_COUNT"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_COMPLETION_COUNT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_USER_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CAMPAIGN_USER_NAME" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Idea_Completions">
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CAMPAIGN_VIEWS" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR" source="FINAL_STATUS_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH_NUMBER" source="FINAL_STATUS_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_DAY" source="FINAL_STATUS_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_MONTH" source="FINAL_STATUS_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH" source="FINAL_STATUS_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE" source="FINAL_STATUS_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_TIME" source="FINAL_STATUS_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATETIME" source="FINAL_STATUS_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="APPLICATION" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_VIEWS" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_WEEK" source="FINAL_STATUS_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_WEEK" source="FINAL_STATUS_AT_WEEK"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_SUBMISSION_COUNT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_CHANGE_COUNT" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_COMPLETION_COUNT" source="IDEA_COUNT"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="IDEA_USER_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CAMPAIGN_USER_NAME" null="true" value=""/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Union_1">
+    <attributes>
+      <attribute id="APPLICATION" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Application"/>
+        <keyMapping columnObjectName="Union_1" columnName="APPLICATION"/>
+      </attribute>
+      <attribute id="DATE_YEAR" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Year"/>
+        <keyMapping columnObjectName="Union_1" columnName="VIEW_DATE_YEAR"/>
+      </attribute>
+      <attribute id="DATE_MONTH_NUMBER" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Month (Number)"/>
+        <keyMapping columnObjectName="Union_1" columnName="VIEW_DATE_MONTH_NUMBER"/>
+      </attribute>
+      <attribute id="DATE_DAY" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Day"/>
+        <keyMapping columnObjectName="Union_1" columnName="VIEW_DATE_DAY"/>
+      </attribute>
+      <attribute id="DATE_YEAR_MONTH" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Year/Month"/>
+        <keyMapping columnObjectName="Union_1" columnName="VIEW_DATE_YEAR_MONTH"/>
+      </attribute>
+      <attribute id="DATE_MONTH" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Month"/>
+        <keyMapping columnObjectName="Union_1" columnName="VIEW_DATE_MONTH"/>
+      </attribute>
+      <attribute id="DATE" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Date"/>
+        <keyMapping columnObjectName="Union_1" columnName="VIEW_DATE"/>
+      </attribute>
+      <attribute id="TIME" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Time"/>
+        <keyMapping columnObjectName="Union_1" columnName="VIEW_TIME"/>
+      </attribute>
+      <attribute id="DATETIME" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Date/Time"/>
+        <keyMapping columnObjectName="Union_1" columnName="VIEW_DATETIME"/>
+      </attribute>
+      <attribute id="DATE_YEAR_WEEK" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Year/Week"/>
+        <keyMapping columnObjectName="Union_1" columnName="VIEW_DATE_YEAR_WEEK"/>
+      </attribute>
+      <attribute id="DATE_WEEK" order="13" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Week"/>
+        <keyMapping columnObjectName="Union_1" columnName="VIEW_DATE_WEEK"/>
+      </attribute>
+      <attribute id="IDEA_USER_NAME" order="17" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="Idea Visitor Name"/>
+        <keyMapping columnObjectName="Union_1" columnName="IDEA_USER_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_USER_NAME" order="18" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="Campaign Visitor Name"/>
+        <keyMapping columnObjectName="Union_1" columnName="CAMPAIGN_USER_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID$local">
+        <keyMapping columnObjectName="Union_1" columnName="CAMPAIGN_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="CAMPAIGN_VIEW_COUNT" order="1" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Campaign Views"/>
+        <measureMapping columnObjectName="Union_1" columnName="CAMPAIGN_VIEWS"/>
+      </measure>
+      <measure id="IDEA_VIEW_COUNT" order="2" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Idea Views"/>
+        <measureMapping columnObjectName="Union_1" columnName="IDEA_VIEWS"/>
+      </measure>
+      <measure id="IDEA_SUBMISSION_COUNT" order="14" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Ideas submitted"/>
+        <measureMapping columnObjectName="Union_1" columnName="IDEA_SUBMISSION_COUNT"/>
+      </measure>
+      <measure id="IDEA_CHANGE_COUNT" order="15" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Ideas Changed after Submit"/>
+        <measureMapping columnObjectName="Union_1" columnName="IDEA_CHANGE_COUNT"/>
+      </measure>
+      <measure id="IDEA_COMPLETION_COUNT" order="16" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Ideas completed"/>
+        <measureMapping columnObjectName="Union_1" columnName="IDEA_COMPLETION_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures>
+      <measure id="IDEA_VISITOR_COUNT" hidden="false" order="19" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" aggregatable="true" datatype="INTEGER">
+        <descriptions defaultDescription="Number of Idea Visitor"/>
+        <exceptionAggregation>
+          <attribute attributeName="IDEA_USER_NAME"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="CAMPAIGN_VISITOR_COUNT" hidden="false" order="20" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" aggregatable="true" datatype="INTEGER">
+        <descriptions defaultDescription="Number of Campaign Visitor"/>
+        <exceptionAggregation>
+          <attribute attributeName="CAMPAIGN_USER_NAME"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+    <sharedDimensions>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION">
+        <attributes>
+          <attributeRef>#CAMPAIGN_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>CAMPAIGN_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinType="referential" joinOperator="Equal"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+    </sharedDimensions>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="253" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Campaign_Views" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="355"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="99" y="451"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Aggregation_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="253" y="451"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Idea_Views" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="176" y="355"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Idea_Submissions" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="330" y="355"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Idea_Changes" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="484" y="355"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="false" modelObjectName="Idea_Completions" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="650" y="361"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Union_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="253" y="203"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape modelObjectName="Union_1" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+        <upperLeftCorner x="67" y="132"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="628" y="262"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

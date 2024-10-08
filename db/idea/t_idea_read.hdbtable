@@ -1,0 +1,13 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Idea read";
+table.columns =[
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment="idea readed key"; },
+	{name = "IDEA_ID"; sqlType = INTEGER; nullable = false; comment="idea readed key"; },
+	{name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment="Create at"; },
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment="Create by user id"; },
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = true; comment="Change at "; },
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = true; comment="Changed by user id"; },
+	{name = "IS_READ"; sqlType = INTEGER; nullable = false; comment="Idea readed status"; }
+];
+table.primaryKey.pkcolumns = ["ID"];

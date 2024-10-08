@@ -1,0 +1,4 @@
+schema = "SAP_INO_EXT";
+query = "select * from \"sap.ino.db.tag::v_assignment_tag_and_group\" with read only";
+
+depends_on_view = ["sap.ino.db.tag::v_assignment_tag_and_group"];

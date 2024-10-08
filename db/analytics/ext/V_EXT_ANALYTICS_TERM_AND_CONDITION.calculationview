@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_TERM_AND_CONDITION" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED">
+  <descriptions defaultDescription="V_EXT_ANALYTICS_TERM_AND_CONDITION"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="24"/>
+  <dataSources>
+    <DataSource id="V_ANALYTICS_TERM_AND_CONDITION" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_TERM_AND_CONDITION</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:AggregationView" id="TERM_HISTORY">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="USER_ID"/>
+        <viewAttribute id="TERM_CODE"/>
+        <viewAttribute id="TERM_CHANGED_AT"/>
+        <viewAttribute id="TERM_ACCEPTED_AT"/>
+        <viewAttribute id="COUNT_ACCEPT"/>
+        <viewAttribute id="COUNT_NOT_ACCEPT"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="TERM_ACCEPTED"/>
+        <viewAttribute id="COUNT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#V_ANALYTICS_TERM_AND_CONDITION">
+        <mapping xsi:type="Calculation:AttributeMapping" target="USER_ID" source="USER_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TERM_CODE" source="TERM_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TERM_CHANGED_AT" source="TERM_CHANGED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TERM_ACCEPTED_AT" source="TERM_ACCEPTED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COUNT_ACCEPT" source="COUNT_ACCEPT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COUNT_NOT_ACCEPT" source="COUNT_NOT_ACCEPT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TERM_ACCEPTED" source="TERM_ACCEPTED"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COUNT" source="COUNT"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="TERM_HISTORY">
+    <descriptions/>
+    <attributes>
+      <attribute id="TERM_CHANGED_AT" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Term changed at"/>
+        <keyMapping columnObjectName="TERM_HISTORY" columnName="TERM_CHANGED_AT"/>
+      </attribute>
+      <attribute id="TERM_ACCEPTED_AT" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Term accepted at"/>
+        <keyMapping columnObjectName="TERM_HISTORY" columnName="TERM_ACCEPTED_AT"/>
+      </attribute>
+      <attribute id="USER_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="TERM_HISTORY" columnName="USER_ID"/>
+      </attribute>
+      <attribute id="TERM_CODE$local">
+        <descriptions/>
+        <keyMapping columnObjectName="TERM_HISTORY" columnName="TERM_CODE"/>
+      </attribute>
+      <attribute id="STATUS_CODE$local">
+        <descriptions/>
+        <keyMapping columnObjectName="TERM_HISTORY" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="TERM_ACCEPTED$local">
+        <descriptions/>
+        <keyMapping columnObjectName="TERM_HISTORY" columnName="TERM_ACCEPTED"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="COUNT_ACCEPT" hidden="true" order="3" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Count of accepted term"/>
+        <measureMapping columnObjectName="TERM_HISTORY" columnName="COUNT_ACCEPT"/>
+      </measure>
+      <measure id="COUNT_NOT_ACCEPT" hidden="true" order="4" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Count of un-accepted term"/>
+        <measureMapping columnObjectName="TERM_HISTORY" columnName="COUNT_NOT_ACCEPT"/>
+      </measure>
+      <measure id="COUNT" order="5" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="COUNT"/>
+        <measureMapping columnObjectName="TERM_HISTORY" columnName="COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+    <sharedDimensions>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION">
+        <attributes>
+          <attributeRef>#USER_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDENTITY_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures>
+          <attributeReference alias="USER_NAME" attributeName="IDENTITY_NAME">
+            <descriptions defaultDescription="Name"/>
+          </attributeReference>
+          <attributeReference attributeName="IDENTITY_IMAGE_ID" hidden="true"/>
+        </associatedAttributeFeatures>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_TEXT_MODULE_DIMENSION">
+        <attributes>
+          <attributeRef>#TERM_CODE$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>TERM_CODE</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures>
+          <attributeReference attributeName="TERM_DESCRIPTION" hidden="true"/>
+        </associatedAttributeFeatures>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_STATUS_DIMENSION">
+        <attributes>
+          <attributeRef>#STATUS_CODE$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>STATUS_CODE</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="leftOuter"/>
+        <associatedAttributeFeatures>
+          <attributeReference alias="TERM_STATUS_TEXT" attributeName="STATUS_TEXT">
+            <descriptions defaultDescription="Term Status"/>
+          </attributeReference>
+          <attributeReference alias="TERM_STATUS_CODE" attributeName="STATUS_CODE">
+            <descriptions defaultDescription="Term Status Code"/>
+          </attributeReference>
+          <attributeReference attributeName="STATUS_DEFAULT_TEXT" hidden="true"/>
+          <attributeReference attributeName="STATUS_DEFAULT_LONG_TEXT" hidden="true"/>
+        </associatedAttributeFeatures>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics/calculationviews/V_ANALYTICS_RESOLVED_TEXT_WRAPPER">
+        <attributes>
+          <attributeRef>#TERM_ACCEPTED$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>TEXT_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="leftOuter"/>
+        <associatedAttributeFeatures>
+          <attributeReference alias="TERM_ACCEPTED_TEXT" attributeName="CONTENT">
+            <descriptions defaultDescription="Term accepted or not"/>
+          </attributeReference>
+          <attributeReference attributeName="TEXT_ID" hidden="true"/>
+        </associatedAttributeFeatures>
+      </logicalJoin>
+    </sharedDimensions>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="22" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="TERM_HISTORY" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="257"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape modelObjectName="TERM_HISTORY" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+        <upperLeftCorner x="347" y="325"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="-144" y="291"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_TEXT_MODULE_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="823" y="342"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_STATUS_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="719" y="540"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics/calculationviews/V_ANALYTICS_RESOLVED_TEXT_WRAPPER" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="-20" y="550"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

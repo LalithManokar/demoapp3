@@ -1,0 +1,20 @@
+schema = "SAP_INO";
+query =
+"select campaign_id, camp.name as campaign_name, no_users from (
+    select campaign_id, count(identity_id)as no_users from (
+        select distinct oir.object_id as campaign_id, oir.identity_id as identity_id
+            from \"sap.ino.db.iam::v_object_identity_role_transitive\" as oir
+            join \"sap.ino.db.iam::t_role_privilege\" as rp
+                on oir.role_code = rp.role_code
+            join \"sap.ino.db.iam::t_identity\" as identity
+                on oir.identity_id = identity.id
+            where rp.privilege = 'CAMP_READ' and
+                identity.type_code = 'USER'
+        ) 
+        group by campaign_id
+    )
+    join \"sap.ino.db.campaign::v_campaign_full\" as camp
+            on campaign_id = camp.id";
+            
+depends_on_table = ["sap.ino.db.iam::t_role_privilege", "sap.ino.db.iam::t_identity"];
+depends_on_view = ["sap.ino.db.iam::v_object_identity_role_transitive", "sap.ino.db.campaign::v_campaign_full"];

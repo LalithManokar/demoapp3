@@ -1,0 +1,134 @@
+schema = "SAP_INO_EXT";
+query = "select 1 as NO, 
+            auth.campaign_id, 
+            case when all_ideas_count.submitted_count is null then 0 else all_ideas_count.submitted_count end as all_ideas_count,       
+            case when submitted_count is null then 0 else submitted_count end as submitted_idea_count,
+            case when evaluation_pending is null then 0 else evaluation_pending end as evaluation_pending_count,
+            case when campaign_blogs is null then 0 else campaign_blogs end as campaign_blogs_count,
+            case when completed_idea_count is null then 0 else completed_idea_count end as completed_idea_count,
+            case when followed_completed_idea_count is null then 0 else followed_completed_idea_count end as followed_completed_idea_count,
+            case when OPEN_VOTING_IDEAS_COUNT is null then 0 else OPEN_VOTING_IDEAS_COUNT end as OPEN_VOTING_IDEAS_COUNT,
+            case when MY_COMMENT_IDEA_COUNT is null then 0 else MY_COMMENT_IDEA_COUNT end as MY_COMMENT_IDEA_COUNT,
+            case when MY_VOTE_IDEA_COUNT is null then 0 else MY_VOTE_IDEA_COUNT end as MY_VOTE_IDEA_COUNT,
+            case when MY_EVALUATED_IDEA_COUNT is null then 0 else MY_EVALUATED_IDEA_COUNT end as MY_EVALUATED_IDEA_COUNT,
+            case when OPEN_EVALUATION_IDEA_COUNT is null then 0 else OPEN_EVALUATION_IDEA_COUNT end as OPEN_EVALUATION_IDEA_COUNT,
+            case when MY_ALL_IDEA_COUNT is null then 0 else MY_ALL_IDEA_COUNT end as MY_ALL_IDEA_COUNT
+        from 
+            \"sap.ino.db.campaign::v_auth_campaigns_and_registrable\" as auth
+        left join    
+    		(select count(submitted_idea.id) as submitted_count, campaign_id 
+        		from \"sap.ino.db.idea::t_idea\" as submitted_idea
+        		where submitted_idea.status_code <> 'sap.ino.config.DRAFT' 
+        		group by campaign_id 
+    		) as all_ideas_count
+		on auth.campaign_id = all_ideas_count.campaign_id
+		
+		left join
+            (select count(id) as evaluation_pending, campaign_id
+                from \"sap.ino.db.idea::v_my_evaluation_pending\"
+                group by campaign_id
+            ) as evaluation_pending 
+        on auth.campaign_id = evaluation_pending.campaign_id
+        
+        left join 
+            (select count(id) as campaign_blogs, object_id
+                from \"sap.ino.db.blog::v_blog\"
+                where status_code <> 'sap.ino.config.DRAFT' 
+                group by object_id
+            ) as campaign_blogs
+        on auth.campaign_id = campaign_blogs.object_id
+        
+        left join
+             (select count(id) as completed_idea_count, campaign_id
+                from \"sap.ino.db.idea::t_idea\"
+                where status_code in (select * from \"sap.ino.db.idea::v_status_code_for_completed_idea\") and
+                      id in (select * from \"sap.ino.db.idea::v_auth_ideas_read\")
+                group by campaign_id
+             ) as completed_ideas_count
+        on auth.campaign_id = completed_ideas_count.campaign_id
+        
+        left join
+            (select count(id) as followed_completed_idea_count, campaign_id
+              from \"sap.ino.db.idea.ext::v_ext_my_followed_ideas\"
+              group by campaign_id
+            ) as followed_completed_ideas_count
+        on auth.campaign_id = followed_completed_ideas_count.campaign_id
+        
+        LEFT JOIN (
+            SELECT COUNT(idea.ID) AS OPEN_VOTING_IDEAS_COUNT, 
+            	idea.campaign_id
+            FROM \"sap.ino.db.idea::t_idea\" AS idea
+            	INNER JOIN \"sap.ino.db.idea::v_vote_ideas\" AS open_vote
+            	ON idea.id = open_vote.id
+            WHERE idea.status_code <> 'sap.ino.config.DRAFT'
+            GROUP BY idea.campaign_id
+        ) AS OPEN_FOR_VOTE
+        ON auth.campaign_id = OPEN_FOR_VOTE.campaign_id
+        
+        LEFT JOIN (
+            SELECT COUNT(c_idea.IDEA_ID) AS MY_COMMENT_IDEA_COUNT,
+                idea.CAMPAIGN_ID
+            FROM \"sap.ino.db.idea::f_my_commented_ideas\"() as c_idea
+            INNER JOIN \"sap.ino.db.idea::t_idea\" as idea
+            ON c_idea.IDEA_ID = IDEA.ID
+            GROUP BY idea.CAMPAIGN_ID
+        ) AS MY_COMMENT_IDEAS
+        ON auth.CAMPAIGN_ID = MY_COMMENT_IDEAS.CAMPAIGN_ID
+        
+        LEFT JOIN (
+            SELECT COUNT(c_idea.IDEA_ID) AS MY_VOTE_IDEA_COUNT,
+                idea.CAMPAIGN_ID
+            FROM \"sap.ino.db.idea::v_my_voted_ideas\" as c_idea
+            INNER JOIN \"sap.ino.db.idea::t_idea\" as idea
+            ON c_idea.IDEA_ID = IDEA.ID
+            GROUP BY idea.CAMPAIGN_ID
+        ) AS MY_VOTE_IDEAS
+        ON auth.CAMPAIGN_ID = MY_VOTE_IDEAS.CAMPAIGN_ID
+        
+        LEFT JOIN (
+            SELECT COUNT(c_idea.ID) AS MY_EVALUATED_IDEA_COUNT,
+                c_idea.CAMPAIGN_ID
+            FROM \"sap.ino.db.idea::v_my_evaluated_ideas\" as c_idea
+            GROUP BY c_idea.CAMPAIGN_ID
+        ) AS MY_EVALUATED_IDEAS
+        ON auth.CAMPAIGN_ID = MY_EVALUATED_IDEAS.CAMPAIGN_ID
+        
+        LEFT JOIN (
+            SELECT COUNT(c_idea.ID) AS OPEN_EVALUATION_IDEA_COUNT,
+                c_idea.CAMPAIGN_ID
+            FROM \"sap.ino.db.idea::v_my_evaluation_open\" as c_idea
+            GROUP BY c_idea.CAMPAIGN_ID
+        ) AS OPEN_EVALUATION_IDEAS
+        ON auth.CAMPAIGN_ID = OPEN_EVALUATION_IDEAS.CAMPAIGN_ID
+        
+        LEFT JOIN (    
+    		SELECT COUNT(all_my_idea.id) as MY_ALL_IDEA_COUNT, 
+    		    all_my_idea.CAMPAIGN_ID
+        		FROM \"sap.ino.db.idea::t_idea\" as all_my_idea
+                INNER JOIN \"sap.ino.db.iam::t_object_identity_role\" as role
+	            ON role.object_id = all_my_idea.id
+        		inner join \"sap.ino.db.iam::v_auth_application_user\" as suser
+                ON role.identity_id = suser.id
+        		WHERE role.object_type_code = 'IDEA' 
+	        and (role.role_code = 'IDEA_SUBMITTER' or role.role_code = 'IDEA_CONTRIBUTOR')
+        		GROUP BY all_my_idea.CAMPAIGN_ID 
+    		) AS MY_ALL_IDEA
+		ON auth.CAMPAIGN_ID = MY_ALL_IDEA.CAMPAIGN_ID
+
+        with read only";
+
+depends_on_view = [ "sap.ino.db.campaign::v_auth_campaigns",
+                    "sap.ino.db.idea::v_my_evaluation_pending",
+                    "sap.ino.db.idea::v_auth_ideas_read",
+                    "sap.ino.db.blog::v_blog",
+                    "sap.ino.db.idea::v_status_code_for_completed_idea",
+                    "sap.ino.db.idea.ext::v_ext_my_followed_ideas",
+                    "sap.ino.db.campaign::v_auth_campaigns_and_registrable",
+                    "sap.ino.db.idea::v_vote_ideas",
+                    "sap.ino.db.idea::v_my_voted_ideas",
+                    "sap.ino.db.idea::v_my_evaluated_ideas",
+                    "sap.ino.db.idea::f_my_commented_ideas",
+                    "sap.ino.db.idea::v_my_evaluation_open",
+                    "sap.ino.db.iam::v_auth_application_user"];
+depends_on_table = ["sap.ino.db.idea::t_idea","sap.ino.db.iam::t_object_identity_role"];                    
+                    

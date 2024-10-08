@@ -1,0 +1,40 @@
+schema = "SAP_INO";
+query = "
+    SELECT 
+        criterion_value.ID,
+    	criterion_value.EVALUATION_ID,
+    	criterion_value.CRITERION_CODE,
+    	criterion_value.NUM_VALUE,
+    	criterion_value.BOOL_VALUE,
+    	criterion_value.TEXT_VALUE,
+    	criterion_value.COMMENT,
+    	criterion_value.IS_DONE,
+    	criteria.CODE,
+    	criteria.MODEL_CODE,
+    	criteria.DATATYPE_CODE,
+    	criteria.PARENT_CRITERION_CODE,
+    	criteria.SEQUENCE_NO,
+    	criteria.IS_OVERALL_RESULT,
+    	criteria.UOM_CODE,
+    	criteria.VALUE_OPTION_LIST_CODE,
+    	criteria.AGGREGATION_TYPE,
+    	criteria.NUM_VALUE_MIN,
+    	criteria.NUM_VALUE_MAX,
+    	criteria.X_AXIS_CRITERION_CODE,
+    	criteria.X_AXIS_SEGMENT_NO,
+    	criteria.Y_AXIS_CRITERION_CODE,
+    	criteria.Y_AXIS_SEGMENT_NO,
+    	criteria.VIS_PARAM_1_CRITERION_CODE,
+    	criteria.VIS_PARAM_2_CRITERION_CODE,
+    	criteria.DEFAULT_TEXT,
+    	criteria.DEFAULT_LONG_TEXT,
+    	criteria.NUM_VALUE_STEP_SIZE,
+    	criteria.WEIGHT,
+    	criteria.FORMULA
+    FROM \"sap.ino.db.evaluation::t_criterion_value\" AS criterion_value
+        INNER JOIN \"sap.ino.db.evaluation::t_criterion\" AS criteria 
+            ON criteria.code = criterion_value.criterion_code
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.evaluation::t_criterion_value", "sap.ino.db.evaluation::t_criterion"];

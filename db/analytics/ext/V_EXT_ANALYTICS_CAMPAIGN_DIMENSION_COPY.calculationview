@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_CAMPAIGN_DIMENSION_COPY" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="Campaign Dimension"/>
+  <metadata changedAt="2021-06-29 16:53:42.248"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="25"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.campaign::t_campaign" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::t_campaign"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.iam::t_identity" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_identity"/>
+    </DataSource>
+    <DataSource id="Campaign_Change_Join$$$$sap.ino.db.iam::t_identity$$" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_identity"/>
+    </DataSource>
+    <DataSource id="V_ANALYTICS_TEXT_CAMPAIGN_NAME" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_TEXT_CAMPAIGN_NAME</resourceUri>
+    </DataSource>
+    <DataSource id="V_ANALYTICS_TEXT_VOTE_TYPE_NAME" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_TEXT_VOTE_TYPE_NAME</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.subresponsibility::t_responsibility_stage" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.subresponsibility::t_responsibility_stage"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Campaign_Projection">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="CAMPAIGN_VALID_FROM"/>
+        <viewAttribute id="CAMPAIGN_VALID_TO"/>
+        <viewAttribute id="CAMPAIGN_SUBMIT_FROM"/>
+        <viewAttribute id="CAMPAIGN_SUBMIT_TO"/>
+        <viewAttribute id="CAMPAIGN_CREATED_BY_ID"/>
+        <viewAttribute id="CAMPAIGN_CHANGED_BY_ID"/>
+        <viewAttribute id="CAMPAIGN_VOTE_TYPE_CODE"/>
+        <viewAttribute id="RESP_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.campaign::t_campaign">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VALID_FROM" source="VALID_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VALID_TO" source="VALID_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SUBMIT_FROM" source="SUBMIT_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SUBMIT_TO" source="SUBMIT_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_CREATED_BY_ID" source="CREATED_BY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_CHANGED_BY_ID" source="CHANGED_BY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VOTE_TYPE_CODE" source="VOTE_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE" source="RESP_CODE"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Campaign_Create_Join" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="CAMPAIGN_VALID_FROM"/>
+        <viewAttribute id="CAMPAIGN_VALID_TO"/>
+        <viewAttribute id="CAMPAIGN_SUBMIT_FROM"/>
+        <viewAttribute id="CAMPAIGN_SUBMIT_TO"/>
+        <viewAttribute id="CAMPAIGN_CREATED_BY_NAME"/>
+        <viewAttribute id="CAMPAIGN_CHANGED_BY_ID"/>
+        <viewAttribute id="CAMPAIGN_VOTE_TYPE_CODE"/>
+        <viewAttribute id="RESP_CODE"/>
+        <viewAttribute hidden="true" id="JOIN$CAMPAIGN_CREATED_BY_ID$ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Campaign_Projection">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VALID_FROM" source="CAMPAIGN_VALID_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VALID_TO" source="CAMPAIGN_VALID_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SUBMIT_FROM" source="CAMPAIGN_SUBMIT_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SUBMIT_TO" source="CAMPAIGN_SUBMIT_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_CHANGED_BY_ID" source="CAMPAIGN_CHANGED_BY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VOTE_TYPE_CODE" source="CAMPAIGN_VOTE_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE" source="RESP_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_CREATED_BY_ID$ID" source="CAMPAIGN_CREATED_BY_ID"/>
+      </input>
+      <input node="#sap.ino.db.iam::t_identity">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_CREATED_BY_NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_CREATED_BY_ID$ID" source="ID"/>
+      </input>
+      <joinAttribute name="JOIN$CAMPAIGN_CREATED_BY_ID$ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Campaign_Change_Join" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="CAMPAIGN_VALID_FROM"/>
+        <viewAttribute id="CAMPAIGN_VALID_TO"/>
+        <viewAttribute id="CAMPAIGN_SUBMIT_FROM"/>
+        <viewAttribute id="CAMPAIGN_SUBMIT_TO"/>
+        <viewAttribute id="CAMPAIGN_CREATED_BY_NAME"/>
+        <viewAttribute id="CAMPAIGN_CHANGED_BY_NAME"/>
+        <viewAttribute id="CAMPAIGN_VOTE_TYPE_CODE"/>
+        <viewAttribute id="RESP_CODE"/>
+        <viewAttribute hidden="true" id="JOIN$CAMPAIGN_CHANGED_BY_ID$ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Campaign_Create_Join">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VALID_FROM" source="CAMPAIGN_VALID_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VALID_TO" source="CAMPAIGN_VALID_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SUBMIT_FROM" source="CAMPAIGN_SUBMIT_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SUBMIT_TO" source="CAMPAIGN_SUBMIT_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_CREATED_BY_NAME" source="CAMPAIGN_CREATED_BY_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VOTE_TYPE_CODE" source="CAMPAIGN_VOTE_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE" source="RESP_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_CHANGED_BY_ID$ID" source="CAMPAIGN_CHANGED_BY_ID"/>
+      </input>
+      <input node="#Campaign_Change_Join$$$$sap.ino.db.iam::t_identity$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_CHANGED_BY_NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_CHANGED_BY_ID$ID" source="ID"/>
+      </input>
+      <joinAttribute name="JOIN$CAMPAIGN_CHANGED_BY_ID$ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Campaign_Name_Join" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="CAMPAIGN_NAME"/>
+        <viewAttribute id="CAMPAIGN_SHORT_NAME"/>
+        <viewAttribute id="CAMPAIGN_VALID_FROM"/>
+        <viewAttribute id="CAMPAIGN_VALID_TO"/>
+        <viewAttribute id="CAMPAIGN_SUBMIT_FROM"/>
+        <viewAttribute id="CAMPAIGN_SUBMIT_TO"/>
+        <viewAttribute id="CAMPAIGN_CREATED_BY_NAME"/>
+        <viewAttribute id="CAMPAIGN_CHANGED_BY_NAME"/>
+        <viewAttribute id="CAMPAIGN_VOTE_TYPE_CODE"/>
+        <viewAttribute id="RESP_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Campaign_Change_Join">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VALID_FROM" source="CAMPAIGN_VALID_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VALID_TO" source="CAMPAIGN_VALID_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SUBMIT_FROM" source="CAMPAIGN_SUBMIT_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SUBMIT_TO" source="CAMPAIGN_SUBMIT_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_CREATED_BY_NAME" source="CAMPAIGN_CREATED_BY_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_CHANGED_BY_NAME" source="CAMPAIGN_CHANGED_BY_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VOTE_TYPE_CODE" source="CAMPAIGN_VOTE_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE" source="RESP_CODE"/>
+      </input>
+      <input node="#V_ANALYTICS_TEXT_CAMPAIGN_NAME">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_NAME" source="CAMPAIGN_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SHORT_NAME" source="CAMPAIGN_SHORT_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+      </input>
+      <joinAttribute name="CAMPAIGN_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Campaign_Vote_Type" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="CAMPAIGN_NAME"/>
+        <viewAttribute id="CAMPAIGN_SHORT_NAME"/>
+        <viewAttribute id="CAMPAIGN_VALID_FROM"/>
+        <viewAttribute id="CAMPAIGN_VALID_TO"/>
+        <viewAttribute id="CAMPAIGN_SUBMIT_FROM"/>
+        <viewAttribute id="CAMPAIGN_SUBMIT_TO"/>
+        <viewAttribute id="CAMPAIGN_CREATED_BY_NAME"/>
+        <viewAttribute id="CAMPAIGN_CHANGED_BY_NAME"/>
+        <viewAttribute id="CAMPAIGN_VOTE_TYPE"/>
+        <viewAttribute id="RESP_CODE"/>
+        <viewAttribute hidden="true" id="JOIN$CAMPAIGN_VOTE_TYPE_CODE$VOTE_TYPE_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Campaign_Name_Join">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_NAME" source="CAMPAIGN_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SHORT_NAME" source="CAMPAIGN_SHORT_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VALID_FROM" source="CAMPAIGN_VALID_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VALID_TO" source="CAMPAIGN_VALID_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SUBMIT_FROM" source="CAMPAIGN_SUBMIT_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SUBMIT_TO" source="CAMPAIGN_SUBMIT_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_CREATED_BY_NAME" source="CAMPAIGN_CREATED_BY_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_CHANGED_BY_NAME" source="CAMPAIGN_CHANGED_BY_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE" source="RESP_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_VOTE_TYPE_CODE$VOTE_TYPE_CODE" source="CAMPAIGN_VOTE_TYPE_CODE"/>
+      </input>
+      <input node="#V_ANALYTICS_TEXT_VOTE_TYPE_NAME">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VOTE_TYPE" source="VOTE_TYPE_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_VOTE_TYPE_CODE$VOTE_TYPE_CODE" source="VOTE_TYPE_CODE"/>
+      </input>
+      <joinAttribute name="JOIN$CAMPAIGN_VOTE_TYPE_CODE$VOTE_TYPE_CODE"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Campaign_Vote_Type_with_text" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="RESP_CODE_TEXT"/>
+        <viewAttribute id="RESP_CODE"/>
+        <viewAttribute id="CAMPAIGN_VOTE_TYPE"/>
+        <viewAttribute id="CAMPAIGN_CHANGED_BY_NAME"/>
+        <viewAttribute id="CAMPAIGN_CREATED_BY_NAME"/>
+        <viewAttribute id="CAMPAIGN_SUBMIT_TO"/>
+        <viewAttribute id="CAMPAIGN_SUBMIT_FROM"/>
+        <viewAttribute id="CAMPAIGN_VALID_TO"/>
+        <viewAttribute id="CAMPAIGN_VALID_FROM"/>
+        <viewAttribute id="CAMPAIGN_SHORT_NAME"/>
+        <viewAttribute id="CAMPAIGN_NAME"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="CAMPAIGN"/>
+        <viewAttribute id="RESP_CODE_LABEL"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Campaign_Vote_Type">
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE" source="RESP_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VOTE_TYPE" source="CAMPAIGN_VOTE_TYPE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_CHANGED_BY_NAME" source="CAMPAIGN_CHANGED_BY_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_CREATED_BY_NAME" source="CAMPAIGN_CREATED_BY_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SUBMIT_TO" source="CAMPAIGN_SUBMIT_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SUBMIT_FROM" source="CAMPAIGN_SUBMIT_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VALID_TO" source="CAMPAIGN_VALID_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VALID_FROM" source="CAMPAIGN_VALID_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_SHORT_NAME" source="CAMPAIGN_SHORT_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_NAME" source="CAMPAIGN_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN" source="CAMPAIGN_NAME"/>
+      </input>
+      <input node="#sap.ino.db.subresponsibility::t_responsibility_stage">
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE_TEXT" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE_LABEL" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE" source="CODE"/>
+      </input>
+      <joinAttribute name="RESP_CODE"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Campaign_Vote_Type_with_text">
+    <descriptions/>
+    <attributes>
+      <attribute id="CAMPAIGN_ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping columnObjectName="Campaign_Vote_Type_with_text" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping columnObjectName="Campaign_Vote_Type_with_text" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_VALID_FROM" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Vlid From"/>
+        <keyMapping columnObjectName="Campaign_Vote_Type_with_text" columnName="CAMPAIGN_VALID_FROM"/>
+      </attribute>
+      <attribute id="CAMPAIGN_SHORT_NAME" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Short Name"/>
+        <keyMapping columnObjectName="Campaign_Vote_Type_with_text" columnName="CAMPAIGN_SHORT_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_VALID_TO" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Valid To"/>
+        <keyMapping columnObjectName="Campaign_Vote_Type_with_text" columnName="CAMPAIGN_VALID_TO"/>
+      </attribute>
+      <attribute id="CAMPAIGN_SUBMIT_FROM" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Submit From"/>
+        <keyMapping columnObjectName="Campaign_Vote_Type_with_text" columnName="CAMPAIGN_SUBMIT_FROM"/>
+      </attribute>
+      <attribute id="CAMPAIGN_CREATED_BY_NAME" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Created By"/>
+        <keyMapping columnObjectName="Campaign_Vote_Type_with_text" columnName="CAMPAIGN_CREATED_BY_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_SUBMIT_TO" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Submit To"/>
+        <keyMapping columnObjectName="Campaign_Vote_Type_with_text" columnName="CAMPAIGN_SUBMIT_TO"/>
+      </attribute>
+      <attribute id="CAMPAIGN_CHANGED_BY_NAME" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Changed By"/>
+        <keyMapping columnObjectName="Campaign_Vote_Type_with_text" columnName="CAMPAIGN_CHANGED_BY_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_VOTE_TYPE" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Vote Type"/>
+        <keyMapping columnObjectName="Campaign_Vote_Type_with_text" columnName="CAMPAIGN_VOTE_TYPE"/>
+      </attribute>
+      <attribute id="RESP_CODE" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Responsibility List"/>
+        <keyMapping columnObjectName="Campaign_Vote_Type_with_text" columnName="RESP_CODE"/>
+      </attribute>
+      <attribute id="RESP_CODE_TEXT" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Responsibility List text"/>
+        <keyMapping columnObjectName="Campaign_Vote_Type_with_text" columnName="RESP_CODE_TEXT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Campaign_Projection" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="700"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Campaign_Create_Join" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="610"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Campaign_Change_Join" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="510"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Campaign_Name_Join" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="420"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Campaign_Vote_Type" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="320"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Campaign_Vote_Type_with_text" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="200"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

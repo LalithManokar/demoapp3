@@ -1,0 +1,43 @@
+<mvc:View
+        controllerName="sap.ino.vc.wall.remote.WallRemoteItemSticker"
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:f="sap.ui.layout.form"
+        xmlns:ino="sap.ino.controls"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Page id="wallRemoteItemSticker">
+        <customHeader>
+            <core:Fragment fragmentName="sap.ino.vc.wall.fragments.WallRemoteItemHeader" type="XML" />
+        </customHeader>
+        <f:SimpleForm 
+            class="sapUiWallRemoteItem"
+            layout="{view>/Layouts/SimpleFormLayout/layout}"
+            labelSpanL="{view>/Layouts/SimpleFormLayout/labelSpanL}"
+            labelSpanM="{view>/Layouts/SimpleFormLayout/labelSpanM}"
+            emptySpanL="{view>/Layouts/SimpleFormLayout/emptySpanL}"
+            emptySpanM="{view>/Layouts/SimpleFormLayout/emptySpanM}">
+            <f:content>
+                <Label text="{i18n>WALL_ITEM_TEXT}"/>
+                <ino:MobileTextEditor visible="{=!${device>/system/desktop}}"
+                    showToolbar="false"
+                    value="{object>CONTENT/TEXT}"
+                    maxHeight="20rem"
+                    editable="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }" 
+                    change="onChange"
+                    openInDialog="true"
+                    dialogTitle="{i18n>IDEA_OBJECT_TIT_DESCRIPTION}" />
+                
+                   <!-- editable="{object>property/nodes/Root/attributes/DESCRIPTION/changeable}" --> 
+                   
+                <Label text="{i18n>WALL_ITEM_COLOR}"/>
+                <ino:ColorPickerLite visible="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }"  id="colorPicker" preview="false" showHex="false" change="onChange" color="{object>CONTENT/COLOR}"
+                defaultColors="#FCF294, E5B0E8, 87E0FD, D2FF52, FFA84C, FF3019, F9D6D6, C4C6FF, FFFFFF, 45484D"/>
+            	
+            </f:content>
+        </f:SimpleForm>
+        <footer>  
+            <core:Fragment fragmentName="sap.ino.vc.wall.fragments.WallRemoteItemFooter" type="XML" />
+        </footer>
+    </Page>
+</mvc:View>

@@ -1,0 +1,31 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Wall Item History";
+table.columns = [
+    {name = "HISTORY_DB_EVENT"; sqlType = VARCHAR; length = 8; nullable = false;comment = "Database event: CREATED, UPDATED, DELETED";},
+    {name = "HISTORY_BIZ_EVENT"; sqlType = VARCHAR; length = 600; nullable = false;comment = "Business events";},
+    {name = "HISTORY_AT"; sqlType = TIMESTAMP; nullable = false;comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID"; sqlType = INTEGER; nullable = false;comment = "Actor who did the changes";},
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+	{name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";},
+	{name = "WALL_ID"; sqlType = INTEGER; nullable = false; comment = "Wall ID";},
+	{name = "PARENT_WALL_ITEM_ID"; sqlType = INTEGER; nullable = true; comment = "Parent Wall Item ID";},
+	{name = "WALL_ITEM_TYPE_CODE"; sqlType = NVARCHAR; length = 5000; nullable = false; comment = "Wall Item Type";},
+	{name = "NAME"; sqlType = NVARCHAR; length = 5000; nullable = true; comment = "Wall Item Name";},
+	{name = "CONTENT"; sqlType = NVARCHAR; length = 5000; nullable = true; comment = "Wall Item Content";},
+	{name = "POSITION_X"; sqlType = DOUBLE; nullable = true; comment = "Wall Item Position X";},
+	{name = "POSITION_Y"; sqlType = DOUBLE; nullable = true; comment = "Wall Item Position Y";},
+	{name = "WIDTH"; sqlType = DOUBLE; nullable = true; comment = "Wall Item Width";},
+	{name = "HEIGHT"; sqlType = DOUBLE; nullable = true; comment = "Wall Item Height";},
+	{name = "ZINDEX"; sqlType = INTEGER; nullable = false; comment = "Wall Item Z-Index";},
+	{name = "REF_OBJECT_TYPE_CODE"; sqlType = VARCHAR; length = 100; nullable = true; comment = "Wall Item Reference Object Type";},
+	{name = "REF_OBJECT_ID"; sqlType = INTEGER; nullable = true; comment = "Wall Item Reference Object ID";},
+	{name = "DESCRIPTION"; sqlType = NVARCHAR; length = 5000; nullable = true; comment = "Searchable description";},
+	{name = "WALL_SESSION_UUID"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Wall Session UUID";}
+];
+table.indexes = [
+	{name="LOGKEY_WALL_ITEM_H"; unique = false; indexColumns = ["ID","HISTORY_AT"];}
+];

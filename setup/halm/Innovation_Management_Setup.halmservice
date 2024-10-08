@@ -1,0 +1,38 @@
+{
+    "ID": "Innovation_Management_Setup",    
+    "APPLICATION_COMPONENT": "PLM-INM",
+    "SCENARIO": {
+        "PACKAGE": "sap.hana.xs.lm.pe.content.halmscenario",
+        "ID": "APPLICATION_CONFIGURATION"
+    },
+    "TEXTBUNDLE": { 
+        "PACKAGE": "sap.ino.text",
+        "FILE": "uitexts.hdbtextbundle"
+    },
+    "DISPLAYNAME": {
+        "TEXT": "Innovation Management Setup",
+        "TEXT_ID": "HALM_TIT_DISP_INO_SETUP"
+    },
+    "DESCRIPTION": {
+        "TEXT": "Setup for SAP Innovation Management",
+        "TEXT_ID": "HALM_TIT_DESCR_INO_SETUP"
+    },
+    "STEPS": [
+        {
+            "XS_FUNCTION": {
+                "ID": "SETUP",
+                "PACKAGE": "sap.ino.setup.xslib",
+                "LIBRARY": "driver.xsjslib",
+                "FUNCTION": "halmSetup",
+                "DISPLAYNAME": {
+                    "TEXT": "Run Setup",
+                    "TEXT_ID": "HALM_TIT_DISP_STEP_SETUP"
+                },
+                "DESCRIPTION": {
+                    "TEXT": "Run Setup",
+                    "TEXT_ID": "HALM_TIT_DESCR_STEP_SETUP"
+                }
+            }
+        }
+    ]
+}

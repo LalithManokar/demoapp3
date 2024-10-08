@@ -1,0 +1,15 @@
+schema = "SAP_INO_EXT";
+
+query = "select campaign_phase.*,
+                status_model.PACKAGE_ID,
+                status_model.DEFAULT_TEXT
+            from \"sap.ino.db.campaign::t_campaign_phase\" as campaign_phase
+            inner join \"sap.ino.db.campaign::v_auth_campaigns\" as auth
+            on campaign_phase.campaign_id = auth.campaign_id
+            left outer join \"sap.ino.db.status::t_status_model_stage\" as status_model
+            on status_model.CODE =  campaign_phase.STATUS_MODEL_CODE"
+            ;
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_phase","sap.ino.db.status::t_status_model_stage"];
+
+depends_on_view = ["sap.ino.db.campaign::v_auth_campaigns"];

@@ -1,0 +1,14 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:rte="sap.ino.controls"
+    xmlns:core="sap.ui.core">
+    <rte:RichTextEditor 
+		width="100%"
+		editable="true"
+		editorType="TinyMCE4"
+		height="300px"
+		showGroupInsert="true"
+		showGroupLink="true"
+		showGroupFont="true"
+		beforeEditorInit="beforeIformEditorInit" />
+</core:FragmentDefinition>

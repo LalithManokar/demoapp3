@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_STATUS_DIMENSION" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="Status Code Dimension"/>
+  <metadata changedAt="2021-07-05 16:06:35.222"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.status::t_status" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.status::t_status"/>
+    </DataSource>
+    <DataSource id="V_ANALYTICS_RESOLVED_TEXT_WRAPPER" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_RESOLVED_TEXT_WRAPPER</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CODE"/>
+        <viewAttribute id="DEFAULT_TEXT"/>
+        <viewAttribute id="DEFAULT_LONG_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.status::t_status">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_TEXT" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_LONG_TEXT" source="DEFAULT_LONG_TEXT"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_1" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CODE"/>
+        <viewAttribute id="CONTENT"/>
+        <viewAttribute id="DEFAULT_TEXT"/>
+        <viewAttribute id="DEFAULT_LONG_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="TEXT" length="4000" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(isnull(&quot;CONTENT&quot;),&quot;CODE&quot;,&quot;CONTENT&quot;)</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#Projection_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_TEXT" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_LONG_TEXT" source="DEFAULT_LONG_TEXT"/>
+      </input>
+      <input node="#V_ANALYTICS_RESOLVED_TEXT_WRAPPER">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CONTENT" source="CONTENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="TEXT_ID"/>
+      </input>
+      <joinAttribute name="CODE"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_1">
+    <descriptions/>
+    <attributes>
+      <attribute id="STATUS_CODE" key="true" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation Status Code"/>
+        <keyMapping columnObjectName="Join_1" columnName="CODE"/>
+      </attribute>
+      <attribute id="STATUS_TEXT" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation Status"/>
+        <keyMapping columnObjectName="Join_1" columnName="TEXT"/>
+      </attribute>
+      <attribute id="STATUS_DEFAULT_TEXT" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Status Default Text"/>
+        <keyMapping columnObjectName="Join_1" columnName="DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="STATUS_DEFAULT_LONG_TEXT" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Status Default Long Text"/>
+        <keyMapping columnObjectName="Join_1" columnName="DEFAULT_LONG_TEXT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="250"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="170"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

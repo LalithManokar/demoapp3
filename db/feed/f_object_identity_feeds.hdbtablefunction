@@ -1,0 +1,87 @@
+FUNCTION "SAP_INO"."sap.ino.db.feed::f_object_identity_feeds" ( ) 
+	RETURNS TABLE (
+	    KEY NVARCHAR(5000),OBJECT_ID INTEGER, OBJECT_TYPE_CODE NVARCHAR(63),OBJECT_TEXT NVARCHAR(100),ACTOR_ID INTEGER,ACTOR_NAME NVARCHAR(100),
+        ACTOR_IMAGE_ID INTEGER, INVOLVED_ID INTEGER, INVOLVED_OBJ_TYPE_CODE NVARCHAR(63), INVOLVED_OBJ_TEXT NVARCHAR(30), EVENT_AT TIMESTAMP,
+        FEED_CODE NVARCHAR(63), CAMPAIGN_ID INTEGER, FIELD1_NAME NVARCHAR(100), FIELD1_TEXT NVARCHAR(500), FIELD1_VALUE NVARCHAR(500),
+        FIELD1_VALUE_OPTION NVARCHAR(100), FIELD2_NAME NVARCHAR(100), FIELD2_TEXT NVARCHAR(500), FIELD2_VALUE NVARCHAR(500),
+        FIELD2_VALUE_OPTION NVARCHAR(100), FILTER_TYPE_CODE NVARCHAR(63),CONTENT NVARCHAR(5000) , SUB_TEXT NVARCHAR(5000), SUB_FEED_CODE VARCHAR(1), 
+        CAMPAIGN_DATE TIMESTAMP, FOLLOW_ID INTEGER, FOLLOWED_BY_ID INTEGER, FOLLOWED_AT TIMESTAMP, EMAIL_AT TIMESTAMP, INST_EMAIL_AT TIMESTAMP
+	)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER
+	DEFAULT SCHEMA SAP_INO	
+	AS 
+BEGIN
+/***************************** 
+	Write your function logic
+ *****************************/
+    lt_followed_object_feeds = select distinct
+            feeds.*,
+            follow.id as follow_id, 
+            follow.created_by_id as followed_by_id, 
+            follow.CREATED_AT as followed_at,
+            follow.EMAIL_AT as email_at,
+            follow.INST_EMAIL_AT as inst_email_at,
+            case filter_type_code
+                when 'BACKOFFICE' then backoffice.campaign_id
+                when 'FRONTOFFICE' then frontoffice.campaign_id 
+                when 'REGISTRATION' then registration.campaign_id   
+                else null
+            end as object_privilege,
+            case involved_obj_type_code
+                when 'CAMPAIGN' then involved_campaign.campaign_id
+                when 'IDEA' then involved_idea.idea_id   
+                else 1
+            end as involved_obj_privilege
+        from "sap.ino.db.follow::t_follow" as follow    
+        inner join "sap.ino.db.feed::f_biz_feeds"() as feeds
+        on feeds.object_id = follow.object_id and feeds.event_at >= follow.CREATED_AT
+        left outer join "sap.ino.db.campaign::v_backoffice_campaign_privilege" as backoffice
+            on feeds.campaign_id = backoffice.campaign_id and feeds.filter_type_code = 'BACKOFFICE'
+                and follow.created_by_id = backoffice.identity_id
+        left outer join "sap.ino.db.campaign::v_registration_campaign_privilege" as registration
+            on feeds.campaign_id = registration.campaign_id and filter_type_code = 'REGISTRATION'   
+                and follow.created_by_id = registration.user_id
+        left outer join "sap.ino.db.campaign::v_campaign_read" as frontoffice 
+            on feeds.campaign_id = frontoffice.campaign_id and filter_type_code = 'FRONTOFFICE'
+                and follow.created_by_id = frontoffice.identity_id 
+        left outer join "sap.ino.db.campaign::v_identity_campaign_read" as involved_campaign
+            on feeds.involved_id = involved_campaign.campaign_id and involved_obj_type_code = 'CAMPAIGN'
+                and follow.created_by_id = involved_campaign.identity_id
+        left outer join "sap.ino.db.idea::v_identity_idea_read" as involved_idea
+            on feeds.involved_id = involved_idea.idea_id and involved_obj_type_code = 'IDEA'
+                and follow.created_by_id = involved_idea.identity_id;
+                
+    return select key,
+            object_id,
+            object_type_code, 
+            object_text,
+            actor_id,
+            actor_name,
+            actor_image_id,
+            involved_id,
+            involved_obj_type_code,
+            involved_obj_text,
+            event_at,
+            feed_code, 
+            campaign_id,
+            field1_name,
+            field1_text,
+            field1_value,
+            field1_value_option,
+            field2_name,
+            field2_text,
+            field2_value,
+            field2_value_option,
+            filter_type_code, 
+            content,
+            involved_obj_text as sub_text,
+            sub_feed_code,
+            campaign_date,
+            follow_id,
+            followed_by_id,
+            followed_at,
+            email_at,
+            inst_email_at 
+        from :lt_followed_object_feeds where object_privilege is not null and involved_obj_privilege is not null;      
+END;

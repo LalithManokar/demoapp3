@@ -1,0 +1,13 @@
+procedure "SAP_INO"."sap.ino.db.feed::p_feed_email_status_update" (
+    in  it_feed_status_ids "SAP_INO"."sap.ino.db.feed::tt_feed_id",
+    in  iv_status varchar(16)
+)
+    language sqlscript 
+    sql security definer
+    default schema SAP_INO
+    as
+begin
+    update "sap.ino.db.feed::t_feed_status" 
+        set mail_status_code = :iv_status,CHANGED_AT = CURRENT_UTCTIMESTAMP
+        where id in (select id from :it_feed_status_ids);
+end;

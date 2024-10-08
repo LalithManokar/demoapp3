@@ -1,0 +1,100 @@
+
+/* ============================================= */
+/* CSS for control sap.ino.wall.WallItemArrow  */
+/* ============================================= */
+
+.sapInoWallWIArrowButton > .sapMBtnDefault {
+    background-color: @sapUiButtonStandardBG;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonThin > .sapMBtnDefault,
+.sapInoWallWIArrowButtonThin.sapMBtn:hover > .sapMBtnHoverable {
+	background-image: url(img/WallItemArrow/line3.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonMedium > .sapMBtnDefault,
+.sapInoWallWIArrowButtonMedium.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/line4.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonThick > .sapMBtnDefault,
+.sapInoWallWIArrowButtonThick.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/line5.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonSOLID > .sapMBtnDefault,
+.sapInoWallWIArrowButtonSOLID.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineSolid.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonDASHED > .sapMBtnDefault,
+.sapInoWallWIArrowButtonDASHED.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineDashed.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonDOTTED > .sapMBtnDefault,
+.sapInoWallWIArrowButtonDOTTED.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineDotted.png);    
+}
+
+.sapInoWallWIArrowButton.sapMBtn:hover > .sapMBtnHoverable {
+    background-color: lighten(@sapUiButtonStandardBG, 50%);
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonNONE > .sapMBtnDefault,
+.sapInoWallWIArrowButtonNONE.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineNone.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonSTART > .sapMBtnDefault,
+.sapInoWallWIArrowButtonSTART.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineStart.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonEND > .sapMBtnDefault,
+.sapInoWallWIArrowButtonEND.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineEnd.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonBOTH > .sapMBtnDefault,
+.sapInoWallWIArrowButtonBOTH.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineBoth.png);    
+}
+
+.sapInoWallWIArrowButton > .sapMToggleBtnPressed.sapMBtnDefault {
+    background-color: @sapUiHighlight;
+    border-color: darken(@sapUiHighlight, 5%);    	
+}
+
+.sapInoWallWIArrowButton.sapMBtn:hover > .sapMBtnHoverable.sapMToggleBtnPressed {
+    background-color: lighten(@sapUiHighlight, 50%);    
+}
+
+.sapInoWallWIArrowVertical .sapInoWallWIArrowEditButtons {
+    width: 46px;
+}
+
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWIArrow.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWIArrow.back {
+	background: transparent;
+	outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWIArrow.back .sapInoWallWIArrowEditButtons {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowButton.sapInoWallWIArrowColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiTextInverted;
+}
+
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowButton.sapInoWallWIArrowColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+	color: @sapUiText;
+}

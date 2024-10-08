@@ -1,0 +1,54 @@
+schema = "SAP_INO";
+query = "select original_setting.idea_id,
+                 status.id,
+                 status.user_id,
+                 idea.CREATED_BY_ID,
+            case
+             when status.user_id  not in (select idea.CREATED_BY_ID as Identity_id
+  
+           FROM \"sap.ino.db.idea::t_idea\" as idea
+            WHERE original_setting.idea_id = idea.ID
+            union all 
+            select 
+            manager.identity_id as Identity_id
+            FROM \"sap.ino.db.idea::t_idea\" as idea
+            inner join \"sap.ino.db.campaign::v_campaign_manager\" as manager
+            on idea.campaign_id = manager.campaign_id
+            WHERE original_setting.idea_id = idea.ID
+            union all 
+           SELECT identity_id  
+           from \"sap.ino.db.iam::t_object_identity_role\" 
+           where role_code = 'IDEA_CONTRIBUTOR' and object_id = original_setting.idea_id
+             ) and original_setting.ANONYMOUS_FOR = 'PARTLY' and feed.feed_code <> 'COMMENT_CREATED'
+            then cast('true' as VARCHAR) 
+            
+            
+             when status.user_id  not in (select idea.CREATED_BY_ID as Identity_id
+            from \"sap.ino.db.idea::t_idea\" as idea
+           WHERE original_setting.idea_id = idea.ID
+           union all 
+           SELECT identity_id  
+           from \"sap.ino.db.iam::t_object_identity_role\" 
+           where role_code = 'IDEA_CONTRIBUTOR' and object_id = original_setting.idea_id
+            ) and original_setting.ANONYMOUS_FOR = 'ALL' and feed.feed_code <> 'COMMENT_CREATED'
+            then cast('true' as VARCHAR) 
+            else  cast('false' as VARCHAR)
+             end as IS_ANONYMOUS
+            from \"sap.ino.db.idea::t_ideas_setting\" as original_setting
+               inner join \"sap.ino.db.feed::t_feed_update\" as feed
+             on ( original_setting.idea_id = feed.object_id or original_setting.idea_id = feed.involved_id)
+            INNER JOIN \"sap.ino.db.feed::t_feed_status\" as status
+            on status.feed_id = feed.id
+            inner join \"sap.ino.db.idea::t_idea\" as idea
+            on idea.id = original_setting.idea_id
+            where status.MAIL_STATUS_CODE = 'UNSENT'
+            with read only";
+ 
+depends_on_table = ["sap.ino.db.idea::t_ideas_setting",
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.feed::t_feed_status",
+                    "sap.ino.db.feed::t_feed_update",
+                    "sap.ino.db.iam::t_object_identity_role"];
+
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user",
+                   "sap.ino.db.campaign::v_campaign_manager"];

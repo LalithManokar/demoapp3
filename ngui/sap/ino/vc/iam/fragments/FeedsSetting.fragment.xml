@@ -1,0 +1,31 @@
+<core:FragmentDefinition
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<VBox class="sapInoScheduledNotificationSetting">
+		<Text text="{i18n>FEEDS_SETTING_WARNING}" class="sapInoPersonalizeSettingLabel sapInoPersonalizeWarning"/>
+		<Panel class="sapInoFilterPanel sapInoFeedsSetting" expandable="false" width="100%">
+			<headerToolbar>
+				<Toolbar>
+					<Text 
+					    tooltip="{i18n>FEEDS_SETTING_OVERALL_TITLE}"
+    				    text="{i18n>FEEDS_SETTING_OVERALL_TITLE}"  />
+				</Toolbar>
+			</headerToolbar>
+			<VBox>
+				<CheckBox 
+                    tooltip="{i18n>FEEDS_SETTING_CAMPAIGNS_TITLE}"
+                    text="{i18n>FEEDS_SETTING_CAMPAIGNS_TITLE}" 
+                    selected="{path:'FEED>/setting/CAMPAIGN_SETTING_VALUE', type: 'sap.ino.commons.models.types.IntBooleanType'}" />
+				<CheckBox 
+                    tooltip="{ i18n>FEEDS_SETTING_IDEAS_TITLE }"
+                    text="{i18n>FEEDS_SETTING_IDEAS_TITLE}" 
+                    selected="{path:'FEED>/setting/IDEA_SETTING_VALUE', type: 'sap.ino.commons.models.types.IntBooleanType'}" />
+				<CheckBox 
+                    tooltip="{i18n>FEEDS_SETTING_TAGS_TITLE }"
+                    text="{i18n>FEEDS_SETTING_TAGS_TITLE}" 
+                    selected="{path:'FEED>/setting/TAG_SETTING_VALUE', type: 'sap.ino.commons.models.types.IntBooleanType'}" />
+			</VBox>
+		</Panel>
+	</VBox>
+</core:FragmentDefinition>

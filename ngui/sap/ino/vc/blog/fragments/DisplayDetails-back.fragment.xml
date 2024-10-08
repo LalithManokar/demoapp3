@@ -1,0 +1,39 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns:u="sap.ui.unified"
+	xmlns:ino="sap.ino.controls"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<l:Grid defaultSpan="XL12 L12 M12 S12">
+		<core:ExtensionPoint name="extension_details_top_left"/>
+		<Text  
+    	    id="DESCRIPTION"  
+            text="{ path: 'object>DESCRIPTION', formatter: '.formatter.wrapHTML'}"/>
+		<core:ExtensionPoint name="extension_details_top_left"/>
+		<Label 
+		    text="{i18n>BLOG_OBJECT_TIT_TAGS}" 
+		    visible="{=!!${object>Tags} &amp;&amp; ${object>Tags}.length > 0}" />
+		<Tokenizer 
+			id="Tags" 
+			class="sapInoWrap" 
+			tokens="{object>Tags}" 
+			editable="false" 
+		    visible="{=!!${object>Tags} &amp;&amp; ${object>Tags}.length > 0}">
+			<tokens>
+				<Token key="{object>TAG_ID}" text="{object>NAME}" editable="false"/>
+			</tokens>
+		</Tokenizer>
+		<core:ExtensionPoint name="extension_details_top_left"/>
+		<Label 
+		    text="{i18n>BLOG_OBJECT_TIT_ATTACHMENTS}" 
+		    visible="{=!!${object>Attachments} &amp;&amp; ${object>Attachments}.length > 0}"/>
+		<mvc:XMLView 
+		    visible="{=!!${object>Attachments} &amp;&amp; ${object>Attachments}.length > 0}"
+		    viewName="sap.ino.vc.attachment.Attachment"
+            class="sapInoBlogUploadCollection"
+            app:editable="false"></mvc:XMLView>
+		<core:ExtensionPoint name="extension_details_top_left"/>
+	</l:Grid>
+</core:FragmentDefinition>

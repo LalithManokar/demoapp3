@@ -1,0 +1,128 @@
+PROCEDURE "SAP_INO"."sap.ino.db.idea::p_all_ideas_search"(
+		IN searchToken NVARCHAR(100), 
+		IN searchType  INTEGER,
+		IN tagsToken NVARCHAR(2048),
+		IN tagsToken1 NVARCHAR(256), 
+		IN tagsToken2 NVARCHAR(256), 
+		IN tagsToken3 NVARCHAR(256), 
+		IN tagsToken4 NVARCHAR(256), 
+		IN filterName VARCHAR(30), 
+		IN filterBackoffice TINYINT, 
+		IN filterString NVARCHAR(2048), 
+		IN c1 VARCHAR(512), 
+		IN o1 INTEGER, 
+		IN v1 NVARCHAR(128), 
+		IN c2 VARCHAR(512), 
+		IN o2 INTEGER, 
+		IN v2 NVARCHAR(128), 
+		IN c3 VARCHAR(512), 
+		IN o3 INTEGER, 
+		IN v3 NVARCHAR(128), 
+		IN ideaFormId VARCHAR(512), 
+        IN cvt             VARCHAR(128),
+        IN cvr             INTEGER,
+        IN cvy             INTEGER,		
+		OUT ot_ideas_data SAP_INO."sap.ino.db.idea::tt_selected_all_idea_data"
+	)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER
+	DEFAULT SCHEMA SAP_INO
+	READS SQL DATA
+AS
+BEGIN
+	DECLARE lv_filter_string NVARCHAR(40000);
+
+	lv_filter_string = :filterString;
+	IF (:filterBackoffice = 0) THEN
+		lt_ideas = SELECT *
+				FROM "_SYS_BIC"."sap.ino.db.idea.ext/V_EXT_IDEAS_COMMUNITY_SEARCH"(
+						PLACEHOLDER."$$searchToken$$" => :searchToken, 
+						PLACEHOLDER."$$tagsToken$$" => :tagsToken,
+						PLACEHOLDER."$$tagsToken1$$" => :tagsToken1,
+						PLACEHOLDER."$$tagsToken2$$" => :tagsToken2,
+						PLACEHOLDER."$$tagsToken3$$" => :tagsToken3,
+						PLACEHOLDER."$$tagsToken4$$" => :tagsToken4,
+						PLACEHOLDER."$$filterName$$" => :filterName, 
+						PLACEHOLDER."$$filterBackoffice$$" => :filterBackoffice, 
+						PLACEHOLDER."$$c1$$" => :c1, 
+						PLACEHOLDER."$$o1$$" => :o1, 
+						PLACEHOLDER."$$v1$$" => :v1, 
+						PLACEHOLDER."$$c2$$" => :c2, 
+						PLACEHOLDER."$$o2$$" => :o2, 
+						PLACEHOLDER."$$v2$$" => :v2, 
+						PLACEHOLDER."$$c3$$" => :c3, 
+						PLACEHOLDER."$$o3$$" => :o3, 
+						PLACEHOLDER."$$v3$$" => :v3,
+                        PLACEHOLDER."$$cvt$$" => :cvt, 
+                        PLACEHOLDER."$$cvr$$" => :cvr, 
+                        PLACEHOLDER."$$cvy$$" => :cvy 						
+					);
+		ot_ideas = apply_filter(
+				:lt_ideas, 
+				:lv_filter_string
+			);
+		IF (LENGTH(:ideaFormId) > 0) THEN
+			ot_ideas = SELECT idea.*
+					FROM "sap.ino.db.campaign::t_campaign" AS camp
+						INNER JOIN :ot_ideas AS idea
+						ON camp.id = idea.campaign_id
+					WHERE camp.form_code = :ideaFormId
+						OR camp.admin_form_code = :ideaFormId;
+		END IF;
+		ot_ideas_data = SELECT DISTINCT id, 
+					campaign_id, 
+					phase, 
+					status, 
+					null AS follow_up_date, 
+					resp_value_code,
+					null as submitter_id,
+					null as submitter_name
+				FROM :ot_ideas;
+	ELSE
+		lt_ideas_backoffice = SELECT *
+				FROM "_SYS_BIC"."sap.ino.db.idea.ext/V_EXT_IDEAS_MEDIUM_SEARCH"(
+						PLACEHOLDER."$$searchToken$$" => :searchToken, 
+						PLACEHOLDER."$$searchType$$" => :searchType,
+						PLACEHOLDER."$$tagsToken$$" => :tagsToken,
+						PLACEHOLDER."$$tagsToken1$$" => :tagsToken1,
+						PLACEHOLDER."$$tagsToken2$$" => :tagsToken2,
+						PLACEHOLDER."$$tagsToken3$$" => :tagsToken3,
+						PLACEHOLDER."$$tagsToken4$$" => :tagsToken4,
+						PLACEHOLDER."$$filterName$$" => :filterName, 
+						PLACEHOLDER."$$filterBackoffice$$" => :filterBackoffice, 
+						PLACEHOLDER."$$c1$$" => :c1, 
+						PLACEHOLDER."$$o1$$" => :o1, 
+						PLACEHOLDER."$$v1$$" => :v1, 
+						PLACEHOLDER."$$c2$$" => :c2, 
+						PLACEHOLDER."$$o2$$" => :o2, 
+						PLACEHOLDER."$$v2$$" => :v2, 
+						PLACEHOLDER."$$c3$$" => :c3, 
+						PLACEHOLDER."$$o3$$" => :o3, 
+						PLACEHOLDER."$$v3$$" => :v3,
+                        PLACEHOLDER."$$cvt$$" => :cvt, 
+                        PLACEHOLDER."$$cvr$$" => :cvr, 
+                        PLACEHOLDER."$$cvy$$" => :cvy 						
+					);
+		ot_ideas_backoffice = apply_filter(
+				:lt_ideas_backoffice, 
+				:lv_filter_string
+			);
+		IF (LENGTH(:ideaFormId) > 0) THEN
+			ot_ideas_backoffice = SELECT idea.*
+					FROM "sap.ino.db.campaign::t_campaign" AS camp
+						INNER JOIN :ot_ideas_backoffice AS idea
+						ON camp.id = idea.campaign_id
+					WHERE camp.form_code = :ideaFormId
+						OR camp.admin_form_code = :ideaFormId;
+		END IF;
+		ot_ideas_data = SELECT  DISTINCT id, 
+					campaign_id, 
+					phase, 
+					status, 
+					follow_up_date, 
+					resp_value_code,
+					submitter_id,
+					submitter_name
+				FROM :ot_ideas_backoffice;
+	END IF;
+END;

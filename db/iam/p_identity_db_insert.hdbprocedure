@@ -1,0 +1,44 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_identity_db_insert" (
+    in iv_biz_event  varchar(16),
+    in it_identities SAP_INO."sap.ino.db.iam::t_identity"
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    insert into
+        "sap.ino.db.iam::t_identity"
+    select
+        id,
+        created_at,
+        created_by_id,
+        changed_at,
+        changed_by_id,
+        type_code,
+        name,
+        first_name,
+        last_name,
+        email,
+        user_name,
+        is_external,
+        erased,
+        phone,
+        mobile,
+        cost_center,
+        organization,
+        office,
+        description,
+        staged,
+        source_type_code,
+        company,           
+        street,           
+        city,              
+        country,         
+        zip_code,
+        validation_to,
+        LAST_LOGIN
+    from
+        :it_identities;
+    call "sap.ino.db.iam::p_identity_db_history_insert" ('CREATED', :iv_biz_event, :it_identities);
+end;

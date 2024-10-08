@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_REWARDS_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_REWARDS_SEARCH"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables>
+    <variable id="filterName" parameter="true">
+      <descriptions defaultDescription="Filter name"/>
+      <variableProperties datatype="VARCHAR" defaultExpressionLanguage="COLUMN_ENGINE" length="30" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+        <defaultExpression>''</defaultExpression>
+      </variableProperties>
+    </variable>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Search token"/>
+      <variableProperties datatype="NVARCHAR" defaultExpressionLanguage="COLUMN_ENGINE" length="100" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+        <defaultExpression>''</defaultExpression>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SCORE"/>
+        <viewAttribute datatype="INTEGER" id="EMPLOYEE_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="EMPLOYEE_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="EMPLOYEE_EMAIL" length="256"/>
+        <viewAttribute datatype="NVARCHAR" id="USER_NAME" length="256"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="INTEGER" id="REWARD_LIST_ID"/>
+        <viewAttribute datatype="VARCHAR" id="IDEA_PHASE_CODE" length="500"/>
+        <viewAttribute datatype="NVARCHAR" id="IDEA_PHASE_TEXT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS_CODE" length="500"/>
+        <viewAttribute datatype="NVARCHAR" id="REWARD_STATUS_TEXT" length="100"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_ID"/>
+        <viewAttribute datatype="NCLOB" id="IDEA_NAME"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CAMPAIGN_NAME" length="5000"/>
+        <viewAttribute datatype="DOUBLE" id="REWARD_AMOUNT"/>
+        <viewAttribute datatype="NVARCHAR" id="REWARD_UNIT" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="REWARD_UNIT_DESCRIPTION" length="300"/>
+        <viewAttribute datatype="DOUBLE" id="REWARD_SHARE"/>
+        <viewAttribute datatype="INTEGER" id="DOWNLOAD_COUNT"/>
+        <viewAttribute datatype="DOUBLE" id="CONTRIBUTION_SHARE"/>
+        <viewAttribute datatype="DATE" id="CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="GROUP_ORDER"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#filterName</localVariable>
+      <localVariable>#searchToken</localVariable>
+      <definition> 
+ /********* Begin Procedure Script ************/ 
+ BEGIN 
+    
+    -- call &quot;SAP_INO&quot;.&quot;sap.ino.db.reward::p_reward_search&quot;(:searchToken, :lt_search_rewards);
+    lt_search_rewards = select id, 1 as score 
+        from
+            &quot;sap.ino.db.reward::t_reward&quot;
+        where
+            length(:searchToken) = 0 or
+            cast(id as nvarchar) = :searchToken;
+    lt_filter_rewards = select reward.id as reward_id
+                          from &quot;sap.ino.db.reward::t_reward&quot; as reward
+                          where :filterName &lt;&gt; 'submittedReward'        and
+                                :filterName &lt;&gt; 'publishedReward'        and
+                                :filterName &lt;&gt; 'rewardManage'           and
+                                :filterName &lt;&gt; 'readyForDownloadReward' and
+                                :filterName &lt;&gt; 'downloadedReward'       and
+                                reward.reward_list_id in (select reward_list_id from &quot;sap.ino.db.reward::v_auth_rewards_read&quot;)
+                        union all
+                        select reward.reward_id
+                          from &quot;sap.ino.db.reward::v_submitted_reward&quot; as reward
+                          where :filterName = 'submittedReward'
+                        union all 
+                        select reward.reward_id
+                          from &quot;sap.ino.db.reward::v_published_reward&quot; as reward
+                          where :filterName = 'publishedReward'
+                        union all
+                        select reward.reward_id
+                          from &quot;sap.ino.db.reward::v_reward_ready_for_download&quot; as reward
+                          inner join &quot;sap.ino.db.reward::v_auth_rewards_manage&quot; as auth_manage
+                            on reward.reward_list_id = auth_manage.reward_list_id
+                          where :filterName = 'readyForDownloadReward'
+                        union all
+                        select reward.reward_id 
+                          from &quot;sap.ino.db.reward::v_downloaded_reward&quot; as reward
+                          inner join &quot;sap.ino.db.reward::v_auth_rewards_manage&quot; as auth_manage
+                            on reward.reward_list_id = auth_manage.reward_list_id
+                          where :filterName = 'downloadedReward'
+                        union all
+                        select reward.id as reward_id
+                          from &quot;sap.ino.db.reward::v_reward&quot; as reward
+                          inner join &quot;sap.ino.db.reward::v_auth_rewards_manage&quot; as auth_manage
+                            on reward.reward_list_id = auth_manage.reward_list_id
+                          where :filterName = 'rewardManage'; 
+                          
+ 	 var_out = select lt_search_rewards.score as score, reward.*
+ 	             from :lt_filter_rewards            as lt_filter_rewards,
+ 	                  &quot;sap.ino.db.reward.ext::v_ext_reward&quot; as reward
+ 	             inner join :lt_search_rewards as lt_search_rewards
+ 	               on lt_search_rewards.id = reward.id
+ 	             where lt_filter_rewards.reward_id = reward.id;
+
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SCORE" order="1">
+        <descriptions defaultDescription="SCORE"/>
+        <keyMapping columnObjectName="Script_View" columnName="SCORE"/>
+      </attribute>
+      <attribute id="EMPLOYEE_ID" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="EMPLOYEE_ID"/>
+      </attribute>
+      <attribute id="EMPLOYEE_NAME" order="3">
+        <descriptions defaultDescription="Employee Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="EMPLOYEE_NAME"/>
+      </attribute>
+      <attribute id="EMPLOYEE_EMAIL" order="4">
+        <descriptions defaultDescription="Employee e-mail address"/>
+        <keyMapping columnObjectName="Script_View" columnName="EMPLOYEE_EMAIL"/>
+      </attribute>
+      <attribute id="USER_NAME" order="5">
+        <descriptions defaultDescription="DB User Name like in tables USERS"/>
+        <keyMapping columnObjectName="Script_View" columnName="USER_NAME"/>
+      </attribute>
+      <attribute id="ID" order="6">
+        <descriptions defaultDescription="Reward ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="REWARD_LIST_ID" order="7">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="REWARD_LIST_ID"/>
+      </attribute>
+      <attribute id="IDEA_PHASE_CODE" order="8">
+        <descriptions defaultDescription="Idea Phase code"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_PHASE_CODE"/>
+      </attribute>
+      <attribute id="IDEA_PHASE_TEXT" order="9">
+        <descriptions defaultDescription="Idea Phase text"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_PHASE_TEXT"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="10">
+        <descriptions defaultDescription="Status Code. Foreign key to t_status.CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="REWARD_STATUS_TEXT" order="11">
+        <descriptions defaultDescription="Status text"/>
+        <keyMapping columnObjectName="Script_View" columnName="REWARD_STATUS_TEXT"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="12">
+        <descriptions defaultDescription="idea where the reward belongs to. Foreign key to t_idea.ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_NAME" order="13">
+        <descriptions defaultDescription="Idea Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="14">
+        <descriptions defaultDescription="Foreign key to t_campaign.ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="15">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="REWARD_AMOUNT" order="16">
+        <descriptions defaultDescription="reward amount"/>
+        <keyMapping columnObjectName="Script_View" columnName="REWARD_AMOUNT"/>
+      </attribute>
+      <attribute id="REWARD_UNIT" order="17">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="REWARD_UNIT"/>
+      </attribute>
+      <attribute id="REWARD_UNIT_DESCRIPTION" order="18">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="REWARD_UNIT_DESCRIPTION"/>
+      </attribute>
+      <attribute id="REWARD_SHARE" order="19">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="REWARD_SHARE"/>
+      </attribute>
+      <attribute id="DOWNLOAD_COUNT" order="20">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="DOWNLOAD_COUNT"/>
+      </attribute>
+      <attribute id="CONTRIBUTION_SHARE" order="21">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CONTRIBUTION_SHARE"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="22">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="GROUP_ORDER" order="23">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="GROUP_ORDER"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

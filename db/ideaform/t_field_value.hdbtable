@@ -1,0 +1,17 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Form Field Value";
+table.columns = [
+	{name = "ID";         sqlType = INTEGER;                 nullable = false; comment = "Human readable identifier";},
+	{name = "IDEA_ID";    sqlType = INTEGER;                 nullable = false; comment = "Idea ID to relate the idea. Foreign key to t_idea.ID";},
+	{name = "FIELD_CODE"; sqlType = VARCHAR; length = 500;   nullable = false; comment = "Field Code to relate the Form Field Code. Foreign key to t_field.CODE";},
+	{name = "NUM_VALUE";  sqlType = DOUBLE;                  nullable = true;  comment = "Number Value";},
+	{name = "BOOL_VALUE"; sqlType = TINYINT;                 nullable = true;  comment = "Bool Value. 0 = False, 1 = true";},
+	{name = "TEXT_VALUE"; sqlType = NVARCHAR; length = 1024; nullable = true;  comment = "Text Value";},
+	{name = "RICH_TEXT_VALUE"; sqlType = NCLOB;              nullable = true;  comment = "Rich Text Value";},
+	{name = "DATE_VALUE"; sqlType = TIMESTAMP;               nullable = true;  comment = "Date Value";},
+	{name = "COMMENT";    sqlType = NVARCHAR; length = 1024; nullable = true;  comment = "The Comment of Field Value";},
+	{name = "FIELD_TYPE_CODE";    sqlType = VARCHAR; length = 20; nullable = true;  comment = "The type of Field ";},
+    {name = "STATE_OF_PUBLISH";       sqlType = TINYINT;                nullable = true;  comment = "Marked this field whether it has already been pubilished in frontend for admin form";}
+];
+table.primaryKey.pkcolumns = ["ID"];

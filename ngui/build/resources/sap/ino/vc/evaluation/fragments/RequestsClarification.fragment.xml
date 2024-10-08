@@ -1,0 +1,11 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<VBox class="sapInoRequestsClarification">
+	    <mvc:XMLView id="commentViewList" viewName="sap.ino.vc.comment.Comment" type="XML" app:object_id="{object>InitRefObjectId}" app:modelObjectType="sap.ino.commons.models.object.EvaluationRequestComment" />
+		<mvc:XMLView viewName="sap.ino.vc.evaluation.RequestsClarificationList" type="XML" />
+		<mvc:XMLView viewName="sap.ino.vc.evaluation.RequestsForwardList" type="XML" class="sapInoCleanFloat"/>
+	</VBox>
+</core:FragmentDefinition>

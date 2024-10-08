@@ -1,0 +1,834 @@
+/* NOTE: This file was generated as an optimized version of "library.source.less" for the Theme Designer. */
+
+/*!
+ * SAP UI development toolkit for HTML5 (SAPUI5)
+ *
+ * (c) Copyright 2009-2024 SAP SE. All rights reserved
+ */
+
+@import "../base/library.less";
+@import "../../../../../sap/ui/core/themes/sap_hcb/global.less";
+
+/* START "ColorPicker.less" */
+.sapInoWallColorPickerPopoverPanel .sapUiSliStd .sapUiSliGrip:focus {
+	border-color: @sapUiHighlight;
+}
+/* END "ColorPicker.less" */
+
+/* START "DragButton.less" */
+/* ============================================= */
+/* CSS for control sap.ino.wall/DragButton.control */
+/* ============================================= */
+
+.sapInoWallDragButton > div {
+	  border: 0
+}
+/* END "DragButton.less" */
+
+/* START "DropUpload.less" */
+.sapInoWallDropUpload .sapInoWallDropUploadArea:focus {
+	border: 2px solid @sapUiHighlight;
+}
+
+.sapInoWallDropUpload .sapInoWallDropUploadArea {
+	background-color: @sapUiBaseBG;
+	border: 2px solid @sapUiLightText;
+	color: @sapUiLightText;
+}
+
+.sapInoWallDropUpload .sapInoWallDropUploadAreaInner {
+	color: @sapUiLightText;
+}
+/* END "DropUpload.less" */
+
+/* START "ResponsiveOptionSelector.less" */
+.sapInoWallROSSegmentedButton .sapMSegBBtnSel {
+  	background-color: @sapUiLightText;;
+  	border-color: @sapUiLightText;
+  	color: @sapUiBaseBG;
+}
+
+.sapInoWallROSSegmentedButton .sapMSegBBtnSel:active,
+.sapInoWallROSSegmentedButton .sapMSegBBtnSel:hover {
+	color: @sapUiLightText;
+}
+/* END "ResponsiveOptionSelector.less" */
+
+/* START "ScrollableToolbar.less" */
+
+/* ============================================= */
+/* CSS for control sap.ino.wall/ScrollableToolbar.control */
+/* ============================================= */
+
+.sapInoWallScrollableToolbarArrowScroll {
+	color: @sapUiLightText;
+}
+
+.sap-desktop .sapInoWallScrollableToolbarArrowScroll:hover, 
+.sap-desktop .sapInoWallScrollableToolbarArrowScroll:active {
+	color: @sapUiHighlight;
+}
+/* END "ScrollableToolbar.less" */
+
+/* START "TextEditor.less" */
+
+/* ============================================= */
+/* CSS for control sap.ino.wall.TextEditor  */
+/* ============================================= */
+
+.sapInoWallTextEditorControlButton > .sapMBtnDefault {
+    background-color: @sapUiButtonStandardBG;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonBold > .sapMBtnDefault,
+.sapInoWallTextEditorControlButtonBold.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/TextEditor/editorbold.png);    
+}
+
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonItalic > .sapMBtnDefault,
+.sapInoWallTextEditorControlButtonItalic.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/TextEditor/editoritalic.png);    
+}
+
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonUnderline > .sapMBtnDefault,
+.sapInoWallTextEditorControlButtonUnderline.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/TextEditor/editorunderline.png);    
+}
+
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonOl > .sapMBtnDefault,
+.sapInoWallTextEditorControlButtonOl.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/TextEditor/editorol.png);    
+}
+
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonUl > .sapMBtnDefault,
+.sapInoWallTextEditorControlButtonUl.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/TextEditor/editorul.png);    
+}
+
+
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn {
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn {
+	border-color: white;
+}
+
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn.sapMSegBBtnFocusable:hover {
+    background-color: lighten(@sapUiButtonStandardBG, 50%);
+}
+
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn:nth-child(1),
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn:nth-child(1):hover {
+	background-image: url(img/TextEditor/editorleft.png);    
+}
+
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn:nth-child(2),
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn:nth-child(2):hover {
+    background-image: url(img/TextEditor/editorcenter.png);
+}
+
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn:nth-child(3),
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn:nth-child(3):hover {
+    background-image: url(img/TextEditor/editorright.png);
+}
+
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn.sapMSegBBtnSel {
+	background-color: @sapUiHighlight;
+}
+
+.sapInoWallTextEditorControlButton.sapMBtn:hover > .sapMBtnHoverable {
+    background-color: lighten(@sapUiButtonStandardBG, 50%);
+}
+
+.sapInoWallTextEditorControlButton > .sapMToggleBtnPressed.sapMBtnDefault {
+    background-color: @sapUiHighlight;
+    border-color: darken(@sapUiHighlight, 5%);      
+}
+
+.sapInoWallTextEditorControlButton.sapMBtn:hover > .sapMBtnHoverable.sapMToggleBtnPressed {
+    background-color: lighten(@sapUiHighlight, 50%);    
+}
+
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiTextInverted;
+}
+
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+	color: @sapUiText;
+}
+/* END "TextEditor.less" */
+
+/* START "Wall.less" */
+
+/* ============================================= */
+/* CSS for control sap.ino.wall/wall.control      */
+/* ============================================= */
+
+.sapInoWallSelector:focus {
+	top: 48px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border: 5px solid @sapUiHighlight;
+}
+
+/**************************************
+ * Wall trash bin                     *
+ **************************************/
+
+.sapInoWallWTrash {
+	box-shadow: none;
+}
+
+.sapInoWallWTrash.above,
+.sapInoWallWTrash.above.active {
+	border: 2px solid @sapUiLightText;
+	box-shadow: none;
+}
+
+.sapInoWallWTrash.active {
+	border: 3px solid @sapUiLightText;
+	box-shadow: none;
+}
+
+.sapInoWallWTrashBin {
+	text-shadow: none;	
+}
+
+.sapInoWallWTrash.active span {
+	color: @sapUiLightText;
+	webkit-text-stroke-width: 1.5px;
+	-webkit-text-stroke-color: @sapUiBaseBG;
+}
+
+.sapInoWallWTrashBin.above, .sapInoWallWTrashBin.above.active {
+	opacity: 1.0;
+	-webkit-text-stroke-color: @sapUiLightText;
+}
+
+.sapInoWallWTemplateIndicator {
+	border-top: 200px solid black;
+}
+
+.sapInoWallWLockIcon {
+	color: @sapUiLightText;
+	text-shadow: none;
+  	background-color: @sapUiBaseBG;
+	border: 1px solid @sapUiLightText;
+}
+/* END "Wall.less" */
+
+/* START "WallItemArrow.less" */
+
+/* ============================================= */
+/* CSS for control sap.ino.wall.WallItemArrow  */
+/* ============================================= */
+
+.sapInoWallWIArrowButton > .sapMBtnDefault {
+    background-color: @sapUiButtonStandardBG;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonThin > .sapMBtnDefault,
+.sapInoWallWIArrowButtonThin.sapMBtn:hover > .sapMBtnHoverable {
+	background-image: url(img/WallItemArrow/line3.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonMedium > .sapMBtnDefault,
+.sapInoWallWIArrowButtonMedium.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/line4.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonThick > .sapMBtnDefault,
+.sapInoWallWIArrowButtonThick.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/line5.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonSOLID > .sapMBtnDefault,
+.sapInoWallWIArrowButtonSOLID.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineSolid.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonDASHED > .sapMBtnDefault,
+.sapInoWallWIArrowButtonDASHED.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineDashed.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonDOTTED > .sapMBtnDefault,
+.sapInoWallWIArrowButtonDOTTED.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineDotted.png);    
+}
+
+.sapInoWallWIArrowButton.sapMBtn:hover > .sapMBtnHoverable {
+    background-color: lighten(@sapUiButtonStandardBG, 50%);
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonNONE > .sapMBtnDefault,
+.sapInoWallWIArrowButtonNONE.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineNone.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonSTART > .sapMBtnDefault,
+.sapInoWallWIArrowButtonSTART.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineStart.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonEND > .sapMBtnDefault,
+.sapInoWallWIArrowButtonEND.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineEnd.png);    
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonBOTH > .sapMBtnDefault,
+.sapInoWallWIArrowButtonBOTH.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemArrow/lineBoth.png);    
+}
+
+.sapInoWallWIArrowButton > .sapMToggleBtnPressed.sapMBtnDefault {
+    background-color: @sapUiHighlight;
+    border-color: darken(@sapUiHighlight, 5%);    	
+}
+
+.sapInoWallWIArrowButton.sapMBtn:hover > .sapMBtnHoverable.sapMToggleBtnPressed {
+    background-color: lighten(@sapUiHighlight, 50%);    
+}
+
+.sapInoWallWIArrowVertical .sapInoWallWIArrowEditButtons {
+    width: 46px;
+}
+
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWIArrow.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWIArrow.back {
+	background: transparent;
+	outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWIArrow.back .sapInoWallWIArrowEditButtons {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowButton.sapInoWallWIArrowColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiTextInverted;
+}
+
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowButton.sapInoWallWIArrowColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+	color: @sapUiText;
+}
+/* END "WallItemArrow.less" */
+
+/* START "WallItemAttachment.less" */
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable.sapInoWallWIAtt > .front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable.sapInoWallWIAtt > .back {
+	outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIAttLayout {
+	background: @sapUiBaseBG;
+	box-shadow: none;
+}
+
+.sapInoWallWIAtt .sapInoWallWITitle {
+	border-top: 2px solid @sapUiLightText;
+	color: @sapUiLightText;
+}
+
+.sapInoWallWIAttRight {
+	right: 0px;
+	background: @sapUiBaseBG;
+}
+
+.sapInoWallWIAttIconWrapper {
+	color: @sapUiLightText;
+}
+/* END "WallItemAttachment.less" */
+
+/* START "WallItemBase.less" */
+
+/* ============================================= */
+/* CSS for control WallItemBase.control */
+/* ============================================= */
+
+.front:not(.sapInoWallWIPFlip), .back {
+	border: 2px solid @sapUiBlackBG;
+}
+
+.sapUiSizeCompact .sapInoInnoMgmtMShell .sapInoWallWIBSelect, 
+.sapUiSizeCompact .sapInoInnoMgmtMShell .sapMSlt.sapMSltDefault.sapInoWallWIBSelect {
+	background-color: black;
+}
+
+.sapInoWallWIBTitle,
+.sapInoWallWIBTitle input {
+	background-color: @sapUiBaseBG;
+}
+ 
+.sapInoWallWIBSelect,
+.sapInoWallWIBSelect input {
+	background-color: @sapUiBaseBG;
+}
+
+.sapInoWallWIPEmailIP,
+.sapInoWallWIPEmailIP input {
+	background-color: @sapUiBaseBG;
+}
+
+.sapInoWallWIPPhoneIP,
+.sapInoWallWIPPhoneIP input {
+	background-color: @sapUiBaseBG;
+}
+
+.sapInoWallWILLinkIP, 
+.sapInoWallWILLinkIP input {
+	background-color: @sapUiBaseBG;
+}
+
+.sapInoWallWIFlipBackButton .sapMBtnInner {
+	border-radius: 0px;
+}
+/* END "WallItemBase.less" */
+
+/* START "WallItemGroup.less" */
+/* ================================================= */
+/* CSS for control sap.ino.wall/WallItemGroup.control */
+/* ================================================= */
+
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWallItemGroup.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWallItemGroup.back {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIGTitle .sapInoWallWITitle {
+	background: @sapUiBaseBG;
+	color: @sapUiLightText;
+}
+
+.sapInoWallWallItemGroup.back {
+	background: @sapUiBaseBG;
+}
+
+.back.sapInoWallWallItemGroup .sapInoWallWIBTitle {
+    background-color: transparent;
+}
+
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiTextInverted; 
+}
+
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiText; 
+}
+/* END "WallItemGroup.less" */
+
+/* START "WallItemHeadline.less" */
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable.sapInoWallWIHL > .front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable.sapInoWallWIHL > .back {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIHCLEAR {
+	text-shadow: none;
+	background-color: @sapUiBaseBG;
+	color: @sapUiLightText;
+}
+
+.front.sapInoWallWIHeadline.sapInoWallWIHSIMPLE {
+	background-color: @sapUiLightText;
+	color: @sapUiBaseBG;
+}
+
+.back.sapInoWallWIHeadline {
+	background-color: @sapUiBaseBG;
+}
+
+.front.sapInoWallWIHeadline {
+	box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+}
+/* END "WallItemHeadline.less" */
+
+/* START "WallItemImage.less" */
+.sapInoWallWIIImageError .sapInoWallWIIImageWrapper {
+    background-image: url("img/WallItemImage/error.png");
+    height: calc(~'100% - 20px');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.sapInoWallWIIImageWrapper {
+    height: calc(~'100% - 20px');
+}
+
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWII.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWII.back {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIPImage {
+  	border: 2px solid white;
+  	margin-left: -7px;
+  	margin-top: -7px;
+}
+
+.sapInoWallWII {
+	background: @sapUiBaseBG;
+}
+
+.sapInoWallWIITitle {
+	color: @sapUiLightText;
+}
+
+.sapInoWallWIResizeHandle {
+	opacity: 1;
+	color: white;
+}
+/* END "WallItemImage.less" */
+
+/* START "WallItemLine.less" */
+
+/* ============================================= */
+/* CSS for control sap.ino.wall.WallItemLine  */
+/* ============================================= */
+
+.sapInoWallWILineButton > .sapMBtnDefault {
+    background-color: @sapUiButtonStandardBG;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+.sapInoWallWILineButton.sapInoWallWILineButtonThin > .sapMBtnDefault,
+.sapInoWallWILineButtonThin.sapMBtn:hover > .sapMBtnHoverable {
+	background-image: url(img/WallItemLine/line1px.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonMedium > .sapMBtnDefault,
+.sapInoWallWILineButtonMedium.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/line3px.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonThick > .sapMBtnDefault,
+.sapInoWallWILineButtonThick.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/line5px.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonHORIZONTAL > .sapMBtnDefault,
+.sapInoWallWILineButtonHORIZONTAL.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/lineHorizontal.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonVERTICAL > .sapMBtnDefault,
+.sapInoWallWILineButtonVERTICAL.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/lineVertical.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonSOLID > .sapMBtnDefault,
+.sapInoWallWILineButtonSOLID.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/lineSolid.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonDASHED > .sapMBtnDefault,
+.sapInoWallWILineButtonDASHED.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/lineDashed.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonDOTTED > .sapMBtnDefault,
+.sapInoWallWILineButtonDOTTED.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/lineDotted.png);    
+}
+
+.sapInoWallWILineButton.sapMBtn:hover > .sapMBtnHoverable {
+    background-color: lighten(@sapUiButtonStandardBG, 50%);
+}
+
+.sapInoWallWILineButton > .sapMToggleBtnPressed.sapMBtnDefault {
+    background-color: @sapUiHighlight;
+    border-color: darken(@sapUiHighlight, 5%);    	
+}
+
+.sapInoWallWILineButton.sapMBtn:hover > .sapMBtnHoverable.sapMToggleBtnPressed {
+    background-color: lighten(@sapUiHighlight, 50%);    
+}
+
+.sapInoWallWILineVertical .sapInoWallWILineEditButtons {
+    width: 46px;
+}
+
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWILine.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWILine.back {
+	background: @sapUiHighlight;          
+}
+
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWILine.back .sapInoWallWILineEditButtons {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.front.sapInoWallWILine, .back.sapInoWallWILine {
+	border: none;
+}
+
+.sapInoWallWILineColorSelectorButton.sapInoWallWILineButton.sapInoWallWILineColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallWILineColorSelectorButton.sapInoWallWILineColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWILineColorSelectorButton.sapInoWallWILineColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiTextInverted;
+}
+
+.sapInoWallWILineColorSelectorButton.sapInoWallWILineButton.sapInoWallWILineColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallWILineColorSelectorButton.sapInoWallWILineColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWILineColorSelectorButton.sapInoWallWILineColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiText;
+}
+/* END "WallItemLine.less" */
+
+/* START "WallItemLink.less" */
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWIL.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWIL.back {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIL {
+	background: @sapUiBaseBG;
+}
+
+.sapInoWallWIL .sapInoWallWITitle {
+	background: @sapUiBaseBG;
+	border: 2px solid @sapUiLightText;
+}
+
+.sapInoWallWILDescription {
+	background: @sapUiBaseBG;
+	border: 2px solid @sapUiLightText;
+	border-top: none;
+}
+
+.sapInoWallWILIcon {
+	color: white !important;
+	font-size: 105px !important;
+	margin-top: -5px !important;
+  	margin-left: -6px !important;
+	background: none !important;
+  	-webkit-text-fill-color: initial !important;
+}
+/* END "WallItemLink.less" */
+
+/* START "WallItemPerson.less" */
+.sapInoWallWIPImageWrapperDefaultImage {
+	background-image: url(img/WallItemPerson/user_150x150.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWIP.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWIP.back {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIP {
+	background: @sapUiBaseBG;
+}
+
+.sapInoWallWIPMeta {
+	background: @sapUiBaseBG;
+	border: 2px solid @sapUiLightText; 
+}
+
+.sapInoWallWIP .sapInoWallWITitle {
+	color: @sapUiLightText;
+	font-size: 14px;
+}
+
+.sapInoWallWIPPhoneL, .sapInoWallWIPEmailL {
+  	font-size: 12px;	
+}
+
+.sapInoWallWIP.front {
+	border: 2px solid @sapUiBlackBG;
+}
+
+.sapInoWallWIBVisibleFocus .sapInoWallWIP.front.sapInoWallWIPPerson {
+	border: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIBVisibleFocus .sapInoWallWIP.front.sapInoWallWIPPerson .sapInoWallWIPMeta {
+	border: @sapUiHighlight solid 2px;
+}
+/* END "WallItemPerson.less" */
+
+/* START "WallItemSprite.less" */
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWISprite.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWISprite.back {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.back.sapInoWallWISprite {
+	background: @sapUiBaseBG;
+}
+
+.sapInoWallWISprite.front {
+	border: 2px solid @sapUiLightText !important;
+}
+
+.sapInoWallWISpriteColorSelectorButton.sapInoWallWISpriteColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallWISpriteColorSelectorButton.sapInoWallWISpriteColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWISpriteColorSelectorButton.sapInoWallWISpriteColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiTextInverted;  
+    line-height: 28px;
+}
+
+.sapInoWallWISpriteColorSelectorButton.sapInoWallWISpriteColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallWISpriteColorSelectorButton.sapInoWallWISpriteColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWISpriteColorSelectorButton.sapInoWallWISpriteColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiText;
+    line-height: 28px;
+}
+/* END "WallItemSprite.less" */
+
+/* START "WallItemSticker.less" */
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWISticker.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWISticker.back {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallStickerColorPicker.active {
+	border: 2px solid @sapUiHighlight;
+  	box-shadow: none;
+}
+
+.sapInoWallWISticker > .sapInoWallWIResizeHandle {
+	color: @sapUiBaseBG
+}
+
+.sapInoWallWIStickerBlack > .sapInoWallWIResizeHandle {
+	color: @sapUiLightText;
+}
+/* END "WallItemSticker.less" */
+
+/* START "WallItemText.less" */
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWIT.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWIT.back {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIT {
+	background: @sapUiBaseBG;
+}
+
+.sapInoWallWITDescriptionTA textarea {
+	background: @sapUiBaseBG;
+}
+
+.sapInoWallWIT .sapInoWallWITitle {
+	color: @sapUiLightText;
+}
+/* END "WallItemText.less" */
+
+/* START "WallItemVideo.less" */
+.sapInoWallWIVInner {
+	min-width: 109px;
+}
+
+.sapInoWallWIVVideoError {
+	background-image: url(img/WallItemVideo/error.png);
+	height: 114px;
+	width: 109px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.sapInoWallWIVVideoDefault {
+    background-image: url(img/WallItemVideo/video.png);
+    height: 114px;
+    width: 109px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.back.sapInoWallWIV {
+    border-left: 5px solid #131313;
+    border-right: 5px solid #131313;
+}
+
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable.sapInoWallWIVideo > .front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable.sapInoWallWIVideo > .back {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIVVideo {
+	background-color: @sapUiBaseBG;
+}
+
+.sapInoWallWIVVideo input {
+	background-color: @sapUiBaseBG;
+}
+
+.sapInoWallWIVOuter {
+  	border-left: 12px dotted white;
+  	border-right: 12px dotted white;
+  	height: 100%;
+  	display: block;
+  	margin-left: 4px;
+  	margin-right: 4px;
+  	font-size: 12px;
+}
+
+.sapInoWallWIVOuterOuter {
+	border: none;
+  	background-color: @sapUiBaseBG;
+}
+
+.back.sapInoWallWIV {
+  	border: 2px solid @sapUiLightText;
+	background: @sapUiBaseBG;
+}
+
+.sapInoWallWIVEdithint {
+	font-size: 11px;
+}
+
+.sapInoWallWIVInner {
+	background: @sapUiBaseBG;
+}
+/* END "WallItemVideo.less" */
+
+/* START "WallPreview.less" */
+
+/* ============================================= */
+/* CSS for control wallPreview.control */
+/* ============================================= */
+
+.sapInoWallPreview {
+	border-color: @sapUiBaseBorder;
+}
+
+.sapInoWallPreviewHeader {
+	background-color: @sapUiBaseBG;
+}
+
+.sapInoWallPreviewFooter {
+	background-color: @sapUiBaseBG;
+}
+
+.sapInoWallPreviewRemove:focus, .sapInoWallPreviewRemove:hover, .sapInoWallPreviewRemove:active {
+	background-color: @sapUiHighlightColor; 
+}
+/* END "WallPreview.less" */
+

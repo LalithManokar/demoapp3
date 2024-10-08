@@ -1,0 +1,9 @@
+schema = "SAP_INO_EXT";
+query =
+"select campaign_id,
+        campaign_name,
+        no_users as number_of_users
+    from
+        \"sap.ino.db.iam::v_user_number_per_campaign\"";
+        
+depends_on_view = ["sap.ino.db.iam::v_user_number_per_campaign"];

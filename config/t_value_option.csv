@@ -1,0 +1,21 @@
+CODE;LIST_CODE;NUM_VALUE;BOOL_VALUE;TEXT_VALUE;DEFAULT_TEXT;DEFAULT_LONG_TEXT;ACTIVE;SEQUENCE_NO
+sap.ino.config.RR_BREAD_BUTTER;sap.ino.config.RR_RESULT;3;;;Bread & Butter;;1;1
+sap.ino.config.RR_PEARL;sap.ino.config.RR_RESULT;4;;;Pearl;;1;2
+sap.ino.config.RR_OYSTER;sap.ino.config.RR_RESULT;2;;;Oyster;;1;3
+sap.ino.config.RR_ELEPHANT;sap.ino.config.RR_RESULT;1;;;White Elephant;;1;4
+sap.ino.config.QUARTER_ONE;sap.ino.config.QUARTER;1;;;Quarter 1;;1;1
+sap.ino.config.QUARTER_TWO;sap.ino.config.QUARTER;2;;;Quarter 2;;1;2
+sap.ino.config.QUARTER_THREE;sap.ino.config.QUARTER;3;;;Quarter 3;;1;3
+sap.ino.config.QUARTER_FOUR;sap.ino.config.QUARTER;4;;;Quarter 4;;1;4
+sap.ino.config.JANURARY;sap.ino.config.MONTH;1;;;Janurary;;1;1
+sap.ino.config.FEBRUARY;sap.ino.config.MONTH;2;;;February;;1;2
+sap.ino.config.MARCH;sap.ino.config.MONTH;3;;;March;;1;3
+sap.ino.config.APRIL;sap.ino.config.MONTH;4;;;April;;1;4
+sap.ino.config.MAY;sap.ino.config.MONTH;5;;;May;;1;5
+sap.ino.config.JUNE;sap.ino.config.MONTH;6;;;June;;1;6
+sap.ino.config.JULY;sap.ino.config.MONTH;7;;;July;;1;7
+sap.ino.config.AUGUST;sap.ino.config.MONTH;8;;;August;;1;8
+sap.ino.config.SEPTEMBER;sap.ino.config.MONTH;9;;;September;;1;9
+sap.ino.config.OCTOBER;sap.ino.config.MONTH;10;;;October;;1;10
+sap.ino.config.NOVEMBER;sap.ino.config.MONTH;11;;;November;;1;11
+sap.ino.config.DECEMBER;sap.ino.config.MONTH;12;;;December;;1;12

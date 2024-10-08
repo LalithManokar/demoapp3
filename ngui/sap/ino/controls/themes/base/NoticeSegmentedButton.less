@@ -1,0 +1,78 @@
+.sapInoDisplayNoticePoint {
+	width: 12px;
+	position: absolute;
+	top: 1px;
+	left: 20px;
+	background-color: #f31c1c;
+	border-radius: 12px;
+	text-align: center;
+	font-size: 10px;
+	height: 12px;
+	color: white;
+	line-height: 16px;
+}
+
+	.sapInoTextWithoutBorder {
+		//border-radius: 20px!important;
+		//border: 1px solid !important;
+		text-align: left!important;
+		padding-left: 0.25rem!important;
+		padding-right: 0.25rem!important;
+}
+	.sapInoButtonLi {
+		border-radius: 20px!important;
+		border: none !important;
+		margin-bottom: 0.25rem;
+}
+
+html.sap-desktop .sapMSegBBtnFocusable.sapMSegBBtnSel:focus {
+    outline: none;
+    border: 1px dotted #ffffff !important;
+}
+
+html.sap-desktop .sapMSegBBtnFocusable:focus {
+    outline: none;
+    border: 1px dotted #000000 !important;
+}
+html.sap-desktop .sapMSegBBtnFocusable.sapMSegBBtnSel + .sapMSegBBtn:not(.sapMSegBBtnDis):focus {
+    border-left: 1px dotted #000000 !important;
+}
+	.sapInoSegBtnText {
+		display: inline-block;
+        text-overflow: ellipsis !important;
+        overflow: hidden !important;
+        width: auto;
+        max-width: 10rem;
+        margin-right: 0.5rem;
+}
+	.sapInoSegBtnTextInVisible {
+		display: none;
+}
+.sapInoBtnNarrowWidth {
+		width: 2.5rem!important;
+        position: relative;
+        background-color: #f4f4f4!important;  
+}
+
+//  @keyframes :global(expandbutton)
+// {
+// from {width:3rem !important;}
+// to {width:20rem !important;}
+// }
+
+.sapInoBtnExpandWidth{
+    width: auto !important;
+    position: relative;
+    background-color: #4d98f4!important;
+}
+
+.sapInoDisplayInherit{
+    height: inherit !important;
+}
+
+.sapInoBtnExpandWidth> .sapInoTextWithoutBorder > .sapUiIcon{
+    color: white !important;
+}
+.sapInoBtnNarrowWidth> .sapInoTextWithoutBorder > .sapUiIcon{
+    color: grey!important;
+}

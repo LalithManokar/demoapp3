@@ -1,0 +1,20 @@
+role sap.ino.authorizations::innovation_system_manager extends role sap.ino.authorizations::innovation_manager
+{
+system privilege: REPO.MODIFY_OWN_CONTRIBUTION;
+
+schema sap.ino.db.basis:SAP_INO.hdbschema: EXECUTE;
+sql object sap.ino.db.config::v_config_content_package: //Objecttype: VIEW
+	SELECT;
+
+
+package sap.ino.config: REPO.READ;
+package sap.ino.db.idea: REPO.READ, REPO.EDIT_NATIVE_OBJECTS, REPO.ACTIVATE_NATIVE_OBJECTS, REPO.EDIT_IMPORTED_OBJECTS, REPO.ACTIVATE_IMPORTED_OBJECTS;
+package sap.ino.db.blog: REPO.READ, REPO.EDIT_NATIVE_OBJECTS, REPO.ACTIVATE_NATIVE_OBJECTS, REPO.EDIT_IMPORTED_OBJECTS, REPO.ACTIVATE_IMPORTED_OBJECTS;
+package sap.ino.db.campaign: REPO.READ, REPO.EDIT_NATIVE_OBJECTS, REPO.ACTIVATE_NATIVE_OBJECTS, REPO.EDIT_IMPORTED_OBJECTS, REPO.ACTIVATE_IMPORTED_OBJECTS;
+
+application privilege: "sap.ino.xs.rest.admin.system::execute";
+application privilege: "sap.ino.xs.rest.support::execute";
+application privilege: "sap.ino.setup.rest::execute";
+application privilege: "sap.ino.xs.rest.transport::execute";
+
+}

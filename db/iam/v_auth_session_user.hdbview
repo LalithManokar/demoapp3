@@ -1,0 +1,11 @@
+schema = "SAP_INO";
+query = "
+    select *
+        from
+            \"sap.ino.db.iam::t_identity\"
+        where
+            user_name = session_user
+        with read only
+";
+
+depends_on_table = ["sap.ino.db.iam::t_identity"];

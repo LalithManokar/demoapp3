@@ -1,0 +1,91 @@
+PROCEDURE "SAP_INO"."sap.ino.db.idea::p_idea_filter" (
+	 in  iv_filter_name varchar(25),
+     out ot_idea_id  SAP_INO."sap.ino.db.basis::tt_object_id"
+ ) 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA SAP_INO
+	READS SQL DATA AS
+BEGIN
+/***************************** 
+	Write your procedure logic 
+ *****************************/
+ ot_idea_id = select id 
+                  from "sap.ino.db.idea::t_idea" 
+                  where :iv_filter_name <> 'myAuthoredIdeas'        and 
+                        :iv_filter_name <> 'myEvaluatedIdeas'       and 
+                        :iv_filter_name <> 'myEvaluatableIdeas'     and 
+                        :iv_filter_name <> 'qualifiedIdeaForReward' and
+                        :iv_filter_name <> 'ideasIcanVoteFor'       and
+                        :iv_filter_name <> 'unassignedCoach'        and 
+                        :iv_filter_name <> 'evaluatedIdeas'         and 
+                        :iv_filter_name <> 'coachedIdeasByMe'       and
+                        :iv_filter_name <> 'completedIdeas'         and
+                        :iv_filter_name <> 'followedCompletedIdeas' and 
+                        :iv_filter_name <> 'followedupIdeas'        and
+                        :iv_filter_name <> 'myVotedIdeas' 			and 
+                        :iv_filter_name <> 'myCommentedIdeas'       and 
+                        :iv_filter_name <> 'openForEvaluation'	    and
+                        :iv_filter_name <> 'myFollowingIdeas'       
+                union all
+               select id 
+                   from "sap.ino.db.idea::v_my_authored_ideas" 
+                   where :iv_filter_name = 'myAuthoredIdeas' 
+                   union all
+               select id 
+                   from "sap.ino.db.idea::v_my_evaluated_ideas" 
+                   where :iv_filter_name = 'myEvaluatedIdeas' 
+                   union all
+               select id 
+                   from "sap.ino.db.idea::v_my_evaluation_pending" 
+                   where :iv_filter_name = 'myEvaluatableIdeas' 
+                   union all
+               select id
+                   from "sap.ino.db.idea.ext::v_ext_qualified_idea_for_reward"
+                   where :iv_filter_name = 'qualifiedIdeaForReward' 
+                   union all
+               select id 
+                   from "sap.ino.db.idea::v_vote_ideas" 
+                   where :iv_filter_name = 'ideasIcanVoteFor' 
+                   union all
+               select id 
+                   from "sap.ino.db.idea::v_evaluated_ideas" 
+                   where :iv_filter_name = 'evaluatedIdeas' 
+                   union all
+               select id
+                   from "sap.ino.db.idea::v_my_coached_ideas"
+                   where :iv_filter_name = 'coachedIdeasByMe' 
+                   union all
+               select id
+                   from "sap.ino.db.idea::v_followed_up_ideas" 
+                   where :iv_filter_name = 'followedupIdeas' 
+                   union all
+               select id
+                   from "sap.ino.db.idea::v_completed_ideas"
+                   where :iv_filter_name = 'completedIdeas' 
+                   union all
+               select idea_id
+                   from "sap.ino.db.idea::v_my_followed_ideas"
+                   where :iv_filter_name = 'followedCompletedIdeas' 
+                   union all
+               select id 
+                   from "sap.ino.db.idea::t_idea"
+                   where :iv_filter_name = 'unassignedCoach' and 
+                         id not in (select object_id from "sap.ino.db.iam::t_object_identity_role" where
+                                                             object_type_code = 'IDEA' and 
+                                                             role_code = 'IDEA_COACH') 
+             union all
+               select idea_id as id
+               		from "sap.ino.db.idea::v_my_voted_ideas"
+               		where :iv_filter_name = 'myVotedIdeas' 
+       		union all
+               select idea_id as id from "sap.ino.db.idea::f_my_commented_ideas"()
+               		where :iv_filter_name = 'myCommentedIdeas'
+       		union all
+               select id from "sap.ino.db.idea::v_my_evaluation_open"
+               		where :iv_filter_name = 'openForEvaluation'
+            union all
+            select id from "sap.ino.db.idea::v_my_following_ideas" 
+            where :iv_filter_name = 'myFollowingIdeas'
+            ;
+END;

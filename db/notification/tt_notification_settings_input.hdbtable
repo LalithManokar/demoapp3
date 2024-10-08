@@ -1,0 +1,12 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE;
+table.temporary = true;
+table.description = "Input table for UPDATE procedure of notification settings";
+table.columns = [
+    {name = "ID";        sqlType = INTEGER;              nullable = false; comment = "Human readable identifier";},
+    {name = "ROLE_ID";   sqlType = INTEGER;              nullable = false; comment = "Human readable identifier";},
+    {name = "USER_ID";   sqlType = INTEGER;              nullable = false; comment = "Foreign key to t_identity.ID";},
+    {name = "ROLE_CODE"; sqlType = VARCHAR; length = 20; nullable = false; comment = "Code that references the role";},
+    {name = "BIZ_EVENT"; sqlType = VARCHAR; length = 60; nullable = false; comment = "Code of a notification e.g. a business event: IDEA_CREATED, COACH_ASSIGNED...";},
+    {name = "SEND_MAIL"; sqlType = TINYINT;              nullable = false; comment = "Emails will be sent";}
+];

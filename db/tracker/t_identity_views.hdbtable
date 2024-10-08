@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Recorded Views for identity per hour";
+table.columns = [
+	{name = "ACCESSED_AT"; sqlType = TIMESTAMP; nullable = false;},
+	{name = "IDENTITY_ID"; sqlType = INTEGER; nullable = false;}
+];  

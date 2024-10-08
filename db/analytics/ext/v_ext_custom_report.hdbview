@@ -1,0 +1,17 @@
+schema = "SAP_INO_EXT";
+query = "
+    select report.id,
+           report.identity_id,
+           report.campaign_id,
+           report.config,
+           report.campaign_name,
+           report.campaign_color,
+           report.campaign_phase_count,
+           report.order_sequence,
+           report.report_template_code,
+           report.is_usage_report
+        from 
+            \"sap.ino.db.analytics::v_custom_report\" as report
+    with read only";
+
+depends_on_view  = ["sap.ino.db.analytics::v_custom_report"];

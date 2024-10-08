@@ -1,0 +1,11 @@
+schema = "SAP_INO_EXT";
+query = "
+    select data.* from 
+        \"sap.ino.db.analytics::v_analytics_static_campaign_activities\" as data
+    inner join
+        \"sap.ino.db.idea::v_auth_backoffice_campaign_privilege\" as auth
+        on data.campaign_id = auth.campaign_id
+    with read only";
+
+depends_on_view = ["sap.ino.db.analytics::v_analytics_static_campaign_activities",
+                   "sap.ino.db.idea::v_auth_backoffice_campaign_privilege"];

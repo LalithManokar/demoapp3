@@ -1,0 +1,18 @@
+schema = "SAP_INO";
+query = "
+    select language.code,
+           language.iso_code as locale,
+           count(system_settings.code) as is_system_default,
+           language.default_text,
+           language.default_long_text
+    from \"sap.ino.db.basis::t_language\" as language
+    left outer join \"sap.ino.db.basis::v_local_system_setting_full\" as system_settings
+        on language.code = system_settings.value and
+           system_settings.code = 'sap.ino.config.DEFAULT_SYSTEM_LANGUAGE'
+    where ( language.is_hidden is null or 
+          language.is_hidden = 0 )
+    group by language.code, language.iso_code, language.default_text, language.default_long_text
+with read only";
+
+depends_on_table = ["sap.ino.db.basis::t_language", "sap.ino.db.basis::t_locale"];
+depends_on_view = ["sap.ino.db.basis::v_local_system_setting_full"];

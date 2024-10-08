@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Data types";
+table.columns = [
+    {name = "CODE";              sqlType = VARCHAR;  length =   8; nullable = false; comment = "Data type code";},
+    {name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default Text for Data Type";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true;  comment = "Default Long Text for Data Type";}
+   ];
+table.primaryKey.pkcolumns = ["CODE"];

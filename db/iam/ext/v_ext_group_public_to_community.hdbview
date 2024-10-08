@@ -1,0 +1,10 @@
+schema = "SAP_INO_EXT";
+query = "
+    select groups.group_id, groups.group_name, groups.description
+    from \"sap.ino.db.iam::v_groups\" as groups
+    inner join \"sap.ino.db.iam::v_group_attribute\" as group_attribute
+    on groups.group_id = group_attribute.group_id where group_attribute.is_public = 1
+    with read only 
+";
+
+depends_on_view = ["sap.ino.db.iam::v_groups", "sap.ino.db.iam::v_group_attribute"];

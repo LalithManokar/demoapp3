@@ -1,0 +1,32 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE; 
+table.temporary = true;
+table.description = "Input table User Import";
+table.columns = [
+    {name = "LINE_NO";      sqlType = INTEGER;                nullable = true;                comment = "Line in the input file";},
+    {name = "NAME";         sqlType = NVARCHAR; length = 100; nullable = true;                comment = "User name";},
+    {name = "FIRST_NAME";   sqlType = NVARCHAR; length = 100; nullable = true;                comment = "First name of user";},
+    {name = "LAST_NAME";    sqlType = NVARCHAR; length = 100; nullable = true;                comment = "Last name of user";},
+    {name = "EMAIL";        sqlType = NVARCHAR; length = 256; nullable = true;                comment = "E-Mail address of user";},
+    {name = "USER_NAME";    sqlType = NVARCHAR; length = 256; nullable = true; unique = true; comment = "DB User Name like in table USERS";},
+    {name = "IS_EXTERNAL";  sqlType = TINYINT;                nullable = true;                comment = "The identity is company external";},
+    {name = "PHONE";        sqlType = NVARCHAR; length = 256; nullable = true;                comment = "Phone number";},
+    {name = "MOBILE";       sqlType = NVARCHAR; length = 256; nullable = true;                comment = "Mobile phone number";},
+    {name = "COST_CENTER";  sqlType = NVARCHAR; length = 100; nullable = true;                comment = "Cost center";},
+    {name = "ORGANIZATION"; sqlType = NVARCHAR; length = 100; nullable = true;                comment = "Organization";},
+    {name = "OFFICE";       sqlType = NVARCHAR; length = 100; nullable = true;                comment = "Office";},
+    {name = "DESCRIPTION";  sqlType = NVARCHAR; length = 256; nullable = true;                comment = "Description of the user";},
+    {name = "COMPANY";      sqlType = NVARCHAR; length = 100; nullable = true;               comment = "Company";},
+    {name = "STREET";       sqlType = NVARCHAR; length = 100; nullable = true;               comment = "Street";},
+    {name = "CITY";         sqlType = NVARCHAR; length = 100; nullable = true;               comment = "City";},
+    {name = "COUNTRY";      sqlType = NVARCHAR; length = 100; nullable = true;               comment = "Country";},
+    {name = "ZIP_CODE";     sqlType = NVARCHAR; length = 100; nullable = true;               comment = "Zip Code";},
+    {name = "VALIDATION_TO"; sqlType = TIMESTAMP;              nullable = true;              comment = "Validation to";},
+    {name = "TYPE";         sqlType = VARCHAR;  length = 1;   nullable = true;                comment = "Type: E (Error), W (Warning), I(Information) ";},
+    {name = "MESSAGE";      sqlType = VARCHAR;  length = 100; nullable = true;},
+    {name = "REF_FIELD";    sqlType = VARCHAR;  length = 100; nullable = true;},
+    {name = "PARAM_0";      sqlType = NVARCHAR; length = 100; nullable = true;},
+    {name = "PARAM_1";      sqlType = NVARCHAR; length = 100; nullable = true;},
+    {name = "PARAM_2";      sqlType = NVARCHAR; length = 100; nullable = true;},
+    {name = "PARAM_3";      sqlType = NVARCHAR; length = 100; nullable = true;}
+];

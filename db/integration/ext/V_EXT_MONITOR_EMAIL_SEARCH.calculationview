@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_MONITOR_EMAIL_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_MONITOR_EMAIL_SEARCH"/>
+  <metadata changedAt="2020-01-13 11:12:35.592"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="searchToken"/>
+      <variableProperties datatype="VARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="ACTION_CODE" length="128"/>
+        <viewAttribute datatype="VARCHAR" id="MAIL_STATUS_CODE" length="16"/>
+        <viewAttribute datatype="NVARCHAR" id="MAIL_STATUS_REASON" length="3096"/>
+        <viewAttribute datatype="TIMESTAMP" id="SENTAT"/>
+        <viewAttribute datatype="NVARCHAR" id="MAILRECIPIENT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="OBJECT_TYPE_CODE" length="100"/>
+        <viewAttribute datatype="INTEGER" id="OBJECT_ID"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CAMPAIGN_NAME" length="100"/>
+      
+        <viewAttribute id="ROLE_CODE" datatype="NVARCHAR" length="20"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition> BEGIN 
+   search_result = 
+        select
+            id,
+            1 as search_score
+        from
+            &quot;sap.ino.db.integration::v_monitor_email&quot; 
+        where
+            length(:searchToken) = 0 
+        union all
+        select
+            id,
+            1 as search_score
+        from
+            &quot;sap.ino.db.integration::v_monitor_email&quot; 
+        where
+            length(:searchToken) &gt; 0 and length(ltrim(:searchToken,'0123456789')) &lt;=0 and
+            cast(id as nvarchar) = :searchToken
+        union all    
+        select
+            id,
+            1 as search_score
+        from
+            &quot;sap.ino.db.integration::v_monitor_email&quot; 
+        where length(:searchToken) &gt; 0 and (
+            MailRecipient like CONCAT(CONCAT('%', lcase(:searchToken)), '%') or
+            MAIL_STATUS_REASON like CONCAT(CONCAT('%', lcase(:searchToken)), '%') or
+            MAIL_STATUS_CODE like CONCAT(CONCAT('%', lcase(:searchToken)), '%') or
+            ACTION_CODE like CONCAT(CONCAT('%', lcase(:searchToken)), '%') or
+            CAMPAIGN_NAME like  CONCAT(CONCAT('%', lcase(:searchToken)), '%') or
+            OBJECT_TYPE_CODE like CONCAT(CONCAT('%', lcase(:searchToken)), '%'));
+   
+   var_out = 
+    SELECT distinct
+            sr.search_score,	
+            sr.id,
+            monitor_email.ACTION_CODE,
+            monitor_email.MAIL_STATUS_CODE,
+            monitor_email.MAIL_STATUS_REASON,
+            monitor_email.SentAt,
+            monitor_email.MailRecipient,
+            monitor_email.OBJECT_TYPE_CODE,
+            monitor_email.OBJECT_ID,
+            monitor_email.CAMPAIGN_ID,
+            monitor_email.CAMPAIGN_NAME,
+            monitor_email.ROLE_CODE
+        FROM 
+            &quot;sap.ino.db.integration::v_monitor_email&quot; as monitor_email
+        INNER JOIN
+            :search_result as sr
+        ON
+            monitor_email.id = sr.id;
+END </definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="ACTION_CODE" order="3">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ACTION_CODE"/>
+      </attribute>
+      <attribute id="MAIL_STATUS_CODE" order="4">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="MAIL_STATUS_CODE"/>
+      </attribute>
+      <attribute id="MAIL_STATUS_REASON" order="5">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="MAIL_STATUS_REASON"/>
+      </attribute>
+      <attribute id="SENTAT" order="6">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SENTAT"/>
+      </attribute>
+      <attribute id="MAILRECIPIENT" order="7">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="MAILRECIPIENT"/>
+      </attribute>
+      <attribute id="OBJECT_TYPE_CODE" order="8">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="OBJECT_TYPE_CODE"/>
+      </attribute>
+      <attribute id="OBJECT_ID" order="9">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="OBJECT_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="10">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="11">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+    
+      <attribute id="ROLE_CODE" order="12">
+    
+        <keyMapping columnObjectName="Script_View" columnName="ROLE_CODE"/>
+    
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

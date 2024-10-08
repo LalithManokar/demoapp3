@@ -1,0 +1,10 @@
+schema = "SAP_INO_EXT";
+query = "
+    SELECT group_id, group_name, description
+    FROM \"sap.ino.db.iam::v_groups\"
+    WHERE EXISTS(SELECT 1 from \"sap.ino.db.basis::v_system_setting\"
+        WHERE CODE = 'sap.ino.config.OPEN_GROUP_FOR_COMMUNITY_USER'
+        	AND VALUE = 1)
+    with read only";
+
+depends_on_view = ["sap.ino.db.iam::v_groups"];

@@ -1,0 +1,40 @@
+<mvc:View
+        controllerName="sap.ino.vc.comment.EditCommentDialog"
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns:l="sap.ui.layout"
+        xmlns:f="sap.ui.layout.form"
+        xmlns:uxap="sap.uxap">
+
+    <Dialog
+            id="editCommentDialog"
+            title="{i18n>COMMENT_EDIT_OBJECT_TIT}"
+            contentWidth="500px"
+            contentHeight="500px"
+            stretch="{= ${device>phone} ? true: false}">
+        <f:SimpleForm  maxContainerCols="2"
+                       editable="true"
+                       layout="ResponsiveGridLayout"
+                       labelSpanL="3"
+                       labelSpanM="3"
+                       emptySpanL="4"
+                       emptySpanM="4"
+                       columnsL="1"
+                       columnsM="1">
+            <f:content>
+                <Label text="{i18n>COMMENT_EDIT_OBJECT_LABEL}"/>
+                <TextArea editable="{object>/property/actions/update/enabled}" maxLength="{object>/meta/nodes/Root/attributes/COMMENT/maxLength}" value="{object>COMMENT}" rows="20"></TextArea>
+            </f:content>
+        </f:SimpleForm>
+
+        <buttons>
+            <Button text="{i18n>COMMENT_OBJECT_BTN_CANCEL}" press="onCancelPressed"/>
+            <Button text="{i18n>COMMENT_OBJECT_BTN_DELETE}" visible="{object>/property/actions/del/enabled}" press="onDeletePressed"/>
+            <Button text="{i18n>COMMENT_OBJECT_BTN_UPDATE}" visible="{object>/property/actions/update/enabled}" press="onUpdatePressed"/>
+        </buttons>
+
+    </Dialog>
+
+
+</mvc:View>

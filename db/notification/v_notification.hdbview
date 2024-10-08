@@ -1,0 +1,57 @@
+schema = "SAP_INO";
+query = "select status.id as id, 
+				status.notification_id, 
+                status.user_id,
+                status.role_code, 			 
+				status.status_code,
+                notification.event_at, 
+                notification.notification_code, 
+                notification.action_code, 
+                notification.object_type_code, 
+                notification.object_id,
+                notification.object_text,
+                notification.sub_text,
+                 case 
+                 when settings.IS_ANONYMOUS = 'true' and (notification.notification_code = 'FOLLOW_STATUS_ACTION_SUBMIT' 
+                 or notification.notification_code = 'STATUS_ACTION_sap.ino.config.EVAL_SUBMIT'
+                 or  notification.notification_code = 'STATUS_ACTION_sap.ino.config.EVAL_PUB_SUBMITTER' or notification.action_code = 'SUBMIT_IDEA') then  cast(0 as INTEGER) 
+                  else notification.actor_id
+                  end as actor_id, 
+                notification.owner_id,
+                notification.involved_id,
+                case 
+                 when settings.IS_ANONYMOUS = 'true' and (notification.notification_code = 'FOLLOW_STATUS_ACTION_SUBMIT' 
+                 or notification.notification_code = 'STATUS_ACTION_sap.ino.config.EVAL_SUBMIT'
+                 or  notification.notification_code = 'STATUS_ACTION_sap.ino.config.EVAL_PUB_SUBMITTER' or notification.action_code = 'SUBMIT_IDEA' ) then  cast(0 as INTEGER) 
+                  else attachment_assign.attachment_id
+                  end as actor_image_id, 
+                 case 
+                 when settings.IS_ANONYMOUS = 'true' and (notification.notification_code = 'FOLLOW_STATUS_ACTION_SUBMIT' 
+                 or notification.notification_code = 'STATUS_ACTION_sap.ino.config.EVAL_SUBMIT'
+                 or  notification.notification_code = 'STATUS_ACTION_sap.ino.config.EVAL_PUB_SUBMITTER' or notification.action_code = 'SUBMIT_IDEA') then  cast('Anonymous' as VARCHAR) 
+                  else identity.name
+                  end as actor_name
+            from
+            	\"sap.ino.db.notification::t_notification_status\" as status
+			inner join 
+            	\"sap.ino.db.notification::t_notification\" as notification
+            	on notification.id = status.notification_id
+			left outer join 
+            	\"sap.ino.db.iam::t_identity\" as identity
+            	on identity.id = notification.actor_id
+   			left outer join 
+   				\"sap.ino.db.attachment::t_attachment_assignment\" as attachment_assign
+	        	on attachment_assign.owner_id = notification.actor_id and
+    	       	   attachment_assign.owner_type_code = 'IDENTITY' and
+        		   attachment_assign.role_type_code = 'IDENTITY_IMAGE'
+            left outer join \"sap.ino.db.idea::v_idea_settings_test\" as settings 
+                on settings.idea_id = notification.INVOLVED_ID or settings.idea_id = notification.OBJECT_ID
+            where status.status_code = 'UNREAD'
+            
+            with read only";
+            
+depends_on_table = ["sap.ino.db.notification::t_notification",
+                    "sap.ino.db.notification::t_notification_status",
+                    "sap.ino.db.attachment::t_attachment_assignment",
+                    "sap.ino.db.iam::t_identity"];
+depends_on_view = ["sap.ino.db.idea::v_idea_settings_test"];    

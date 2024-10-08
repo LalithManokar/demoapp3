@@ -1,0 +1,19 @@
+PROCEDURE "SAP_INO"."sap.ino.db.reward::p_reward_search" (
+     in  iv_search_term nvarchar(1024),
+     out ot_reward_score  SAP_INO."sap.ino.db.basis::tt_object_score" ) 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA SAP_INO
+	READS SQL DATA AS
+BEGIN
+/***************************** 
+	Write your procedure logic 
+ *****************************/
+  ot_reward_score =
+        select id, 1 as score 
+        from
+            "sap.ino.db.reward::t_reward"
+        where
+            length(:iv_search_term) = 0 or
+            cast(id as nvarchar) = :iv_search_term;
+END;

@@ -1,0 +1,13 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Evaluation Request Item forward";
+table.columns = [
+    {name = "ID";                   sqlType = INTEGER;   nullable = false;                comment = "Human readable identifier";},
+    {name = "EVAL_REQ_ID";          sqlType = INTEGER;   nullable = false;                comment = "Evaluation Request ID";},
+    {name = "EVAL_REQ_ITEM_ID";     sqlType = INTEGER;   nullable = false;                comment = "Evaluation Request ID";},
+    {name = "FROM_IDENTITY";        sqlType = INTEGER;   nullable = false;                comment = "From expert: identity id";},
+    {name = "TO_IDENTITY";          sqlType = INTEGER;   nullable = true;                 comment = "To expert: identity id"; },
+    {name = "FORWARDED_AT";         sqlType = TIMESTAMP; nullable = false;                comment = "Forward timestamp";},
+    {name = "COMMENT_FORWARD";      sqlType = NVARCHAR;  nullable = true;  length = 1024; comment = "comment when forward"; }
+];
+table.primaryKey.pkcolumns = ["ID"];

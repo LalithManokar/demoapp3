@@ -1,0 +1,60 @@
+schema = "SAP_INO";
+query  = "
+    select
+         responsibility.code,
+         resp_value.code                                                                      as resp_value_code,
+         campaign.id                                                                          as campaign_id,
+          case campaign_auth.campaign_id
+           when null then not_authorized.content
+           else campaign_text.name
+         end                                                                                  as campaign_name,
+         idea.id                                                                              as idea_id,
+         idea.CREATED_BY_ID                                                                   as idea_author_id,
+         identity.NAME                                                                        as idea_author_name,
+         case auth_idea.idea_id
+           when null then not_authorized.content
+           else idea.name
+         end                                                                                  as idea_name,
+         count(idea.id)                                                                       as resp_value_count
+       from              \"sap.ino.db.subresponsibility::t_responsibility_stage\"             as responsibility
+         left outer join \"sap.ino.db.subresponsibility::t_responsibility_value_stage\"       as resp_value
+       					      on responsibility.code = resp_value.resp_code
+       	 left outer join \"sap.ino.db.idea::t_idea\"                                          as idea
+                           on idea.resp_value_code = resp_value.code
+         left outer join \"sap.ino.db.iam::t_identity\"                                        as identity
+                           on identity.id = idea.CREATED_BY_ID
+         left outer join \"sap.ino.db.campaign::t_campaign\"                                  as campaign
+                           on campaign.resp_code = responsibility.code and
+                              campaign.id        = idea.campaign_id
+         left outer join \"sap.ino.db.campaign::v_auth_campaigns\"                            as campaign_auth
+                           on campaign_auth.campaign_id = campaign.id
+         left outer join \"sap.ino.db.campaign::v_campaign_t_locale\"                         as campaign_text
+                           on campaign_text.campaign_id = campaign_auth.campaign_id
+        left outer join  \"sap.ino.db.idea::v_auth_ideas_read\"                               as auth_idea
+                           on idea.id = auth_idea.idea_id,                   
+       (select content from \"sap.ino.db.basis::v_resolved_text\" where object_name = 'uitexts' and text_id = 'BO_COMMON_NOT_AUTHORIZED') as not_authorized
+      where idea.resp_value_code is not null
+      group by
+        responsibility.code,
+        resp_value.code,
+        campaign.id,
+        campaign_text.name,
+        idea.id,
+        auth_idea.idea_id,
+        idea.name,
+        idea.CREATED_BY_ID  ,
+        identity.NAME,
+        not_authorized.content,
+        campaign_auth.campaign_id
+   with read only ";
+   
+depends_on_table = ["sap.ino.db.campaign::t_campaign",
+				    "sap.ino.db.subresponsibility::t_responsibility_stage",
+				    "sap.ino.db.subresponsibility::t_responsibility_value_stage",				    
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.iam::t_identity"];
+depends_on_view = ["sap.ino.db.campaign::v_auth_campaigns",
+                   "sap.ino.db.basis::v_resolved_text",
+                   "sap.ino.db.campaign::v_campaign_t_locale",
+                   "sap.ino.db.idea::v_auth_ideas_read"];
+  

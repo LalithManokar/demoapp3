@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="cvc_languages" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" dimensionType="STANDARD" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="cvc_languages"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.basis::t_language" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::t_language"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:AggregationView" id="t_languages">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CODE"/>
+        <viewAttribute id="ISO_CODE"/>
+        <viewAttribute id="IS_HIDDEN"/>
+        <viewAttribute id="DEFAULT_TEXT"/>
+        <viewAttribute id="DEFAULT_LONG_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.basis::t_language">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ISO_CODE" source="ISO_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_HIDDEN" source="IS_HIDDEN"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_TEXT" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_LONG_TEXT" source="DEFAULT_LONG_TEXT"/>
+      </input>
+      <filter>isNull(&quot;IS_HIDDEN&quot;) OR &quot;IS_HIDDEN&quot;=0</filter>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="t_languages">
+    <descriptions/>
+    <attributes>
+      <attribute id="CODE" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Technical Code Value"/>
+        <keyMapping columnObjectName="t_languages" columnName="CODE"/>
+      </attribute>
+      <attribute id="ISO_CODE" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Language ISO 639-1 Code Value"/>
+        <keyMapping columnObjectName="t_languages" columnName="ISO_CODE"/>
+      </attribute>
+      <attribute id="IS_HIDDEN" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Language code is hidden"/>
+        <keyMapping columnObjectName="t_languages" columnName="IS_HIDDEN"/>
+      </attribute>
+      <attribute id="DEFAULT_TEXT" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Default Text for Language"/>
+        <keyMapping columnObjectName="t_languages" columnName="DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="DEFAULT_LONG_TEXT" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Default Long Text for Language"/>
+        <keyMapping columnObjectName="t_languages" columnName="DEFAULT_LONG_TEXT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="22" y="87"/>
+        <rectangleSize/>
+      </shape>
+      <shape expanded="true" modelObjectName="t_languages" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="165"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

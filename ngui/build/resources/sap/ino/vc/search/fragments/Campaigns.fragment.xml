@@ -1,0 +1,21 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:ino="sap.ino.controls"
+	xmlns:core="sap.ui.core">
+
+    <ino:WrappingList 
+        id="objectCampaignList"
+        noDataText="{i18>CAMPAIGN_LIST_FLD_NO_CAMPAIGN}"
+        visible="{path: 'data>/Campaigns', formatter:'.isShown'}"
+        growing="true"
+        growingThreshold="{path : 'device>/system', formatter: '.formatter.listThreshold'}"
+        growingScrollToLoad="true"
+        wrapping="true"
+        updateStarted="onObjectListUpdateStarted"
+        updateFinished="onObjectListUpdateFinished">
+    </ino:WrappingList>
+    <OverflowToolbar design="transparent" height="2rem" class="sapInoGlobalSearchToolbar" visible="{path: 'data>/Campaigns', formatter:'.isShown'}">
+        <ToolbarSpacer/>
+		<Link text="{i18n>CTRL_GLOBAL_SEARCH_MORE}" tooltip="{i18n>CTRL_GLOBAL_SEARCH_MORE_CAMPAIGN_TOOLTIP}" visible="{parts: [{path: 'data>/Campaigns'}], formatter: '.showMoreLink'}" press="goCampaigns" class="sapInoGlobalSearchMore"/>
+    </OverflowToolbar>    
+</core:FragmentDefinition>

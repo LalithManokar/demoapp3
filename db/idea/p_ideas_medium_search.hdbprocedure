@@ -1,0 +1,102 @@
+PROCEDURE "SAP_INO"."sap.ino.db.idea::p_ideas_medium_search" ( 
+                                                       in searchToken      nvarchar(100),
+                                                       in searchType       integer,
+                                                       in tagsToken        nvarchar(256),
+                                                       in tagsToken1        nvarchar(256),
+                                                       in tagsToken2        nvarchar(256),
+                                                       in tagsToken3        nvarchar(256),
+                                                       in tagsToken4        nvarchar(256),
+                                                       in filterName       varchar(30), 
+                                                       in filterBackoffice tinyint,
+                                                       in filterString     nvarchar(2048),
+                                                       in ideasId         nvarchar(4000),
+                                                       in c1              varchar(512),
+                                                       in o1              integer,
+                                                       in v1              nvarchar(128),
+                                                       in c2              varchar(512),
+                                                       in o2              integer,
+                                                       in v2              nvarchar(128),
+                                                       in c3              varchar(512),
+                                                       in o3              integer,
+                                                       in v3              nvarchar(128),
+                                                       in cvt             varchar(128),
+                                                       in cvr             integer,
+                                                       in cvy             integer,
+                                                       out ot_ideas       _SYS_BIC."sap.ino.db.idea.ext/V_EXT_IDEAS_MEDIUM_SEARCH/proc/tabletype/VAR_OUT",
+                                                       out ot_author      SAP_INO."sap.ino.db.idea::tt_idea_identity_name",
+                                                       out ot_coach       SAP_INO."sap.ino.db.idea::tt_idea_identity_name",
+                                                       out ot_expert      SAP_INO."sap.ino.db.idea::tt_idea_identity_name",
+                                                       out ot_voter       SAP_INO."sap.ino.db.idea::tt_idea_identity_name",
+                                                       out ot_tag         SAP_INO."sap.ino.db.idea::tt_idea_tag_name",
+                                                       out ot_field_value SAP_INO."sap.ino.db.ideaform::tt_idea_field_value",
+                                                       out ot_resp        SAP_INO."sap.ino.db.subresponsibility::tt_idea_subresponsibility"
+) 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA SAP_INO
+	READS SQL DATA AS
+BEGIN
+
+declare lv_filter_string nvarchar(40000);
+if length(:ideasId) > 0 then
+    if length(:filterString) > 0 then
+        lv_filter_string = :filterString || ' and ID in (' || :ideasId || ')';
+    else
+        lv_filter_string = ' ID in (' || :ideasId || ')';
+    end if;
+else
+    lv_filter_string = :filterString;
+end if;
+
+lt_ideas = select * from "_SYS_BIC"."sap.ino.db.idea.ext/V_EXT_IDEAS_MEDIUM_SEARCH"( PLACEHOLDER."$$searchToken$$"      => :searchToken, 
+                                                                                     PLACEHOLDER."$$searchType$$"        => :searchType, 
+                                                                                     PLACEHOLDER."$$tagsToken$$"        => :tagsToken,
+                                                                                     PLACEHOLDER."$$tagsToken1$$"        => :tagsToken1,
+                                                                                     PLACEHOLDER."$$tagsToken2$$"        => :tagsToken2,
+                                                                                     PLACEHOLDER."$$tagsToken3$$"        => :tagsToken3,
+                                                                                     PLACEHOLDER."$$tagsToken4$$"        => :tagsToken4,
+                                                                                     PLACEHOLDER."$$filterName$$"       => :filterName, 
+                                                                                     PLACEHOLDER."$$filterBackoffice$$" => :filterBackoffice,
+                                                                                     PLACEHOLDER."$$c1$$" => :c1, 
+                                                                                     PLACEHOLDER."$$o1$$" => :o1, 
+                                                                                     PLACEHOLDER."$$v1$$" => :v1, 
+                                                                                     PLACEHOLDER."$$c2$$" => :c2, 
+                                                                                     PLACEHOLDER."$$o2$$" => :o2, 
+                                                                                     PLACEHOLDER."$$v2$$" => :v2, 
+                                                                                     PLACEHOLDER."$$c3$$" => :c3, 
+                                                                                     PLACEHOLDER."$$o3$$" => :o3, 
+                                                                                     PLACEHOLDER."$$v3$$" => :v3,
+                                                                                     PLACEHOLDER."$$cvt$$" => :cvt, 
+                                                                                     PLACEHOLDER."$$cvr$$" => :cvr, 
+                                                                                     PLACEHOLDER."$$cvy$$" => :cvy );
+ot_ideas = apply_filter(:lt_ideas, :lv_filter_string); 
+
+ot_author = select idea_id , string_agg(name, ';'order by idea_id) as identity_name from SAP_INO_EXT."sap.ino.db.idea.ext::v_ext_idea_author"
+                                                    where idea_id in ( select id from :ot_ideas ) group by idea_id; 
+                                                   
+ot_coach  = select idea_id , string_agg(name, ';'order by idea_id) as identity_name from SAP_INO_EXT."sap.ino.db.idea.ext::v_ext_idea_coach"
+                                                   where idea_id in ( select id from :ot_ideas ) group by idea_id; 
+                                                   
+ot_expert = select idea_id , string_agg(name, ';'order by idea_id) as identity_name from SAP_INO_EXT."sap.ino.db.idea.ext::v_ext_idea_experts"
+                                                   where idea_id in ( select id from :ot_ideas ) group by idea_id;  
+
+ot_voter  = select idea_id , cast(string_agg(name, ';'order by idea_id) as nvarchar(2000) ) as identity_name from SAP_INO_EXT."sap.ino.db.idea.ext::v_ext_idea_vote"
+                                                   where idea_id in ( select id from :ot_ideas ) group by idea_id;
+                                                   
+ot_tag    = select idea_id , string_agg(name, ';'order by idea_id) as tag_name from SAP_INO_EXT."sap.ino.db.idea.ext::v_ext_idea_tag"
+                                                   where idea_id in ( select id from :ot_ideas ) group by idea_id; 
+                                                   
+ot_field_value = select idea_id, field_code, default_text as field_name, 
+                                    cast(coalesce(num_value, bool_value, text_value, rich_text_value, date_value) as nvarchar(4000)) as field_value,
+                                    form_code,is_admin_form,STATE_OF_PUBLISH
+                                    from "sap.ino.db.ideaform.ext::v_ext_field_value"
+                                    where idea_id in ( select id from :ot_ideas )
+                union
+                select idea_id, field_code, default_text as field_name, 
+                                    cast(coalesce(num_value, bool_value, text_value, rich_text_value, date_value) as nvarchar(4000)) as field_value,
+                                    form_code,is_admin_form,STATE_OF_PUBLISH
+                                    from "sap.ino.db.ideaform.ext::v_ext_admin_field_value_new_logic"
+                                    where idea_id in ( select id from :ot_ideas ); 
+                                    
+ot_resp = select id as idea_id, resp_name, resp_value_name from :lt_ideas;
+END;

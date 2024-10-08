@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_IDEAS_EVALUATIONS_RESULT" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <origin/>
+  <descriptions defaultDescription="V_ANALYTICS_IDEAS_EVALUATIONS_RESULT"/>
+  <metadata changedAt="2021-06-29 15:33:12.25"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.evaluation::v_criterion_value_with_option_value" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="sap.ino.db.evaluation::v_criterion_value_with_option_value">
+    <descriptions/>
+    <attributes>
+      <attribute id="IDEA_ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea ID"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_PHASE_CODE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Phase Code"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="CAMPAIGN_PHASE_CODE"/>
+      </attribute>
+      <attribute id="MODEL_CODE" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Model Code"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="MODEL_CODE"/>
+      </attribute>
+      <attribute id="EVALUATION_ID" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation ID"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="EVALUATION_ID"/>
+      </attribute>
+      <attribute id="EVALUATION_CREATED_AT" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation Creation Date"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="EVALUATION_CREATED_AT"/>
+      </attribute>
+      <attribute id="EVALUATION_CREATED_BY_ID" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation Created By"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="EVALUATION_CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="EVALUATION_CHANGED_AT" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation Change Date"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="EVALUATION_CHANGED_AT"/>
+      </attribute>
+      <attribute id="EVALUATION_CHANGED_BY_ID" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation Changed By"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="EVALUATION_CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="EVALUATION_STATUS_CODE" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation Status Code"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="EVALUATION_STATUS_CODE"/>
+      </attribute>
+      <attribute id="EVALUATION_COMMENT" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation Comment"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="EVALUATION_COMMENT"/>
+      </attribute>
+      <attribute id="CRITERION_CODE" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Criterion Code"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="CRITERION_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_DATATYPE_CODE" order="13" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Criterion Datatype Code"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="CRITERION_DATATYPE_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_IS_OVERALL_RESULT" order="14" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Criterion is Overall Result"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="CRITERION_IS_OVERALL_RESULT"/>
+      </attribute>
+      <attribute id="CRITERION_TEXT_VALUE" order="15" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Criterion Text Value"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="CRITERION_TEXT_VALUE"/>
+      </attribute>
+      <attribute id="CRITERION_VALUE" order="16" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Criterion Value"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="CRITERION_VALUE"/>
+      </attribute>
+      <attribute id="CRITERION_ALL_VALUE" order="17" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="All Criterion Value"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::v_criterion_value_with_option_value" columnName="CRITERION_ALL_VALUE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

@@ -1,0 +1,5 @@
+table.schemaName = "SAP_INO";
+table.description = "List of IDs";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER;}
+];

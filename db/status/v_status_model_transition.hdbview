@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "
+    select  
+        statusmodeltransition.*
+    from \"sap.ino.db.status::t_status_model_transition\" as statusmodeltransition
+    with read only";
+
+depends_on_table = ["sap.ino.db.status::t_status_model_transition"];

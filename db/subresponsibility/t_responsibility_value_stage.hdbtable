@@ -1,0 +1,24 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Sub responsibility value Configuration: Runtime Table";
+table.columns     = [
+    {name = "PACKAGE_ID";        sqlType = NVARCHAR; length = 256; nullable = false; comment = "Package where content is delivered from";},
+    {name = "CODE";              sqlType = VARCHAR;  length = 500; nullable = false; comment = "Identifier of SAP Sub responsibility value";},
+    {name = "RESP_CODE";         sqlType = VARCHAR;  length = 500; nullable = false; comment = "Sub responsiblity list the value belongs to. Foreign key reference to t_responsibility.code.";},
+    {name = "RESP_ID";           sqlType = INTEGER;                nullable = true;  comment = "Sub responsibility ID";},
+    {name = "PARENT_VALUE_CODE"; sqlType = VARCHAR;  length = 500; nullable = true;  comment = "Parent Value (only 1 level supported!";},
+    {name = "PARENT_VALUE_ID";   sqlType = INTEGER;                nullable = true;  comment = "Parent value ID";},
+    {name = "SEQUENCE_NO";       sqlType = INTEGER;                nullable = true;  comment = "Sequence order for display";},
+    {name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default Text for Sub responsibility value";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 2048; nullable = true;  comment = "Default Long Text for Sub responsibility value";},
+    {name = "ID";                sqlType = INTEGER;                nullable = true;  comment = "ID used for UI maintenance - empty for imported configuration content";},
+    {name = "PLAIN_CODE";        sqlType = VARCHAR;  length = 100; nullable = true;  comment = "Code key without package and naming prefix for UI maintenance";},
+    {name = "CREATED_AT";        sqlType = TIMESTAMP;              nullable = true;  comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID";     sqlType = INTEGER;                nullable = true;  comment = "Identity by which content has been created.";},
+    {name = "CHANGED_AT";        sqlType = TIMESTAMP;              nullable = true;  comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID";     sqlType = INTEGER;                nullable = true;  comment = "Identity by which content has been changed.";},   
+    {name = "IS_DEACTIVE";       sqlType = TINYINT;                nullable = true;  comment = "Indicates whether SAP Sub responsibility value is active";},
+    {name = "LINK_URL";          sqlType = VARCHAR; length = 500;  nullable = true;  comment = "URL for Link ";}, 
+    {name = "DEFAULT_COACH";     sqlType = INTEGER;                nullable = true;  comment = "Default Coach for Sub Responsiblity Value";} 
+]; 
+table.primaryKey.pkcolumns = ["PACKAGE_ID", "CODE"]; 

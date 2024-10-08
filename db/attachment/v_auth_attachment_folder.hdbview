@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "select distinct attachment.id as attachment_id
+	from \"sap.ino.db.attachment::t_attachment\" as attachment
+    	where attachment.folder_id in (select folder_id from \"sap.ino.db.attachment.folder::v_auth_attachment_folder\")
+    with read only";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment"];
+depends_on_view = ["sap.ino.db.attachment.folder::v_auth_attachment_folder"];

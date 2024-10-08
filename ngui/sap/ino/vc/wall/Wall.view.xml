@@ -1,0 +1,213 @@
+<mvc:View
+    controllerName="sap.ino.vc.wall.Wall"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:layout="sap.ui.layout"
+    xmlns:wall="sap.ino.wall"
+    xmlns:ino="sap.ino.controls"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <layout:HorizontalLayout id="wallContentLayout" class="sapInoGenericWallContent">
+		<layout:HorizontalLayout id="wallTopBar" class="sapInoGenericWallTopBar">
+			<Button tooltip="{i18n>WALL_BUT_CREATE_IDEA_TOOLTIP}"
+					icon="sap-icon://lightbulb"
+					press="onIdeaCreate"
+					class="sapInoGenericWallBtnCreateIdea">
+			</Button>
+			<Input 
+			       id="wallTitleInput"
+			       value="{object>NAME}"
+            	   width="300px"
+            	   maxLength="{object>/meta/nodes/Root/attributes/NAME/maxLength}"
+            	   required="true"
+            	   editable="{object>WALL_ADMINISTRABLE}"
+		           textAlign="Center"
+		           class="sapInoGenericWallInputWallName"
+		           change="onNameChanged">
+			</Input>
+			<Button tooltip="{i18n>WALL_BUT_REFRESH_TOOLTIP}"
+					icon="sap-icon://refresh"
+					press="onWallRefresh"
+					class="sapInoGenericWallBtnRefresh">
+			</Button>
+		</layout:HorizontalLayout>
+		<ino:SidePanel id="toolbarSidePanel"
+					   openerSide="0"
+					   openerPosition="0%"
+					   openerIcon="sap-icon://wrench"
+					   expanded="true"
+					   openerTooltipShow="{i18n>WALL_EXP_TOOLS_PANEL_SHOW}"
+					   openerTooltipHide="{i18n>WALL_EXP_TOOLS_PANEL_HIDE}"
+					   visible="{object>WALL_EDITABLE}">
+			<ino:content>
+				<layout:VerticalLayout>
+					<wall:ScrollableToolbar orientation="Vertical"
+            								height="100%"
+            								width="100%"
+            								class="sapInoGenericWallScrollableToolbar">
+						<wall:content>
+							<wall:DragButton app:item="WallItemHeadline"
+											 icon="{ path:'view>/ToolbarItems/WallItemHeadline/icon', formatter:'.formatter.image' }"
+											 iconDensityAware="false"
+											 tooltip="{i18n>WALL_EXP_ITEMHEADLINE_NAME}"
+											 press="onToolbarButtonPress"
+											 drag="onToolbarButtonDrag"
+							        	     activateByKey="onToolbarButtonKeyPressed">
+							</wall:DragButton>
+							<wall:DragButton app:item="WallItemLink"
+											 icon="{ path:'view>/ToolbarItems/WallItemLink/icon', formatter:'.formatter.image' }"
+											 iconDensityAware="false"
+											 tooltip="{i18n>WALL_EXP_ITEMLINK_NAME}"
+											 press="onToolbarButtonPress"
+											 drag="onToolbarButtonDrag"
+							        	     activateByKey="onToolbarButtonKeyPressed">
+							</wall:DragButton>
+							<wall:DragButton app:item="WallItemSticker"
+											 icon="{ path:'view>/ToolbarItems/WallItemSticker/icon', formatter:'.formatter.image' }"
+											 iconDensityAware="false"
+											 tooltip="{i18n>WALL_EXP_ITEMSTICKER_NAME}"
+											 press="onToolbarButtonPress"
+											 drag="onToolbarButtonDrag"
+							        	     activateByKey="onToolbarButtonKeyPressed">
+							</wall:DragButton>
+							<wall:DragButton app:item="WallItemImage"
+											 icon="{ path:'view>/ToolbarItems/WallItemImage/icon', formatter:'.formatter.image' }"
+											 iconDensityAware="false"
+											 tooltip="{i18n>WALL_EXP_ITEMIMAGE_NAME}"
+											 press="onToolbarButtonPress"
+											 drag="onToolbarButtonDrag"
+							        	     activateByKey="onToolbarButtonKeyPressed">
+							</wall:DragButton>
+							<wall:DragButton app:item="WallItemText"
+											 icon="{ path:'view>/ToolbarItems/WallItemText/icon', formatter:'.formatter.image' }"
+											 iconDensityAware="false"
+											 tooltip="{i18n>WALL_EXP_ITEMTEXT_NAME}"
+											 press="onToolbarButtonPress"
+											 drag="onToolbarButtonDrag"
+							        	     activateByKey="onToolbarButtonKeyPressed">
+							</wall:DragButton>
+							<wall:DragButton app:item="WallItemLine"
+											 icon="{ path:'view>/ToolbarItems/WallItemLine/icon', formatter:'.formatter.image' }"
+											 iconDensityAware="false"
+											 tooltip="{i18n>WALL_EXP_ITEMLINE_NAME}"
+											 press="onToolbarButtonPress"
+											 drag="onToolbarButtonDrag"
+							        	     activateByKey="onToolbarButtonKeyPressed">
+							</wall:DragButton>
+							<wall:DragButton app:item="WallItemArrow"
+											 icon="{ path:'view>/ToolbarItems/WallItemArrow/icon', formatter:'.formatter.image' }"
+											 iconDensityAware="false"
+											 tooltip="{i18n>WALL_EXP_WALL_ITEMARROW_NAME}"
+											 press="onToolbarButtonPress"
+											 drag="onToolbarButtonDrag"
+							        	     activateByKey="onToolbarButtonKeyPressed">
+							</wall:DragButton>
+							<wall:DragButton app:item="WallItemSprite"
+											 icon="{ path:'view>/ToolbarItems/WallItemSprite/icon', formatter:'.formatter.image' }"
+											 iconDensityAware="false"
+											 tooltip="{i18n>WALL_EXP_ITEMSPRITE_NAME}"
+											 press="onToolbarButtonPress"
+											 drag="onToolbarButtonDrag"
+							        	     activateByKey="onToolbarButtonKeyPressed">
+							</wall:DragButton>
+							<wall:DragButton app:item="WallItemPerson"
+											 icon="{ path:'view>/ToolbarItems/WallItemPerson/icon', formatter:'.formatter.image' }"
+											 iconDensityAware="false"
+											 tooltip="{i18n>WALL_EXP_ITEMPERSON_NAME}"
+											 press="onToolbarButtonPress"
+											 drag="onToolbarButtonDrag"
+							        	     activateByKey="onToolbarButtonKeyPressed">
+							</wall:DragButton>
+							<wall:DragButton app:item="WallItemVideo"
+											 icon="{ path:'view>/ToolbarItems/WallItemVideo/icon', formatter:'.formatter.image' }"
+											 iconDensityAware="false"
+											 tooltip="{i18n>WALL_EXP_ITEMVIDEO_NAME}"
+											 press="onToolbarButtonPress"
+											 drag="onToolbarButtonDrag"
+							        	     activateByKey="onToolbarButtonKeyPressed">
+							</wall:DragButton>
+							<wall:DragButton app:item="WallItemAttachment"
+											 icon="{ path:'view>/ToolbarItems/WallItemAttachment/icon', formatter:'.formatter.image' }"
+											 iconDensityAware="false"
+											 tooltip="{i18n>WALL_EXP_ITEMATTACHMENT_NAME}"
+											 press="onToolbarButtonPress"
+											 drag="onToolbarButtonDrag"
+							        	     activateByKey="onToolbarButtonKeyPressed">
+							</wall:DragButton>
+							<wall:DragButton app:item="WallItemGroup"
+											 icon="{ path:'view>/ToolbarItems/WallItemGroup/icon', formatter:'.formatter.image' }"
+											 iconDensityAware="false"
+											 tooltip="{i18n>WALL_EXP_ITEMGROUP_NAME}"
+											 press="onToolbarButtonPress"
+											 drag="onToolbarButtonDrag"
+							        	     activateByKey="onToolbarButtonKeyPressed">
+							</wall:DragButton>
+						</wall:content>
+					</wall:ScrollableToolbar>
+				</layout:VerticalLayout>
+			</ino:content>
+		</ino:SidePanel>
+		<ino:SidePanel id="settingsSidePanel"
+					   openerSide="1"
+					   openerPosition="0%"
+					   openerIcon="sap-icon://action-settings"
+					   expanded="false"
+					   openerTooltipShow="{i18n>WALL_EXP_SETTINGS_PANEL_SHOW}"
+					   openerTooltipHide="{i18n>WALL_EXP_SETTINGS_PANEL_HIDE}"
+					   changed="onSettingsSidePanelChanged">
+			<ino:content>
+				<mvc:XMLView id="settings" viewName="sap.ino.vc.wall.WallSettings" tabindex="0"></mvc:XMLView>
+			</ino:content>
+		</ino:SidePanel>
+		<layout:HorizontalLayout id="wallBottomBar" 
+								 class="sapInoGenericWallBottomBar">
+			<Button tooltip="{i18n>WALL_STATUSMSG_ZOOM_OUT}"
+					icon="sap-icon://less"
+					press="onWallZoomOut"
+					class="sapInoGenericWallBtnZoomOut">
+			</Button>
+			<Slider id="wallZoomControl"
+					value="100"
+					width="173px"
+					min="20"
+					max="200"
+					liveChange="onZoomLiveChange"
+					class="sapInoGenericWallZoomSlider">
+			</Slider>
+			<Label id="wallZoomLabel"
+				   text=""
+				   textAlign="End"
+				   class="sapInoGenericWallZoomLabel">
+			</Label>
+			<Button tooltip="{i18n>WALL_STATUSMSG_ZOOM_IN}"
+					icon="sap-icon://add"
+					press="onWallZoomIn"
+					class="sapInoGenericWallBtnZoomIn sapUiTinyMarginEnd">
+			</Button>
+			<Button tooltip="{i18n>WALL_STATUSMSG_ZOOM_VIEWPORT}"
+					icon="sap-icon://resize"
+					press="onWallAdjustViewport"
+					class="sapInoGenericWallBtnAdjustViewport sapUiTinyMarginBeginEnd">
+			</Button>
+			<SearchField placeholder="{i18n>WALL_FLD_SEARCH_PLACEHOLDER}"
+						 search="onSearch"
+						 class="sapInoGenericWallBtnSearch sapUiTinyMarginBegin"
+						 width="180px">
+			</SearchField>
+			<Button id="wallSearchPrevious" 
+					tooltip="{i18n>WALL_INS_SEARCH_UP_TOOLTIP}"
+					icon="sap-icon://slim-arrow-up"
+					press="showPreviousSearchResult"
+					class="sapInoGenericWallBtnSearchUp sapUiTinyMarginBegin"
+					enabled="false">
+			</Button>
+			<Button id="wallSearchNext" 
+					tooltip="{i18n>WALL_INS_SEARCH_DOWN_TOOLTIP}"
+					icon="sap-icon://slim-arrow-down"
+					press="showNextSearchResult"
+					class="sapInoGenericWallBtnSearchDown sapUiTinyMarginBegin"
+					enabled="false">
+			</Button>			
+		</layout:HorizontalLayout>
+	</layout:HorizontalLayout>
+</mvc:View>

@@ -1,0 +1,20 @@
+schema = "SAP_INO";
+query = "
+    select wall.id as wall_id, object_role.identity_id
+        from \"sap.ino.db.wall::t_wall\" as wall
+        inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role
+            on  wall.id = object_role.object_id
+            and object_role.object_type_code = 'WALL'
+        inner join \"sap.ino.db.iam::t_role_privilege\" as role
+            on  role.role_code = object_role.role_code
+            and role.privilege = 'WALL_ADMIN'
+	    left outer join \"sap.ino.db.wall::t_wall_assignment\" as assignment
+	    	on assignment.wall_id = wall.id
+	   	where assignment.id is null
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.wall::t_wall",
+					"sap.ino.db.wall::t_wall_assignment", 
+					"sap.ino.db.iam::t_role_privilege"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];

@@ -1,0 +1,18 @@
+schema = "SAP_INO";
+query = "
+select 
+    idea.id as idea_id, 
+    campaign_phase.voting_active,
+    vote_type.type_code,
+    vote_type.max_star_no
+from \"sap.ino.db.idea::t_idea\" as idea
+    inner join \"sap.ino.db.campaign::t_campaign\" as campaign
+        on campaign.id = idea.campaign_id
+    inner join \"sap.ino.db.campaign::t_campaign_phase\" as campaign_phase
+        on campaign_phase.campaign_id = campaign.id and
+           campaign_phase.phase_Code = idea.phase_code
+    inner join \"sap.ino.db.campaign::t_vote_type\" as vote_type
+        on vote_type.code = campaign.vote_type_code
+";
+
+depends_on_table = ["sap.ino.db.idea::t_idea", "sap.ino.db.campaign::t_campaign", "sap.ino.db.campaign::t_campaign_phase", "sap.ino.db.campaign::t_vote_type"];

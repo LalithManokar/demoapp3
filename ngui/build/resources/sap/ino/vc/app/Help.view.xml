@@ -1,0 +1,96 @@
+<mvc:View 
+    controllerName="sap.ino.vc.app.Help" 
+    xmlns="sap.m"
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:layout="sap.ui.layout"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<Dialog
+	    id="helpDialog"
+	    class="sapInoHelpDialog"
+	    contentWidth="100%"
+        contentHeight="100%"
+        stretch="true"
+        afterClose="onAfterClose">
+    	<customHeader>
+	        <Toolbar>
+                <ToolbarSpacer/>
+                <Button 
+                    visible="{= ${device>/system/desktop} }"
+                    icon="sap-icon://create-session" 
+                    type="Transparent"
+                    press="onDraggableDialogOpen"
+                    tooltip="{i18n>HELP_EXP_OPEN_SEPARATELY}"/>
+                <Button 
+                    icon="sap-icon://sys-cancel" 
+                    id="helpClose"
+                    type="Transparent"
+                    press="onClose"
+                    tooltip="{i18n>HELP_EXP_CLOSE}"/>
+            </Toolbar>
+	    </customHeader>
+	    <content>
+	        <ScrollContainer
+	            height="100%"
+	            width="100%"
+	            horizontal="false"
+	            vertical="true"
+	            focusable="false">
+    	        <layout:Grid
+    	            width="80%"
+    	            class="sapInoHelpGrid sapInoHelpContentContainer"
+    	            hSpacing="2"
+    	            vSpacing="2"
+    	            position="Center"
+    	            defaultSpan="XL12 L12 M12 S12">
+    	            <layout:content>
+    	                <!-- HTML Control has problems w/ updating the binding therefore we set it directly -->
+    	                <!--<core:HTML content="{help>/CONTENT}"></core:HTML> -->
+    	            </layout:content>
+    	        </layout:Grid>
+    	    </ScrollContainer>
+	    </content>
+	</Dialog>
+	<Dialog
+	    id="helpDraggableDialog"
+	    contentWidth="100px"
+        contentHeight="600px"
+        afterClose="onDraggableAfterClose"
+        draggable="true"
+        resizable="true">
+    	<customHeader>
+	        <Toolbar>
+	            <Title 
+	                text="{i18n>HELP_TIT_DIALOG}"
+	                class="sapUiSmallMarginBegin"/>
+                <ToolbarSpacer/>
+                <Button 
+                    id="helpDraggableClose"
+                    icon="sap-icon://sys-cancel" 
+                    type="Transparent"
+                    press="onDraggableClose"
+                    tooltip="{i18n>HELP_EXP_CLOSE}"/>
+            </Toolbar>
+	    </customHeader>
+	    <content>
+	        <ScrollContainer
+	            height="100%"
+	            width="100%"
+	            horizontal="false"
+	            vertical="true"
+	            focusable="false">
+    	        <layout:Grid
+    	            class="sapInoHelpContentContainer"
+    	            hSpacing="2"
+    	            vSpacing="2"
+    	            position="Center"
+    	            defaultSpan="XL12 L12 M12 S12">
+    	            <layout:content>
+    	                <!-- HTML Control has problems w/ updating the binding therefore we set it directly -->
+    	                <!-- <core:HTML content="{help>/CONTENT}"></core:HTML> -->
+    	            </layout:content>
+    	        </layout:Grid>
+    	    </ScrollContainer>
+	    </content>
+	</Dialog>
+</mvc:View>

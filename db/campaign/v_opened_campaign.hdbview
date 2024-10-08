@@ -1,0 +1,15 @@
+schema = "SAP_INO";
+query = "
+SELECT campaign.ID
+FROM \"sap.ino.db.campaign::t_campaign\" AS campaign
+	INNER JOIN \"sap.ino.db.campaign::v_auth_campaigns_and_registrable\" AS auth
+	ON campaign.id = auth.campaign_id
+WHERE (campaign.submit_from <= CURRENT_UTCTIMESTAMP
+		AND campaign.submit_to >= CURRENT_UTCTIMESTAMP
+		OR campaign.register_from <= CURRENT_UTCTIMESTAMP
+		AND campaign.register_to >= CURRENT_UTCTIMESTAMP)
+	AND campaign.status_code != 'sap.ino.config.CAMP_DRAFT'
+";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign"];
+depends_on_view = ["sap.ino.db.campaign::v_auth_campaigns_and_registrable"];

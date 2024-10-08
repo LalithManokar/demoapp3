@@ -1,0 +1,21 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Notification";
+table.columns = [
+    {name = "ID";                sqlType = INTEGER;                 nullable = false; comment = "Human readable Identifier";},
+    {name = "OBJECT_TYPE_CODE";  sqlType = VARCHAR;  length = 100;  nullable = false; comment = "Object type. Foreign key t_application_object.CODE";},
+    {name = "OBJECT_ID";         sqlType = INTEGER;                 nullable = false; comment = "Foreign key e.g. to t_idea.ID and t_campaign.ID";},
+    {name = "EVENT_AT";          sqlType = TIMESTAMP;               nullable = false; comment = "Timestamp when event occurred";},
+    {name = "NOTIFICATION_CODE"; sqlType = VARCHAR;  length = 600;  nullable = false; comment = "Code of a notification e.g. a business event: IDEA_CREATED, COACH_ASSIGNED...";},
+    {name = "ACTOR_ID";          sqlType = INTEGER;                 nullable = false; comment = "Id of actor who triggered the biz event";},
+    {name = "OWNER_ID";          sqlType = INTEGER;                 nullable = false; comment = "Id of owner of the object";},
+    {name = "OBJECT_TEXT";       sqlType = NVARCHAR; length = 100;  nullable = true; comment = "Textual description of the object";},
+    {name = "SUB_TEXT";          sqlType = NVARCHAR; length = 5000; nullable = true;  comment = "Sub text of the notification";},
+    {name = "INVOLVED_ID";       sqlType = INTEGER;                 nullable = true; comment = "Id of identity which was involved by the biz event";},
+    {name = "STATUS_CODE";       sqlType = VARCHAR;  length = 16;   nullable = false; comment = "Status of notification: NEW, ACTIVE";},
+    {name = "CAMPAIGN_ID";       sqlType = INTEGER;                 nullable = true;  comment = "ID of campaign";},
+    {name = "RESPONSE";          sqlType = NVARCHAR; length = 5000; nullable = true;  comment = "Response that has been attached to the event";},
+    {name = "ACTION_CODE";       sqlType = NVARCHAR; length = 128;  nullable = true;  comment = "Action code for new notification";},
+    {name = "HISTORY_OBJECT_INFO";       sqlType = NVARCHAR; length = 2048;  nullable = true;  comment = "Snap shot for action trigger time";}
+];
+table.primaryKey.pkcolumns = ["ID"];

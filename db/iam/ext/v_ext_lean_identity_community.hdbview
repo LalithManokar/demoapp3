@@ -1,0 +1,15 @@
+schema = "SAP_INO_EXT";
+query = "
+    select
+        identity.id,
+        identity.name,
+        identity.image_id,
+        identity.changed_at,
+        identity.type_code,
+        identity.is_valid_email
+    from
+        \"sap.ino.db.iam::v_identity_full\" as identity
+    WHERE EXISTS(SELECT 1 FROM \"sap.ino.db.basis::v_local_system_setting_full\" WHERE CODE='sap.ino.config.PEOPLE_MENU_FOR_ALL_ACTIVE' AND VALUE=1)
+    with read only 
+";
+depends_on_view = ["sap.ino.db.iam::v_identity_full","sap.ino.db.basis::v_local_system_setting_full"];

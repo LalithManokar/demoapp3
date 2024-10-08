@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="cvc_new_evaluation_request" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" dimensionType="STANDARD" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="cvc_new_evaluation_request"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.evaluation::t_evaluation_request_item_h" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::t_evaluation_request_item_h"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="HISTORY_AT"/>
+        <viewAttribute id="EVAL_REQ_ID"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="COMMENT_FORWARD"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.evaluation::t_evaluation_request_item_h">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_AT" source="HISTORY_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVAL_REQ_ID" source="EVAL_REQ_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_FORWARD" source="COMMENT_FORWARD"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:UnionView" id="Union_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID" transparentFilter="false"/>
+        <viewAttribute datatype="VARCHAR" id="TEST" length="10"/>
+        <viewAttribute id="HISTORY_AT" transparentFilter="false"/>
+        <viewAttribute id="EVAL_REQ_ID" transparentFilter="false"/>
+        <viewAttribute id="STATUS_CODE" transparentFilter="false"/>
+        <viewAttribute id="COMMENT_FORWARD" transparentFilter="false"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input emptyUnionBehavior="NO_ROW" node="#Aggregation_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_AT" source="HISTORY_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVAL_REQ_ID" source="EVAL_REQ_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_FORWARD" source="COMMENT_FORWARD"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="TEST" null="false" value="EVAL_REQUEST_ITEM"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Union_1">
+    <descriptions/>
+    <attributes>
+      <attribute id="ID" order="1" attributeHierarchyActive="false" displayAttribute="false" transparentFilter="false">
+        <descriptions defaultDescription="Human readable identifier"/>
+        <keyMapping columnObjectName="Union_1" columnName="ID"/>
+      </attribute>
+      <attribute id="TEST" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="TEST"/>
+        <keyMapping columnObjectName="Union_1" columnName="TEST"/>
+      </attribute>
+      <attribute id="HISTORY_AT" order="3" attributeHierarchyActive="false" displayAttribute="false" transparentFilter="false">
+        <descriptions defaultDescription="Timestamp when event occurred"/>
+        <keyMapping columnObjectName="Union_1" columnName="HISTORY_AT"/>
+      </attribute>
+      <attribute id="EVAL_REQ_ID" order="4" attributeHierarchyActive="false" displayAttribute="false" transparentFilter="false">
+        <descriptions defaultDescription="Evaluation Request ID"/>
+        <keyMapping columnObjectName="Union_1" columnName="EVAL_REQ_ID"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="5" attributeHierarchyActive="false" displayAttribute="false" transparentFilter="false">
+        <descriptions defaultDescription="Status Code"/>
+        <keyMapping columnObjectName="Union_1" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="COMMENT_FORWARD" order="6" attributeHierarchyActive="false" displayAttribute="false" transparentFilter="false">
+        <descriptions defaultDescription="comment when forward"/>
+        <keyMapping columnObjectName="Union_1" columnName="COMMENT_FORWARD"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="100"/>
+        <rectangleSize/>
+      </shape>
+      <shape expanded="true" modelObjectName="Aggregation_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="50" y="420"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Union_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="50" y="240"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

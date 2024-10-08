@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_ANALYTICS_IDEA_PHASE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" runWithInvokerPrivileges="false" scriptParametersCaseSensitive="true">
+  <origin/>
+  <descriptions defaultDescription="V_ANALYITCS_IDEAS_TIME_IN_PHASE"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="IDEA_ID"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="PHASE_CODE" length="100"/>
+        <viewAttribute datatype="INTEGER" id="PHASE_SEQUENCE_NO"/>
+        <viewAttribute datatype="INTEGER" id="DAYS"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition>begin    var_out = select
+                  idea_h.id as idea_id,
+                  idea_h.campaign_id,
+                  idea_h.phase_code,
+                  campaign_phase.sequence_no as phase_sequence_no,
+                  days_between(
+                      idea_h.date_from,
+                      case when idea_h.date_to is null then now() else idea_h.date_to end) as days
+              from(
+                  select 
+                      id,
+                      campaign_id,
+                      phase_code,
+                      history_biz_event,
+                      history_at as date_from, 
+                      lead(history_at, 1, NULL) over (partition by id order by history_at asc ) as date_to
+                  from (
+                      select
+                          idea.id,
+                          idea.campaign_id,
+                          idea_h.phase_code,
+                          idea_h.history_biz_event,
+                          idea_h.history_at
+                      from
+                          &quot;sap.ino.db.idea::t_idea_h&quot; as idea_h
+                      inner join
+                          &quot;sap.ino.db.idea::t_idea&quot; as idea
+                      on
+                  	      idea.id = idea_h.id and
+                          idea.campaign_id = idea_h.campaign_id and
+                          history_biz_event in ('STATUS_ACTION_sap.ino.config.START_NEXT_PHASE',
+                                                'STATUS_ACTION_sap.ino.config.RESTART_PREV_PHASE',
+                                                'STATUS_ACTION_SUBMIT',
+                                                'STATUS_ACTION_sap.ino.config.DISCONTINUE',
+                                                'STATUS_ACTION_sap.ino.config.COMPLETE')
+                      union all
+                      select 
+                          idea.id,
+                          idea.campaign_id, 
+                          idea_h.phase_code,
+                          idea_h.history_biz_event, 
+                          idea_h.history_at 
+                      from (
+	                      select 
+                              id,
+                              phase_code,
+                              history_biz_event,
+                              history_at,
+                              campaign_id,
+                              lag(campaign_id, 1, NULL) over (partition by id order by history_at asc ) as campaign_from
+                          from 
+                              &quot;sap.ino.db.idea::t_idea_h&quot;
+                      ) as idea_h
+                      inner join
+                          &quot;sap.ino.db.idea::t_idea&quot; as idea
+                      on
+                          idea.id = idea_h.id and
+                          idea.campaign_id = idea_h.campaign_id and
+                          history_biz_event = 'IDEA_UPDATED' and 
+                          idea_h.campaign_id &lt;> idea_h.campaign_from
+                  )
+              ) as idea_h
+              inner join
+                  &quot;sap.ino.db.campaign::t_campaign_phase&quot; as campaign_phase
+              on 
+                  campaign_phase.campaign_id = idea_h.campaign_id and
+                  campaign_phase.phase_code = idea_h.phase_code and
+                  history_biz_event not in ('STATUS_ACTION_sap.ino.config.DISCONTINUE',
+                                            'STATUS_ACTION_sap.ino.config.COMPLETE');
+end </definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="IDEA_ID" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="2">
+        <descriptions defaultDescription="CAMPAIGN_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="PHASE_CODE" order="3">
+        <descriptions defaultDescription="HISTORY_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="PHASE_CODE"/>
+      </attribute>
+      <attribute id="PHASE_SEQUENCE_NO" order="4">
+        <descriptions defaultDescription="SEQUENCE_NO"/>
+        <keyMapping columnObjectName="Script_View" columnName="PHASE_SEQUENCE_NO"/>
+      </attribute>
+      <attribute id="DAYS" order="5">
+        <keyMapping columnObjectName="Script_View" columnName="DAYS"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

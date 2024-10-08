@@ -1,0 +1,12 @@
+schema = "SAP_INO";
+query = "
+select 
+    reward_list.id,
+    status_trans.*
+from \"sap.ino.db.reward::t_reward_list\" as reward_list
+    inner join \"sap.ino.db.status::t_status_model_transition\" as status_trans
+        on status_trans.current_status_code = reward_list.status_code 
+    	where status_trans.status_model_code = 'sap.ino.config.REWARD'";
+
+depends_on_table =  ["sap.ino.db.status::t_status_model_transition",
+                     "sap.ino.db.reward::t_reward_list"];

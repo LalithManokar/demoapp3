@@ -1,0 +1,20 @@
+schema = "SAP_INO";
+query = "
+    select
+        oir.*,
+        rp.privilege
+    from
+        \"sap.ino.db.iam.debug::v_object_identity_role\" as oir
+    left outer join
+        \"sap.ino.db.iam::t_role_privilege\" as rp
+    on
+        oir.role_code = rp.role_code
+";
+
+depends_on_table = [
+    "sap.ino.db.iam::t_role_privilege"
+];
+
+depends_on_view =  [
+    "sap.ino.db.iam.debug::v_object_identity_role"
+];

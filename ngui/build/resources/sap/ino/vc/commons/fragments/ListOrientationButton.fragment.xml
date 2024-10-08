@@ -1,0 +1,15 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Button 
+        id="orientationButton"
+        icon="{= ${view>/ORIENTATION} === 0 ? 'sap-icon://menu' : 'sap-icon://grid' }"
+        tooltip="{i18n>EXP_LIST_ORIENTATION_BUTTON}"
+        visible="{= ${device>/system/desktop}  &amp;&amp;  ${view>/List/VARIANT} !== 'tag' }"
+        press="_onManualOrientationChange"
+        type="Transparent">
+        <layoutData>
+            <OverflowToolbarLayoutData moveToOverflow="false" />
+        </layoutData>
+    </Button>
+</core:FragmentDefinition>

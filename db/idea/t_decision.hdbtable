@@ -1,0 +1,26 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Idea";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Technical decision ID";},
+	{name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which decision has been logged.";},
+	{name = "IDEA_ID"; sqlType = INTEGER; nullable = false; comment = "Technical idea ID for which decision has been logged";},
+	{name = "DECIDER_ID"; sqlType = INTEGER; nullable = false; comment = "Technical identity ID of decider";},
+	{name = "DECISION_DATE"; sqlType = DATE; nullable = false; comment = "Date on which decision has been taken";},
+	{name = "REASON"; sqlType = NVARCHAR; length = 500; nullable = true; comment = "Reason why decision was taken";},
+	{name = "STATUS_ACTION_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Phase Code after decision";},
+	{name = "PHASE_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Phase Code after decision";},
+	{name = "STATUS_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Status Code after decision";},
+	{name = "SEND_RESPONSE"; sqlType = TINYINT; nullable = true; comment = "Indicates if the response will be sent";},
+	{name = "RESPONSE"; sqlType = NVARCHAR; length = 5000; nullable = true; comment = "Response that will be sent to the author";},
+	{name = "TEXT_MODULE_CODE"; sqlType = VARCHAR; length = 500; nullable = true; comment = "Text Module Code";},
+    {name = "REASON_CODE"; sqlType = VARCHAR; length = 500; nullable = true; comment = "Reason code for decision"; },
+    {name = "DECISION_REASON_LIST_CODE"; sqlType = VARCHAR; length = 500; nullable = true; comment = "Decision Reason Code List";},
+    {name = "DECISION_REASON_LIST_VISIBLE"; sqlType = TINYINT; nullable = true; comment = "Decision Reason visible to community";},
+    {name = "LINK_LABEL"; sqlType = VARCHAR; length = 500; nullable = true; comment = "Label for Decision Link ";},
+    {name = "LINK_URL"; sqlType = VARCHAR; length = 500; nullable = true; comment = "URL for Decision Link ";},
+    {name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = true; comment = "Change timestamp";},
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = true; comment = "Identity that changed the decision";} 
+];
+table.primaryKey.pkcolumns = ["ID"];

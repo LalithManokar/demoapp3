@@ -1,0 +1,9 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Evaluation Request Item";
+table.columns = [
+    {name = "ID";              sqlType = INTEGER;   nullable = false;                comment = "Human readable identifier";},
+    {name = "EVAL_REQ_ID";     sqlType = INTEGER;   nullable = false;                comment = "Evaluation Request ID";},
+    {name = "STATUS_CODE";     sqlType = VARCHAR;   nullable = false; length = 500;  comment = "Status Code";}
+];
+table.primaryKey.pkcolumns = ["ID"];

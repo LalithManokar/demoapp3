@@ -1,0 +1,15 @@
+schema = "SAP_INO";
+query = "
+    select  
+        whitelist.*,
+        created_by_identity.name as created_by, 
+        changed_by_identity.name as changed_by 
+    from \"sap.ino.db.basis::t_url_whitelist_ui_stage\" as whitelist
+        left outer join \"sap.ino.db.iam::t_identity\" as created_by_identity
+            on whitelist.created_by_id = created_by_identity.id
+        left outer join \"sap.ino.db.iam::t_identity\" as changed_by_identity
+            on whitelist.changed_by_id = changed_by_identity.id
+    with read only";
+
+depends_on_table = ["sap.ino.db.basis::t_url_whitelist_ui_stage",
+                    "sap.ino.db.iam::t_identity"];

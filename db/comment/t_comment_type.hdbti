@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.comment::t_comment_type";
+    file       = "sap.ino.db.comment:t_comment_type.csv";
+    header     = false;
+    delimField = ";";
+}];

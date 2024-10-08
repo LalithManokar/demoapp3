@@ -1,0 +1,11 @@
+procedure "SAP_INO"."sap.ino.db.notification::p_notification_service" ()
+language sqlscript
+sql security definer
+default schema sap_ino
+as
+begin
+    call "sap.ino.db.notification::p_notification_create" ();
+    call "sap.ino.db.notification::p_notification_status_create" ();
+    call "sap.ino.db.notification::p_notification_cleanup" ();
+    call "sap.ino.db.followup::p_follow_up_notification_cleanup" ();
+end;

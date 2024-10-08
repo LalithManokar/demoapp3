@@ -1,0 +1,13 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Report Templates";
+table.columns = [
+    {name = "CODE"; sqlType = VARCHAR;  length = 500;  nullable = false; comment = "Identifier";},
+    {name = "CONFIGURATION"; sqlType = VARCHAR; length = 3000; nullable = true; comment = "do not use";},
+    {name = "CONFIG"; sqlType = NCLOB; nullable = true; comment = "JSON Configuration Object (new column)";},
+    {name = "DEFAULT_TEXT"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Default Text";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true; comment = "Default Long Text";},
+    {name = "IS_USAGE_REPORT"; sqlType = TINYINT; nullable = true; comment = "Identifier 0 or 1 if it is a usage report";},
+    {name = "IS_CAMPAIGN_REPORT"; sqlType = TINYINT; nullable = true; comment = "Identifier 0 or 1 if it is a report that runs in a campaign context";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

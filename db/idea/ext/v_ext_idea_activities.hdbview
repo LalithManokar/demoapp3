@@ -1,0 +1,61 @@
+schema = "SAP_INO_EXT"; 
+query = "select 
+        idea_activities.change_event, 
+		idea_activities.change_object, 
+		idea_activities.changed_at, 
+		idea_activities.id, 
+		idea_activities.phase_code, 
+		idea_activities.status_code, 
+		 case 
+        when settings.IS_ANONYMOUS = 'true' and idea.CREATED_BY_ID = idea_activities.changed_by_id then  cast(0 as INTEGER) 
+        else idea_activities.changed_by_id
+        end as changed_by_id, 
+        case 
+        when settings.IS_ANONYMOUS = 'true' and idea.CREATED_BY_ID = idea_activities.changed_by_id then  cast('Anonymity' as VARCHAR) 
+        else idea_activities.changed_by
+        end as changed_by, 
+        case 
+        when settings.IS_ANONYMOUS = 'true' and idea.CREATED_BY_ID = idea_activities.changed_by_id then  cast('Anonymity' as VARCHAR) 
+        else idea_activities.changed_by_organization
+        end as changed_by_organization, 
+        case 
+        when settings.IS_ANONYMOUS = 'true' and idea.CREATED_BY_ID = idea_activities.changed_by_id then  cast(0 as INTEGER) 
+        else idea_activities.changed_by_image_id
+        end as changed_by_image_id, 
+		idea_activities.changed_by_role_code,
+		idea_activities.campaign_id, 
+		idea_activities.campaign_name, 
+
+		-- variable payload - filled as needed with parameters
+		idea_activities.param_0,
+		-- special case: decision ids are never passed on to unauthorized persons
+		case 
+		    when idea_activities.origin = 2 
+		    and (decision.decision_reason_list_visible is null or decision.decision_reason_list_visible = 0) 
+		    and auth.auth_level < 4 then null
+		    else idea_activities.param_0_id 
+	    end as param_0_id, 
+		idea_activities.param_1,
+		idea_activities.param_1_id,
+
+		idea_activities.auth_stage,
+		idea_activities.origin,
+		idea_activities.change_code
+    from \"sap.ino.db.idea::v_idea_activities\" as idea_activities
+    inner join \"sap.ino.db.idea::v_auth_ideas_read_staged\" as auth
+        on idea_activities.id = auth.idea_id
+            -- only pass through history items that are visible to user
+            and idea_activities.auth_stage <= auth.auth_level
+    inner join \"sap.ino.db.idea::t_idea\" as idea
+    on idea_activities.id = idea.id
+    left join \"sap.ino.db.idea::t_decision\" as decision
+        on idea_activities.origin = 2 and idea_activities.param_0_id = decision.id
+    left outer join \"sap.ino.db.idea::v_idea_settings_test\" as settings 
+    on settings.idea_id = idea_activities.id 
+with read only";
+
+depends_on_table = [ "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.idea::t_decision" ];
+depends_on_view = [ "sap.ino.db.idea::v_idea_activities", 
+                    "sap.ino.db.idea::v_auth_ideas_read_staged",
+                    "sap.ino.db.idea::v_idea_settings_test"];

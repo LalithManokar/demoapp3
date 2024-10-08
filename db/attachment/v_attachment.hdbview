@@ -1,0 +1,30 @@
+schema = "SAP_INO";
+query = "
+	select 
+			attachment.*,
+			attachment_data.DATA,
+			attachment_data.DATA_SMALL,
+			attachment_data.DATA_LARGE,
+	        identity1.name as created_by_name,
+    	    identity1.last_name as created_by_last_name,
+        	identity1.first_name as created_by_first_name,
+        	identity1.email as created_by_email,
+        	identity2.name as changed_by_name,
+        	identity2.last_name as changed_by_last_name,
+        	identity2.first_name as changed_by_first_name,
+        	identity2.email as changed_by_email
+	    from 
+	    	\"sap.ino.db.attachment::t_attachment\" as attachment
+	    inner join 
+	     	\"sap.ino.db.attachment::t_attachment_data\" as attachment_data
+	    		on attachment.id = attachment_data.id
+	    left outer join \"sap.ino.db.iam::t_identity\" as identity1
+    	    on identity1.id = attachment.created_by_id 
+    	left outer join \"sap.ino.db.iam::t_identity\" as identity2
+        	on identity2.id = attachment.changed_by_id
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment",
+					"sap.ino.db.attachment::t_attachment_data",
+					"sap.ino.db.iam::t_identity"]; 

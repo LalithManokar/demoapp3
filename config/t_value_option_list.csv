@@ -1,0 +1,4 @@
+CODE;DATATYPE_CODE;DEFAULT_TEXT;DEFAULT_LONG_TEXT
+sap.ino.config.RR_RESULT;INTEGER;Risk Reward Result;
+sap.ino.config.QUARTER;INTEGER;Quarter;
+sap.ino.config.MONTH;INTEGER;Month;

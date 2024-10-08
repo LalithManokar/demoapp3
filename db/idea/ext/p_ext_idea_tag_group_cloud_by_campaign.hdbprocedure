@@ -1,0 +1,33 @@
+procedure "SAP_INO_EXT"."sap.ino.db.idea.ext::p_ext_idea_tag_group_cloud_by_campaign" (
+     in     iv_campaign_id          varchar(512),
+     in     iv_excl_status          varchar(512),
+     out    ov_without_taggroup     nvarchar(1),
+     out    ot_ranked_tag           SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_ranked_tag_and_group"
+)
+language sqlscript
+sql security definer
+default schema SAP_INO
+reads sql data as
+begin
+    declare lv_tag_group_count int;
+    lt_filtered =
+        select idea.id
+            from
+                "sap.ino.db.idea::t_idea"            as idea
+            inner join
+                "sap.ino.db.idea::v_auth_ideas_read" as idea_auth
+            on
+                idea.id = idea_auth.idea_id and
+                (length(:iv_campaign_id) = 0 or idea.campaign_id = :iv_campaign_id) and
+                idea.status_code <> :iv_excl_status;
+
+    call "sap.ino.db.idea::p_tag_relevant_idea_tag"(:lt_filtered, :lt_relevant_idea_tag);
+    call "sap.ino.db.basis::p_tag_cloud_by_group"(:lt_relevant_idea_tag, :ot_ranked_tag);
+    
+    ot_ranked_tag = select * from :ot_ranked_tag order by name asc;
+    ov_without_taggroup = '';
+    select count(*) into lv_tag_group_count from "sap.ino.db.tag::t_group_tag";
+    if lv_tag_group_count <= 0 then
+       ov_without_taggroup = 'X';
+    end if;
+end;

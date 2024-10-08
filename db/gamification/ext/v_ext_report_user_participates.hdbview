@@ -1,0 +1,33 @@
+schema = "SAP_INO";
+query = "select   identity_id,  dimension_id, current_value,
+       dimension.name as dimension_name,
+       dimension.technical_name as dimension_tech_name,
+       unit.default_text as dimension_unit,
+       unit.code as unit_code,
+       dimension.scope,
+       dimension.status,
+       case
+            when dimension.status = 1 then 'DIMENSION_ACTIVE'
+            else 'DIMENSION_INACTIVE'
+        end as DIMENSION_ACTIVE_STATUS,     
+       dimension.redeem,
+       case
+            when dimension.redeem = 1 then 'DIMENSION_REDEEM_ENABLE'
+            else 'DIMENSION_REDEEM_DISABLE'
+        end as DIMENSION_REDEEM_STATUS,         
+       dimension.description,
+       identity.user_name,
+       identity.name,
+       identity.email
+ from \"sap.ino.db.gamification::v_identity_dimension_total_value\" as aggr_dimension 
+       left outer join \"sap.ino.db.gamification::t_dimension\" as dimension on aggr_dimension.dimension_id = dimension.id
+       left outer join \"sap.ino.db.iam::v_identity\" as identity  on aggr_dimension.identity_id = identity.id
+       left outer join \"sap.ino.db.basis::t_unit\" as unit
+       on unit.code = dimension.unit
+       
+    with read only";
+    
+depends_on_table = ["sap.ino.db.gamification::v_identity_dimension_total_value",
+                    "sap.ino.db.gamification::t_dimension",
+                    "sap.ino.db.iam::v_identity",
+                    "sap.ino.db.basis::t_unit"];   

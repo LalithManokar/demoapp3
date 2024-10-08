@@ -1,0 +1,15 @@
+schema = "SAP_INO";
+query = "SELECT DISTINCT *
+FROM (
+		SELECT my_camp.ID
+		FROM \"sap.ino.db.campaign::v_my_backoffice_campaign\" AS my_camp
+
+		UNION
+
+		SELECT my_resp_camp.ID
+		FROM \"sap.ino.db.campaign::v_my_backoffice_responsibility_campaign\" AS my_resp_camp
+	)
+    with read only";
+ 
+depends_on_view =  ["sap.ino.db.campaign::v_my_backoffice_responsibility_campaign", 
+                    "sap.ino.db.campaign::v_my_backoffice_campaign"];

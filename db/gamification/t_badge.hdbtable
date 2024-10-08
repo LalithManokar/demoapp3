@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "activity of dimension setting table";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "DIMENSION_ID"; sqlType = INTEGER; nullable = false; comment = "DIMENSION ID ";},
+	{name = "NAME"; sqlType = NVARCHAR ;length=128 ;nullable = false ; comment = "name of badge";},
+	{name = "BADGE_VALUE"; sqlType = INTEGER ;nullable = false;  comment = "To set the bottom of this badge";},
+	{name = "DESCRIPTION"; sqlType = VARCHAR ;length=500 ;nullable = true; comment = "describe the badge";}
+];
+table.primaryKey.pkcolumns = ["ID"];

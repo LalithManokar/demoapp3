@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Notification code mapping to action code";
+table.columns = [
+    {name = "ACTION_CODE";         sqlType = VARCHAR; length = 128; nullable = false; comment = "Action Code ---the executed action";},
+    {name = "NOTIFICATION_CODE";     sqlType = VARCHAR;  length = 256; nullable = false; comment = "Notification Code ";}
+];
+table.primaryKey.pkcolumns = ["NOTIFICATION_CODE"];

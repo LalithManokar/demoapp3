@@ -1,0 +1,170 @@
+schema = "SAP_INO_EXT";
+query = "select 
+        idea.id, 
+        idea.name,
+        idea.description,
+        idea.short_description,
+        idea.reward_dismissed,
+        idea.ANONYMOUS_FOR,
+        
+        idea.changed_at,
+        idea.created_by_id,
+        idea.created_by_name,
+        idea.created_at,
+        
+        idea.submitted_at,
+        idea.submitter_id, 
+        idea.submitter_name, 
+        
+        idea.show_created_viewer,
+        idea.show_updated_viewer,
+        idea.show_comment_viewer,
+        idea.show_statuschange_viewer,
+                    
+        idea.coach_id,
+        idea.coach_name,
+        
+        idea.campaign_name,
+        idea.campaign_short_name,
+        idea.campaign_description,
+        idea.campaign_color,
+        idea.resp_code,
+        idea.auto_assign_coach,  
+        idea.IS_INTEGRATION_ACTIVE,  
+        idea.campaign_reward_unit_code,
+        idea.campaign_submit_to,
+        idea.campaign_form_code,
+        idea.campaign_admin_form_code,
+        idea.campaign_reward_unit_text,
+        
+        idea.campaign_background_image_assign_id,
+        idea.campaign_background_image_id,
+        idea.campaign_small_background_image_assign_id,
+        idea.campaign_small_background_image_id,
+        
+        idea.phase,
+        idea.step,
+        idea.steps,
+        idea.status,
+        idea.status_code,
+        idea.status_type,
+        idea.status_color,
+        idea.campaign_id,
+        
+        idea.title_image_assign_id,
+        idea.title_image_id,
+        idea.title_image_media_type,
+        idea.title_image_changed_at,
+        
+        idea.vote_type_code, 
+        idea.voted_by_group,
+        idea.vote_type_type_code,
+        idea.max_star_no,
+        idea.public_vote,
+        idea.publish_vote,  
+        idea.auto_vote,
+        idea.auto_follow,
+        idea.vote_comment_type,
+        idea.vote_reason_code, 
+        
+        
+        idea.score,
+        idea.vote_count,
+        idea.pos_votes,
+        idea.neg_votes,
+        
+        idea.exp_score,
+        idea.exp_vote_count,
+        idea.exp_pos_score,
+        idea.exp_neg_score,
+        
+        idea.user_score,
+        idea.vote_id,
+        idea.participant_can_comment,
+        idea.participant_can_vote,
+        idea.open_status_setting,
+        idea.comment_has_privilege,
+        idea.voting_has_privilege,
+        idea.voting_active, 
+        
+        idea.follow_up_date,
+        idea.follow_up_id,
+        idea.follow,
+                
+        idea.read_id,
+        idea.is_read,
+        idea.reference_label,
+        idea.reference_url,
+        
+        idea.last_publ_eval_id,
+        idea.last_publ_eval_at,
+        idea.last_publ_eval_in_phase,
+        idea.last_publ_eval_ov_res_datatype_code,
+        idea.last_publ_eval_ov_res_num_value,
+        idea.last_publ_eval_ov_res_bool_value,
+        idea.last_publ_eval_ov_res_text_value,
+        idea.last_publ_eval_ov_res_value_option_list_code,
+        idea.last_publ_eval_ov_res_uom_code,
+        
+        idea.evaluation_in_phase_count,
+        idea.evaluation_count,
+        idea.view_count,
+        idea.resp_value_code,
+        idea.is_open_for_contributors,
+        idea.volunteer_id,
+        idea.attachment_count,
+        idea.wall_count,
+        
+        idea.curr_phase_evaluation_model,
+                
+        idea.resp_name,
+        idea.resp_description,
+        idea.default_coach,
+        idea.resp_value_name,
+        idea.resp_value_description,
+                
+        idea.contribution_read_only,
+        idea.reward_active,
+                
+        idea.idea_has_rewards,
+                 
+        idea.idea_phase_need_reward,
+                
+        idea.idea_has_incompleted_eval_req,
+                
+        idea.integration_object_exist,  
+        idea.reason_code,
+        idea.reason_comment,
+        idea.status_reason,
+        idea.internal_attachment_count,
+        idea.internal_note_count,
+        idea.comment_count,
+            LINK_IDEA.*,
+            idea_extension.* 
+        from \"sap.ino.db.idea::v_idea_full\" as idea 
+        LEFT OUTER JOIN (SELECT DISTINCT midea.name AS link_idea_name, 
+        	midea.id AS link_idea_id, 
+        	midea.status_code AS link_idea_status,
+        	link.TARGET_OBJECT_ID AS link_object_id
+        FROM \"sap.ino.db.idea::t_idea\" AS midea
+        	INNER JOIN \"sap.ino.db.link::t_link\" AS link
+        	ON midea.id = link.object_id
+        		AND link.SEMANTIC = 'sap.ino.config.MERGED'
+        		AND link.object_type_code = 'IDEA'
+        		AND link.target_object_type_code = 'IDEA'
+        		AND link.type_code = 'OBJECT') AS LINK_IDEA
+		ON idea.ID = LINK_IDEA.link_object_id
+          -- for performance reasons extension fields are joined on outermost view
+          left outer join \"sap.ino.db.basis::t_extension\" as idea_extension
+                on idea_extension._object_id = idea.id and 
+                   idea_extension._object_type_code = 'IDEA'
+		  where idea.id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")
+         with read only";
+
+depends_on_table = ["sap.ino.db.basis::t_extension", 
+                    "sap.ino.db.idea::t_idea", 
+                    "sap.ino.db.link::t_link"];
+
+depends_on_view = [ "sap.ino.db.idea::v_idea", 
+                    "sap.ino.db.idea::v_auth_ideas_read"];
+

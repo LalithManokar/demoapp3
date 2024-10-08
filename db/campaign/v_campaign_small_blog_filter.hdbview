@@ -1,0 +1,16 @@
+schema = "SAP_INO";
+query = "
+-- this is necessary as empty row in the UI
+select  null as id, 
+        ''   as name,
+        ''   as short_name
+from dummy
+union all
+select campaign.id, campaign.name, campaign.short_name
+from \"sap.ino.db.campaign::v_campaign_small\" as campaign
+    inner join \"sap.ino.db.campaign::v_auth_campaigns_blog_read\" as auth
+        on campaign.id = auth.object_id
+with read only";
+
+depends_on_view = [ "sap.ino.db.campaign::v_campaign_small", 
+                    "sap.ino.db.campaign::v_auth_campaigns_blog_read"];

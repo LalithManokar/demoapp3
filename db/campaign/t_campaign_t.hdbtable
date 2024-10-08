@@ -1,0 +1,13 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Language dependent text table for t_campaign";
+table.columns = [
+	{name = "ID";                        sqlType = INTEGER;                 nullable = false; comment = "Technical record ID";},
+	{name = "CAMPAIGN_ID";               sqlType = INTEGER;                 nullable = false; comment = "Foreign key to t_campaign.ID";},
+	{name = "LANG";                      sqlType = VARCHAR;  length = 5;    nullable = false; comment = "Language. Foreign key to t_lang.CODE";},
+	{name = "NAME";                      sqlType = NVARCHAR; length = 100;  nullable = false; comment = "Name of campaign";},
+	{name = "SHORT_NAME";                sqlType = NVARCHAR; length = 40;                     comment = "Short name of campaign";},
+	{name = "DESCRIPTION";               sqlType = NVARCHAR; length = 5000; nullable = true;  comment = "Lengthy description of campaign";},
+	{name = "IDEA_DESCRIPTION_TEMPLATE"; sqlType = NCLOB;                   nullable = true;  comment = "Optional template for the description of the campaign ideas";}
+];
+table.primaryKey.pkcolumns = ["ID"];

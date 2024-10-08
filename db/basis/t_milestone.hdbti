@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.basis::t_milestone";
+    file       = "sap.ino.db.basis:t_milestone.csv";
+    header     = false;
+    delimField = ";";
+}];

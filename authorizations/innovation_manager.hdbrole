@@ -1,0 +1,8 @@
+role sap.ino.authorizations::innovation_manager extends role sap.ino.authorizations::backoffice_user
+{
+
+application privilege: "sap.ino.xs.rest.admin.application::execute";
+application privilege: "sap.ino.xs.rest.admin.application::campaign";
+application privilege: "sap.ino.xs.rest.admin.migration::execute";
+
+}

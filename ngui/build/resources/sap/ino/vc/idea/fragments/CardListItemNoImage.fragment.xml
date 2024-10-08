@@ -1,0 +1,96 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:ino="sap.ino.controls"
+    xmlns:mvc="sap.ui.core.mvc">
+    <CustomListItem
+        type="Active"
+        press="onCardItemPress">
+        <content>
+            <ino:IdeaCardNoImage
+                ideaId="{:= ${data>ID}}"
+                ideaHref="{:= ${path: 'data>ID', formatter: '.formatter.ideaNavigationLink'}}"
+                ideaName="{:= ${data>NAME}}"
+                ideaDescription="{:= ${path: 'data>SHORT_DESCRIPTION'}}"
+                ideaSubmitter="{:= ${data>SUBMITTER_NAME}}"
+                ideaSubmitterId="{data>SUBMITTER_ID}"
+                ideaSubmittedAt="{:= ${path: 'data>SUBMITTED_AT', formatter: '.formatter.toRelativeDate'}}"
+                ideaCreatedAt="{:= ${path: 'data>CREATED_AT', formatter: '.formatter.toRelativeDate'}}"
+                isDraft="{:= ${path: 'data>STATUS', formatter: '.formatter.isDraft'}}"
+                campaignId="{:= ${data>CAMPAIGN_ID}}"
+                campaignHref="{:= ${path: 'data>CAMPAIGN_ID', formatter: '.formatter.campaignNavigationLink'}}"
+                campaignName="{:= ${data>CAMPAIGN_SHORT_NAME}}"
+                isOpenForContributors="{:= ${path: 'data>IS_OPEN_FOR_CONTRIBUTORS', formatter: '.formatter.toBool'}}"
+                color="{:= ${path: 'data>CAMPAIGN_COLOR', formatter: '.formatter.color'}}"
+                respValue="{:= ${data>RESP_VALUE_NAME}}"
+                phase="{:= ${path: 'data>PHASE', formatter: '.formatter.ideaPhase'}}"
+                status="{:= ${path: 'data>STATUS', formatter: '.formatter.ideaStatus'}}"
+                statusColor="{:= ${data>STATUS_COLOR}}"
+                voteType="{:= ${path: 'data>VOTE_TYPE_TYPE_CODE'}}"
+                voteCount="{= ${path: 'data>VOTE_COUNT', formatter: '.formatter.toInt'}}"
+                voteLike="{:= ${path: 'data>POS_VOTES', formatter: '.formatter.toInt'}}"
+                voteDislike="{:= ${path: 'data>NEG_VOTES', formatter: '.formatter.toInt'}}"
+                negativeVotes="{:= ${path: 'data>NEG_VOTES', formatter: '.formatter.toInt'}}"
+				positiveVotes="{:= ${path: 'data>POS_VOTES', formatter: '.formatter.toInt'}}"
+                openIdea="onOpenIdea"
+                openIdeaComment="onIdeaCommentPress"
+                openCampaign="onOpenCampaign"
+                openSubmitter="onOpenIdentityQuickView"
+                readIdea="onIdeaReadPress">
+				<ino:votePlaceholder>
+				    <ino:VoteNoImage
+				        enabled="{:= ${parts: [{path: 'data>STATUS'}, {path: 'data>VOTING_ACTIVE'},{path: 'data>PARTICIPANT_CAN_VOTE'},{path: 'data>OPEN_STATUS_SETTING'},{path: 'data>VOTING_HAS_PRIVILEGE'}], formatter: '.formatter.votingActive'} }"
+				        visible="{= !!${data>VOTE_TYPE_TYPE_CODE}}"
+				        voteId="{:= ${data>VOTE_ID} }"
+				        objectId="{:= ${data>ID}}"
+				        tooltip="{parts: [{path: 'data>STATUS'},
+        						 	      {path: 'data>VOTING_HAS_PRIVILEGE'},
+        						 	      {path: 'data>VOTING_ACTIVE'},
+        						 	      {path: 'data>PHASE'},
+        						 	      {path: 'data>VOTE_TYPE_TYPE_CODE'},
+        						 	      {path: 'data>VOTE_COUNT'},
+        						 	      {path: 'data>SCORE'},
+        						 	      {path: 'data>USER_SCORE'},
+        						 	      {path: 'data>/DISPLAY_ONLY'},
+        						 	      {path: 'data>PARTICIPANT_CAN_VOTE'},
+            					          {path: 'data>OPEN_STATUS_SETTING'}], formatter: '.formatter.voteTooltip'}"
+				        type="{:= ${data>VOTE_TYPE_TYPE_CODE}}"
+				        userVote="onUserVote"
+				        value="{:= ${data>USER_SCORE}}"
+				        likeVotes="{:= ${path: 'data>SCORE', formatter: '.formatter.toInt'}}"
+				        maxStar="{:= ${data>MAX_STAR_NO}}"
+				        starVoteCount="{:= ${path: 'data>VOTE_COUNT', formatter: '.formatter.toInt'}}"
+				        starVotes="{:= ${path: 'data>SCORE', formatter: '.formatter.toFloat'}}"/>
+				</ino:votePlaceholder>
+				<ino:followButton>
+				    <ino:Follow onlyIcon="true" value="{data>FOLLOW}" objectId="{data>ID}" type="IDEA" enabled="true" follow="onFollow"  styleType="ideaDetailFollow"/>
+				</ino:followButton>				
+				<ino:contributorButton>
+				    <ino:IdeaVolunteer styleClass="sapInoIdeaVolunteer" key="{data>VOLUNTEER_ID}" ideaId="{data>ID}" enabled="true" visible="true" onlyIcon="true" value="{= !!${data>VOLUNTEER_ID}}" volunteer="toggleVolunteer" />  
+				</ino:contributorButton>
+            </ino:IdeaCardNoImage>
+            <core:InvisibleText
+                class="sapInoItemAriaLabel"
+                text="{:= ${parts: [{path: 'data>NAME'}, 
+                                               {path: 'data>PHASE'},
+                                               {path: 'data>STEP'},
+                                               {path: 'data>STEPS'},
+                                               {path: 'data>STATUS'},
+                                               {path: 'data>VOTE_TYPE_TYPE_CODE'},
+                                               {path: 'data>COMMENT_COUNT'},
+                                               {path: 'data>VIEW_COUNT'},
+                                               {path: 'data>SCORE'},
+                                               {path: 'data>MAX_STAR_NO'},
+                                               {path: 'data>POS_VOTES'},
+                                               {path: 'data>NEG_VOTES'}
+                                               ], formatter: '.formatter.ideaAccessibilityLabel'}}">
+            </core:InvisibleText>
+        </content>
+        <customData>
+			<core:CustomData 
+                key="style-idealatestupdate-class"  
+                value="{parts:[{path:'data>SHOW_CREATED_VIEWER'},{path:'data>SHOW_UPDATED_VIEWER'},{path:'data>SHOW_COMMENT_VIEWER'},{path:'data>SHOW_STATUSCHANGE_VIEWER'}],formatter:'.formatter.setIdeaListLatestUpdateBackGroundColor'}" 
+                writeToDom="true"/>
+	    </customData>
+    </CustomListItem>
+</core:FragmentDefinition>

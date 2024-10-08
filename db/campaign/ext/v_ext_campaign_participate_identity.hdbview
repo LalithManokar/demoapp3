@@ -1,0 +1,17 @@
+schema = "SAP_INO_EXT";
+query = "select participate.campaign_id,
+        participate.id,
+        participate.identity_id, 
+        participate.name,
+        participate.user_name,
+        participate.is_external,
+        participate.type_code,
+        participate.description,
+        participate.email,
+        participate.image_id,
+        participate.CAN_VOTE,
+        participate.CAN_COMMENT,
+        participate.CAN_SUBMIT  from \"sap.ino.db.campaign::v_campaign_participate_identity\" as participate
+            join \"sap.ino.db.campaign::v_auth_campaigns\" as auth
+            on participate.campaign_id = auth.campaign_id";
+depends_on_view = ["sap.ino.db.campaign::v_campaign_participate_identity", "sap.ino.db.campaign::v_auth_campaigns"];

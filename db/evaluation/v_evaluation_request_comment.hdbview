@@ -1,0 +1,51 @@
+schema = "SAP_INO";
+query = "select 
+             eval_req_comment.ID,
+             eval_req_comment.CREATED_AT as created_at,
+			 eval_req_comment.CREATED_BY_ID,
+			 eval_req_comment.CHANGED_AT as changed_at,
+			 eval_req_comment.CHANGED_BY_ID,
+             eval_req_comment.OBJECT_ID as object_id,
+             eval_req_comment.comment as comment,
+             
+             changed_user.name as changed_by_name,
+             changed_user.email as changed_by_email,
+             changed_user.phone as changed_by_phone,
+             changed_user.mobile as changed_by_mobile,
+             changed_user.office as changed_by_office,
+             changed_user.identity_image_id as changed_by_image_id,
+
+             created_user.name as created_by_name,
+             created_user.email as created_by_email,
+             created_user.phone as created_by_phone,
+             created_user.mobile as created_by_mobile,
+             created_user.office as created_by_office,
+             created_user.identity_image_id as created_by_image_id,
+
+             case when can_update.comment_id is not null then 1 else 0 end as can_update,
+             case when can_delete.comment_id is not null then 1 else 0 end as can_delete
+         from 
+             \"sap.ino.db.comment::v_community_comment\" as eval_req_comment 
+         left outer join
+             \"sap.ino.db.iam::v_identity\" as changed_user
+         on 
+             changed_user.id = eval_req_comment.changed_by_id
+         left outer join
+             \"sap.ino.db.iam::v_identity\" as created_user
+         on 
+             created_user.id = eval_req_comment.created_by_id  
+         left outer join 
+             \"sap.ino.db.idea::v_auth_comment_update\" as can_update
+         on 
+             can_update.comment_id = eval_req_comment.id  
+         left outer join
+             \"sap.ino.db.idea::v_auth_comment_delete\" as can_delete
+         on 
+             can_delete.comment_id = eval_req_comment.id  
+             where eval_req_comment.OBJECT_TYPE_CODE = 'EVAL_REQUEST' 
+         with read only"; 
+
+depends_on_view  = ["sap.ino.db.comment::v_community_comment", 
+                    "sap.ino.db.idea::v_auth_comment_update", 
+                    "sap.ino.db.idea::v_auth_comment_delete", 
+                    "sap.ino.db.iam::v_identity"];

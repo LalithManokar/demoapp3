@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_CAMPAIGN_RETURN" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED">
+  <descriptions defaultDescription="Campaign Overview"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="V_ANALYTICS_CAMPAIGN" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_CAMPAIGN</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_1">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="CAMPAIGN_PARTICIPANTS_COUNT"/>
+        <viewAttribute id="CAMPAIGN_VISITOR_COUNT"/>
+        <viewAttribute id="CAMPAIGN_VIEW_COUNT"/>
+        <viewAttribute id="CAMPAIGN_ACTIVE_PARTICIPANTS_COUNT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#V_ANALYTICS_CAMPAIGN">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_PARTICIPANTS_COUNT" source="CAMPAIGN_PARTICIPANTS_COUNT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VISITOR_COUNT" source="CAMPAIGN_VISITOR_COUNT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_VIEW_COUNT" source="CAMPAIGN_VIEW_COUNT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ACTIVE_PARTICIPANTS_COUNT" source="CAMPAIGN_ACTIVE_PARTICIPANTS_COUNT"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Aggregation_1">
+    <attributes>
+      <attribute id="CAMPAIGN_ID$local">
+        <keyMapping columnObjectName="Aggregation_1" columnName="CAMPAIGN_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="CAMPAIGN_PARTICIPANTS_COUNT" order="1" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Participants"/>
+        <measureMapping columnObjectName="Aggregation_1" columnName="CAMPAIGN_PARTICIPANTS_COUNT"/>
+      </measure>
+      <measure id="CAMPAIGN_VISITOR_COUNT" order="2" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Visitors"/>
+        <measureMapping columnObjectName="Aggregation_1" columnName="CAMPAIGN_VISITOR_COUNT"/>
+      </measure>
+      <measure id="CAMPAIGN_VIEW_COUNT" order="3" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Views"/>
+        <measureMapping columnObjectName="Aggregation_1" columnName="CAMPAIGN_VIEW_COUNT"/>
+      </measure>
+      <measure id="CAMPAIGN_ACTIVE_PARTICIPANTS_COUNT" order="4" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Active Participants"/>
+        <measureMapping columnObjectName="Aggregation_1" columnName="CAMPAIGN_ACTIVE_PARTICIPANTS_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures>
+      <measure id="CAMPAIN_PARTICIPANT_RATIO" hidden="false" order="5" aggregationType="sum" measureType="simple" datatype="DOUBLE">
+        <descriptions defaultDescription="Participants Return"/>
+        <formula>IF((&quot;CAMPAIGN_PARTICIPANTS_COUNT&quot; > 0), (1/&quot;CAMPAIGN_PARTICIPANTS_COUNT&quot;*&quot;CAMPAIGN_ACTIVE_PARTICIPANTS_COUNT&quot;), 0)</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+    <sharedDimensions>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION">
+        <attributes>
+          <attributeRef>#CAMPAIGN_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>CAMPAIGN_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+    </sharedDimensions>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Aggregation_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="220"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape modelObjectName="Aggregation_1" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+        <upperLeftCorner x="31" y="68"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="618" y="76"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

@@ -1,0 +1,16 @@
+schema = "SAP_INO";
+query = "
+    select idea.phase,
+           coalesce(phase_text.content, phase.default_text) as default_text, 
+           phase.default_long_text, 
+           idea.campaign_id
+        from \"sap.ino.db.idea.ext::v_ext_ideas_medium\" as idea
+            inner join \"sap.ino.db.campaign::t_phase\" as phase
+                on idea.phase = phase.code
+            left outer join \"sap.ino.db.basis::v_resolved_text\" as phase_text
+                on phase.code = phase_text.text_id
+    with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_phase"];
+depends_on_view = ["sap.ino.db.idea.ext::v_ext_ideas_medium",
+                   "sap.ino.db.basis::v_resolved_text"];

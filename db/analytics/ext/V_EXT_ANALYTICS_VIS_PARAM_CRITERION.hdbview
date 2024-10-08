@@ -1,0 +1,50 @@
+schema = "SAP_INO_EXT";
+query = "
+    SELECT DISTINCT C.CODE, 
+	CN.CONTENT AS VIS_PARAM_CRITERION
+FROM (
+		SELECT al.CODE, 
+			'CTRL_EVALUATION_FLD_MATRIX_INNER_CIRCLE' AS VIS_PARAM_CRITERION
+		FROM \"sap.ino.db.evaluation::t_criterion\" AS al
+			INNER JOIN \"sap.ino.db.evaluation::t_criterion\" AS x
+			ON al.code = x.VIS_PARAM_1_CRITERION_CODE
+				AND x.AGGREGATION_TYPE = 'MATRIX'
+
+		UNION
+
+		SELECT al.CODE, 
+			'CTRL_EVALUATION_FLD_MATRIX_OUTER_CIRCLE' AS VIS_PARAM_CRITERION
+		FROM \"sap.ino.db.evaluation::t_criterion\" AS al
+			INNER JOIN \"sap.ino.db.evaluation::t_criterion\" AS Y
+			ON al.code = Y.VIS_PARAM_2_CRITERION_CODE
+				AND Y.AGGREGATION_TYPE = 'MATRIX'
+	) AS C
+	INNER JOIN \"_SYS_REPO\".\"ACTIVE_CONTENT_TEXT_CONTENT\" AS CN
+	ON C.VIS_PARAM_CRITERION = CN.TEXT_ID
+		AND PACKAGE_ID = 'sap.ino.text'
+		AND OBJECT_NAME = 'nguii18n'
+	INNER JOIN (
+		SELECT LANG
+        FROM (
+        		SELECT ROW_NUMBER() OVER (PARTITION BY LAN.LANG  ORDER BY LAN.SEQ ASC) AS ROW_ORDER, 
+        			LAN.LANG
+        		FROM (
+        				SELECT txt_user_locale.LOCALE AS LANG, 
+        					1 AS SEQ
+        				FROM \"sap.ino.db.basis::v_user_locale\" AS txt_user_locale
+        					INNER JOIN \"sap.ino.db.iam::t_identity\" AS iden
+        					ON iden.id = txt_user_locale.user_id
+        				WHERE user_name = session_context('APPLICATIONUSER')
+        
+        				UNION
+        				
+						SELECT iso_code AS LANG, 
+        					2 AS SEQ
+        				FROM \"sap.ino.db.basis::v_sys_default_language\"
+        			) AS LAN
+    	    )
+        WHERE ROW_ORDER = 1
+	) AS LAN
+	ON CN.LANG = LAN.LANG;
+";
+

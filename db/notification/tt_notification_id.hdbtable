@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE;
+table.temporary = true;
+table.description = "Input table for DELETE procedure of notification status";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Notification STATUS ids to be deleted";}
+];

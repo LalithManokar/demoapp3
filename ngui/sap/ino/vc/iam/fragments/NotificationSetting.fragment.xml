@@ -1,0 +1,59 @@
+<core:FragmentDefinition
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+	xmlns:ino="sap.ino.controls"
+	xmlns:f="sap.ui.layout.form">
+	<VBox class="sapInoScheduledNotificationSetting">
+	    <Text text="{i18n>NOTIFICATION_SETTING_WARNING}" class="sapInoPersonalizeSettingLabel sapInoPersonalizeWarning"/>
+		<Panel class="sapInoFilterPanel" expandable="false"  width="100%">
+			<headerToolbar>
+				<Toolbar>
+					<Label text="{i18n>NOTIFICATION_SETTING_SCHEDULE_TITLE}"/>
+				</Toolbar>
+			</headerToolbar>
+			<RadioButtonGroup columns="4"  width="100%" selectedIndex="{NOTIFICATION>/setting/KEY/0/SETTING_VALUE}" class="sapUiSmallMarginBottom">
+				<buttons>
+					<RadioButton text="{i18n>NOTIFICATION_SETTING_SCHEDULE_IMMEDIATE}" />
+					<RadioButton text="{i18n>NOTIFICATION_SETTING_SCHEDULE_DAILY}" />
+					<RadioButton text="{i18n>NOTIFICATION_SETTING_SCHEDULE_WEEKLY}" />
+					<RadioButton text="{i18n>NOTIFICATION_SETTING_SCHEDULE_NEVER}" />
+				</buttons>
+			</RadioButtonGroup>
+		</Panel>
+		<Panel class="sapInoFilterPanel" expandable="false" visible="{=${NOTIFICATION>/setting/IDEA}.length >= 1}" width="100%">
+			<headerToolbar>
+				<Toolbar>
+					<Label text="{i18n>NOTIFICATION_SETTING_IDEA_GROUP_TITLE}"/>
+				</Toolbar>
+			</headerToolbar>
+			<ino:WrappingList wrapping="true" class="sapUiSmallMarginBottom" overwirteOnkeydown="false"
+			    items="{ path: 'NOTIFICATION>/setting/IDEA', sorter:[{ path: 'SUBCATEGORY_CODE', descending:false, group: true},{ path: 'order', descending:false}], templateShareable: false, groupHeaderFactory: '.getGroupHeader' }">
+				<CustomListItem>
+					<CheckBox 
+					    tooltip="{path: 'NOTIFICATION>MAPPING_SETTING_CODE', formatter: '.formatMappingSettingCode'}"
+					    enabled="{path: 'NOTIFICATION>/setting/KEY/0/SETTING_VALUE', formatter: '.formatEnableMappingSettingValue'}"
+    				    text="{path: 'NOTIFICATION>MAPPING_SETTING_CODE', formatter: '.formatMappingSettingCode'}" 
+    				    selected="{ path: 'NOTIFICATION>SETTING_VALUE', type: 'sap.ino.commons.models.types.IntBooleanType' }" />
+				</CustomListItem>
+			</ino:WrappingList>
+		</Panel>
+		<Panel class="sapInoFilterPanel" expandable="false" visible="{=${NOTIFICATION>/setting/CAMPAIGN}.length >= 1}" width="100%">
+			<headerToolbar>
+				<Toolbar>
+					<Label text="{i18n>NOTIFICATION_SETTING_CAMPAIGN_GROUP_TITLE}"/>
+				</Toolbar>
+			</headerToolbar>
+			<ino:WrappingList wrapping="true" overwirteOnkeydown="false" items="{ path: 'NOTIFICATION>/setting/CAMPAIGN', sorter:{ path: 'SUBCATEGORY_CODE', descending:false, group: true}, templateShareable: false, groupHeaderFactory: '.getGroupHeader' }" class="sapUiSmallMarginBottom">
+				<CustomListItem>
+					<CheckBox 
+					    tooltip="{path: 'NOTIFICATION>MAPPING_SETTING_CODE', formatter: '.formatMappingSettingCode'}"
+					    enabled="{path: 'NOTIFICATION>/setting/KEY/0/SETTING_VALUE', formatter: '.formatEnableMappingSettingValue'}"
+    				    text="{path: 'NOTIFICATION>MAPPING_SETTING_CODE', formatter: '.formatMappingSettingCode'}" 
+    				    selected="{ path: 'NOTIFICATION>SETTING_VALUE', type: 'sap.ino.commons.models.types.IntBooleanType' }" />
+				</CustomListItem>
+			</ino:WrappingList>
+		</Panel>
+	</VBox>
+</core:FragmentDefinition>

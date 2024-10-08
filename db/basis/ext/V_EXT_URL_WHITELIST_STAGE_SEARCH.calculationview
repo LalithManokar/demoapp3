@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_URL_WHITELIST_STAGE_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_URL_WHITELIST_STAGE_SEARCH"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="searchToken"/>
+      <variableProperties datatype="VARCHAR" length="100" mandatory="false" defaultValue="undefined">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="PACKAGE_ID" length="256"/>
+        <viewAttribute datatype="VARCHAR" id="CODE" length="500"/>
+        <viewAttribute datatype="NVARCHAR" id="DEFAULT_TEXT" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="DEFAULT_LONG_TEXT" length="300"/>
+        <viewAttribute datatype="VARCHAR" id="PROTOCOL" length="20"/>
+        <viewAttribute datatype="NVARCHAR" id="HOST" length="255"/>
+        <viewAttribute datatype="INTEGER" id="PORT"/>
+        <viewAttribute datatype="NVARCHAR" id="PATH" length="2000"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CREATED_BY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CREATED_BY" length="100"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CHANGED_BY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CHANGED_BY" length="100"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>begin
+    lt_search_result = 
+        select distinct 
+            package_id, 
+            code, 
+            cast (1 as double) as search_score 
+        from &quot;sap.ino.db.basis::v_url_whitelist_stage&quot;
+        where length(:searchToken) = 0 
+    union all
+        select distinct 
+            package_id, 
+            code, 
+            score() as search_score 
+        from &quot;sap.ino.db.basis::v_url_whitelist_stage&quot;
+        where length(:searchToken) &gt; 0 and (
+              contains(code, :searchToken, fuzzy(0.8), weight(1.0)) or
+              contains(default_text, :searchToken, fuzzy(0.8), weight(1.0)) or
+              contains(default_long_text, :searchToken, fuzzy(0.8), weight(0.5)) or
+              contains(code, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+              contains(default_text, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+              contains(default_long_text, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(0.5)));
+
+    var_out = select
+                 search.search_score,
+                 whitelist.id,
+                 whitelist.package_id,
+                 whitelist.code,
+                 whitelist.default_text,
+                 whitelist.default_long_text,
+                 whitelist.protocol,
+                 whitelist.host,
+                 whitelist.port,
+                 whitelist.path,
+                 whitelist.created_at,
+                 whitelist.created_by_id,
+                 whitelist.created_by,
+                 whitelist.changed_at,
+                 whitelist.changed_by_id,
+                 whitelist.changed_by
+              from &quot;sap.ino.db.basis::v_url_whitelist_stage&quot; as whitelist 
+                      inner join :lt_search_result as search
+                          on whitelist.package_id = search.package_id and 
+                             whitelist.code = search.code;
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="PACKAGE_ID" order="3">
+        <descriptions defaultDescription="PACKAGE_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="PACKAGE_ID"/>
+      </attribute>
+      <attribute id="CODE" order="4">
+        <descriptions defaultDescription="CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="CODE"/>
+      </attribute>
+      <attribute id="DEFAULT_TEXT" order="5">
+        <descriptions defaultDescription="DEFAULT_TEXT"/>
+        <keyMapping columnObjectName="Script_View" columnName="DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="DEFAULT_LONG_TEXT" order="6">
+        <descriptions defaultDescription="DEFAULT_LONG_TEXT"/>
+        <keyMapping columnObjectName="Script_View" columnName="DEFAULT_LONG_TEXT"/>
+      </attribute>
+      <attribute id="PROTOCOL" order="7">
+        <descriptions defaultDescription="PROTOCOL"/>
+        <keyMapping columnObjectName="Script_View" columnName="PROTOCOL"/>
+      </attribute>
+      <attribute id="HOST" order="8">
+        <descriptions defaultDescription="HOST"/>
+        <keyMapping columnObjectName="Script_View" columnName="HOST"/>
+      </attribute>
+      <attribute id="PORT" order="9">
+        <descriptions defaultDescription="PORT"/>
+        <keyMapping columnObjectName="Script_View" columnName="PORT"/>
+      </attribute>
+      <attribute id="PATH" order="10">
+        <descriptions defaultDescription="PATH"/>
+        <keyMapping columnObjectName="Script_View" columnName="PATH"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="11">
+        <descriptions defaultDescription="CREATED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CREATED_BY_ID" order="12">
+        <descriptions defaultDescription="CREATED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="CREATED_BY" order="13">
+        <descriptions defaultDescription="CREATED_BY"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="14">
+        <descriptions defaultDescription="CHANGED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="15">
+        <descriptions defaultDescription="CHANGED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_BY" order="16">
+        <descriptions defaultDescription="CHANGED_BY"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

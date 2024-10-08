@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Tag";
+table.columns = [
+    {name = "SOURCE_ID";     sqlType = INTEGER; nullable = false;},
+    {name = "TARGET_ID";     sqlType = INTEGER; nullable = false;},
+    {name = "EDIT_DISTANCE"; sqlType = INTEGER; nullable = false;}
+];
+table.primaryKey.pkcolumns = ["SOURCE_ID", "TARGET_ID"];

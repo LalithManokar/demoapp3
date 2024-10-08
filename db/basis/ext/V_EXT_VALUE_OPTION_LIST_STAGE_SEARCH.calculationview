@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_VALUE_OPTION_LIST_STAGE_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="Value Option List Search"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Free text search token"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="PACKAGE_ID" length="255"/>
+        <viewAttribute datatype="NVARCHAR" id="CODE" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="DATATYPE_CODE" length="8"/>
+        <viewAttribute datatype="NVARCHAR" id="DEFAULT_TEXT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="DEFAULT_LONG_TEXT" length="300"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CREATED_BY_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY" length="100"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CHANGED_BY_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY" length="100"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>begin
+    lt_search_result = 
+        select distinct 
+            package_id, 
+            code, 
+            cast (1 as double) as search_score 
+        from &quot;sap.ino.db.basis::v_value_option_list_stage&quot;
+        where length(:searchToken) = 0 
+    union all
+        select distinct 
+            package_id, 
+            code, 
+            score() as search_score 
+        from &quot;sap.ino.db.basis::v_value_option_list_stage&quot;
+        where length(:searchToken) &gt; 0 and (
+              contains(code, :searchToken, fuzzy(0.8), weight(1.0)) or
+              contains(default_text, :searchToken, fuzzy(0.8), weight(1.0)) or
+              contains(default_long_text, :searchToken, fuzzy(0.8), weight(0.5)) or
+              contains(code, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+              contains(default_text, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+              contains(default_long_text, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(0.5)));
+
+    var_out = select
+                 search.search_score,
+                 value_option_list.id,
+                 value_option_list.package_id,
+                 value_option_list.code,
+                 value_option_list.datatype_code,
+                 value_option_list.default_text,
+                 value_option_list.default_long_text,
+                 value_option_list.created_at,
+                 value_option_list.created_by_id,
+                 value_option_list.created_by,
+                 value_option_list.changed_at,
+                 value_option_list.changed_by_id,
+                 value_option_list.changed_by
+              from &quot;sap.ino.db.basis::v_value_option_list_stage&quot; as value_option_list 
+                      inner join :lt_search_result as search
+                          on value_option_list.package_id = search.package_id and 
+                             value_option_list.code = search.code;
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions defaultDescription="Search Score"/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2" descriptionColumnName="CODE">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="PACKAGE_ID" order="3">
+        <descriptions defaultDescription="Package"/>
+        <keyMapping columnObjectName="Script_View" columnName="PACKAGE_ID"/>
+      </attribute>
+      <attribute id="CODE" order="4">
+        <descriptions defaultDescription="Code"/>
+        <keyMapping columnObjectName="Script_View" columnName="CODE"/>
+      </attribute>
+      <attribute id="DATATYPE_CODE" order="5">
+        <descriptions defaultDescription="Data Type"/>
+        <keyMapping columnObjectName="Script_View" columnName="DATATYPE_CODE"/>
+      </attribute>
+      <attribute id="DEFAULT_TEXT" order="6">
+        <descriptions defaultDescription="Default Text"/>
+        <keyMapping columnObjectName="Script_View" columnName="DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="DEFAULT_LONG_TEXT" order="7">
+        <descriptions defaultDescription="Default Description"/>
+        <keyMapping columnObjectName="Script_View" columnName="DEFAULT_LONG_TEXT"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="8">
+        <descriptions defaultDescription="Created At"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CREATED_BY_ID" order="9">
+        <descriptions defaultDescription="Created By ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="CREATED_BY" order="10">
+        <descriptions defaultDescription="Created By Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="11">
+        <descriptions defaultDescription="Changed At"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="12">
+        <descriptions defaultDescription="Changed By ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_BY" order="13">
+        <descriptions defaultDescription="Changed By Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

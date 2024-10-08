@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO_EXT";
+table.tableType = COLUMNSTORE;
+table.temporary = true;
+table.description = "Output table for texts";
+table.columns = [
+    {name = "TEXT_ID"; sqlType = NVARCHAR; length = 256; nullable = false; comment = "Human readable identifier";},
+    {name = "STRING"; sqlType = NVARCHAR; length = 4000; nullable = false; comment = "Content";}
+];

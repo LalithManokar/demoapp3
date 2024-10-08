@@ -1,0 +1,30 @@
+schema = "SAP_INO";
+query = "select milestone.id,
+                milestone.campaign_task_id,
+                milestone.milestone_code,
+                milestone.date_type_code,
+                milestone.milestone_date,
+                milestone.milestone_quarter_code,
+                milestone.milestone_month_code,
+                milestone.milestone_year,
+                milestone.is_milestone_display,
+                milestone.milestone_color_code,
+                coalesce(milestone_text.content, milestone.milestone_name) as milestone_name,
+                milestone_quarater_text.content as milestone_quarter,
+                milestone_month_text.content as milestone_month,
+                task.campaign_id
+        from \"sap.ino.db.campaign::t_campaign_milestone\" as milestone
+            left outer join \"sap.ino.db.campaign::t_campaign_task\" as task
+                on milestone.campaign_task_id = task.id
+            left outer join \"sap.ino.db.basis::v_resolved_text\" as milestone_text
+                on milestone.milestone_code = milestone_text.text_id
+            left outer join \"sap.ino.db.basis::v_resolved_text\" as milestone_quarater_text
+                on milestone.milestone_quarter_code = milestone_quarater_text.text_id
+            left outer join \"sap.ino.db.basis::v_resolved_text\" as milestone_month_text
+                on milestone.milestone_month_code = milestone_month_text.text_id
+          with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_milestone",
+                    "sap.ino.db.campaign::t_campaign_task"];
+
+depends_on_view = ["sap.ino.db.basis::v_resolved_text"];

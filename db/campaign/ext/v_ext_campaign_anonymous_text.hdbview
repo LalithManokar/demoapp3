@@ -1,0 +1,5 @@
+schema = "SAP_INO_EXT";
+query = "select * from \"sap.ino.db.campaign::t_campaign_anonymous_text\" ";
+           
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_anonymous_text"];

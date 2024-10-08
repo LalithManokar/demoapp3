@@ -1,0 +1,42 @@
+<core:FragmentDefinition
+	xmlns:l="sap.ui.layout"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:ino="sap.ino.controls">
+	<Panel id="topCommentator" width="auto" class="sapInoHomeTitledPanel sapInoTopPanelHiddenfooter sapInoHomepageBorder">
+		<headerToolbar>
+			<Toolbar height="3rem" class="sapInoHomeTitledPanelHeader">
+				<Title id="panelTitle" text="{i18n>MW_TCO_TIT_TOP_COMMENTATORS}"/>
+				<ToolbarSpacer />
+				<!--Button icon="sap-icon://navigation-right-arrow" press=""/-->
+			</Toolbar>
+		</headerToolbar>
+		<content>
+			<List
+			    id="topCommentatorsList"
+			    noDataText="{i18n>CAMPAIGN_LIST_FLD_NO_COMMENTATOR}"
+				items="{
+				    path: 'data>TopCommentators',
+				    sorter:[{path: 'COMMENT_COUNT', descending: true}],
+				    length: 3
+				}">
+				<CustomListItem class="sapInoTopCampaignItem">
+					<ino:IdentityCard 
+                            identityPress="onOpenIdentityQuickView"
+                            identityId="{data>IDENTITY_ID}"
+                            userName="{data>NAME}"
+                            orientation="Horizontal"
+                            userImageUrl="{path: 'data>IDENTITY_IMAGE_ID', formatter:'.formatter.userImage' }" 
+                            imageSize="S">
+						<ino:content>
+							<HBox>
+								<core:Icon size="1rem" src="sap-icon://comment" tooltip="{i18n>MW_TCO_ALT_NR_OF_COMMENTS_TOOLTIP}"/>
+								<Label text="{data>COMMENT_COUNT}"/>
+							</HBox>
+						</ino:content>
+					</ino:IdentityCard>
+				</CustomListItem>
+			</List>
+		</content>
+	</Panel>
+</core:FragmentDefinition>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="v_ext_ideaform_suggestion_list_search_params" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="v_ext_ideaform_suggestion_list_search_params"/>
+  <metadata changedAt="2018-12-14 15:09:21.241"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="searchToken"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="64" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="filterBackoffice" parameter="true">
+      <descriptions/>
+      <variableProperties datatype="TINYINT" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="DEFAULT_TEXT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CODE" length="500"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <localVariable>#filterBackoffice</localVariable>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+    IF(:filterBackoffice = 1) THEN
+        var_out = SELECT 
+            form.id, 
+            form.default_text,
+            form.code
+        FROM  &quot;sap.ino.db.ideaform::t_form_stage&quot; AS form
+        WHERE lcase(form.default_text) LIKE '%' || lcase(:searchToken) || '%';
+    END IF;
+     IF(:filterBackoffice != 1) THEN
+        var_out = SELECT 
+            form.id, 
+            form.default_text,
+            form.code
+        FROM  &quot;sap.ino.db.ideaform::t_form_stage&quot; AS form
+        WHERE (form.IS_ADMIN_FORM = 0 OR form.IS_ADMIN_FORM IS NULL) AND (lcase(form.default_text) LIKE '%' || lcase(:searchToken) || '%');
+    END IF;
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="ID" order="1">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="DEFAULT_TEXT" order="2">
+        <descriptions defaultDescription="DEFAULT_TEXT"/>
+        <keyMapping columnObjectName="Script_View" columnName="DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="CODE" order="3">
+        <descriptions defaultDescription="CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="CODE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

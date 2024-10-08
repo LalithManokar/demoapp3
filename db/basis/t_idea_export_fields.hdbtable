@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Idea Export: fields list";
+table.columns = [
+    {name = "ID";             sqlType = INTEGER;                nullable = false;},
+    {name = "COLUMN_NAME";    sqlType = NVARCHAR; length = 256; nullable = false; comment = "Column name";}
+];
+table.primaryKey.pkcolumns = ["ID"];

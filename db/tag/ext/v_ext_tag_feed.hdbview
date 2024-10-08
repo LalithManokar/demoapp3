@@ -1,0 +1,5 @@
+schema = "SAP_INO_EXT";
+query = "select tag_feed.*
+         from \"sap.ino.db.tag::v_tag_biz_feeds\" as tag_feed 
+         with read only";
+depends_on_view = ["sap.ino.db.tag::v_tag_biz_feeds"]; 

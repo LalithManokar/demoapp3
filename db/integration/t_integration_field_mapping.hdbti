@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.integration::t_integration_field_mapping";
+    file       = "sap.ino.db.integration:t_integration_field_mapping.csv";
+    header     = false;
+    delimField = ";";
+}];

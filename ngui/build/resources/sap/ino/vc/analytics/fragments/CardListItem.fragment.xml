@@ -1,0 +1,57 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:chart="sap.suite.ui.microchart"
+	xmlns:core="sap.ui.core">
+	<CustomListItem type="Active" press="onItemPress"  >
+        <content>
+            <VBox
+                class="sapInoAnalyticsTileContent"
+                height="235px"
+                width="200px">
+                <core:HTML content="{tile>/CAMPAIGN_COLOR}" sanitizeContent="true"/>
+                <Toolbar
+                    height="3rem"
+                    design="Transparent">
+                    <Label text="{tile>/TITLE}" class="sapInoAnalyticsListItemTitle"/>
+					<ToolbarSpacer />
+					<Button 
+                        visible="{tile>/DELETE_BUTTON_VISIBLE}"
+                        icon="sap-icon://sys-cancel"
+                        press="onDelete"/>
+				</Toolbar>
+				<VBox>
+				    <Label
+                        class="sapUiSmallMarginBegin sapUiTinyMarginTop"
+                        text="{tile>/CAMPAIGN_NAME}"/>
+                    <HBox
+                        alignContent="Center"
+                        height="122px">
+                        <chart:ColumnMicroChart
+                            size="S"
+                            tooltip="{i18n>ANALYTICS_LIST_MISSING_PARAMETER}"
+                            class="sapUiSmallMargin sapUiMediumMarginBegin sapInoAnalyticsDefaultChart"
+                            visible="{= !${tile>/CHART_VISIBLE} }">
+                            <chart:columns>
+                                <chart:ColumnMicroChartData value="80" color="Neutral" />
+                                <chart:ColumnMicroChartData value="100" color="Neutral" />
+                                <chart:ColumnMicroChartData value="75" color="Neutral" />
+                                <chart:ColumnMicroChartData value="80" color="Neutral" />
+                                <chart:ColumnMicroChartData value="60" color="Neutral" />
+                                <chart:ColumnMicroChartData value="20" color="Neutral" />
+                                <chart:ColumnMicroChartData value="0" color="Neutral" />
+                            </chart:columns>
+                        </chart:ColumnMicroChart>
+					</HBox>
+					<HBox
+                        class="sapInoAnalyticsTileFooter">
+                        <Text
+                            text="{tile>/UNIT}"
+                            tooltip="{tile>/UNIT}"
+                            textAlign="Center"
+                            class="sapUiTinyMarginTop sapUiTinyMarginBottom sapUiSmallMarginBegin sapInoAnalyticsUnitText"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+		</content>
+	</CustomListItem>
+</core:FragmentDefinition>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_SYSTEM_INTEGRATION_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+<origin/>
+  <descriptions defaultDescription="V_EXT_SYSTEM_INTEGRATION_USAGE"/>
+  <metadata changedAt="2019-09-24 15:02:14.019"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="V_SYSTEMS_INTEGRATION_USAGE" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.integration/calculationviews/V_SYSTEMS_INTEGRATION_USAGE</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="V_SYSTEMS_INTEGRATION_USAGE">
+    <descriptions/>
+    <attributes>
+      <attribute id="API_TECHNICAL_NAME" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="api_technical_name"/>
+        <keyMapping columnObjectName="V_SYSTEMS_INTEGRATION_USAGE" columnName="API_TECHNICAL_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="campaign_id"/>
+        <keyMapping columnObjectName="V_SYSTEMS_INTEGRATION_USAGE" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="campaign_name"/>
+        <keyMapping columnObjectName="V_SYSTEMS_INTEGRATION_USAGE" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="USAGE_COUNT" order="4" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="usage_count"/>
+        <measureMapping columnObjectName="V_SYSTEMS_INTEGRATION_USAGE" columnName="USAGE_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/></shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

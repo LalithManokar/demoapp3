@@ -1,0 +1,15 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Value Option - Runtime table";
+table.columns = [
+    {name = "CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Identifier of value option";},
+    {name = "LIST_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Value option list the option belongs to. Foreign key reference to t_value_option_list.code";},
+    {name = "NUM_VALUE"; sqlType = DOUBLE; nullable = true; comment = "Value for datatype NUMERIC/INTEGER";},
+    {name = "BOOL_VALUE"; sqlType = TINYINT; nullable = true; comment = "Value for datatype BOOLEAN. 0 = False, 1 = true";},
+    {name = "TEXT_VALUE"; sqlType = NVARCHAR; length = 1024; nullable = true; comment = "Value for datatype TEXT";},
+    {name = "DEFAULT_TEXT"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Default Text for Value Option";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true; comment = "Default Long Text for Value Option";},
+    {name = "ACTIVE"; sqlType = TINYINT;  nullable = true; comment = "Value for datatype BOOLEAN. 1 = ACTIVE, 0 = INACTIVE";}, 
+    {name = "SEQUENCE_NO";       sqlType = INTEGER;                nullable = true;  comment = "Sequence order for display";}     
+];
+table.primaryKey.pkcolumns = ["CODE"];

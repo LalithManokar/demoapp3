@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Positive list of User IDs and Notification Codes";
+table.columns = [
+    {name = "ID";          sqlType = INTEGER;              nullable = false; comment = "identifier";},
+    {name = "IDENTITY_ID"; sqlType = INTEGER;              nullable = false; comment = "User who votes. Foreign key to t_identity.ID";},
+    {name = "ROLE_CODE";   sqlType = VARCHAR; length = 20; nullable = false; comment = "Code that references the role";},
+    {name = "BIZ_EVENT";   sqlType = VARCHAR; length = 60; nullable = false; comment = "Code of a notification e.g. a business event: IDEA_CREATED, COACH_ASSIGNED...";},
+    {name = "SEND_MAIL";   sqlType = TINYINT;              nullable = false; comment = "Emails will be sent";}
+];
+table.primaryKey.pkcolumns = ["ID"];

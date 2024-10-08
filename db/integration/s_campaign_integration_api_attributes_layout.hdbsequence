@@ -1,0 +1,6 @@
+schema     = "SAP_INO";
+start_with = 1;
+minvalue   = 1;
+cycles     = false;
+reset_by= "select ifnull(max(id), 0) + 1 from \"sap.ino.db.integration::t_campaign_integration_api_attributes_layout\"";
+depends_on_table = "sap.ino.db.integration::t_campaign_integration_api_attributes_layout";

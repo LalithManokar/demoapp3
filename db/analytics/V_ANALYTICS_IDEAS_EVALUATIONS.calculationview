@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_IDEAS_EVALUATIONS" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="SCRIPT_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_ANALYTICS_IDEAS_EVALUATIONS"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="IDEA_ID"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_PHASE_CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="MODEL_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="EVALUATION_ID"/>
+        <viewAttribute datatype="TIMESTAMP" id="EVALUATION_CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="EVALUATION_CREATED_BY_ID"/>
+        <viewAttribute datatype="TIMESTAMP" id="EVALUATION_CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="EVALUATION_CHANGED_BY_ID"/>
+        <viewAttribute datatype="VARCHAR" id="EVALUATION_STATUS_CODE" length="500"/>
+        <viewAttribute id="EVALUATION_COMMENT" datatype="NVARCHAR" length="1024"/>
+        <viewAttribute datatype="VARCHAR" id="CRITERION_CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="CRITERION_DATATYPE_CODE" length="500"/>
+        <viewAttribute datatype="TINYINT" id="CRITERION_IS_OVERALL_RESULT"/>
+        <viewAttribute datatype="VARCHAR" id="CRITERION_TEXT_VALUE" length="1024"/>
+        <viewAttribute datatype="DOUBLE" id="CRITERION_VALUE"/>
+      
+        <viewAttribute id="CRITERION_ALL_VALUE" datatype="VARCHAR" length="1024"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition> 
+ /********* Begin Procedure Script ************/ 
+ BEGIN 
+ 	 var_out = 
+ 	   select 
+ 	      idea_id,
+ 	      campaign_id,
+ 	      campaign_phase_code,
+ 	      model_code,
+ 	      evaluation_id,
+ 	      evaluation_created_at,
+ 	      evaluation_created_by_id,
+ 	      evaluation_changed_at,
+ 	      evaluation_changed_by_id,
+ 	      evaluation_status_code,
+ 	      evaluation_comment,
+ 	      criterion_code,
+ 	      criterion_datatype_code,
+ 	      criterion_is_overall_result,
+ 	      criterion_text_value,
+ 	      criterion_value,
+ 	      criterion_all_value
+ 	   from
+ 	      &quot;sap.ino.db.evaluation::v_criterion_value_per_ideas_and_phases&quot;;
+ 	 
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="IDEA_ID" order="1">
+        <descriptions defaultDescription="Idea ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="2">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_PHASE_CODE" order="3">
+        <descriptions defaultDescription="Campaign Phase Code"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_PHASE_CODE"/>
+      </attribute>
+      <attribute id="MODEL_CODE" order="4">
+        <descriptions defaultDescription="Model Code"/>
+        <keyMapping columnObjectName="Script_View" columnName="MODEL_CODE"/>
+      </attribute>
+      <attribute id="EVALUATION_ID" order="5">
+        <descriptions defaultDescription="Evaluation ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="EVALUATION_ID"/>
+      </attribute>
+      <attribute id="EVALUATION_CREATED_AT" order="6">
+        <descriptions defaultDescription="Evaluation Creation Date"/>
+        <keyMapping columnObjectName="Script_View" columnName="EVALUATION_CREATED_AT"/>
+      </attribute>
+      <attribute id="EVALUATION_CREATED_BY_ID" order="7">
+        <descriptions defaultDescription="Evaluation Created By"/>
+        <keyMapping columnObjectName="Script_View" columnName="EVALUATION_CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="EVALUATION_CHANGED_AT" order="8">
+        <descriptions defaultDescription="Evaluation Change Date"/>
+        <keyMapping columnObjectName="Script_View" columnName="EVALUATION_CHANGED_AT"/>
+      </attribute>
+      <attribute id="EVALUATION_CHANGED_BY_ID" order="9">
+        <descriptions defaultDescription="Evaluation Changed By"/>
+        <keyMapping columnObjectName="Script_View" columnName="EVALUATION_CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="EVALUATION_STATUS_CODE" order="10">
+        <descriptions defaultDescription="Evaluation Status Code"/>
+        <keyMapping columnObjectName="Script_View" columnName="EVALUATION_STATUS_CODE"/>
+      </attribute>
+      <attribute id="EVALUATION_COMMENT" order="11">
+        <keyMapping columnObjectName="Script_View" columnName="EVALUATION_COMMENT"/>
+      </attribute>
+      <attribute id="CRITERION_CODE" order="12">
+        <descriptions defaultDescription="Criterion Code"/>
+        <keyMapping columnObjectName="Script_View" columnName="CRITERION_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_DATATYPE_CODE" order="13">
+        <descriptions defaultDescription="Criterion Datatype Code"/>
+        <keyMapping columnObjectName="Script_View" columnName="CRITERION_DATATYPE_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_IS_OVERALL_RESULT" order="14">
+        <descriptions defaultDescription="Criterion is Overall Result"/>
+        <keyMapping columnObjectName="Script_View" columnName="CRITERION_IS_OVERALL_RESULT"/>
+      </attribute>
+      <attribute id="CRITERION_TEXT_VALUE" order="15">
+        <descriptions defaultDescription="Criterion Text Value"/>
+        <keyMapping columnObjectName="Script_View" columnName="CRITERION_TEXT_VALUE"/>
+      </attribute>
+    
+      <attribute id="CRITERION_ALL_VALUE" order="17">
+        <keyMapping columnObjectName="Script_View" columnName="CRITERION_ALL_VALUE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="CRITERION_VALUE" order="16" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Criterion Value"/>
+        <measureMapping columnObjectName="Script_View" columnName="CRITERION_VALUE"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

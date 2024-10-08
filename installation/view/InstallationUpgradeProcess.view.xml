@@ -1,0 +1,38 @@
+<mvc:View
+   controllerName="sap.ino.installation.controller.InstallationUpgradeProcess"
+	xmlns="sap.m"
+	xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.f"
+	xmlns:core="sap.ui.core"	
+	displayBlock="true">
+	<Page showHeader="false"  class="sapInoInstallationPage">
+		<content>
+			<Panel class="sapInoInstallationPanelContent sapInoInstallationProcessPanelContent"
+							headerText="{i18n>UPGRADE_INNOVATION_MANAGEMENT_SYSTEM_PROCESS}">
+			</Panel>
+					<Wizard id="UpgradeProcessWizard" finishButtonText ="Next" showNextButton="false">
+						<WizardStep id="upgradePrepare"
+					    title="{i18n>PROCESS_UPGRADE_PREPARE}"
+					    validated="false"
+					    nextStep="upgradeInstallDu">
+					    <core:Fragment fragmentName="sap.ino.installation.view.fragments.installationUpgradeProcessPrepare" type="XML"/>
+					    </WizardStep>
+					    
+						<WizardStep id="upgradeInstallDu"
+				    	title="{i18n>PROCESS_UPGRADE_INSTALL_DU}"
+					    validated="false" 
+					    nextStep="upgradePost"
+					    complete="onCompleteInstallDu">
+	                    <core:Fragment fragmentName="sap.ino.installation.view.fragments.installationUpgradeProcessInstallDU" type="XML"/>			    
+					    </WizardStep>
+
+						<WizardStep id="upgradePost"
+					    title="{i18n>PROCESS_UPGRADE_POST}"
+					    validated="false" >
+					    <core:Fragment fragmentName="sap.ino.installation.view.fragments.installationUpgradeProcessPost" type="XML"/>
+					    </WizardStep>
+					</Wizard>
+		</content>
+	</Page>
+</mvc:View>

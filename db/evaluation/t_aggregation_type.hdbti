@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.evaluation::t_aggregation_type";
+    file       = "sap.ino.db.evaluation:t_aggregation_type.csv";
+    header     = false;
+    delimField = ";";
+}]; 

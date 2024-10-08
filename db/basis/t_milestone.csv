@@ -1,0 +1,6 @@
+CAMP_START;Campaign Start;Campaign Start;VALID_FROM
+CAMP_END;Campaign End;Campaign End;VALID_TO
+CAMP_REGISTER_START;Campaign Registration Start;Campaign Registration Start;REGISTER_FROM
+CAMP_REGISTER_END;Campaign Registration End;Campaign Registration End;REGISTER_TO
+IDEA_SUBMIT_START;Idea Submission Start;Idea Submission Start;SUBMIT_FROM
+IDEA_SUBMIT_END;Idea Submission End;Idea Submission End;SUBMIT_TO

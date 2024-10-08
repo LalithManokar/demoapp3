@@ -1,0 +1,7 @@
+table.schemaName  = "SAP_INO";
+table.description = "Ideas";
+table.temporary   = true;
+table.columns = [
+    {name = "HANDLE_ID";    sqlType = INTEGER;},
+    {name = "GENERATED_ID"; sqlType = INTEGER;}
+];

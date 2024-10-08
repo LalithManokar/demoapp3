@@ -1,0 +1,191 @@
+procedure "SAP_INO"."sap.ino.db.feed::p_feed_service_email" (
+    out ot_feeds "SAP_INO"."sap.ino.db.feed::tt_feed_email" 
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    current_datetime = SELECT CURRENT_UTCTIMESTAMP as latest FROM dummy;
+    -- deactive feed which use did not follow any more, or campaign is deleted, or idea is deleted
+    lt_followed_object = select created_by_id || object_type_code || object_id as followed
+        from "sap.ino.db.follow::t_follow";
+        
+    lt_deactive_feed = select distinct deactive_feed.id from
+            (select status.id from "sap.ino.db.feed::t_feed_status" as status
+                where status.mail_status_code = 'UNSENT'
+                    AND status.user_id in (select id from "sap.ino.db.iam::t_identity" where ERASED = 1)
+            union all
+            select 
+                status.id
+            from 
+                :current_datetime as date_time, "sap.ino.db.feed::t_feed_status" as status
+            inner join "sap.ino.db.feed::t_feed_update" as feed 
+                on status.feed_id = feed.id
+            -- inner join "sap.ino.db.notification::v_mail_notification_settings" as identity_notification
+            --         on status.user_id = identity_notification.user_id    
+            where 
+                status.created_at <= date_time.latest 
+                and (status.user_id || feed.object_type_code || object_id not in (select followed from :lt_followed_object )
+                    or feed.campaign_id not in ( select id from "sap.ino.db.campaign::t_campaign" )
+                    or (feed.object_type_code = 'IDEA' and feed.object_id not in ( select id from "sap.ino.db.idea::t_idea" )))
+            -- or identity_notification.value <> 'active'
+            UNION ALL
+            select 
+                status.id
+            from :current_datetime as date_time, "sap.ino.db.feed::t_feed_status" as status
+            inner join "sap.ino.db.feed::t_feed_update" as feed 
+                on status.feed_id = feed.id
+            inner join (select 
+                            identity_id,setting_value,changed_at,
+                            case object_type_code 
+                            when 'CAMPAIGN_SETTING_VALUE' then 'CAMPAIGN' 
+                            when 'IDEA_SETTING_VALUE' then 'IDEA' 
+                            else 'TAG' end as CODE 
+                        from "sap.ino.db.iam::t_personalize_setting" where type_code='FEEDS') as setting
+                ON status.user_id = setting.identity_id AND feed.OBJECT_TYPE_CODE = setting.CODE 
+            where 
+                status.created_at <= date_time.latest 
+                and ((setting.setting_value = 0 and feed.event_at >= setting.changed_at) 
+                    or (setting.setting_value = 1 and feed.event_at <= setting.changed_at)) 
+                --and status.mail_status_code = 'UNSENT' and (status.IS_INSTANCE is null or status.IS_INSTANCE = 0)) as deactive_feed;
+                --Include All Feeds
+                and status.mail_status_code = 'UNSENT' ) as deactive_feed;
+    --sent feed to user which they have privilege to view         
+    lt_identity_campaign_read = select identity_id || campaign_id as campaign_read 
+    from "sap.ino.db.campaign::v_identity_campaign_read";
+    
+    lt_feeds = select 
+                    status.id,
+                    status.feed_id,
+                    object_id, 
+                    object_type_code,
+                    event_at,  
+                    feed_code,
+                      case 
+                    when settings.IS_ANONYMOUS = 'true' and settings.CREATED_BY_ID = actor_id then  cast(0 as INTEGER) 
+                    else actor_id
+                    end as actor_id, 
+                     case 
+                    when settings.IS_ANONYMOUS = 'true' and settings.CREATED_BY_ID = actor_id then  cast('Anonymity' as VARCHAR) 
+                    else  actor_name
+                    end as actor_name, 
+                    object_text,
+                    content as sub_text, 
+                    involved_id,
+                    involved_obj_type_code,
+                    involved_obj_text,
+                    campaign_id, 
+                    campaign_date,
+                    field1_name,
+                    field1_text,
+                    field1_value,
+                    field1_value_option,
+                    field2_name,
+                    field2_text,
+                    field2_value,
+                    field2_value_option,
+                    filter_type_code,
+                    status.user_id as followed_by_id
+                from :current_datetime as date_time, "sap.ino.db.feed::t_feed_status" as status
+                inner join "sap.ino.db.feed::t_feed_update" as feed
+                    on status.feed_id = feed.id
+                 left outer join "sap.ino.db.idea::v_email_idea_isAnonymous" as settings 
+                 on settings.id = status.id 
+                where 
+                    status.created_at <= date_time.latest 
+                    and status.mail_status_code = 'UNSENT'
+                    and status.user_id || feed.campaign_id in (select campaign_read from :lt_identity_campaign_read)
+                    --and (status.IS_INSTANCE is null or status.IS_INSTANCE = 0)
+                    and status.id not in (select deactive_feed.id from :lt_deactive_feed as deactive_feed);
+                    
+    --Get the setting for Never/Daily Send(Default Daily Send)
+    
+        lt_daily_send_feeds_1st = select all_feeds.*  from :lt_feeds as all_feeds left outer join "sap.ino.db.iam::t_personalize_setting" as setting
+                               on setting.TYPE_CODE = 'FEEDS' AND setting.OBJECT_TYPE_CODE = 'FEEDS_KEY' AND setting.IDENTITY_ID = all_feeds.followed_by_id 
+                               where setting.setting_value is null;
+        lt_daily_send_feeds_time = select all_feeds.* from :lt_feeds as all_feeds left outer join "sap.ino.db.iam::t_personalize_setting" as setting
+                               on setting.TYPE_CODE = 'FEEDS' AND setting.OBJECT_TYPE_CODE = 'FEEDS_KEY' AND setting.IDENTITY_ID = all_feeds.followed_by_id 
+                               where setting.setting_value = 1;                               
+        lt_never_send_feeds = select all_feeds.* from :lt_feeds as all_feeds left outer join "sap.ino.db.iam::t_personalize_setting" as setting
+                               on setting.TYPE_CODE = 'FEEDS' AND setting.OBJECT_TYPE_CODE = 'FEEDS_KEY' AND setting.IDENTITY_ID = all_feeds.followed_by_id 
+                               where setting.setting_value = -1;        
+                           
+        current_seconds = select value  from "sap.ino.db.notification::v_notification_email_scheduled_currentseconds";
+        
+        lt_daily_actual_send_time = select feed_time. * from :current_seconds, :lt_daily_send_feeds_time as feed_time inner join "sap.ino.db.iam::t_personalize_setting" as setting_key 
+                          on feed_time.followed_by_id = setting_key.IDENTITY_ID and setting_key.TYPE_CODE = 'FEEDS' 
+                          AND setting_key.OBJECT_TYPE_CODE = 'NEXT_TIME'
+                          where setting_key.SETTING_VALUE < :current_seconds.value;
+                          
+        lt_actual_send_feeds = select * from :lt_daily_send_feeds_1st union select * from :lt_daily_actual_send_time;
+        lt_should_send_feeds = select * from :lt_daily_send_feeds_1st union select * from :lt_daily_send_feeds_time;
+    --update default setting and the next time
+    --next_time = :current_seconds + 24 * 60 * 60;
+    lt_daily_send_feeds_1st_identity_id = select distinct followed_by_id from :lt_daily_send_feeds_1st;
+    INSERT INTO "sap.ino.db.iam::t_personalize_setting" (ID,IDENTITY_ID,OBJECT_TYPE_CODE,SETTING_VALUE,TYPE_CODE,CHANGED_AT,SEQUENCE) 
+    select "sap.ino.db.iam::s_personalize_setting".nextval, daily_feeds.followed_by_id, 'FEEDS_KEY', 1 ,'FEEDS', CURRENT_UTCTIMESTAMP, null
+    from :lt_daily_send_feeds_1st_identity_id as daily_feeds; 
+    
+    INSERT INTO "sap.ino.db.iam::t_personalize_setting"  (ID,IDENTITY_ID,OBJECT_TYPE_CODE,SETTING_VALUE,TYPE_CODE,CHANGED_AT,SEQUENCE) 
+    select "sap.ino.db.iam::s_personalize_setting".nextval, daily_feeds.followed_by_id, 'NEXT_TIME', :current_seconds.value + 24 * 60 * 60 ,'FEEDS', CURRENT_UTCTIMESTAMP, null
+    from :lt_daily_send_feeds_1st_identity_id as daily_feeds, :current_seconds;
+     
+    UPDATE setting
+    SET 
+        setting.SETTING_VALUE = setting.SETTING_VALUE + setting_key.SETTING_VALUE * 24 * 60 * 60
+    FROM
+        "sap.ino.db.iam::t_personalize_setting" AS setting
+    INNER JOIN  "sap.ino.db.iam::t_personalize_setting" AS setting_key
+        on setting_key.IDENTITY_ID = setting.IDENTITY_ID AND 
+        setting_key.TYPE_CODE = 'FEEDS' AND setting_key.OBJECT_TYPE_CODE = 'FEEDS_KEY' AND setting_key.SETTING_VALUE = 1
+    WHERE 
+        setting.TYPE_CODE = 'FEEDS' AND setting.OBJECT_TYPE_CODE = 'NEXT_TIME' AND setting.IDENTITY_ID in ( select followed_by_id from :lt_daily_actual_send_time);
+
+                    
+    --update feed that will not be sent
+    UPDATE status
+    SET status.MAIL_STATUS_CODE = 'DEACTIVATED', 
+    	status.CHANGED_AT = CURRENT_UTCTIMESTAMP
+    FROM :current_datetime as date_time,"sap.ino.db.feed::t_feed_status" AS status
+    	INNER JOIN "sap.ino.db.notification::v_mail_notification_settings" AS identity_notification
+    	ON status.user_id = identity_notification.user_id
+    		AND identity_notification.value = 'inactive'
+    		AND status.mail_status_code = 'UNSENT'
+	WHERE 
+        status.created_at <= date_time.latest;
+		
+    update status
+    set
+        status.mail_status_code = 'DEACTIVATED',
+        status.CHANGED_AT = CURRENT_UTCTIMESTAMP
+    from :current_datetime as date_time, "sap.ino.db.feed::t_feed_status" as status
+    where 
+        status.created_at <= date_time.latest 
+        and status.id not in (select id from :lt_should_send_feeds) 
+        and status.mail_status_code = 'UNSENT'; 
+       -- and (status.IS_INSTANCE is null or status.IS_INSTANCE = 0);       
+       
+    update status
+    set
+        status.mail_status_code = 'DEACTIVATED',
+        status.CHANGED_AT = CURRENT_UTCTIMESTAMP
+    from "sap.ino.db.feed::t_feed_status" as status
+    where status.mail_status_code = 'UNSENT'
+        AND status.user_id in (select id from "sap.ino.db.iam::t_identity" where ERASED = 1);
+               
+    ot_feeds = select TOP 100000 feeds.* , locale.locale, iden.name,
+                iden.email,
+                iden.is_external
+                from :lt_actual_send_feeds as feeds
+                inner join
+                "sap.ino.db.iam::t_identity" as iden
+                on 
+                    feeds.followed_by_id = iden.id
+                left outer join
+                "sap.ino.db.basis::v_user_locale" as locale
+                on 
+                locale.user_id = feeds.followed_by_id
+                WHERE iden.ERASED = 0
+                order by feeds.followed_by_id, feeds.event_at;
+	end;

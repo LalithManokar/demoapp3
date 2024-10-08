@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "select ifnull(max(id),0) + 1 as nextid from 
+        (select max(id) as id from \"sap.ino.db.evaluation::t_evaluation\" 
+         union all 
+         select max(id) as id from \"sap.ino.db.evaluation::t_evaluation_h\" )";
+
+depends_on_table = ["sap.ino.db.evaluation::t_evaluation",
+                    "sap.ino.db.evaluation::t_evaluation_h"];

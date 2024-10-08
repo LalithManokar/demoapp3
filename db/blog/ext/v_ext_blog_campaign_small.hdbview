@@ -1,0 +1,25 @@
+schema = "SAP_INO_EXT";
+query  = " select 
+        blog.id,
+        blog.title,
+        blog.short_description,
+        blog.is_major_change,
+        blog.status_code,
+        blog.object_id,
+        blog.object_type_code,
+        blog.object_id as campaign_id,
+        blog.published_at,
+        blog.created_at,
+        blog.created_by_id,
+        blog.created_by_name,
+        blog.comment_count, 
+        blog.campaign_name,
+        blog.campaign_short_name,
+        blog.campaign_description,
+        blog.campaign_color
+
+from \"sap.ino.db.blog::v_blog_campaign_small\" as blog 
+            where blog.id in (select blog_id from \"sap.ino.db.blog::v_auth_blogs_read\")
+            with read only";
+depends_on_view = ["sap.ino.db.blog::v_blog_campaign_small",
+                    "sap.ino.db.blog::v_auth_blogs_read"];

@@ -1,0 +1,45 @@
+schema = "SAP_INO";
+query = "
+    select 
+        vol.code as value_list_code, 
+        votetype.code as vote_type_code,
+        campaign.id as campaign_id,
+        campaign_text.short_name as  campaign_name,
+        count(distinct votetype.code) as usage_count
+    from 
+        \"sap.ino.db.basis::t_value_option_list\" as vol
+    inner join 
+        \"sap.ino.db.campaign::t_vote_type_stage\" as votetype
+    on
+        vol.code = votetype.VOTE_REASON_CODE
+    inner join 
+        \"sap.ino.db.campaign::t_campaign\" as campaign 
+    on  
+        campaign.vote_type_code = votetype.code
+    left outer join 
+        \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign_text 
+    on campaign.id = campaign_text.campaign_id
+    group by 
+        vol.code, 
+        votetype.code,
+        campaign.id,
+        campaign_text.short_name
+union
+    select 
+        vol.code as value_list_code, 
+        votetype.code as vote_type_code,
+        0 as campaign_id,
+        '' as  campaign_name,
+        count(distinct votetype.code) as usage_count
+    from 
+        \"sap.ino.db.basis::t_value_option_list\" as vol
+    inner join 
+        \"sap.ino.db.campaign::t_vote_type_stage\" as votetype
+    on
+        vol.code = votetype.VOTE_REASON_CODE
+    group by 
+        vol.code, 
+        votetype.code
+    with read only";
+depends_on_table = ["sap.ino.db.basis::t_value_option_list", "sap.ino.db.campaign::t_vote_type_stage", "sap.ino.db.campaign::t_campaign"];
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale"];

@@ -1,0 +1,12 @@
+schema = "SAP_INO";
+query  = " 
+          select item.* from \"sap.ino.db.evaluation::v_evaluation_request_item_for_me\" as item_for_me
+            inner join \"sap.ino.db.evaluation::v_auth_evaluation_request_item_read\" as auth_item
+              on item_for_me.id = auth_item.EVAL_REQ_ITEM_ID
+            inner join \"sap.ino.db.evaluation::v_evaluation_request_item\"           as item
+              on item.id = item_for_me.id
+          with read only";
+          
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request_item_for_me",
+                   "sap.ino.db.evaluation::v_auth_evaluation_request_item_read",
+                   "sap.ino.db.evaluation::v_evaluation_request_item"];

@@ -1,0 +1,6 @@
+schema = "SAP_INO_EXT";
+query  = " select reward_list.* from \"sap.ino.db.reward::v_reward_list\" as reward_list
+            where reward_list.id in (select reward_list_id from \"sap.ino.db.reward::v_auth_rewards_read\")
+            with read only";
+depends_on_view = ["sap.ino.db.reward::v_reward_list",
+                    "sap.ino.db.reward::v_auth_rewards_read"];

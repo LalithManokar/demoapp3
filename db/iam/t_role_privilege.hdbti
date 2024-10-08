@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.iam::t_role_privilege";
+    file       = "sap.ino.db.iam:t_role_privilege.csv";
+    header     = false;
+    delimField = ";";
+}];

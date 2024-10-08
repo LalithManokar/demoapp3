@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT";
+query = "select blog_comment.*
+         from \"sap.ino.db.blog::v_blog_comment_community\" as blog_comment
+         where blog_comment.object_id in (select blog_id from \"sap.ino.db.blog::v_auth_blogs_read\")
+         with read only";
+depends_on_view = ["sap.ino.db.blog::v_blog_comment_community", "sap.ino.db.blog::v_auth_blogs_read"];
+

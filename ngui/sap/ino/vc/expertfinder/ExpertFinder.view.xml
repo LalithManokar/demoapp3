@@ -1,0 +1,58 @@
+<mvc:View
+    controllerName="sap.ino.vc.expertfinder.ExpertFinder"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:ino="sap.ino.controls"
+    xmlns:l="sap.ui.layout"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:uxap="sap.uxap">  
+    <Page id="expertfinderDisplay" class="sapInoExpertTagContainer">
+        <customHeader visible="false">
+            <core:Fragment
+                fragmentName="sap.ino.vc.expertfinder.fragments.PageCustomHeader"
+                type="XML"/>
+        </customHeader>
+        <content visible="false">
+            <VBox id="expertTagContainer" class="sapUiSmallMarginTop sapUiSmallMarginBegin">
+                <HBox class="sapUiTinyMarginBottom">
+                    <Input id="suggestTag" type="Text" 
+                        placeholder="{i18n>EXPERT_FINDER_TAG_INPUT_PLACEHOLDER}" 
+                        tooltip="{i18n>EXPERT_FINDER_TAG_INPUT_TOOLTIP}" 
+            			displaySecondaryValues="false" 
+            			showSuggestion="true" 
+            			suggest="onSuggestTag" 
+            			submit="onAddTag">
+                        <layoutData>
+                            <OverflowToolbarLayoutData minWidth="200px" maxWidth="300px" shrinkable="false"/>
+                        </layoutData>
+                    </Input>
+                    <Button text="{i18n>BTN_ADD}" press="onAddTag" class="sapUiTinyMarginBegin"/>
+                </HBox>
+    
+                <!-- Tag List -->
+                <Tokenizer class="sapInoWrap" tokens="{view>/Tags}" editable="true" 
+                    tokenChange="onChangeTag"
+                    visible="{path: 'view>/Tags', formatter: '.formatter.notEmpty'}">
+                    <tokens>
+                        <Token key="{view>TAG_ID}" text="{view>NAME}" editable="true"/>
+                    </tokens>
+                </Tokenizer>
+            </VBox>
+
+            <!-- Tag Graph -->
+            <VBox id="expertGraphContainer">
+                <ino:ExpertGraph 
+                    id="expertGraph"
+                    experts="{proposedExperts>/}"
+                    clickNode="onClickNode"/>
+            </VBox>
+
+            <!-- Selected Expert -->
+            <VBox id="expertDetailContainer" width="100%" class="sapInoInvisible sapInoExpertDetailContainer">
+                <core:Fragment fragmentName="sap.ino.vc.expertfinder.fragments.ExpertDetails" type="XML"/>
+            </VBox>
+        </content>
+        <core:Fragment fragmentName="sap.ino.vc.commons.fragments.ObjectNotExists"
+                       type="XML"/>
+    </Page>
+</mvc:View>

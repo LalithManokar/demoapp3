@@ -1,0 +1,12 @@
+schema = "SAP_INO";
+query = "
+    select 
+        vote.*
+        , val_option.DEFAULT_TEXT as VOTE_REASON_TEXT
+    from \"sap.ino.db.idea::t_vote\" as vote
+    left outer join \"sap.ino.db.basis::t_value_option\" as val_option
+        on vote.VOTE_REASON = val_option.CODE
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.idea::t_vote", "sap.ino.db.basis::t_value_option", "sap.ino.db.basis::t_value_option_list"];

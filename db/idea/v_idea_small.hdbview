@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = "
+    select 
+        id,
+        name,
+        created_at,
+        changed_at,
+        submitter_name,
+        campaign_id,
+        last_login
+    from
+        \"sap.ino.db.idea::v_idea_community\" 
+";
+depends_on_view = ["sap.ino.db.idea::v_idea_community"];

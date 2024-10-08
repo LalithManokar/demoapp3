@@ -1,0 +1,61 @@
+schema = "SAP_INO";
+query = "select distinct
+    campaign.history_biz_event,
+    campaign.history_at,
+    campaign.history_actor_id,
+    campaign.id as campaign_id,
+    identity.name as history_actor_name
+from \"sap.ino.db.campaign::v_campaign_h\" as campaign
+    inner join \"sap.ino.db.iam::t_identity\" as identity
+        on campaign.history_actor_id = identity.id
+    left outer join \"sap.ino.db.campaign::v_campaign_t_h\" as campaign_text
+        on campaign.id = campaign_text.campaign_id and campaign.history_at=campaign_text.history_at
+where campaign.created_at is not null or
+      campaign.created_by_id is not null or
+      campaign.status_code is not null or
+      campaign.created_at is not null or
+      campaign.valid_from is not null or
+      campaign.valid_to is not null or
+      campaign.submit_from is not null or
+      campaign.submit_to is not null or
+      campaign.is_black_box is not null or
+      campaign.vote_type_code is not null or
+      campaign.color_code is not null or
+      campaign.phase_count is not null or
+      campaign.page_count is not null or
+      campaign_text.name is not null
+        
+ union
+
+select distinct
+    campaign_phase.history_biz_event,
+    campaign_phase.history_at,
+    campaign_phase.history_actor_id,
+    campaign_phase.campaign_id as campaign_id,
+    identity.name as history_actor_name
+from \"sap.ino.db.campaign::v_campaign_phase_h\" as campaign_phase
+    inner join \"sap.ino.db.iam::t_identity\" as identity
+        on campaign_phase.history_actor_id = identity.id 
+
+ union
+
+select distinct
+    campaign_role.history_biz_event,
+    campaign_role.history_at,
+    campaign_role.history_actor_id,
+    campaign_role.object_id as campaign_id,
+    identity.name as history_actor_name
+from \"sap.ino.db.iam::t_object_identity_role_h\" as campaign_role
+    inner join \"sap.ino.db.iam::t_identity\" as identity
+        on campaign_role.history_actor_id = identity.id
+           and
+           campaign_role.object_type_code = 'CAMPAIGN'
+           
+with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity",
+                    "sap.ino.db.iam::t_object_identity_role_h"];
+
+depends_on_view =  ["sap.ino.db.campaign::v_campaign_h",
+                    "sap.ino.db.campaign::v_campaign_phase_h",
+                    "sap.ino.db.campaign::v_campaign_t_h"];

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_CAMPAIGN_REGISTRATION_PARTICIPANT" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="SCRIPT_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_ANALYTICS_CAMPAIGN_REGISTRATION_PARTICIPANT"/>
+  <metadata changedAt="2022-03-09 11:27:02.882"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="VARCHAR" id="ASSIGNED_PARTICIPATE" length="18"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CAMPAIGN_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="IDENTITY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="IDENTITY_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="EMAIL" length="256"/>
+        <viewAttribute datatype="NVARCHAR" id="PHONE" length="256"/>
+        <viewAttribute datatype="NVARCHAR" id="MOBILE" length="256"/>
+        <viewAttribute datatype="INTEGER" id="PARTICIPANTS_COUNT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+   var_out = select 
+        case when registration.status = 'sap.ino.config.REGISTER_APPROVED' then 'Registered' else 'Non Registered' end as assigned_participate,
+        participants.campaign_id,
+        campaign.Name as campaign_name,
+        participants.identity_id,
+        participants.name as identity_name,
+        participants.email as email,
+        participants.phone as phone,
+        participants.mobile as mobile,
+        count(participants.identity_id) as participants_count
+        
+   from 
+        &quot;sap.ino.db.campaign::v_campaign_participate_identity&quot; as participants
+        left outer join &quot;sap.ino.db.campaign::v_campaign_t_locale&quot; as campaign
+        on participants.campaign_id = campaign.campaign_id
+        left outer join &quot;sap.ino.db.campaign::t_registration&quot; as registration
+        on  participants.identity_id = registration.applicant_id and participants.campaign_id = registration.campaign_id
+        where participants.type_code &lt;> 'GROUP'
+        group by registration.status, participants.campaign_id, campaign.Name, participants.identity_id, participants.name,participants.email,
+                participants.phone, participants.mobile
+        union ( select  'Non Registered' as assigned_participate,
+                        participants.campaign_id,
+                        campaign.Name as campaign_name,
+                        userTansitive.member_id as identity_id,
+                        userTansitive.member_name as identity_name,
+                        participants.email as email,
+                        participants.phone as phone,
+                        participants.mobile as mobile, 
+                        count(participants.identity_id) as participants_count
+                        from &quot;sap.ino.db.campaign::v_campaign_participate_identity&quot; as participants 
+                        left outer join &quot;sap.ino.db.campaign::v_campaign_t_locale&quot; as campaign
+                        on participants.campaign_id = campaign.campaign_id
+                        left outer join &quot;sap.ino.db.iam::v_group_member_transitive&quot; as userTansitive 
+                        on participants.identity_id = userTansitive.group_id 
+                        where participants.type_code = 'GROUP' and userTansitive.type_code = 'USER'
+                        group by participants.campaign_id, campaign.Name, userTansitive.member_id, userTansitive.member_name, participants.email, participants.phone, participants.mobile ) ;
+END /********* End Procedure Script ************/
+
+</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="ASSIGNED_PARTICIPATE" order="1">
+        <descriptions defaultDescription="ASSIGNED PARTICIPATE"/>
+        <keyMapping columnObjectName="Script_View" columnName="ASSIGNED_PARTICIPATE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="2">
+        <descriptions defaultDescription="CAMPAIGN_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="3">
+        <descriptions defaultDescription="CAMPAIGN_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="IDENTITY_ID" order="4">
+        <descriptions defaultDescription="IDENTITY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="IDENTITY_NAME" order="5">
+        <descriptions defaultDescription="IDENTITY_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_NAME"/>
+      </attribute>
+      <attribute id="EMAIL" order="6">
+        <descriptions defaultDescription="EMAIL"/>
+        <keyMapping columnObjectName="Script_View" columnName="EMAIL"/>
+      </attribute>
+      <attribute id="PHONE" order="7">
+        <descriptions defaultDescription="PHONE"/>
+        <keyMapping columnObjectName="Script_View" columnName="PHONE"/>
+      </attribute>
+      <attribute id="MOBILE" order="8">
+        <descriptions defaultDescription="MOBILE"/>
+        <keyMapping columnObjectName="Script_View" columnName="MOBILE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="PARTICIPANTS_COUNT" order="9" aggregationType="sum" measureType="simple">
+        <descriptions/>
+        <measureMapping columnObjectName="Script_View" columnName="PARTICIPANTS_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

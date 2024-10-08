@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = "
+    select package_id, file_name, media_type, path from (
+        select 
+            repo.package_id,
+            repo.object_name as file_name,
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation' as media_type,
+            concat(concat(concat(concat(replace(repo.package_id, '.', '/'), '/'), repo.object_name), '.'), repo.object_suffix) as path,
+            row_number() over (partition by repo.object_name order by config_package.layer desc) as rank
+        from 
+        	_sys_repo.active_object as repo
+    	inner join
+    	    ( select layer, concat(ext_package_id, '.attachment') as package_id from \"sap.ino.db.basis::t_package_extension\" where base_package_id = 'sap.ino.config') as config_package
+    	    on repo.package_id = config_package.package_id
+    	    and repo.object_suffix = 'pptx'
+    ) where rank = 1
+with read only";
+
+depends_on_table = ["sap.ino.db.basis::t_package_extension"];

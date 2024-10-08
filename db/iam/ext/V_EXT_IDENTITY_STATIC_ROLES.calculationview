@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_EXT_IDENTITY_STATIC_ROLES" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_IDENTITY_STATIC_ROLES"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="IDENTITY_ID" parameter="true">
+      <descriptions defaultDescription="IDENTITY_ID"/>
+      <variableProperties datatype="INTEGER" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="INTEGER" id="IDENTITY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="ROLE_CODE" length="256"/>
+        <viewAttribute datatype="NVARCHAR" id="TECHNICAL_ROLE_CODE" length="256"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#IDENTITY_ID</localVariable>
+      <definition>begin
+    var_out = 
+        select
+            id,
+            identity_id,
+            logical_role_name as role_code,
+            qualified_role_name as technical_role_code
+        from &quot;sap.ino.db.iam::v_identity_static_roles&quot;
+        where identity_id = :IDENTITY_ID;
+end
+</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="ID" order="1">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="IDENTITY_ID" order="2">
+        <descriptions defaultDescription="IDENTITY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="ROLE_CODE" order="3">
+        <descriptions defaultDescription="ROLE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="ROLE_CODE"/>
+      </attribute>
+      <attribute id="TECHNICAL_ROLE_CODE" order="4">
+        <descriptions defaultDescription="TECHNICAL_ROLE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="TECHNICAL_ROLE_CODE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

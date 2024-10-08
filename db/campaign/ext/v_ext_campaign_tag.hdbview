@@ -1,0 +1,8 @@
+schema = "SAP_INO_EXT";
+query = "select campaign_tags.* 
+            from \"sap.ino.db.campaign::v_campaign_tag\" as campaign_tags
+            inner join \"sap.ino.db.campaign::v_auth_campaigns\" as auth_campaigns
+            on auth_campaigns.campaign_id = campaign_tags.campaign_id
+            with read only";
+
+depends_on_view = ["sap.ino.db.campaign::v_campaign_tag","sap.ino.db.campaign::v_auth_campaigns"];

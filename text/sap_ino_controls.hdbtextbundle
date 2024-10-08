@@ -1,0 +1,258 @@
+# TRANSLATE
+
+# ---------------------------- IMAGE CROPPING ----------------------------
+
+# ARIA keyboard announcement 
+#XACT,200 
+IMAGE_CROP_DETAIL=Drag image with the mouse, scroll up or down to zoom in or out. Use arrows keys to move image and +/- keys to zoom image.
+
+#XBUT,20 
+IMAGE_CROP_ZOOM_PLUS=Zoom in
+#XBUT,20
+IMAGE_CROP_ZOOM_MINUS=Zoom out
+#XBUT,20
+IMAGE_CROP_MOVE_UP=Scroll Up
+#XBUT,20
+IMAGE_CROP_MOVE_DOWN=Scroll Down
+#XBUT,20
+IMAGE_CROP_MOVE_LEFT=Scroll Left
+#XBUT,20
+IMAGE_CROP_MOVE_RIGHT=Scroll Right
+#XBUT,20
+IMAGE_CROP_CLEAR=Clear
+#XBUT,20
+IMAGE_CROP_CROP=Crop
+
+# ---------------------------- PROCESS INDICATOR -------------------------------
+# XFLD, 20
+CTRL_PROCESSINDICATOR_FLD_PHASE_LABEL=Phase:
+# XFLD, 20
+CTRL_PROCESSINDICATOR_FLD_STATUS_LABEL=Status:
+# XALT, 20
+CTRL_PROCESSINDICATOR_ALT_PHASE_TOOLTIP=Phase {0}
+# XALT, 20
+CTRL_PROCESSINDICATOR_ALT_STATUS_TOOLTIP=Status {0}
+# XALT, 20
+CTRL_PROCESSINDICATOR_ALT_TOOLTIP=Progress Indicator
+# XALT, 100
+CTRL_PROCESSINDICATOR_ALT_NOTE=The idea is in phase {0} and status {1}.
+# XALT, 100
+CTRL_PROCESSINDICATOR_ALT_NOTE_WITHOUT_STATUS=The idea is in phase {0}.
+# XALT, 100
+CTRL_PROCESSINDICATOR_ALT_NOTE_WITHOUT_PHASE=The idea is in status {0}.
+# XALT, 20
+CTRL_PROCESSINDICATOR_FLD_IDEA_LABEL=Idea :
+# XALT, 50
+CTRL_PROCESSINDICATOR_ALT_IDEA_TOOLTIP=Idea {0} 
+
+# ---------------------------- CARD -------------------------------
+
+# XALT, 50
+CTRL_CARD_ALT_CAMPAIGN_TOOLTIP=Open campaign details
+
+# ---------------------------- IDEA CARD -------------------------------
+# XBUT, 20
+CTRL_IDEACARD_BUT_FLIP_BUTTON=Turn Idea Card
+# XBUT, 30
+CTRL_IDEACARD_BUT_COMMENT_BUTTON=Open comments of Idea
+# XLFD, 70
+VOTE_MSG_COMMENT_NO_PRIVILEGE=You have no privilege to comment this idea
+# XFLD, 20
+CTRL_IDEACARD_FLD_SUBMITTED_BY=By {0}, {1}
+# XALT, 50
+CTRL_IDEACARD_ALT_IDEA_TOOLTIP=Open details of idea {0}
+# XLFD, 70
+CTRL_IDEACARD_ALT_OPEN_CONTRIBUTION_TOOLTIP=Idea is open for registration for contribution
+# XLNK, 20
+CTRL_IDEACARD_XLNK_MORE=More...
+# XTIT, 10
+CTRL_IDEACARD_TIT_DRAFT=Draft
+# XALT, 50
+CTRL_IDEACARD_ALT_ACCESSIBILITY_TEXT_CAMPAIGN_LINK=Open details of campaign {0}
+# XALT, 50
+CTRL_IDEACARD_ALT_ACCESSIBILITY_TEXT_FLIP_BACK=Show face of IdeaCard
+# XALT, 50
+CTRL_IDEACARD_ALT_ACCESSIBILITY_TEXT_FLIP=Show reverse side of IdeaCard
+# XALT, 50
+CTRL_IDEACARD_ALT_ACCESSIBILITY_TEXT_SUBMITTER=Filling details
+# XALT, 50
+CTRL_IDEACARD_ALT_ACCESSIBILITY_TEXT_MORE=Open details of idea {0}
+# XALT, 50
+CTRL_IDEACARD_ALT_ACCESSIBILITY_TEXT_VOTE=Voting of idea {0}
+# XALT, 50
+CTRL_IDEACARD_ALT_ACCESSIBILITY_TEXT_IDEA_LINK=Open details of idea {0}
+# XALT, 50
+CTRL_IDEACARD_ALT_ACCESSIBILITY_TEXT_CONTRIBUTOR=Contributor of idea {0}
+# XALT, 50
+CTRL_IDEACARD_ALT_ACCESSIBILITY_TEXT_COMMENT=Open comments of Idea {0}
+# XFLD, 20
+CTRL_IDEACARD_FLD_VOTE_LABEL=Vote count {0}
+# XFLD, 50
+CTRL_IDEACARD_FLD_LIKE_LABEL=Like count {0}
+# XFLD, 50
+CTRL_IDEACARD_FLD_DISLIKE_LABEL=Dislike count {0}
+# XFLD, 50
+CTRL_PROCESSINDICATOR_FLD_RESP_LABEL=Responsiblity: 
+# XALT, 50
+CTRL_PROCESSINDICATOR_ALT_RESP_TOOLTIP=Responsiblity {0}
+# YEXP, 100
+VOTE_FLD_LIKE_THUMBS_UP_TOOLTIP=thumbs up
+# YEXP, 100
+VOTE_FLD_DISLIKE_THUMBS_DOWN_TOOLTIP=thumbs down
+# XBUT, 30
+IDEA_LIST_ITEM_IDEA_STATUS=New Status
+# XBUT, 30
+IDEA_LIST_ITEM_IDEA_COMMENT=New Comment
+# XBUT, 30
+IDEA_LIST_ITEM_IDEA_UPDATE=New Update
+# XBUT, 30
+IDEA_LIST_ITEM_IDEA_CREATE=New Create
+# XBUT, 30
+IDEA_LIST_FLD_READ=Unread
+# XFLD, 20
+CTRL_IDEA_OBJECT_LATEST_UPDATE_NEW = there is an update
+
+
+# ---------------------------- COMMENT BUTTON -------------------------------
+# XALT, 100
+CTRL_IDEACARD_ALT_COMMENT_TEXT=There are no comments; click here to open idea details
+# XALT, 100
+CTRL_IDEACARD_ALT_COMMENT_TEXT_0=There are no comments; click here to open idea details
+# XALT, 100
+CTRL_IDEACARD_ALT_COMMENT_TEXT_1=There is 1 comment; click here to see comment in idea details
+# XALT, 100
+CTRL_IDEACARD_ALT_COMMENT_TEXT_MULTIPLE=There are {0} comments; click here to see comments in idea details
+# XBTN, 20
+CTRL_IDEACARD_ALT_BTN_CREATE_IDEA=Create Idea
+
+# ---------------------------- CAMPAIGN CARD -------------------------------
+
+#XALT, 50
+CTRL_CAMPAIGNCARD_ALT_VIEW_COUNT=Number of Views
+#XALT, 50
+CTRL_CAMPAIGNCARD_ALT_IDEA_COUNT=Number of Ideas
+#XALT, 50
+CTRL_CAMPAIGNCARD_ALT_PARTICIPANT_COUNT=Number of Participants
+#XALT, 50
+CTRL_CAMPAIGNCARD_ALT_CAMPAIGN_END_DATE=Campaign End Date
+#XALT, 50
+CTRL_CAMPAIGNCARD_ALT_CAMPAIGN=Campaign {0}
+#XMSG, 30
+CTRL_CAMPAIGNCARD_MSG_DRAFT=Draft
+
+# ---------------------------- CAMPAIGN -------------------------------
+
+#YEXP, 50
+CTRL_CAMPAIGN_EXP_VIEW_COUNT=Number of Views
+#YEXP, 50
+CTRL_CAMPAIGN_EXP_IDEA_COUNT=Number of Ideas
+#YEXP, 50
+CTRL_CAMPAIGN_EXP_PARTICIPANT_COUNT=Number of Participants
+#YEXP, 50
+CTRL_CAMPAIGN_EXP_ACTIVE_PARTICIPANT_COUNT=Number of Active Participants
+#YEXP, 50
+CTRL_CAMPAIGN_EXP_BTN_CREATE_IDEA=Create Idea for this Campaign
+#YEXP, 50
+CTRL_CAMPAIGN_EXP_NAV_LINK=Open campaign {0}
+#YEXP, 50
+CTRL_CAMPAIGN_EXP_CREATE_IDEA_DESCRIPTION=Create Idea for Campaign {0}
+#YEXP, 50
+CTRL_CAMPAIGN_EXP_FOLLOW_DESCRIPTION=Click to follow for this campaign
+#YEXP, 50
+CTRL_CAMPAIGN_EXP_SETTING_DESCRIPTION=Open Settings
+#YEXP, 100
+CTRL_CAMPAIGN_EXP_REGISTER_DESCRIPTION=Register to participate in the initial call or sign up for initial call
+# ---------------------------- BLOG -------------------------------
+# XALT, 50
+CTRL_BLOGLIST_ALT_BLOG_TOOLTIP=Open details of blog {0}
+
+# ---------------------------- VOTE DISPLAY -------------------------------
+#XFLD, 20
+CTRL_VOTE_DISPLAY_FLD_STAR={0} ({1} Vote)
+#XFLD, 20
+CTRL_VOTE_DISPLAY_FLD_STARS={0} ({1} Votes)
+#XALT, 40
+CTRL_VOTE_DISPLAY_ALT_VOTES=Number of Votes
+#XTOL,20
+CTRL_VOTE_DISPLAY_VOTE=Vote
+#XTOL,20
+CTRL_VOTE_DISPLAY_VOTED=Voted
+# ---------------------------- COLOR PICKER -------------------------------
+#XTOL,20
+COLORPICKER_RED=Red
+#XTOL,20
+COLORPICKER_GREEN=Green
+#XTOL,20
+COLORPICKER_BLUE=Blue
+#XTOL,20
+COLORPICKER_HUE=Hue
+#XTOL,20
+COLORPICKER_SAT=Saturation
+#XTOL,20
+COLORPICKER_VALUE=Value
+#XTOL,20
+COLORPICKER_HEX=Hexadecimal
+#XTOL,20
+COLORPICKER_ALPHA=Alpha
+
+# ---------------------------- Mobile Text Editor -------------------------------
+# XBUT, 30
+CTRL_MTE_DONE=Done
+# XBUT, 30
+CRTL_MTE_TOOLBAR_LABEL=Toolbar Text Editor
+
+# ---------------------------- Expert Graph -------------------------------------
+# XGRP, 80
+CTRL_EXPERTFINDER_EMPTY_SCREEN=Add one or more tags to see the graphical view
+# XGRP, 50
+CTRL_EXPERTFINDER_GRP_LEGEND=Click to see the details of an expert
+# XGRP, 50
+CTRL_EXPERTFINDER_GRP_NO_NAME=Missing Name
+
+# ---------------------------- Identity Action Cards -------------------------------------
+# XTOL, 50
+CTRL_IDENTITY_CARD_BTN_TOOLTIP_ADD=Add
+# XTOL, 50
+CTRL_IDENTITY_CARD_BTN_TOOLTIP_REMOVE=Remove
+# XTOL, 50
+CTRL_CLIPBOARD_BTN_TOOLTIP_PERSON_REMOVE=Remove person from Clipboard
+# XTOL, 50
+CTRL_CLIPBOARD_BTN_TOOLTIP_PERSON_ADD=Add person to Clipboard
+
+# ----------------------------- Active Navigate -----------------
+
+# XTIT, 20
+CTRL_ACTNAV_SELECTED=Selected
+# XTOL, 50
+CTRL_NAVIGATION_HISTORY=Navigation History
+
+#-----------------------------Milestone---------------------------
+# XTIT, 20
+MILESTONE_TASK=Task: 
+# XTIT, 20
+MILESTONE_START=Start: 
+# XTIT, 20
+MILESTONE_END=End: 
+# XTIT, 20
+MILESTONE_INFINITY=Infinity
+# XTIT, 20
+MILESTONE_TODAY=Today
+
+
+# ---------------------------- Tag Cards -------------------------------------
+# XTOL, 50
+CTRL_TAG_CARD_CAMPAIGN=CAMPAIGN
+# XTOL, 50
+CTRL_TAG_CARD_IDEA=IDEA
+# ---------------------------- Quick View PAGE -------------------------------------
+# XFLD, 50
+CTRL_GAMIFICATION_DIMENSION_TOTAL_POINTS = Total {0}
+# XFLD, 50
+CTRL_GAMIFICATION_DIMENSION_TOTAL_REDEEM_POINTS = Redeem {0}
+# XFLD, 50
+CTRL_GAMIFICATION_DIMENSION_NEED = Need 
+# XFLD, 50
+CTRL_GAMIFICATION_DIMENSION_TO_NEXT_LEVEL = {0} to next level
+# XFLD, 50
+CTRL_GAMIFICATION_NAVIGATION_TO_LEADER_BOARD = Navigate to leaderboard
+

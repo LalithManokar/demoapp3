@@ -1,0 +1,46 @@
+schema = "SAP_INO";
+query = "
+    select
+        item.id,
+		item.history_db_event as action_code, 
+	    item.history_at as action_at,
+        item.wall_id,
+        item.parent_wall_item_id,
+        item.name,
+        item.wall_item_type_code,
+        item.content,
+        item.position_x,
+        item.position_y,
+        item.width,
+        item.height, 
+        item.zindex,
+        item.ref_object_type_code,
+        item.ref_object_id,
+        item.wall_session_uuid,
+        
+        item.created_at,
+        item.created_by_id,
+        identity1.name as created_by_name,
+        identity1.last_name as created_by_last_name,
+        identity1.first_name as created_by_first_name,
+        identity1.email as created_by_email,
+
+        item.changed_at,
+        item.changed_by_id,
+        identity2.name as changed_by_name,
+        identity2.last_name as changed_by_last_name,
+        identity2.first_name as changed_by_first_name,
+        identity2.email as changed_by_email
+        
+	from (select id, max(history_at) as history_at from \"sap.ino.db.wall::t_wall_item_h\" as wall group by id) as delta
+	inner join \"sap.ino.db.wall::t_wall_item_h\" as item
+		on delta.id = item.id and
+		   delta.history_at = item.history_at
+    left outer join \"sap.ino.db.iam::t_identity\" as identity1
+        on identity1.id = item.created_by_id 
+    left outer join \"sap.ino.db.iam::t_identity\" as identity2
+        on identity2.id = item.changed_by_id
+    with read only ";
+        
+depends_on_table = ["sap.ino.db.wall::t_wall_item_h",
+                    "sap.ino.db.iam::t_identity"];

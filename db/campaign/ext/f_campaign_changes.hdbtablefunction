@@ -1,0 +1,20 @@
+function "SAP_INO"."sap.ino.db.campaign.ext::f_campaign_changes" ( )
+        returns table (change_event nvarchar(63), change_object nvarchar(63), history_biz_event nvarchar(60), changed_at timestamp,
+                id integer, history_actor_id integer, campaign_id integer, filter_type_code nvarchar(63),
+                field1_name nvarchar(100), field1_text nvarchar(500), field1_value nvarchar(500), field1_value_option nvarchar(100),
+                field2_name nvarchar(100), field2_text nvarchar(500), field2_value nvarchar(500), field2_value_option nvarchar(100))
+        language sqlscript
+        sql security invoker as
+begin
+        declare lv_user_name nvarchar(32) default '';
+        lv_user_name := session_context('APPLICATIONUSER');
+        if lv_user_name = '' then
+                return select null as change_event, null as change_object, null as history_biz_event, null as changed_at,
+                                null as id, null as history_actor_id, null as campaign_id, null as filter_type_code,
+                                null as field1_name, null as field1_text, null as field1_value, null as field1_value_option,
+                                null as field2_name, null as field2_text, null as field2_value, null as field2_value_option from dummy where 1=0;
+        else
+                return select * from sap_ino."sap.ino.db.campaign::v_campaign_changes";
+        end if;
+end;
+ 

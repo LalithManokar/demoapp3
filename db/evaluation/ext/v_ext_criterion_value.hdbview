@@ -1,0 +1,39 @@
+schema = "SAP_INO_EXT";
+query = "
+select DISTINCT
+	criterion_value.ID,
+	criterion_value.EVALUATION_ID,
+	criterion_value.CRITERION_CODE,
+	criterion_value.NUM_VALUE,
+	criterion_value.BOOL_VALUE,
+	criterion_value.TEXT_VALUE,
+	criterion_value.COMMENT,
+	criterion_value.IS_DONE,
+	criterion_value.CODE,
+	criterion_value.MODEL_CODE,
+	criterion_value.DATATYPE_CODE,
+	criterion_value.PARENT_CRITERION_CODE,
+	criterion_value.SEQUENCE_NO,
+	criterion_value.IS_OVERALL_RESULT,
+	criterion_value.UOM_CODE,
+	criterion_value.VALUE_OPTION_LIST_CODE,
+	criterion_value.AGGREGATION_TYPE,
+	criterion_value.NUM_VALUE_MIN,
+	criterion_value.NUM_VALUE_MAX,
+	criterion_value.X_AXIS_CRITERION_CODE,
+	criterion_value.X_AXIS_SEGMENT_NO,
+	criterion_value.Y_AXIS_CRITERION_CODE,
+	criterion_value.Y_AXIS_SEGMENT_NO,
+	criterion_value.VIS_PARAM_1_CRITERION_CODE,
+	criterion_value.VIS_PARAM_2_CRITERION_CODE,
+	criterion_value.DEFAULT_TEXT,
+	criterion_value.DEFAULT_LONG_TEXT,
+	criterion_value.NUM_VALUE_STEP_SIZE,
+	criterion_value.WEIGHT,
+	criterion_value.FORMULA
+from \"sap.ino.db.evaluation::v_criterion_value\" as criterion_value 
+inner join \"sap.ino.db.evaluation::v_auth_evaluation_read\" as e_r
+on criterion_value.evaluation_id = e_r.evaluation_id
+with read only";
+depends_on_view = [ "sap.ino.db.evaluation::v_criterion_value",
+                    "sap.ino.db.evaluation::v_auth_evaluation_read"];

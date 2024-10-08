@@ -1,0 +1,38 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:ino="sap.ino.controls"
+    xmlns:l="sap.ui.layout">
+    <FlexBox
+        alignItems="Start"
+        alignContent="Start"
+        class="sapUiTinyMarginBottom sapInoIdeaSorterItem"
+        visible="{= !${view>/List/HIDE_SORT}}">
+        <Select
+            ariaLabelledBy="sortlabel"
+            items="{
+                path: 'list>/Sorter/Values'
+            }"
+            width="160px"
+            class="sortSelectBox"
+            change="onSorterChange">
+            <core:Item
+                text="{path : 'list>TEXT', formatter : '.formatter.text'}"
+                key="{list>ACTION}"
+                class="sapUiSmallMarginTopBottom sapUiSmallMarginEnd">
+        	</core:Item>
+        </Select>
+        <ToggleButton icon="sap-icon://sort-descending" press="onSortPress" pressed="true" class="sapInoIdeaSorterBottom"/>
+        <Button
+            ariaLabelledBy="sortlabel"
+            icon="sap-icon://sys-cancel"
+            tooltip="{i18n>EXP_REMOVE_SORT_BUTTON}"
+            press="onSorterRemove"
+            type="Transparent"
+            class="sapInoIdeaSorterBottom">
+            <layoutData>
+        	    <FlexItemData growFactor="2" />
+        	</layoutData>
+        </Button>
+    </FlexBox>
+</core:FragmentDefinition>

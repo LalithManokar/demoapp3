@@ -1,0 +1,10 @@
+schema = "SAP_INO_EXT";
+
+query = "select campaign_role.* from \"sap.ino.db.campaign::v_campaign_role_events_filtered\" as campaign_role
+            join \"sap.ino.db.campaign::v_auth_campaigns\" as auth
+            on campaign_role.campaign_id = auth.campaign_id
+         where
+            campaign_role.role_code='CAMPAIGN_COACH'";
+
+depends_on_view = ["sap.ino.db.campaign::v_auth_campaigns",
+                   "sap.ino.db.campaign::v_campaign_role_events_filtered"];

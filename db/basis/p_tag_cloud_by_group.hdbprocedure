@@ -1,0 +1,46 @@
+procedure "SAP_INO"."sap.ino.db.basis::p_tag_cloud_by_group" (
+    in  it_object_tag SAP_INO."sap.ino.db.basis::tt_object_tag",
+    out ot_ranked_tag SAP_INO."sap.ino.db.basis::tt_ranked_tag_and_group"
+)
+language sqlscript 
+sql security invoker
+default schema SAP_INO 
+reads sql data as
+begin
+    -- count objects per tag
+    lt_tag_frequency = select assigned_tag.tag_group_id, tag.tag_id, count(*) as frequency
+                       from :it_object_tag as tag
+                       left outer join "sap.ino.db.tag::t_assignment_tag" as assigned_tag
+                       on tag.tag_id = assigned_tag.tag_id
+                       group by assigned_tag.tag_group_id, tag.tag_id;
+
+    -- sort tags by object count and throw away anything that can not possibly make it into the tag cloud
+    lt_tag_sorted_by_frequency = select tag_group_id, tag_id, frequency 
+                                 from :lt_tag_frequency as tag 
+                                 order by tag_group_id, frequency desc;
+
+    -- compute ranking of the remaining tags
+    lt_tag_ranked_by_frequency = select tag_group_id, tag_id, row_number() over (partition by tag_group_id order by frequency desc) as r
+                                 from :lt_tag_sorted_by_frequency as tag;
+
+    lt_ranked_tag = select tag_group_id, tag_id, row_number() over (partition by tag_group_id order by r asc) as "RANK"
+                    from :lt_tag_ranked_by_frequency as tag;
+    -- only provide first 20 entries for each tag group
+    lt_ranked_tag_with_name = select tag_group_id, tag.id, name, "RANK"
+                              from :lt_ranked_tag as "RANK", "sap.ino.db.tag::t_tag" as tag
+                              where tag.id = "RANK".tag_id
+                              order by tag_group_id, "RANK" asc;
+                              
+    ot_ranked_tag = select tag.id, tag.name, "RANK", tag_group.id as group_id, tag_group.name as group_name, tag_group.description as group_description
+                    from :lt_ranked_tag_with_name as tag
+                    left outer join "sap.ino.db.tag::t_group_tag" as tag_group
+                    on tag.tag_group_id = tag_group.id
+                    where tag_group.top_number is null and "RANK" < 31 
+                    union all 
+                    select tag.id, tag.name, "RANK", tag_group.id as group_id, tag_group.name as group_name, tag_group.description as group_description
+                    from :lt_ranked_tag_with_name as tag
+                    left outer join "sap.ino.db.tag::t_group_tag" as tag_group
+                    on tag.tag_group_id = tag_group.id
+                    where tag_group.top_number >= 0 and "RANK" <= tag_group.top_number; 
+
+end;

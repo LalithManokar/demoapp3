@@ -1,0 +1,38 @@
+schema = "SAP_INO";
+query = "
+    SELECT idea.id, 
+	idea.created_by_id, 
+    idea.name,
+    idea.status_code AS status_code,
+    idea.campaign_id as campaign_id,
+    camp.name AS campaign_name,
+    camp.short_name AS campaign_short_name,
+	campaign.is_black_box, 
+	phase.show_idea_in_community
+FROM \"sap.ino.db.idea::t_idea\" AS idea
+	LEFT OUTER JOIN \"sap.ino.db.campaign::t_campaign_phase\" AS phase
+	ON idea.campaign_id = phase.campaign_id
+		AND idea.phase_code = phase.phase_code
+	LEFT OUTER JOIN \"sap.ino.db.campaign::t_campaign\" AS campaign
+	ON campaign.id = idea.campaign_id 
+	left outer join (
+        select 
+                text_default.campaign_id,
+                coalesce(text_user.name, text_default.name) as name,
+                coalesce(text_user.short_name, text_default.short_name) as short_name,
+                coalesce(text_user.lang, text_default.lang) as lang
+             from \"sap.ino.db.campaign::t_campaign_t\" as text_default
+             inner join ( 
+                    select iso_code from \"sap.ino.db.basis::v_sys_default_language\" 
+                ) as default_lang
+             on text_default.lang = default_lang.iso_code 
+             left outer join ( select * from \"sap.ino.db.campaign::t_campaign_t\" text_user 
+                                    where lang = substr(session_context('LOCALE'),0,2) ) as text_user
+                    on text_user.campaign_id = text_default.campaign_id
+    ) as camp 
+        on camp.campaign_id = idea.campaign_id;
+";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.campaign::t_campaign_phase",
+                    "sap.ino.db.idea::t_idea"]; 

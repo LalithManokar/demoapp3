@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE; 
+table.temporary = true;
+table.description = "Input table for groups";
+table.columns = [
+    {name = "ID";          sqlType = INTEGER;                  nullable = false;               comment = "identifier";},
+    {name = "NAME";        sqlType = NVARCHAR; length = 100;   nullable = true; unique = true; comment = "Group name";},
+    {name = "DESCRIPTION";   sqlType = NVARCHAR; length = 256; nullable = true;                comment = "Description of Group";}
+ ];

@@ -1,0 +1,18 @@
+schema = "SAP_INO";
+query = "
+    select
+    	role.id,
+    	role.identity_id,
+    	role.object_id,
+    	role.role_code,
+        identity.name as identity_name
+    
+    from \"sap.ino.db.iam::t_object_identity_role\" as role
+        
+    left outer join \"sap.ino.db.iam::t_identity\" as identity
+        on identity.id = role.identity_id 
+        where role.object_type_code = 'WALL'
+";
+                
+depends_on_table = ["sap.ino.db.iam::t_object_identity_role",
+                    "sap.ino.db.iam::t_identity"];

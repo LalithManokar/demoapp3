@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_NOTIFICATION_SETTING_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_NOTIFICATION_SETTING_SEARCH"/>
+  <metadata changedAt="2019-11-28 10:59:34.611"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="searchToken"/>
+      <variableProperties datatype="VARCHAR" defaultValue="undefined" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="searchLanguage" parameter="true">
+      <descriptions defaultDescription="searchLanguage"/>
+      <variableProperties datatype="VARCHAR" defaultValue="&apos;&apos;" length="10" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CHANGED_BY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CHANGED_BY" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="ACTION_CODE" length="128"/>
+        <viewAttribute datatype="INTEGER" id="ALLOW_INBOX_NOTIFICATION"/>
+        <viewAttribute datatype="INTEGER" id="ALLOW_EMAIL_NOTIFICATION"/>
+        <viewAttribute datatype="VARCHAR" id="EMAIL_TEMPLATE_CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="TEXT_MODULE_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="STANDARD"/>
+        <viewAttribute datatype="VARCHAR" id="ACTION_TYPE_CODE" length="128"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <localVariable>#searchLanguage</localVariable>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+    search_result =
+        select
+            id,
+            1 as search_score
+        from
+            &quot;sap.ino.db.newnotification::v_notification_system_setting&quot; 
+        where
+            length(:searchToken) = 0 
+    union all
+      select
+            NOTI_SETTING.id + 10000 as id,
+            score() as search_score
+        from
+         &quot;sap.ino.db.newnotification::t_notification_system_setting&quot; AS NOTI_SETTING
+        left outer join &quot;_SYS_REPO&quot;.&quot;ACTIVE_CONTENT_TEXT_CONTENT&quot; AS CODE_TEXT
+        ON CODE_TEXT.TEXT_ID = CONCAT(NOTI_SETTING.ACTION_CODE,'_TEXT') AND  CODE_TEXT.LANG = :searchLanguage 
+        and CODE_TEXT.PACKAGE_ID = 'sap.ino.text' and CODE_TEXT.object_name = 'uitexts'
+        where length(:searchToken) &gt; 0 
+        AND (contains(ACTION_CODE, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or 
+            contains(CONTENT, CONCAT(CONCAT('%', lcase(:searchToken)), '%') , fuzzy(0.8), weight(1.0)))
+      union all
+      select
+            NOTI_SETTING.id,
+            score() as search_score
+        from
+         &quot;sap.ino.db.newnotification::t_notification_system_setting_local&quot; AS NOTI_SETTING
+        left outer join &quot;sap.ino.db.iam::t_identity&quot; as identity_change_by    
+        on identity_change_by.id = NOTI_SETTING.CHANGED_BY_ID 
+        left outer join &quot;_SYS_REPO&quot;.&quot;ACTIVE_CONTENT_TEXT_CONTENT&quot; AS CODE_TEXT
+        ON CODE_TEXT.TEXT_ID = CONCAT(NOTI_SETTING.ACTION_CODE,'_TEXT')  AND  CODE_TEXT.LANG = :searchLanguage
+        and CODE_TEXT.PACKAGE_ID = 'sap.ino.text' and CODE_TEXT.object_name = 'uitexts'
+        where length(:searchToken) &gt; 0 
+        AND (contains(ACTION_CODE,   CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or 
+            contains(CONTENT, CONCAT(CONCAT('%', lcase(:searchToken)), '%') , fuzzy(0.8), weight(1.0)) or 
+            contains(identity_change_by.NAME,CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)));
+        
+  var_out = select 
+            sr.search_score,
+            sr.id,
+            setting.CHANGED_AT,
+            setting.CHANGED_BY_ID,
+            setting.changed_by,
+            setting.action_code,
+            setting.ALLOW_INBOX_NOTIFICATION,
+            setting.ALLOW_EMAIL_NOTIFICATION,
+            setting.EMAIL_TEMPLATE_CODE,
+            setting.TEXT_MODULE_CODE,
+            setting.STANDARD,
+            setting.ACTION_TYPE_CODE
+         from :search_result as sr
+         inner join &quot;sap.ino.db.newnotification::v_notification_system_setting&quot;  as setting 
+         on sr.id = setting.id; 
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions defaultDescription="SEARCH_SCORE"/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="3">
+        <descriptions defaultDescription="CHANGED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="4">
+        <descriptions defaultDescription="CHANGED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_BY" order="5">
+        <descriptions defaultDescription="CHANGED_BY"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY"/>
+      </attribute>
+      <attribute id="ACTION_CODE" order="6">
+        <descriptions defaultDescription="ACTION_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="ACTION_CODE"/>
+      </attribute>
+      <attribute id="ALLOW_INBOX_NOTIFICATION" order="7">
+        <descriptions defaultDescription="ALLOW_INBOX_NOTIFICATION"/>
+        <keyMapping columnObjectName="Script_View" columnName="ALLOW_INBOX_NOTIFICATION"/>
+      </attribute>
+      <attribute id="ALLOW_EMAIL_NOTIFICATION" order="8">
+        <descriptions defaultDescription="ALLOW_EMAIL_NOTIFICATION"/>
+        <keyMapping columnObjectName="Script_View" columnName="ALLOW_EMAIL_NOTIFICATION"/>
+      </attribute>
+      <attribute id="EMAIL_TEMPLATE_CODE" order="9">
+        <descriptions defaultDescription="EMAIL_TEMPLATE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="EMAIL_TEMPLATE_CODE"/>
+      </attribute>
+      <attribute id="TEXT_MODULE_CODE" order="10">
+        <descriptions defaultDescription="TEXT_MODULE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="TEXT_MODULE_CODE"/>
+      </attribute>
+      <attribute id="STANDARD" order="11">
+        <descriptions defaultDescription="STANDARD"/>
+        <keyMapping columnObjectName="Script_View" columnName="STANDARD"/>
+      </attribute>
+      <attribute id="ACTION_TYPE_CODE" order="12">
+        <descriptions defaultDescription="ACTION_TYPE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="ACTION_TYPE_CODE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

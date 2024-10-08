@@ -1,0 +1,51 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:ino="sap.ino.controls"
+    xmlns:l="sap.ui.layout">
+    <Panel width="auto" class="sapInoHomeTitledPanel sapInoCampaignHomeIdeaList sapInoHomepageBorder">
+		<headerToolbar>
+			<Toolbar height="3rem" class="sapInoHomeTitledPanelHeader" active="true" press="onNavigateToIdeas" tooltip="{i18n>CAMPAIGN_HOME_PANEL_IDEAS_NAVIGATE}">
+				<Title id="panelTitle" />
+				<ToolbarSpacer />
+				<Button icon="sap-icon://navigation-right-arrow" tooltip="{i18n>CAMPAIGN_HOME_PANEL_IDEAS_NAVIGATE}" press="onNavigateToIdeas"/>
+			</Toolbar>
+		</headerToolbar>
+		<infoToolbar>
+		    <Toolbar class="sapInoHomeTitledPanelNav">
+				<ToolbarSpacer/>
+				<SegmentedButton id="sapInoCampHomeIdeasButtons" visible="{= ${device>/system/desktop}}" width="80%" selectedKey="follow" select="onIdeaListTypeSelect">
+					<items>
+						<SegmentedButtonItem text="{i18n>CAMPAIGN_HOME_PANEL_IDEAS_FOLLOW}" key="follow" />
+						<SegmentedButtonItem text="{i18n>CAMPAIGN_HOME_PANEL_IDEAS_COACHME}" key="coachme" />
+						<SegmentedButtonItem text="{i18n>CAMPAIGN_HOME_PANEL_IDEAS_UNASSIGNED}" key="unassigned"/>
+						<SegmentedButtonItem text="{i18n>CAMPAIGN_HOME_PANEL_IDEAS_EVALDONE}" key="evaldone" />
+					</items>
+				</SegmentedButton>
+				<Select id="sapInoCampHomeIdeasSelect" visible="{= !${device>/system/desktop}}" selectedKey="follow" change="onIdeaListTypeSelect">
+				    <items>
+				        <core:Item text="{i18n>CAMPAIGN_HOME_PANEL_IDEAS_FOLLOW}" key="follow" />
+						<core:Item text="{i18n>CAMPAIGN_HOME_PANEL_IDEAS_COACHME}" key="coachme" />
+						<core:Item text="{i18n>CAMPAIGN_HOME_PANEL_IDEAS_UNASSIGNED}" key="unassigned"/>
+						<core:Item text="{i18n>CAMPAIGN_HOME_PANEL_IDEAS_EVALDONE}" key="evaldone" />
+				    </items>
+				</Select>
+				<ToolbarSpacer/>
+		    </Toolbar>
+		</infoToolbar>
+		<content>
+		    <!-- note: must be growing list, as otherwise UI refreshing fails on model update - sapInoListHideGrowing CSS class hides "load" button -->
+		    <!--HBox class="sapInoHomepageLeftRightBorder"-->
+		    <List
+                id="ideasList"
+                width="100%"
+                growing="true"
+                growingThreshold="4"
+                growingScrollToLoad="false"
+                noDataText="{i18n>CAMPAIGN_HOME_PANEL_IDEAS_NO_DATA}"
+                class="sapInoCheckboxNotVisible sapInoListHideGrowing">
+            </List>
+            <!--/HBox-->
+        </content>
+    </Panel>
+</core:FragmentDefinition>

@@ -1,0 +1,57 @@
+schema = "SAP_INO";
+query  = "
+select distinct
+    eval_req.eval_req_id,
+    eval_req.id,
+    idea.campaign_id,
+    eval_req.idea_id,
+    eval_req.idea_phase_code,
+    phase.default_text as idea_phase_text,
+    eval_req.description,
+    eval_req.accept_date,
+    eval_req.complete_date,
+    eval_req.created_at,
+    eval_req.created_by_id,
+    eval_req.changed_at,
+    eval_req.idea_name,
+    eval_req.changed_by_id,
+    eval_req.created_by, 
+    eval_req.changed_by,
+    eval_req.status_code,
+    status.default_text as status_text,
+    accepted_item.accepted_on_time,
+    completed_item.completed_on_time,
+    eval_req.owner_id,
+    owner.name as owner_name,
+    eval_req_group_orders.group_order as group_order
+  from \"sap.ino.db.evaluation::v_evaluation_request_item_all\" as eval_req
+  inner join \"sap.ino.db.idea::t_idea\" as idea
+    on  idea.id = eval_req.idea_id 
+  inner join \"sap.ino.db.campaign::t_phase\"                  as phase
+                on eval_req.idea_phase_code = phase.code
+   inner join \"sap.ino.db.status::t_status\"                   as status
+                on eval_req.status_code = status.code
+  left outer join \"sap.ino.db.iam::t_identity\" as owner 
+             on owner.id = eval_req.owner_id
+  left outer join \"sap.ino.db.evaluation::v_evaluation_request_item_accepted\" as accepted_item
+             on eval_req.eval_req_id = accepted_item.eval_req_id and 
+                eval_req.id          = accepted_item.id
+  left outer join \"sap.ino.db.evaluation::v_evaluation_request_item_completed\" as completed_item
+             on eval_req.eval_req_id = completed_item.eval_req_id and
+                eval_req.id          = completed_item.id
+
+  left outer join (
+                select idea_id, idea_phase_code, ROW_NUMBER() over (partition by idea_id order by last_date desc) as group_order from (
+                select max(changed_at) last_date, idea_phase_code, idea_id from \"sap.ino.db.evaluation::v_evaluation_request_item_all\" group by idea_phase_code, idea_id
+                )  ) as eval_req_group_orders
+                    on eval_req.idea_id = eval_req_group_orders.idea_id and eval_req.idea_phase_code = eval_req_group_orders.idea_phase_code
+with read only";
+
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request_item_all",
+                   "sap.ino.db.evaluation::v_evaluation_request_item_accepted",
+                   "sap.ino.db.evaluation::v_evaluation_request_item_completed"];
+                    
+depends_on_table = ["sap.ino.db.idea::t_idea",
+                    "sap.ino.db.campaign::t_phase",
+                    "sap.ino.db.status::t_status",
+                    "sap.ino.db.iam::t_identity"];

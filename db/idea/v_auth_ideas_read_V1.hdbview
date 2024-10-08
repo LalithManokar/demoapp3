@@ -1,0 +1,59 @@
+schema = "SAP_INO";
+query = "
+    -- nested distinct is used due to performance reasons
+    -- to avoid distinct to be moved to more expensive joins
+    -- where the read view is being used
+        select distinct object_role.object_id as idea_id
+            from \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role
+            inner join \"sap.ino.db.iam::t_role_privilege\" as role
+                on  role.role_code = object_role.role_code
+                and role.privilege = 'IDEA_READ'
+            where object_role.object_type_code = 'IDEA'
+        union
+        select distinct idea.id as idea_id
+            from \"sap.ino.db.idea::t_idea\" as idea
+            inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role
+                on  idea.campaign_id = object_role.object_id
+                and object_role.object_type_code = 'CAMPAIGN'
+            inner join \"sap.ino.db.iam::t_role_privilege\" as role
+                on role.role_code = object_role.role_code
+                    and role.privilege = 'CAMP_IDEA_PUBLIC_READ'
+            inner join \"sap.ino.db.campaign::t_campaign_phase\" as phase
+                on  idea.campaign_id = phase.campaign_id
+                and idea.phase_code = phase.phase_code
+                and phase.show_idea_in_community = 1
+        union
+        select distinct idea.id as idea_id
+            from \"sap.ino.db.idea::t_idea\" as idea
+            left outer join \"sap.ino.db.subresponsibility::t_responsibility_value_stage\" as resp_value
+                on idea.resp_value_code = resp_value.code
+            inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role
+                on  (idea.campaign_id = object_role.object_id
+                and object_role.object_type_code = 'CAMPAIGN')
+                    or (resp_value.id = object_role.object_id and object_role.object_type_code = 'RESPONSIBILITY')
+            inner join \"sap.ino.db.iam::t_role_privilege\" as role
+                on  role.role_code = object_role.role_code
+                and role.privilege = 'CAMP_IDEA_PROTECTED_READ'
+            where idea.phase_code is not null
+        union
+        select distinct idea.id as idea_id
+            from \"sap.ino.db.idea::t_idea\" as idea
+            left outer join \"sap.ino.db.evaluation::v_evaluation_request_item\" as eval_req
+                on idea.id = eval_req.idea_id 
+                    and eval_req.status_code not in 
+                    ('sap.ino.config.EVAL_REQ_REJECTED',
+                    'sap.ino.config.EVAL_REQ_EXPIRED') 
+            inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role
+                on  eval_req.id = object_role.object_id
+                and object_role.object_type_code = 'EVAL_REQUEST_ITEM'
+            inner join \"sap.ino.db.iam::t_role_privilege\" as role
+                on role.role_code = object_role.role_code 
+                    and role.privilege = 'IDEA_EVAL_REQ_ITEM_READ' 
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.idea::t_idea", "sap.ino.db.iam::t_role_privilege", 
+                    "sap.ino.db.campaign::t_campaign_phase",
+                    "sap.ino.db.subresponsibility::t_responsibility_value_stage"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive",
+                   "sap.ino.db.evaluation::v_evaluation_request_item"];

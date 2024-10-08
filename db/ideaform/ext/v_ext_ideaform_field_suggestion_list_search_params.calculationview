@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="v_ext_ideaform_field_suggestion_list_search_params" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="v_ext_ideaform_fieldvalue_suggestion_list_search_params"/>
+  <metadata changedAt="2018-12-14 14:43:18.396"/>
+  <localVariables>
+    <variable id="CampaignID" parameter="true">
+      <descriptions defaultDescription="CampaignID"/>
+      <variableProperties datatype="INTEGER" defaultValue="0" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="FormID" parameter="true">
+      <descriptions defaultDescription="FormID"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="512" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="filterBackoffice" parameter="true">
+      <descriptions/>
+      <variableProperties datatype="TINYINT" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="VARCHAR" id="CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="DATATYPE_CODE" length="500"/>
+        <viewAttribute datatype="NVARCHAR" id="DEFAULT_TEXT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="VALUE_OPTION_LIST_CODE" length="500"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#CampaignID</localVariable>
+      <localVariable>#FormID</localVariable>
+      <localVariable>#filterBackoffice</localVariable>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+    IF(:CampaignID &gt; 0 AND :filterBackoffice = 1) THEN
+        var_out = SELECT fd.CODE, 
+        	fd.DATATYPE_CODE, 
+        	fd.DEFAULT_TEXT,
+        	fd.VALUE_OPTION_LIST_CODE
+        FROM &quot;sap.ino.db.ideaform::t_field_stage&quot; AS fd
+        	INNER JOIN &quot;sap.ino.db.campaign::t_campaign&quot; AS campaign
+        	ON fd.FORM_CODE = campaign.FORM_CODE
+        WHERE (fd.IS_DISPLAY_ONLY IS NULL OR fd.IS_DISPLAY_ONLY = 0) 
+            AND campaign.ID = :CampaignID
+        
+        UNION ALL
+        
+        SELECT fld.CODE, 
+            fld.DATATYPE_CODE, 
+            fld.DEFAULT_TEXT,
+        	fld.VALUE_OPTION_LIST_CODE
+        FROM &quot;sap.ino.db.ideaform::t_field_stage&quot; AS fld
+        INNER JOIN &quot;sap.ino.db.campaign::t_campaign&quot; AS camp
+        ON fld.FORM_CODE = camp.ADMIN_FORM_CODE
+        WHERE (fld.IS_DISPLAY_ONLY IS NULL OR fld.IS_DISPLAY_ONLY = 0) 
+            AND camp.ID = :CampaignID;
+
+    END IF;
+    
+    IF(:CampaignID &gt; 0 AND :filterBackoffice != 1) THEN
+        var_out = SELECT fd.CODE, 
+        	fd.DATATYPE_CODE, 
+        	fd.DEFAULT_TEXT,
+        	fd.VALUE_OPTION_LIST_CODE
+        FROM &quot;sap.ino.db.ideaform::t_field_stage&quot; AS fd
+        	INNER JOIN &quot;sap.ino.db.campaign::t_campaign&quot; AS campaign
+        	ON fd.FORM_CODE = campaign.FORM_CODE
+        WHERE (fd.IS_DISPLAY_ONLY IS NULL OR fd.IS_DISPLAY_ONLY = 0) 
+            AND campaign.ID = :CampaignID;
+    END IF;
+    
+    IF(LENGTH(:FormID) &gt; 0) THEN
+        var_out = SELECT CODE, 
+        	DATATYPE_CODE, 
+        	DEFAULT_TEXT,
+        	VALUE_OPTION_LIST_CODE
+        FROM &quot;sap.ino.db.ideaform::t_field_stage&quot;
+        WHERE (IS_DISPLAY_ONLY IS NULL OR IS_DISPLAY_ONLY = 0) 
+            AND FORM_CODE = :FormID;
+    END IF;
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="CODE" order="1">
+        <descriptions defaultDescription="CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="CODE"/>
+      </attribute>
+      <attribute id="DATATYPE_CODE" order="2">
+        <descriptions defaultDescription="DATATYPE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="DATATYPE_CODE"/>
+      </attribute>
+      <attribute id="DEFAULT_TEXT" order="3">
+        <descriptions defaultDescription="DEFAULT_TEXT"/>
+        <keyMapping columnObjectName="Script_View" columnName="DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="VALUE_OPTION_LIST_CODE" order="4">
+        <descriptions defaultDescription="VALUE_OPTION_LIST_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="VALUE_OPTION_LIST_CODE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

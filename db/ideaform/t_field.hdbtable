@@ -1,0 +1,23 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Form Field";
+table.columns = [
+    {name = "CODE"; 				  sqlType = VARCHAR; length = 500;  nullable = false; comment = "Identifier of SAP criterion";},
+	{name = "FORM_CODE"; 			  sqlType = VARCHAR; length = 500;  nullable = false; comment = "Form Code to relate the Idea Form. Foreign key to t_form.PACKAGE_ID";},
+	{name = "SEQUENCE_NO"; 			  sqlType = INTEGER;                nullable = true;  comment = "Sequence order for display";},
+	{name = "DEFAULT_TEXT"; 	      sqlType = NVARCHAR;length = 500;  nullable = false; comment = "Name of the form fledld";},
+	{name = "DEFAULT_LONG_TEXT"; 	  sqlType = NVARCHAR;length = 500;  nullable = true;  comment = "The Description of Form Field";},
+	{name = "MANDATORY"; 			  sqlType = TINYINT;                nullable = false; defaultValue = "0"; comment = "The Form Field is mandatory";},
+	{name = "DATATYPE_CODE"; 		  sqlType = VARCHAR; length = 500;  nullable = false;  comment = "Datatype (INTEGER, NUMERIC, TEXT, BOOLEAN). If null criterion is considered as \"heading\"";},
+	{name = "VALUE_OPTION_LIST_CODE"; sqlType = VARCHAR; length = 500;  nullable = true;  comment = "The drop down list code of Form Field. Foreign key to t_value_option_list.CODE";},
+	{name = "NUM_VALUE_MIN";          sqlType = DOUBLE;                 nullable = true;  comment = "Minimal value for criterion of data type NUMERIC";},
+    {name = "NUM_VALUE_MAX";          sqlType = DOUBLE;                 nullable = true;  comment = "Maximal value for criterion of data type NUMERIC";},
+    {name = "NUM_VALUE_STEP_SIZE";    sqlType = DOUBLE;                 nullable = true;  comment = "Step Size for the Numeric Values";},
+    {name = "UOM_CODE";               sqlType = VARCHAR; length = 500;  nullable = true;  comment = "Unit of measure code";},
+    {name = "IS_HIDDEN";               sqlType = TINYINT;                nullable = true;  comment = "Marked this field whether it is hiden in frontend for idea form";},
+    {name = "IS_PUBLISH";             sqlType = TINYINT;                nullable = true;  comment = "Marked this field whether it is pubilished in frontend for admin form";},
+    {name = "IS_DISPLAY_ONLY";        sqlType = TINYINT;                nullable = true;  comment = "Marked this field whether it is used for display only";},
+    {name = "DISPLAY_TEXT";           sqlType = NVARCHAR; length = 3000; nullable = true;  comment = "Length of display text";},
+    {name = "IS_ACTIVE";            sqlType = TINYINT;                nullable = true;  comment = "Indicates whether form field is active";}    
+];
+table.primaryKey.pkcolumns = ["CODE"];

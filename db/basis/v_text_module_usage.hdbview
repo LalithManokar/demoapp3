@@ -1,0 +1,86 @@
+schema = "SAP_INO";
+query = "
+    select
+        text_module_code,
+        object_type,
+        object_id,
+        object_name,
+        count(object_id) as object_count
+    from (
+        select
+            campaign.mail_success_code as text_module_code,
+            'CAMPAIGN' as object_type,
+            campaign.id as object_id,
+            campaign_locale.name as object_name
+        from \"sap.ino.db.campaign::t_campaign\" as campaign
+            left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign_locale on campaign.id = campaign_locale.campaign_id
+        union all
+        select
+            campaign.mail_rejection_code as text_module_code,
+            'CAMPAIGN' as object_type,
+            campaign.id as object_id,
+            campaign_locale.name as object_name
+        from \"sap.ino.db.campaign::t_campaign\" as campaign
+            left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign_locale on campaign.id = campaign_locale.campaign_id
+        union all
+        select
+            campaign.mail_phase_change_code as text_module_code,
+            'CAMPAIGN' as object_type,
+            campaign.id as object_id,
+            campaign_locale.name as object_name
+        from \"sap.ino.db.campaign::t_campaign\" as campaign
+            left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign_locale on campaign.id = campaign_locale.campaign_id
+        union all
+        select 
+            status.text_module_code as text_module_code,
+            'STATUS_MODEL' as object_type,
+            0 as object_id,
+            model.default_text as object_name
+        from \"sap.ino.db.status::t_status_model_transition\" as status
+        inner join \"sap.ino.db.status::t_status_model\" as model
+            on model.code = status.status_model_code
+        union all
+        select
+            setting.value as text_module_code,
+            'TERMSANDCONDITIONS' as object_type,
+            0 as object_id,
+            null as object_name
+        from \"sap.ino.db.basis::t_local_system_setting\" as setting
+        where code = 'sap.ino.config.TERMS_AND_CONDITIONS_TEXT'
+        UNION ALL
+        SELECT
+            TEXT_MODULE_CODE as TEXT_MODULE_CODE,
+            'NOTIFICATION' as object_type,
+            0 as object_id,
+            ACTION_CODE as object_name
+        FROM
+            (SELECT ACTION_CODE, 
+            	TEXT_MODULE_CODE
+            FROM \"sap.ino.db.newnotification::v_notification_system_setting\"
+            WHERE TEXT_MODULE_CODE IS NOT NULL
+            
+            UNION ALL
+            
+            SELECT ACTION_CODE, 
+            TEXT_MODULE_CODE
+            FROM \"sap.ino.db.newnotification::v_notification_campaign_setting\"
+            WHERE TEXT_MODULE_CODE IS NOT NULL
+            
+            UNION ALL
+
+            SELECT 'CHANGE_STATUS' AS ACTION_CODE, 
+            TEXT_MODULE_CODE
+            FROM \"sap.ino.db.newnotification::t_notification_campaign_status_setting\"
+            WHERE TEXT_MODULE_CODE IS NOT NULL)
+    ) group by 
+        text_module_code,
+        object_type,
+        object_id, 
+        object_name
+    with read only ";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.status::t_status_model_transition",
+                    "sap.ino.db.status::t_status_model",
+                    "sap.ino.db.basis::t_local_system_setting"];
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale"];

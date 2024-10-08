@@ -1,0 +1,29 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Dialog icon="sap-icon://message-warning" title="{i18n>IDEA_CONFIRM_TIT_CHANGE_AUTHOR}">
+		<VBox class="sapUiSmallMarginTop sapUiSmallMarginBegin sapUiSmallMarginEnd">
+			<Text 
+			    text="{parts: ['confirm>/oldAuthor', 'confirm>/newAuthor'], formatter: '.formatter.formatterMoveRewardMessage'}" 
+			    visible="{= ${confirm>/REWARDCOUNT} > 0 &amp;&amp; ${confirm>/SELFEVALUATIONCOUNT} === 0}" />
+			<Text 
+			    text="{parts: ['confirm>/oldAuthor', 'confirm>/newAuthor'], formatter: '.formatter.formatterMoveSelfEvluMessage'}" 
+			    visible="{= ${confirm>/REWARDCOUNT} === 0 &amp;&amp; ${confirm>/SELFEVALUATIONCOUNT} > 0}" />
+			<CheckBox 
+			    useEntireWidth="true"
+			    text="{parts: ['confirm>/oldAuthor', 'confirm>/newAuthor'], formatter: '.formatter.formatterMoveRewardMessage'}" 
+			    visible="{= ${confirm>/REWARDCOUNT} > 0 &amp;&amp; ${confirm>/SELFEVALUATIONCOUNT} > 0}"
+			    selected="{confirm>/changeReward}" />
+			<CheckBox 
+			    useEntireWidth="true"
+			    text="{parts: ['confirm>/oldAuthor', 'confirm>/newAuthor'], formatter: '.formatter.formatterMoveSelfEvluMessage'}" 
+			    visible="{= ${confirm>/REWARDCOUNT} > 0 &amp;&amp; ${confirm>/SELFEVALUATIONCOUNT} > 0}"
+			    selected="{confirm>/changeEval}" />
+		</VBox>
+		<buttons>
+			<Button text="{i18n>BTN_OK}" type="Accept" press="onChangeAuthorConfirm" visible="{= ${confirm>/REWARDCOUNT} > 0 &amp;&amp; ${confirm>/SELFEVALUATIONCOUNT} > 0}" />
+			<Button text="{i18n>IDEA_CONFIRM_BUT_YES}" type="Accept" press="onChangeRewardAndEvluYes" visible="{= ${confirm>/REWARDCOUNT} === 0 || ${confirm>/SELFEVALUATIONCOUNT} === 0}" />
+			<Button text="{i18n>IDEA_CONFIRM_BUT_NO}" press="onChangeRewardAndEvaluNO" visible="{= ${confirm>/REWARDCOUNT} === 0 || ${confirm>/SELFEVALUATIONCOUNT} === 0}" />
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

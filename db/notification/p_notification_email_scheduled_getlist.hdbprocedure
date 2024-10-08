@@ -1,0 +1,47 @@
+PROCEDURE "SAP_INO"."sap.ino.db.notification::p_notification_email_scheduled_getlist" (
+    IN user_id  integer,
+    IN changed_by_id  integer,
+    OUT ot_notifications "SAP_INO"."sap.ino.db.notification::tt_notification_email"
+)
+LANGUAGE SQLSCRIPT
+SQL SECURITY DEFINER
+DEFAULT SCHEMA SAP_INO AS
+BEGIN
+    ot_notifications = SELECT TOP 3000
+        status.id as id,
+        status.notification_id,
+        status.user_id,
+        status.role_code,
+        status.status_code,
+        notification.campaign_id,
+        notification.event_at,
+        notification.notification_code,
+        notification.object_type_code,
+        notification.object_id,
+        notification.object_text,
+        notification.sub_text,
+        notification.response,
+        notification.actor_id,
+        notification.owner_id,
+        notification.involved_id,
+        identity.name,
+        identity.email,
+        identity.is_external,
+        locale.locale
+    FROM
+        "sap.ino.db.notification::t_notification_status" AS status
+    INNER JOIN
+        "sap.ino.db.notification::t_notification" AS notification
+    ON 
+        notification.id = status.notification_id
+    INNER JOIN
+        "sap.ino.db.iam::t_identity" AS identity
+    ON 
+        status.user_id = identity.id
+    left outer join
+        "sap.ino.db.basis::v_user_locale" AS locale
+    ON 
+        locale.user_id = identity.id
+    WHERE 
+        status.user_id = :user_id AND status.mail_status_code = 'PROCESSING' AND status.CHANGED_BY_ID = :changed_by_id;
+END;

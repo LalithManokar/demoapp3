@@ -1,0 +1,11 @@
+schema = "SAP_INO";
+query = "select distinct campaign.id as campaign_id
+            from \"sap.ino.db.campaign::t_campaign\" as campaign,
+                 \"sap.ino.db.iam::v_auth_application_user\" as suser,
+                 sys.effective_privileges as privs 
+            where
+                privs.user_name = suser.user_name and 
+                privs.privilege = 'sap.ino.xs.rest.admin.application::campaign'";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user"];

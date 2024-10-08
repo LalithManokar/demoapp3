@@ -1,0 +1,5 @@
+schema= "SAP_INO";
+minvalue= 1;
+cycles= false;
+reset_by= "select ifnull(max(id), 0) + 1 from \"sap.ino.db.reward::t_contribution_share\"";
+depends_on_table = "sap.ino.db.reward::t_contribution_share";

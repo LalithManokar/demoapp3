@@ -1,0 +1,108 @@
+
+/* ============================================= */
+/* CSS for control sap.ino.wall.WallItemLine  */
+/* ============================================= */
+
+.sapInoWallWILineButton > .sapMBtnDefault {
+    background-color: @sapUiButtonStandardBG;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+.sapInoWallWILineButton.sapInoWallWILineButtonThin > .sapMBtnDefault,
+.sapInoWallWILineButtonThin.sapMBtn:hover > .sapMBtnHoverable {
+	background-image: url(img/WallItemLine/line1px.png);    
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonThin > .sapMBtnDefault.sapMToggleBtnPressed {
+    background-image: url(img/WallItemLine/line1px_white.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonMedium > .sapMBtnDefault,
+.sapInoWallWILineButtonMedium.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/line3px.png);    
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonMedium > .sapMBtnDefault.sapMToggleBtnPressed {
+    background-image: url(img/WallItemLine/line3px_white.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonThick > .sapMBtnDefault,
+.sapInoWallWILineButtonThick.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/line5px.png);    
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonThick > .sapMBtnDefault.sapMToggleBtnPressed {
+    background-image: url(img/WallItemLine/line5px_white.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonHORIZONTAL > .sapMBtnDefault,
+.sapInoWallWILineButtonHORIZONTAL.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/lineHorizontal.png);    
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonHORIZONTAL > .sapMBtnDefault.sapMToggleBtnPressed {
+    background-image: url(img/WallItemLine/lineHorizontal_white.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonVERTICAL > .sapMBtnDefault,
+.sapInoWallWILineButtonVERTICAL.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/lineVertical.png);    
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonVERTICAL > .sapMBtnDefault.sapMToggleBtnPressed {
+    background-image: url(img/WallItemLine/lineVertical_white.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonSOLID > .sapMBtnDefault,
+.sapInoWallWILineButtonSOLID.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/lineSolid.png);    
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonSOLID > .sapMBtnDefault.sapMToggleBtnPressed {
+    background-image: url(img/WallItemLine/lineSolid_white.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonDASHED > .sapMBtnDefault,
+.sapInoWallWILineButtonDASHED.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/lineDashed.png);    
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonDASHED > .sapMBtnDefault.sapMToggleBtnPressed {
+    background-image: url(img/WallItemLine/lineDashed_white.png);    
+}
+
+.sapInoWallWILineButton.sapInoWallWILineButtonDOTTED > .sapMBtnDefault,
+.sapInoWallWILineButtonDOTTED.sapMBtn:hover > .sapMBtnHoverable {
+    background-image: url(img/WallItemLine/lineDotted.png);    
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonDOTTED > .sapMBtnDefault.sapMToggleBtnPressed {
+    background-image: url(img/WallItemLine/lineDotted_white.png);    
+}
+
+
+
+.sapInoWallWILineButton.sapMBtn:hover > .sapMBtnHoverable {
+    background-color: darken(@sapUiButtonStandardBG, 5%);
+}
+
+.sapInoWallWILineButton > .sapMToggleBtnPressed.sapMBtnDefault {
+    background-color: @sapUiHighlight;
+    border-color: darken(@sapUiHighlight, 5%);    	
+}
+
+.sapInoWallWILineButton.sapMBtn:hover > .sapMBtnHoverable.sapMToggleBtnPressed {
+    background-color: darken(@sapUiHighlight, 5%);    
+}
+
+.sapInoWallWILineVertical .sapInoWallWILineEditButtons {
+    width: 46px;
+}
+
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWILine.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWILine.back {
+	background: @sapUiHighlight;          
+}
+
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWILine.back .sapInoWallWILineEditButtons {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWILineColorSelectorButton > .sapMBtnInner {
+    text-shadow: none;
+}
+

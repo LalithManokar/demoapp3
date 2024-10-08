@@ -1,0 +1,91 @@
+
+/* ================================================= */
+/* CSS for control sap.ino.wall/WallItemGroup.control */
+/* ================================================= */
+
+.sapInoWallWallItemGroup {
+	border: 2px solid rgba(250,250,250, 1);
+	box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+	background-color: rgba(0, 0, 0, 0.3);
+	clear: both;
+}
+
+.sapInoWallWallItemGroup.back {
+	padding: 5px;
+}
+
+.sapInoWallWIGTitle {
+	position: absolute;
+	text-align: center;
+	color: white;
+	width: 100%;
+	left: 0px;
+	top: -18px;
+	z-index: 10000;	
+}
+
+.sapInoWallWIGTitle .sapInoWallWITitle {
+	background: #8d8e8d; /* Old browsers */
+	background: -moz-linear-gradient(top,  #8d8e8d 0%, #4e4e4e 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#8d8e8d), color-stop(100%,#4e4e4e)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #8d8e8d 0%,#4e4e4e 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #8d8e8d 0%,#4e4e4e 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #8d8e8d 0%,#4e4e4e 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #8d8e8d 0%,#4e4e4e 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8d8e8d', endColorstr='#4e4e4e',GradientType=0 ); /* IE6-9 */
+	border: 2px solid #ffffff;
+	display: inline-block;
+	max-width: 85%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	font-size: 1.2rem;
+	white-space: nowrap;
+	padding: 5px;
+	font-weight: bold;
+}
+
+.sapInoWallWIGroupColorSelectorButton {
+	height: 50px;
+    width: 50px;
+    padding: 0px;
+}
+
+.sapInoWallWIGroupColorSelectorButton > .sapMBtnInner {
+	background: transparent;
+	width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+}
+
+.sapInoWallWIGroupColorSelectorButton > .sapMBtnInner > span {
+	width: 50px;
+    height: 50px;
+    line-height: 50px;	
+}
+
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiText;
+}
+
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiTextInverted; 
+}
+
+.sapUiSizeCompact .sapInoWallWIGroupColorSelectorButton .sapMBtnInner {
+	padding: 0;
+}
+
+.sapUiSizeCompact .sapInoWallWIGroupColorSelectorButton.sapMBtn {
+	height: 50px;
+    width: 50px;
+    padding: 0px;
+}
+
+.sapUiSizeCompact .sapInoWallWIGroupColorSelectorButton .sapMBtnIcon {
+	margin: 0;
+}

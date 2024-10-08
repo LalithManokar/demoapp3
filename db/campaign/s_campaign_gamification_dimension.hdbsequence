@@ -1,0 +1,6 @@
+schema   = "SAP_INO";
+minvalue = 1;
+cycles   = false;
+reset_by = "select ifnull(max(id), 0) + 1 from \"sap.ino.db.campaign::t_campaign_gamification_dimension\"";
+
+depends_on_table = "sap.ino.db.campaign::t_campaign_gamification_dimension";

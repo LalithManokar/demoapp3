@@ -1,0 +1,749 @@
+schema = "SAP_INO";
+query = "
+select * from (
+    select
+	    'ACTION_VALID_FROM_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_VALID_FROM' as field1_text,
+		TO_NVARCHAR(history.valid_from) as field1_value,
+		'DATE' as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        where 
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.valid_from is not null
+        
+union all
+
+    select
+        'ACTION_VALID_TO_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_VALID_TO' as field1_text,
+		TO_NVARCHAR(history.valid_to) as field1_value,
+		'DATE' as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        where
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.valid_to is not null
+            
+union all
+ 	select
+        'ACTION_SUBMIT_FROM_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_SUBMIT_FROM' as field1_text,
+		TO_NVARCHAR(history.submit_from) as field1_value,
+		'DATE' as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        where
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.submit_from is not null
+            
+union all
+ 	
+ 	select
+        'ACTION_SUBMIT_TO_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_SUBMIT_TO' as field1_text,
+		TO_NVARCHAR(history.submit_to) as field1_value,
+		'DATE' as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        where
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.submit_to is not null
+        
+union all
+ 	
+ 	select
+        'ACTION_BLACK_BOX_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_BLACK_BOX' as field1_text,
+		TO_NVARCHAR(history.is_black_box) as field1_value,
+		'BOOLEAN' as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        where
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.is_black_box is not null
+
+union all
+ 	
+ 	select
+        'ACTION_VOTE_TYPE_CODE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_VOTE_TYPE_CODE' as field1_text,
+		history.vote_type_code as field1_value,
+		'sap.ino.xs.object.campaign.VoteType.Root' as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        where
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.vote_type_code is not null       
+            
+union all
+ 	
+ 	select
+        'ACTION_COLOR_CODE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_COLOR_CODE' as field1_text,
+		null as field1_value,
+		null as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        where
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.color_code is not null
+               
+union all
+ 	
+ 	select
+        'ACTION_REGISTER_FROM_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'REGISTRATION' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_REGISTER_FROM' as field1_text,
+		TO_NVARCHAR(history.register_from) as field1_value,
+		'DATE' as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        where
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.register_from is not null  
+               
+union all
+ 	
+ 	select
+        'ACTION_REGISTER_TO_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'REGISTRATION' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_REGISTER_TO' as field1_text,
+		TO_NVARCHAR(history.register_to) as field1_value,
+		'DATE' as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        where
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.register_to is not null 
+               
+union all
+ 	
+ 	select
+        'ACTION_IS_REGISTER_AUTO_APPROVE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_IS_REGISTER_AUTO_APPROVE' as field1_text,
+		TO_NVARCHAR(history.is_register_auto_approve) as field1_value,
+		'BOOLEAN' as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        where
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.is_register_auto_approve is not null
+               
+union all
+ 	
+ 	select
+        'ACTION_FORM_CODE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_FORM_CODE' as field1_text,
+		history.form_code as field1_value,
+		'sap.ino.xs.object.ideaform.IdeaForm.Root' as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        where
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.form_code is not null
+               
+union all
+ 	
+ 	select
+        'ACTION_RESP_CODE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_RESP_CODE' as field1_text,
+		history.resp_code as field1_value,
+		'sap.ino.xs.object.subresponsibility.ResponsibilityStage.Root' as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        where
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.resp_code is not null  
+               
+union all
+ 	
+ 	select
+        'ACTION_REWARD_UNIT_CODE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_REWARD_UNIT_CODE' as field1_text,
+		history.reward_unit_code as field1_value,
+		'sap.ino.xs.object.basis.Unit.Root' as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        where
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.reward_unit_code is not null                
+               
+union all
+ 	
+ 	select
+        'ACTION_TITLE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_TITLE' as field1_text,
+		null as field1_value,
+		null as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_t_h\" as campaign_text
+            on history.id = campaign_text.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_text.history_at
+    where
+        campaign_text.name is not null    
+        
+union all
+ 	
+ 	select
+        'ACTION_SHORT_TITLE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_SHORT_TITLE' as field1_text,
+		null as field1_value,
+		null as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_t_h\" as campaign_text
+            on history.id = campaign_text.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_text.history_at
+    where
+        campaign_text.short_name is not null   
+        
+union all
+ 	
+ 	select
+        'ACTION_DESCRIPTION_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_DESCRIPTION' as field1_text,
+		null as field1_value,
+		null as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_t_h\" as campaign_text
+            on history.id = campaign_text.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_text.history_at
+    where
+        campaign_text.description is not null  
+        
+union all
+ 	
+ 	select
+        'ACTION_IDEA_DESCRIPTION_TEMPLATE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_IDEA_DESCRIPTION_TEMPLATE' as field1_text,
+		null as field1_value,
+		null as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_t_h\" as campaign_text
+            on history.id = campaign_text.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_text.history_at
+    where
+        campaign_text.idea_description_template is not null   
+        
+union all
+ 	
+ 	select distinct
+        'ACTION_LANDING_PAGE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_LANDING_PAGE' as field1_text,
+		null as field1_value,
+		null as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		null as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::t_campaign_page_t_h\" as campaign_page
+            on history.id = campaign_page.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_page.history_at
+            
+union all
+ 	
+ 	select 
+        'ACTION_PHASE_' || history.history_db_event as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_PHASE' as field1_text,
+		campaign_phase.phase_code as field1_value,
+		'sap.ino.xs.object.campaign.Phase.Root' as field1_value_option,
+		null as field2_name,
+		null as field2_text,
+		TO_NVARCHAR(campaign_phase.sequence_no) as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        inner join \"sap.ino.db.campaign::v_campaign_phase_h\" as campaign_phase
+            on history.id = campaign_phase.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_phase.history_at
+               and 
+               campaign_phase.history_db_event <> 'UPDATED'  
+            
+union all
+ 	
+ 	select 
+        'ACTION_PHASE_EVALUATION_METHOD_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_PHASE' as field1_text,
+		campaign_phase.phase_code as field1_value,
+		'sap.ino.xs.object.campaign.Phase.Root' as field1_value_option,
+		null as field2_name,
+		'EVALUATION_METHOD' as field2_text,
+		TO_NVARCHAR(campaign_phase.evaluation_model_code) as field2_value,
+		'sap.ino.xs.object.evaluation.Model.Root' as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_phase_h\" as campaign_phase
+            on history.id = campaign_phase.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_phase.history_at
+               and 
+               history.history_db_event = 'UPDATED'     
+        where campaign_phase.evaluation_model_code <> campaign_phase.evaluation_model_code_old
+        or ( campaign_phase.evaluation_model_code_old is null and campaign_phase.evaluation_model_code is not null)
+        or ( campaign_phase.evaluation_model_code_old is not null and campaign_phase.evaluation_model_code is null)
+        
+union all
+ 	
+ 	select 
+        'ACTION_PHASE_AUTO_EVAL_PUB_CODE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_PHASE' as field1_text,
+		campaign_phase.phase_code as field1_value,
+		'sap.ino.xs.object.campaign.Phase.Root' as field1_value_option,
+		null as field2_name,
+		'AUTO_EVAL_PUB_CODE' as field2_text,
+		TO_NVARCHAR(campaign_phase.auto_eval_pub_code) as field2_value,
+		'sap.ino.xs.object.evaluation.AutoPublication.Root' as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_phase_h\" as campaign_phase
+            on history.id = campaign_phase.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_phase.history_at
+               and 
+               history.history_db_event = 'UPDATED'     
+        where campaign_phase.auto_eval_pub_code <> campaign_phase.auto_eval_pub_code_old
+        or ( campaign_phase.auto_eval_pub_code_old is null and campaign_phase.auto_eval_pub_code is not null)
+        or ( campaign_phase.auto_eval_pub_code_old is not null and campaign_phase.auto_eval_pub_code is null)
+        
+union all
+ 	
+ 	select 
+        'ACTION_PHASE_VOTING_ACTIVE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_PHASE' as field1_text,
+		campaign_phase.phase_code as field1_value,
+		'sap.ino.xs.object.campaign.Phase.Root' as field1_value_option,
+		null as field2_name,
+		'VOTING_ACTIVE' as field2_text,
+		TO_NVARCHAR(campaign_phase.voting_active) as field2_value,
+		'BOOLEAN' as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_phase_h\" as campaign_phase
+            on history.id = campaign_phase.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_phase.history_at
+               and 
+               history.history_db_event = 'UPDATED'     
+        where campaign_phase.voting_active <> campaign_phase.voting_active_old    
+        
+union all
+ 	
+ 	select 
+        'ACTION_PHASE_SHOW_IDEA_IN_COMMUNITY_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_PHASE' as field1_text,
+		campaign_phase.phase_code as field1_value,
+		'sap.ino.xs.object.campaign.Phase.Root' as field1_value_option,
+		null as field2_name,
+		'SHOW_IDEA_IN_COMMUNITY' as field2_text,
+		TO_NVARCHAR(campaign_phase.show_idea_in_community) as field2_value,
+		'BOOLEAN' as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_phase_h\" as campaign_phase
+            on history.id = campaign_phase.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_phase.history_at
+               and 
+               history.history_db_event = 'UPDATED'     
+        where campaign_phase.show_idea_in_community <> campaign_phase.show_idea_in_community_old   
+        
+union all
+ 	
+ 	select 
+        'ACTION_PHASE_IDEA_CONTENT_EDITABLE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_PHASE' as field1_text,
+		campaign_phase.phase_code as field1_value,
+		'sap.ino.xs.object.campaign.Phase.Root' as field1_value_option,
+		null as field2_name,
+		'IDEA_CONTENT_EDITABLE' as field2_text,
+		TO_NVARCHAR(campaign_phase.idea_content_editable) as field2_value,
+		'BOOLEAN' as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_phase_h\" as campaign_phase
+            on history.id = campaign_phase.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_phase.history_at
+               and 
+               history.history_db_event = 'UPDATED'     
+        where campaign_phase.idea_content_editable <> campaign_phase.idea_content_editable_old  
+        
+union all
+ 	
+ 	select 
+        'ACTION_PHASE_SELF_EVALUATION_ACTIVE_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_PHASE' as field1_text,
+		campaign_phase.phase_code as field1_value,
+		'sap.ino.xs.object.campaign.Phase.Root' as field1_value_option,
+		null as field2_name,
+		'SELF_EVALUATION_ACTIVE' as field2_text,
+		TO_NVARCHAR(campaign_phase.self_evaluation_active) as field2_value,
+		'BOOLEAN' as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_phase_h\" as campaign_phase
+            on history.id = campaign_phase.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_phase.history_at
+               and 
+               history.history_db_event = 'UPDATED'     
+        where campaign_phase.self_evaluation_active <> campaign_phase.self_evaluation_active_old   
+        
+union all
+ 	
+ 	select 
+        'ACTION_PHASE_REWARD_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_PHASE' as field1_text,
+		campaign_phase.phase_code as field1_value,
+		'sap.ino.xs.object.campaign.Phase.Root' as field1_value_option,
+		null as field2_name,
+		'REWARD' as field2_text,
+		TO_NVARCHAR(campaign_phase.reward) as field2_value,
+		'BOOLEAN' as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_phase_h\" as campaign_phase
+            on history.id = campaign_phase.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_phase.history_at
+               and 
+               history.history_db_event = 'UPDATED'       
+        where campaign_phase.reward <> campaign_phase.reward_old
+        
+union all
+ 	
+ 	select 
+        'ACTION_PHASE_SEQUENCE_NO_CHANGED' as change_event,
+		'CAMPAIGN' as change_object,
+		history.history_biz_event as history_biz_event,
+		history.history_at as changed_at,
+    	history.id as id,
+    	history.history_actor_id as history_actor_id,
+		history.id as campaign_id,
+		'FRONTOFFICE' as filter_type_code,
+		null as field1_name,
+		'CAMPAIGN_PHASE' as field1_text,
+		campaign_phase.phase_code as field1_value,
+		'sap.ino.xs.object.campaign.Phase.Root' as field1_value_option,
+		null as field2_name,
+		'SEQUENCE_NO' as field2_text,
+		TO_NVARCHAR(sequence_no) as field2_value,
+		null as field2_value_option
+    from \"sap.ino.db.campaign::v_campaign_h\" as history
+        left outer join \"sap.ino.db.campaign::v_campaign_phase_h\" as campaign_phase
+            on history.id = campaign_phase.campaign_id
+               and
+               history.history_biz_event = 'CAMP_MAJOR_PUBLISH'
+               and
+               history.history_at=campaign_phase.history_at
+               and 
+               history.history_db_event = 'UPDATED'    
+        where campaign_phase.sequence_no <> campaign_phase.sequence_no_old 
+            
+) with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_page_t_h"];
+
+depends_on_view =  ["sap.ino.db.campaign::v_campaign_h",
+                    "sap.ino.db.campaign::v_campaign_phase_h",
+                    "sap.ino.db.campaign::v_campaign_t_h",
+                    "sap.ino.db.campaign::v_campaign_t_h"];

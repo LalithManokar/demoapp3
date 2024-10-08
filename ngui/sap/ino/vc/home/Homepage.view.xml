@@ -1,0 +1,4 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="sap.ino.vc.home.Homepage" class="sapInoViewNoBackground">
+    <Page id="homepage" showHeader="false" showSubHeader="false" enableScrolling="false">
+    </Page>
+</mvc:View>

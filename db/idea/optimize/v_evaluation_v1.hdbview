@@ -1,0 +1,45 @@
+schema = "SAP_INO";
+query = "
+select
+    evaluation.id, 
+    evaluation.idea_id,
+    evaluation.changed_at,
+    evaluation.status_code,
+    evaluation.idea_phase_code,    
+    case 
+    when model.enable_formula = 1 then 'NUMERIC'
+    else evaluation_overall_result.DATATYPE_CODE 
+    end as OV_RES_DATATYPE_CODE,
+	case
+	    when model.enable_formula = 1 then evaluation.CAL_NUM_VALUE 
+	    else evaluation_overall_result.NUM_VALUE
+	    end as OV_RES_NUM_VALUE,
+	evaluation_overall_result.BOOL_VALUE as OV_RES_BOOL_VALUE,
+	evaluation_overall_result.TEXT_VALUE as OV_RES_TEXT_VALUE,
+	evaluation_overall_result.VALUE_OPTION_LIST_CODE as OV_RES_VALUE_OPTION_LIST_CODE,
+    evaluation_overall_result.UOM_CODE as OV_RES_UOM_CODE
+    from \"sap.ino.db.evaluation::t_evaluation\" as evaluation
+    inner join \"sap.ino.db.evaluation::t_model\" as model
+		on evaluation.model_code = model.code
+	left outer join \"sap.ino.db.iam::t_object_identity_role\" as identity_role_evaluator
+    	on  identity_role_evaluator.object_id = evaluation.id and 
+        	identity_role_evaluator.object_type_code = 'EVALUATION' and 
+            identity_role_evaluator.role_code = 'EVALUATION_OWNER'
+	left outer join \"sap.ino.db.iam::t_identity\" as ident_evaluator 
+    	on ident_evaluator.id = identity_role_evaluator.identity_id 
+	left outer join \"sap.ino.db.evaluation::v_criterion_value_overall\" as evaluation_overall_result
+		on evaluation.id = evaluation_overall_result.evaluation_id
+    with read only";
+depends_on_table = ["sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.evaluation::t_model",
+					"sap.ino.db.evaluation::t_criterion",  
+                    "sap.ino.db.evaluation::t_evaluation",
+                    "sap.ino.db.iam::t_object_identity_role", 
+                    "sap.ino.db.iam::t_identity",
+                    "sap.ino.db.idea::t_idea"];
+                    
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale",
+                   "sap.ino.db.evaluation::v_criterion_value_overall",
+                   "sap.ino.db.iam::v_identity_settings",
+                   "sap.ino.db.evaluation::v_evaluation_request_item_all",
+                   "sap.ino.db.idea::v_idea_settings_test"];

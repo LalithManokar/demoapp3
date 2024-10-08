@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = "select distinct idea.id as id
+	from \"sap.ino.db.idea::t_idea\" as idea
+	LEFT OUTER JOIN \"sap.ino.db.campaign::v_my_backoffice_campaign\" as my_backoffice_campaign
+                ON idea.campaign_id = my_backoffice_campaign.id
+            LEFT OUTER JOIN \"sap.ino.db.idea::v_my_backoffice_responsibility_idea\" as my_backoffice_responsibility_idea
+                ON idea.id = my_backoffice_responsibility_idea.id
+            WHERE (
+         		idea.campaign_id = my_backoffice_campaign.id or 
+               	idea.campaign_id is null or 
+               	idea.campaign_id <= 0 or
+                idea.id = my_backoffice_responsibility_idea.id
+                ) and idea.status_code <> 'sap.ino.config.DRAFT' 
+                and
+                   idea.status_code in (select * from \"sap.ino.db.idea::v_status_code_for_completed_idea\")
+                with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea"];
+depends_on_view = ["sap.ino.db.idea::v_status_code_for_completed_idea"];

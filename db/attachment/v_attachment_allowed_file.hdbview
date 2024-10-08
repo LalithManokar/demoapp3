@@ -1,0 +1,7 @@
+schema = "SAP_INO";
+query = "
+    select * from \"sap.ino.db.attachment::t_attachment_allowed_file\"
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment_allowed_file"];

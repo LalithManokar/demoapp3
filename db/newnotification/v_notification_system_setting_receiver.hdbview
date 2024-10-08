@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = "SELECT distinct
+          case when receiver_local.ACTION_CODE is null then 0 else receiver_local.ID end as ID,
+          case when receiver_local.ACTION_CODE is null then receiver.ACTION_ID else  receiver_local.ACTION_ID end as ACTION_ID,
+          case when receiver_local.ACTION_CODE is null then receiver.ROLE_CODE else  receiver_local.ROLE_CODE end as ROLE_CODE,           
+          case when receiver_local.ACTION_CODE is null then receiver.IS_RECEIVE_EMAIL else  receiver_local.IS_RECEIVE_EMAIL end as IS_RECEIVE_EMAIL,
+          receiver.ACTION_CODE
+    FROM \"sap.ino.db.newnotification::v_notification_system_setting_receiver_full\" as receiver
+    LEFT OUTER JOIN \"sap.ino.db.newnotification::v_notification_system_setting_receiver_local_full\" as receiver_local
+    on receiver.ACTION_CODE = receiver_local.ACTION_CODE
+    with read only
+";  
+
+depends_on_view = ["sap.ino.db.newnotification::v_notification_system_setting_receiver_full","sap.ino.db.newnotification::v_notification_system_setting_receiver_local_full"];   

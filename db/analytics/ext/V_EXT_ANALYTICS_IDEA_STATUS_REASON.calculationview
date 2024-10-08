@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_IDEA_STATUS_REASON" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED">
+  <descriptions defaultDescription="V_EXT_ANALYTICS_IDEA_STATUS_REASON"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="25"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.idea::v_idea_status_reason" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::v_idea_status_reason"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:AggregationView" id="IDEA_STATUS_REASON">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="USER_ID"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="STATUS_REASON_CODE"/>
+        <viewAttribute id="STATUS_REASON_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.idea::v_idea_status_reason">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="USER_ID" source="USER_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_REASON_CODE" source="REASON_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_REASON_TEXT" source="DEFAULT_TEXT"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="IDEA_STATUS_REASON">
+    <descriptions/>
+    <attributes>
+      <attribute id="STATUS_REASON_TEXT" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Status Reason Text"/>
+        <keyMapping columnObjectName="IDEA_STATUS_REASON" columnName="STATUS_REASON_TEXT"/>
+      </attribute>
+      <attribute id="STATUS_REASON_CODE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Status Reason Code"/>
+        <keyMapping columnObjectName="IDEA_STATUS_REASON" columnName="STATUS_REASON_CODE"/>
+      </attribute>
+      <attribute id="IDEA_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="IDEA_STATUS_REASON" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="IDEA_STATUS_REASON" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="USER_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="IDEA_STATUS_REASON" columnName="USER_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures>
+      <measure id="IDEA_COUNT" hidden="false" order="1" aggregationType="sum" measureType="simple" aggregatable="true" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Number of ideas"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="IDEA_ID" dimensionUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+    <sharedDimensions>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION">
+        <attributes>
+          <attributeRef>#IDEA_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDEA_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="inner"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION">
+        <attributes>
+          <attributeRef>#CAMPAIGN_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>CAMPAIGN_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="inner"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION">
+        <attributes>
+          <attributeRef>#USER_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDENTITY_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="inner"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+    </sharedDimensions>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize/>
+      </shape>
+      <shape expanded="true" modelObjectName="IDEA_STATUS_REASON" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="30" y="240"/>
+        <rectangleSize height="30" width="140"/>
+      </shape>
+      <shape modelObjectName="IDEA_STATUS_REASON" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+        <upperLeftCorner x="-20" y="86"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="225" y="-12"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="225" y="285"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="219" y="463"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

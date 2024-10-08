@@ -1,0 +1,95 @@
+
+/* ============================================= */
+/* CSS for control sap.ino.wall/ScrollableToolbar.control */
+/* ============================================= */
+
+/* Head Container */
+
+/* special styles for a vertical toolbar */
+.sapInoWallScrollableToolbarVertical {
+	height: 100%;
+	position: absolute;
+	width: 100%;
+}
+
+.sapInoWallScrollableToolbarVertical .sapInoWallScrollableToolbarInner > * {
+	display: block;
+}
+
+/* desktop & default */
+.sapInoWallScrollableToolbarInner {
+	display: block;
+	margin: 0 2rem;
+	white-space: nowrap;
+	position: relative;
+	overflow: hidden;
+}
+
+.sapInoWallScrollableToolbarVertical .sapInoWallScrollableToolbarInner {
+	height: calc(~"100% - 50px");
+	margin: 0;
+	margin-top: 25px;
+	/* TODO: does not work on android and ie9 */
+}
+
+/* scrollbar from browser should not be visible */
+.sapInoWallScrollableToolbarScrollContainer::-webkit-scrollbar {
+	display: none;
+}
+
+/* scrollbar from iscroll should not be visible */
+.sapInoWallScrollableToolbarScrollContainer > div:nth-child(2) {
+	visibility: hidden;
+}
+
+/* arrow styles*/
+.sapInoWallScrollableToolbarArrowScroll {
+	font-size: 1rem;
+	position: absolute;
+	top: 1px;
+	color: #666666; /* TODO: @sapUiElement */
+	cursor: pointer;
+}
+
+.sap-desktop .sapInoWallScrollableToolbarArrowScroll:hover,
+.sap-desktop .sapInoWallScrollableToolbarArrowScroll:active {
+	color: #007cc0; /* TODO: @sapUiHighlight */
+}
+
+.sapInoWallScrollableToolbarArrowScrollLeft {
+	left: 0.25rem;
+	padding: 0 0.4rem;
+}
+
+.sapInoWallScrollableToolbarArrowScrollRight {
+	right: 0.25rem;
+	padding: 0 0.4rem;
+}
+
+.sapInoWallScrollableToolbarVertical .sapInoWallScrollableToolbarArrowScrollLeft {
+	bottom: initial;
+	left: initial;
+	width: 100%;
+	top: 4px;
+	padding: 0;
+}
+
+.sapInoWallScrollableToolbarVertical .sapInoWallScrollableToolbarArrowScrollRight {
+	top: auto;
+	right: auto;
+	width: 100%;
+	bottom: 4px;
+  	padding: 0;
+}
+
+.sapInoWallScrollableToolbarNotScrollable > .sapInoWallScrollableToolbarArrowScroll,
+.sapInoWallScrollableToolbarScrollable.sapInoWallScrollableToolbarNoScrollBack > .sapInoWallScrollableToolbarArrowScrollLeft,
+.sapInoWallScrollableToolbarScrollable.sapInoWallScrollableToolbarNoScrollForward > .sapInoWallScrollableToolbarArrowScrollRight {
+	visibility: hidden;
+}
+
+.sapInoWallScrollableToolbarArrowScroll:focus,
+.sapInoWallScrollableToolbar:focus,
+.sapInoWallScrollableToolbarInner:focus {
+	outline: none;
+}

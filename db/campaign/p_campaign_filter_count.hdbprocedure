@@ -1,0 +1,64 @@
+procedure "SAP_INO"."sap.ino.db.campaign::p_campaign_filter_count" ()
+ language sqlscript
+ sql security invoker
+ default schema SAP_INO
+ reads sql data as
+begin
+                     select COUNT(*) as COUNT,'ALL' FILTER_NAME 
+                         from "sap.ino.db.campaign::t_campaign"
+                        
+                     union all
+                     select  COUNT(*) as COUNT,'ACTIVE' FILTER_NAME  
+                         from "sap.ino.db.campaign::t_campaign"
+                         where   valid_from <= CURRENT_UTCTIMESTAMP
+                             and valid_to >= CURRENT_UTCTIMESTAMP
+                     union all
+                     select COUNT(*) as COUNT,'OPEN' FILTER_NAME
+                         from "sap.ino.db.campaign::t_campaign"
+                         where (
+                             (submit_from <= CURRENT_UTCTIMESTAMP and submit_to >= CURRENT_UTCTIMESTAMP)
+                             or
+                             (register_from <= CURRENT_UTCTIMESTAMP and register_to >= CURRENT_UTCTIMESTAMP))
+                    union all
+                     select distinct COUNT(*) as COUNT,'DRAFT' FILTER_NAME
+                        from "sap.ino.db.campaign::v_my_backoffice_campaign" as my_campaign
+                        inner join "sap.ino.db.campaign::t_campaign" as campaign
+                        on campaign.id = my_campaign.id
+                        where  status_code = 'sap.ino.config.CAMP_DRAFT'         
+                     union all
+                     select COUNT(*) as COUNT,'FUTURE' FILTER_NAME 
+                         from "sap.ino.db.campaign::t_campaign"
+                           where  valid_from >= CURRENT_UTCTIMESTAMP and   STATUS_CODE != 'sap.ino.config.CAMP_DRAFT'
+                     union all
+                     select COUNT(*) as COUNT,'CLOSED' FILTER_NAME 
+                         from "sap.ino.db.campaign::t_campaign"
+                         where  valid_to <= CURRENT_UTCTIMESTAMP 
+                    union all
+                    select   COUNT(*) as COUNT,'REGISTERED' FILTER_NAME
+                        from "sap.ino.db.campaign::t_campaign" as campaign
+                    inner join
+                        "sap.ino.db.campaign::v_my_registered_campaign" as registered_campaign
+                    on
+                        campaign.id = registered_campaign.CAMPAIGN_ID
+                    union all
+                    select distinct COUNT(*) as COUNT,'MANAGED' FILTER_NAME
+                        from "sap.ino.db.campaign::v_my_backoffice_campaign" as my_campaign
+                        inner join "sap.ino.db.campaign::t_campaign" as campaign
+                        on campaign.id = my_campaign.id
+                       
+                    union all
+                    select distinct COUNT(*) as COUNT,'PUBLISHED' FILTER_NAME
+                        from "sap.ino.db.campaign::v_my_backoffice_campaign" as my_campaign
+                        inner join "sap.ino.db.campaign::t_campaign" as campaign
+                        on campaign.id = my_campaign.id
+                        where campaign.STATUS_CODE != 'sap.ino.config.CAMP_DRAFT'
+                    union all
+                    select distinct COUNT(*) as COUNT,'SUBMITTABLE' FILTER_NAME
+                        from "sap.ino.db.campaign::v_my_backoffice_campaign" as my_campaign
+                        inner join "sap.ino.db.campaign::t_campaign" as campaign
+                        on campaign.id = my_campaign.id
+                        where 
+                             (submit_from <= CURRENT_UTCTIMESTAMP and submit_to >= CURRENT_UTCTIMESTAMP)
+                             or
+                             (register_from <= CURRENT_UTCTIMESTAMP and register_to >= CURRENT_UTCTIMESTAMP);
+end;

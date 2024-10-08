@@ -1,0 +1,109 @@
+
+/* ============================================= */
+/* CSS for control TextEditor.control */
+/* ============================================= */
+
+
+/* ============================================= */
+/* CSS for control TextEditor.control */
+/* ============================================= */
+
+/* Fixes prevention of text selection in UI5 for editable content of nicEdit-main (using !important) */
+/* Deactivates the following CSS of UI5: html.sap-phone *, html.sap-tablet * { -webkit-user-select: none; } */
+.nicEdit-main,
+.nicEdit-main * {
+	-webkit-user-select: text !important;
+	-moz-user-select: text !important;
+}
+
+.sapUiInoWallTextEditorContent p {
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+/* overrides for button px calculations instead of rem */
+.sapMBtn.sapInoWallTextEditorControlButton .sapMBtnInner,
+.sapInoWallTextEditorControlButton .sapMBtnInner {
+	height: 40px;
+	min-width: 48px;
+	padding: 0;
+}
+
+/* overrides with px values */
+.sapMBtn.sapInoWallTextEditorControlButton,
+.sapMSegB.sapInoWallTextEditorControlButton,
+.sapInoWallTextEditorControlButton {
+	min-width: 48px;
+	width: 48px;
+	height: 48px;
+	padding: 4px 0;
+}
+
+/* overrides with px values */
+.sapMBtn.sapInoWallTextEditorControlSelect.sapMSlt,
+.sapInoWallTextEditorControlSelect.sapMSlt {
+	margin: 4px 0 4px 0;
+}
+
+/* overrides with px values */
+.sapInoWallTextEditorControlButton .sapMBtnIcon {
+	line-height: 38px;
+	width: 38px;
+	max-height: 38px;
+}
+
+.sapInoWallTextEditorControlButton.sapMSegB {
+	width: auto;
+	height: 40px;
+}
+
+.sapInoWallTextEditorControlButton.sapMSegB .sapMSegBBtn {
+	font-size:14px;
+	height: 38px;
+	line-height: 38px;
+	min-width: 46px;
+	padding: 0;
+}
+
+.sapInoWallTextEditorControlButton.sapMSegBIcons .sapMSegBBtn img {
+	padding: 0 8px;
+}
+
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiText;
+}
+
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiTextInverted;
+}
+
+/* override: remove gradient for color picker */
+.sapInoWallTextEditorColorSelectorButton .sapMBtnInner,
+.sapInoWallTextEditorColorSelectorButton.sapMBtn:hover>.sapMBtnHoverable,
+.sapInoWallTextEditorColorSelectorButton.sapMBtn:focus>.sapMBtnInner.sapMFocusable {
+	background: none;
+	background-color: inherit;
+}
+
+.sapInoWallTextEditor .sapInoWallTextEditorContent.sapMInputBaseInner {
+	padding: 10px;
+	height: auto;
+}
+
+/* overrides the defaults of nicedit */
+.sapInoWallTextEditor .sapInoWallTextEditorContent .nicEdit-main {
+	margin: 0px !important;
+	width: auto !important;
+	min-height: inherit !important;
+	height: 100%;
+}
+
+.sapUiSizeCompact .sapInoWallTextEditorColorSelectorButton .sapMBtnIcon {
+	margin: 0;
+}

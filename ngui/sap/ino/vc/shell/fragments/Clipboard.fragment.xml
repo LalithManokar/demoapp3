@@ -1,0 +1,34 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns:tnt="sap.tnt"
+    xmlns:ino="sap.ino.controls">
+    <tnt:NavigationList
+        id="navmenu"
+        items="{path: 'clipboard>/object', templateShareable: true}">
+        <tnt:NavigationListItem
+            icon="sap-icon://pushpin-off"
+            text="{path: 'clipboard>name', formatter: '.formatter.clipboardObjectName'}"
+            items="{path: 'clipboard>entry', templateShareable: true}"
+            >
+            <tnt:items>
+                <ino:ActiveNavigationListItem
+                    buttonIcon="sap-icon://sys-cancel"
+                    text="{clipboard>name}"
+                    hasExpander="false"
+                    buttonTooltip="{i18n>CLIPBOARD_OBJECT_REMOVE}"
+                    press=".onRemoveClipboardObject"
+                    select="onOpenClipboardObject">
+                    <ino:customData>
+                        <core:CustomData
+                            key="OBJECT_NAME"
+                            value="{clipboard>objectName}"/>  
+                        <core:CustomData
+                            key="OBJECT_KEY"
+                            value="{clipboard>key}"/>  
+                    </ino:customData>
+                </ino:ActiveNavigationListItem>
+            </tnt:items>
+        </tnt:NavigationListItem>
+    </tnt:NavigationList>
+</core:FragmentDefinition>
+	

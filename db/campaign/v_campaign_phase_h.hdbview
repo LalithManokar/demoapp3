@@ -1,0 +1,53 @@
+schema = "SAP_INO";
+query = "select distinct
+    campaign_phase_hc.history_db_event,
+    campaign_phase_hc.history_biz_event,
+    campaign_phase_hc.history_at,
+    campaign_phase_hc.history_actor_id,
+    campaign_phase_hc.id,
+    campaign_phase_hc.campaign_id,
+    
+    campaign_phase_hc.phase_code,
+    campaign_phase_hb.phase_code as phase_code_old,
+    
+    campaign_phase_hc.sequence_no as sequence_no,
+    campaign_phase_hb.sequence_no as sequence_no_old,
+    
+    campaign_phase_hc.next_phase_code as next_phase_code,
+    campaign_phase_hb.next_phase_code as next_phase_code_old,
+    
+    campaign_phase_hc.status_model_code as status_model_code,
+    campaign_phase_hb.status_model_code as status_model_code_old,
+    
+    campaign_phase_hc.evaluation_model_code as evaluation_model_code,
+    campaign_phase_hb.evaluation_model_code as evaluation_model_code_old,
+    
+    campaign_phase_hc.voting_active as voting_active,
+    campaign_phase_hb.voting_active as voting_active_old,
+    
+    campaign_phase_hc.show_idea_in_community as show_idea_in_community,
+    campaign_phase_hb.show_idea_in_community as show_idea_in_community_old,
+    
+    campaign_phase_hc.idea_content_editable as idea_content_editable,
+    campaign_phase_hb.idea_content_editable as idea_content_editable_old,
+    
+    campaign_phase_hc.self_evaluation_active as self_evaluation_active,
+    campaign_phase_hb.self_evaluation_active as self_evaluation_active_old,
+    
+    campaign_phase_hc.auto_eval_pub_code as auto_eval_pub_code,
+    campaign_phase_hb.auto_eval_pub_code as auto_eval_pub_code_old,
+    
+    campaign_phase_hc.reward as reward,
+    campaign_phase_hb.reward as reward_old
+from (
+    select
+        *,
+        lag(history_at, 1, NULL) over (partition by id order by history_at asc) as predecessor
+    from
+        \"sap.ino.db.campaign::t_campaign_phase_h\") as campaign_phase_hc 
+        left outer join \"sap.ino.db.campaign::t_campaign_phase_h\" as campaign_phase_hb
+            on campaign_phase_hc.predecessor = campaign_phase_hb.history_at and 
+               campaign_phase_hc.id = campaign_phase_hb.id
+with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_phase_h"];

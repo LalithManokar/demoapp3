@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_TAG_GROUPS_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_TAG_GROUPS_SEARCH"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="searchToken"/>
+      <variableProperties datatype="VARCHAR" defaultValue="" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="30"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CREATED_BY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CREATED_BY" length="100"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CHANGED_BY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CHANGED_BY" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="DESCRIPTION" length="100"/>
+      
+        <viewAttribute id="TAGS_COUNT" datatype="INTEGER"/>
+        <viewAttribute id="TOP_NUMBER" datatype="INTEGER"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>begin
+    search_result =
+        select
+            id,
+            1 as search_score
+        from
+            &quot;sap.ino.db.tag::t_group_tag&quot; 
+        where
+            length(:searchToken) = 0 
+        union all
+        select
+            id,
+            1 as search_score
+        from
+            &quot;sap.ino.db.tag::t_group_tag&quot; 
+        where
+            cast(id as nvarchar) = :searchToken
+        union all
+        select
+            id,
+            score() as seach_score
+        from
+            &quot;sap.ino.db.tag::t_group_tag&quot; 
+        where length(:searchToken) &gt; 0 and (
+            contains(name, :searchToken, fuzzy(0.8)) or 
+            contains(name, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8)) );
+
+    var_out = 
+        select 
+            sr.search_score,
+            sr.id,
+            tag_group.name,
+            tag_group.created_at,
+            tag_group.created_by_id,
+            tag_group.created_by,
+            tag_group.changed_at,
+            tag_group.changed_by_id,
+            tag_group.changed_by,
+            tag_group.description,
+            tag_group.tags_count, 
+            tag_group.top_number
+        from 
+            &quot;sap.ino.db.tag::v_group_tag&quot; as tag_group
+        inner join
+            :search_result as sr
+        on
+            tag_group.id = sr.id; 
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="3">
+        <descriptions defaultDescription="NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="4">
+        <descriptions defaultDescription="CREATED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CREATED_BY_ID" order="5">
+        <descriptions defaultDescription="CREATED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="CREATED_BY" order="6">
+        <descriptions defaultDescription="CREATED_BY"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="7">
+        <descriptions defaultDescription="CHANGED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="8">
+        <descriptions defaultDescription="CHANGED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_BY" order="9">
+        <descriptions defaultDescription="CHANGED_BY"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY"/>
+      </attribute>
+      <attribute id="DESCRIPTION" order="10">
+        <descriptions defaultDescription="DESCRIPTION"/>
+        <keyMapping columnObjectName="Script_View" columnName="DESCRIPTION"/>
+      </attribute>
+    
+      <attribute id="TAGS_COUNT" order="11">
+    
+        <keyMapping columnObjectName="Script_View" columnName="TAGS_COUNT"/>
+    
+      </attribute>
+      <attribute id="TOP_NUMBER" order="12">
+        <keyMapping columnObjectName="Script_View" columnName="TOP_NUMBER"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

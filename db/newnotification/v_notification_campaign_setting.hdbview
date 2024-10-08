@@ -1,0 +1,12 @@
+schema = "SAP_INO";
+query = "SELECT setting.ID,
+        setting.CHANGED_AT,
+        setting.CHANGED_BY_ID,
+        setting.ACTION_CODE,
+        setting.CAMPAIGN_ID,
+        setting.TEXT_MODULE_CODE
+    FROM \"sap.ino.db.newnotification::t_notification_campaign_setting\" as setting
+    with read only
+";  
+
+depends_on_table = ["sap.ino.db.newnotification::t_notification_campaign_setting"];   

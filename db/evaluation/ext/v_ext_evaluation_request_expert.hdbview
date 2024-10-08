@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT";
+query = "select eval_req_expert.* 
+            from \"sap.ino.db.evaluation::v_evaluation_request_expert\" as eval_req_expert 
+            where eval_req_expert.eval_req_item_id in (select eval_req_item_id from \"sap.ino.db.evaluation::v_auth_evaluation_request_item_read\")
+            with read only";
+
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request_expert","sap.ino.db.evaluation::v_auth_evaluation_request_item_read"];

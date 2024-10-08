@@ -1,0 +1,95 @@
+<mvc:View
+        controllerName="sap.ino.vc.idea.Modify"
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns:uxap="sap.uxap"
+        xmlns:ino="sap.ino.controls"
+        afterRendering="onAfterRendering"
+        xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Page id="ideaModify"
+    	  app:aofSmartControl="true"
+		  app:aofModel="object"
+          app:aofObject="sap.ino.xs.object.idea.Idea">
+          <customHeader>
+        	<ino:ColorBar id="pageheader" backgroundColor="{path: 'object>CAMPAIGN_COLOR', formatter: '.formatter.color'}">
+        	    <core:Fragment fragmentName="sap.ino.vc.commons.fragments.NavBackButton" type="XML" />
+        	    <ToolbarSpacer/>
+        		<Link text="{object>CAMPAIGN_NAME}" press="onCampaignPressed" visible="{= ${object>CAMPAIGN_NAME} ? true : false }"/>   			   			
+        		<ToolbarSpacer/>
+        	    <core:Fragment fragmentName="sap.ino.vc.commons.fragments.FullScreenButton" type="XML" />
+			</ino:ColorBar>        	
+        </customHeader> 
+        <content>
+            <uxap:ObjectPageLayout 
+                id="objectpage" 
+                useIconTabBar="true"
+                enableLazyLoading="true"
+                visible="{view>/objectExists}"
+                class="sapInoIdeaModifyLayout" >
+                <uxap:headerTitle>
+                    <uxap:ObjectPageHeader id="objectpageheader" visible="{= !${device>/system/phone} }"
+                            objectTitle="{= ${object>NAME} || ${object>ID} > 0 ? ${object>NAME} : ${i18n>IDEA_OBJECT_TIT_NEW_IDEA} }"
+                            objectSubtitle="{parts: ['i18n>FLD_BY', 'object>SUBMITTER_NAME', 'object>CREATED_BY_NAME', 'object>SUBMITTED_AT', 'object>CREATED_AT'], formatter:'.formatter.alternativeBy'}"                    
+                            isObjectIconAlwaysVisible="false"
+                            isObjectTitleAlwaysVisible="true"
+                            isObjectSubtitleAlwaysVisible="true"
+                            isActionAreaAlwaysVisible="false">
+                    </uxap:ObjectPageHeader>
+                </uxap:headerTitle>
+                <uxap:sections>
+                    <uxap:ObjectPageSection id="sectionDetails" title="{i18n>MENU_MIT_DETAILS}">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection id="mainsubsection" title="{i18n>MENU_MIT_DETAILS}">
+                                <uxap:blocks>
+                                    <core:Fragment fragmentName="sap.ino.vc.idea.fragments.ModifyDetails" type="XML" />
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+                    <uxap:ObjectPageSection id="attachmentsection" title="{i18n>IDEA_OBJECT_TIT_ATTACHMENTS}" visible="{=${device>/system/phone}}">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection id="attachmentsubsection" title="{i18n>IDEA_OBJECT_TIT_ATTACHMENTS}">
+                                <uxap:blocks>
+                                    <mvc:XMLView viewName="sap.ino.vc.attachment.Attachment"
+                                                 app:editable="true"
+                                                 class="sapInoFormUploadCollection"/>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+                    <uxap:ObjectPageSection id="wallsection" title="{i18n>IDEA_OBJECT_TIT_WALLS}">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection id="wallsubsection">
+                                <uxap:blocks>
+        						    <mvc:XMLView viewName="sap.ino.vc.wall.ListInIdea" app:editable="true" />
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+                </uxap:sections>
+            </uxap:ObjectPageLayout>
+            <core:Fragment fragmentName="sap.ino.vc.commons.fragments.GeneralObjectNotExists" type="XML"/>
+        </content>
+        <footer>
+            <OverflowToolbar visible="{view>/objectExists}">
+                <content>
+                    <core:Fragment fragmentName="sap.ino.vc.commons.fragments.MessageLog"
+                                   type="XML" />
+                    <ToolbarSpacer />
+                    <Button id="ideaSubmitBtn"
+                            visible="{=${object>STATUS_CODE} === 'sap.ino.config.DRAFT' &amp;&amp; ${object>/property/actions/modifyAndSubmit/enabled}}"
+                            type="Accept"
+                            text="{i18n>IDEA_OBJECT_BTN_SUBMIT}"
+                            press="onSubmit" />
+                    <Button id="ideaSaveBtn"
+                            visible="{= ${object>/property/actions/update/enabled} === true || ${object>/property/actions/create/enabled} === true}"
+                            text="{=${object>STATUS_CODE} !== 'sap.ino.config.DRAFT' ? ${i18n>BTN_SAVE} : ${i18n>BTN_SAVE_DRAFT}}"
+                            type="{=${object>STATUS_CODE} !== 'sap.ino.config.DRAFT' ? 'Accept' : 'Default'}"
+                            press="onSave" />
+                    <Button text="{i18n>BTN_CLOSE}" press="onCancel" id="cancelBtn"/>
+                </content>
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

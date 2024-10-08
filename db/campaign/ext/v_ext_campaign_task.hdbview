@@ -1,0 +1,8 @@
+schema = "SAP_INO_EXT";
+
+query = "select campaign_task.* from \"sap.ino.db.campaign::v_campaign_task\" as campaign_task
+            inner join \"sap.ino.db.campaign::v_auth_campaigns\" as auth
+            on campaign_task.campaign_id = auth.campaign_id";
+
+depends_on_view = ["sap.ino.db.campaign::v_campaign_task",
+                   "sap.ino.db.campaign::v_auth_campaigns"];

@@ -1,0 +1,18 @@
+schema = "SAP_INO";
+query = "select distinct
+             eval_experts.id,
+             eval_experts.eval_req_id,
+             eval_experts.identity_id, 
+             identity.name,
+             identity_settings.image_id,
+             identity.type_code
+         from \"sap.ino.db.evaluation::t_evaluation_request_experts\" as eval_experts
+         inner join \"sap.ino.db.iam::t_identity\" as identity 
+             on identity.id = eval_experts.identity_id
+         left outer join \"sap.ino.db.iam::v_identity_settings\" as identity_settings
+             on identity_settings.identity_id = eval_experts.identity_id
+         with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity",
+                    "sap.ino.db.evaluation::t_evaluation_request_experts"];
+depends_on_view = ["sap.ino.db.iam::v_identity_settings"];

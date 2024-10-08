@@ -1,0 +1,12 @@
+schema = "SAP_INO_EXT";
+query =
+"select count(identity_id)as no_users from (
+    select distinct oir.identity_id as identity_id
+        from \"sap.ino.db.iam::v_object_identity_role_transitive\" as oir
+        join \"sap.ino.db.iam::t_role_privilege\" as rp
+            on oir.role_code = rp.role_code
+        where rp.privilege = 'CAMP_READ'
+    )";
+
+depends_on_view = ["sap.ino.db.iam::v_object_identity_role_transitive"];
+depends_on_table = ["sap.ino.db.iam::t_role_privilege"];

@@ -1,0 +1,7 @@
+role sap.ino.authorizations::backoffice_user extends role
+        sap.ino.authorizations::community_user
+{
+    application privilege: "sap.ino.xs.rest.backoffice::execute";
+    application privilege: "sap.ino.ui::backoffice.access";
+    application privilege: "sap.ino.xs.rest.integration::execute";
+}

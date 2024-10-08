@@ -1,0 +1,11 @@
+schema = "SAP_INO";
+query = "
+select
+  eval_req_item_by_me.id 
+from \"sap.ino.db.evaluation::v_evaluation_request_item_by_me\" as eval_req_item_by_me
+inner join \"sap.ino.db.evaluation::v_evaluation_request_overdue_item\" as eval_req_item
+  on eval_req_item_by_me.id = eval_req_item.id
+with read only";
+
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request_item_by_me",
+                   "sap.ino.db.evaluation::v_evaluation_request_overdue_item"];

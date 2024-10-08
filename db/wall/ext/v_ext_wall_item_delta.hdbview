@@ -1,0 +1,10 @@
+schema = "SAP_INO_EXT";
+query = "select 
+            item.*
+        from \"sap.ino.db.wall::v_wall_item_delta\" as item 
+            inner join \"sap.ino.db.wall::v_auth_wall\" as auth 
+                on item.wall_id = auth.wall_id 
+         with read only";
+
+depends_on_view = [ "sap.ino.db.wall::v_wall_item_delta", 
+                    "sap.ino.db.wall::v_auth_wall"]; 

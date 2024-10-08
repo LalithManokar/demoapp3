@@ -1,0 +1,11 @@
+schema = "SAP_INO";
+query = "SELECT  
+	ID,
+	DIMENSION_ID,
+	NAME,
+	BADGE_VALUE,
+	DESCRIPTION
+FROM \"sap.ino.db.gamification::t_badge\" as badge
+    with read only
+";
+depends_on_table = ["sap.ino.db.gamification::t_badge"];   

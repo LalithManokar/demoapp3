@@ -1,0 +1,54 @@
+<core:FragmentDefinition
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form">
+    <VBox class="sapInoPersonalizeSetting">
+        
+        <Text text="{i18n>PERSONALIZE_WARNING}" class="sapInoPersonalizeSettingLabel sapInoPersonalizeWarning"/>
+        <FlexBox justifyContent="SpaceBetween" alignItems="Center" class="sapInoPersonalizeSettingRow">
+            <items>
+                <Label text="{i18n>PERSONALIZE_CAMPAIGN_VIEW}" class="sapInoPersonalizeSettingLabel" />
+                <Switch state="{PERSONALIZE>/CAMPAIGN_VIEW}" customTextOn="{i18n>SETTINGS_SWITCH_ON}" customTextOff="{i18n>SETTINGS_SWITCH_OFF}" class="sapInoPersonalizeSettingToggle"/>
+            </items>
+        </FlexBox>
+        <FlexBox justifyContent="SpaceBetween" alignItems="Center" class="sapInoPersonalizeSettingRow">
+            <items>
+                <Label text="{i18n>PERSONALIZE_IDEA_VIEW}" class="sapInoPersonalizeSettingLabel" />
+                <Switch state="{PERSONALIZE>/IDEA_VIEW}" customTextOn="{i18n>SETTINGS_SWITCH_ON}" customTextOff="{i18n>SETTINGS_SWITCH_OFF}" class="sapInoPersonalizeSettingToggle"/>
+            </items>
+        </FlexBox>
+        <FlexBox justifyContent="SpaceBetween" alignItems="Center" class="sapInoPersonalizeSettingRow">
+            <items>
+                <Label text="{i18n>PERSONALIZE_SCREEN_SIZE}" class="sapInoPersonalizeSettingLabel" />
+                <Switch state="{PERSONALIZE>/SCREEN_SIZE}" customTextOn="{i18n>SETTINGS_SWITCH_ON}" customTextOff="{i18n>SETTINGS_SWITCH_OFF}" class="sapInoPersonalizeSettingToggle"/>
+            </items>
+        </FlexBox>
+        <FlexBox justifyContent="SpaceBetween" alignItems="Center" class="sapInoPersonalizeSettingRow">
+            <items>
+                <Label text="{i18n>PERSONALIZE_FILTER}" class="sapInoPersonalizeSettingLabel" />
+                <Switch state="{PERSONALIZE>/FILTER}" customTextOn="{i18n>SETTINGS_SWITCH_ON}" customTextOff="{i18n>SETTINGS_SWITCH_OFF}" class="sapInoPersonalizeSettingToggle"/>
+            </items>
+        </FlexBox>
+        <FlexBox justifyContent="SpaceBetween" alignItems="Center" class="sapInoPersonalizeSettingRow">
+            <items>
+                <Label text="{i18n>PERSONALIZE_SIMILAR_IDEA}" class="sapInoPersonalizeSettingLabel" />
+                <Switch state="{PERSONALIZE>/SIMILAR_IDEA}" customTextOn="{i18n>SETTINGS_SWITCH_ON}" customTextOff="{i18n>SETTINGS_SWITCH_OFF}" class="sapInoPersonalizeSettingToggle"/>
+            </items>
+        </FlexBox>
+        <FlexBox justifyContent="SpaceBetween" alignItems="Center" class="sapInoPersonalizeSettingRow">
+            <items>
+                <Label text="{i18n>PERSONALIZE_FILTER_ACTIVE_IDEA}" class="sapInoPersonalizeSettingLabel" />
+                <Switch state="{PERSONALIZE>/FILTER_ACTIVE_IDEA}" customTextOn="{i18n>SETTINGS_SWITCH_ON}" customTextOff="{i18n>SETTINGS_SWITCH_OFF}" class="sapInoPersonalizeSettingToggle"/>
+            </items>
+        </FlexBox>
+        <FlexBox justifyContent="SpaceBetween" alignItems="Center" class="sapInoPersonalizeSettingRow">
+            <items>
+                <Label text="{i18n>PERSONALIZE_REPORT_VIEW}" class="sapInoPersonalizeSettingLabel" />
+                <Switch state="{PERSONALIZE>/REPORT_VIEW}" customTextOn="{i18n>SETTINGS_SWITCH_ON}" customTextOff="{i18n>SETTINGS_SWITCH_OFF}" class="sapInoPersonalizeSettingToggle"/>
+            </items>
+        </FlexBox>
+    </VBox>
+    
+</core:FragmentDefinition>

@@ -1,0 +1,6 @@
+schema = "SAP_INO";
+query = "
+    select * from \"sap.ino.db.basis::t_value_option_list\"
+";
+
+depends_on_table = ["sap.ino.db.basis::t_value_option_list"];

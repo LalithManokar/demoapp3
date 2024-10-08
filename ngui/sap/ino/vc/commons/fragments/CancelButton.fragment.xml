@@ -1,0 +1,7 @@
+<core:FragmentDefinition
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core">
+    <Button text="{i18n>BTN_CLOSE}"
+            press="onCancel"
+            id="cancelBtn"/>
+</core:FragmentDefinition>

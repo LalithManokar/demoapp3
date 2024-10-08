@@ -1,0 +1,103 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:ino="sap.ino.controls"
+    xmlns:l="sap.ui.layout">
+    <Panel width="auto" id="campaignProfile" class="sapInoHomeTitledPanel sapInoTopPanelHiddenfoote sapCampaignHomePage">
+        <headerToolbar>
+			<Toolbar class="sapInoHomeTitledPanelHeader">
+				<Title text="{i18n>CAMPAIGN_HOME_PANEL_PROFILE}" />
+				<ToolbarSpacer />
+			</Toolbar>
+		</headerToolbar>
+		<content>
+		    <VBox class="sapInoIdentityProfile" id="identityProfile" alignItems="Stretch" fitContainer="true">
+                <VBox>
+                    <List
+                        id="identityProfileList"
+                        width="100%"
+                        class="sapInoIdentityProfileCounts"
+                        items="{IdentityProfile>/Binding}"
+                        showSeparators="None">
+                        <CustomListItem
+                            ariaLabelledBy="identityProfileAccText"
+                            visible="{= ${ parts : [{ path : 'IdentityProfile>COUNT' }, { path : 'IdentityProfile>Route/QUERY/variant' }, {path: 'IdentityProfile>EXPERT'}, { path: 'data>NO' }, { path: 'IdentityProfile>ROLES'}], formatter : '.formatIdentityProfileCountVisibility' }}">
+                            <content>
+                                <HBox
+                                    width="100%"
+                                    fitContainer="true"
+                                    class="sapInoIdentityProfileCountItem sapUiSmallMarginBottom"
+                                    wrap="Wrap">
+                                    <core:Icon
+                                        class="sapInoIdentityProfileCountItemIcon"
+                                        useIconTooltip="false"
+                                        src="{IdentityProfile>ICON}">
+                                    </core:Icon>
+                                    <Link
+                                        class="sapInoIdentityProfileCountItemLink"
+                                        wrapping="true"
+                                        press="navigateToList"
+                                        text="{path : 'IdentityProfile>LINK_TEXT', formatter : '.formatIdentityProfileText'}"
+                                        tooltip="{i18n>CAMPAIGN_HOME_PANEL_PROFILE_LINK}">
+                                    </Link>
+                                    <Text
+                                        class="sapInoIdentityProfileCountItemText"
+                                        wrapping="false"
+                                        text="{ parts : [{ path : 'IdentityProfile>COUNT' }, { path : 'data>NO' }], formatter : '.formatIdentityProfileCount' }"
+                                        width="100%"
+                                        textAlign="End">
+                                    </Text>
+                                </HBox>
+                            </content>
+                        </CustomListItem>
+                    </List>
+                </VBox>	
+                <VBox id="identityProfileButtons" alignItems="Stretch" fitContainer="true">
+                    <HBox id="identityProfileSeparator" class=" sapInoIdentityProfileBtns" wrap="Wrap"
+                        justifyContent="Center"
+                        fitContainer="true"
+                        visible="{= !(${IdentityProfile>/SHOW_BUTTONS} === true || (${IdentityProfile>/SHOW_BUTTONS_AUTH} === true &amp;&amp; ${data>IS_OPEN_FOR_SUBMISSION} + ${data>SUBMITTABLE} === 2)
+                        || (${IdentityProfile>/SHOW_CRTBLOG_AUTH} === true &amp;&amp; ${data>IS_OPEN_FOR_BLOG_CREATE} === 1))}">
+                        <ino:Follow onlyIcon="false" type="CAMPAIGN" value="{data>FOLLOW}" objectId="{data>ID}" visible="{= !!${data>ID} }" enabled="true" styleType="campaignHomeFollow" follow="onFollow" />
+                        <Button icon="{ path:'data>REGISTER_STATUS', formatter:'.transIcon' }" id="registerButton"
+                        class="registerButton isRegisted" text="{ path:'data>REGISTER_STATUS', formatter:'.transText' }" press="Register"
+                        tooltip="{ parts : [{path:'data>REGISTER_STATUS'},{path:'data>IS_REGIST_DISABLED'},{path:'data>IS_OPEN_REGISTER_SETTING'}] ,formatter:'.transTooltip' }"
+                        visible="{ parts: [{path:'data>ID'},{path:'data>IS_OPEN_FOR_REGISTRATION'}, {path:'data>REGISTER_STATUS'}], formatter: '.isVisabled'}" 
+                        enabled="{parts:[{path:'data>REGISTER_STATUS'},{path:'data>IS_REGIST_DISABLED'},{path:'data>IS_OPEN_REGISTER_SETTING'}], formatter:'.isEnabled'}"/>
+                    </HBox>
+                    
+                    
+                    <HBox
+                        id="identityProfileButton"
+                        class="sapInoIdentityProfileBtns "
+                        wrap="Wrap"
+                        justifyContent="Center"
+                        fitContainer="true"
+                        visible="{= ${IdentityProfile>/SHOW_BUTTONS} === true || (${IdentityProfile>/SHOW_BUTTONS_AUTH} === true &amp;&amp; ${data>IS_OPEN_FOR_SUBMISSION} + ${data>SUBMITTABLE} === 2)
+                        || (${IdentityProfile>/SHOW_CRTBLOG_AUTH} === true &amp;&amp; ${data>IS_OPEN_FOR_BLOG_CREATE} === 1)}">
+                        <Button
+                            id="createIdea"
+                            class="createIdeaButton"
+                            text="{i18n>PROFILE_BTN_CREATE_IDEA}"
+                            icon="sap-icon://InoIcons/idea-add"
+                            visible="{= !(${IdentityProfile>/SHOW_CRTBLOG_AUTH} === true)}"
+                            type="Emphasized"
+                            press="onIdentityProfileCreateIdea"/>
+                        <ino:Follow onlyIcon="false" type="CAMPAIGN" value="{data>FOLLOW}" objectId="{data>ID}" visible="{= !!${data>ID} }" enabled="true" styleType="campaignHomeFollow" follow="onFollow" />
+                        <Button icon="{ path:'data>REGISTER_STATUS', formatter:'.transIcon' }" tooltip="{ parts : [{path:'data>REGISTER_STATUS'},{path:'data>IS_REGIST_DISABLED'}] ,formatter:'.transTooltip' }" class="registerButton isRegisted" text="{ path:'data>REGISTER_STATUS', formatter:'.transText' }" press="Register" visible="{ parts: [{path:'data>ID'},{path:'data>IS_OPEN_FOR_REGISTRATION'}, {path:'data>REGISTER_STATUS'}], formatter: '.isVisabled'}" enabled="{parts:[{path:'data>REGISTER_STATUS'},{path:'data>IS_REGIST_DISABLED'}], formatter:'.isEnabled'}"/>
+                        <Button
+                            id="createBlog"
+                            class=""
+                            text="{i18n>PROFILE_BTN_CREATE_BLOG}"
+                            visible="{= ${IdentityProfile>/SHOW_CRTBLOG_AUTH} === true &amp;&amp; ${data>IS_OPEN_FOR_BLOG_CREATE} === 1}"
+                            icon="sap-icon://InoIcons/wall-add"
+                            type="Emphasized"
+                            press="onIdentityProfileCreateBlog"/>    
+                        
+                    </HBox>
+                </VBox>
+                
+            </VBox>
+		</content>
+    </Panel>
+</core:FragmentDefinition>

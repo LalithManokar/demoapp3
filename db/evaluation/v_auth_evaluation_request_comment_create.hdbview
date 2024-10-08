@@ -1,0 +1,6 @@
+schema = "SAP_INO";
+query = "select auth.eval_req_id as eval_req_id
+			from \"sap.ino.db.evaluation::v_auth_evaluation_request_read\" as auth
+		with read only";
+
+depends_on_view = ["sap.ino.db.evaluation::v_auth_evaluation_request_read"];

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_IDEAS_EVALUATIONS" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED">
+  <descriptions defaultDescription="Ideas and their Evaluations "/>
+  <metadata changedAt="2021-07-05 16:23:58.389"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="19"/>
+  <dataSources>
+    <DataSource id="V_ANALYTICS_IDEAS_EVALUATIONS" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEAS_EVALUATIONS</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="CAMPAIGN_PHASE_CODE"/>
+        <viewAttribute id="MODEL_CODE"/>
+        <viewAttribute id="EVALUATION_ID"/>
+        <viewAttribute id="EVALUATION_CREATED_BY_ID"/>
+        <viewAttribute id="EVALUATION_CREATED_AT"/>
+        <viewAttribute id="EVALUATION_CHANGED_BY_ID"/>
+        <viewAttribute id="EVALUATION_CHANGED_AT"/>
+        <viewAttribute id="EVALUATION_STATUS_CODE"/>
+        <viewAttribute id="CRITERION_CODE"/>
+        <viewAttribute id="CRITERION_VALUE"/>
+        <viewAttribute id="CRITERION_TEXT_VALUE"/>
+        <viewAttribute id="EVALUATION_COMMENT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#V_ANALYTICS_IDEAS_EVALUATIONS">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_PHASE_CODE" source="CAMPAIGN_PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="MODEL_CODE" source="MODEL_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_ID" source="EVALUATION_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_CREATED_BY_ID" source="EVALUATION_CREATED_BY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_CREATED_AT" source="EVALUATION_CREATED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_CHANGED_BY_ID" source="EVALUATION_CHANGED_BY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_CHANGED_AT" source="EVALUATION_CHANGED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_STATUS_CODE" source="EVALUATION_STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CRITERION_CODE" source="CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CRITERION_VALUE" source="CRITERION_VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CRITERION_TEXT_VALUE" source="CRITERION_TEXT_VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_COMMENT" source="EVALUATION_COMMENT"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Aggregation_1">
+    <descriptions/>
+    <attributes>
+      <attribute id="EVALUATION_ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation ID"/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="EVALUATION_ID"/>
+      </attribute>
+      <attribute id="EVALUATION_CREATED_AT" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation Creation Date"/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="EVALUATION_CREATED_AT"/>
+      </attribute>
+      <attribute id="EVALUATION_CHANGED_AT" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation Change Date"/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="EVALUATION_CHANGED_AT"/>
+      </attribute>
+      <attribute id="CRITERION_TEXT_VALUE" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Criterion Text Value"/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="CRITERION_TEXT_VALUE"/>
+      </attribute>
+      <attribute id="EVALUATION_COMMENT" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation Comment"/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="EVALUATION_COMMENT"/>
+      </attribute>
+      <attribute id="CRITERION_CODE$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="CRITERION_CODE"/>
+      </attribute>
+      <attribute id="MODEL_CODE$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="MODEL_CODE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="IDEA_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_PHASE_CODE$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="CAMPAIGN_PHASE_CODE"/>
+      </attribute>
+      <attribute id="EVALUATION_CREATED_BY_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="EVALUATION_CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="EVALUATION_STATUS_CODE$local">
+        <descriptions defaultDescription="Evaluation Status Code"/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="EVALUATION_STATUS_CODE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="CRITERION_VALUE" order="4" semanticType="quantity" aggregationType="sum" measureType="quantity">
+        <descriptions defaultDescription="Criterion Value"/>
+        <unitCurrencyAttribute attributeName="CRITERION_UOM_TEXT" dimensionUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CRITERION_DIMENSION"/>
+        <measureMapping columnObjectName="Aggregation_1" columnName="CRITERION_VALUE"/>
+      </measure>
+      <measure id="CRITERION_VALUE_MIN" order="7" semanticType="quantity" aggregationType="min" measureType="quantity">
+        <descriptions defaultDescription="Criterion Value Minimum"/>
+        <unitCurrencyAttribute attributeName="CRITERION_UOM_TEXT" dimensionUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CRITERION_DIMENSION"/>
+        <measureMapping columnObjectName="Aggregation_1" columnName="CRITERION_VALUE"/>
+      </measure>
+      <measure id="CRITERION_VALUE_MAX" order="8" semanticType="quantity" aggregationType="max" measureType="quantity">
+        <descriptions defaultDescription="Criterion Value Maximum"/>
+        <unitCurrencyAttribute attributeName="CRITERION_UOM_TEXT" dimensionUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CRITERION_DIMENSION"/>
+        <measureMapping columnObjectName="Aggregation_1" columnName="CRITERION_VALUE"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures>
+      <measure id="EVALUATION_COUNT" hidden="false" order="5" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Evaluation Count"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="EVALUATION_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="CRITERION_VALUE_AVERAGE" hidden="false" order="6" aggregationType="sum" measureType="simple" datatype="DOUBLE" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Criterion Value Average"/>
+        <formula>&quot;CRITERION_VALUE&quot; / &quot;EVALUATION_COUNT&quot;</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+    <sharedDimensions>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CRITERION_DIMENSION">
+        <attributes>
+          <attributeRef>#CRITERION_CODE$local</attributeRef>
+          <attributeRef>#MODEL_CODE$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>CRITERION_CODE</attributeName>
+          <attributeName>CRITERION_MODEL_CODE</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="inner"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION">
+        <attributes>
+          <attributeRef>#CAMPAIGN_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>CAMPAIGN_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="inner"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION">
+        <attributes>
+          <attributeRef>#IDEA_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDEA_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="inner"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_MODEL_DIMENSION">
+        <attributes>
+          <attributeRef>#MODEL_CODE$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>MODEL_CODE</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="inner"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_PHASE_DIMENSION">
+        <attributes>
+          <attributeRef>#CAMPAIGN_PHASE_CODE$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>PHASE_CODE</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="inner"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_EVALUATOR_DIMENSION">
+        <attributes>
+          <attributeRef>#EVALUATION_CREATED_BY_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDENTITY_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_STATUS_DIMENSION">
+        <attributes>
+          <attributeRef>#EVALUATION_STATUS_CODE$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>STATUS_CODE</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures>
+          <attributeReference attributeName="STATUS_DEFAULT_TEXT" hidden="true"/>
+          <attributeReference attributeName="STATUS_DEFAULT_LONG_TEXT" hidden="true"/>
+        </associatedAttributeFeatures>
+      </logicalJoin>
+    </sharedDimensions>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="22" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Aggregation_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="320"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape modelObjectName="Aggregation_1" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+        <upperLeftCorner x="582" y="353"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CRITERION_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="1050" y="355"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="16" y="176"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="930" y="16"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_MODEL_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="16" y="401"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_PHASE_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="-15" y="520"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_EVALUATOR_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="637" y="813"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_STATUS_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="-28" y="678"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

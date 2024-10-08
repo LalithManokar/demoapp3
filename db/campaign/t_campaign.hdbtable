@@ -1,0 +1,45 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Campaign for collecting ideas";
+table.columns = [
+    {name = "ID";                       sqlType = INTEGER;               nullable = false; comment = "Human readable identifier ";},
+    {name = "CREATED_AT";               sqlType = TIMESTAMP;             nullable = false; comment = "Creation timestamp ";},
+    {name = "CREATED_BY_ID";            sqlType = INTEGER;               nullable = false; comment = "Identity by which an identity has been created. Foreign key to t_identity.ID ";},
+    {name = "CHANGED_AT";               sqlType = TIMESTAMP;             nullable = false; comment = "Changed timestamp ";},
+    {name = "CHANGED_BY_ID";            sqlType = INTEGER;               nullable = false; comment = "Identity by which an identity has been changed. Foreign key t_identity.ID ";},
+    {name = "STATUS_CODE";              sqlType = VARCHAR; length=500;   nullable = false; comment = "Status of campaign ";},
+    {name = "VALID_FROM";               sqlType = TIMESTAMP;             nullable = false; comment = "Point in time when campaign starts. From that on it is visible to its target group ";},
+    {name = "VALID_TO";                 sqlType = TIMESTAMP;             nullable = true;  comment = "Point in time when campaign ends. From that on campaign is not visible any more. NULL == endless campaign ";},
+    {name = "SUBMIT_FROM";              sqlType = TIMESTAMP;             nullable = true; comment = "Point in time when idea submissions to campaign start ";},
+    {name = "SUBMIT_TO";                sqlType = TIMESTAMP;             nullable = true;  comment = "Point in time when no ideas may be submitted any more. From that on no new ideas can be created. If NULL this is an endless campaign ";},
+    {name = "REGISTER_FROM";              sqlType = TIMESTAMP;             nullable = true; comment = "Point in time when campaign registration start ";},
+    {name = "REGISTER_TO";                sqlType = TIMESTAMP;             nullable = true;  comment = "Point in time when campaign registration end. If NULL this is an endless campaign ";},
+    {name = "IS_BLACK_BOX";             sqlType = TINYINT;               nullable = false; comment = "Black box campaigns are campaigns where ideas are not disclosed to other idea submitters ";},
+    {name = "VOTE_TYPE_CODE";           sqlType = VARCHAR; length = 500; nullable = true;  comment = "Vote type for the campaign. Foreign key to t_vote_type.CODE ";},
+    {name = "COLOR_CODE";               sqlType = VARCHAR; length = 6;   nullable = true;  comment = "Optional HEX Code for campaign color w/o leading # ";},
+    {name = "PHASE_COUNT";              sqlType = INTEGER;               nullable = false; comment = "Number of phases ";},
+    {name = "PAGE_COUNT";               sqlType = INTEGER;               nullable = false; comment = "Number of pages ";},
+    {name = "MAIL_TEMPLATE_CODE";       sqlType = VARCHAR; length = 500; nullable = true;  comment = "Mail Template for the campaign. Foreing key to t_mail_template.CODE ";},
+    {name = "MAIL_SUCCESS_CODE";        sqlType = VARCHAR; length = 500; nullable = true;  comment = "Mail Text for a success message . Foreign key to t_mail_text_template.CODE ";},
+    {name = "MAIL_REJECTION_CODE";      sqlType = VARCHAR; length = 500; nullable = true;  comment = "Mail Text for a rejection message. Foreign key to t_mail_text_template.CODE ";},
+    {name = "MAIL_PHASE_CHANGE_CODE";   sqlType = VARCHAR; length = 500; nullable = true;  comment = "Mail Text for a phase change of an idea. Foreign key to t_mail_text_template.CODE ";},
+    {name = "VIEW_COUNT";               sqlType = INTEGER;               nullable = true;  comment = "View count";},
+    {name = "VISITOR_COUNT";            sqlType = INTEGER;               nullable = true;  comment = "Visitor count";},
+    {name = "ACTIVE_PARTICIPANT_COUNT"; sqlType = INTEGER;               nullable = true;  comment = "Active participant count";},
+    {name = "FORM_CODE";                sqlType = VARCHAR; length=500;   nullable = true;  comment = "idea form code of campaign ";},
+    {name = "RESP_CODE";                sqlType = VARCHAR; length=500;   nullable = true;  comment = "subresponsibility code of campaign ";},
+    {name = "REWARD";                   sqlType = TINYINT;               nullable = true;  comment = "indicator of enable reward for campaign";},
+    {name = "REWARD_UNIT_CODE";         sqlType = VARCHAR; length = 500; nullable = true;  comment = "Drop down list of Reward unit code";},
+    {name = "IS_REGISTER_AUTO_APPROVE"; sqlType = TINYINT;               nullable = true;  comment = "Indicates whether campaign registration needs campaign manager approve";},
+    {name = "IS_MILESTONE_ACTIVE";      sqlType = TINYINT;               nullable = true;  comment = "Indicates whether campaign milestone is enable or not";},
+    {name = "IS_AUTO_ASSIGN_RL_COACH";  sqlType = TINYINT;               nullable = true;  comment = "Indicates whether campaign with Responsibility list can auto assign idea coach";},
+    {name = "IS_OPEN_ANONYMOUS_FUNCTION";  sqlType = TINYINT;            nullable = true;  comment = "Indicates whether campaign turn on the anonymous function for idea";},
+    {name = "IS_OPEN_REGISTER_SETTING";  sqlType = TINYINT;            nullable = true;  comment = "Indicates whether campaign turn on the register setting for campaign";} ,
+    {name = "MAIL_NOTIFICATION_SUMMARY_CODE";   sqlType = VARCHAR; length = 500; nullable = true;  comment = "Mail Text for a summary email. Foreign key to t_mail_text_template.CODE ";},
+    {name = "ADMIN_FORM_CODE";          sqlType = VARCHAR; length=500;   nullable = true;  comment = "admin form code of campaign ";},
+    {name = "IS_INTEGRATION_ACTIVE";    sqlType = TINYINT;  nullable = true;  comment = "";},
+    {name = "IS_GAMIFICATION_ACTIVE";    sqlType = TINYINT;  nullable = true;  comment = "GAMIFICATION";},
+    {name = "VANITY_CODE";    sqlType = VARCHAR;  length = 30; nullable = true;  comment = "VANITY_CODE";}
+    
+];
+table.primaryKey.pkcolumns = ["ID"];

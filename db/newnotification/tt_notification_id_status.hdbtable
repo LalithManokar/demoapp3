@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE;
+table.temporary = true;
+table.description = "Input table for DELETE procedure of notification status";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Notification STATUS ids to be deleted";},
+    {name = "MAIL_STATUS_CODE"; sqlType = VARCHAR; length = 16; nullable = true; comment = "Currently either UNSENT, SENT, DEACTIVATED, PROCESSING";},
+    {name = "MAIL_STATUS_REASON"; sqlType = NVARCHAR; length = 3096; nullable = true; comment = "REASON";}
+];

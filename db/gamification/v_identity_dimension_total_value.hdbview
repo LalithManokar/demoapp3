@@ -1,0 +1,12 @@
+schema = "SAP_INO";
+query = "select 
+       identity_log.identity_id,
+       activity_log.dimension_id, 
+       sum(value) as current_value
+       from \"sap.ino.db.gamification::t_identity_log_for_activity\" as identity_log 
+       inner join \"sap.ino.db.gamification::t_activity_log\" as activity_log  on identity_log.activity_id = activity_log.id
+       group by identity_id,dimension_id 
+    with read only";
+    
+depends_on_table = ["sap.ino.db.gamification::t_identity_log_for_activity",
+                    "sap.ino.db.gamification::t_activity_log"];   

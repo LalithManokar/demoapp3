@@ -1,0 +1,46 @@
+<mvc:View
+        controllerName="sap.ino.vc.idea.PPM"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns:ino="sap.ino.controls"
+	xmlns:l="sap.ui.layout"
+	xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<VBox width="100%">
+		<OverflowToolbar width="100%"></OverflowToolbar>
+	</VBox>
+	<List id="ideaPPMList" class="sapInoIdeaPPMList" 
+            items="{ path: 'ppm>/ObjectLinkListCollection', sorter: [{path: 'Name', descending: true}]}" 
+            noDataText="{i18n>PPM_NO_ITEM_FOUND}"
+            growing="true" growingScrollToLoad="true" growingThreshold="10">
+		<items>
+			<CustomListItem class="ideaPPMListItem">
+				<Panel expandable="true" expanded="false" width="auto" expand=".onExpand">
+					<headerToolbar>
+						<OverflowToolbar height="100%" press=".onExpand">
+							<FlexBox alignItems="Start" justifyContent="SpaceBetween" wrap="NoWrap" width="100%">
+								<items>
+									<VBox class="sapInoPPMItemVBox" height="100%">
+										<Text text="{ppm>Name}" class="sapInoPPMTitle"/>
+										<HBox>
+											<Label text="{i18n>PPM_FLD_OBJECT_TYPE}" class="sapInoPPMLabel" />
+											<Text text="{ppm>LinkedObjectTypeName}" class="sapInoPPMText" />
+										</HBox>
+										<HBox>
+											<Label text="{i18n>PPM_FLD_OBJECT_STATUS}" class="sapInoPPMLabel"/>
+											<Text text="{ppm>LinkedObjectStatusName}" class="sapInoPPMText" />
+										</HBox>
+									</VBox>
+									<VBox class="sapUiSmallMarginEnd" alignItems="End" justifyContent="Center" >
+										<Link text="{i18n>PPM_LNK_NAVIGATION_PATH}" href="{ppm>NavigationPath}" target="_blank"/>
+									</VBox>
+								</items>
+							</FlexBox>
+						</OverflowToolbar>
+					</headerToolbar>
+					<content />
+				</Panel>
+			</CustomListItem>
+		</items>
+	</List>
+</mvc:View>

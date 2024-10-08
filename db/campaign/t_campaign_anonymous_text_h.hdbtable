@@ -1,0 +1,15 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "CAMPAIGN ANONYMOUS UI TEXT SETTING HISTORY";
+table.columns = [
+    {name = "HISTORY_DB_EVENT";         sqlType = VARCHAR;   length = 8;   nullable = false; comment = "Database event: CREATED, UPDATED, DELETED";},
+    {name = "HISTORY_BIZ_EVENT";        sqlType = VARCHAR;   length = 60;  nullable = false; comment = "Business event: CAMPAIGN_CREATED, ...";},
+    {name = "HISTORY_AT";               sqlType = TIMESTAMP;               nullable = false; comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID";         sqlType = INTEGER;                 nullable = false; comment = "Actor who did the changes";},
+    {name = "ID";             sqlType = INTEGER;                nullable = false;},
+    {name = "CODE";           sqlType = VARCHAR; length = 500; nullable = false; comment = "System anonymous text code";},
+    {name = "CAMPAIGN_ID";  sqlType = INTEGER;  nullable = false; comment = "Human-readable identifier of campaign";}  
+];  
+table.indexes = [
+    {name="LOGKEY_CAMPAIGN_ANONYMOUS_TEXT_T_H"; unique = false; indexColumns = ["ID","HISTORY_AT"];}
+];  

@@ -1,0 +1,67 @@
+
+/* ============================================= */
+/* CSS for control DropUpload.control */
+/* ============================================= */
+
+.sapInoWallDropUpload .sapInoWallDropUploadForm {
+	position: absolute;
+	visibility: hidden;
+}
+
+.sapInoWallDropUpload .sapInoWallDropUploadArea {
+	height: 100%;
+	border: 2px solid #888888;
+	background: #efefef; /* Old browsers */
+	filter: none; /* TODO: check if this works in IE9 */
+}
+
+.sapInoWallDropUpload .sapInoWallDropUploadAreaInner.noflip{
+    color:#666666;
+}
+
+.sapInoWallDropUpload .sapInoWallDropUploadAreaInner {
+	margin: 0px auto;
+	text-align:center;
+	font-size: 2rem;
+	font-weight: bold;
+	color: #aaaaaa;
+}
+
+.sapInoWallDropUpload.sapUiNoFlex .sapInoWallDropUploadAreaInner {
+    top: 50%;
+	position: relative;
+	margin-top: initial;
+	margin-bottom: initial;
+}
+
+.sapUiSizeCozy .sapInoWallDropUpload.sapUiNoFlex .sapInoWallDropUploadAreaInner {
+}
+
+/* vertically stretch area */
+.sapInoWallDropUpload {
+	flex-grow: 99999;
+	-ms-flex-grow: 99999;
+	display: flex;
+	display: -ms-flex;
+	flex-direction: column;
+	-ms-flex-direction: column;
+	min-height: 44px;
+}
+
+/* vertically center icon */
+.sapInoWallDropUpload .sapInoWallDropUploadArea {
+	flex-grow: 99999;
+	-ms-flex-grow: 99999;
+	display: flex;
+	display: -ms-flex;
+	flex-direction: row;
+	-ms-flex-direction: row;
+	align-items: center;
+	-ms-align-items: center;
+	height: 0%;
+}
+
+.sapInoWallDropUpload .sapInoWallItemImageDropInner {
+	flex-grow: 1;
+	-ms-flex-grow: 1;
+}

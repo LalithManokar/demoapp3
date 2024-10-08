@@ -1,0 +1,9 @@
+table.schemaName  = "SAP_INO";
+table.description = "Generic object table";
+table.temporary   = true;
+table.columns = [
+    {name = "OBJECT_ID";        sqlType = INTEGER;                                  comment = "Object identifier";},
+    {name = "OBJECT_TYPE_CODE"; sqlType = VARCHAR;   length = 20;                   comment = "Object type code";},
+    {name = "CHANGED_AT";       sqlType = TIMESTAMP;              nullable = false; comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID";    sqlType = INTEGER;                nullable = false; comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";}
+];

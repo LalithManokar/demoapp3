@@ -1,0 +1,69 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_update_delta_identity_group_member_transitive" (
+    in it_member_ids SAP_INO."sap.ino.db.iam::tt_id_set_input"
+)
+language sqlscript
+sql security invoker
+default schema SAP_INO
+as
+begin
+    -- Attention:
+    --     If some of the imported IDs are groups things start to get tricky.
+    --     For users it is sufficient to traverse the group hierarchy upwards.
+    --     For groups it must also cleaned and recomputed downwards. Then
+    --     their childrend must be recomputed and distributed upwards.
+    --     This includes to clean them up upwards as well.
+    
+    --     It follows that touching large groups with this procedure
+    --     is expensive. E.g. if the "all" group is touched then all
+    --     users and consequently any not empty group will be updated.
+    
+    -- It follows that if a relation from a member M to a group G is
+    -- changed then this procedure should be called for M and NOT for G.
+    
+    -- step 1: determine all OLD closures downwards the tree
+    -- step 2: compute new closure
+    -- step 3: wipe old closure
+    -- step 4: store new closure
+    
+    -- step 1: determine all OLD closures downwards the tree
+    lt_relevant_nodes =
+        select * from :it_member_ids
+        union distinct
+        select distinct tc.member_id id from 
+            :it_member_ids as it
+        join
+            "sap.ino.db.iam::t_identity_group_member_transitive" as tc
+        on it.id = tc.group_id;
+    
+    -- step 2: determine all NEW closures (added members downwards the tree)
+    lt_relevant_nodes =
+        select * from :lt_relevant_nodes
+        union distinct
+        select distinct tm.member_id id from
+           :it_member_ids as it
+        join
+            "sap.ino.db.iam::t_identity_group_member" as tm
+        on it.id = tm.group_id        
+        union distinct
+        select distinct tmt.member_id id from
+           :it_member_ids as it
+        join
+            "sap.ino.db.iam::t_identity_group_member" as tm
+        on it.id = tm.group_id
+        join
+            "sap.ino.db.iam::t_identity_group_member_transitive" as tmt
+        on tm.member_id = tmt.group_id;
+    
+    -- step 3: compute new closure
+    call "sap.ino.db.iam::p_get_groups_transitive" (:lt_relevant_nodes, lt_group_ids);
+    
+    -- step 4: wipe old closure
+    delete from "sap.ino.db.iam::t_identity_group_member_transitive"
+        where member_id in (select id from :lt_relevant_nodes);
+    
+    -- step 5: store new closure
+    -- insert is wrong here because computing the closure upwards may result
+    -- in entries that were not removed during deletion of the closure downwards
+    upsert "sap.ino.db.iam::t_identity_group_member_transitive" (member_id, group_id)
+        select member_id, group_id from :lt_group_ids;
+end;

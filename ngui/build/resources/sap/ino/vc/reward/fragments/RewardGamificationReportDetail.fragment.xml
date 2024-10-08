@@ -1,0 +1,130 @@
+<core:FragmentDefinition
+	xmlns="sap.ui.table"
+	xmlns:m="sap.m"
+	xmlns:core="sap.ui.core">
+	<m:Dialog
+        title="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_REPORT_DETAIL_VIEW}"
+        contentWidth="90%"
+        >
+		<Table
+    		id="gamificationReportTableDetail"
+    		visibleRowCount="15"
+    		enableColumnReordering="true"
+    		rowSelectionChange="onGamiTableDetailSelectionChange"
+    		enableCellFilter="true"
+    		enableSelectAll="true"
+    		class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiTinyMarginTop sapUiSmallMarginBottom"
+    		visible="{= ${view>/List/IS_GAMIFICATION_REPORT}}">
+			<extension>
+				<m:OverflowToolbar>
+					<m:Title id="title" text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_TITLE_VIEW}"/>
+					<m:ToolbarSpacer/>
+					<m:Button
+						    id="exportDetailBtn"
+							icon="sap-icon://excel-attachment"
+							tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_DOWNLOAD}"
+							enabled="false"
+							press="onListExport"/>
+				</m:OverflowToolbar>
+			</extension>
+			<columns>
+				<Column hAlign="Begin" showFilterMenuEntry="true" sortProperty="DIMENSION_NAME" filterProperty="DIMENSION_NAME">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_DIMENSION_NAME}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_DIMENSION_NAME}" />
+					<template>
+						<m:Text tooltip="{data>DIMENSION_NAME}" wrapping="false" text="{data>DIMENSION_NAME}" />
+					</template>
+				</Column>
+				<Column  hAlign="Begin" sortProperty="DIMENSION_TECH_NAME" filterProperty="DIMENSION_TECH_NAME" >
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_DIMENSION_TECH_NAME}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_DIMENSION_TECH_NAME}" />
+					<template>
+						<m:Text tooltip="{data>DIMENSION_TECH_NAME}" wrapping="false" text="{data>DIMENSION_TECH_NAME}" />
+					</template>
+				</Column>
+				<Column  hAlign="Begin" showFilterMenuEntry="true" sortProperty="CAMPAIGN_ID" filterProperty="CAMPAIGN_ID" filterType="sap.ui.model.type.Integer">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_CAMPAIGN_ID}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_CAMPAIGN_ID}" />
+					<template>
+						<m:Text wrapping="false" text="{data>CAMPAIGN_ID}" />
+					</template>
+					<customData>
+						<core:CustomData key="exportIgnore" />
+					</customData>
+				</Column>
+				<Column  hAlign="Begin" showFilterMenuEntry="true" sortProperty="CAMPAIGN_NAME" filterProperty="CAMPAIGN_NAME">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_CAMPAIGN_NAME}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_CAMPAIGN_NAME}"/>
+					<template>
+						<m:Text tooltip="{data>CAMPAIGN_NAME}" wrapping="false" text="{data>CAMPAIGN_NAME}" />
+					</template>
+				</Column>
+				<Column  hAlign="Begin" showFilterMenuEntry="true" sortProperty="IDEA_ID" filterProperty="IDEA_ID" filterType="sap.ui.model.type.Integer">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_IDEA_ID}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_IDEA_ID}"/>
+					<template>
+						<m:Text wrapping="false" text="{data>IDEA_ID}" />
+					</template>
+				</Column>
+				<Column  hAlign="Begin" showFilterMenuEntry="true" sortProperty="IDEA_NAME" filterProperty="IDEA_NAME">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_IDEA_NAME}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_IDEA_NAME}" />
+					<template>
+						<m:Text tooltip="{data>IDEA_NAME}" wrapping="false" text="{data>IDEA_NAME}" />
+					</template>
+				</Column>
+				<Column  hAlign="Begin" showFilterMenuEntry="true" sortProperty="ACTIVITY_TEXT" filterProperty="ACTIVITY_TEXT">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_ACTIVITY}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_ACTIVITY}"/>
+					<template>
+						<m:Text tooltip="{data>ACTIVITY_TEXT}" wrapping="false" text="{data>ACTIVITY_TEXT}" />
+					</template>
+				</Column>
+				<Column  hAlign="End" showFilterMenuEntry="true" sortProperty="PHASE_CODE" filterProperty="PHASE_CODE">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_PHASE}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_PHASE}"/>
+					<template>
+						<m:Text tooltip="{data>PHASE_TEXT}" wrapping="false" text="{data>PHASE_TEXT}" />
+					</template>
+				</Column>
+				<Column  hAlign="End" showFilterMenuEntry="true" sortProperty="WITHIN_TIME_TEXT">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_WITHIN_TIME}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_WITHIN_TIME}"/>
+					<template>
+						<m:Text tooltip="{data>WITHIN_TIME_TEXT}" wrapping="false" text="{data>WITHIN_TIME_TEXT}" />
+					</template>
+				</Column>
+				<Column  hAlign="End" showFilterMenuEntry="true" sortProperty="VALUE" filterProperty="VALUE" filterType="sap.ui.model.type.Integer">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_VALUE}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_VALUE}"/>
+					<template>
+						<m:Text wrapping="false" text="{data>VALUE}" />
+					</template>
+				</Column>
+				<Column  hAlign="Begin" showFilterMenuEntry="true" sortProperty="DIMENSION_UNIT" filterProperty="DIMENSION_UNIT">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_UNIT}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_UNIT}"/>
+					<template>
+						<m:Text tooltip="{data>DIMENSION_UNIT}" wrapping="false" text="{data>DIMENSION_UNIT}" />
+					</template>
+				</Column>
+				<Column  hAlign="Begin" showFilterMenuEntry="true" sortProperty="CONSUMED_VALUE" filterProperty="CONSUMED_VALUE" filterType="sap.ui.model.type.Integer">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_CONSUMED_VALUE}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_CONSUMED_VALUE}"/>
+					<template>
+						<m:Text wrapping="false" text="{data>CONSUMED_VALUE}" />
+					</template>
+				</Column>
+				<Column  hAlign="Begin" showFilterMenuEntry="true" sortProperty="CONSUMED_REFERENCE_NO" filterProperty="CONSUMED_REFERENCE_NO">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_CONSUMED_REF_NO}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_CONSUMED_REF_NO}"/>
+					<template>
+						<m:Text wrapping="false" text="{data>CONSUMED_REFERENCE_NO}" />
+					</template>
+				</Column>
+				<Column  hAlign="Begin" showFilterMenuEntry="true" sortProperty="COMMENTS" filterProperty="COMMENTS">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_COMMENTS}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_COMMENTS}"/>
+					<template>
+						<m:Text tooltip="{data>COMMENTS}" wrapping="false" text="{data>COMMENTS}" />
+					</template>
+				</Column>
+				<Column  hAlign="Begin" showFilterMenuEntry="true" sortProperty="CREATED_AT" filterProperty="CREATED_AT">
+					<m:Label text="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_CREATED_AT}" tooltip="{i18n>IDEA_LIST_REWARD_LIST_GAMIFICATION_FLD_CREATED_AT}"/>
+					<template>
+						<m:Text tooltip="{path:'data>CREATED_AT', type:'sap.ui.model.type.DateTime'}" wrapping="false" text="{path:'data>CREATED_AT', type:'sap.ui.model.type.DateTime'}" />
+					</template>
+				</Column>
+			</columns>
+		</Table>
+		<m:endButton>
+			<m:Button text="{i18n>BTN_CLOSE}" press="onPressGamificationDetailClose" />
+		</m:endButton>
+	</m:Dialog>
+</core:FragmentDefinition>

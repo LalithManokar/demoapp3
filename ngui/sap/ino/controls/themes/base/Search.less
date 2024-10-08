@@ -1,0 +1,74 @@
+/**
+*   Global Search 
+**/
+
+.sapInoGlobalSearch{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    .sapInoGlobalSearchDropDown{
+        min-width: 8rem;
+        margin-top: 0.25rem;
+    }
+    .sapInoGlobalSearchInput{
+        width: auto;
+    }
+}
+
+.sapInoGlobalSearchPage{
+    background: #fff;
+    .sapInoGlobalSearchToolbar{
+        border-bottom: none;
+        .sapInoGlobalSearchMore{
+            margin-right: 1rem;
+        }
+    }
+}
+.sapInoSearchPageLayout{
+    
+    .sapUiHLayoutNoWrap{
+        width: 100%;
+    }
+    
+    .sapUiHLayoutChildWrapper{
+        width: 100%;
+    }
+
+    .sapInoWallPreview{
+        .sapUiHLayoutChildWrapper{
+            width: auto;
+        }   
+    }
+    
+    .sapInoGlobalSearcBlogSection{
+        .sapUiHLayoutChildWrapper{
+            width: 100%;
+        }  
+        .sapInoBlogList{
+            .sapInoBlogListItem{
+                padding: 1rem !important;
+                border: 1px solid #ddd !important;
+                margin-bottom: 1rem !important;
+            }    
+        }
+    }
+    
+    .sapInoWrappingList.sapInoWrappingListWrap ul:first-of-type {
+        // justify-content: flex-start;
+    }
+}
+
+
+.sapInoGlobalSearchBusy{
+    opacity: 0;
+    transition: .5s ease-in;
+}
+
+
+html{
+    &:not(.sap-desktop){
+        .sapInoGlobalSearch{
+            display: none;
+        }
+    }
+}

@@ -1,0 +1,28 @@
+schema = "SAP_INO";
+query = "
+    select 
+        vol.code as value_option_list_code,
+        vol.default_text as value_option_list_default_text,
+        vol.default_long_text as value_option_list_default_long_text,
+        criterion.code as criterion_code,
+        criterion.default_text as criterion_default_text,
+        criterion.default_long_text as criterion_default_long_text,
+        model.code as model_code,
+        model.default_text as model_default_text,
+        model.default_long_text as model_default_long_text,
+        model_usage.campaign_id,
+        model_usage.campaign_name,
+        model_usage.campaign_status_code,
+        model_usage.idea_id,
+        model_usage.idea_name,
+        model_usage.evaluation_count
+    from \"sap.ino.db.basis::t_value_option_list\" as vol
+        inner join \"sap.ino.db.evaluation::v_criterion_stage_union\" as criterion on criterion.value_option_list_code = vol.code
+        inner join \"sap.ino.db.evaluation::v_model_stage_union\" as model on model.code = criterion.model_code
+        left outer join \"sap.ino.db.evaluation::v_model_usage\" as model_usage on model_usage.model_code = model.code
+    with read only ";
+
+depends_on_table = ["sap.ino.db.basis::t_value_option_list"];
+depends_on_view = ["sap.ino.db.evaluation::v_criterion_stage_union",
+                   "sap.ino.db.evaluation::v_model_stage_union",
+                   "sap.ino.db.evaluation::v_model_usage"];

@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Joins identity and objects to roles: Someone has on something a certain role";
+table.columns = [
+    {name = "ID";               sqlType = INTEGER;              nullable = false; comment = "Technical record ID";},
+    {name = "IDENTITY_ID";      sqlType = INTEGER;              nullable = false; comment = "Identity which has role ROLE_ID. Foreign key to t_identity.ID";},
+    {name = "OBJECT_ID";        sqlType = INTEGER;              nullable = false; comment = "Object on which an identity has role ROLE_ID. Foreign key to t_idea.ID and t_campaign.ID";},
+    {name = "OBJECT_TYPE_CODE"; sqlType = VARCHAR; length =100; nullable = false; comment = "Object type of link. Foreign key t_application_object.CODE";},
+    {name = "ROLE_CODE";        sqlType = VARCHAR; length = 20; nullable = false; comment = "Role to which identity IDENTITY_ID is assigned.";}
+];
+table.primaryKey.pkcolumns = ["ID"];

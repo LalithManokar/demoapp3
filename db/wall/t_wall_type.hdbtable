@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Wall Types";
+table.columns = [
+    {name = "CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Wall Type e.g. 'sap.ino.config.WALL', 'sap.ino.config.TEMPLATE'";},
+    {name = "DEFAULT_TEXT"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Default Text for Wall Type";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true; comment = "Default Long Text for Wall Type";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

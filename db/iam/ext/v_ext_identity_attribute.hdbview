@@ -1,0 +1,8 @@
+schema = "SAP_INO_EXT";
+query = "SELECT 
+    SETTING.ID,ATTR.CODE,IFNULL(SETTING.IS_PUBLIC,0) AS IS_PUBLIC  
+FROM \"sap.ino.db.iam::t_identity_attribute\" AS ATTR
+LEFT OUTER JOIN \"sap.ino.db.iam::t_identity_attribute_setting\" AS SETTING
+    ON ATTR.CODE = SETTING.CODE";
+
+depends_on_table = ["sap.ino.db.iam::t_identity_attribute","sap.ino.db.iam::t_identity_attribute_setting"];

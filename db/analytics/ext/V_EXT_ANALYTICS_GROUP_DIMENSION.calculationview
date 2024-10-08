@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_EXT_ANALYTICS_GROUP_DIMENSION" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="Group Dimension"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="V_ANALYTICS_GROUP_FULL" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_GROUP_FULL</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="V_ANALYTICS_GROUP_FULL">
+    <attributes>
+      <attribute id="GROUP_ID" order="1" attributeHierarchyActive="false" displayAttribute="false" key="true">
+        <descriptions defaultDescription="Group ID"/>
+        <keyMapping columnObjectName="V_ANALYTICS_GROUP_FULL" columnName="GROUP_ID"/>
+      </attribute>
+      <attribute id="GROUP_NAME" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Group Name"/>
+        <keyMapping columnObjectName="V_ANALYTICS_GROUP_FULL" columnName="GROUP_NAME"/>
+      </attribute>
+      <attribute id="GROUP_EMAIL" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Group E-Mail Adress"/>
+        <keyMapping columnObjectName="V_ANALYTICS_GROUP_FULL" columnName="GROUP_EMAIL"/>
+      </attribute>
+      <attribute id="GROUP_IMAGE_ID" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Group Image ID"/>
+        <keyMapping columnObjectName="V_ANALYTICS_GROUP_FULL" columnName="GROUP_IMAGE_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

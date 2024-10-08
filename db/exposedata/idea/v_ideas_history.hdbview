@@ -1,0 +1,11 @@
+schema = "SAP_INO";
+query = 
+"select history.*, decision.id as decision_id,decision.CREATED_AT as decision_date,decision.decider_id, decision.decider_name, decision.reason_code, decision.reason as reason_comment,
+        decision.response as email_content
+        from \"sap.ino.db.idea::t_idea_h\" as history left outer join 
+             \"sap.ino.db.idea::v_decision\" as decision on history.history_at = decision.created_at 
+                                                                      and history.status_code = decision.status_code
+                                                                      and history.phase_code = decision.phase_code with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea_h"];
+depends_on_view = ["sap.ino.db.idea::v_decision"];

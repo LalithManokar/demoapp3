@@ -1,0 +1,15 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:ino="sap.ino.controls">
+	<VBox>
+	    <Text text="{i18n>FEEDS_FLD_MAJOR_CHANGE_FIELDS}" class="sapUiTinyMarginTopBottom"/>
+		<List items="{path: 'data>Detail', templateShareable: 'true'}" showNoData="false" id="majorChangeList">
+			<items>
+				<CustomListItem>
+					<Text text="{path:'data>', formatter: '.detailformatter'}" class="sapUiTinyMarginBottom sapUiTinyMarginBegin"/>
+				</CustomListItem>
+			</items>
+		</List>
+	</VBox>
+</core:FragmentDefinition>

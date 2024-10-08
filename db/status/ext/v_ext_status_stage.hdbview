@@ -1,0 +1,8 @@
+schema = "SAP_INO_EXT";
+query = "
+    select * from \"sap.ino.db.status::v_status_stage\"  where not contains(code, 'sap.ino.config.REWARD%') and not contains(code, 'sap.ino.config.EVAL%')
+    and not contains (code, 'sap.ino.config.REGISTER%')
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.status::v_status_stage"];

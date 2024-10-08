@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT";
+query = "
+    select * from \"sap.ino.db.ideaform::t_form\"
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.ideaform::t_form"];

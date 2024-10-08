@@ -1,0 +1,16 @@
+schema = "SAP_INO_EXT";
+query = "select 
+        coach.campaign_id,
+        coach.id,
+        coach.identity_id, 
+        coach.name,
+        coach.user_name,
+        coach.email,
+        coach.is_external,
+        coach.type_code,
+        coach.description,
+        coach.image_id 
+        from \"sap.ino.db.campaign::v_campaign_coach\" as coach
+            inner join \"sap.ino.db.campaign::v_auth_campaigns\" as auth
+            on coach.campaign_id = auth.campaign_id";
+depends_on_view = ["sap.ino.db.campaign::v_campaign_coach", "sap.ino.db.campaign::v_auth_campaigns"];

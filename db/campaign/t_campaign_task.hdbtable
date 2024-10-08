@@ -1,0 +1,20 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Campaign Task for Milestones";
+table.columns     = [
+    {name = "ID";                sqlType = INTEGER;                nullable = false; comment = "Human readable identifier";},
+    {name = "TASK_CODE";         sqlType = VARCHAR;  length = 500; nullable = false; comment = "Tasks code, foreign key to MilestoneTask Model";},
+    {name = "DATE_TYPE_CODE";    sqlType = VARCHAR;  length = 500; nullable = false; comment = "Datetype code, foreign key to Datetype Model";},
+    {name = "CAMPAIGN_ID";       sqlType = INTEGER;                nullable = false; comment = "Campaign to which this task belongs. Foreign key to t_campaign.ID";},
+    {name = "SEQUENCE_NO";       sqlType = INTEGER;                nullable = false; comment = "Sequence order for display";},
+    {name = "START_DATE";        sqlType = TIMESTAMP;              nullable = false; comment = "Real start day for display tasks";},
+    {name = "END_DATE";          sqlType = TIMESTAMP;              nullable = false; comment = "Real start day for display tasks";},
+    {name = "START_YEAR";        sqlType = VARCHAR;  length = 4;  nullable = true;  comment = "Start year of task if the date type is quarter or month";},
+    {name = "END_YEAR";          sqlType = VARCHAR;  length = 4;  nullable = true;  comment = "End year of task if the date type is quarter or month";},
+    {name = "START_MONTH_CODE";  sqlType = VARCHAR;  length = 500; nullable = true;  comment = "Start month of task if the date type is month";},
+    {name = "END_MONTH_CODE";    sqlType = VARCHAR;  length = 500; nullable = true;  comment = "End month of task if the date type is month";},
+    {name = "START_QUARTER_CODE";sqlType = VARCHAR;  length = 500; nullable = true;  comment = "Start quarter of task if the date type is quarter";},
+    {name = "END_QUARTER_CODE";  sqlType = VARCHAR;  length = 500; nullable = true;  comment = "End quarter of task if the date type is quarter";},
+    {name = "IS_TASK_DISPLAY";   sqlType = TINYINT;                nullable = false; comment = "Display indicator for this campaign task";}
+]; 
+table.primaryKey.pkcolumns = ["ID"];

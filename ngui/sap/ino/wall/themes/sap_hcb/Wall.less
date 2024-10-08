@@ -1,0 +1,57 @@
+
+/* ============================================= */
+/* CSS for control sap.ino.wall/wall.control      */
+/* ============================================= */
+
+.sapInoWallSelector:focus {
+	top: 48px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border: 5px solid @sapUiHighlight;
+}
+
+/**************************************
+ * Wall trash bin                     *
+ **************************************/
+
+.sapInoWallWTrash {
+	box-shadow: none;
+}
+
+.sapInoWallWTrash.above,
+.sapInoWallWTrash.above.active {
+	border: 2px solid @sapUiLightText;
+	box-shadow: none;
+}
+
+.sapInoWallWTrash.active {
+	border: 3px solid @sapUiLightText;
+	box-shadow: none;
+}
+
+.sapInoWallWTrashBin {
+	text-shadow: none;	
+}
+
+.sapInoWallWTrash.active span {
+	color: @sapUiLightText;
+	webkit-text-stroke-width: 1.5px;
+	-webkit-text-stroke-color: @sapUiBaseBG;
+}
+
+.sapInoWallWTrashBin.above, .sapInoWallWTrashBin.above.active {
+	opacity: 1.0;
+	-webkit-text-stroke-color: @sapUiLightText;
+}
+
+.sapInoWallWTemplateIndicator {
+	border-top: 200px solid black;
+}
+
+.sapInoWallWLockIcon {
+	color: @sapUiLightText;
+	text-shadow: none;
+  	background-color: @sapUiBaseBG;
+	border: 1px solid @sapUiLightText;
+}

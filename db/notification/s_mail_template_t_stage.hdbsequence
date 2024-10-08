@@ -1,0 +1,6 @@
+schema   = "SAP_INO";
+minvalue = 1;
+cycles   = false;
+reset_by = "select ifnull(max(id), 0) + 1 from \"sap.ino.db.notification::t_mail_template_t_stage\"";
+
+depends_on_table = "sap.ino.db.notification::t_mail_template_t_stage";

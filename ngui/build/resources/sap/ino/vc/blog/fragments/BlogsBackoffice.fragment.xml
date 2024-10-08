@@ -1,0 +1,64 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:ino="sap.ino.controls"
+    xmlns:l="sap.ui.layout">
+    <Panel width="auto" class="sapInoHomeTitledPanel sapInoCampaignHomeBlogList sapInoHomepageBorder">
+		<headerToolbar>
+			<Toolbar height="3rem" class="sapInoHomeTitledPanelHeader" active="true" press="onNavigateToBlogs" tooltip="{i18n>CAMPAIGN_HOME_PANEL_BLOGS_NAVIGATE}">
+				<Title id="panelBlogTitle" />
+				<ToolbarSpacer />
+				<Button icon="sap-icon://navigation-right-arrow" tooltip="{i18n>CAMPAIGN_HOME_PANEL_BLOGS_NAVIGATE}" press="onNavigateToBlogs"/>
+			</Toolbar>
+		</headerToolbar>
+		<infoToolbar>
+		    <Toolbar class="sapInoHomeTitledPanelNav" id = "blogsToolBar" visible ="{= ${component>/SHOW_BACKOFFICE_BLOG} === true}">
+				<ToolbarSpacer/>
+				<SegmentedButton id="sapInoCampHomeBlogsButtons" visible="{= ${device>/system/desktop}}" width="80%" selectedKey="published" select="onBlogListTypeSelect">
+					<items>
+						<SegmentedButtonItem text="{i18n>CAMPAIGN_HOME_PANEL_BLOGS_PUBLISHED}" key="published" />
+						<SegmentedButtonItem text="{i18n>CAMPAIGN_HOME_PANEL_BLOGS_DRAFT}" key="draft" />
+					</items>
+				</SegmentedButton>
+				<Select id="sapInoCampHomeBlogsSelect" visible="{= !${device>/system/desktop}}" selectedKey="published" change="onBlogListTypeSelect">
+				    <items>
+				        <core:Item text="{i18n>CAMPAIGN_HOME_PANEL_BLOGS_PUBLISHED}" key="published" />
+						<core:Item text="{i18n>CAMPAIGN_HOME_PANEL_BLOGS_DRAFT}" key="draft" />
+				    </items>
+				</Select>
+				<ToolbarSpacer/>
+		    </Toolbar>
+		</infoToolbar>
+		<content>
+		    <!-- note: must be growing list, as otherwise UI refreshing fails on model update - sapInoListHideGrowing CSS class hides "load" button -->
+		    <!--HBox class="sapInoHomepageLeftRightBorder"-->
+		    <!--List
+                id="blogsList"
+                width="100%"
+                growing="true"
+                growingThreshold="4"
+                growingScrollToLoad="false"
+                noDataText="{i18n>CAMPAIGN_HOME_PANEL_BLOGS_NO_DATA}"
+                class="sapInoCheckboxNotVisible sapInoListHideGrowing"-->
+            <!--/List-->
+            <!--/HBox-->
+		    <!-- note: must be growing list, as otherwise UI refreshing fails on model update - sapInoListHideGrowing CSS class hides "load" button -->
+		    <ino:WrappingList
+                visible="{= !${device>/system/phone} }"
+                id="blogsList"
+                noDataText="{i18n>CAMPAIGN_HOME_PANEL_BLOGS_NO_DATA}"
+                growing="true"
+                growingThreshold="4"
+                growingScrollToLoad="false"
+                wrapping="true"
+                class="sapInoListHideGrowing">
+            </ino:WrappingList>
+            <Carousel
+                id="blogsCarousel"
+                visible="{device>/system/phone}"
+                loop="false"
+                class="sapInoHomepageCarouselMargin">
+            </Carousel>            
+        </content>
+    </Panel>
+</core:FragmentDefinition>

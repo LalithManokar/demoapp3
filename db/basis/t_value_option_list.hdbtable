@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Value Option List - Runtime Table";
+table.columns = [
+    {name = "CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Identifier of value option list";},
+    {name = "DATATYPE_CODE"; sqlType = VARCHAR; length = 8; nullable = false; comment = "Datatype of value option list. Foreign key reference to t_datatype.id";},
+    {name = "DEFAULT_TEXT"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Default Text for Value Option";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true; comment = "Default Long Text for Value Option";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

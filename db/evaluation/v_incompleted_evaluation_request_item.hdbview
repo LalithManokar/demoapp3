@@ -1,0 +1,17 @@
+schema = "SAP_INO";
+query = "
+    select eval_req_item.*, 
+            eval_req.idea_id,
+            eval_req.idea_phase_code
+        from \"sap.ino.db.evaluation::t_evaluation_request_item\" as eval_req_item
+        inner join \"sap.ino.db.evaluation::t_evaluation_request\" as eval_req
+            on eval_req_item.eval_req_id = eval_req.id
+        where eval_req_item.status_code = 'sap.ino.config.EVAL_REQ_REQUESTED'
+            or eval_req_item.status_code = 'sap.ino.config.EVAL_REQ_ACCEPTED'
+            or eval_req_item.status_code = 'sap.ino.config.EVAL_REQ_IN_PROCESS'
+            or eval_req_item.status_code = 'sap.ino.config.EVAL_REQ_IN_CLARIFICATION'
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.evaluation::t_evaluation_request_item",
+                    "sap.ino.db.evaluation::t_evaluation_request"];

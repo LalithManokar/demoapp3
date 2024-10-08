@@ -1,0 +1,17 @@
+schema = "SAP_INO";
+query = "
+    select identity.*,
+           locale.locale,
+           (select accepted from \"sap.ino.db.iam::v_logon_user_accept_term\" ) as term_accepted
+        from
+            \"sap.ino.db.iam::v_identity\" as identity
+        left outer join \"sap.ino.db.basis::v_user_locale\" as locale
+    	    on identity.id = locale.user_id
+        where
+            user_name = session_context('APPLICATIONUSER')
+        with read only
+";
+
+depends_on_view = ["sap.ino.db.iam::v_identity",
+                   "sap.ino.db.iam::v_logon_user_accept_term",
+                   "sap.ino.db.basis::v_user_locale"];

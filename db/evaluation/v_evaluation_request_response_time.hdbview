@@ -1,0 +1,38 @@
+schema = "SAP_INO";
+query  = "
+          select 
+                 eval_req_item.*, 
+                 accepted_on_time_text.content as accepted_on_time_text,
+                 completed_on_time_text.content as completed_on_time_text,
+                 accepted_processing_time_scale_text.content as accepted_processing_time_scale_text,
+                 completed_processing_time_scale_text.content as completed_processing_time_scale_text,
+                 proc_time_scale.accepted_processing_time_scale, 
+                 proc_time_scale.completed_processing_time_scale,
+                 cast( 1 as integer ) as count
+           from \"sap.ino.db.evaluation::v_evaluation_request_full_item\" as eval_req_item
+                left outer join 
+                    \"sap.ino.db.evaluation::v_evaluation_request_processing_time_scale\" as proc_time_scale
+                         on eval_req_item.eval_req_id = proc_time_scale.eval_req_id and
+                         (eval_req_item.accepted_on_time = proc_time_scale.accepted_on_time or
+                          eval_req_item.completed_on_time = proc_time_scale.completed_on_time)
+                left outer join 
+                    \"sap.ino.db.basis::v_resolved_text\"  as accepted_on_time_text
+                         on eval_req_item.accepted_on_time = accepted_on_time_text.text_id and 
+                            accepted_on_time_text.object_name = 'nguii18n'
+                left outer join 
+                    \"sap.ino.db.basis::v_resolved_text\"  as completed_on_time_text
+                         on eval_req_item.completed_on_time = completed_on_time_text.text_id and
+                            completed_on_time_text.object_name = 'nguii18n'
+                left outer join 
+                     \"sap.ino.db.basis::v_resolved_text\"  as accepted_processing_time_scale_text
+                         on proc_time_scale.accepted_processing_time_scale    = accepted_processing_time_scale_text.text_id and
+                            accepted_processing_time_scale_text.object_name = 'nguii18n'
+                left outer join 
+                     \"sap.ino.db.basis::v_resolved_text\"  as completed_processing_time_scale_text
+                         on proc_time_scale.completed_processing_time_scale  = completed_processing_time_scale_text.text_id and
+                            completed_processing_time_scale_text.object_name = 'nguii18n' 
+   with read only";
+   
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request_full_item",
+                   "sap.ino.db.basis::v_resolved_text",
+                   "sap.ino.db.evaluation::v_evaluation_request_processing_time_scale"];

@@ -1,0 +1,11 @@
+{
+  "undef" : true,
+  "strict" : true,
+  "bitwise" : true,
+  "jquery" : true,
+  "browser" : true,
+  "predef": ["sap", "d3", "File"],
+  "noempty" : true,
+  "laxbreak" : true,
+  "multistr": true
+}

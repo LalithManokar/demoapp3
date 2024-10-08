@@ -1,0 +1,78 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_auto_group_calculate" (
+    in   it_user                                   "SAP_INO"."sap.ino.db.iam::t_identity",
+    out  ot_target_group_assignments               "SAP_INO"."sap.ino.db.iam::tt_identity_group_name"
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    lt_assignments_of_all_user_group =
+        select
+        	user.id     as member_id,
+            'All users' as group_name
+        from :it_user as user
+        where
+            user.erased = 0;
+    
+    lt_assignments_of_internal_user_group =
+        select
+        	user.id          as member_id,
+           	'Internal users' as group_name
+        from :it_user as user
+        where
+            user.erased = 0
+        and (user.is_external = 0 or user.is_external is null);
+    
+    lt_assignments_of_external_user_group =
+        select
+        	user.id         as member_id,
+           'External users' as group_name
+        from :it_user as user
+        where
+            user.erased = 0
+        and user.is_external <> 0;
+
+    lt_assignments_of_email_domain_user_groups =
+        select * from (
+            select
+               id                              as member_id,
+               lower(substr_after(email, '@')) as group_name
+            from :it_user
+            where
+                erased = 0
+        ) where group_name != '';
+        
+    lt_assignments_of_organization_user_groups =
+        select * from (
+            select
+               id                              as member_id,
+               organization                    as group_name
+            from :it_user
+            where
+                erased = 0
+        ) where group_name != '';   
+        
+     lt_assignments_of_cost_center_user_groups =
+        select * from (
+            select
+               id                              as member_id,
+               cost_center                     as group_name
+            from :it_user
+            where
+                erased = 0
+        ) where group_name != '';        
+
+    ot_target_group_assignments =
+        select * from :lt_assignments_of_all_user_group
+        union all
+        select * from :lt_assignments_of_internal_user_group
+        union all
+        select * from :lt_assignments_of_external_user_group
+        union all
+        select * from :lt_assignments_of_email_domain_user_groups
+        union all
+        select * from :lt_assignments_of_organization_user_groups
+        union all
+        select * from :lt_assignments_of_cost_center_user_groups;
+end;

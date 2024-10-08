@@ -1,0 +1,30 @@
+schema = "SAP_INO_EXT";
+query = "
+	select  assignment.ID,
+			assignment.OWNER_ID as WALL_ITEM_ID,
+			wall.WALL_ID,
+			assignment.ROLE_TYPE_CODE as ROLE_TYPE_CODE,
+			assignment.FILTER_TYPE_CODE as FILTER_TYPE_CODE,
+			attachment.ID as ATTACHMENT_ID,
+			attachment.CREATED_AT,
+			attachment.CREATED_BY_ID,
+			attachment.CHANGED_AT,
+			attachment.CHANGED_BY_ID,
+			attachment.FILE_NAME,
+			attachment.FILE_SIZE,
+			attachment.MEDIA_TYPE,
+			attachment.LABEL,
+			attachment.CUSTOM_INFO,
+			attachment.FOLDER_ID
+	    from \"sap.ino.db.attachment::t_attachment\" as attachment
+	    inner join \"sap.ino.db.attachment::t_attachment_assignment\" as assignment
+	    	on assignment.attachment_id = attachment.id and assignment.owner_type_code = 'WALL_ITEM'
+	    inner join \"sap.ino.db.wall::t_wall_item\" as wall
+            on assignment.owner_id = wall.id
+	    where attachment.id in (select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_wall_item\") 
+    with read only";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment",
+					"sap.ino.db.attachment::t_attachment_assignment",
+					"sap.ino.db.wall::t_wall_item"];
+depends_on_view = ["sap.ino.db.attachment::v_auth_attachment_wall_item"];

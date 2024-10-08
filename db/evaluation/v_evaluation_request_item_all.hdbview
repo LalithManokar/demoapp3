@@ -1,0 +1,57 @@
+schema = "SAP_INO";
+query = "
+select
+    evaluation_req.id                     as eval_req_id,
+    evaluation_req.idea_id,
+    evaluation_req.idea_phase_code,
+    evaluation_req.description,
+    evaluation_req.accept_date,
+    evaluation_req.complete_date,
+    evaluation_req.created_at,
+    evaluation_req.created_by_id,
+    evaluation_req.changed_at,
+    evaluation_req.idea_name,
+    evaluation_req.changed_by_id,
+    evaluation_req.created_by, 
+    evaluation_req.changed_by,
+    evaluation_req_item.id,
+    evaluation_req_item.status_code,
+    ident_expert.id                        as expert_id,
+    ident_expert.name                      as expert_name,
+    ident_owner.id                         as owner_id,
+    ident_owner.name                       as owner_name,
+    evaluation.id                          as evaluation_id,
+    evaluation.OV_RES_DATATYPE_CODE,
+    evaluation.OV_RES_NUM_VALUE,
+    evaluation.OV_RES_BOOL_VALUE,
+    evaluation.OV_RES_TEXT_VALUE,
+    evaluation.OV_RES_VALUE_OPTION_LIST_CODE,
+    evaluation.OV_RES_UOM_CODE
+from \"sap.ino.db.evaluation::t_evaluation_request_item\"       as evaluation_req_item
+left outer join \"sap.ino.db.evaluation::v_evaluation_request\" as evaluation_req
+   on evaluation_req_item.eval_req_id = evaluation_req.id
+left outer join \"sap.ino.db.iam::t_object_identity_role\"      as identity_role_expert
+    	on  identity_role_expert.object_id = evaluation_req_item.id and 
+        	identity_role_expert.object_type_code = 'EVAL_REQUEST_ITEM' and 
+            identity_role_expert.role_code = 'EVAL_REQUEST_EXPERT'
+left outer join \"sap.ino.db.iam::t_identity\" as ident_expert 
+    	on ident_expert.id = identity_role_expert.identity_id             
+left outer join \"sap.ino.db.iam::t_object_identity_role\" as identity_role_owner
+    	on  identity_role_owner.object_id = evaluation_req.id and 
+        	identity_role_owner.object_type_code = 'EVAL_REQUEST' and 
+            identity_role_owner.role_code = 'EVAL_REQUEST_OWNER'     
+left outer join \"sap.ino.db.iam::t_identity\" as ident_owner 
+    	on ident_owner.id = identity_role_owner.identity_id  
+left outer join \"sap.ino.db.evaluation::v_latest_evaluation_results\" as evaluation
+        on evaluation.idea_id = evaluation_req.idea_id and 
+           evaluation.idea_phase_code = evaluation_req.idea_phase_code and
+           evaluation.evaluator_id = ident_expert.id
+
+    with read only";
+
+depends_on_table = ["sap.ino.db.evaluation::t_evaluation_request_item", 
+                    "sap.ino.db.iam::t_object_identity_role",
+                    "sap.ino.db.iam::t_identity"];
+                    
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request",
+                   "sap.ino.db.evaluation::v_latest_evaluation_results"];

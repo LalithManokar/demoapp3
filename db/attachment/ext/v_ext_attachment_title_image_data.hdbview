@@ -1,0 +1,16 @@
+schema = "SAP_INO_EXT";
+query = " 
+	select 	attachment.ID, 
+			attachment.MEDIA_TYPE,
+			attachment.FILE_NAME,
+			attachment_data.DATA,
+			attachment_data.DATA_SMALL,
+			attachment_data.DATA_LARGE
+	    from \"sap.ino.db.attachment::v_attachment_title_image\" as attachment 
+	    inner join 
+	     	\"sap.ino.db.attachment::t_attachment_data\" as attachment_data
+	    		on attachment.id = attachment_data.id
+    with read only";
+
+depends_on_view = ["sap.ino.db.attachment::v_attachment_title_image"];
+depends_on_table = ["sap.ino.db.attachment::t_attachment_data"];

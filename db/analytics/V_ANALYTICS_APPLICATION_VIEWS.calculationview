@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_ANALYTICS_APPLICATION_VIEWS" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="V_ANALYTICS_APPLICATION_VIEWS"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="sap.ino.db.tracker::t_application_views" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.tracker::t_application_views"/>
+    </DataSource>
+    <DataSource id="V_ANALYTICS_RESOLVED_TEXT_WRAPPER" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_RESOLVED_TEXT_WRAPPER</resourceUri>
+    </DataSource>
+    <DataSource id="Join_2$$$$V_ANALYTICS_RESOLVED_TEXT_WRAPPER$$" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_RESOLVED_TEXT_WRAPPER</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+      <viewAttributes>
+        <viewAttribute id="HOUR"/>
+        <viewAttribute id="VIEWS"/>
+        <viewAttribute id="APPLICATION_CODE"/>
+        <viewAttribute id="VIEW_DATE_YEAR"/>
+        <viewAttribute id="VIEW_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="VIEW_DATE_DAY"/>
+        <viewAttribute id="VIEW_DATE_WEEK"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="VIEW_DATE_YEAR_MONTH" length="7">
+          <formula>if(int(&quot;VIEW_DATE_MONTH_NUMBER&quot;) &lt; 10, string(&quot;VIEW_DATE_YEAR&quot;) + '-0' + string(&quot;VIEW_DATE_MONTH_NUMBER&quot;), string(&quot;VIEW_DATE_YEAR&quot;) + '-' + string(&quot;VIEW_DATE_MONTH_NUMBER&quot;))</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="VIEW_DATE_MONTH_TEXT_CODE" length="50">
+          <formula>'BO_ANA_FLD_CHAR_MONTH_' + string(&quot;VIEW_DATE_MONTH_NUMBER&quot;) + '_SHORT'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="VIEW_DATE" length="10">
+          <formula>if(int(&quot;VIEW_DATE_DAY&quot;) &lt; 10, &quot;VIEW_DATE_YEAR_MONTH&quot; + '-0' + string(&quot;VIEW_DATE_DAY&quot;), &quot;VIEW_DATE_YEAR_MONTH&quot; + '-' + string(&quot;VIEW_DATE_DAY&quot;))</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="VIEW_TIME" length="5">
+          <formula>if(int(&quot;HOUR&quot;) &lt; 10, '0' + string(&quot;HOUR&quot;) + ':00:00', string(&quot;HOUR&quot;) + ':00:00')</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="VIEW_DATETIME" length="16">
+          <formula>&quot;VIEW_DATE&quot; + ' ' +&quot;VIEW_TIME&quot;</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="VIEW_DATE_YEAR_WEEK" length="7">
+          <formula>if(int(&quot;VIEW_DATE_WEEK&quot;) &lt; 10, string(&quot;VIEW_DATE_YEAR&quot;) + '-0' + string(&quot;VIEW_DATE_WEEK&quot;), string(&quot;VIEW_DATE_YEAR&quot;) + '-' + string(&quot;VIEW_DATE_WEEK&quot;))</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.tracker::t_application_views">
+        <mapping xsi:type="Calculation:AttributeMapping" target="HOUR" source="HOUR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEWS" source="VIEWS"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="APPLICATION_CODE" source="APPLICATION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR" source="YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH_NUMBER" source="MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_DAY" source="DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_WEEK" source="WEEK"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" joinType="inner">
+      <viewAttributes>
+        <viewAttribute id="VIEWS"/>
+        <viewAttribute id="VIEW_DATE_YEAR"/>
+        <viewAttribute id="VIEW_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="VIEW_DATE_DAY"/>
+        <viewAttribute id="VIEW_DATE_YEAR_MONTH"/>
+        <viewAttribute id="VIEW_DATE_MONTH"/>
+        <viewAttribute id="VIEW_DATE"/>
+        <viewAttribute id="VIEW_TIME"/>
+        <viewAttribute id="VIEW_DATETIME"/>
+        <viewAttribute id="APPLICATION_CODE"/>
+        <viewAttribute id="VIEW_DATE_YEAR_WEEK"/>
+        <viewAttribute id="VIEW_DATE_WEEK"/>
+        <viewAttribute hidden="true" id="JOIN$VIEW_DATE_MONTH_TEXT_CODE$TEXT_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Projection_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEWS" source="VIEWS"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR" source="VIEW_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH_NUMBER" source="VIEW_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_DAY" source="VIEW_DATE_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_MONTH" source="VIEW_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE" source="VIEW_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_TIME" source="VIEW_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATETIME" source="VIEW_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="APPLICATION_CODE" source="APPLICATION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_WEEK" source="VIEW_DATE_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_WEEK" source="VIEW_DATE_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$VIEW_DATE_MONTH_TEXT_CODE$TEXT_ID" source="VIEW_DATE_MONTH_TEXT_CODE"/>
+      </input>
+      <input node="#V_ANALYTICS_RESOLVED_TEXT_WRAPPER">
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH" source="CONTENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$VIEW_DATE_MONTH_TEXT_CODE$TEXT_ID" source="TEXT_ID"/>
+      </input>
+      <joinAttribute name="JOIN$VIEW_DATE_MONTH_TEXT_CODE$TEXT_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_2" joinType="inner">
+      <viewAttributes>
+        <viewAttribute id="VIEWS"/>
+        <viewAttribute id="VIEW_DATE_YEAR"/>
+        <viewAttribute id="VIEW_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="VIEW_DATE_DAY"/>
+        <viewAttribute id="VIEW_DATE_YEAR_MONTH"/>
+        <viewAttribute id="VIEW_DATE_MONTH"/>
+        <viewAttribute id="VIEW_DATE"/>
+        <viewAttribute id="VIEW_TIME"/>
+        <viewAttribute id="VIEW_DATETIME"/>
+        <viewAttribute id="APPLICATION"/>
+        <viewAttribute id="VIEW_DATE_YEAR_WEEK"/>
+        <viewAttribute id="VIEW_DATE_WEEK"/>
+        <viewAttribute hidden="true" id="JOIN$APPLICATION_CODE$TEXT_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEWS" source="VIEWS"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR" source="VIEW_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH_NUMBER" source="VIEW_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_DAY" source="VIEW_DATE_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_MONTH" source="VIEW_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_MONTH" source="VIEW_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE" source="VIEW_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_TIME" source="VIEW_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATETIME" source="VIEW_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_YEAR_WEEK" source="VIEW_DATE_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIEW_DATE_WEEK" source="VIEW_DATE_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$APPLICATION_CODE$TEXT_ID" source="APPLICATION_CODE"/>
+      </input>
+      <input node="#Join_2$$$$V_ANALYTICS_RESOLVED_TEXT_WRAPPER$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="APPLICATION" source="CONTENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$APPLICATION_CODE$TEXT_ID" source="TEXT_ID"/>
+      </input>
+      <joinAttribute name="JOIN$APPLICATION_CODE$TEXT_ID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_2">
+    <attributes>
+      <attribute id="VIEW_DATE_YEAR" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Year"/>
+        <keyMapping columnObjectName="Join_2" columnName="VIEW_DATE_YEAR"/>
+      </attribute>
+      <attribute id="VIEW_DATE_MONTH_NUMBER" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Month (Number)"/>
+        <keyMapping columnObjectName="Join_2" columnName="VIEW_DATE_MONTH_NUMBER"/>
+      </attribute>
+      <attribute id="VIEW_DATE_DAY" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Day"/>
+        <keyMapping columnObjectName="Join_2" columnName="VIEW_DATE_DAY"/>
+      </attribute>
+      <attribute id="VIEW_DATE_YEAR_MONTH" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Year/Month"/>
+        <keyMapping columnObjectName="Join_2" columnName="VIEW_DATE_YEAR_MONTH"/>
+      </attribute>
+      <attribute id="VIEW_DATE_MONTH" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Month"/>
+        <keyMapping columnObjectName="Join_2" columnName="VIEW_DATE_MONTH"/>
+      </attribute>
+      <attribute id="VIEW_DATE" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Date"/>
+        <keyMapping columnObjectName="Join_2" columnName="VIEW_DATE"/>
+      </attribute>
+      <attribute id="VIEW_TIME" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Time"/>
+        <keyMapping columnObjectName="Join_2" columnName="VIEW_TIME"/>
+      </attribute>
+      <attribute id="VIEW_DATETIME" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Date/Time"/>
+        <keyMapping columnObjectName="Join_2" columnName="VIEW_DATETIME"/>
+      </attribute>
+      <attribute id="APPLICATION" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Application"/>
+        <keyMapping columnObjectName="Join_2" columnName="APPLICATION"/>
+      </attribute>
+      <attribute id="VIEW_DATE_YEAR_WEEK" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Year/Week"/>
+        <keyMapping columnObjectName="Join_2" columnName="VIEW_DATE_YEAR_WEEK"/>
+      </attribute>
+      <attribute id="VIEW_DATE_WEEK" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Week"/>
+        <keyMapping columnObjectName="Join_2" columnName="VIEW_DATE_WEEK"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="VIEWS" order="1" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Views"/>
+        <measureMapping columnObjectName="Join_2" columnName="VIEWS"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="22" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="357"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="261"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="165"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

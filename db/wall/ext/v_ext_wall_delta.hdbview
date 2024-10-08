@@ -1,0 +1,47 @@
+schema = "SAP_INO_EXT";
+query = "select 
+            wall.id,
+			wall.action_code,
+			wall.action_at,
+	        wall.name,
+	        wall.is_locked,
+	        case when auth_write.wall_id is null then 0 else 1 end as is_editable,
+	        case when auth_admin.wall_id is null then 0 else 1 end as is_administrable,
+	        wall.wall_type_code,
+	        wall.background_image_url,
+	        wall.background_image_zoom,
+	        wall.background_image_position_x,
+	        wall.background_image_position_y, 
+	        wall.background_image_width,
+	        wall.background_image_height,
+	        wall.background_image_repeat,
+	        wall.background_color,
+	        wall.background_image_attachment_id,
+	        wall.wall_session_uuid,
+	        
+	        wall.created_at,
+	        wall.created_by_id,
+	        wall.created_by_name,
+	        wall.created_by_last_name,
+	        wall.created_by_first_name,
+	        wall.created_by_email,
+	
+	        wall.changed_at,
+	        wall.changed_by_id,
+	        wall.changed_by_name,
+	        wall.changed_by_last_name,
+	        wall.changed_by_first_name,
+	        wall.changed_by_email
+        from \"sap.ino.db.wall::v_wall_delta\" as wall 
+            inner join \"sap.ino.db.wall::v_auth_wall\" as auth 
+                on wall.id = auth.wall_id
+            left outer join \"sap.ino.db.wall::v_auth_wall_write\" as auth_write 
+                on wall.id = auth_write.wall_id
+            left outer join \"sap.ino.db.wall::v_auth_wall_admin\" as auth_admin 
+                on wall.id = auth_admin.wall_id
+         with read only";
+
+depends_on_view = ["sap.ino.db.wall::v_wall_delta", 
+                   "sap.ino.db.wall::v_auth_wall",
+                   "sap.ino.db.wall::v_auth_wall_write",
+                   "sap.ino.db.wall::v_auth_wall_admin"];

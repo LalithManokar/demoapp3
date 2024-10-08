@@ -1,0 +1,142 @@
+@sapInoSidePanelOpenerWidth: 38px;
+@sapInoSidePanelOpenerHeight: 38px;
+@sapInoSidePanelOpenerTop: 45px;
+@sapInoSidePanelContentTop: 0px; 	/* header */
+@sapInoSidePanelContentBottom: 0px;	/* footer */
+@sapInoSidePanelContentRightWidth: 36rem;
+@sapInoSidePanelZIndexLeft: 10005; /* on top of normal between 100 and 10000 */
+@sapInoSidePanelZIndexRight: 10006;
+@sapInoSidePanelOpenerColor: #666666;
+@sapInoSidePanelOpenerFontSize: 22pt;
+
+/* right side panel */
+.sapInoSidePanelRight {
+	position: absolute;
+	top: @sapInoSidePanelContentTop;
+	bottom: @sapInoSidePanelContentBottom;
+	right: 0px;
+	width: @sapInoSidePanelContentRightWidth;
+	z-index: @sapInoSidePanelZIndexRight;   
+}
+
+.sapInoSidePanelRight .sapInoSidePanelOpenerRight {
+	position: relative;
+	top: @sapInoSidePanelOpenerTop;
+	width: @sapInoSidePanelOpenerWidth;
+	height: @sapInoSidePanelOpenerHeight;
+	float: right;
+	font-size: @sapInoSidePanelOpenerFontSize;
+	padding: 2px;
+	color: @sapInoSidePanelOpenerColor;
+	background-color: rgba(200,200,200,0.8);
+	right: @sapInoSidePanelContentRightWidth;
+	border: 1px solid @sapUiBaseBorder;
+	border-right: 0;
+	margin-right: -1px;
+	z-index: @sapInoSidePanelZIndexRight;
+}
+
+.sapInoSidePanelLeft .sapInoSidePanelOpenerLeft .sapUiIcon,
+.sapInoSidePanelRight .sapInoSidePanelOpenerRight .sapUiIcon {
+  	padding-left: 4px;
+}
+
+.sapInoSidePanelRight .sapInoSidePanelOpenerRight .sapUiIcon {
+  	padding-top: 3px;
+}
+
+html[data-sap-ui-browser*="ff"] .sapInoSidePanelRight .sapInoSidePanelOpenerRight .sapUiIcon {
+  	padding-top: 0px;
+}
+
+.sapInoSidePanelContentRight {
+	height: 100%;
+}
+
+.sapInoSidePanelRight .sapInoSidePanelContentRight {
+	position: absolute;
+	width: 100%;
+	float: right;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 0px;
+	background-color: rgba(200,200,200,0.8);
+	border: 1px solid @sapUiBaseBorder;
+	border-right: 0;
+}
+
+.sapInoSidePanelRight.sapInoSidePanelExpanded {
+    right: 0px;
+}
+
+.sapInoSidePanelRight.sapInoSidePanelCollapsed {
+    right: -@sapInoSidePanelContentRightWidth;
+}
+
+.sapInoSidePanelContentRight > .sapUiHLayout,
+.sapInoSidePanelContentRight > .sapUiHLayout > .sapUiHLayoutChildWrapper {
+    width: 100%;
+} 
+
+.sapInoSidePanelRight .sapInoSidePanelOpenerRight:focus {
+    background-color: fade(@sapHighlightColor, 45%);  	
+    color: #FFFFFF;
+}
+
+/* left side panel */
+.sapInoSidePanelLeft {
+	position: absolute;
+	left: 0px;
+	z-index: @sapInoSidePanelZIndexLeft;
+	width: 100px;	
+}
+
+.sapInoSidePanelOpenerLeft {
+	position: absolute;
+	top: @sapInoSidePanelOpenerTop;
+	width: @sapInoSidePanelOpenerWidth;
+	height: 36px;
+	float: left;
+	font-size: @sapInoSidePanelOpenerFontSize;
+	padding: 2px;
+	left: 100px;
+	color: @sapInoSidePanelOpenerColor;
+	background-color: rgba(200,200,200,0.8);
+	border: 1px solid @sapUiBaseBorder;
+	border-left: 0;
+	margin-left: 0px;
+	z-index: @sapInoSidePanelZIndexLeft;
+	
+}
+
+.sapInoSidePanelContentLeft {
+	/* do not set width here, it is managed by control property panelWidth*/
+	position: relative;
+	width: 100%;
+	float: left;
+	overflow: hidden;
+	padding: 0px;
+	background-color: rgba(200,200,200,0.8);
+	border: 1px solid @sapUiBaseBorder;
+	border-left: 0;
+	height: 100%;
+}
+
+.sapInoSidePanelContentLeft > .sapUiHLayout,
+.sapInoSidePanelContentLeft > .sapUiHLayout > .sapUiHLayoutChildWrapper {
+    width: 100%;
+} 
+
+.sapInoSidePanelLeft.sapInoSidePanelExpanded {
+	left: 0px;
+}
+
+.sapInoSidePanelLeft.sapInoSidePanelCollapsed {
+    left: -100px;
+}
+
+.sapInoSidePanelLeft .sapInoSidePanelOpenerLeft:focus {
+    background-color: fade(@sapInoHighlightBG, 45%);
+	color: @sapInoTextInverted;
+	outline: 0;
+}

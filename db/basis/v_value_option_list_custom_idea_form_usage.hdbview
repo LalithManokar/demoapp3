@@ -1,0 +1,16 @@
+schema = "SAP_INO";
+query = "
+        select 
+        distinct ideaform.VALUE_OPTION_LIST_CODE as CODE,
+        ideaform.id as ID,
+        ideaform.id as IDEA_FORM_ID,
+        ideaform.code as CODE_NAME,
+        ideaform.default_text as NAME
+        from\"sap.ino.db.basis::t_value_option_list\" as list
+        inner join (select form.*,field.VALUE_OPTION_LIST_CODE from\"sap.ino.db.ideaform::t_form_stage\"as form
+        inner join \"sap.ino.db.ideaform::t_field\"as field
+        on form.code = field.FORM_CODE) as ideaform
+        on list.code = ideaform.VALUE_OPTION_LIST_CODE
+     
+    with read only";
+depends_on_table = ["sap.ino.db.basis::t_value_option_list", "sap.ino.db.ideaform::t_form_stage", "sap.ino.db.ideaform::t_field"];

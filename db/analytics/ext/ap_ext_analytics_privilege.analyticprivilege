@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Privilege:analyticPrivilege xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Privilege="http://www.sap.com/ndb/BiModelPrivilege.ecore" id="ap_ext_analytics_privilege" privilegeType="ANALYTIC_PRIVILEGE" schemaVersion="1.1">
+<descriptions defaultDescription="ap_ext_analytics_privilege"/>
+<securedModels>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_VOTE</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_UNCHANGED_IDEAS</modelUri>
+
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_APPLICATION_VIEWS</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_ACTIVITY</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEAS</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEAS_TIME_IN_PHASE</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEAS_TIME_STATUS</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_PARTICIPANTS</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_TOP_CONTRIBUTORS</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_TOP_COMMENTATORS</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEAS_EVALUATIONS</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_IDEA_OVERVIEW</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_TOP_TAGS</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_EVALUATIONS_PER_EXPERT</modelUri>
+
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_PARTICIPANTS_SHARE</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_TOP_PARTICIPANTS</modelUri>
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_RETURN</modelUri>
+
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_RESPONSIBILITY</modelUri>
+
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_REWARD</modelUri>
+
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_GROUP_VOTE</modelUri>
+
+  <modelUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_EVALUATION_REQUEST_RESPONSE_TIME</modelUri>
+</securedModels>
+
+<restriction>
+  <filter attributeName="CAMPAIGN_ID" xsi:type="Privilege:AttributeFilter">
+    <procedureFilter operator="IN" procedureName="sap.ino.db.analytics.ext::p_ext_auth_campaign"/>
+  </filter>
+  <dimensionUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION</dimensionUri>
+</restriction>
+</Privilege:analyticPrivilege>

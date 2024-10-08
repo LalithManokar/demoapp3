@@ -1,0 +1,39 @@
+procedure "SAP_INO_EXT"."sap.ino.db.campaign.ext::p_ext_campaign_tag_cloud" ( 
+     in  iv_searchterm  nvarchar(1024),
+     in  iv_filtername  nvarchar(1024),
+     in  it_tag         SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_tag_id_input",
+     in  it_excl_status SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_excl_status_code_input",
+     out ot_ranked_tag  SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_ranked_tag"
+)
+language sqlscript
+sql security definer
+default schema SAP_INO
+reads sql data as
+begin
+    call "SAP_INO"."sap.ino.db.campaign::p_campaign_search"(:iv_searchterm, :lt_search_prefiltered);
+    call "SAP_INO"."sap.ino.db.campaign::p_campaign_filter"(:iv_filtername, :lt_filter_prefiltered);
+
+    lt_filtered_2 =
+        select campaign.id
+            from
+                "sap.ino.db.campaign::v_auth_campaigns" as auth
+            inner join
+                "sap.ino.db.campaign::t_campaign"       as campaign
+            on 
+                auth.campaign_id = campaign.id and 
+                ((select count(*) from :it_excl_status) = 0 or campaign.status_code not in (select code from :it_excl_status))
+            inner join
+                :lt_search_prefiltered                  as prefilter
+            on 
+                auth.campaign_id = prefilter.id
+            inner join
+                :lt_filter_prefiltered                  as prefilter2
+            on
+                auth.campaign_id = prefilter2.id;
+
+    call "SAP_INO"."sap.ino.db.campaign::p_tag_filter"(:lt_filtered_2, :it_tag, :lt_filtered_3);
+    call "SAP_INO"."sap.ino.db.campaign::p_campaign_tag"(:lt_filtered_3, :lt_campaign_tag);
+    call "SAP_INO"."sap.ino.db.basis::p_tag_cloud"(:lt_campaign_tag, :ot_ranked_tag);
+
+    ot_ranked_tag = select * from :ot_ranked_tag order by name asc;
+end;

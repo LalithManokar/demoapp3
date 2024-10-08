@@ -1,0 +1,8 @@
+schema = "SAP_INO_EXT";
+query = "select idea_relations.* 
+            from \"sap.ino.db.idea::v_idea_relation\" as idea_relations
+            where idea_relations.idea_id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")
+            with read only";
+ 
+depends_on_view = ["sap.ino.db.idea::v_idea_relation",
+				   "sap.ino.db.idea::v_auth_ideas_read"];

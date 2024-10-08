@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_EXT_MODEL_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="Evaluation Models (Staging Object) and their usage in campaigns"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="V_MODEL_USAGE" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.evaluation/calculationviews/V_MODEL_USAGE</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="V_MODEL_USAGE">
+    <attributes>
+      <attribute id="MODEL_CODE" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation Method"/>
+        <keyMapping columnObjectName="V_MODEL_USAGE" columnName="MODEL_CODE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="2" attributeHierarchyActive="false" descriptionColumnName="CAMPAIGN_NAME" displayAttribute="false">
+        <descriptions defaultDescription="Campaign"/>
+        <keyMapping columnObjectName="V_MODEL_USAGE" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping columnObjectName="V_MODEL_USAGE" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_STATUS_CODE" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Status"/>
+        <keyMapping columnObjectName="V_MODEL_USAGE" columnName="CAMPAIGN_STATUS_CODE"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="5" attributeHierarchyActive="false" descriptionColumnName="IDEA_NAME" displayAttribute="false">
+        <descriptions defaultDescription="Idea"/>
+        <keyMapping columnObjectName="V_MODEL_USAGE" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_NAME" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Name"/>
+        <keyMapping columnObjectName="V_MODEL_USAGE" columnName="IDEA_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="EVALUATION_COUNT" order="7" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Evaluations"/>
+        <measureMapping columnObjectName="V_MODEL_USAGE" columnName="EVALUATION_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

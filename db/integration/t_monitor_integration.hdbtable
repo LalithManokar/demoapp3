@@ -1,0 +1,17 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "The monitor field from integration";
+table.columns = [
+    {name = "ID";               sqlType = INTEGER;                nullable = false;                     comment = "monitor history identifier - must never be exposed to end users";},
+    {name = "STATUS";           sqlType = INTEGER;                nullable = false;                     comment = "monitor status";},
+    {name = "RESPONSE_MESSAGE"; sqlType = NCLOB;                  nullable = true;                     comment = "text for response message";},
+    {name = "OBJECT_ID";        sqlType = INTEGER;                nullable = true;                     comment = "Identity by which an object has been created";},
+    {name = "PATH";             sqlType = NVARCHAR; length = 1024;  nullable = true;                     comment = "REQUEST PATH";},
+    {name = "DIRECTION_PATH";   sqlType = NVARCHAR; length = 16;  nullable = false;                     comment = "direction from";},
+    {name = "INTERFACE_NAME";   sqlType = NVARCHAR; length = 512;  nullable = false;                     comment = "interface name";},
+    {name = "OPERATOR_BY_ID";    sqlType = INTEGER;               nullable = false;                     comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";},
+    {name = "OPERATOR_AT";      sqlType = TIMESTAMP;              nullable = false;                     comment = "operation timestamp";},
+    {name = "OBJECT_PAYLOAD_JSON"; sqlType = NCLOB;               nullable = false;                  comment = "JSON metadata for the object payload json";}
+];
+
+table.primaryKey.pkcolumns = ["ID"];    

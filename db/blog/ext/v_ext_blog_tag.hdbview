@@ -1,0 +1,9 @@
+schema = "SAP_INO_EXT";
+query = "select blog_tags.* 
+            from \"sap.ino.db.blog::v_blog_tag\" as blog_tags
+			where blog_tags.blog_id in (select blog_id from \"sap.ino.db.blog::v_auth_blogs_read\")
+            with read only";
+
+
+
+depends_on_view = ["sap.ino.db.blog::v_blog_tag","sap.ino.db.blog::v_auth_blogs_read"];

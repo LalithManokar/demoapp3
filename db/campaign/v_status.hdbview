@@ -1,0 +1,6 @@
+schema = "SAP_INO";
+query = "
+    select 'sap.ino.config.CAMP_DRAFT' as code from dummy
+    union all
+	select 'sap.ino.config.CAMP_PUBLISHED' as code from dummy
+";

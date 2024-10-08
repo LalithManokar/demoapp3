@@ -1,0 +1,17 @@
+schema = "SAP_INO_EXT";
+query = "select manager.campaign_id,
+        manager.id,
+        manager.identity_id, 
+        manager.name,
+        manager.user_name,
+        manager.is_external,
+        manager.type_code,
+        manager.description,
+        manager.email,
+        manager.image_id,
+       cast(OCCURRENCES_REGEXPR('^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w+)+)$' in trim(' ' from manager.email)) as TINYINT) as is_valid_email,         
+        manager.DISPLAY_HOMEPAGE
+        from \"sap.ino.db.campaign::v_campaign_manager_identity\" as manager
+            join \"sap.ino.db.campaign::v_auth_campaigns\" as auth
+            on manager.campaign_id = auth.campaign_id";
+depends_on_view = ["sap.ino.db.campaign::v_campaign_manager_identity", "sap.ino.db.campaign::v_auth_campaigns"];

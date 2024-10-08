@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = "SELECT
+           receiver.ACTION_ID,
+           receiver.ROLE_CODE,
+           receiver.IS_RECEIVE_EMAIL,
+           setting.ACTION_CODE,
+           receiver.ID
+    FROM \"sap.ino.db.newnotification::t_notification_system_setting_receiver_local\" as receiver
+    INNER JOIN \"sap.ino.db.newnotification::t_notification_system_setting_local\" as setting
+    ON setting.ID = receiver.ACTION_ID
+    with read only
+";  
+
+depends_on_table = ["sap.ino.db.newnotification::t_notification_system_setting_receiver_local","sap.ino.db.newnotification::t_notification_system_setting_local"];   

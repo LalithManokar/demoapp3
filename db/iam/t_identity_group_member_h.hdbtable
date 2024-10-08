@@ -1,0 +1,12 @@
+table.schemaName = "SAP_INO"; 
+table.tableType = COLUMNSTORE;
+table.description = "Identity group members history";
+table.columns = [
+    {name = "HISTORY_DB_EVENT";  sqlType = VARCHAR;   length = 8;  nullable = false; comment = "Database event: CREATED, UPDATED, DELETED";},
+    {name = "HISTORY_BIZ_EVENT"; sqlType = VARCHAR;   length = 60; nullable = false; comment = "Business event: IDEA_CREATED, IDEA_SUBMITTED ...";},
+    {name = "HISTORY_AT";        sqlType = TIMESTAMP;              nullable = false; comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID";  sqlType = INTEGER;                nullable = false; comment = "Actor who did the changes";},
+    {name = "ID";                sqlType = INTEGER;                nullable = false; comment = "Technical record ID";},
+    {name = "MEMBER_ID";         sqlType = INTEGER;                nullable = true;  comment = "Identity which is member of group specified in GROUP_ID. Foreign key to t_identity.ID";},
+    {name = "GROUP_ID";          sqlType = INTEGER;                nullable = false; comment = "Identity which is the group the identity in MEMBER_ID is member of. A user may not be a group. UUID handle. Foreign key to t_identity.ID";}
+];

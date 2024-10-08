@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_IDEAS_FULL" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" runWithInvokerPrivileges="false" scriptParametersCaseSensitive="true">
+  <origin/>
+  <descriptions defaultDescription="V_ANALYTICS_IDEAS_FULL"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="IDEA_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="IDEA_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="COACH_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="COACH_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="SUBMITTER_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="SUBMITTER_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="PHASE_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="PHASE_SEQUENCE_NUMBER"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS_CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS_CODE_TEXT" length="100"/>
+        <viewAttribute datatype="TIMESTAMP" id="IDEA_SUBMITTED_AT"/>
+        <viewAttribute datatype="VARCHAR" id="IDEA_RESPONSIBILITY_CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="IDEA_RESPONSIBILITY_TEXT" length="100"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_SUBMITTED_AT_YEAR"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_SUBMITTED_AT_MONTH"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_SUBMITTED_AT_WEEK"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_SUBMITTED_AT_DAY"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_SUBMITTED_AT_HOUR"/>
+        <viewAttribute datatype="TIMESTAMP" id="IDEA_CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_CHANGED_AT_YEAR"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_CHANGED_AT_MONTH"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_CHANGED_AT_WEEK"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_CHANGED_AT_DAY"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_CHANGED_AT_HOUR"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition>begin
+    var_out = select idea.id as idea_id,
+                     idea.name as idea_name,
+                     idea.campaign_id,
+                     /*idea_auth_relevant.campaign_name,
+                     idea_auth_relevant.coach_id,
+                     idea_auth_relevant.coach_name,
+                     idea_auth_relevant.submitter_id,
+                     idea_auth_relevant.submitter_name,*/
+                     idea.campaign_name,
+                     idea.coach_id,
+                     idea.coach_name,
+                     idea.submitter_id,
+                     idea.submitter_name,
+                     idea.phase as phase_code,
+                     camp_phase.sequence_no as phase_sequence_number,
+                     idea.status as status_code,
+                     status.default_text as status_code_text,
+                     idea.submitted_at as idea_submitted_at,
+                     idea.resp_value_code as idea_responsibility_code,
+                     resp_value.default_text as idea_responsibility_text,
+                     EXTRACT (year FROM idea.submitted_at) as idea_submitted_at_year,
+                     EXTRACT (month FROM idea.submitted_at) as idea_submitted_at_month,
+                     week(idea.submitted_at) as idea_submitted_at_week,
+                     EXTRACT (day FROM idea.submitted_at) as idea_submitted_at_day,
+                     EXTRACT (hour FROM idea.submitted_at) as idea_submitted_at_hour,
+                     idea.changed_at as idea_changed_at,
+                     EXTRACT (year FROM idea.changed_at) as idea_changed_at_year,
+                     EXTRACT (month FROM idea.changed_at) as idea_changed_at_month,
+                     week(idea.changed_at) as idea_changed_at_week,
+                     EXTRACT (day FROM idea.changed_at) as idea_changed_at_day,
+                     EXTRACT (hour FROM idea.changed_at) as idea_changed_at_hour
+               from
+                   &quot;sap.ino.db.idea::v_idea_medium&quot; as idea
+               inner join &quot;sap.ino.db.idea::v_auth_ideas_read&quot; as idea_auth
+                       on idea.id = idea_auth.idea_id
+               inner join &quot;sap.ino.db.campaign::t_campaign_phase&quot; as camp_phase
+                    on idea.campaign_id = camp_phase.campaign_id
+                    and idea.phase = camp_phase.phase_code
+               left outer join
+               		&quot;sap.ino.db.status::t_status&quot; as status
+               		on idea.status = status.code
+               /*left outer join (
+                   select * from 
+                       &quot;sap.ino.db.idea::v_idea_medium&quot; as idea_auth_relevant
+                   inner join &quot;sap.ino.db.idea::v_auth_ideas_read&quot; as idea_auth
+                       on idea_auth_relevant.id = idea_auth.idea_id
+               ) as idea_auth_relevant
+               on idea.id = idea_auth_relevant.id*/
+               left outer join &quot;sap.ino.db.subresponsibility::v_responsibility_value&quot; as resp_value
+               on resp_value.code = idea.resp_value_code
+               where
+                   idea.status != 'sap.ino.config.DRAFT' order by camp_phase.sequence_no;
+end </definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="IDEA_ID" order="1" descriptionColumnName="IDEA_NAME">
+        <descriptions defaultDescription="Idea ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_NAME" order="2">
+        <descriptions defaultDescription="Idea Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="3" descriptionColumnName="CAMPAIGN_NAME">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="4">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="COACH_ID" order="5" descriptionColumnName="COACH_NAME">
+        <descriptions defaultDescription="Coach ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="COACH_ID"/>
+      </attribute>
+      <attribute id="COACH_NAME" order="6">
+        <descriptions defaultDescription="Coach Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="COACH_NAME"/>
+      </attribute>
+      <attribute id="SUBMITTER_ID" order="7" descriptionColumnName="SUBMITTER_NAME">
+        <descriptions defaultDescription="Author ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="SUBMITTER_ID"/>
+      </attribute>
+      <attribute id="SUBMITTER_NAME" order="8">
+        <descriptions defaultDescription="Author Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="SUBMITTER_NAME"/>
+      </attribute>
+      <attribute id="PHASE_CODE" order="9">
+        <descriptions defaultDescription="Phase"/>
+        <keyMapping columnObjectName="Script_View" columnName="PHASE_CODE"/>
+      </attribute>
+      <attribute id="PHASE_SEQUENCE_NUMBER" order="10">
+        <descriptions defaultDescription="Phase Sequence Number"/>
+        <keyMapping columnObjectName="Script_View" columnName="PHASE_SEQUENCE_NUMBER"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="11">
+        <descriptions defaultDescription="Status"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="STATUS_CODE_TEXT" order="12">
+        <descriptions defaultDescription="Status Text"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_CODE_TEXT"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT" order="13">
+        <descriptions defaultDescription="Submitted at"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_SUBMITTED_AT"/>
+      </attribute>
+      <attribute id="IDEA_RESPONSIBILITY_CODE" order="14">
+        <descriptions defaultDescription="Idea Responsibility List Value "/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_RESPONSIBILITY_CODE"/>
+      </attribute>
+      <attribute id="IDEA_RESPONSIBILITY_TEXT" order="15">
+        <descriptions defaultDescription="Idea Responsibility"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_RESPONSIBILITY_TEXT"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_YEAR" hidden="false" order="16">
+        <descriptions defaultDescription="Submitted at Year"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_SUBMITTED_AT_YEAR"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_MONTH" hidden="false" order="17">
+        <descriptions defaultDescription="Submitted at Month"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_SUBMITTED_AT_MONTH"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_WEEK" order="18">
+        <descriptions defaultDescription="Submitted at Week"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_SUBMITTED_AT_WEEK"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_DAY" hidden="false" order="19">
+        <descriptions defaultDescription="Submitted at Day"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_SUBMITTED_AT_DAY"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_HOUR" hidden="false" order="20">
+        <descriptions defaultDescription="Submitted at Hour"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_SUBMITTED_AT_HOUR"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT" order="21">
+        <descriptions defaultDescription="Changed at"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_CHANGED_AT"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_YEAR" hidden="false" order="22">
+        <descriptions defaultDescription="Changed at Year"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_CHANGED_AT_YEAR"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_MONTH" hidden="false" order="23">
+        <descriptions defaultDescription="Changed at Month"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_CHANGED_AT_MONTH"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_WEEK" order="24">
+        <descriptions defaultDescription="Changed at Week"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_CHANGED_AT_WEEK"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_DAY" hidden="false" order="25">
+        <descriptions defaultDescription="Changed at Day"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_CHANGED_AT_DAY"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_HOUR" hidden="false" order="26">
+        <descriptions defaultDescription="Changed at Hour"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_CHANGED_AT_HOUR"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

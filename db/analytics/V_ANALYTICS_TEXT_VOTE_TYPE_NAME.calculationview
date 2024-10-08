@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_TEXT_VOTE_TYPE_NAME" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="false" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_ANALYTICS_TEXT_VOTE_TYPE_NAME"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="VARCHAR" id="VOTE_TYPE_CODE" length="500"/>
+        <viewAttribute datatype="NVARCHAR" id="VOTE_TYPE_TEXT" length="100"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition> &#xD;
+ /********* Begin Procedure Script ************/ &#xD;
+ BEGIN &#xD;
+ 	 var_out =     &#xD;
+		select &#xD;
+		    text_default.code as vote_type_code,&#xD;
+		    coalesce(text_default.default_text, text_user.content) as vote_type_text&#xD;
+		from &quot;SAP_INO&quot;.&quot;sap.ino.db.status::t_status&quot; as text_default&#xD;
+		left outer join&#xD;
+			(select text_id, content from &quot;_SYS_REPO&quot;.&quot;ACTIVE_CONTENT_TEXT_CONTENT&quot;&#xD;
+            	where lang = substr(session_context('LOCALE'),0,2) and&#xD;
+            		object_name = 't_vote_type') as text_user&#xD;
+			on text_default.code = text_user.text_id;&#xD;
+&#xD;
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="VOTE_TYPE_CODE" order="1">
+        <descriptions defaultDescription="VOTE_TYPE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="VOTE_TYPE_CODE"/>
+      </attribute>
+      <attribute id="VOTE_TYPE_TEXT" order="2">
+        <descriptions defaultDescription="VOTE_TYPE_TEXT"/>
+        <keyMapping columnObjectName="Script_View" columnName="VOTE_TYPE_TEXT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

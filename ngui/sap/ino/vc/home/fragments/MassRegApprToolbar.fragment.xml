@@ -1,0 +1,28 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Toolbar class="sapMBar" design="Auto"  visible="{= !${device>/system/phone} }">
+		<core:Fragment fragmentName="sap.ino.vc.commons.fragments.MessageLog" type="XML"/>
+		<ToolbarSpacer/>
+		<Button 
+            id="sapInoMassRegisterAcceptBtn"
+            text="{i18n>REG_APPR_BTN_ACCEPT_BUTTON}"
+            tooltip="{i18n>REG_APPR_EXP_ACCEPT_BUTTON}"
+            enabled="false"
+            press="onApprovalMassAction">
+			<customData>
+				<core:CustomData key="Status" value="1" />
+			</customData>
+		</Button>
+		<Button 
+            id="sapInoMassRegisterRejectBtn"
+            text="{i18n>REG_APPR_BTN_REJECT_BUTTON}"
+            tooltip="{i18n>REG_APPR_EXP_REJECT_BUTTON}"
+            enabled="false"
+            press="onApprovalMassAction">
+			<customData>
+				<core:CustomData key="Status" value="0" />
+			</customData>
+		</Button>
+	</Toolbar>
+</core:FragmentDefinition>

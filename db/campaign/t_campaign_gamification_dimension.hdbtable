@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "CAMPAIGN GAMIFICATION DIMENSION";
+table.columns = [
+    {name = "ID";             sqlType = INTEGER;                nullable = false;},
+    {name = "DIMENSION_ID";  sqlType = INTEGER;  nullable = false; comment = "Human-readable identifier of gamification dimension";} ,
+    {name = "CAMPAIGN_ID";  sqlType = INTEGER;  nullable = false; comment = "Human-readable identifier of campaign";}  
+];  
+table.primaryKey.pkcolumns = ["ID"];        

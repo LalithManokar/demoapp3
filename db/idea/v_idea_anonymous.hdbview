@@ -1,0 +1,18 @@
+schema = "SAP_INO";
+query = "select  campaign_anonymous_text.id,
+                anonymous_text.code,
+               anonymous_text.ANONYMOUS_FOR,
+               campaign_anonymous_text.CAMPAIGN_ID
+from \"sap.ino.db.campaign::t_campaign_anonymous_text\" as campaign_anonymous_text
+inner join \"sap.ino.db.basis::t_idea_anonymous\" as anonymous_text
+on anonymous_text.code = campaign_anonymous_text.code
+left outer join \"sap.ino.db.campaign::t_campaign\" as  campaign
+on campaign.id = campaign_anonymous_text.CAMPAIGN_ID
+inner join \"sap.ino.db.campaign::v_auth_campaigns\" as auth
+on campaign_anonymous_text.CAMPAIGN_ID = auth.campaign_id
+where campaign.IS_OPEN_ANONYMOUS_FUNCTION = 1
+         with read only";
+
+depends_on_table = ["sap.ino.db.basis::t_idea_anonymous",
+                    "sap.ino.db.campaign::t_campaign_anonymous_text",
+                    "sap.ino.db.campaign::t_campaign"];

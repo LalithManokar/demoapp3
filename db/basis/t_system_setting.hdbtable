@@ -1,0 +1,15 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "System Settings: Runtime Table";
+table.columns = [
+    {name = "CODE";                     sqlType = VARCHAR;  length = 500;  nullable = false; comment = "Code of system setting";},
+    {name = "VALUE";                    sqlType = NVARCHAR; length = 5000; nullable = true;  comment = "Value of system setting";},
+    {name = "DEFAULT_TEXT";             sqlType = NVARCHAR; length = 100;  nullable = true;  comment = "Default Text of system setting";},
+    {name = "DEFAULT_LONG_TEXT";        sqlType = NVARCHAR; length = 300;  nullable = true;  comment = "Default Long Text for system setting";},
+    {name = "HAS_LOCAL_SYSTEM_SETTING"; sqlType = TINYINT;                 nullable = true;  comment = "Indicates if this system setting has a corresponding local system setting";},
+    {name = "DATATYPE_CODE";            sqlType = VARCHAR;  length = 8;    nullable = true;  comment = "Datatype of value option list. Foreign key reference to t_datatype.id";},
+    {name = "CODE_TABLE";               sqlType = NVARCHAR; length = 100;  nullable = true;  comment = "Table path for the Data Type 'CODE'";},
+    {name = "GROUP_ID";                 sqlType = INTEGER;                 nullable = true;  comment = "Number of system setting group";},
+    {name = "GROUP_ORDER";              sqlType = INTEGER;                 nullable = true;  comment = "Position of system setting in its group";}    
+];
+table.primaryKey.pkcolumns = ["CODE"];

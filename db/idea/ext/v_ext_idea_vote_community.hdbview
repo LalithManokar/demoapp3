@@ -1,0 +1,29 @@
+schema = "SAP_INO_EXT";
+query = "select 
+            idea_vote.id,
+            idea_vote.idea_id,
+            case when PUBLISH_VOTE = 1 AND  PUBLIC_VOTE = 1 then  idea_vote.user_id else null end as user_id,
+            case when PUBLISH_VOTE = 1 then  idea_vote.score else null end as score,
+            case when PUBLISH_VOTE = 1 then  idea_vote.created_at else null end as created_at,
+            case when PUBLISH_VOTE = 1 then  idea_vote.changed_at else null end as changed_at,
+            case when PUBLISH_VOTE = 1 then  idea_vote.vote_reason else null end as vote_reason,            
+            case when PUBLISH_VOTE = 1 then  idea_vote.vote_comment else null end as vote_comment,   
+            case when PUBLISH_VOTE = 1 then  idea_vote.VOTED_BY_GROUP else null end as VOTED_BY_GROUP,   
+            case when PUBLISH_VOTE = 1 then case VOTED_BY_GROUP
+                when 'ORG' then idea_vote.ORGANIZATION
+                when 'COM' then idea_vote.company
+                when 'COST' then idea_vote.cost_center
+                when 'OFF' then idea_vote.office
+                else ''
+            end
+            end as group_vote_name ,
+            case when PUBLISH_VOTE = 1 AND  PUBLIC_VOTE = 1 then  idea_vote.NAME else null end as NAME,
+            case when PUBLISH_VOTE = 1 AND  PUBLIC_VOTE = 1  and VOTED_BY_GROUP = 'ORG' then  idea_vote.ORGANIZATION else null end as ORGANIZATION,   
+            case when PUBLISH_VOTE = 1 AND  PUBLIC_VOTE = 1 and  VOTED_BY_GROUP = 'COM' then  idea_vote.company else null end as company,     
+            case when PUBLISH_VOTE = 1 AND  PUBLIC_VOTE = 1 then  idea_vote.identity_image_id else null end as identity_image_id,
+            idea_vote.source_idea_id
+         from \"sap.ino.db.idea::v_vote_user_comment\" as idea_vote
+         where idea_vote.idea_id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")
+         with read only";
+depends_on_view = ["sap.ino.db.idea::v_vote_user_comment", "sap.ino.db.idea::v_auth_ideas_read"];
+

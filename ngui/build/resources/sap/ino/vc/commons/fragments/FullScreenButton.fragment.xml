@@ -1,0 +1,13 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core" >
+    <Button 
+        id="fullScreenButton"
+        icon="{= ${component>/FULLSCREEN} ? 'sap-icon://exit-full-screen' : 'sap-icon://full-screen' }" 
+        press="toggleFullScreen" 
+        tooltip="{i18n>EXP_FULL_SCREEN_BUTTON}"
+        visible="{= !${device>/system/phone} }"
+        type="Transparent"
+        class="sapInoLetterboxInvisible">
+    </Button>
+</core:FragmentDefinition>

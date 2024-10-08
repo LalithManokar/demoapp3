@@ -1,0 +1,15 @@
+function "SAP_INO"."sap.ino.db.basis::f_check_locale" ( iv_locale varchar(14)) 
+    returns table ( locale varchar(14) )
+    language sqlscript
+    sql security definer as
+begin
+    return select :iv_locale as locale 
+                 from dummy 
+                 where :iv_locale in (select locale from "sap.ino.db.basis::v_locale")
+             union all
+             select iso_code as locale 
+                 from "sap.ino.db.basis::v_sys_default_language"
+                 where :iv_locale is null or
+                       :iv_locale = '' or
+                       :iv_locale not in (select locale from "sap.ino.db.basis::v_locale");
+end;

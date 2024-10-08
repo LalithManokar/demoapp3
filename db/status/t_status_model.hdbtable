@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Status Models";
+table.columns = [
+    {name = "CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Status Model Code";},
+    {name = "OBJECT_TYPE_CODE"; sqlType = VARCHAR; length = 100; nullable = false; comment = "Object type. Foreign key t_application_object.CODE";},
+    {name = "DEFAULT_TEXT"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Default Text";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true; comment = "Default Long Text";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

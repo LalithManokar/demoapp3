@@ -1,0 +1,23 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Evaluation of an idea";
+table.columns = [
+    {name = "HISTORY_DB_EVENT"; sqlType = VARCHAR; length = 8; nullable = false;comment = "Database event: CREATED, UPDATED, DELETED";},
+    {name = "HISTORY_BIZ_EVENT"; sqlType = VARCHAR; length = 600; nullable = false;comment = "Business event: EVAL_CREATED, EVAL_STATUS_CHANGED ...";},
+    {name = "HISTORY_AT"; sqlType = TIMESTAMP; nullable = false;comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID"; sqlType = INTEGER; nullable = false;comment = "Actor who did the changes";},
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Technical key";},
+    {name = "MODEL_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Model where this evaluation is based on. Foreign key to t_model.CODE";},	
+    {name = "IDEA_ID"; sqlType = INTEGER; nullable = false; comment = "Idea to which this evaluation belongs to. Foreign key to t_idea.ID ";},
+    {name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+    {name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";},
+    {name = "STATUS_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Status Code";},
+    {name = "IDEA_PHASE_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Idea Phase Code";},
+    {name = "CAL_NUM_VALUE"; sqlType = DOUBLE; nullable = true; comment = "Value for datatype NUMERIC/INTEGER calculate by formula";},
+    {name = "COMMENT"; sqlType = NVARCHAR; length = 1024; nullable = true; comment = "Comment to this evaluation";}
+];
+table.indexes = [
+    {name="LOGKEY_EVALUTION_H"; unique = false; indexColumns = ["ID","HISTORY_AT"];}
+];

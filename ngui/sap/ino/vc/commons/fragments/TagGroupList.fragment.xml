@@ -1,0 +1,30 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:ino="sap.ino.controls">
+    <List
+        class="inmTagGroupFilter"
+        items="{
+            path: 'tag>/TAG_GROUP',
+            templateShareable: false
+        }"
+        ariaLabelledBy="sapInmIdeaListTagGroupListFragLabel"
+        visible="{= ${view>/List/TAGCLOUD} === true }"
+        width="100%"
+        mode="SingleSelectMaster"
+        showSeparators="All">
+        <CustomListItem
+         type="Active">
+         	<content>
+              <Link tooltip="{path: 'tag>GROUP_DESCRIPTION'}" text="{path: 'tag>GROUP_NAME'}"  enabled="{parts:[{path : 'view>/List/TAGS'},{path : 'tag>GROUP_ID'}], formatter : '.formatter.TagGroupLinkEnable'}" press="onTagGroupSelected">
+              	<customData>
+						<core:CustomData  key="groupid" value="{tag>GROUP_ID}"/>
+						<core:CustomData  key="groupname" value="{tag>GROUP_NAME}"/>
+				</customData>
+				</Link>
+			</content>
+    	</CustomListItem>
+    </List>
+</core:FragmentDefinition>
+
+

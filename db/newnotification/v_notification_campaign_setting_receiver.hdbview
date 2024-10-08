@@ -1,0 +1,11 @@
+schema = "SAP_INO";
+query = "SELECT
+           receiver.ID,
+           receiver.ACTION_ID,
+           receiver.ROLE_CODE,
+           receiver.IS_RECEIVE_EMAIL
+    FROM \"sap.ino.db.newnotification::t_notification_campaign_setting_receiver\" as receiver
+    with read only
+";  
+
+depends_on_table = ["sap.ino.db.newnotification::t_notification_campaign_setting_receiver"];   

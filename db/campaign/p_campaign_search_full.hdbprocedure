@@ -1,0 +1,26 @@
+PROCEDURE "SAP_INO"."sap.ino.db.campaign::p_campaign_search_full" (
+     in  iv_search_term nvarchar(1024),
+     out ot_campaign_score  SAP_INO."sap.ino.db.basis::tt_object_score"
+ )
+ language sqlscript
+ sql security invoker
+ default schema SAP_INO
+ reads sql data as
+BEGIN
+ot_campaign_score = select id, sum(score) / count(score) as score from (   
+						select id, score() as score from "sap.ino.db.campaign::cv_campaign_search_data" where cast(id as nvarchar) = :iv_search_term or
+						                                        contains(campaign_name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(1.0)) or  
+																contains(campaign_short_name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(1.0)) or
+						                                        contains(campaign_description, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(0.5)) OR
+						                                        contains(resp_default_text, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(1.0)) OR
+						                                        contains(resp_default_long_text, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(0.5)) OR
+                                 								contains(tag_name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(1.0)) OR
+							                                   	contains(blog_title, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(1.0)) OR
+																contains(blog_description, :iv_search_term, fuzzy(0.8,'similarCalculationMode=search'), weight(0.5))  OR
+																contains(name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare')) OR
+							                                    contains(first_name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare')) OR
+							                                    contains(last_name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare')) OR
+							                                    contains(user_name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare')) OR
+									                            contains(email, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'))
+					)group by id;
+END;    

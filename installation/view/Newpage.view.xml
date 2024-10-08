@@ -1,0 +1,23 @@
+<mvc:View
+   controllerName="sap.ino.installation.controller.Newpage"
+   xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true">
+
+
+				<Page title="new  page">
+					<content>
+						<Panel
+							headerText="new page"
+							>
+							<content >
+								
+							<Button
+									text="back"
+									press=".onNavBack"/>
+							</content>
+						</Panel>
+					</content>
+				</Page>
+
+</mvc:View>

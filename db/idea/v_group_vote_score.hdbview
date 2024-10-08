@@ -1,0 +1,85 @@
+schema = "SAP_INO";
+query = "
+    select distinct 
+            vote.idea_id as idea_id,
+            idea.campaign_id as campaign_id,
+            identity.company as company,
+            'Company' as group_type,
+            1 as score
+             
+    from \"sap.ino.db.idea::t_vote\" as vote
+        inner join \"sap.ino.db.idea::t_idea\" as idea
+            on vote.idea_id = idea.id
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on vote.user_id = identity.id
+        inner join \"sap.ino.db.campaign::t_campaign\" as campaign
+            on campaign.id = idea.campaign_id
+        inner join \"sap.ino.db.campaign::t_vote_type\" as vote_type
+            on vote_type.code = campaign.vote_type_code
+        where vote_type.voted_by_group = 'COM'
+
+union all
+
+    select distinct 
+            vote.idea_id as idea_id,
+            idea.campaign_id as campaign_id,
+            identity.organization as organization,
+            'Orgnization' as group_type,
+            1 as score
+             
+    from \"sap.ino.db.idea::t_vote\" as vote
+        inner join \"sap.ino.db.idea::t_idea\" as idea
+            on vote.idea_id = idea.id
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on vote.user_id = identity.id
+        inner join \"sap.ino.db.campaign::t_campaign\" as campaign
+            on campaign.id = idea.campaign_id
+        inner join \"sap.ino.db.campaign::t_vote_type\" as vote_type
+            on vote_type.code = campaign.vote_type_code
+        where vote_type.voted_by_group = 'ORG'
+
+union all
+
+    select distinct 
+            vote.idea_id as idea_id,
+            idea.campaign_id as campaign_id,
+            identity.cost_center as cost_center,
+            'CostCenter' as group_type,
+            1 as score
+             
+    from \"sap.ino.db.idea::t_vote\" as vote
+        inner join \"sap.ino.db.idea::t_idea\" as idea
+            on vote.idea_id = idea.id
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on vote.user_id = identity.id
+        inner join \"sap.ino.db.campaign::t_campaign\" as campaign
+            on campaign.id = idea.campaign_id
+        inner join \"sap.ino.db.campaign::t_vote_type\" as vote_type
+            on vote_type.code = campaign.vote_type_code
+        where vote_type.voted_by_group = 'COST'
+
+union all
+    select distinct 
+            vote.idea_id as idea_id,
+            idea.campaign_id as campaign_id,
+            identity.office as office,
+            'Office' as group_type,
+            1 as score
+             
+    from \"sap.ino.db.idea::t_vote\" as vote
+        inner join \"sap.ino.db.idea::t_idea\" as idea
+            on vote.idea_id = idea.id
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on vote.user_id = identity.id
+        inner join \"sap.ino.db.campaign::t_campaign\" as campaign
+            on campaign.id = idea.campaign_id
+        inner join \"sap.ino.db.campaign::t_vote_type\" as vote_type
+            on vote_type.code = campaign.vote_type_code
+        where vote_type.voted_by_group = 'OFF'
+";
+
+depends_on_table = ["sap.ino.db.idea::t_vote", 
+                    "sap.ino.db.idea::t_idea", 
+                    "sap.ino.db.iam::t_identity", 
+                    "sap.ino.db.campaign::t_vote_type",
+                    "sap.ino.db.campaign::t_campaign"];

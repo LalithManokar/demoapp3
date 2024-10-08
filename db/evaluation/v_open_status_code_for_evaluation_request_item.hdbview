@@ -1,0 +1,10 @@
+schema = "SAP_INO";
+query  = "
+          select 'sap.ino.config.EVAL_REQ_IN_CLARIFICATION' as status_code from dummy
+          union
+          select 'sap.ino.config.EVAL_REQ_IN_PROCESS' as status_code from dummy
+          union
+          select 'sap.ino.config.EVAL_REQ_ACCEPTED'   as status_code from dummy
+          union
+          select 'sap.ino.config.EVAL_REQ_REQUESTED'  as status_code from dummy
+          with read only";

@@ -1,0 +1,25 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Vote type";
+table.columns = [
+    {name = "PACKAGE_ID";        sqlType = NVARCHAR; length = 256; nullable = false; comment = "Package where content is delivered from";},
+    {name = "CODE";              sqlType = VARCHAR;  length = 500; nullable = false; comment = "Vote Type";},
+    {name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default Text for Vote Type";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true;  comment = "Default Long Text for Vote Type";},
+    {name = "TYPE_CODE";         sqlType = VARCHAR;  length = 40;  nullable = false; comment = "Either LIKE, DISLIKE or STAR";},
+    {name = "MAX_STAR_NO";       sqlType = INTEGER;                nullable = true;  comment = "Maximum number of stars";},
+    {name = "ID";                sqlType = INTEGER;                nullable = true;  comment = "ID used for UI maintenance - empty for imported configuration content";},
+    {name = "PLAIN_CODE";        sqlType = VARCHAR;  length = 100; nullable = true;  comment = "Code key without package and naming prefix for UI maintenance";},
+    {name = "PUBLIC_VOTE";       sqlType = TINYINT;                nullable = true;  comment = "Vote is public with user name and campany name";},
+    {name = "PUBLISH_VOTE";      sqlType = TINYINT;                nullable = true;  comment = "Publish Voting to Community";},
+    {name = "VOTED_BY_GROUP";    sqlType = VARCHAR;  length = 40;  nullable = true;  comment = "Either Voted by Company, Organization, Cost Center, Office or Not";},
+    {name = "VOTE_COMMENT_TYPE"; sqlType = VARCHAR;  length = 10;  nullable = true;  comment = "Vote Comment Type with reason list or free text, default is empty";},
+    {name = "VOTE_REASON_CODE";  sqlType = VARCHAR;  length = 200; nullable = true;  comment = "Vote reason list code";},
+    {name = "CREATED_AT";        sqlType = TIMESTAMP;              nullable = true;  comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID";     sqlType = INTEGER;                nullable = true;  comment = "Identity by which content has been created.";},
+    {name = "CHANGED_AT";        sqlType = TIMESTAMP;              nullable = true;  comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID";     sqlType = INTEGER;                nullable = true;  comment = "Identity by which content has been changed.";},
+    {name = "AUTO_VOTE";         sqlType = TINYINT;                nullable = true;  comment = "When submit idea with auto vote action";},    
+    {name = "AUTO_FOLLOW";       sqlType = TINYINT;                nullable = true;  comment = "When vote idea with auto follow action";}
+];
+table.primaryKey.pkcolumns = ["PACKAGE_ID", "CODE"];

@@ -1,0 +1,15 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Notification Status";
+
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "FEED_ID"; sqlType = INTEGER; nullable = false; comment = "Identifier of referenced feed";},
+    {name = "USER_ID"; sqlType = INTEGER; nullable = false; comment = "Receipient (user) of Notification. Foreign key to t_identity.ID";},
+    {name = "IS_INSTANCE"; sqlType = TINYINT; nullable = true;  comment = "The feed is instance feed or not";},
+    {name = "MAIL_STATUS_CODE"; sqlType = VARCHAR; length = 16; nullable = true; comment = "Currently either UNSENT, SENT, DEACTIVATED, PROCESSING";},
+    {name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = true; comment = "Creation timestamp";},
+    {name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = true; comment = "Changed timestamp";}
+];
+
+table.primaryKey.pkcolumns = ["ID"];

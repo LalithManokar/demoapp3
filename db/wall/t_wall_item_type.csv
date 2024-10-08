@@ -1,0 +1,14 @@
+sap.ino.config.ATTACHMENT;Attachment;Attachment
+sap.ino.config.DOCUMENT;Document;Document
+sap.ino.config.HEADLINE;Headline;Headline
+sap.ino.config.IMAGE;Image;Image
+sap.ino.config.LINE;Line;Line
+sap.ino.config.LINK;Link;Link
+sap.ino.config.PERSON;Person;Person
+sap.ino.config.SPRITE;Sprite;Sprite
+sap.ino.config.STICKER;Sticker;Sticker
+sap.ino.config.TEXT;Text;Text
+sap.ino.config.VIDEO;Video;Video
+sap.ino.config.GROUP;Group;Group
+sap.ino.config.IDEA;Idea;Idea
+sap.ino.config.ARROW;Arrow;Arrow

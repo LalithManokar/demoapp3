@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE;
+table.temporary = true;
+table.description = "Input table for CREATE and UPDATE procedures of static identity roles";
+table.columns = [
+    {name = "IDENTITY_ID"; sqlType = INTEGER;               nullable = true;  comment = "IDENTITY_ID";},
+    {name = "ROLE";        sqlType = VARCHAR; length = 256; nullable = true;  comment = "Role to which identity IDENTITY_ID is assigned.";},
+    {name = "ACTION";      sqlType = VARCHAR; length = 10;  nullable = false; comment = "GRANT or REVOKE";}
+ ];

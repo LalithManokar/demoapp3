@@ -1,0 +1,52 @@
+schema = "SAP_INO";
+query = " 
+select * from (
+        select 
+            replace(feed.object_id || feed.object_type_code || feed.event_at || feed.feed_code || IFNULL(feed.involved_id, 0),  ' ','_') as key,
+            feed.object_id,
+            feed.object_type_code,
+            feed.object_text,
+            feed.actor_id,
+            feed.actor_name,
+            feed.identity_image_id as actor_image_id,
+            feed.involved_id,
+            feed.involved_obj_type_code,
+            feed.sub_text as involved_obj_text,
+            feed.event_at,
+            feed.feed_code, 
+            feed.campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            null as field2_name,
+            null as field2_text,
+            null as field2_value,
+            null as field2_value_option,
+            feed.filter_type_code, 
+            null as content,
+            feed.sub_text,
+            null as sub_feed_code,
+            feed.campaign_date,
+            follow.created_by_id as followed_by_id,
+            follow.CREATED_AT as followed_at,
+            follow.EMAIL_AT as latest_email_at
+        from \"sap.ino.db.follow::t_follow\" as follow 
+        inner join \"sap.ino.db.tag::v_tag_biz_feeds\" as feed
+            on feed.object_id = follow.object_id and follow.object_type_code = 'TAG'
+            and feed.event_at >= follow.CREATED_AT
+            and follow.created_by_id in (select id from \"sap.ino.db.iam::v_auth_application_user\")
+        where 
+            (feed.involved_obj_type_code = 'CAMPAIGN' and feed.involved_id in (select campaign_id from \"sap.ino.db.campaign::v_auth_campaigns_and_registrable\")) or
+            (feed.involved_obj_type_code = 'IDEA' and feed.involved_id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")) or 
+            (feed.involved_obj_type_code <> 'IDEA' and feed.involved_obj_type_code <> 'CAMPAIGN') or 
+            feed.involved_obj_type_code is null
+         
+) with read only"; 
+
+depends_on_table = ["sap.ino.db.follow::t_follow"];
+
+depends_on_view =  ["sap.ino.db.tag::v_tag_biz_feeds",
+                    "sap.ino.db.iam::v_auth_application_user",
+                    "sap.ino.db.idea::v_auth_ideas_read",
+                    "sap.ino.db.campaign::v_auth_campaigns_and_registrable"];          

@@ -1,0 +1,55 @@
+<mvc:View
+    controllerName="sap.ino.vc.follow.CampaignFeedList"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns:ino="sap.ino.controls"
+	xmlns:l="sap.ui.layout">
+	<VBox class='sapInoFeedListContainer'> 
+	<List id="campaignFeedList"
+                showSeparators="Inner"
+                items="{path: 'feed>/results'}"
+                noDataText="{i18n>FEED_LIST_NO_DATA}"
+                class="sapInoFeedList">
+		<items>
+			<CustomListItem class="sapInoFeedListItem">
+			    <content>
+					<FlexBox alignItems="Start" width="100%" height="100%">
+						<items>
+							<VBox width="100%" class="sapUiSmallMarginTopBottom" >
+								<HBox width="100%">
+									<ino:IdentityCard
+                                        visible="{= !${device>/system/phone} }"
+                                        userImageUrl="{ path: 'feed>ACTOR_IMAGE_ID', formatter: '.formatter.userImage' }"
+                                        identityId="{feed>ACTOR_ID}"
+                                        identityPress="onOpenIdentityQuickView"
+                                        imageSize="S" />
+									<VBox height="100%" wrap="Wrap" class="sapInoFeedListItemBox">
+                                        <l:HorizontalLayout allowWrapping="true" class="sapInoFeedListItemTxt sapUiSmallMarginBottom">
+                                            <l:content>
+                                                <Text visible="{= ${feed>ACTOR_ID} === 0}" text="{i18n>IDEA_OBJECT_TIT_IDEA_Anonymity}" class="sapUiTinyMarginEnd"/>
+                                                <Link visible="{parts:[{path :'feed>FEED_CODE'},{path:'feed>ACTOR_ID'}],formatter: '.formatter.feedLink'}" text="{feed>ACTOR_NAME}" press="onOpenActor" class="sapUiTinyMarginEnd"/>
+                                                <core:HTML 
+                                                    content="{path: 'feed>', formatter:'.feedMsgFormatter'}" 
+                                                    sanitizeContent="true" 
+                                                    afterRendering="_onAfterRendering"/>
+                                	        </l:content>
+                                		</l:HorizontalLayout>
+										<Label text="{path: 'feed>EVENT_AT', type: 'sap.ui.model.type.DateTime', formatOptions: { relative: false }}"
+                                            class="sapInoTimestamp"/>
+                                        <core:HTML sanitizeContent="true" preferDOM="false"
+                                            visible="{= ${feed>INVOLVED_OBJ_TYPE_CODE} === 'COMMENT' &amp;&amp; !!${feed>CONTENT}}" 
+                                            content="{path:'feed>CONTENT',formatter:'.formatter.wrapToHTML'}" 
+                                            class="sapUiSmallMarginTop" />
+                                        <l:HorizontalLayout class="sapUiSmallMarginTop" />
+									</VBox>
+								</HBox>
+							</VBox>
+						</items>
+					</FlexBox>
+				</content>
+			</CustomListItem>
+		</items>
+	</List>
+	</VBox>
+</mvc:View>

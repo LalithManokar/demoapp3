@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = "select object_id as campaign_id, count(distinct identity_id) as active_participant_count from 
+        (select log.object_id, log.identity_id 
+            from \"sap.ino.db.tracker::t_action_log\" as log 
+            where log.object_type='CAMPAIGN' and log.action_type <> 'VIEW'
+        union all
+        select idea.campaign_id as object_id, log.identity_id 
+            from \"sap.ino.db.tracker::t_action_log\" as log 
+            left join \"sap.ino.db.idea::t_idea\" as idea 
+            on idea.id = log.object_id  
+            where log.object_type='IDEA' and log.action_type <> 'VIEW')
+        group by object_id";
+depends_on_table = ["sap.ino.db.tracker::t_action_log",
+                    "sap.ino.db.idea::t_idea"]; 

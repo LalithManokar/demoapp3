@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_EXT_ANALYTICS_MODEL_DIMENSION" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="Model Dimension"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="sap.ino.db.evaluation::t_model" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::t_model"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="sap.ino.db.evaluation::t_model">
+    <attributes>
+      <attribute id="MODEL_CODE" order="1" attributeHierarchyActive="false" displayAttribute="false" key="true">
+        <descriptions defaultDescription="Model Code"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::t_model" columnName="CODE"/>
+      </attribute>
+      <attribute id="MODEL_DEFAULT_TEXT" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Model Default Text"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::t_model" columnName="DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="MODEL_DEFAULT_LONG_TEXT" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Model Default Long Text"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::t_model" columnName="DEFAULT_LONG_TEXT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

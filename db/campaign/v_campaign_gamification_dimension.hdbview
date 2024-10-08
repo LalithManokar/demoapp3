@@ -1,0 +1,9 @@
+schema = "SAP_INO";
+query = "SELECT setting.ID,
+        setting.DIMENSION_ID,
+        setting.CAMPAIGN_ID
+    FROM \"sap.ino.db.campaign::t_campaign_gamification_dimension\" as setting
+    with read only
+";  
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_gamification_dimension"];   

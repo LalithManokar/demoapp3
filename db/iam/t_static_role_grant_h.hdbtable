@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Role grants history";
+table.columns = [
+    {name = "HISTORY_DB_EVENT";  sqlType = VARCHAR; length =   8;  nullable = false; comment = "Database event: GRANT, REVOKE";},
+    {name = "HISTORY_BIZ_EVENT"; sqlType = VARCHAR; length =  60;  nullable = false; comment = "Business event: GRANT, REVOKE";},
+    {name = "HISTORY_AT";        sqlType = TIMESTAMP;              nullable = false; comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID";  sqlType = INTEGER;                nullable = false; comment = "Actor Who triggered the event";},
+    {name = "ID";                sqlType = INTEGER;                nullable = false; comment = "User ID for whom the event was processed";},
+    {name = "ROLE_NAME";         sqlType = NVARCHAR; length = 256; nullable = false; comment = "Role name";}
+];

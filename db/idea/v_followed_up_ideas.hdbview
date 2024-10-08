@@ -1,0 +1,6 @@
+schema = "SAP_INO";
+query = "select distinct follow_up.object_id as id
+	from \"sap.ino.db.followup::v_follow_up\" as follow_up
+	where follow_up.object_type_code = 'IDEA'";
+
+depends_on_view = ["sap.ino.db.followup::v_follow_up"];

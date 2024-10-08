@@ -1,0 +1,12 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "widget of homepage";
+table.columns = [
+	{name = "ID";           sqlType = INTEGER;                 nullable = false; comment = "Human-readable identifier of widget page";},
+	{name = "IS_VISIBLE";   sqlType = TINYINT;                 nullable = false; comment = "Indicator for the visibility of the page";},
+	{name = "TITLE";        sqlType = NVARCHAR; length = 100;  nullable = true;  comment = "Title of widget";},
+	{name = "HTML_CONTENT"; sqlType = NCLOB;                   nullable = true;  comment = "HTML content of widget page";},
+	{name = "TYPE_CODE";    sqlType = VARCHAR;  length = 32;   nullable = false; comment = "type code for widget";}
+	
+];
+table.primaryKey.pkcolumns = ["ID"]; 

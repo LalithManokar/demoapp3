@@ -1,0 +1,27 @@
+schema = "SAP_INO_EXT";
+
+query = "
+    SELECT 
+        id,
+        group_id,
+        group_name,
+        member_id,
+        member_name,
+        type_code,
+        description,
+        user_name
+    FROM \"sap.ino.db.iam::v_group_member\" AS M
+    WHERE EXISTS (SELECT 1
+		FROM \"SYS\".\"EFFECTIVE_PRIVILEGES\" AS P
+		WHERE P.USER_NAME = SESSION_CONTEXT('APPLICATIONUSER')
+			AND (PRIVILEGE = 'sap.ino.xs.rest.admin.application::execute'
+				OR PRIVILEGE = 'sap.ino.xs.rest.admin.application::user'))
+	OR (M.USER_NAME = SESSION_CONTEXT('APPLICATIONUSER') 
+	    AND NOT EXISTS(SELECT 1
+		FROM \"SYS\".\"EFFECTIVE_PRIVILEGES\" AS P
+		WHERE P.USER_NAME = SESSION_CONTEXT('APPLICATIONUSER')
+			AND (PRIVILEGE = 'sap.ino.xs.rest.admin.application::execute'
+				OR PRIVILEGE = 'sap.ino.xs.rest.admin.application::user')))
+    with read only";
+
+depends_on_view = ["sap.ino.db.iam::v_group_member"];

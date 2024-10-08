@@ -1,0 +1,5 @@
+{
+    "privileges": [
+        { "name": "executeInstallation",   "description": " inm installation - only needed by doing installtion process" }
+    ]
+}

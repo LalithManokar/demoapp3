@@ -1,0 +1,50 @@
+schema = "SAP_INO_EXT";
+query = "select 1 as NO, 
+		(select count(evaluated_idea.ID) from \"sap.ino.db.idea::v_my_backoffice_evaluated_ideas\" as evaluated_idea) as evaluated_idea_count,
+        (select count(follow_up_idea.ID) from \"sap.ino.db.idea::v_followed_up_ideas\" as follow_up_idea) as follow_up_idea_count,
+        (SELECT COUNT(distinct idea.id)  FROM \"sap.ino.db.idea::v_my_coached_ideas\" AS idea
+            	LEFT OUTER JOIN \"sap.ino.db.campaign::v_my_backoffice_campaign\" AS backoffice_campaign
+            	ON backoffice_campaign.ID = idea.CAMPAIGN_ID
+            	LEFT OUTER JOIN \"sap.ino.db.idea::v_my_backoffice_responsibility_idea\" AS responsibility_idea
+            	ON responsibility_idea.ID = idea.ID
+            WHERE idea.campaign_id = backoffice_campaign.id
+            	OR idea.campaign_id IS NULL
+            	OR idea.campaign_id <= 0
+            	OR idea.id = responsibility_idea.id) as coached_by_me_idea_count,
+        (select count(uncoached_idea.ID) from \"sap.ino.db.idea::v_my_uncoached_ideas\" as uncoached_idea) as unassigned_idea_count,
+        (select count(my_pending_apprs.register_id) FROM \"sap.ino.db.campaign::v_campaign_register\" as my_pending_apprs where my_pending_apprs.IS_REGISTER_AUTO_APPROVE <> 1 or my_pending_apprs.IS_REGISTER_AUTO_APPROVE is null) as my_pending_appr_count,
+        (select count(followed_idea.id) from \"sap.ino.db.idea.ext::v_ext_my_followed_ideas\" as followed_idea) as followed_completed_idea_count,
+        (select count(completed_idea.id) from \"sap.ino.db.idea.ext::v_ext_completed_ideas_backoffice\" as completed_idea) as completed_idea_count,
+        (select count(eval_item.id) from \"sap.ino.db.evaluation.ext::v_ext_evaluation_request_item_by_me\" as eval_item) as my_pending_eval_item_count,
+        (select count(my_follow.follow_id) from \"sap.ino.db.follow::v_auth_follow_count\" as my_follow) as my_followed_count,
+        (select count(reward.id) from 
+                (select reward_item.* from \"sap.ino.db.reward::v_reward\" as reward_item
+                    inner join \"sap.ino.db.reward::v_auth_rewards_manage\" as auth_manage
+                            on reward_item.reward_list_id = auth_manage.reward_list_id)  
+                as reward) as rewards_management_count,
+        (select count(opened.ID) from \"sap.ino.db.campaign::v_opened_campaign\" as opened) as open_campaign_count,
+        (select count(managed.ID) from \"sap.ino.db.campaign::v_managed_campaign\" as managed) as managed_campaign_count,
+        (select count(idea.ID) from  \"sap.ino.db.idea::t_idea\" as idea
+                  inner join  \"sap.ino.db.idea::v_vote_ideas\" as open_vote on idea.id=open_vote.id where idea.status_code <> 'sap.ino.config.DRAFT') as open_voting_ideas_count
+                       
+    	from dummy 
+    	with read only";
+
+depends_on_table = [ "sap.ino.db.idea::t_idea"];
+
+depends_on_view = [ "sap.ino.db.idea::v_my_backoffice_evaluated_ideas",
+                    "sap.ino.db.idea::v_followed_up_ideas",
+        	        "sap.ino.db.idea::v_my_coached_ideas",
+                    "sap.ino.db.idea::v_my_uncoached_ideas",
+                    "sap.ino.db.follow::v_auth_follow_count",
+                    "sap.ino.db.idea.ext::v_ext_my_followed_ideas",
+                    "sap.ino.db.idea.ext::v_ext_completed_ideas",
+                    "sap.ino.db.evaluation.ext::v_ext_evaluation_request_item_by_me",
+                    "sap.ino.db.reward::v_reward",
+                    "sap.ino.db.reward::v_auth_rewards_manage",
+                    "sap.ino.db.campaign::v_campaign_register",
+                    "sap.ino.db.campaign::v_managed_campaign",
+                    "sap.ino.db.campaign::v_opened_campaign",
+                    "sap.ino.db.idea::v_vote_ideas",
+                    "sap.ino.db.campaign::v_my_backoffice_campaign",
+                    "sap.ino.db.idea::v_my_backoffice_responsibility_idea"];

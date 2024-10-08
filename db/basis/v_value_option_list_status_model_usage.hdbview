@@ -1,0 +1,60 @@
+schema = "SAP_INO";
+query = "
+    select 
+        vol.code as value_list_code,
+        model.code as status_model_code,
+        phase.campaign_id as campaign_id,
+		txt.name as campaign_name,
+	    phase.phase_code as campaign_phase,
+	    count(distinct model.code) as status_model_count
+    from
+        \"sap.ino.db.basis::t_value_option_list\" as vol
+    inner join
+        \"sap.ino.db.status::t_status_model_transition\" as transition
+    on
+        vol.code = transition.decision_reason_list_code
+    inner join
+        \"sap.ino.db.status::t_status_model_stage\" as model
+    on
+        transition.status_model_code = model.code
+    inner join 
+        \"sap.ino.db.campaign::t_campaign_phase\" as phase 
+    on 
+        model.code = phase.status_model_code
+    left outer join 
+        \"sap.ino.db.campaign::v_campaign_t_locale\" as txt 
+    on 
+        phase.CAMPAIGN_ID = txt.CAMPAIGN_ID
+    group by
+        vol.code,
+        model.code,
+        phase.campaign_id,
+        txt.name,
+        phase.phase_code
+union
+    select 
+        vol.code as value_list_code,
+        model.code as status_model_code,
+        0 as campaign_id,
+		'' as campaign_name,
+	    '' as campaign_phase,
+	    count(distinct model.code) as status_model_count
+	from
+        \"sap.ino.db.basis::t_value_option_list\" as vol
+    inner join
+        \"sap.ino.db.status::t_status_model_transition\" as transition
+    on
+        vol.code = transition.decision_reason_list_code
+    inner join
+        \"sap.ino.db.status::t_status_model_stage\" as model
+    on
+        transition.status_model_code = model.code
+    group by
+        vol.code,
+        model.code
+    with read only";
+depends_on_table = ["sap.ino.db.basis::t_value_option_list", 
+                    "sap.ino.db.status::t_status_model_transition",
+                    "sap.ino.db.status::t_status_model_stage",
+                    "sap.ino.db.campaign::t_campaign_phase"];
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale"];

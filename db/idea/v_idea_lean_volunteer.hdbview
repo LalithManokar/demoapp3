@@ -1,0 +1,28 @@
+schema = "SAP_INO";
+query = "
+    select 
+        volunteer.ID,
+        volunteer.IDEA_ID,
+        identity.id as IDENTITY_ID,
+        identity.name,
+        identity.image_id,
+        identity.identity_image_id,
+        identity.identity_image_media_type 
+    from
+        \"sap.ino.db.idea::t_volunteers\" as volunteer
+    inner join
+        \"sap.ino.db.idea::v_auth_ideas_update\" as idea_privilege
+    on
+        volunteer.IDEA_ID = idea_privilege.IDEA_ID
+    inner join
+        \"sap.ino.db.iam::v_auth_application_user\" as auth_user
+    on
+        idea_privilege.IDENTITY_ID = auth_user.ID
+    inner join
+        \"sap.ino.db.iam::v_identity_full\" as identity
+    on
+        volunteer.IDENTITY_ID = identity.ID
+    with read only
+";
+depends_on_table = ["sap.ino.db.idea::t_volunteers"];
+depends_on_view = ["sap.ino.db.idea::v_auth_ideas_update", "sap.ino.db.iam::v_auth_application_user", "sap.ino.db.iam::v_identity_full"];

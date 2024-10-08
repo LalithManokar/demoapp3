@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "select id,
+'true' as IS_ANONYMOUS
+from \"sap.ino.db.idea::t_ideas_setting\" 
+            with read only";
+ 
+depends_on_table = ["sap.ino.db.idea::t_ideas_setting"];
+

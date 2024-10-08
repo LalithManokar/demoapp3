@@ -1,0 +1,17 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Attachment";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+	{name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an attachment has been created. Foreign key to t_identity.ID";},
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an attachment has been changed. Foreign key t_identity.ID";},
+	{name = "FILE_NAME"; sqlType = NVARCHAR; length = 200; nullable = true; comment = "Name of attachment";},
+	{name = "FILE_SIZE"; sqlType = DOUBLE; nullable = true; comment = "Size of attachment";},
+	{name = "MEDIA_TYPE"; sqlType = VARCHAR; length = 100; nullable = true; comment = "Media type of attachment";},
+	{name = "LABEL"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Additional label";},
+	{name = "CUSTOM_INFO"; sqlType = NVARCHAR; length = 500; nullable = true; comment = "Additional custom info";},
+	{name = "FOLDER_ID"; sqlType = INTEGER; nullable = true; comment = "Folder the file resides. Foreign key t_identity.ID";} 
+];
+table.primaryKey.pkcolumns = ["ID"];

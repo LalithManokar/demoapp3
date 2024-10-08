@@ -1,0 +1,9 @@
+<core:FragmentDefinition
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core">
+    <Button visible="{object>property/actions/del/enabled}"
+            type="Reject"
+            id="deleteBtn"
+            text="{i18n>BTN_DEL}"
+            press="onDelete"/>
+</core:FragmentDefinition>

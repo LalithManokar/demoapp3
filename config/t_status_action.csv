@@ -1,0 +1,26 @@
+CODE;DEFAULT_TEXT
+sap.ino.config.START_NEXT_PHASE;Start Next Phase
+sap.ino.config.DISCONTINUE;Discontinue
+sap.ino.config.START_PROCESS;Start Processing
+sap.ino.config.REWORK_EVALUATION;Rework Evaluation
+sap.ino.config.DECISION_PREPARE;Mark as Ready for decision
+sap.ino.config.CONTINUE_PROJECT;Continue Project
+sap.ino.config.RESTART_PHASE;Restart Phase
+sap.ino.config.RESTART_PREV_PHASE;Restart Previous Phase
+sap.ino.config.WAIT;Wait for Staffing
+sap.ino.config.COMPLETE;Wait
+sap.ino.config.EVAL_SUBMIT;Submit
+sap.ino.config.EVAL_REWORK;Rework Evaluation
+sap.ino.config.EVAL_PUB_SUBMITTER;Publish to Author
+sap.ino.config.EVAL_UNPUBLISH;Unpublish
+sap.ino.config.EVAL_PUB_COMMUNITY;Publish to Community
+sap.ino.config.REWARD_PUB_AUTHOR;Publish to Author
+sap.ino.config.REWARD_PUB_COMMUNITY;Publish to Community
+sap.ino.config.REWARD_UNPUBLISH;Reward UnPublish
+sap.ino.config.EVAL_REQ_ACCEPT;Accept
+sap.ino.config.EVAL_REQ_REJECT;Reject
+sap.ino.config.EVAL_REQ_START_PROCESS;Start Processing
+sap.ino.config.EVAL_REQ_ASK_FOR_CLARI;Ask For Clarification
+sap.ino.config.EVAL_REQ_RET_TO_REQUEST;return to requested
+sap.ino.config.EVAL_REQ_COMPLETE;Complete
+sap.ino.config.EVAL_REQ_EXPIRE;Expire

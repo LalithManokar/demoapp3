@@ -1,0 +1,92 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+                         xmlns:f="sap.ui.layout.form"
+                         xmlns="sap.m"
+                         xmlns:ino="sap.ino.controls"
+                         xmlns:mvc="sap.ui.core.mvc"
+                         xmlns:form="sap.ui.layout.form"                         
+                        >
+                           <Panel>
+				            <content >
+				            <MessageStrip class="sapUiSmallMarginBottom"
+								text="{parts:[ 'preCheck>/du_version/version',
+								               'preCheck>/du_version/version_patch',
+								               'preCheck>/du_version/version_sp',
+								               'preCheck>/prevVersion/version',
+								               'preCheck>/prevVersion/version_patch',
+								               'preCheck>/prevVersion/version_sp'
+								               ],
+								               formatter:'.formatUpgradeVersionText'}"
+								type="Success"
+								showIcon="true"/>				            
+				            <!--MessageStrip class="sapUiSmallMarginBottom"
+								text="{installation>/setSystemConfig/message}"
+								type="Success"
+								visible="{parts:['installation>/setSystemConfig/status'],formatter:'.visibleUpgradePostMsgStrip'}"
+								showIcon="true"/-->
+                           <Text text="{i18n>PROCESS_CREATE_PROCESSING_TEXT_DES}" />
+                           <VBox >
+                            <VBox id="runConfig" width = "50%" class="sapInoInstallCreatePrcedure">
+                                <HBox class="sapInoInstallRestartDBHbox">
+                                <VBox>
+                                <Title class="sapInoInstallProcessingMarginLeft" text="{i18n>PROCESS_CREATE_PROCESSING_POST}" />
+                                <Text class="sapInoInstallProcessingMarginLeft" text="{i18n>PROCESS_CREATE_PROCESSING_POST_DES}" />
+                                </VBox>
+                                <ToolbarSpacer/>
+                                <Button text="{i18n>PROCESS_CREATE_RE_PROCESS}" press="onReprocess" visible="{parts:['installation>/runConfig/status'],formatter:'.visibleMessageBox'}" />
+                                </HBox>
+                                
+                                <Toolbar class="sapInoInstallationPanelVboxToolbar" width="100%" height="1px" visible="{parts:['installation>/runConfig/status'],formatter:'.visibleMessageStatusBox'}"/>
+                                <HBox class="sapInoInstallProcessingMarginLeft" visible="{parts:['installation>/runConfig/status'],formatter:'.visibleMessageStatusBox'}">            
+                                    <Label class="sapInoInstallProcessingStatus" text="{i18n>PROCESS_CREATE_PROCESSING_STATUS}" />
+                                    <Label  class="sapInoInstallProcessingStatusContent" text="{parts:['installation>/runConfig/status'],formatter:'.formatStatusText'}"/>
+                                </HBox>  
+                                <HBox class="sapInoInstallProcessingMarginLeft" visible="{parts:['installation>/runConfig/status'],formatter:'.visibleMessageBox'}" >
+                                    <Label class="sapInoInstallProcessingStatus" text="{i18n>PROCESS_CREATE_PROCESSING_MESSAGE}" />
+                                    <Label class="sapInoInstallProcessingStatusContent" text="{installation>/runConfig/message}" 
+                                           tooltip="{installation>/runConfig/message}"/> 
+                                    <Link class="sapUiSmallMarginBegin" text="{i18n>SHOW_INFORMATION_MORE}" press="showMessageDetail">
+                                    			<customData>
+                                        			<core:CustomData 
+                                                        value="{installation>/runConfig/message}" />
+                                               </customData>
+                                    </Link>  
+                                </HBox>            
+                            </VBox> 
+                            
+                            <VBox id="revokeTimeout" width = "50%" class="sapInoInstallCreatePrcedure">
+                                <HBox class="sapInoInstallRestartDBHbox">
+                                <VBox>
+                                <Title class="sapInoInstallProcessingMarginLeft" text="{i18n>PROCESS_CREATE_PROCESSING_PREPARE_SYSTEM}" />
+                                <Text class="sapInoInstallProcessingMarginLeft" text="{i18n>PROCESS_CREATE_PROCESSING_PREPARE_SYSTEM_DES}" />
+                                </VBox>
+                                <ToolbarSpacer/>
+                                <Button text="{i18n>PROCESS_CREATE_RE_PROCESS}" press="onReprocess" visible="{parts:['installation>/revokeTimeout/status'],formatter:'.visibleMessageBox'}" />
+                                </HBox>
+                                
+                                <Toolbar class="sapInoInstallationPanelVboxToolbar" width="100%" height="1px" visible="{parts:['installation>/revokeTimeout/status'],formatter:'.visibleMessageStatusBox'}"/>
+                                <HBox class="sapInoInstallProcessingMarginLeft" visible="{parts:['installation>/revokeTimeout/status'],formatter:'.visibleMessageStatusBox'}">            
+                                    <Label class="sapInoInstallProcessingStatus" text="{i18n>PROCESS_CREATE_PROCESSING_STATUS}" />
+                                    <Label  class="sapInoInstallProcessingStatusContent" text="{parts:['installation>/revokeTimeout/status'],formatter:'.formatStatusText'}"/>
+                                </HBox>  
+                                <HBox class="sapInoInstallProcessingMarginLeft" visible="{parts:['installation>/revokeTimeout/status'],formatter:'.visibleMessageBox'}" >
+                                    <Label class="sapInoInstallProcessingStatus" text="{i18n>PROCESS_CREATE_PROCESSING_MESSAGE}" />
+                                    <Label class="sapInoInstallProcessingStatusContent" text="{installation>/revokeTimeout/message}"
+                                           tooltip="{installation>/revokeTimeout/message}"/> 
+                                    <Link class="sapUiSmallMarginBegin" text="{i18n>SHOW_INFORMATION_MORE}" press="showMessageDetail">
+                                    			<customData>
+                                        			<core:CustomData 
+                                                        value="{installation>/revokeTimeout/message}" />
+                                               </customData>
+                                    </Link>                                    
+                                </HBox>            
+                            </VBox> 
+                            
+                           </VBox>
+			                </content>
+			            </Panel>
+				<Toolbar  class="sapInoInstallToolBar" visible="{parts:['installation>/STARTED_TO_PROCESS'],formatter:'.visibleStartToProcessBtn'}">
+				<ToolbarSpacer/>
+			            <Button id = "createUpgradeProcessBtn" text="{i18n>PROCESS_CREATE_INPUT_START_POST}"  press="onPressUpgradePost"/>
+			            <Button text="{i18n>BTN_CANCEL}" press="onPressUpgradeCancel"/>
+		     	</Toolbar>				            
+</core:FragmentDefinition>

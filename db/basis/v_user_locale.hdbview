@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = "
+    select
+        user_id,
+        value as locale
+    from
+        \"sap.ino.db.basis::t_user_parameter\"
+    where
+        section = 'locale' and
+        key     = 'locale'
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.basis::t_user_parameter"];

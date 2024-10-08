@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT";
+query = "
+    select * from \"sap.ino.db.link::t_link_semantic\"
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.link::t_link_semantic"];

@@ -1,0 +1,35 @@
+@sapInoWallROSRadius: 80px;
+
+.sapInoWallROS {
+	height: 28px;
+}
+
+.sapInoWallROSSegmentedButton .sapMSegBBtn {
+	font-size: 0.75rem;
+	padding-left: 0px;
+	padding-right: 0px;
+	width: 60px;
+  	height: 20px; 
+	line-height: 22px; 
+}
+
+.sapInoWallROSSegmentedButton .sapMSegBBtnSel {
+	background: #808080;
+	border-color: #808080; 
+}
+
+/* override: round borders for first button */
+.sapInoWallROSSegmentedButton .sapMSegBBtn:first-child:first-child {
+	border-top-left-radius: @sapInoWallROSRadius;
+	border-bottom-left-radius: @sapInoWallROSRadius;
+}
+
+/* override: round borders for last button */
+.sapInoWallROSSegmentedButton .sapMSegBBtn:last-child {
+	border-top-right-radius: @sapInoWallROSRadius;
+	border-bottom-right-radius: @sapInoWallROSRadius;
+}
+
+html[data-sap-ui-browser*='ie'] .sapMILI-CTX .sapInoWallROS .sapInoWallROSSegmentedButton {
+	margin-right: 20px;
+}

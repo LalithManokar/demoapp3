@@ -1,0 +1,29 @@
+procedure "SAP_INO"."sap.ino.db.newnotification::p_notification_cleanup" () 
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+
+    -- delete all orphaned notifications which do not have any idea reference any more
+    lt_orphaned_notification_id = select id from "sap.ino.db.notification::t_notification" 
+        where  ( object_id not in (select id from "sap.ino.db.idea::t_idea") and object_type_code = 'IDEA' )
+        and ( object_id not in (select id from "sap.ino.db.tag::t_tag") and object_type_code = 'FOLLOW' )
+        and ( object_id not in (select id from "sap.ino.db.campaign::t_campaign") and object_type_code = 'CAMPAIGN' )
+        and ( object_id not in (select id from "sap.ino.db.evaluation::t_evaluation_request_item") and object_type_code = 'EVAL_REQUEST_ITEM' );
+    delete from "sap.ino.db.notification::t_notification" where id in (select id from :lt_orphaned_notification_id);
+    
+    -- delete all notifications which do not have any identity reference any more
+    -- lt_orphaned_notification_id_by_identity = select id from "sap.ino.db.notification::t_notification" where owner_id not in (select id from "sap.ino.db.iam::t_identity");
+    -- delete from "sap.ino.db.notification::t_notification" where id in (select id from :lt_orphaned_notification_id_by_identity);
+    
+    -- -- cleanup notification table
+    -- delete from "sap.ino.db.notification::t_notification" where id not in ( select notification_id from "sap.ino.db.notification::t_notification_status" where status_code = 'UNREAD' or mail_status_code = 'UNSENT' );
+
+    -- cleanup status table
+    delete from "sap.ino.db.notification::t_notification_status" WHERE  status_code = 'DELETED';
+    
+    UPDATE "sap.ino.db.notification::t_notification_status"
+    SET MAIL_STATUS_CODE='ERROR', MAIL_STATUS_REASON = 'NOT EXISTS NOTIFICATION ID'
+    WHERE MAIL_STATUS_CODE='UNSENT' AND NOTIFICATION_ID NOT IN (SELECT id FROM "sap.ino.db.notification::t_notification");
+end;

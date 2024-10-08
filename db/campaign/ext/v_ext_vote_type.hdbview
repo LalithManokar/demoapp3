@@ -1,0 +1,4 @@
+schema = "SAP_INO_EXT";
+query = "select * from \"sap.ino.db.campaign::t_vote_type\" with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_vote_type"];

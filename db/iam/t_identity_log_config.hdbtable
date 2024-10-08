@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE; 
+table.description = "log  some fields of identity";
+table.columns = [
+    {name = "ID";       sqlType = INTEGER;                  nullable = false; comment = "Human readable identifier";},
+    {name = "CODE";     sqlType = VARCHAR;  length = 255;   nullable = false; comment = "Attribute code";},
+    {name = "IS_LOG";   sqlType = TINYINT;                  nullable = false; comment = "1 for log, 0 for not";}
+ ]; 
+ table.primaryKey.pkcolumns = ["ID"];

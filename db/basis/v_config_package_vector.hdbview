@@ -1,0 +1,5 @@
+schema = "SAP_INO";
+query = "
+select ext_package_id as package_id, layer as layer from \"sap.ino.db.basis::t_package_extension\" where base_package_id = 'sap.ino.config'";
+
+depends_on_table = ["sap.ino.db.basis::t_package_extension"];

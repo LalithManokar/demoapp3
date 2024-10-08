@@ -1,0 +1,7 @@
+schema = "SAP_INO";
+query = "select ifnull(max(id),0) + 1 as nextid from
+        (select max(id) as id from \"sap.ino.db.campaign::t_campaign_t\"
+         union all
+         select max(id) as id from \"sap.ino.db.campaign::t_campaign_t_h\" )";
+depends_on_table = ["sap.ino.db.campaign::t_campaign_t",
+                    "sap.ino.db.campaign::t_campaign_t_h"]; 

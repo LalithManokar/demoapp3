@@ -1,0 +1,44 @@
+schema = "SAP_INO";
+query = "select 
+-- this view is similar to v_idea_h, but returns both old and new data and returns more idea information, which is needed by new activity feed
+                new_idea.history_db_event, 
+                new_idea.history_biz_event, 
+                -- we need both old and new timestamp and actor ids 
+                new_idea.history_at,
+                old_idea.history_at as history_at_old, 
+                new_idea.history_actor_id, 
+                old_idea.history_actor_id as history_actor_id_old,
+                -- the following will not change over versions
+                new_idea.id,
+                new_idea.created_at,
+                new_idea.created_by_id,
+                -- the following new fields are only filled when there has been a delta
+                case new_idea.changed_at when old_idea.changed_at then null else new_idea.changed_at end as changed_at, 
+                    old_idea.changed_at as changed_at_old, 
+                case new_idea.changed_by_id when old_idea.changed_by_id then null else new_idea.changed_by_id end as changed_by_id, 
+                    old_idea.changed_by_id as changed_by_id_old, 
+                case new_idea.name when old_idea.name then null else new_idea.name end as name, 
+                    old_idea.name as name_old, 
+                -- NCLOBs can only be compared with like
+                case when new_idea.description like old_idea.description then null else new_idea.description end as description, 
+                    old_idea.description as description_old,
+                case new_idea.campaign_id when old_idea.campaign_id then null else new_idea.campaign_id end as campaign_id, 
+                    old_idea.campaign_id as campaign_id_old,
+                case new_idea.phase_code when old_idea.phase_code then null else new_idea.phase_code end as phase_code, 
+                    old_idea.phase_code as phase_code_old,
+                case new_idea.status_code when old_idea.status_code then null else new_idea.status_code end as status_code, 
+                    old_idea.status_code as status_code_old,
+                case new_idea.resp_value_code when old_idea.resp_value_code then null else new_idea.resp_value_code end as resp_value_code, 
+                    old_idea.resp_value_code as resp_value_code_old,    
+                new_idea.description_mime_type,
+                new_idea.submitted_at,
+                new_idea.short_description 
+from (
+    select *, lag(history_at, 1, NULL) over (partition by id order by history_at asc) as predecessor
+        from \"sap.ino.db.idea::t_idea_h\") as new_idea
+left outer join \"sap.ino.db.idea::t_idea_h\" as old_idea
+    on new_idea.predecessor = old_idea.history_at and 
+        new_idea.id = old_idea.id 
+with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea_h"];

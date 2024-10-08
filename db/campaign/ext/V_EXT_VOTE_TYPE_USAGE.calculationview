@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="V_EXT_VOTE_TYPE_USAGE" applyPrivilegeType="NONE" dataCategory="CUBE" dimensionType="STANDARD" schemaVersion="2.3" defaultClient="$$client$$" visibility="reportingEnabled" outputViewType="Aggregation" calculationScenarioType="TREE_BASED" enforceSqlExecution="false">
+<descriptions defaultDescription="Vote type usage"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="sap.ino.db.campaign::v_vote_type_usage" type="DATA_BASE_VIEW">
+    <viewAttributes allViewAttributes="true"/>
+    <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::v_vote_type_usage"/>
+  </DataSource>
+</dataSources>
+<calculationViews/>
+<logicalModel id="sap.ino.db.campaign::v_vote_type_usage">
+  <attributes>
+    <attribute id="CAMPAIGN_NAME" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Campaign Name"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::v_vote_type_usage" columnName="CAMPAIGN_NAME"/>
+    </attribute>
+    <attribute id="VOTE_TYPE_CODE" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Vote Type Code"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::v_vote_type_usage" columnName="VOTE_TYPE_CODE"/>
+    </attribute>
+    <attribute id="CAMPAIGN_ID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Campaign Id"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::v_vote_type_usage" columnName="CAMPAIGN_ID"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="USAGE_COUNT" order="2" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Usage Count"/>
+      <measureMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::v_vote_type_usage" columnName="USAGE_COUNT"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

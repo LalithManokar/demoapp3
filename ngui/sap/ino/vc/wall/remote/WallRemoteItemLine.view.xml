@@ -1,0 +1,64 @@
+<mvc:View
+        controllerName="sap.ino.vc.wall.remote.WallRemoteItemLine"
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns:ino="sap.ino.controls"
+        xmlns:f="sap.ui.layout.form"
+        xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+        <Page>
+        <customHeader>
+            <core:Fragment fragmentName="sap.ino.vc.wall.fragments.WallRemoteItemHeader" type="XML" />
+        </customHeader>
+        
+        <f:SimpleForm 
+            class="sapUiWallRemoteItem"
+            layout="{view>/Layouts/SimpleFormLayout/layout}"
+            labelSpanL="{view>/Layouts/SimpleFormLayout/labelSpanL}"
+            labelSpanM="{view>/Layouts/SimpleFormLayout/labelSpanM}"
+            emptySpanL="{view>/Layouts/SimpleFormLayout/emptySpanL}"
+            emptySpanM="{view>/Layouts/SimpleFormLayout/emptySpanM}"
+            id="wallRemoteItemForm">
+            <f:content>
+                <Label text="{i18n>WALL_ITEM_ORIENTATION}"/>
+                <HBox>
+                    <ToggleButton enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }"  iconDensityAware="false" app:ORIENTATION="HORIZONTAL" 
+                    icon="{=${object>CONTENT/ORIENTATION} === 'HORIZONTAL' ? '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/lineHorizontal_white.png' : '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/lineHorizontal.png'}" 
+                    press="onTogglePressed" class="sapInoWallRemoteToggleButton"/>
+        		    <ToggleButton enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }"  iconDensityAware="false" app:ORIENTATION="VERTICAL" 
+        		    icon="{=${object>CONTENT/ORIENTATION} === 'VERTICAL' ? '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/lineVertical_white.png' : '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/lineVertical.png'}" 
+        		    press="onTogglePressed" class="sapInoWallRemoteToggleButton"/>
+    		    </HBox>
+    		    <Label text="{i18n>WALL_ITEM_STYLE}"/>
+    		    <HBox>
+        		    <ToggleButton enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }"  iconDensityAware="false" app:STYLE="SOLID" 
+        		    icon="{=${object>CONTENT/STYLE} === 'SOLID' ? '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/lineSolid_white.png' : '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/lineSolid.png'}" 
+        		    press="onTogglePressed" class="sapInoWallRemoteToggleButton"/>
+    		        <ToggleButton enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }"  iconDensityAware="false" app:STYLE="DASHED" 
+    		        icon="{=${object>CONTENT/STYLE} === 'DASHED' ? '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/lineDashed_white.png' : '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/lineDashed.png'}" 
+    		        press="onTogglePressed" class="sapInoWallRemoteToggleButton"/>
+    		        <ToggleButton enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }"  iconDensityAware="false" app:STYLE="DOTTED" 
+    		        icon="{=${object>CONTENT/STYLE} === 'DOTTED' ? '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/lineDotted_white.png' : '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/lineDotted.png'}" 
+    		        press="onTogglePressed" class="sapInoWallRemoteToggleButton"/>
+    		    </HBox>
+    		    <Label text="{i18n>WALL_ITEM_THICKNESS}"/>
+    		    <HBox>
+        		    <ToggleButton enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }"  iconDensityAware="false" app:THICKNESS="2" 
+        		    icon="{=${object>CONTENT/THICKNESS} === 2 ? '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/line3_white.png' : '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/line3.png'}" 
+        		    press="onTogglePressed" class="sapInoWallRemoteToggleButton"/>
+    		        <ToggleButton enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }"  iconDensityAware="false" app:THICKNESS="4" 
+    		        icon="{=${object>CONTENT/THICKNESS} === 4 ? '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/line4_white.png' : '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/line4.png'}" 
+    		        press="onTogglePressed" class="sapInoWallRemoteToggleButton"/>
+    		        <ToggleButton enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }"  iconDensityAware="false" app:THICKNESS="6" 
+    		        icon="{=${object>CONTENT/THICKNESS} === 6 ? '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/line5_white.png' : '/sap/ino/ngui/sap/ino/controls/themes/base/img/toggleButtons/line5.png'}" 
+    		        press="onTogglePressed" class="sapInoWallRemoteToggleButton"/>
+    		    </HBox>
+    		    <Label text="{i18n>WALL_ITEM_COLOR}"/>
+                <ino:ColorPickerLite visible="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }"  id="colorPicker" change="onChange" color="{object>CONTENT/COLOR}" />
+            </f:content>
+        </f:SimpleForm>
+        <footer>  
+            <core:Fragment fragmentName="sap.ino.vc.wall.fragments.WallRemoteItemFooter" type="XML" />
+        </footer>
+    </Page>
+</mvc:View>

@@ -1,0 +1,19 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "System level for API of Integration";
+table.columns = [
+    {name = "ID";               sqlType = INTEGER;                nullable = false;                     comment = "technical user identifier - must never be exposed to end users";},
+    {name = "CREATED_AT";       sqlType = TIMESTAMP;              nullable = false;                     comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID";    sqlType = INTEGER;                nullable = false;                     comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+    {name = "CHANGED_AT";       sqlType = TIMESTAMP;              nullable = false;                     comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID";    sqlType = INTEGER;                nullable = false;                     comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";},
+    {name = "API_TECHNICAL_NAME";       sqlType = NVARCHAR; length = 128; nullable = false;                 comment = "Using For identify API ";},
+    {name = "SYSTEM_NAME";        sqlType = NVARCHAR; length = 64; nullable = false;                    comment = "Stantard name for destination";},
+    {name = "SYSTEM_PACKAGE_NAME";    sqlType = NVARCHAR; length = 256; nullable = false;                comment = "Package name for destination";},
+    {name = "MAPPING_FIELD_CODE";        sqlType = NVARCHAR; length = 128; nullable = false;                    comment = "The mapping filed code stored for integration";},
+    {name = "MAPPING_FIELD_VALUE";        sqlType = NVARCHAR; length = 512; nullable = false;                    comment = "The mapping filed value stored for integration";},
+    {name = "IDEA_ID";               sqlType = INTEGER;                nullable = false;                     comment = "IDEA_ID for assignment";},
+    {name = "API_ID";               sqlType = INTEGER;                nullable = false;                     comment = "API_ID for assignment";},
+    {name = "INTEGRATION_OBJECT_UUID";               sqlType = VARCHAR;   length = 32;             nullable = false;                     comment = "uuid for assignment object on idea";}
+];
+table.primaryKey.pkcolumns = ["ID"];

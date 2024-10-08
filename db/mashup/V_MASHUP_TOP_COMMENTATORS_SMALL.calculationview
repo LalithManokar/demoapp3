@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_MASHUP_TOP_COMMENTATORS_SMALL" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="Top Commentators"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="sap.ino.db.mashup_V_MASHUP_COMMUNITY_COMMENT" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.mashup/calculationviews/V_MASHUP_COMMUNITY_COMMENT</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.idea::t_idea" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_idea"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.attachment::t_attachment_assignment" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.attachment::t_attachment_assignment"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.iam::t_identity" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_identity"/>
+    </DataSource></dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+      <viewAttributes>
+        <viewAttribute id="COMMENT_ID"/>
+        <viewAttribute id="COMMENTATOR_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE" datatype="VARCHAR" length="100"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.mashup_V_MASHUP_COMMUNITY_COMMENT">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENTATOR_ID" source="CREATED_BY_ID"/>
+      </input>
+      <filter>&quot;OBJECT_TYPE_CODE&quot; = 'IDEA'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" joinType="inner">
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="COMMENT_ID"/>
+        <viewAttribute id="COMMENTATOR_ID"/>
+        <viewAttribute id="CAMPAIGN_ID" datatype="INTEGER" length="10" scale="0"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Projection_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_ID" source="COMMENT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENTATOR_ID" source="COMMENTATOR_ID"/>
+      </input>
+      <input node="#sap.ino.db.idea::t_idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="ID"/>
+      </input>
+      <joinAttribute name="IDEA_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_2">
+      <viewAttributes>
+        <viewAttribute id="IDENTITY_IMAGE_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="OWNER_TYPE_CODE" datatype="VARCHAR" length="100"/>
+        <viewAttribute id="ROLE_TYPE_CODE" datatype="VARCHAR" length="20"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.attachment::t_attachment_assignment">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_IMAGE_ID" source="ATTACHMENT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="OWNER_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OWNER_TYPE_CODE" source="OWNER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_TYPE_CODE" source="ROLE_TYPE_CODE"/>
+      </input>
+      <filter>&quot;OWNER_TYPE_CODE&quot; = 'IDENTITY' and &quot;ROLE_TYPE_CODE&quot; = 'IDENTITY_IMAGE'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_3" joinType="leftOuter">
+      <viewAttributes>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="IDENTITY_NAME"/>
+        <viewAttribute id="IDENTITY_IMAGE_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.iam::t_identity">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_NAME" source="NAME"/>
+      </input>
+      <input node="#Projection_2">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_IMAGE_ID" source="IDENTITY_IMAGE_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+      </input>
+      <joinAttribute name="IDENTITY_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_2" joinType="inner">
+      <viewAttributes>
+        <viewAttribute id="COMMENTATOR_ID"/>
+        <viewAttribute id="COMMENT_ID"/>
+        <viewAttribute id="CAMPAIGN_ID" datatype="INTEGER" length="10" scale="0"/>
+        <viewAttribute id="IDENTITY_NAME"/>
+        <viewAttribute id="IDENTITY_IMAGE_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENTATOR_ID" source="COMMENTATOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_ID" source="COMMENT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+      </input>
+      <input node="#Join_3">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_NAME" source="IDENTITY_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_IMAGE_ID" source="IDENTITY_IMAGE_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENTATOR_ID" source="IDENTITY_ID"/>
+      </input>
+      <joinAttribute name="COMMENTATOR_ID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_2">
+    <attributes>
+      <attribute id="CAMPAIGN_ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping columnObjectName="Join_2" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="COMMENTATOR_NAME" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Commentator Name"/>
+        <keyMapping columnObjectName="Join_2" columnName="IDENTITY_NAME"/>
+      </attribute>
+      <attribute id="COMMENTATOR_IMAGE_ID" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Commentator Image"/>
+        <keyMapping columnObjectName="Join_2" columnName="IDENTITY_IMAGE_ID"/>
+      </attribute>
+      <attribute id="COMMENT_ID" hidden="true" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Comment ID"/>
+        <keyMapping columnObjectName="Join_2" columnName="COMMENT_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures>
+      <measure id="COMMENT_COUNT" hidden="false" order="5" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER">
+        <descriptions defaultDescription="Comment Count"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="COMMENT_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="270"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="370"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="170"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_3" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="200" y="270"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="200" y="370"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

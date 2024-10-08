@@ -1,0 +1,9 @@
+schema = "SAP_INO_EXT";
+query = "select 1 as no, to_int(count(notification.ID)) as count
+            from \"sap.ino.db.notification.ext::v_ext_notification\" as notification
+            inner join \"sap.ino.db.newnotification::v_notification_system_setting\" as notification_setting
+            on notification_setting.action_code = notification.action_code and notification_setting.ALLOW_INBOX_NOTIFICATION = 1
+            with read only";
+ 
+depends_on_view = ["sap.ino.db.notification.ext::v_ext_notification",
+                    "sap.ino.db.newnotification::v_notification_system_setting"];

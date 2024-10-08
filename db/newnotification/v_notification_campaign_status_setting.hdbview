@@ -1,0 +1,11 @@
+schema = "SAP_INO";
+query = "SELECT
+           campaign_status.ID,
+           campaign_status.TEXT_MODULE_CODE,
+           campaign_status.CAMPAIGN_PHASE_ID,
+           campaign_status.STATUS_ACTION_CODE
+    FROM \"sap.ino.db.newnotification::t_notification_campaign_status_setting\" as campaign_status
+    with read only
+";  
+
+depends_on_table = ["sap.ino.db.newnotification::t_notification_campaign_status_setting"];   

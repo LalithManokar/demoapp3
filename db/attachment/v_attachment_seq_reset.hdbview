@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "select ifnull(max(id),0) + 1 as nextid from 
+        (select max(id) as id from \"sap.ino.db.attachment::t_attachment\" 
+         union all 
+         select max(id) as id from \"sap.ino.db.attachment::t_attachment_data\" )";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment",
+                    "sap.ino.db.attachment::t_attachment_data"];

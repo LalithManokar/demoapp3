@@ -1,0 +1,13 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Personalize setting for individual user";
+table.columns = [
+    {name = "ID";               sqlType = INTEGER;              nullable = false; comment = "Technical record ID";},
+    {name = "IDENTITY_ID";      sqlType = INTEGER;              nullable = false; comment = "Identity which has personalize setting. Foreign key to t_identity.ID";},
+    {name = "TYPE_CODE"; 		sqlType = VARCHAR; length =50;  nullable = false; comment = "Object type of Personalize";},
+    {name = "OBJECT_TYPE_CODE"; sqlType = VARCHAR; length =100; nullable = false; comment = "Object type of Personalize";},
+    {name = "SETTING_VALUE";    sqlType = INTEGER;  		    nullable = false; comment = "Personalize Setting Value";},
+    {name = "SEQUENCE";         sqlType = INTEGER;  		    nullable = true; comment = "Sequence Value for personalize";},
+    {name = "CHANGED_AT";       sqlType = TIMESTAMP;             nullable = true;  comment = "Changed timestamp";}
+];
+table.primaryKey.pkcolumns = ["ID"];

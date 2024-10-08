@@ -1,0 +1,8 @@
+schema = "SAP_INO_EXT";
+query = "
+    select 1 as id, id as user_id, user_name, first_name, last_name, name, email, phone, mobile, cost_center, organization, company, street, city, country, zip_code, office, validation_to,staged, is_external, identity_image_id, identity_image_changed_at, locale, term_accepted
+    from \"sap.ino.db.iam::v_logon_user\"
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.iam::v_logon_user"];

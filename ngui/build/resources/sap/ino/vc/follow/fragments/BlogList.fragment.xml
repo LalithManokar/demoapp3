@@ -1,0 +1,61 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:ino="sap.ino.controls"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <CustomListItem
+        type="Inactive"
+        class="sapInoBlogListItem sapInoBlogListItemHome sapInoFeedBlogListItem"
+        app:aofSmartControl="true"
+        app:aofModel="data"
+	    app:aofObject="sap.ino.xs.object.blog.Blog">
+	    <content>
+        <l:VerticalLayout width="100%">
+            <HBox>
+                <Link class="sapInoBlogListBlogLink" wrapping="true" tooltip="{:= ${parts: [{path: 'i18n>CTRL_BLOGLIST_ALT_BLOG_TOOLTIP'}, {path:'blog>/TITLE'}], formatter: '.formatter.formatMsg'}}" text="{:= ${blog>/TITLE}}" app:exportLabel="{:= ${i18n>BLOG_LIST_FLD_NAME}}" emphasized="true" href="{:= ${path: 'blog>/ID', formatter: '.formatter.blogNavigationLink'}}"/>
+            </HBox>
+            <HBox>
+                <core:HTML
+	                content="&lt;div class='sapInoBlogListBlogDesc sapInoBlogListSmallFont sapUiTinyMarginTop'>{blog>/SHORT_DESCRIPTION}&lt;/div>"
+	                sanitizeContent="true"
+                    preferDOM="false">
+                </core:HTML>
+            </HBox>
+            <HBox class="sapInoBlogListSmallFont sapUiMediumMarginTop">
+                <Label text="{:= ${i18n>BLOG_LIST_FLD_CREATED_BY_NAME}}" class="sapInoBlogListMarginEnd4"/>
+                <Link text="{blog>/CREATED_BY_NAME}" class="sapUiSmallMarginEnd" href="javascript:void(0)" press="onOpenCreator"/> 
+                <Text text="{path: 'blog>/CREATED_AT', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium', relative: false }}"/>
+            </HBox>
+            <HBox class="sapInoBlogListSmallFont">
+                <Label text="{:= ${i18n>BLOG_LIST_FLD_CAMPAIGN}}" class="sapInoBlogListMarginEnd4"/>
+                <Link text="{:= ${blog>/CAMPAIGN_SHORT_NAME}}" tooltip="{:= ${path: 'i18n>CTRL_CARD_ALT_CAMPAIGN_TOOLTIP', formatter: '.formatter.formatMsg'}}" href="{:= ${path: 'blog>/CAMPAIGN_ID', formatter: '.formatter.campaignNavigationLink'}}"/>
+    	    </HBox>
+			<FlexBox
+                width="100%"
+                alignItems="Start"
+                justifyContent="Start"
+                class="sapInoBlogListSmallFont sapUiTinyMarginTop">
+                <items>
+                    <HBox width="100%">
+                        <Label text="{:= ${i18n>BLOG_LIST_FLD_TAG}}" class="sapInoBlogListTagLabel sapInoBlogListMarginEnd4" visible="{path: 'blog>/Tags/results', formatter: '.formatter.notEmpty'}"/>
+                        <Tokenizer class="sapInoWrap" tokens="{path: 'blog>/Tags/results', templateShareable: 'true'}" editable="false" visible="{path: 'blog>/Tags/results', formatter: '.formatter.notEmpty'}">
+            				<tokens>
+            					<Token key="{blog>TAG_ID}" text="{blog>NAME}" press="showPopupTagCard" editable="false" class="sapInoBlogListSmallFont" />
+            				</tokens>
+            			</Tokenizer>
+        			</HBox>
+                </items>
+            </FlexBox>
+        </l:VerticalLayout>
+        <core:InvisibleText
+            class="sapInoItemAriaLabel"
+            text="{parts: [{path: 'blog>/NAME'}, 
+                {path: 'blog>/CAMPAIGN_SHORT_NAME'},
+                {path: 'blog>/ATTACHMENT_COUNT'},
+                {path: 'blog>/COMMENT_COUNT'}
+            ], formatter: '.formatter.blogAccessibilityLabelListItem'}"> 
+        </core:InvisibleText>
+        </content>
+    </CustomListItem >
+</core:FragmentDefinition>  

@@ -1,0 +1,15 @@
+schema = "SAP_INO";
+query = "
+    select  
+        criterion.*,
+        created_by_identity.name as created_by, 
+        changed_by_identity.name as changed_by 
+    from \"sap.ino.db.evaluation::t_criterion_stage\" as criterion
+        left outer join \"sap.ino.db.iam::t_identity\" as created_by_identity
+            on criterion.created_by_id = created_by_identity.id
+        left outer join \"sap.ino.db.iam::t_identity\" as changed_by_identity
+            on criterion.changed_by_id = changed_by_identity.id
+    with read only";
+
+depends_on_table = ["sap.ino.db.evaluation::t_criterion_stage",
+                    "sap.ino.db.iam::t_identity"];

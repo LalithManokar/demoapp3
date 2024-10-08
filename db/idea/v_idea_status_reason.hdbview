@@ -1,0 +1,17 @@
+schema = "SAP_INO";
+query = "
+	select 
+		idea.ID, idea.CAMPAIGN_ID, decision.REASON_CODE, value_opt.DEFAULT_TEXT, decision.CREATED_BY_ID as USER_ID
+	from 
+		\"sap.ino.db.idea::t_idea\" as idea
+	inner join 
+		\"sap.ino.db.idea::t_decision\" as decision
+		on idea.ID = decision.IDEA_ID
+	inner join 
+		\"sap.ino.db.basis::t_value_option\" as value_opt
+		on decision.REASON_CODE = value_opt.CODE
+	with read only
+";
+
+depends_on_table = ["sap.ino.db.idea::t_idea", "sap.ino.db.idea::t_decision", "sap.ino.db.basis::t_value_option"];
+

@@ -1,0 +1,21 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Popover
+		showHeader="false"
+		placement="Bottom"
+		verticalScrolling="true"
+		horizontalScrolling="false">
+	    <List 
+            items="{
+                path: 'list>/Variants/Values'
+            }"
+            width="100%">
+            <StandardListItem
+                title="{path : 'list>TEXT', formatter : '.formatter.text'}"
+        		type="Active"
+        		press="_onVariantPress">
+        	</StandardListItem>
+        </List>
+    </Popover>
+</core:FragmentDefinition>

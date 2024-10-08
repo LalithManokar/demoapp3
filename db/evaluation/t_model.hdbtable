@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Evaluation Model";
+table.columns = [
+    {name = "CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Identifier";},
+    {name = "DEFAULT_TEXT"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Default Text";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true; comment = "Default Long Text";},
+    {name = "ENABLE_FORMULA"; sqlType = TINYINT; nullable = true; comment = "enable calc formula";},
+    {name = "CALC_FORMULA"; sqlType = VARCHAR; length = 300; nullable = true; comment = "the result of calc formula";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

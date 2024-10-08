@@ -1,0 +1,63 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:ino="sap.ino.controls"
+    >
+    <CustomListItem
+        type="Active"
+        press="onCardItemPress">
+        <content>
+            <ino:Campaign
+                color="{path: 'data>COLOR_CODE', formatter: '.formatter.color'}"
+                objectId="{path: 'data>ID'}"
+                href="{path: 'data>ID', formatter: '.formatter.campaignNavigationLink'}"
+                image="{parts: [{path:'data>CAMPAIGN_IMAGE_ID'},{path:'data>CAMPAIGN_LIST_IMAGE_ID'}], formatter: '.formatter.campaignListImageURL'}"
+                title="{path: 'data>SHORT_NAME'}" 
+                width="{ path : 'device>/system', formatter: '.formatter.widthCampaignCard' }"
+                height="{ path : 'device>/system', formatter: '.formatter.heightCampaignCard' }"
+                date="{= ${path: 'data>VALID_FROM', formatter: '.formatter.isFutureDate'} ? ${path: 'data>VALID_FROM', formatter: '.formatter.campaignStartsInDays'} : ${path: 'data>VALID_TO', formatter: '.formatter.daysLeft'} }"
+                submissionDate="{= ${path: 'data>SUBMIT_FROM', formatter: '.formatter.isFutureDate'} ? ${path: 'data>SUBMIT_FROM', formatter: '.formatter.submissionStartsInDays'} : ${path: 'data>SUBMIT_TO', formatter: '.formatter.submissionDaysLeft'} }"
+                registrationDate="{= ${path: 'data>REGISTER_FROM', formatter: '.formatter.isFutureDate'} ? ${path: 'data>REGISTER_FROM', formatter: '.formatter.registrationStartsInDays'} : ${path: 'data>REGISTER_TO', formatter: '.formatter.registrationDaysLeft'} }"
+                dateTooltip="{= ${path: 'data>VALID_FROM', formatter: '.formatter.isFutureDate'} ? ${path: 'data>VALID_FROM', formatter: '.formatter.formatInfinityWithTimeFormat'} : ${path: 'data>VALID_TO', formatter: '.formatter.formatInfinityWithTimeFormat'} }"
+                submissionDateTooltip="{= ${path: 'data>SUBMIT_FROM', formatter: '.formatter.isFutureDate'} ? ${path: 'data>SUBMIT_FROM', formatter: '.formatter.formatInfinityWithTimeFormat'} : ${path: 'data>SUBMIT_TO', formatter: '.formatter.formatInfinityWithTimeFormat'} }"
+                registrationDateTooltip="{= ${path: 'data>REGISTER_FROM', formatter: '.formatter.isFutureDate'} ? ${path: 'data>REGISTER_FROM', formatter: '.formatter.formatInfinityWithTimeFormat'} : ${path: 'data>REGISTER_TO', formatter: '.formatter.formatInfinityWithTimeFormat'} }"
+                ideaCount="{= (${data>ALL_IDEAS_COUNT} &amp;&amp; ${data>ALL_IDEAS_COUNT} > 0) ? ${data>ALL_IDEAS_COUNT} : 0}"
+                participantCount="{= (${data>PARTICIPANTS_COUNT} &amp;&amp; ${data>PARTICIPANTS_COUNT} > 0) ? ${data>PARTICIPANTS_COUNT} : 0}"
+                activeParticipantCount="{= (${data>ACTIVE_PARTICIPANT_COUNT} &amp;&amp; ${data>ACTIVE_PARTICIPANT_COUNT} > 0) ? ${data>ACTIVE_PARTICIPANT_COUNT} : 0}"
+                viewCount="{= ${path : 'data>NO', formatter : '.formatter.isUsageReportingActive' } ? ((${data>VIEW_COUNT} &amp;&amp; ${data>VIEW_COUNT} > 0) ? ${data>VIEW_COUNT} : 0) : undefined }"
+                openForSubmission="{= (${data>IS_OPEN_FOR_SUBMISSION} + ${data>SUBMITTABLE} === 2) ? true : false}"
+                openForRegistration="{=${data>IS_OPEN_FOR_REGISTRATION} === 1 || !${data>SUBMIT_FROM}? true : false}"
+                type="Normal"
+                isManaged="true"
+                press="onItemPress"
+                createIdea="onCreateIdea"
+                openSetting="onOpenCampaignSettings"
+                isInnovationView="{= ${component>/SHOW_BACKOFFICE}}"
+                >
+        
+            <ino:followButton>
+			    <ino:Follow onlyIcon="true" value="{data>FOLLOW}" objectId="{data>ID}" type="CAMPAIGN" enabled="true" follow="onFollow" styleType="CampaignCardFollow" />
+			</ino:followButton>
+			 
+			<ino:registerButton>
+				<Button icon="{ path:'data>REGISTER_STATUS', formatter:'.transIcon' }" tooltip="{ parts : [{path:'data>REGISTER_STATUS'},{path:'data>IS_REGIST_DISABLED'},{path:'data>IS_OPEN_REGISTER_SETTING'}] ,formatter:'.transTooltip' }"  press="Register" visible="{ parts: [{path:'data>ID'},{path:'data>IS_OPEN_FOR_REGISTRATION'},{path:'data>REGISTER_STATUS'}], formatter: '.isVisabledForList'}" enabled="{parts:[{path:'data>REGISTER_STATUS'},{path:'data>IS_REGIST_DISABLED'},{path:'data>IS_OPEN_REGISTER_SETTING'}], formatter:'.isEnabled'}"/>
+			</ino:registerButton>
+			
+			
+			</ino:Campaign>
+           
+            <core:InvisibleText
+                class="sapInoItemAriaLabel"
+                text="{parts: [{path: 'data>NAME'}, 
+                               {path: 'data>VALID_TO'},
+                               {path: 'data>ALL_IDEAS_COUNT'},
+                               {path: 'data>ACTIVE_PARTICIPANT_COUNT'},
+                               {path: 'data>VIEW_COUNT'},
+                               {path: 'data>IS_OPEN_FOR_SUBMISSION'},
+                               {path: 'data>SUBMITTABLE'},
+                               {path: 'data>IS_OPEN_FOR_REGISTRATION'}
+                               ], formatter: '.formatter.campaignAccessibilityLabel'}">
+            </core:InvisibleText>
+        </content>
+    </CustomListItem>
+</core:FragmentDefinition>

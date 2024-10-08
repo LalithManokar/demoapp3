@@ -1,0 +1,11 @@
+schema = "SAP_INO";
+query = "
+select status_model_transition.*, campaign_phase.campaign_id 
+from \"sap.ino.db.status::t_status_model_transition\" as status_model_transition 
+inner join \"sap.ino.db.campaign::t_campaign_phase\" as campaign_phase 
+    on status_model_transition.status_model_code = campaign_phase.status_model_code
+with read only
+";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_phase",
+                    "sap.ino.db.status::t_status_model_transition"];

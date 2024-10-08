@@ -1,0 +1,12 @@
+schema = "SAP_INO";
+query = "
+select 
+    eval_item.id,
+    status_trans.*
+from \"sap.ino.db.evaluation::t_evaluation_request_item\" as eval_item
+    inner join \"sap.ino.db.status::t_status_model_transition\" as status_trans
+        on status_trans.current_status_code = eval_item.status_code 
+    	where status_trans.status_model_code = 'sap.ino.config.EVALREQUEST'";
+
+depends_on_table =  ["sap.ino.db.status::t_status_model_transition",
+                     "sap.ino.db.evaluation::t_evaluation_request_item"];

@@ -1,0 +1,5 @@
+{
+    "privileges": [
+        { "name": "backoffice.access",  "description": "Back office user interface access" }
+    ]
+}

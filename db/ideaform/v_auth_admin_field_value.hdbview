@@ -1,0 +1,37 @@
+schema = "SAP_INO_EXT";
+query = "
+select distinct ID from (
+  ---Coach
+   select distinct field_value.ID from \"sap.ino.db.ideaform::v_field_value\" as field_value 
+   inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as auth
+   on auth.OBJECT_ID = field_value.idea_id or auth.OBJECT_ID = field_value.campaign_id
+   where is_admin_form = 1 and ( auth.ROLE_CODE = 'IDEA_COACH' or auth.ROLE_CODE = 'CAMPAIGN_COACH')
+  --- resp coach 
+  union all
+  select distinct field_value.ID from \"sap.ino.db.ideaform::v_field_value\" as field_value 
+   inner join \"sap.ino.db.idea::v_idea_resp_coach\" as coach
+   on coach.id = field_value.idea_id
+   inner join \"sap.ino.db.iam::v_auth_application_user\" as application_user
+   on application_user.ID = coach.identity_id
+   where is_admin_form = 1 
+   union all
+   ---Campaign Manager
+   select field_value.ID from \"sap.ino.db.ideaform::v_field_value\" as field_value 
+   inner join \"sap.ino.db.campaign::v_campaign_manager_transitive\" as campaign_manager
+   on campaign_manager.campaign_id = field_value.campaign_id
+   inner join \"sap.ino.db.iam::v_auth_application_user\" as application_user
+   on application_user.ID = campaign_manager.identity_id
+   where is_admin_form = 1
+   union all
+  ---Other People
+   select field_value.ID from \"sap.ino.db.ideaform::v_field_value\" as field_value 
+   where is_admin_form = 1 and is_publish = 1 )
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.ideaform::v_field_value",
+                   "sap.ino.db.idea::v_idea_coach",
+                   "sap.ino.db.iam::v_auth_application_user",
+                   "sap.ino.db.campaign::v_campaign_manager_transitive",
+                   "sap.ino.db.idea::v_idea_resp_coach",
+                   "sap.ino.db.iam::v_auth_application_user_role_transitive"];

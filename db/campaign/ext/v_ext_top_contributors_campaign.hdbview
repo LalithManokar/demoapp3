@@ -1,0 +1,11 @@
+schema = "SAP_INO_EXT";
+query = "
+    select top 4 data.* from 
+        \"sap.ino.db.analytics::v_analytics_static_top_contributors_campaign\" as data
+    inner join
+        \"sap.ino.db.campaign::v_auth_campaigns\" as auth
+        on data.campaign_id = auth.campaign_id
+    with read only";
+
+depends_on_view = ["sap.ino.db.analytics::v_analytics_static_top_contributors_campaign",
+                   "sap.ino.db.campaign::v_auth_campaigns"];

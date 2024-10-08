@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_IDEA_GROUP_VOTE" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED">
+  <descriptions defaultDescription="V_EXT_ANALYTICS_IDEA_GROUP_VOTE"/>
+<defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.idea::v_group_vote_score" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::v_group_vote_score"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:AggregationView" id="IDEA_GROUP_VOTE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="GROUP"/>
+        <viewAttribute id="SCORE"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+      
+        <viewAttribute id="GROUP_TYPE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.idea::v_group_vote_score">
+        <mapping xsi:type="Calculation:AttributeMapping" target="GROUP" source="COMPANY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SCORE" source="SCORE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+      
+        <mapping xsi:type="Calculation:AttributeMapping" target="GROUP_TYPE" source="GROUP_TYPE"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="IDEA_GROUP_VOTE">
+    <descriptions/>
+    <attributes>
+      <attribute id="GROUP" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Group"/>
+        <keyMapping columnObjectName="IDEA_GROUP_VOTE" columnName="GROUP"/>
+      </attribute>
+      <attribute id="GROUP_TYPE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="Group Type"/>
+        <keyMapping columnObjectName="IDEA_GROUP_VOTE" columnName="GROUP_TYPE"/>
+      </attribute>
+      <attribute id="IDEA_ID$local">
+        <keyMapping columnObjectName="IDEA_GROUP_VOTE" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID$local">
+        <keyMapping columnObjectName="IDEA_GROUP_VOTE" columnName="CAMPAIGN_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="SCORE" order="2" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of votes"/>
+        <measureMapping columnObjectName="IDEA_GROUP_VOTE" columnName="SCORE"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures>
+      <measure id="IDEA_COUNT" hidden="false" order="1" aggregationType="sum" measureType="simple" aggregatable="true" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Number of ideas"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="IDEA_ID" dimensionUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+    <sharedDimensions>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION">
+        <attributes>
+          <attributeRef>#IDEA_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDEA_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinType="referential" cardinality="CN_1" joinOperator="Equal"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION">
+        <attributes>
+          <attributeRef>#CAMPAIGN_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>CAMPAIGN_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinType="referential" cardinality="CN_1" joinOperator="Equal"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+    </sharedDimensions>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/></shape>
+      <shape expanded="true" modelObjectName="IDEA_GROUP_VOTE" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="240"/>
+        <rectangleSize height="30" width="140"/>
+      </shape>
+      <shape modelObjectName="IDEA_GROUP_VOTE" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+        <upperLeftCorner x="0" y="30"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="200" y="30"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="400" y="30"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

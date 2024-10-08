@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Locale codes according to RFC 5646";
+table.columns = [
+    {name = "CODE";              sqlType = VARCHAR;  length = 500; nullable = false; comment = "Technical Code Value";},
+    {name = "LANGUAGE_CODE";     sqlType = VARCHAR;  length = 500; nullable = false; comment = "Technical Language Code Value";},
+    {name = "LOCALE_RFC_CODE";   sqlType = VARCHAR;  length = 6;   nullable = false; comment = "Language Tag/Locale Code (RFC 5646)";},
+    {name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default Text for Language";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true;  comment = "Default Long Text for Language";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

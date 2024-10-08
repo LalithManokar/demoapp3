@@ -1,0 +1,15 @@
+schema = "SAP_INO_EXT";
+query = "
+    select transition.*, 
+    current_status.status_type as current_status_type,
+    next_status.status_type as next_status_type
+    from \"sap.ino.db.status::t_status_model_transition_stage\" as transition
+        inner join \"sap.ino.db.status::t_status\" as current_status
+            on transition.current_status_code = current_status.code
+        inner join \"sap.ino.db.status::t_status\" as next_status
+            on transition.next_status_code = next_status.code    
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.status::t_status_model_transition_stage",
+                    "sap.ino.db.status::t_status"];

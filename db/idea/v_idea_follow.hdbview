@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "select idea_follow.*
+            from 
+                \"sap.ino.db.follow::v_follow\" as idea_follow
+            inner join    
+                \"sap.ino.db.iam::v_auth_application_user\" as user
+            on
+                idea_follow.OBJECT_TYPE_CODE = 'IDEA'
+            and
+                idea_follow.CREATED_BY_ID = user.id
+        with read only"; 
+
+depends_on_view  = ["sap.ino.db.follow::v_follow", "sap.ino.db.iam::v_auth_application_user"];

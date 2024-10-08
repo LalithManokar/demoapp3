@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_EXPERT_TAGS_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="V_EXT_EXPERT_TAGS_SEARCH"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Free text search token"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="100"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>begin
+    var_out = 
+    select distinct tag.id, tag.name
+        from &quot;sap.ino.db.tag::t_tag&quot; as tag
+        inner join &quot;sap.ino.db.tag::t_object_tag&quot; as idea_tag
+            on tag.id = idea_tag.tag_id and
+               'IDEA' = idea_tag.object_type_code
+        where length(:searchToken) = 0
+    union all
+    select distinct tag.id, tag.name
+        from &quot;sap.ino.db.tag::t_tag&quot; as tag
+        inner join &quot;sap.ino.db.tag::t_object_tag&quot; as idea_tag
+            on tag.id = idea_tag.tag_id and
+               'IDEA' = idea_tag.object_type_code
+        where length(:searchToken) &gt; 0
+            and lcase(tag.name) like CONCAT(lcase(:searchToken), '%');
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="ID" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

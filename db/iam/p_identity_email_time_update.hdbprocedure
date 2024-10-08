@@ -1,0 +1,12 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_identity_email_time_update" (
+    in  it_id  "SAP_INO"."sap.ino.db.iam::tt_identity_mail"
+)
+    language sqlscript 
+    sql security definer
+    default schema SAP_INO
+    as
+begin
+   update "sap.ino.db.iam::t_identity_mail" 
+        set mail_sent_at = current_utctimestamp
+        where id in (select id from :it_id);
+end; 

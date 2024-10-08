@@ -1,0 +1,23 @@
+schema = "SAP_INO";
+query = "select idea_id, identity_id, name, first_name, last_name, user_name, email, image_id, type_code, organization from \"sap.ino.db.idea::v_idea_submitter\"
+		 union distinct
+		 select idea_id, identity_id, name, first_name, last_name, user_name, email, image_id, type_code, organization from \"sap.ino.db.idea::v_idea_contributors\"
+		 union distinct
+		 select idea_id, identity_id, name, first_name, last_name, user_name, email, image_id, type_code, organization from \"sap.ino.db.idea::v_idea_coach\"
+		 union distinct
+		 select idea_id, identity_id, name, first_name, last_name, user_name, email, image_id, type_code, organization from \"sap.ino.db.idea::v_idea_experts\"
+		 union distinct
+		 select idea_id, identity_id, name, first_name, last_name, user_name, email, image_id, type_code, organization from \"sap.ino.db.idea::v_idea_campaign_experts\"
+		 union distinct
+		 select idea_id, identity_id, name, first_name, last_name, user_name, email, image_id, type_code, organization from \"sap.ino.db.idea::v_idea_evaluators\"
+		 union distinct
+		 select idea_id, identity_id, name, first_name, last_name, user_name, email, image_id, type_code, organization from \"sap.ino.db.idea::v_idea_commentators\"
+         with read only";
+
+depends_on_view = ["sap.ino.db.idea::v_idea_submitter",
+				   "sap.ino.db.idea::v_idea_contributors",
+				   "sap.ino.db.idea::v_idea_coach",
+				   "sap.ino.db.idea::v_idea_experts",
+				   "sap.ino.db.idea::v_idea_campaign_experts",
+				   "sap.ino.db.idea::v_idea_evaluators",
+				   "sap.ino.db.idea::v_idea_commentators"];

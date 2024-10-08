@@ -1,0 +1,49 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_identity_db_history_insert" (
+    in iv_db_event   varchar(8),
+    in iv_biz_event  varchar(16),
+    in it_identities SAP_INO."sap.ino.db.iam::t_identity"
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    insert into "sap.ino.db.iam::t_identity_h" 
+        (history_db_event, history_biz_event, history_at, history_actor_id,
+         id, created_at, created_by_id, changed_at, changed_by_id, type_code, 
+         name, first_name, last_name, email, user_name, is_external, erased, 
+         phone, mobile, cost_center, organization, office, description, 
+         staged, source_type_code, company, street, city, country, zip_code)
+        select 
+            :iv_db_event        as history_db_event,
+            :iv_biz_event       as history_biz_event,
+            changed_at          as history_at,
+            changed_by_id       as history_actor_id,
+            id                  as id,
+            created_at          as created_at,
+            created_by_id       as created_by_id,
+            changed_at          as changed_at,
+            changed_by_id       as changed_by_id,
+            type_code           as type_code,
+            name                as name,
+            first_name          as first_name,
+            last_name           as last_name,
+            email               as email,
+            user_name           as user_name,
+            is_external         as is_external,
+            0                   as erased,
+            phone               as phone,
+            mobile              as mobile,
+            cost_center         as cost_center,
+            organization        as organization,
+            office              as office,
+            description         as description,
+            staged              as staged,
+            source_type_code    as source_type_code,
+            company             as company,           
+            street              as street,           
+            city                as city,              
+            country             as country,         
+            zip_code            as zip_code
+        from :it_identities;
+end;

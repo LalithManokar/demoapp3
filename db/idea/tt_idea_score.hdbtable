@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Output table for Ideas IDs and scores";
+table.temporary = true;
+table.columns = [
+        {name = "ID";    sqlType = INTEGER; nullable = false; comment = "Idea ID";},
+        {name = "SCORE"; sqlType = DOUBLE;  nullable = false; comment = "Idea Search Score";}
+];

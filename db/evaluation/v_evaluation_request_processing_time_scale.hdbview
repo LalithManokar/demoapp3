@@ -1,0 +1,53 @@
+schema = "SAP_INO";
+query  = "
+        select 
+               er_count.eval_req_id,
+               er_count.eval_req_count,
+               er_accepted_count.accepted_on_time,
+               er_accepted_count.eval_req_accepted_count,
+               er_completed_count.completed_on_time,
+               er_completed_count.eval_req_completed_count,
+               case when er_accepted_count.accepted_on_time = 'BO_ANA_FLD_ACCEPTED_ON_TIME'     or 
+                         er_accepted_count.accepted_on_time = 'BO_ANA_FLD_NOT_ACCEPTED_ON_TIME' then
+                    case
+                        when (er_accepted_count.eval_req_accepted_count / er_count.eval_req_count) > 0.5 and
+                             er_accepted_count.accepted_on_time = 'BO_ANA_FLD_ACCEPTED_ON_TIME' then
+                                'BO_ANA_FLD_MORE_THAN_50_BEFORE'
+                        when (er_accepted_count.eval_req_accepted_count / er_count.eval_req_count) > 0.5 and
+                              er_accepted_count.accepted_on_time = 'BO_ANA_FLD_NOT_ACCEPTED_ON_TIME' then
+                                'BO_ANA_FLD_MORE_THAN_50_AFTER'
+                        when ((er_accepted_count.eval_req_accepted_count / er_count.eval_req_count) between 0 and 0.5) and 
+                             er_accepted_count.accepted_on_time = 'BO_ANA_FLD_ACCEPTED_ON_TIME' then
+                                'BO_ANA_FLD_BETWEEN_0_AND_50_BEFORE'
+                        when ((er_accepted_count.eval_req_accepted_count / er_count.eval_req_count) between 0 and 0.5) and
+                             er_accepted_count.accepted_on_time = 'BO_ANA_FLD_NOT_ACCEPTED_ON_TIME' then
+                                'BO_ANA_FLD_BETWEEN_0_AND_50_AFTER'
+                    end
+                end as accepted_processing_time_scale,
+                case when er_completed_count.completed_on_time = 'BO_ANA_FLD_COMPLETED_ON_TIME'     or
+                          er_completed_count.completed_on_time = 'BO_ANA_FLD_NOT_COMPLETED_ON_TIME' then
+                    case
+                        when (er_completed_count.eval_req_completed_count / er_count.eval_req_count) > 0.5 and 
+                             er_completed_count.completed_on_time = 'BO_ANA_FLD_COMPLETED_ON_TIME' then
+                                'BO_ANA_FLD_MORE_THAN_50_BEFORE'
+                        when (er_completed_count.eval_req_completed_count / er_count.eval_req_count) > 0.5 and 
+                             er_completed_count.completed_on_time = 'BO_ANA_FLD_NOT_COMPLETED_ON_TIME' then
+                                'BO_ANA_FLD_MORE_THAN_50_AFTER'
+                        when ((er_completed_count.eval_req_completed_count / er_count.eval_req_count) between 0 and 0.5) and
+                             er_completed_count.completed_on_time = 'BO_ANA_FLD_COMPLETED_ON_TIME' then
+                                'BO_ANA_FLD_BETWEEN_0_AND_50_BEFORE'
+                        when ((er_completed_count.eval_req_completed_count / er_count.eval_req_count) between 0 and 0.5) and 
+                             er_completed_count.completed_on_time = 'BO_ANA_FLD_NOT_COMPLETED_ON_TIME' then
+                                'BO_ANA_FLD_BETWEEN_0_AND_50_AFTER'
+                    end
+                end as completed_processing_time_scale
+    from \"sap.ino.db.evaluation::v_evaluation_request_count\" as er_count
+    left outer join \"sap.ino.db.evaluation::v_evaluation_request_accepted_count\" as er_accepted_count
+       on er_count.eval_req_id = er_accepted_count.eval_req_id
+    left outer join \"sap.ino.db.evaluation::v_evaluation_request_completed_count\" as er_completed_count
+       on er_count.eval_req_id = er_completed_count.eval_req_id
+    with read only";
+    
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request_count",
+                   "sap.ino.db.evaluation::v_evaluation_request_accepted_count",
+                   "sap.ino.db.evaluation::v_evaluation_request_completed_count"];

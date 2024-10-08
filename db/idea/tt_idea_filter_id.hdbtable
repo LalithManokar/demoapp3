@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Output id of idea filter";
+table.temporary = true;
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "ID - Human readable identifier";}
+];

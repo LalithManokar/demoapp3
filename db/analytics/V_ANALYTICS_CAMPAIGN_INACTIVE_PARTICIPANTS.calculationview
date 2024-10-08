@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_ANALYTICS_CAMPAIGN_INACTIVE_PARTICIPANTS" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" runWithInvokerPrivileges="false" scriptParametersCaseSensitive="true">
+  <origin/>
+  <descriptions defaultDescription="V_ANALYTICS_RESOLVED_TEXT_WRAPPER"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="INTEGER" id="IDENTITY_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition>begin
+    var_out = select 
+    	participant.campaign_id, 
+    	participant.identity_id 
+    from 
+    	&quot;sap.ino.db.analytics::V_ANALYTICS_CAMPAIGN_PARTICIPANT&quot; as participant
+	where 
+		participant.identity_id not in (
+			select identity_id 
+			from &quot;sap.ino.db.analytics::V_ANALYTICS_CAMPAIGN_ACTIVE_PARTICIPANTS&quot; 
+			where campaign_id = participant.campaign_id);
+end </definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="CAMPAIGN_ID" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="IDENTITY_ID" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

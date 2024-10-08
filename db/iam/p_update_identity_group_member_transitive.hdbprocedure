@@ -1,0 +1,14 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_update_identity_group_member_transitive" ()
+language sqlscript 
+sql security invoker
+default schema SAP_INO
+as
+begin
+    initial_ids = select id from "sap.ino.db.iam::t_identity"
+                      where erased = 0;
+    call "sap.ino.db.iam::p_get_groups_transitive" (:initial_ids, lt_group_ids);
+     
+    delete from "sap.ino.db.iam::t_identity_group_member_transitive";
+    insert into "sap.ino.db.iam::t_identity_group_member_transitive"
+        select member_id, group_id from :lt_group_ids;
+end;

@@ -1,0 +1,187 @@
+procedure "SAP_INO_EXT"."sap.ino.db.expert.ext::p_ext_expert_tag_data_service" (
+    in  it_tags             SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_object_id",
+    out ot_submitters       SAP_INO_EXT."sap.ino.db.expert.ext::tt_ext_expert",
+    out ot_commentators     SAP_INO_EXT."sap.ino.db.expert.ext::tt_ext_expert",
+    out ot_contributors     SAP_INO_EXT."sap.ino.db.expert.ext::tt_ext_expert",
+    out ot_coaches          SAP_INO_EXT."sap.ino.db.expert.ext::tt_ext_expert",
+    out ot_evaluations      SAP_INO_EXT."sap.ino.db.expert.ext::tt_ext_expert"
+) 
+language sqlscript
+sql security definer 
+default schema SAP_INO_EXT
+reads sql data as
+begin 
+    lt_tag_name = 
+        select
+            t.IDEA_ID,
+            t.TAG_ID,
+            t.NAME as TAG_NAME 
+        from 
+            "SAP_INO"."sap.ino.db.idea::v_idea_tag" as t
+        where
+            t.TAG_ID in (select * from :it_tags);
+
+    ot_submitters =
+        select 
+            submitter.IDEA_ID,
+            tag.TAG_ID,
+            tag.TAG_NAME, 
+            idea.SUBMITTED_AT as CREATED_AT,
+            submitter.IDENTITY_ID,
+            submitter.NAME as IDENTITY_NAME,
+            submitter.EMAIL as IDENTITY_EMAIL,
+            pers.PHONE as IDENTITY_PHONE,
+            pers.MOBILE as IDENTITY_MOBILE,
+            pers.OFFICE as IDENTITY_OFFICE,
+            pers.ORGANIZATION as IDENTITY_ORGANIZATION,
+            pers.COST_CENTER  as IDENTITY_COST_CENTER,
+            pers.IDENTITY_IMAGE_ID
+        from
+            "SAP_INO"."sap.ino.db.idea::v_idea_submitter" as submitter
+        inner join 
+            :lt_tag_name as tag 
+        on 
+            tag.IDEA_ID = submitter.IDEA_ID
+        inner join 
+            "SAP_INO"."sap.ino.db.iam::v_identity" as pers 
+        on 
+            pers.ID = submitter.IDENTITY_ID
+        inner join 
+            "SAP_INO"."sap.ino.db.idea::t_idea" as idea 
+        on 
+            idea.ID = submitter.IDEA_ID
+        and idea.STATUS_CODE <> 'sap.ino.config.DRAFT';
+
+    ot_commentators =  
+        select 
+            comment.OBJECT_ID as IDEA_ID,
+            tag.TAG_ID,
+            tag.TAG_NAME, 
+            comment.CREATED_AT, 
+            comment.CREATED_BY_ID   as IDENTITY_ID, 
+            comment.CREATED_BY_NAME as IDENTITY_NAME,
+            comment.CREATED_BY_EMAIL as IDENTITY_EMAIL,
+            pers.PHONE as IDENTITY_PHONE,
+            pers.MOBILE as IDENTITY_MOBILE,
+            pers.OFFICE as IDENTITY_OFFICE,
+            pers.ORGANIZATION as IDENTITY_ORGANIZATION,
+            pers.COST_CENTER  as IDENTITY_COST_CENTER,
+            pers.IDENTITY_IMAGE_ID
+        from 
+            "SAP_INO"."sap.ino.db.idea::v_idea_comment" as comment
+        inner join 
+            :lt_tag_name as tag 
+        on 
+            tag.IDEA_ID = comment.OBJECT_ID
+        inner join 
+            "SAP_INO"."sap.ino.db.iam::v_identity" as pers 
+        on 
+            pers.ID = comment.CREATED_BY_ID
+        inner join 
+            "SAP_INO"."sap.ino.db.idea::t_idea" as idea 
+        on 
+            idea.ID = comment.OBJECT_ID
+        and idea.STATUS_CODE <> 'sap.ino.config.DRAFT';
+
+    ot_contributors = 
+        select 
+            contributor.IDEA_ID,
+            tag.TAG_ID,
+            tag.TAG_NAME, 
+            idea.SUBMITTED_AT as CREATED_AT,
+            contributor.IDENTITY_ID,
+            contributor.NAME as IDENTITY_NAME,
+            contributor.EMAIL as IDENTITY_EMAIL,
+            pers.PHONE as IDENTITY_PHONE,
+            pers.MOBILE as IDENTITY_MOBILE,
+            pers.OFFICE as IDENTITY_OFFICE,
+            pers.ORGANIZATION as IDENTITY_ORGANIZATION,
+            pers.COST_CENTER  as IDENTITY_COST_CENTER,
+            pers.IDENTITY_IMAGE_ID
+        from
+            "SAP_INO"."sap.ino.db.idea::v_idea_contributors" as contributor
+        inner join 
+            :lt_tag_name as tag 
+        on 
+            tag.IDEA_ID = contributor.IDEA_ID
+        inner join 
+            "SAP_INO"."sap.ino.db.iam::v_identity" as pers 
+        on 
+            pers.ID = contributor.IDENTITY_ID
+        inner join 
+            "SAP_INO"."sap.ino.db.idea::t_idea" as idea 
+        on 
+            idea.ID = contributor.IDEA_ID
+        and idea.STATUS_CODE <> 'sap.ino.config.DRAFT';
+
+    ot_coaches =
+        select
+            coach.IDEA_ID,
+            tag.TAG_ID,
+            tag.TAG_NAME, 
+            coach.CREATED_AT,
+            coach.IDENTITY_ID,
+            pers.NAME as IDENTITY_NAME,
+            pers.EMAIL as IDENTITY_EMAIL,
+            pers.PHONE as IDENTITY_PHONE,
+            pers.MOBILE as IDENTITY_MOBILE,
+            pers.OFFICE as IDENTITY_OFFICE,
+            pers.ORGANIZATION as IDENTITY_ORGANIZATION,
+            pers.COST_CENTER  as IDENTITY_COST_CENTER,
+            pers.IDENTITY_IMAGE_ID
+        from
+            (select 
+                OBJECT_ID as IDEA_ID, 
+                IDENTITY_ID,
+                max(HISTORY_AT) as CREATED_AT
+             from
+                "SAP_INO"."sap.ino.db.iam::t_object_identity_role_h"
+             where
+                history_biz_event = 'COACH_ASSIGNED'
+             and
+                object_type_code = 'IDEA'
+             group by
+                OBJECT_ID, IDENTITY_ID
+            ) as coach
+        inner join 
+            :lt_tag_name as tag 
+        on 
+            tag.IDEA_ID = coach.IDEA_ID
+        inner join 
+            "SAP_INO"."sap.ino.db.iam::v_identity" as pers 
+        on 
+            pers.ID = coach.IDENTITY_ID
+        inner join 
+            "SAP_INO"."sap.ino.db.idea::t_idea" as idea 
+        on 
+            idea.ID = coach.IDEA_ID
+        and 
+            idea.STATUS_CODE <> 'sap.ino.config.DRAFT';
+
+    ot_evaluations =
+        select
+            eval.IDEA_ID, 
+            tag.TAG_ID,
+            tag.TAG_NAME, 
+            eval.CREATED_AT,
+            eval.EVALUATOR_ID   as IDENTITY_ID,
+            eval.EVALUATOR_NAME as IDENTITY_NAME,
+            pers.EMAIL as IDENTITY_EMAIL,
+            pers.PHONE as IDENTITY_PHONE,
+            pers.MOBILE as IDENTITY_MOBILE,
+            pers.OFFICE as IDENTITY_OFFICE,
+            pers.ORGANIZATION as IDENTITY_ORGANIZATION,
+            pers.COST_CENTER  as IDENTITY_COST_CENTER,
+            pers.IDENTITY_IMAGE_ID
+        from
+            "SAP_INO"."sap.ino.db.evaluation::v_evaluation" as eval
+        inner join 
+            :lt_tag_name as tag 
+        on 
+            tag.IDEA_ID = eval.IDEA_ID
+        inner join 
+            "SAP_INO"."sap.ino.db.iam::v_identity" as pers 
+        on 
+            pers.ID = eval.EVALUATOR_ID
+        and eval.STATUS_CODE <> 'sap.ino.config.EVAL_DRAFT';           
+end;

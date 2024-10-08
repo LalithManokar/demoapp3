@@ -1,0 +1,4 @@
+schema = "SAP_INO";
+query = "select * from \"sap.ino.db.campaign::t_registration_h\" with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_registration_h"];

@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+                         xmlns:f="sap.ui.layout.form"
+                         xmlns="sap.m"
+                         xmlns:ino="sap.ino.controls"
+                         xmlns:mvc="sap.ui.core.mvc"
+                        >
+                           <Panel class="sapInoInstallationInstallDuStepPanel" headerText="{i18n>PROCESS_UPGRADE_INSTALL_DU_STEP1}" >
+				            <content >
+				            <Text text="{i18n>PROCESS_UPGRADE_INSTALL_DU_STEP1_DESC}"/>
+				            <HBox>
+				            <VBox>
+				            <Text text="{i18n>PROCESS_UPGRADE_INSTALL_DU_SOFTWARE_DOWNLOAD}"/>
+				            <Link     text="{i18n>PROCESS_UPGRADE_INSTALL_DU_LINK_SOFTWARE_DOWNLOAD}"
+				                      target="_blank"
+				                      href="https://launchpad.support.sap.com/#/softwarecenter/search/inno_mgmt" />
+				            </VBox>
+				            </HBox>
+			                </content>
+			            </Panel>
+                        <Panel class="sapInoInstallationInstallDuStepPanel" headerText="{i18n>PROCESS_UPGRADE_INSTALL_DU_STEP2}" >
+				            <content >
+				            <Text text="{i18n>PROCESS_UPGRADE_INSTALL_DU_STEP2_DESC}"/>
+				            <HBox>
+				            <VBox>
+				            <Link     text="{i18n>PROCESS_UPGRADE_INSTALL_DU_LINK_APPLICATION_LIFECYLE_MANAGER}"
+				                      target="_blank"
+				                      href="{parts:['i18n>PROCESS_UPGRADE_INSTALL_DU_LINK_APPLICATION_LIFECYLE_MANAGER'], formatter:'.formatInstallDuLink'}" />
+				            </VBox>
+				            </HBox>				            
+			                </content>
+			            </Panel>
+			           <Panel class="sapInoInstallationInstallDuStepPanel" headerText="{i18n>PROCESS_UPGRADE_INSTALL_DU_STEP3}" >
+				            <content >
+				            <Text text="{i18n>PROCESS_UPGRADE_INSTALL_DU_STEP3_DESC}"/>
+			                </content>
+			            </Panel>
+				<Toolbar  class="sapInoInstallToolBar" visible="{parts:['installation>/STEP_TO_PROCESS'],formatter:'.visbileUpgradeButtonToolbar'}">
+				<ToolbarSpacer/>
+			            <Button text="{i18n>UPGRADE_NEXT_BUTTON}" press="onPressInstallDuNextButton"/>
+			            <Button text="{i18n>BTN_CANCEL}" press="onPressUpgradeCancel"/>
+		     	</Toolbar>	
+			            
+</core:FragmentDefinition>

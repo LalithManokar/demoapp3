@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Notification Campaign Setting Receiver";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "ACTION_ID";         sqlType = INTEGER;  nullable = false; comment = "Action Code ID ---the executed action";},
+    {name = "ROLE_CODE"; sqlType = VARCHAR; length = 20; nullable = false; comment = "Code that references the role";},
+    {name = "IS_RECEIVE_EMAIL"; sqlType = TINYINT;  nullable = true; comment="Marked whether can receive email";}
+];
+table.primaryKey.pkcolumns = ["ID"];

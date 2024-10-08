@@ -1,0 +1,116 @@
+procedure "SAP_INO"."sap.ino.db.iam.admin::grant_innovation_management_system_admin_privileges" (  
+    in iv_user_name      nvarchar(256),
+    in iv_first_name     nvarchar(100),
+    in iv_last_name      nvarchar(100),
+    in iv_email          nvarchar(256),
+    out ot_message       SAP_INO."sap.ino.db.basis::tt_message",
+    out ot_generated_id  SAP_INO."sap.ino.db.basis::tt_generated_id"
+)
+language sqlscript
+sql security definer
+default schema SAP_INO
+as
+begin
+    declare lv_user_name nvarchar(256);
+    -- enforce user actually exists
+        -- if iv_user_name does not point to a valid user the
+        -- statement below will lead to a "no data found" exception
+    select 
+        user_name into lv_user_name
+    from 
+        sys.users
+    where
+        user_name = upper(iv_user_name); 
+    -- since lv_user_name was selected from "SYS"."USERS" we now know
+    -- that the input is a valid user name
+
+    -- create (almost) suitable input for p_ext_identity_create
+    lt_identity =
+        select
+             -1                                      as ID,
+            -- null                                    as created_at,
+            --  -1                                      as created_by_id,
+            -- null                                    as changed_at,
+            -- -1                                      as changed_by_id,
+             'USER'                                  as type_code,
+             :iv_first_name || ' ' || :iv_last_name  as name,
+             :iv_first_name                          as first_name,
+             :iv_last_name                           as last_name,
+             :iv_email                               as email,
+             :lv_user_name                           as user_name,
+             0                                       as is_external,
+            -- 0                                       as erased,
+             ''                                      as phone,
+             ''                                      as mobile,
+             ''                                      as cost_center,
+             ''                                      as organization,
+             ''                                      as office,
+             'administrative user for bootstrapping' as description,
+             ''                                      as company,           
+             ''                                      as street,           
+             ''                                      as city,              
+             ''                                      as country,         
+             ''                                      as zip_code,
+             '31.12.9999'                            as validation_to,
+             NULL                                   AS LAST_LOGIN
+        from
+            dummy;
+
+    -- Instead of calling p_ext_identity_create we have to call the inner procedures
+    -- explicitly. This way we can bypass the determinations. This is because they
+    -- implicitly assume that the caller exists as an innovation management user.
+    -- During setup no users at all exist --> we need to bypass this.
+
+    -- Notice that this procedure runs with invoker rights thus only admins can execute it.
+    
+    -- The following "5" calls are basically following the implementation of p_identity_create
+    
+    call "sap.ino.db.iam::p_identity_merge_create"(:lt_identity, lt_merged_identity);
+    call "sap.ino.db.iam::p_identity_check"(:lt_merged_identity, ot_message, lt_checked_identity);
+    -- we can not determine the administrative data "created_by" and "changed_by" since
+    -- no user is yet known --> skip this step for now
+    -- call "sap.ino.db.iam::p_identity_determine_create"(:lt_checked_identity, lt_determined_identity);
+    call "sap.ino.db.iam::p_identity_determine_ids"(:lt_checked_identity, :lt_identity_with_id, ot_generated_id);
+    -- "determine" the administrative data by setting it to the to be created user
+    -- this is the substitute for the p_identity_determine_create procedure call
+    lt_merged_identity =
+        select
+            it.id                as id,
+            current_utctimestamp as created_at,
+            it.id                as created_by_id,
+            current_utctimestamp as changed_at,
+            it.id                as changed_by_id,
+            it.type_code         as type_code,
+            it.name              as name,
+            it.first_name        as first_name,
+            it.last_name         as last_name,
+            it.email             as email,
+            upper(it.user_name)  as user_name,
+            it.is_external       as is_external,
+            it.erased            as erased,
+            it.phone             as phone,
+            it.mobile            as mobile,
+            it.cost_center       as cost_center,
+            it.organization      as organization,
+            it.office            as office,
+            it.description       as description,
+            it.staged            as staged,
+            it.source_type_code  as source_type_code,
+            it.company           as company,           
+            it.street            as street,           
+            it.city              as city,              
+            it.country           as country,         
+            it.zip_code          as zip_code,
+            it.validation_to     as validation_to,
+            null                 as LAST_LOGIN
+        FROM
+            :lt_identity_with_id as it;    
+    call "sap.ino.db.iam::p_identity_db_insert"('IDENTITY_CREATED', :lt_merged_identity); 
+
+
+    -- grant innovation management privileges to the user
+    call "_SYS_REPO"."GRANT_ACTIVATED_ROLE"(
+        'sap.ino.authorizations::innovation_system_manager',
+        :lv_user_name);
+
+end;

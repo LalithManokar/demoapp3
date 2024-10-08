@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.description = "Identity - Name ";
+table.columns = [
+    {name = "ID";               sqlType = INTEGER;                nullable = false;                     comment = "technical user identifier - must never be exposed to end users";},
+    {name = "NAME";             sqlType = NVARCHAR; length = 100; nullable = true;                      comment = "Display name";},
+    {name = "FIRST_NAME";       sqlType = NVARCHAR; length = 100; nullable = true;                      comment = "First name of user";},
+    {name = "LAST_NAME";        sqlType = NVARCHAR; length = 100; nullable = true;                      comment = "Last name of user";}
+];
+table.primaryKey.pkcolumns = ["ID"];

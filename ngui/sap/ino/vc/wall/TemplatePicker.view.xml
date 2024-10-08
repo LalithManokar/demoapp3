@@ -1,0 +1,21 @@
+<mvc:View
+    controllerName="sap.ino.vc.wall.TemplatePicker"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:ino="sap.ino.controls"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout">
+    <l:VerticalLayout
+        width="100%"
+        id="filterBar"
+        visible="false">
+        <core:Fragment fragmentName="sap.ino.vc.wall.fragments.PickerFilterBar" type="XML"/>
+    </l:VerticalLayout>
+    <ino:WrappingList id="templatelistpicker"
+        growing="true"
+        growingThreshold="{path : 'device>/system', formatter: '.formatter.listThreshold'}"
+        growingScrollToLoad="true"
+        itemPress="onItemPress"
+        wrapping="true">
+    </ino:WrappingList>
+</mvc:View>

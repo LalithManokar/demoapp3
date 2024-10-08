@@ -1,0 +1,13 @@
+{
+    "name": "sap.ino.apps.ino",
+    "version": "2.0",
+    "description": "SAP Innovation Management",
+    "keywords": [
+        "SAP",
+        "Innovation",
+        "Management",
+        "INO"
+    ],
+    "dependencies": {
+    }
+}

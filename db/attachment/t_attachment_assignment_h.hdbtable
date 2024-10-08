@@ -1,0 +1,18 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "History of Attachment Assignment";
+table.columns = [
+    {name = "HISTORY_DB_EVENT"; sqlType = VARCHAR; length = 8; nullable = false;comment = "Database event: CREATED, UPDATED, DELETED";},
+    {name = "HISTORY_BIZ_EVENT"; sqlType = VARCHAR; length = 60; nullable = false;comment = "Business event: IDEA_CREATED, IDEA_SUBMITTED ...";},
+    {name = "HISTORY_AT"; sqlType = TIMESTAMP; nullable = false;comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID"; sqlType = INTEGER; nullable = false;comment = "Actor who did the changes";},
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Technical record ID";},
+	{name = "ATTACHMENT_ID"; sqlType = INTEGER; nullable = false; comment = "Attachment of the data. Foreign key t_attachment.ID";}, 
+	{name = "OWNER_ID"; sqlType = INTEGER; nullable = false; comment = "Owner of attachment. Foreign key t_idea.ID, t_campaign.ID or t_identity.ID";},
+	{name = "OWNER_TYPE_CODE"; sqlType = VARCHAR; length = 100; nullable = false;},
+	{name = "ROLE_TYPE_CODE"; sqlType = VARCHAR; length = 50; nullable = true; comment = "Role of attachment. Foreign key t_attachment_role_type.CODE";},
+	{name = "FILTER_TYPE_CODE"; sqlType = VARCHAR; length = 20; nullable = true; comment = "Filter for attachment. Foreign key t_attachment_filter_type.CODE";}
+];
+table.indexes = [
+     {name="LOGKEY_ATTACH_ASSIGN_H"; unique = false; indexColumns = ["ID", "HISTORY_AT"];}
+];

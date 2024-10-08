@@ -1,0 +1,93 @@
+schema = "SAP_INO";
+query = "select distinct
+    campaign_hc.history_db_event,
+    campaign_hc.history_biz_event,
+    campaign_hc.history_at,
+    campaign_hc.history_actor_id,
+    campaign_hc.id,
+    
+    case campaign_hc.created_at     when campaign_hb.created_at     then null else campaign_hc.created_at       end as created_at,
+    campaign_hb.created_at as created_at_old,
+    
+    case campaign_hc.created_by_id  when campaign_hb.created_by_id  then null else campaign_hc.created_by_id    end as created_by_id,
+    campaign_hb.created_by_id as created_by_id_old,
+    
+    case campaign_hc.status_code    when campaign_hb.status_code    then null else campaign_hc.status_code      end as status_code,
+    campaign_hb.status_code as status_code_old,
+    
+    case campaign_hc.valid_from     when campaign_hb.valid_from     then null else campaign_hc.valid_from       end as valid_from,
+    campaign_hb.valid_from as valid_from_old,
+    
+    case campaign_hc.valid_to       when campaign_hb.valid_to       then null else campaign_hc.valid_to         end as valid_to,
+    campaign_hb.valid_to as valid_to_old,
+    
+    case campaign_hc.submit_from    when campaign_hb.submit_from    then null else campaign_hc.submit_from      end as submit_from,
+    campaign_hb.submit_from as submit_from_old,
+    
+    case campaign_hc.submit_to      when campaign_hb.submit_to      then null else campaign_hc.submit_to        end as submit_to,
+    campaign_hb.submit_to as submit_to_old,
+    
+    case campaign_hc.is_black_box   when campaign_hb.is_black_box   then null else campaign_hc.is_black_box     end as is_black_box,
+    campaign_hb.is_black_box as is_black_box_old,
+    
+    case campaign_hc.vote_type_code when campaign_hb.vote_type_code then null else campaign_hc.vote_type_code   end as vote_type_code,
+    campaign_hb.vote_type_code as vote_type_code_old,
+    
+    case campaign_hc.color_code     when campaign_hb.color_code     then null else campaign_hc.color_code       end as color_code,
+    campaign_hb.color_code as color_code_old,
+    
+    case campaign_hc.phase_count    when campaign_hb.phase_count    then null else campaign_hc.phase_count      end as phase_count,
+    campaign_hb.phase_count as phase_count_old,
+    
+    case campaign_hc.page_count     when campaign_hb.page_count     then null else campaign_hc.page_count       end as page_count,
+    campaign_hb.page_count as page_count_old,
+    
+    case campaign_hc.mail_template_code when campaign_hb.mail_template_code then null else campaign_hc.mail_template_code end as mail_template_code,
+    campaign_hb.mail_template_code as mail_template_code_old,
+    
+    case campaign_hc.mail_success_code when campaign_hb.mail_success_code then null else campaign_hc.mail_success_code end as mail_success_code,
+    campaign_hb.mail_success_code as mail_success_code_old,
+    
+    case campaign_hc.mail_rejection_code when campaign_hb.mail_rejection_code then null else campaign_hc.mail_rejection_code end as mail_rejection_code,
+    campaign_hb.mail_rejection_code as mail_rejection_code_old,
+    
+    case campaign_hc.mail_phase_change_code when campaign_hb.mail_phase_change_code then null else campaign_hc.mail_phase_change_code end as mail_phase_change_code,
+    campaign_hb.mail_phase_change_code as mail_phase_change_code_old,
+    
+    case campaign_hc.register_from when campaign_hb.register_from then null else campaign_hc.register_from end as register_from,
+    campaign_hb.register_from as register_from_old,
+    
+    case campaign_hc.register_to when campaign_hb.register_to then null else campaign_hc.register_to end as register_to,
+    campaign_hb.register_to as register_to_old,
+
+    case campaign_hc.is_register_auto_approve when campaign_hb.is_register_auto_approve then null else campaign_hc.is_register_auto_approve end as is_register_auto_approve,
+    campaign_hb.is_register_auto_approve as is_register_auto_approve_old,
+
+    case campaign_hc.form_code when campaign_hb.form_code then null else campaign_hc.form_code end as form_code,
+    campaign_hb.form_code as form_code_old,
+
+    case campaign_hc.resp_code when campaign_hb.resp_code then null else campaign_hc.resp_code end as resp_code,
+    campaign_hb.resp_code as resp_code_old,
+
+    case campaign_hc.reward when campaign_hb.reward then null else campaign_hc.reward end as reward,
+    campaign_hb.reward as reward_old,
+
+    case campaign_hc.reward_unit_code when campaign_hb.reward_unit_code then null else campaign_hc.reward_unit_code end as reward_unit_code,
+    campaign_hb.reward_unit_code as reward_unit_code_old,
+
+    case campaign_hc.IS_GAMIFICATION_ACTIVE when campaign_hb.IS_GAMIFICATION_ACTIVE then null else campaign_hc.IS_GAMIFICATION_ACTIVE end as IS_GAMIFICATION_ACTIVE,
+    campaign_hb.IS_GAMIFICATION_ACTIVE as IS_GAMIFICATION_ACTIVE_OLD
+from
+    (
+    select
+        *,
+        lag(history_at, 1, NULL) over (partition by id order by history_at asc) as predecessor
+    from
+        \"sap.ino.db.campaign::t_campaign_h\"
+    ) as campaign_hc 
+        left outer join \"sap.ino.db.campaign::t_campaign_h\" as campaign_hb
+            on campaign_hc.predecessor = campaign_hb.history_at and 
+               campaign_hc.id = campaign_hb.id
+with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_h"];

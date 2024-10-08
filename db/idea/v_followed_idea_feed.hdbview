@@ -1,0 +1,60 @@
+schema = "SAP_INO";
+query = " 
+select * from (
+        select 
+            replace(feed.object_id || feed.object_type_code || feed.event_at || feed.feed_code || IFNULL(feed.involved_id, 0),  ' ','_') as key,
+            feed.object_id,
+            feed.object_type_code,
+            feed.object_text,
+            feed.actor_id,
+            feed.actor_name,
+            feed.actor_image_id,
+            feed.involved_id,
+            feed.involved_obj_type_code,
+            feed.involved_obj_text,
+            feed.event_at,
+            feed.feed_code, 
+            feed.campaign_id,
+            feed.field1_name,
+            feed.field1_text,
+            feed.field1_value,
+            feed.field1_value_option,
+            null as field2_name,
+            null as field2_text,
+            null as field2_value,
+            null as field2_value_option,
+            feed.filter_type_code, 
+            feed.content,
+            involved_obj_text as sub_text,
+            null as sub_feed_code,
+            null as campaign_date,
+            follow.created_by_id as followed_by_id,
+            follow.CREATED_AT as followed_at,
+            follow.EMAIL_AT as latest_email_at
+        from \"sap.ino.db.follow::t_follow\" as follow 
+        inner join \"sap.ino.db.idea::v_idea_biz_feeds\" as feed
+            on feed.object_id = follow.object_id and follow.object_type_code = 'IDEA'
+            and feed.event_at >= follow.CREATED_AT
+            and follow.created_by_id in (select id from \"sap.ino.db.iam::v_auth_application_user\")
+        where (
+            ( feed.filter_type_code = 'BACKOFFICE' and
+            feed.campaign_id in ( select campaign_id from \"sap.ino.db.campaign::v_auth_backoffice_campaign_privilege\" )) or
+            ( feed.filter_type_code = 'FRONTOFFICE' and 
+            feed.object_id in ( select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\" ))
+        ) and 
+        (
+            (feed.involved_obj_type_code = 'CAMPAIGN' and feed.involved_id in (select campaign_id from \"sap.ino.db.campaign::v_auth_campaigns_and_registrable\")) or
+            (feed.involved_obj_type_code = 'IDEA' and feed.involved_id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")) or 
+            (feed.involved_obj_type_code <> 'IDEA' and feed.involved_obj_type_code <> 'CAMPAIGN') or 
+            feed.involved_obj_type_code is null
+        )
+         
+) with read only"; 
+
+depends_on_table = ["sap.ino.db.follow::t_follow"];
+
+depends_on_view =  ["sap.ino.db.idea::v_idea_biz_feeds",
+                    "sap.ino.db.iam::v_auth_application_user",
+                    "sap.ino.db.campaign::v_auth_backoffice_campaign_privilege",
+                    "sap.ino.db.idea::v_auth_ideas_read",
+                    "sap.ino.db.campaign::v_auth_campaigns_and_registrable"];          

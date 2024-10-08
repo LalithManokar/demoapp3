@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.temporary = true;
+table.description = "Input table for CREATE and UPDATE procedures of static identity roles";
+table.columns = [
+    {name = "ID";          sqlType = INTEGER;              nullable = false; comment = "Handle ID";},
+    {name = "IDENTITY_ID"; sqlType = INTEGER;              nullable = true;  comment = "IDENTITY_ID";},
+    {name = "ROLE_CODE";   sqlType = VARCHAR; length = 60; nullable = true;  comment = "Role code to which identity IDENTITY_ID is assigned.";}
+ ];

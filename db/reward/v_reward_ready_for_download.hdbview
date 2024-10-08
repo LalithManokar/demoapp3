@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query  = "
+          select reward.id as reward_id,
+                 reward.reward_list_id
+             from \"sap.ino.db.reward::t_reward\" as reward
+              where download_count = cast( 0 as INTEGER ) or download_count is null
+          with read only";
+depends_on_table = ["sap.ino.db.reward::t_reward"];          

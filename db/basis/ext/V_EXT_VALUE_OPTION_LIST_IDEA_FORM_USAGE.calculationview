@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_VALUE_OPTION_LIST_IDEA_FORM_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <origin/>
+  <descriptions defaultDescription="V_EXT"/>
+  <metadata changedAt="2018-09-04 17:22:18.672"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="23"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.basis::v_value_option_list_custom_idea_form_usage" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_custom_idea_form_usage"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="sap.ino.db.basis::v_value_option_list_custom_idea_form_usage">
+    <descriptions/>
+    <attributes>
+      <attribute id="CODE_NAME" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Technical Name"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_custom_idea_form_usage" columnName="CODE_NAME"/>
+      </attribute>
+      <attribute id="NAME" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Name"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_custom_idea_form_usage" columnName="NAME"/>
+      </attribute>
+      <attribute id="CODE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CODE"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_custom_idea_form_usage" columnName="CODE"/>
+      </attribute>
+      <attribute id="IDEA_FORM_ID" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_FORM_ID"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_custom_idea_form_usage" columnName="IDEA_FORM_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="ID" order="4" aggregationType="max" measureType="simple">
+        <descriptions defaultDescription="ID"/>
+        <measureMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_custom_idea_form_usage" columnName="ID"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="200"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

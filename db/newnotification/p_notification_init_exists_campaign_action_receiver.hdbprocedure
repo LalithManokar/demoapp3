@@ -1,0 +1,55 @@
+PROCEDURE "SAP_INO"."sap.ino.db.newnotification::p_notification_init_exists_campaign_action_receiver" ( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   DEFAULT SCHEMA SAP_INO
+   AS
+BEGIN
+   /*************************************
+       Write your procedure logic 
+   *************************************/
+   INSERT INTO "SAP_INO"."sap.ino.db.newnotification::t_notification_campaign_setting"("ID","ACTION_CODE","TEXT_MODULE_CODE","CAMPAIGN_ID")
+ SELECT "sap.ino.db.newnotification::s_notification_campaign_setting".nextval, 
+    	ACTION_CODE, 
+    	NULL, 
+    	CAMPAIGN_ID
+    FROM(
+		SELECT DISTINCT setting.CAMPAIGN_ID, 
+			ACTION.ACTION_CODE
+		FROM (
+				SELECT 'CAMPAIGN_START_SOON' AS ACTION_CODE
+				FROM DUMMY
+			    UNION
+				SELECT 'CAMPAIGN_DUE_TO_EXPIRE' AS ACTION_CODE
+				FROM DUMMY
+			    UNION
+				SELECT 'IDEA_SUBMISSION_SOON' AS ACTION_CODE
+				FROM DUMMY
+			    UNION
+				SELECT 'IDEA_SUBMISSION_DUE_TO_EXPIRE' AS ACTION_CODE
+				FROM DUMMY
+			    UNION
+				SELECT 'CAMPAIGN_REGISTRATION_SOON' AS ACTION_CODE
+				FROM DUMMY
+			    UNION
+				SELECT 'CAMPAIGN_REGISTRATION_DUE_TO_EXPIRE' AS ACTION_CODE
+				FROM DUMMY
+			) AS ACTION,
+			"sap.ino.db.newnotification::t_notification_campaign_setting" AS setting
+	);
+   
+   INSERT INTO "SAP_INO"."sap.ino.db.newnotification::t_notification_campaign_setting_receiver"("ID","ACTION_ID","ROLE_CODE","IS_RECEIVE_EMAIL") 
+    SELECT "sap.ino.db.newnotification::s_notification_campaign_setting_receiver".nextval, 
+    	ID, 
+    	ROLE_CODE, 
+    	0
+    FROM(
+    		SELECT DISTINCT setting.ID, 
+    			ROLES.ROLE_CODE
+    		FROM (
+    				SELECT 'FOLLOWER' AS ROLE_CODE
+    				FROM DUMMY
+    			) AS ROLES, "sap.ino.db.newnotification::t_notification_campaign_setting" AS setting
+    		WHERE (setting.ACTION_CODE IN('CAMPAIGN_START_SOON','CAMPAIGN_DUE_TO_EXPIRE','IDEA_SUBMISSION_SOON','IDEA_SUBMISSION_DUE_TO_EXPIRE','CAMPAIGN_REGISTRATION_SOON','CAMPAIGN_REGISTRATION_DUE_TO_EXPIRE'))
+    	);
+
+END

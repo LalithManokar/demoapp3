@@ -1,0 +1,37 @@
+schema = "SAP_INO";
+query = "select
+    campaign_hc.history_db_event,
+    campaign_hc.history_biz_event,
+    campaign_hc.history_at,
+    campaign_hc.history_actor_id,
+    campaign_hc.id,
+    campaign_hc.lang,
+    campaign_hc.campaign_id,
+    
+    case campaign_hc.name when campaign_hb.name then null else campaign_hc.name end as name,
+    campaign_hb.name as name_old,
+    
+    case campaign_hc.short_name when campaign_hb.short_name then null else campaign_hc.short_name end as short_name,
+    campaign_hb.short_name as short_name_old,
+    
+    -- NCLOBs can only be compared with like
+    case when campaign_hc.description like campaign_hb.description then null else campaign_hc.description end as description,
+    campaign_hb.description as description_old,
+    
+    -- NCLOBs can only be compared with like
+    case when campaign_hc.idea_description_template like campaign_hb.idea_description_template then null else campaign_hc.idea_description_template end as idea_description_template,
+    campaign_hb.idea_description_template as idea_description_template_old
+from
+    (
+    select
+        *,
+        lag(history_at, 1, NULL) over (partition by id order by history_at asc) as predecessor
+    from
+        \"sap.ino.db.campaign::t_campaign_t_h\"
+    ) as campaign_hc 
+        left outer join \"sap.ino.db.campaign::t_campaign_t_h\" as campaign_hb
+            on campaign_hc.predecessor = campaign_hb.history_at and 
+               campaign_hc.id = campaign_hb.id
+with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_t_h"];

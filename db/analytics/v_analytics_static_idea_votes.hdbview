@@ -1,0 +1,11 @@
+schema = "SAP_INO";
+query = "
+    select campaign_id,
+        vote_id,
+        exp_vote_id,
+        case when month( changed_at ) < 10 then
+            year ( changed_at ) || '-0' || month ( changed_at ) else
+            year ( changed_at ) || '-' || month ( changed_at ) end as changed_at_year_month
+	    from \"sap.ino.db.idea::v_vote_idea_expert_score\" ";
+
+depends_on_view = ["sap.ino.db.idea::v_vote_idea_expert_score"];

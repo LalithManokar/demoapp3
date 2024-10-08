@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "URL Whitelist for HTML Sanitization. See jQuery.sap.addUrlWhitelist.";
+table.columns = [
+    {name = "PROTOCOL"; sqlType = VARCHAR;  length = 20;   nullable = false; comment = "Scheme/Protocol of the whitelist URL";},
+    {name = "HOST";     sqlType = NVARCHAR; length = 255;  nullable = true;  comment = "Hostname (can also have special characters)";},
+    {name = "PORT";     sqlType = INTEGER;                 nullable = true;  comment = "Port";},
+    {name = "PATH";     sqlType = NVARCHAR; length = 2000; nullable = true;  comment = "URL path (encoded)";}
+];

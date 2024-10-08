@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT";
+query = "
+select * from \"sap.ino.db.campaign::v_campaign_small_idea_assign\"
+with read only";
+
+depends_on_view = [ "sap.ino.db.campaign::v_campaign_small_idea_assign"];
+ 

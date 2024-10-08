@@ -1,0 +1,34 @@
+.sapInoColorBar.sapInoColorBarPhoneEnabled,
+html:not(.sap-phone) .sapMTB.sapInoColorBar {
+    &.sapInoColorBarTextLight .sapMBarChild {
+        color: @sapInoText;
+	    
+	    // BCP-1980511887: add focus color for links in color bar to fix acc issue
+        &.sapMLnk:focus:not(.sapMLnkDsbl) {
+            outline: 1px dotted @sapInoText!important;
+            position:static; //for ie
+        }
+        &.sapMBtn:focus .sapMBtnFocusDiv {
+            border: 1px dashed @sapInoText!important;
+        }
+    }
+    &.sapInoColorBarTextDark .sapMBarChild {
+	    color: @sapInoTextInverted;
+	    
+	    // BCP-1980511887: add focus color for links in color bar to fix acc issue
+        &.sapMLnk:focus:not(.sapMLnkDsbl) {
+            outline: 1px dotted @sapInoTextInverted!important;
+            position:static; //for ie
+        }
+        &.sapMBtn:focus .sapMBtnFocusDiv {
+            border: 1px dashed @sapInoTextInverted!important;
+        }
+    }  
+    // BCP-1980511925: fix button invisible issue
+    &.sapInoColorBarTextDark .sapMBarChild div:not(.sapMToggleBtnPressed):not(.sapMBtnActive) .sapMBtnIcon,
+    &.sapInoColorBarTextLight .sapMBarChild div:not(.sapMToggleBtnPressed):not(.sapMBtnActive) .sapMBtnIcon,
+    &.sapInoColorBarTextDark .sapMBtnTransparent:not(.sapMToggleBtnPressed):not(.sapMBtnActive) .sapMBtnIcon,
+    &.sapInoColorBarTextLight .sapMBtnTransparent:not(.sapMToggleBtnPressed):not(.sapMBtnActive) .sapMBtnIcon{
+        color: @sapInoText;
+    }
+}

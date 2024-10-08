@@ -1,0 +1,23 @@
+schema = "SAP_INO";
+query = "
+    select value_option.id as id,
+           value_option.list_id as list_id,
+           value_option.package_id as package_id,
+           value_option.code as code,
+           value_option.list_code as list_code,
+           value_option_list.datatype_code as datatype_code,
+           value_option.plain_code as plain_code,
+           value_option.num_value as num_value,
+           value_option.bool_value as bool_value,
+           value_option.text_value as text_value,
+           value_option.default_text as default_text,
+           value_option.default_long_text as default_long_text,
+           value_option.active as active,
+           value_option.sequence_no        
+    from \"sap.ino.db.basis::t_value_option_stage\" as value_option
+    inner join \"sap.ino.db.basis::t_value_option_list_stage\" as value_option_list
+        on value_option.list_code = value_option_list.code
+";
+
+depends_on_table = ["sap.ino.db.basis::t_value_option_stage",
+                    "sap.ino.db.basis::t_value_option_list_stage"];

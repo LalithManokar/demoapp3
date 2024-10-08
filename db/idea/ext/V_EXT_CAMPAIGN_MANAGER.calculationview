@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_CAMPAIGN_MANAGER" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <origin/>
+  <descriptions defaultDescription="V_EXT_CAMPAIGN_MANAGER"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.campaign::v_auth_campaigns" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::v_auth_campaigns"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.iam::v_object_identity_role_transitive" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_object_identity_role_transitive"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="CampaignManager" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="IDENTITY_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.iam::v_object_identity_role_transitive">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+      </input>
+      <filter>&quot;ROLE_CODE&quot;='CAMPAIGN_MANAGER'and &quot;OBJECT_TYPE_CODE&quot;='CAMPAIGN'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="CampaignManagerJoinAuth" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute hidden="true" id="JOIN$CAMPAIGN_ID$OBJECT_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.campaign::v_auth_campaigns">
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_ID$OBJECT_ID" source="CAMPAIGN_ID"/>
+      </input>
+      <input node="#CampaignManager">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_ID$OBJECT_ID" source="OBJECT_ID"/>
+      </input>
+      <joinAttribute name="JOIN$CAMPAIGN_ID$OBJECT_ID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="CampaignManagerJoinAuth">
+    <descriptions/>
+    <attributes>
+      <attribute id="OBJECT_TYPE_CODE" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="OBJECT_TYPE_CODE"/>
+        <keyMapping columnObjectName="CampaignManagerJoinAuth" columnName="OBJECT_TYPE_CODE"/>
+      </attribute>
+      <attribute id="OBJECT_ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="OBJECT_ID"/>
+        <keyMapping columnObjectName="CampaignManagerJoinAuth" columnName="OBJECT_ID"/>
+      </attribute>
+      <attribute id="ROLE_CODE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ROLE_CODE"/>
+        <keyMapping columnObjectName="CampaignManagerJoinAuth" columnName="ROLE_CODE"/>
+      </attribute>
+      <attribute id="IDENTITY_ID" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDENTITY_ID"/>
+        <keyMapping columnObjectName="CampaignManagerJoinAuth" columnName="IDENTITY_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="110"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="CampaignManagerJoinAuth" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="220"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="CampaignManager" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="340"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

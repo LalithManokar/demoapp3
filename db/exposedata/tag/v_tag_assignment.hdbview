@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = "
+    select tagGroupAsssign.ID,
+           tag.ID as TAG_ID,
+           tag.NAME as TAG_NAME,
+           tagGroupAsssign.TAG_GROUP_ID,
+           tagGroup.NAME as TAG_GROUP_NAME
+    from \"sap.ino.db.tag::t_tag\" as tag
+    left outer join \"sap.ino.db.tag::t_assignment_tag\" as tagGroupAsssign
+    on tag.ID = tagGroupAsssign.TAG_ID
+    left outer join \"sap.ino.db.tag::t_group_tag\" as tagGroup
+     on tagGroupAsssign.TAG_GROUP_ID = tagGroup.ID
+    with read only ";
+depends_on_table = ["sap.ino.db.tag::t_assignment_tag","sap.ino.db.tag::t_tag","sap.ino.db.tag::t_group_tag"];

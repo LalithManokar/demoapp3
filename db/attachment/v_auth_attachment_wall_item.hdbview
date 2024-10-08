@@ -1,0 +1,20 @@
+schema = "SAP_INO";
+query = " 
+    select distinct attachment.id as attachment_id
+    	from 
+    		\"sap.ino.db.attachment::t_attachment\" as attachment
+		join 
+			\"sap.ino.db.attachment::t_attachment_assignment\" as assignment
+	   		on assignment.owner_type_code = 'WALL_ITEM' and
+	   	   	   assignment.attachment_id = attachment.id
+		join \"sap.ino.db.wall::t_wall_item\" as wall_item
+	   		on assignment.owner_id = wall_item.id
+	    join \"sap.ino.db.wall::v_auth_wall\" as auth
+	   		on wall_item.wall_id = auth.wall_id 
+	with read only";
+
+depends_on_table = ["sap.ino.db.wall::t_wall_item",
+					"sap.ino.db.attachment::t_attachment",
+					"sap.ino.db.attachment::t_attachment_assignment"];
+					
+depends_on_view = ["sap.ino.db.wall::v_auth_wall"];

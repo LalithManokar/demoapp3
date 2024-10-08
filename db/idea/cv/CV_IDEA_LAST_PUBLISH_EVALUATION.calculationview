@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="CV_IDEA_LAST_PUBLISH_EVALUATION" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <origin/>
+  <descriptions defaultDescription="CV_IDEA"/>
+  <metadata changedAt="2021-05-21 14:42:07.751"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="33"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.idea.optimize::v_evaluation_v1" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea.optimize::v_evaluation_v1"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.evaluation::t_evaluation" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::t_evaluation"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.idea::t_idea" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_idea"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="OV_RES_DATATYPE_CODE"/>
+        <viewAttribute id="OV_RES_NUM_VALUE"/>
+        <viewAttribute id="OV_RES_BOOL_VALUE"/>
+        <viewAttribute id="OV_RES_TEXT_VALUE"/>
+        <viewAttribute id="OV_RES_VALUE_OPTION_LIST_CODE"/>
+        <viewAttribute id="OV_RES_UOM_CODE"/>
+        <viewAttribute id="CHANGED_AT"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="IDEA_PHASE_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.idea.optimize::v_evaluation_v1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OV_RES_DATATYPE_CODE" source="OV_RES_DATATYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OV_RES_NUM_VALUE" source="OV_RES_NUM_VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OV_RES_BOOL_VALUE" source="OV_RES_BOOL_VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OV_RES_TEXT_VALUE" source="OV_RES_TEXT_VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OV_RES_VALUE_OPTION_LIST_CODE" source="OV_RES_VALUE_OPTION_LIST_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OV_RES_UOM_CODE" source="OV_RES_UOM_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CHANGED_AT" source="CHANGED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_PHASE_CODE" source="IDEA_PHASE_CODE"/>
+      </input>
+      <filter>(&quot;STATUS_CODE&quot; ='sap.ino.config.EVAL_PUB_SUBMITTER' or &quot;STATUS_CODE&quot; = 'sap.ino.config.EVAL_PUB_COMMUNITY')</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_2" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="IDEA_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.evaluation::t_evaluation">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+      </input>
+      <filter>(&quot;STATUS_CODE&quot; ='sap.ino.config.EVAL_PUB_SUBMITTER' or &quot;STATUS_CODE&quot; = 'sap.ino.config.EVAL_PUB_COMMUNITY')</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" joinOrder="OUTSIDE_IN">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="EVALUATION_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.idea::t_idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+      </input>
+      <input node="#Projection_2">
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="IDEA_ID"/>
+      </input>
+      <joinAttribute name="ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID"/>
+        <viewAttribute aggregationType="max" id="EVALUATION_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_ID" source="EVALUATION_ID"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_2" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CHANGED_AT"/>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="OV_RES_DATATYPE_CODE"/>
+        <viewAttribute id="OV_RES_NUM_VALUE"/>
+        <viewAttribute id="OV_RES_BOOL_VALUE"/>
+        <viewAttribute id="OV_RES_TEXT_VALUE"/>
+        <viewAttribute id="OV_RES_VALUE_OPTION_LIST_CODE"/>
+        <viewAttribute id="OV_RES_UOM_CODE"/>
+        <viewAttribute id="IDEA_PHASE_CODE"/>
+        <viewAttribute id="EVALUATION_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Aggregation_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_ID" source="EVALUATION_ID"/>
+      </input>
+      <input node="#Projection_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CHANGED_AT" source="CHANGED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OV_RES_DATATYPE_CODE" source="OV_RES_DATATYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OV_RES_NUM_VALUE" source="OV_RES_NUM_VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OV_RES_BOOL_VALUE" source="OV_RES_BOOL_VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OV_RES_TEXT_VALUE" source="OV_RES_TEXT_VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OV_RES_VALUE_OPTION_LIST_CODE" source="OV_RES_VALUE_OPTION_LIST_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OV_RES_UOM_CODE" source="OV_RES_UOM_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_PHASE_CODE" source="IDEA_PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_ID" source="ID"/>
+      </input>
+      <joinAttribute name="EVALUATION_ID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_2">
+    <descriptions/>
+    <attributes>
+      <attribute id="CHANGED_AT" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CHANGED_AT"/>
+        <keyMapping columnObjectName="Join_2" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Join_2" columnName="ID"/>
+      </attribute>
+      <attribute id="OV_RES_DATATYPE_CODE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="OV_RES_DATATYPE_CODE"/>
+        <keyMapping columnObjectName="Join_2" columnName="OV_RES_DATATYPE_CODE"/>
+      </attribute>
+      <attribute id="OV_RES_NUM_VALUE" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="OV_RES_NUM_VALUE"/>
+        <keyMapping columnObjectName="Join_2" columnName="OV_RES_NUM_VALUE"/>
+      </attribute>
+      <attribute id="OV_RES_BOOL_VALUE" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="OV_RES_BOOL_VALUE"/>
+        <keyMapping columnObjectName="Join_2" columnName="OV_RES_BOOL_VALUE"/>
+      </attribute>
+      <attribute id="OV_RES_TEXT_VALUE" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="OV_RES_TEXT_VALUE"/>
+        <keyMapping columnObjectName="Join_2" columnName="OV_RES_TEXT_VALUE"/>
+      </attribute>
+      <attribute id="OV_RES_VALUE_OPTION_LIST_CODE" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="OV_RES_VALUE_OPTION_LIST_CODE"/>
+        <keyMapping columnObjectName="Join_2" columnName="OV_RES_VALUE_OPTION_LIST_CODE"/>
+      </attribute>
+      <attribute id="OV_RES_UOM_CODE" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="OV_RES_UOM_CODE"/>
+        <keyMapping columnObjectName="Join_2" columnName="OV_RES_UOM_CODE"/>
+      </attribute>
+      <attribute id="IDEA_PHASE_CODE" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_PHASE_CODE"/>
+        <keyMapping columnObjectName="Join_2" columnName="IDEA_PHASE_CODE"/>
+      </attribute>
+      <attribute id="EVALUATION_ID" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Technical key"/>
+        <keyMapping columnObjectName="Join_2" columnName="EVALUATION_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="250" y="490"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="70" y="660"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="70" y="510"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Aggregation_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="60" y="400"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="170" y="280"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

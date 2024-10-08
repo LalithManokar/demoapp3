@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "            
+	select wall_id from \"sap.ino.db.wall::v_auth_wall_read\"
+	union 
+	select wall_id from \"sap.ino.db.wall::v_auth_wall_idea\"
+	union 
+	select wall_id from \"sap.ino.db.wall::v_auth_wall_idea_internal\"
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.wall::v_auth_wall_read",
+				   "sap.ino.db.wall::v_auth_wall_idea",
+				   "sap.ino.db.wall::v_auth_wall_idea_internal"];

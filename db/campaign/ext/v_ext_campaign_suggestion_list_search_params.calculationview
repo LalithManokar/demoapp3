@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="v_ext_campaign_suggestion_list_search_params" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="v_ext_campaign_suggestion_list_search_params"/>
+  <metadata changedAt="2017-11-21 11:22:00.227"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="searchToken"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="undefined" length="40" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="filterName" parameter="true">
+      <descriptions defaultDescription="Managed Campaigns/All Campaigns"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="undefined" length="30" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="SHORT_NAME" length="40"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <localVariable>#filterName</localVariable>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+       if length(:filterName) = 0 then
+        lt_filter_campaigns = select campaign_id as id 
+                        from &quot;sap.ino.db.campaign::v_auth_campaign_read_idea_exist&quot;
+                        where length(:filterName) = 0;
+    elseif :filterName = 'managedCampaigns' then
+        lt_filter_campaigns = select distinct id from ( select id 
+                              from &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; 
+                              union
+                              select  id  from &quot;sap.ino.db.campaign::v_my_backoffice_responsibility_campaign&quot;)
+                        where :filterName = 'managedCampaigns';
+    elseif :filterName = 'allCampaigns' then
+        lt_filter_campaigns = select id from &quot;sap.ino.db.campaign::t_campaign&quot; 
+            where status_code &lt;&gt; 'sap.ino.config.CAMP_DRAFT' 
+            and valid_from &lt;= CURRENT_UTCTIMESTAMP
+            and valid_to &gt;= CURRENT_UTCTIMESTAMP;
+    elseif :filterName = 'allCampaignsExceptDraft' then
+        lt_filter_campaigns = select id from &quot;sap.ino.db.campaign::t_campaign&quot; 
+            where status_code = 'sap.ino.config.CAMP_PUBLISHED' 
+                and submit_from &lt;= current_utctimestamp 
+                and current_utctimestamp &lt;= submit_to;            
+    end if;
+    var_out = 
+          select campaign.id, descr.short_name
+                from 
+                    &quot;sap.ino.db.campaign::t_campaign&quot; as campaign
+                inner join
+                    :lt_filter_campaigns as auth_campaign
+                on
+                    campaign.id = auth_campaign.id
+                left outer join
+                    &quot;sap.ino.db.campaign::v_campaign_t_locale&quot; as descr
+                on
+                    campaign.id = descr.campaign_id
+                where
+                    (lcase(descr.short_name) like '%' || lcase(:searchToken) || '%') and 
+                    campaign.status_code &lt;&gt; 'sap.ino.config.CAMP_DRAFT'; 
+
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="ID" order="1">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="SHORT_NAME" order="2">
+        <descriptions defaultDescription="SHORT_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="SHORT_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

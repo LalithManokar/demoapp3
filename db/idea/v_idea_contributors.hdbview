@@ -1,0 +1,57 @@
+schema = "SAP_INO";
+ query = "select distinct
+             case 
+        when settings.IS_ANONYMOUS = 'true' then  cast(0 as INTEGER) 
+        else object_identity_role.id
+        end as id, 
+             object_identity_role.object_id as idea_id,
+             case 
+        when settings.IS_ANONYMOUS = 'true' then  cast(0 as INTEGER) 
+        else object_identity_role.identity_id
+        end as identity_id, 
+            case 
+        when settings.IS_ANONYMOUS = 'true' then  cast('Anonymity' as VARCHAR) 
+        else identity.name
+        end as name, 
+         case 
+        when settings.IS_ANONYMOUS = 'true' then  cast('Anonymity' as VARCHAR) 
+        else identity.first_name
+        end as first_name, 
+          case 
+        when settings.IS_ANONYMOUS = 'true' then  cast('Anonymity' as VARCHAR) 
+        else identity.last_name
+        end as last_name, 
+          case 
+        when settings.IS_ANONYMOUS = 'true' then  cast('Anonymity' as VARCHAR) 
+        else identity.user_name
+        end as user_name, 
+             'IDEA_CONTRIBUTOR' as role_code,
+          case 
+        when settings.IS_ANONYMOUS = 'true' then  cast('Anonymity' as VARCHAR) 
+        else identity.email
+        end as email, 
+                case 
+        when settings.IS_ANONYMOUS = 'true' then  cast(0 as INTEGER) 
+        else identity_settings.image_id
+        end as image_id, 
+             identity.type_code,
+            case 
+        when settings.IS_ANONYMOUS = 'true' then  cast('Anonymity' as VARCHAR) 
+        end as organization, 
+             cast(OCCURRENCES_REGEXPR('^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w+)+)$' in identity.email) as TINYINT) as is_valid_email
+         from \"sap.ino.db.iam::t_object_identity_role\" as object_identity_role
+         inner join \"sap.ino.db.iam::t_identity\" as identity 
+             on identity.id = object_identity_role.identity_id 
+                 and object_identity_role.role_code = 'IDEA_CONTRIBUTOR'
+                 and object_identity_role.object_type_code = 'IDEA'
+         left outer join \"sap.ino.db.iam::v_identity_settings\" as identity_settings
+             on identity_settings.identity_id = object_identity_role.identity_id
+         left outer join \"sap.ino.db.idea::v_idea_settings_test\" as settings 
+         on settings.idea_id = object_identity_role.object_id 
+         with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity",
+                    "sap.ino.db.iam::t_object_identity_role"];
+                    
+depends_on_view = ["sap.ino.db.iam::v_identity_settings",
+                    "sap.ino.db.idea::v_idea_settings_test"];

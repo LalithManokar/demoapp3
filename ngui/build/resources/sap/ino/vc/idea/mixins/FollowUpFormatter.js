@@ -1,0 +1,4 @@
+/*!
+ * SAP Innovation Management (c) Copyright 2014 SAP AG. All rights reserved.
+ */
+sap.ui.define(["sap/ino/commons/formatters/ObjectFormatter"],function(O){"use strict";var f=function(){};f.followUpRelativeDateText=function(k){if(k){return O.text.apply(this,["IDEA_OBJECT_FLD_FOLLOW_UP_ROW_"+k]);}};f.minDate=function(){var c=new Date();return new Date(c.getFullYear(),c.getMonth(),c.getDate());};f.followUpDateHeader=function(d){if(d){return O.toDate(d);}return O.text.apply(this,["IDEA_OBJECT_TIT_NO_FOLLOW_UP_DATE"]);};f.followUpDateHeaderColor=function(d){if(!d){return"false";}var c=new Date();var n=new Date(c.getFullYear(),c.getMonth(),c.getDate());if(n>d){return"true";}return"false";};f.followUpOkButtonEnabled=function(){var F=this.getView()&&this.getView()._oFollowUpDialog||this._oFollowUpMixinFollowUpDialog;if(F&&this.hasMessages){return!this.hasMessages(F);}return true;};return f;});

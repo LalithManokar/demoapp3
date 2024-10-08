@@ -1,0 +1,9 @@
+schema = "SAP_INO_EXT";
+query = "
+select 
+criterion_value.* 
+from \"sap.ino.db.evaluation::v_criterion_value_overall\" as criterion_value 
+where criterion_value.evaluation_id in (select evaluation_id from \"sap.ino.db.evaluation::v_auth_evaluation_read\" )
+with read only";
+depends_on_view = [ "sap.ino.db.evaluation::v_criterion_value_overall",
+                    "sap.ino.db.evaluation::v_auth_evaluation_read"];

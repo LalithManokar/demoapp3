@@ -1,0 +1,16 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:ino="sap.ino.controls"
+	xmlns:l="sap.ui.layout">
+	<ino:WrappingList 
+        id="objectlist"
+        growing="true"
+        growingThreshold="{path : 'device>/system', formatter: '.formatter.listThreshold'}"
+        growingScrollToLoad="true"
+        wrapping="false"
+        updateStarted="onObjectListUpdateStarted"
+        updateFinished="onObjectListUpdateFinished"
+        visible="{= !!${view>/List/IS_IDEA_LIST}}">
+    </ino:WrappingList>
+</core:FragmentDefinition>

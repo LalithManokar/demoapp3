@@ -1,0 +1,17 @@
+schema = "SAP_INO";
+query = "
+    select distinct attachment.id, role_type.code as role_type_code  
+	from \"sap.ino.db.attachment::t_attachment\" as attachment, 
+    	 \"sap.ino.db.attachment::t_attachment_role_type\" as role_type
+	inner join \"sap.ino.db.attachment::t_attachment_media_type_restriction\" as media_type_restriction
+		on role_type.code = media_type_restriction.code
+    where not exists 
+    	(select code from \"sap.ino.db.attachment::t_attachment_media_type_restriction\" as media_type_restriction 
+    		where lcase(attachment.media_type) like concat(lcase(media_type_restriction.media_type), '%'))
+    		
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment",
+					"sap.ino.db.attachment::t_attachment_role_type", 
+					"sap.ino.db.attachment::t_attachment_media_type_restriction"];

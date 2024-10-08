@@ -1,0 +1,8 @@
+{
+  "undef" : true,
+  "predef": ["jQuery"],
+  "noempty" : true,
+  "laxbreak" : true,
+  "esnext" : true,
+  "multistr": true
+}

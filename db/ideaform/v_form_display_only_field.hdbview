@@ -1,0 +1,23 @@
+schema = "SAP_INO";
+query = "
+    select 
+        field_value.*,
+        field.*,
+        value_list.default_text      as value_list_default_text,
+        value_list.default_long_text as value_list_default_long_text,
+        form.IS_ADMIN_FORM,
+        form.DEFAULT_TEXT as FORM_DEFAULT_TEXT,
+        idea.CAMPAIGN_ID
+    from \"sap.ino.db.ideaform::t_field_value\" as field_value
+        inner join \"sap.ino.db.ideaform::t_field\" as field 
+            on field.code = field_value.field_code
+        inner join \"sap.ino.db.ideaform::t_form\" as form
+            on field.FORM_CODE = form.CODE
+        inner join \"sap.ino.db.idea::t_idea\" as idea
+           on idea.id = field_value.idea_id
+        left outer join \"sap.ino.db.basis::t_value_option_list\" as value_list
+            on value_list.code = field.value_option_list_code
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.ideaform::t_field_value", "sap.ino.db.ideaform::t_field", "sap.ino.db.basis::t_value_option_list","sap.ino.db.ideaform::t_form","sap.ino.db.idea::t_idea"];

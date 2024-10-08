@@ -1,0 +1,1 @@
+sap.ui.define([],function(){"use strict";var c=function(){};c.formatterMoveRewardMessage=function(o,n){return this.getText("IDEA_OBJECT_MSG_MOVE_REWARDS",[o,n]);};c.formatterMoveSelfEvluMessage=function(o,n){return this.getText("IDEA_OBJECT_MSG_MOVE_EVALUATION_AUTHOR",[o,n]);};return c;});

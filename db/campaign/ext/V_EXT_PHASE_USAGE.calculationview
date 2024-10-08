@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_EXT_PHASE_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="SCRIPT_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="Phase (Staging Object) and their usage in campaigns "/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="VARCHAR" id="PHASE_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_STATUS_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_COUNT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition> 
+ /********* Begin Procedure Script ************/ 
+ BEGIN 
+     var_out = 
+        select 
+          phase_usage.phase_code,
+          phase_usage.campaign_id,
+          phase_usage.campaign_name,
+          phase_usage.campaign_status_code,
+          phase_usage.campaign_count
+        from &quot;sap.ino.db.campaign::v_phase_usage&quot; 
+        as phase_usage; 
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="PHASE_CODE" order="1">
+        <descriptions defaultDescription="Phase"/>
+        <keyMapping columnObjectName="Script_View" columnName="PHASE_CODE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="2" descriptionColumnName="CAMPAIGN_NAME">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="3">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_STATUS_CODE" order="4">
+        <descriptions defaultDescription="Campaign Status"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_STATUS_CODE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="CAMPAIGN_COUNT" hidden="false" order="5" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Campaigns"/>
+        <measureMapping columnObjectName="Script_View" columnName="CAMPAIGN_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

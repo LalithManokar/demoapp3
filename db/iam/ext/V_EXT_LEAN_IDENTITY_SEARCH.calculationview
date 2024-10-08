@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_LEAN_IDENTITY_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="V_SEARCH_IDENTITY"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Free text search token"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="100"/>
+        <viewAttribute id="USER_NAME" datatype="VARCHAR" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="TYPE_CODE" length="20"/>
+        <viewAttribute datatype="VARCHAR" id="SOURCE_TYPE_CODE" length="20"/>
+        <viewAttribute datatype="INTEGER" id="IMAGE_ID"/>
+        <viewAttribute datatype="INTEGER" id="IS_EXTERNAL"/>
+        <viewAttribute id="IS_VALID_EMAIL" datatype="TINYINT"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CREATED_BY_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY_NAME" length="100"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CHANGED_BY_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY_NAME" length="100"/></viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>begin
+    search_result =
+        select
+            search_score,
+            id
+        from
+            &quot;sap.ino.db.iam::f_identity_search&quot;(:searchToken);
+ 
+    var_out =
+        select top 10
+            sr.search_score,
+            sr.id,
+            identity.name,
+            identity.user_name,
+            identity.type_code,
+            identity.source_type_code,
+            identity.identity_image_id as image_id,
+            identity.is_external,
+            identity.is_valid_email,              
+			identity.created_at,
+        	identity.created_by_id,
+        	identity.created_by_name,
+        	identity.changed_at,
+	        identity.changed_by_id,
+        	identity.changed_by_name
+        from 
+            &quot;sap.ino.db.iam::v_identity_full&quot; as identity
+        inner join
+            :search_result as sr
+        on 
+            identity.id = sr.id;
+
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="ID" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="3">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="USER_NAME" order="4">
+        <keyMapping columnObjectName="Script_View" columnName="USER_NAME"/>
+      </attribute>
+      <attribute id="TYPE_CODE" order="5">
+        <descriptions defaultDescription="TYPE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="TYPE_CODE"/>
+      </attribute>
+      <attribute id="SOURCE_TYPE_CODE" order="6">
+        <descriptions defaultDescription="SOURCE_TYPE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="SOURCE_TYPE_CODE"/>
+      </attribute>
+      <attribute id="IS_VALID_EMAIL" order="9">
+        <keyMapping columnObjectName="Script_View" columnName="IS_VALID_EMAIL"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="10">
+        <descriptions defaultDescription="CREATED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CREATED_BY_ID" order="11">
+        <descriptions defaultDescription="CREATED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="CREATED_BY_NAME" order="12">
+        <descriptions defaultDescription="CREATED_BY_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_NAME"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="13">
+        <descriptions defaultDescription="CHANGED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="14">
+        <descriptions defaultDescription="CHANGED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_BY_NAME" order="15">
+        <descriptions defaultDescription="CHANGED_BY_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_NAME"/>
+      </attribute></attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="SEARCH_SCORE" order="1" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="SEARCH_SCORE"/>
+        <measureMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </measure>
+      <measure id="IMAGE_ID" order="7" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="IMAGE_ID"/>
+        <measureMapping columnObjectName="Script_View" columnName="IMAGE_ID"/>
+      </measure>
+      <measure id="IS_EXTERNAL" order="8" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="IS_EXTERNAL"/>
+        <measureMapping columnObjectName="Script_View" columnName="IS_EXTERNAL"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

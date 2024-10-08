@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc">
+    <Dialog 
+        contentWidth="720px"
+        contentHeight="500px"
+        verticalScrolling="true"
+        class="sapUiResponsiveContentPadding"
+        title="{i18n>EXPERT_FINDER_TITLE}">
+        <content>
+            <mvc:XMLView viewName="sap.ino.vc.evaluation.Experts" />
+        </content>
+		<buttons>
+			<Button text="{i18n>BTN_OK}" type="Accept" press="onExpertFinderDialogOK" />
+			<Button text="{i18n>BTN_CANCEL}" press="onExpertFinderDialogCancel" />
+		</buttons>
+    </Dialog>
+</core:FragmentDefinition>

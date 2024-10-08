@@ -1,0 +1,41 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Idea History";
+table.columns = [
+    {name = "HISTORY_DB_EVENT";  sqlType = VARCHAR; length = 8;          nullable = false;                     comment = "Database event: CREATED, UPDATED, DELETED";},
+    {name = "HISTORY_BIZ_EVENT"; sqlType = VARCHAR; length = 60;         nullable = false;                     comment = "Business event: IDEA_CREATED, IDEA_SUBMITTED ...";},
+    {name = "HISTORY_AT";        sqlType = TIMESTAMP;                    nullable = false;                     comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID";  sqlType = INTEGER;                      nullable = false;                     comment = "Actor who did the changes";},
+    {name = "ID";                sqlType = INTEGER;                      nullable = false;                     comment = "technical user identifier - must never be exposed to end users";},
+    {name = "CREATED_AT";        sqlType = TIMESTAMP;                    nullable = false;                     comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID";     sqlType = INTEGER;                      nullable = false;                     comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+    {name = "CHANGED_AT";        sqlType = TIMESTAMP;                    nullable = false;                     comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID";     sqlType = INTEGER;                      nullable = false;                     comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";},
+    {name = "TYPE_CODE";         sqlType = VARCHAR; length = 20;         nullable = false;                     comment = "Either GROUP or USER";},
+    {name = "NAME";              sqlType = NVARCHAR; length = 100;       nullable = true; unique = true;       comment = "Group name";},
+    {name = "FIRST_NAME";        sqlType = NVARCHAR; length = 100;       nullable = true;                      comment = "First name of user";},
+    {name = "LAST_NAME";         sqlType = NVARCHAR; length = 100;       nullable = true;                      comment = "Last name of user";},
+    {name = "EMAIL";             sqlType = NVARCHAR; length = 256;       nullable = true;                      comment = "E-Mail address of user";},
+    {name = "USER_NAME";         sqlType = NVARCHAR; length = 256;       nullable = true; unique = true;       comment = "DB User Name like in tables USERS";},
+    {name = "IS_EXTERNAL";       sqlType = TINYINT;  defaultValue = "0"; nullable = true;                      comment = "The identity is company external";},
+    {name = "ERASED";            sqlType = TINYINT;  defaultValue = "0"; nullable = true;                      comment = "The identity is logically deleted";},
+    {name = "PHONE";             sqlType = NVARCHAR; length = 256;       nullable = true;                      comment = "Phone number";},
+    {name = "MOBILE";            sqlType = NVARCHAR; length = 256;       nullable = true;                      comment = "Mobile phone number";},
+    {name = "COST_CENTER";       sqlType = NVARCHAR; length = 100;       nullable = true;                      comment = "Cost centerr";},
+    {name = "ORGANIZATION";      sqlType = NVARCHAR; length = 100;       nullable = true;                      comment = "Organisation";},
+    {name = "OFFICE";            sqlType = NVARCHAR; length = 100;       nullable = true;                      comment = "Office";},
+    {name = "DESCRIPTION";       sqlType = NVARCHAR; length = 256;       nullable = true;                      comment = "Description of Group";},
+    {name = "STAGED";            sqlType = TINYINT;                      nullable = false; defaultValue = "0"; comment = "Staged after upload, e.g. community role still missing";},
+    {name = "SOURCE_TYPE_CODE";  sqlType = VARCHAR;  length = 20;        nullable = true;                      comment = "Source the identity comes from";},
+    {name = "COMPANY";           sqlType = NVARCHAR; length = 100;       nullable = true;                      comment = "Company";},
+    {name = "STREET";            sqlType = NVARCHAR; length = 100;       nullable = true;                      comment = "Street";},
+    {name = "CITY";              sqlType = NVARCHAR; length = 100;       nullable = true;                      comment = "City";},
+    {name = "COUNTRY";           sqlType = NVARCHAR; length = 100;       nullable = true;                      comment = "Country";},
+    {name = "ZIP_CODE";          sqlType = NVARCHAR; length = 100;       nullable = true;                      comment = "Zip Code";},
+    {name = "VALIDATION_TO";     sqlType = TIMESTAMP;                    nullable = true; defaultValue = "9999-12-31"; comment = "Validation to";},
+    {name = "LAST_LOGIN";        sqlType = TIMESTAMP;                    nullable = true;                      comment = "Last login time";}
+];
+
+table.indexes = [
+    {name="LOGKEY_IDENTITY_H"; unique = false; indexColumns = ["ID","HISTORY_AT"];}
+];

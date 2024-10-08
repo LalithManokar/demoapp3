@@ -1,0 +1,15 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Latest comment viewer History";
+table.columns = [
+	{name = "HISTORY_DB_EVENT"; sqlType = VARCHAR; length = 8; nullable = false;comment = "Database event: CREATED, UPDATED, DELETED";},
+	{name = "HISTORY_BIZ_EVENT"; sqlType = VARCHAR; length = 600; nullable = false;comment = "Business event: IDEA_LATEST_VIEWER_CREATED, IDEA_LATEST_VIEWER_UPDATED, IDEA_LATEST_VIEWER_DELETED...";},
+    {name = "HISTORY_AT"; sqlType = TIMESTAMP; nullable = false;comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID"; sqlType = INTEGER; nullable = false;comment = "Actor who did the changes";},
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Primary key";},
+	{name = "IDENTITY_ID"; sqlType = INTEGER; nullable = false; comment = "Viewer's id";},
+	{name = "OBJECT_ID"; sqlType = INTEGER; nullable = false; comment = "Foreign key to latest idea table";}
+];
+table.indexes = [
+	{name="LOGKEY_IDEA_LATEST_COMMENT_VIEWER_H"; unique = false; indexColumns = ["ID","HISTORY_AT"];}
+];

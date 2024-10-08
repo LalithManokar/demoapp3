@@ -1,0 +1,6 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.temporary = true;
+table.description = "Input table for List of IDs"; table.columns = [
+    {name = "ID"; sqlType = INTEGER;}
+];

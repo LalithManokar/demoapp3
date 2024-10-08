@@ -1,0 +1,12 @@
+PROCEDURE "SAP_INO"."sap.ino.db.basis::p_clean_orphan_data"()
+LANGUAGE SQLSCRIPT
+SQL SECURITY INVOKER
+DEFAULT SCHEMA SAP_INO 
+AS
+BEGIN
+    -- delete follow data
+    DELETE FROM "sap.ino.db.follow::t_follow"
+    WHERE (CREATED_BY_ID IN (SELECT ID
+    		FROM "sap.ino.db.iam::t_identity"
+    		WHERE ERASED = 1));
+END;

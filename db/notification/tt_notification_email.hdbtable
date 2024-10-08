@@ -1,0 +1,26 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE;
+table.temporary = true;
+table.description = "Input table for DELETE procedure of notification status";
+table.columns = [
+    {name = "ID";                sqlType = INTEGER;                 nullable = false; comment = "Human readable identifier";},
+    {name = "NOTIFICATION_ID";   sqlType = INTEGER;                 nullable = false; comment = "Identifier of referenced notification";},
+    {name = "USER_ID";           sqlType = INTEGER;                 nullable = false; comment = "Receipient (user) of Notification. Foreign key to t_identity.ID";},
+    {name = "ROLE_CODE";         sqlType = VARCHAR;  length = 20;   nullable = false; comment = "Role the user has for this notification";},
+    {name = "STATUS_CODE";       sqlType = VARCHAR;  length = 16;   nullable = false; comment = "Status of user-notification-interaction. Currently either READ, UNREAD";},
+    {name = "CAMPAIGN_ID";       sqlType = INTEGER;                 nullable = true;  comment = "Campaign ID that is used to derive the template";},
+    {name = "EVENT_AT";          sqlType = TIMESTAMP;               nullable = false; comment = "Timestamp when event occurred";},
+    {name = "NOTIFICATION_CODE"; sqlType = VARCHAR;  length = 60;   nullable = false; comment = "Code of a notification e.g. a business event: IDEA_CREATED, COACH_ASSIGNED...";},
+    {name = "OBJECT_TYPE_CODE";  sqlType = VARCHAR;  length = 20;   nullable = false; comment = "Object type. Currently either IDEA, CAMPAIGN, SYSTEM, ATTACHMENT, COMMENT";},
+    {name = "OBJECT_ID";         sqlType = INTEGER;                 nullable = false; comment = "Foreign key e.g. to t_idea.ID and t_campaign.ID";},
+    {name = "OBJECT_TEXT";       sqlType = NVARCHAR; length = 100;  nullable = false; comment = "Textual description of the object";},
+    {name = "SUB_TEXT";          sqlType = NVARCHAR; length = 100;  nullable = true;  comment = "Sub text of the notification";},
+    {name = "RESPONSE";          sqlType = NVARCHAR; length = 5000; nullable = true;  comment = "Response that will be sent";},
+    {name = "ACTOR_ID";          sqlType = INTEGER;                 nullable = false; comment = "Id of actor who triggered the biz event";},
+    {name = "OWNER_ID";          sqlType = INTEGER;                 nullable = false; comment = "Id of owner of the object";},
+    {name = "INVOLVED_ID";       sqlType = INTEGER;                 nullable = false; comment = "Id of identity which was involved by the biz event";},
+    {name = "NAME";              sqlType = NVARCHAR; length = 100;  nullable = false; comment = "Display name";},
+    {name = "EMAIL";             sqlType = NVARCHAR; length = 256;  nullable = false; comment = "E-Mail address of user";},
+    {name = "IS_EXTERNAL";       sqlType = TINYINT;                 nullable = true;  comment = "The identity is company external";},
+    {name = "LOCALE";            sqlType = VARCHAR;  length = 5000; nullable = true;  comment = "Communication Language of the user";}
+];

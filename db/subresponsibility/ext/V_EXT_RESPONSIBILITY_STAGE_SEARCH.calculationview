@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_RESPONSIBILITY_STAGE_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="Sub-responsibility list search"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="free text search token"/>
+      <variableProperties datatype="VARCHAR" defaultValue="undefined" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="PACKAGE_ID" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="CODE" length="500"/>
+        <viewAttribute datatype="NVARCHAR" id="DEFAULT_TEXT" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="DEFAULT_LONG_TEXT" length="500"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CREATED_BY_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY" length="100"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CHANGED_BY_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY" length="100"/>
+        <viewAttribute datatype="TINYINT" id="IS_MANAGER_PUBLIC"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+    lt_search_result = 
+        select distinct 
+            package_id, 
+            code, 
+            cast (1 as double) as search_score 
+        from &quot;sap.ino.db.subresponsibility::v_responsibility_stage&quot;
+        where length(:searchToken) = 0 
+    union all
+        select distinct 
+            package_id, 
+            code, 
+            score() as search_score 
+        from &quot;sap.ino.db.subresponsibility::v_responsibility_stage&quot;
+        where length(:searchToken) > 0 and 
+              (contains(code,              :searchToken,                                  fuzzy(0.8), weight(1.0)) or
+               contains(default_text,      :searchToken,                                  fuzzy(0.8), weight(1.0)) or
+               contains(default_long_text, :searchToken,                                  fuzzy(0.8), weight(0.5)) or
+               contains(code,              CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+               contains(default_text,      CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+               contains(default_long_text, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(0.5)));
+
+    var_out = select
+                 search.search_score,
+                 responsibility.id,
+                 responsibility.package_id,
+                 responsibility.code,
+                 responsibility.default_text,
+                 responsibility.default_long_text,
+                 responsibility.created_at,
+                 responsibility.created_by_id,
+                 responsibility.created_by,
+                 responsibility.changed_at,
+                 responsibility.changed_by_id,
+                 responsibility.changed_by,
+                 responsibility.is_manager_public
+              from &quot;sap.ino.db.subresponsibility::v_responsibility_stage&quot; as responsibility 
+                      inner join :lt_search_result as search
+                          on responsibility.package_id = search.package_id and 
+                             responsibility.code       = search.code; 
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions defaultDescription="SEARCH_SCORE"/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2" descriptionColumnName="CODE">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="PACKAGE_ID" order="3">
+        <descriptions defaultDescription="PACKAGE_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="PACKAGE_ID"/>
+      </attribute>
+      <attribute id="CODE" order="4">
+        <descriptions defaultDescription="CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="CODE"/>
+      </attribute>
+      <attribute id="DEFAULT_TEXT" order="5">
+        <descriptions defaultDescription="DEFAULT_TEXT"/>
+        <keyMapping columnObjectName="Script_View" columnName="DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="DEFAULT_LONG_TEXT" order="6">
+        <descriptions defaultDescription="DEFAULT_LONG_TEXT"/>
+        <keyMapping columnObjectName="Script_View" columnName="DEFAULT_LONG_TEXT"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="7">
+        <descriptions defaultDescription="CREATED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CREATED_BY_ID" order="8">
+        <descriptions defaultDescription="CRATED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="CREATED_BY" order="9">
+        <descriptions defaultDescription="CREATED_BY"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="10">
+        <descriptions defaultDescription="CHANGED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="11">
+        <descriptions defaultDescription="CHANGED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_BY" order="12">
+        <descriptions defaultDescription="CHANGED_BY"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY"/>
+      </attribute>
+      <attribute id="IS_MANAGER_PUBLIC" order="13">
+        <descriptions defaultDescription="Indicates whether SAP Sub responsibility can been edited by other people"/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_MANAGER_PUBLIC"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

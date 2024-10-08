@@ -1,0 +1,12 @@
+schema = "SAP_INO";
+query = "
+
+select object_role.* 
+from \"sap.ino.db.iam::v_object_identity_role_transitive\" as object_role
+inner join \"sap.ino.db.iam::v_auth_session_user\" as suser 
+    on suser.id = object_role.identity_id
+
+";
+
+depends_on_view = ["sap.ino.db.iam::v_object_identity_role_transitive",
+                   "sap.ino.db.iam::v_auth_session_user"];

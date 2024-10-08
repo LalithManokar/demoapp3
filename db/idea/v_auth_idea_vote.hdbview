@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "select id ,1 as can_vote from\"sap.ino.db.campaign::t_campaign\"
+         where id not in 
+             (select object_id from\"sap.ino.db.iam::v_auth_object_identity_limitation_action\" as limitation
+             where limitation.object_type_code = 'CAMPAIGN' and limitation.action_code = 'IDEA_VOTE')
+        union all
+        select distinct object_id as id ,1 as can_vote from\"sap.ino.db.iam::v_auth_object_identity_limitation_action\" as limitation
+              where limitation.object_type_code = 'CAMPAIGN' and limitation.action_code = 'IDEA_VOTE' and limitation.disabled = 0";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign"];
+
+depends_on_view = [ 
+                    "sap.ino.db.iam::v_auth_object_identity_limitation_action"];

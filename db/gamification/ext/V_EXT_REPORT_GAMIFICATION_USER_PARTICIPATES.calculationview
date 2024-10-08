@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_REPORT_GAMIFICATION_USER_PARTICIPATES" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_REPORT_GAMIFICATION_DETAIL"/>
+  <metadata changedAt="2020-10-14 15:58:17.787"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchLanguage" parameter="true">
+      <descriptions defaultDescription="searchLanguage"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="10" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="IDENTITY_ID"/>
+        <viewAttribute datatype="INTEGER" id="DIMENSION_ID"/>
+        <viewAttribute datatype="DECIMAL" id="CURRENT_VALUE" length="34"/>
+        <viewAttribute datatype="NVARCHAR" id="DIMENSION_NAME" length="128"/>
+        <viewAttribute datatype="VARCHAR" id="DIMENSION_TECH_NAME" length="128"/>
+        <viewAttribute datatype="NVARCHAR" id="DIMENSION_UNIT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="UNIT_CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="SCOPE" length="16"/>
+        <viewAttribute datatype="TINYINT" id="STATUS"/>
+        <viewAttribute datatype="TINYINT" id="REDEEM"/>
+        <viewAttribute datatype="NVARCHAR" id="DESCRIPTION" length="512"/>
+        <viewAttribute datatype="NVARCHAR" id="USER_NAME" length="256"/>
+        <viewAttribute datatype="NVARCHAR" id="STATUS_TEXT" length="4000"/>
+        <viewAttribute datatype="NVARCHAR" id="REDEEM_TEXT" length="4000"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="EMAIL" length="256"/>
+      
+        <viewAttribute id="BADGE_NAME" datatype="NVARCHAR" length="128"/>
+      
+        <viewAttribute id="CONSUMED_VALUE" datatype="INTEGER"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchLanguage</localVariable>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+    
+    lt_badge = select IDENTITY_ID, DIMENSION_ID,NAME as BADGE_NAME,CONCAT(IDENTITY_ID,dimension_id) as combine_id from (
+        select *, ROW_NUMBER() over(partition by IDENTITY_ID,dimension_id order by badge_value desc) RANK from
+        (
+         select A.current_value,A.IDENTITY_ID,B.DIMENSION_ID,B.BADGE_VALUE,B.NAME
+         from &quot;sap.ino.db.gamification.ext::v_ext_report_user_participates&quot; as A
+        inner join &quot;sap.ino.db.gamification::v_dimension_badge&quot;  as B 
+        on A.DIMENSION_ID = B.DIMENSION_ID  
+        where current_value &gt;= BADGE_VALUE ) ) where rank = 1; 
+
+
+    -- lt_points_less_than_badge = select IDENTITY_ID, DIMENSION_ID,NAME as BADGE_NAME,CONCAT(IDENTITY_ID,dimension_id) as combine_id from (
+    --     select *, ROW_NUMBER() over(partition by IDENTITY_ID,dimension_id order by badge_value desc) RANK from
+    --     (
+    --      select A.current_value,A.IDENTITY_ID,B.DIMENSION_ID,B.BADGE_VALUE,B.NAME
+    --      from &quot;sap.ino.db.gamification.ext::v_ext_report_user_participates&quot; as A
+    --     inner join &quot;sap.ino.db.gamification::v_dimension_badge&quot;  as B 
+    --     on A.DIMENSION_ID = B.DIMENSION_ID  
+    --     where current_value &gt; BADGE_VALUE ) ) where rank = 1 and CONCAT(IDENTITY_ID,dimension_id) not in (select combine_id from :lt_points_less_than_badge);         
+    -- lt_badge= select * from :lt_points_less_than_badge 
+    --           union 
+    --           select * from :lt_points_larger_than_badge;
+
+    lt_gamification_transaction = select identity_id, dimension_id, IFNULL(sum(consumed_value),0) as consumed_value 
+     from &quot;sap.ino.db.gamification::t_gamification_transaction&quot; group by identity_id,dimension_id;
+
+   var_out = select  
+    user_report.identity_id,  
+    user_report.dimension_id, 
+    case when gam_transaction.consumed_value is null
+    then user_report.current_value else user_report.current_value - gam_transaction.consumed_value
+    end as current_value,
+    user_report.dimension_name,
+    user_report.dimension_tech_name,
+    user_report.dimension_unit,
+    user_report.unit_code,
+    user_report.scope,
+    user_report.status,
+    user_report.redeem,
+    user_report.description,
+    user_report.user_name,
+    CODE_TEXT_STATUS.content as status_text,
+    CODE_TEXT_REDEEM.content as redeem_text,
+    user_report.name,
+    user_report.email,
+    badge.BADGE_NAME,
+    IFNULL(gam_transaction.consumed_value,0) as consumed_value
+         from
+           &quot;sap.ino.db.gamification.ext::v_ext_report_user_participates&quot; as user_report
+        left outer join &quot;_SYS_REPO&quot;.&quot;ACTIVE_CONTENT_TEXT_CONTENT&quot; AS CODE_TEXT_STATUS
+        ON CODE_TEXT_STATUS.TEXT_ID = CONCAT(user_report.DIMENSION_ACTIVE_STATUS,'_TEXT') and CODE_TEXT_STATUS.LANG = :searchLanguage
+        and CODE_TEXT_STATUS.PACKAGE_ID = 'sap.ino.text' and CODE_TEXT_STATUS.object_name = 'nguii18n' 
+        left outer join &quot;_SYS_REPO&quot;.&quot;ACTIVE_CONTENT_TEXT_CONTENT&quot; AS CODE_TEXT_REDEEM
+        ON CODE_TEXT_REDEEM.TEXT_ID = CONCAT(user_report.DIMENSION_REDEEM_STATUS,'_TEXT') and CODE_TEXT_REDEEM.LANG = :searchLanguage
+        and CODE_TEXT_REDEEM.PACKAGE_ID = 'sap.ino.text' and CODE_TEXT_REDEEM.object_name = 'nguii18n'
+        left outer join :lt_badge as badge on badge.identity_id = user_report.identity_id and badge.dimension_id = user_report.dimension_id
+        left outer join :lt_gamification_transaction as gam_transaction 
+        on gam_transaction.identity_id = user_report.identity_id and user_report.dimension_id = gam_transaction.dimension_id
+        order by user_report.dimension_name asc, user_report.name asc; 
+
+
+
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="IDENTITY_ID" order="1">
+        <descriptions defaultDescription="IDENTITY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="DIMENSION_ID" order="2">
+        <descriptions defaultDescription="DIMENSION_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="DIMENSION_ID"/>
+      </attribute>
+      <attribute id="CURRENT_VALUE" order="3">
+        <descriptions defaultDescription="CURRENT_VALUE"/>
+        <keyMapping columnObjectName="Script_View" columnName="CURRENT_VALUE"/>
+      </attribute>
+      <attribute id="DIMENSION_NAME" order="4">
+        <descriptions defaultDescription="DIMENSION_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="DIMENSION_NAME"/>
+      </attribute>
+      <attribute id="DIMENSION_TECH_NAME" order="5">
+        <descriptions defaultDescription="DIMENSION_TECH_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="DIMENSION_TECH_NAME"/>
+      </attribute>
+      <attribute id="DIMENSION_UNIT" order="6">
+        <descriptions defaultDescription="DIMENSION_UNIT"/>
+        <keyMapping columnObjectName="Script_View" columnName="DIMENSION_UNIT"/>
+      </attribute>
+      <attribute id="UNIT_CODE" order="7">
+        <descriptions defaultDescription="UNIT_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="UNIT_CODE"/>
+      </attribute>
+      <attribute id="SCOPE" order="8">
+        <descriptions defaultDescription="SCOPE"/>
+        <keyMapping columnObjectName="Script_View" columnName="SCOPE"/>
+      </attribute>
+      <attribute id="STATUS" order="9">
+        <descriptions defaultDescription="STATUS"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS"/>
+      </attribute>
+      <attribute id="REDEEM" order="10">
+        <descriptions defaultDescription="REDEEM"/>
+        <keyMapping columnObjectName="Script_View" columnName="REDEEM"/>
+      </attribute>
+      <attribute id="DESCRIPTION" order="11">
+        <descriptions defaultDescription="DESCRIPTION"/>
+        <keyMapping columnObjectName="Script_View" columnName="DESCRIPTION"/>
+      </attribute>
+      <attribute id="USER_NAME" order="12">
+        <descriptions defaultDescription="USER_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="USER_NAME"/>
+      </attribute>
+      <attribute id="STATUS_TEXT" order="13">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_TEXT"/>
+      </attribute>
+      <attribute id="REDEEM_TEXT" order="14">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="REDEEM_TEXT"/>
+      </attribute>
+      <attribute id="NAME" order="15">
+        <descriptions defaultDescription="NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="EMAIL" order="16">
+        <descriptions defaultDescription="EMAIL"/>
+        <keyMapping columnObjectName="Script_View" columnName="EMAIL"/>
+      </attribute>
+    
+      <attribute id="BADGE_NAME" order="17">
+        <descriptions defaultDescription="BADGE_NAME"/>
+    
+        <keyMapping columnObjectName="Script_View" columnName="BADGE_NAME"/>
+    
+      </attribute>
+    
+      <attribute id="CONSUMED_VALUE" order="18">
+        <descriptions defaultDescription="CONSUMED_VALUE"/>
+    
+        <keyMapping columnObjectName="Script_View" columnName="CONSUMED_VALUE"/>
+    
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

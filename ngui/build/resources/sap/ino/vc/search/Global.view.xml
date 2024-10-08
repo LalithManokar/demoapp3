@@ -1,0 +1,19 @@
+<mvc:View
+	controllerName="sap.ino.vc.search.Global"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout">
+    <Page 
+        id="searchresults"
+        enableScrolling="false"
+        title="{i18n>MENU_MIT_SEARCH_RESULTS}"
+        class="sapInoGlobalSearchPage">
+        <customHeader>
+            <core:Fragment fragmentName="sap.ino.vc.search.fragments.ObjectListToolbar" type="XML" />
+        </customHeader>
+        <content>
+            <core:Fragment fragmentName="sap.ino.vc.search.fragments.ObjectList" type="XML" />
+        </content>
+    </Page>
+</mvc:View>

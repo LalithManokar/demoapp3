@@ -1,0 +1,24 @@
+schema = "SAP_INO";
+query = "
+	select  assignment.ID,
+			assignment.OWNER_ID as BADGE_ID,
+			assignment.ROLE_TYPE_CODE as ROLE_TYPE_CODE,
+			assignment.FILTER_TYPE_CODE as FILTER_TYPE_CODE,
+			attachment.ID as ATTACHMENT_ID,
+			attachment.CREATED_AT,
+			attachment.CREATED_BY_ID,
+			attachment.CHANGED_AT,
+			attachment.CHANGED_BY_ID,
+			attachment.FILE_NAME,
+			attachment.FILE_SIZE,
+			attachment.MEDIA_TYPE,
+			attachment.LABEL,
+			attachment.CUSTOM_INFO,
+			attachment.FOLDER_ID
+	    from \"sap.ino.db.attachment::t_attachment\" as attachment
+	    inner join \"sap.ino.db.attachment::t_attachment_assignment\" as assignment
+	    	on assignment.attachment_id = attachment.id and assignment.owner_type_code = 'DIMENSION_BADGE'
+    with read only";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment",
+					"sap.ino.db.attachment::t_attachment_assignment"];

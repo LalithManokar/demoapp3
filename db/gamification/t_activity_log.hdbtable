@@ -1,0 +1,20 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "activity log of dimension table";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = true; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = true; comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = true; comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = true; comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";},
+    {name = "DIMENSION_ID"; sqlType = INTEGER; nullable = false; comment = "DIMENSION ID ";},
+    {name = "ACTOR_ID"; sqlType = INTEGER; nullable = false; comment = "ACTOR ID ";},
+    {name = "OBJECT_ID"; sqlType = INTEGER; nullable = false; comment = "OBJECT ID ";},
+    {name = "OBJECT_TYPE_CODE"; sqlType = VARCHAR; length=36 ;nullable = false; comment = "OBJECT TYPE CODE ";},
+	{name = "CODE"; sqlType = NVARCHAR ;length=128 ;nullable = false ; comment = "activity code";},
+	{name = "PHASE_CODE"; sqlType = NVARCHAR ;length=500 ;nullable = true;  comment = "affected phase for current activity";},
+	{name = "WITHIN_TIME"; sqlType = INTEGER; comment = "time range for activity";},
+	{name = "TIME_UNIT"; sqlType = VARCHAR ;length=16 ;nullable = true; comment = "time unit for activity";},
+	{name = "VALUE"; sqlType = DECIMAL ;nullable = false; defaultValue = "0" ; comment = "impact scrore for this dimension";}
+];
+table.primaryKey.pkcolumns = ["ID"];

@@ -1,0 +1,7 @@
+schema = "SAP_INO";
+query = "SELECT A.*, CONCAT(A.ACTION_CODE,'_TEXT') AS ACTION_CODE_TEXT
+    FROM \"sap.ino.db.newnotification::v_notification_system_setting\" as A
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.newnotification::v_notification_system_setting"];   

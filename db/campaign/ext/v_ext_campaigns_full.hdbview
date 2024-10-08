@@ -1,0 +1,18 @@
+schema = "SAP_INO_EXT";
+query = "
+         select 
+            campaign.*,
+            campaign_extension.*
+         from \"sap.ino.db.campaign::v_campaign_full\" as campaign
+         inner join \"sap.ino.db.campaign::v_auth_campaigns_and_registrable\" as auth
+             on campaign.id = auth.campaign_id
+         -- for performance reasons extension fields are joined on outermost view
+         left outer join \"sap.ino.db.basis::t_extension\" as campaign_extension
+             on campaign_extension._object_id = campaign.id and 
+                campaign_extension._object_type_code = 'CAMPAIGN'
+";
+
+depends_on_view = [ "sap.ino.db.campaign::v_campaign_full", 
+                    "sap.ino.db.campaign::v_auth_campaigns_and_registrable"];
+depends_on_table = [ "sap.ino.db.basis::t_extension" ];
+ 

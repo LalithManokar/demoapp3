@@ -1,0 +1,189 @@
+schema = "SAP_INO";
+query = "
+    -- this is a specialized view for displaying ideas in idea community list
+    -- it uses the current_user and thus may *NOT* be used in procedural
+    -- contexts 
+        select
+            idea.id,
+            idea.name,
+            anonymous_setting.ANONYMOUS_FOR,
+            idea.created_at,
+            idea.created_by_id,
+            idea.changed_at,
+            to_date(idea.changed_at) as changed_at_dt,
+            idea.submitted_at,
+            to_date(idea.submitted_at) as submitted_at_dt,
+
+       
+ 
+            idea.campaign_id as campaign_id,
+            camp.name AS campaign_name,
+            camp.short_name AS campaign_short_name,
+            campaign.color_code AS campaign_color,
+            campaign.is_black_box,
+    
+            idea.phase_code AS phase,
+            phase.sequence_no AS step,
+            campaign.phase_count AS steps,
+            idea.status_code AS status,
+            idea.status_code AS status_code,
+            all_status.color_code as status_color,
+            case when all_status.status_type is null then ''
+            else all_status.status_type
+            end as status_type,
+
+
+             
+            vote_type.type_code as vote_type_type_code,
+            vote_type.voted_by_group,
+            vote_type.max_star_no,
+            vote_type.public_vote,
+            vote_type.publish_vote,
+            vote_type.auto_follow,
+            vote_type.vote_comment_type,
+            vote_type.vote_reason_code,
+            cast (vote.score as double) as score,
+            case 
+                when vote.vote_count is null then 0
+                else vote.vote_count
+            end as vote_count,
+
+
+            vote.user_score,
+            vote.user_vote_id as vote_id,
+
+            ifnull(auth_idea_comment.can_comment,0) as participant_can_comment,
+            ifnull(auth_idea_vote.can_vote,0) as participant_can_vote,
+            ifnull(status_setting.value,0) as open_status_setting,
+            ifnull(comment_status_authorization.id,0) as comment_has_privilege,
+            ifnull(vote_status_authorization.id,0) as voting_has_privilege,
+            phase.voting_active as voting_active, 
+            phase.show_idea_in_community,
+            
+            idea.comment_count,
+            ifnull(idea_view_count.view_count, 0) as view_count,
+            
+            idea_follow.id as follow,
+            idea.is_open_for_contributors,
+            idea_volunteers.ID as volunteer_id
+
+
+            
+    from \"sap.ino.db.idea::t_idea\" as idea 
+    left outer join \"sap.ino.db.idea::v_idea_view_count\" as idea_view_count
+        on idea.id = idea_view_count.idea_id
+    left outer join \"sap.ino.db.status::t_status\" as all_status
+        on idea.status_code = all_status.code
+    left outer join \"sap.ino.db.iam::t_object_identity_role\" as identity_role_submitter
+        on idea.id = identity_role_submitter.object_id and 
+           identity_role_submitter.object_type_code = 'IDEA' and
+           identity_role_submitter.role_code = 'IDEA_SUBMITTER'
+    left outer join \"sap.ino.db.iam::t_identity\" as ident_submitter 
+        on ident_submitter.id = identity_role_submitter.identity_id
+    left outer join \"sap.ino.db.campaign::t_campaign_phase\" as phase
+        on idea.campaign_id = phase.campaign_id and 
+           idea.phase_code = phase.phase_code 
+        left outer join \"sap.ino.db.campaign::t_campaign\" as campaign 
+        on campaign.id = idea.campaign_id 
+    left outer join \"sap.ino.db.campaign::t_vote_type\" as vote_type 
+        on vote_type.code = campaign.vote_type_code
+
+    left outer join (
+        -- this is inlined due to reference to current user
+        select 
+            aggr_score.idea_id,
+            case when aggr_score.group_score <> 0 then aggr_score.group_score else aggr_score.score end as score,
+            case 
+                when aggr_score.group_score <> 0 then aggr_score.group_score
+                else aggr_score.vote_count
+            end as vote_count,
+            neg_score,
+            pos_score,
+            aggr_score.exp_score,
+            exp_vote_count,
+            exp_neg_score,
+            exp_pos_score,
+            user_score.score as user_score,
+            user_score.id as user_vote_id
+        from \"sap.ino.db.idea::t_vote_aggr_score\" as aggr_score 
+            left outer join (
+            select vote.*
+                from \"sap.ino.db.idea::t_vote\" as vote
+                    inner join \"sap.ino.db.iam::v_auth_application_user\" as user
+                        on vote.user_id = user.id
+            ) as user_score 
+            on user_score.idea_id = aggr_score.idea_id
+    ) as vote 
+        on vote.idea_id = idea.id 
+    left outer join (
+        -- this is inline (and not v_campaign_t) is used as 
+        -- joining the default language needs to happen differently
+        -- this is only beneficial when the current_user is used
+        select 
+                text_default.campaign_id,
+                coalesce(text_user.name, text_default.name) as name,
+                coalesce(text_user.short_name, text_default.short_name) as short_name,
+                coalesce(text_user.description, text_default.description) as description,
+                coalesce(text_user.lang, text_default.lang) as lang
+             from \"sap.ino.db.campaign::t_campaign_t\" as text_default
+             inner join ( 
+                    select iso_code from \"sap.ino.db.basis::v_sys_default_language\" 
+                ) as default_lang
+             on text_default.lang = default_lang.iso_code 
+             left outer join ( select * from \"sap.ino.db.campaign::t_campaign_t\" text_user 
+                                    where lang = substr(session_context('LOCALE'),0,2) ) as text_user
+                    on text_user.campaign_id = text_default.campaign_id
+    ) as camp 
+        on camp.campaign_id = idea.campaign_id
+    left outer join \"sap.ino.db.follow::v_follow\" as idea_follow
+        on idea.id = idea_follow.object_id
+        and idea_follow.object_type_code = 'IDEA'
+    left outer join \"sap.ino.db.idea::v_volunteers\" as idea_volunteers
+    	on idea.id = idea_volunteers.IDEA_ID
+    left outer join \"sap.ino.db.idea::t_ideas_setting\" as anonymous_setting
+    on anonymous_setting.idea_id = idea.id
+    left outer join \"sap.ino.db.idea::v_auth_idea_comment\" as auth_idea_comment
+    on auth_idea_comment.id = idea.campaign_id
+    left outer join \"sap.ino.db.idea::v_auth_idea_vote\" as auth_idea_vote
+    on auth_idea_vote.id = idea.campaign_id
+    left outer join \"sap.ino.db.status::v_status_authorization_setting\" as status_setting
+    on status_setting.code = idea.status_code
+    left outer join (select distinct idea_id as id from\"sap.ino.db.status::v_auth_campaign_authorization_underStatus\" as campaign_underStatus
+                where campaign_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and campaign_underStatus.VALUE = 1
+                and campaign_underStatus.action_code = 'IDEA_COMMENT' and campaign_underStatus.can_do_action = 1
+                UNION  
+              select distinct idea_id as id from\"sap.ino.db.status::v_auth_idea_authorization_underStatus\" as idea_underStatus
+                where idea_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and idea_underStatus.VALUE = 1
+                and idea_underStatus.action_code = 'IDEA_COMMENT' and idea_underStatus.can_do_action = 1) as comment_status_authorization
+    on comment_status_authorization.id = idea.id
+    left outer join (select distinct idea_id as id from\"sap.ino.db.status::v_auth_campaign_authorization_underStatus\" as campaign_underStatus
+                where campaign_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and campaign_underStatus.VALUE = 1
+                and campaign_underStatus.action_code = 'IDEA_VOTE' and campaign_underStatus.can_do_action = 1
+                UNION  
+              select distinct idea_id as id from\"sap.ino.db.status::v_auth_idea_authorization_underStatus\" as idea_underStatus
+                where idea_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and idea_underStatus.VALUE = 1
+                and idea_underStatus.action_code = 'IDEA_VOTE' and idea_underStatus.can_do_action = 1) as vote_status_authorization
+    on vote_status_authorization.id = idea.id
+";
+
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user",
+                   "sap.ino.db.basis::v_sys_default_language",
+                   "sap.ino.db.idea::v_volunteers",
+                   "sap.ino.db.follow::v_follow",
+                   "sap.ino.db.idea::v_auth_idea_comment",
+                    "sap.ino.db.idea::v_auth_idea_vote",
+                    "sap.ino.db.status::v_status_authorization_setting",
+                    "sap.ino.db.status::v_auth_campaign_authorization_underStatus",
+                    "sap.ino.db.status::v_auth_idea_authorization_underStatus"];
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_t", 
+                    "sap.ino.db.iam::t_object_identity_role",
+                    "sap.ino.db.iam::t_identity",
+                    "sap.ino.db.idea::t_vote",
+                    "sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.campaign::t_campaign_phase",
+                    "sap.ino.db.campaign::t_vote_type",
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.idea::t_vote_aggr_score",
+                    "sap.ino.db.status::t_status",
+                    "sap.ino.db.idea::t_ideas_setting"]; 

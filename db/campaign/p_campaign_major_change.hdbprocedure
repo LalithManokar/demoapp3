@@ -1,0 +1,575 @@
+procedure "SAP_INO"."sap.ino.db.campaign::p_campaign_major_change" (
+    out ot_feeds "SAP_INO"."sap.ino.db.campaign::tt_campaign_major_change_output" 
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+reads sql data as
+begin
+                     
+    DECLARE  tab_index integer;
+    DECLARE  feed_index integer;
+    DECLARE  ot_feed_code varchar(60) array;
+    DECLARE  ot_object_type_code varchar(100) array;
+    DECLARE  ot_event_at timestamp array;
+    DECLARE  ot_object_id integer array;
+    DECLARE  ot_history_actor_id integer array;
+    DECLARE  ot_campaign_id integer array;
+    DECLARE  ot_filter_type_code varchar(12) array;
+    DECLARE  ot_field1_name varchar(100) array;
+    DECLARE  ot_field1_text varchar(100) array;
+    DECLARE  ot_field1_value nvarchar(5000) array;
+    DECLARE  ot_field1_value_option varchar(600) array;
+    DECLARE  ot_field2_name varchar(100) array;
+    DECLARE  ot_field2_text varchar(100) array;
+    DECLARE  ot_field2_value nvarchar(5000) array;
+    DECLARE  ot_field2_value_option varchar(600) array;
+    
+    DECLARE  valid_from timestamp array;
+    DECLARE  valid_to timestamp array;
+    DECLARE  submit_from timestamp array;
+    DECLARE  submit_to timestamp array;
+    DECLARE  is_black_box tinyint array;
+    DECLARE  vote_type_code varchar(500) array;
+    DECLARE  color_code varchar(6) array;
+    DECLARE  register_from timestamp array;
+    DECLARE  register_to timestamp array;
+    DECLARE  is_register_auto_approve tinyint array;
+    DECLARE  form_code varchar(500) array;
+    DECLARE  resp_code varchar(500) array;
+    DECLARE  reward_unit_code varchar(500) array;
+    DECLARE  title nvarchar(100) array;
+    DECLARE  short_name nvarchar(40) array;
+    DECLARE  description nvarchar(100) array;
+    DECLARE  idea_description_template nvarchar(100) array;
+    DECLARE  history_db_event varchar(8) array;
+    declare  phase_code varchar(500) array;
+    declare  evaluation_model_code varchar(500) array;
+    declare  evaluation_model_code_old varchar(500) array;
+    declare  auto_eval_pub_code_old varchar(500) array;
+    declare  auto_eval_pub_code varchar(500) array;
+    declare  voting_active tinyint array;
+    declare  voting_active_old tinyint array;
+    declare  show_idea_in_community tinyint array;
+    declare  show_idea_in_community_old tinyint array;
+    declare  idea_content_editable tinyint array;
+    declare  idea_content_editable_old tinyint array;
+    declare  self_evaluation_active tinyint array;
+    declare  self_evaluation_active_old tinyint array;
+    declare  reward tinyint array;
+    declare  reward_old tinyint array;
+    declare  sequence_no integer array;
+    declare  sequence_no_old integer array;
+    DECLARE  event_at timestamp array;
+    DECLARE  object_id integer array;
+    DECLARE  history_actor_id integer array;
+    declare  page_history_at timestamp array;
+    
+    lt_major_change = select distinct campaign.* ,
+                             campaign_text.name,
+                             campaign_text.short_name,
+                             left(campaign_text.description, 10) as description,
+                             left(campaign_text.idea_description_template, 10) as idea_description_template,
+                             campaign_phase.history_db_event as phase_history_db_event,
+                             campaign_phase.phase_code,
+                             campaign_phase.evaluation_model_code,
+                             campaign_phase.evaluation_model_code_old,
+                             campaign_phase.auto_eval_pub_code,
+                             campaign_phase.auto_eval_pub_code_old,
+                             campaign_phase.voting_active,
+                             campaign_phase.voting_active_old,
+                             campaign_phase.show_idea_in_community,
+                             campaign_phase.show_idea_in_community_old,
+                             campaign_phase.idea_content_editable,
+                             campaign_phase.idea_content_editable_old,
+                             campaign_phase.self_evaluation_active,
+                             campaign_phase.self_evaluation_active_old,
+                             campaign_phase.reward as phase_reward,
+                             campaign_phase.reward_old as phase_reward_old,
+                             campaign_phase.sequence_no, 
+                             campaign_phase.sequence_no_old,
+                             campaign_page.history_at as page_history_at
+                        from "sap.ino.db.campaign::v_campaign_h"  as campaign
+                        left outer join "sap.ino.db.campaign::v_campaign_t_h" as campaign_text
+                            on campaign.id = campaign_text.campaign_id
+                            and campaign.history_at=campaign_text.history_at 
+                        left join "sap.ino.db.campaign::v_campaign_phase_h" as campaign_phase
+                            on campaign.id = campaign_phase.campaign_id   
+                            and campaign.history_at=campaign_phase.history_at
+                        left join "sap.ino.db.campaign::t_campaign_page_t_h" as campaign_page
+                            on campaign.id = campaign_page.campaign_id   
+                            and campaign.history_at = campaign_page.history_at
+                        where campaign.history_biz_event = 'CAMP_MAJOR_PUBLISH';
+       
+    
+    object_id = ARRAY_AGG(:lt_major_change.id order by history_at);
+    history_actor_id = ARRAY_AGG(:lt_major_change.history_actor_id order by history_at);
+    event_at = ARRAY_AGG(:lt_major_change.history_at order by history_at);
+    
+    valid_from = ARRAY_AGG(:lt_major_change.valid_from order by history_at);
+    valid_to = ARRAY_AGG(:lt_major_change.valid_to order by history_at);
+    submit_from = ARRAY_AGG(:lt_major_change.submit_from order by history_at);
+    submit_to = ARRAY_AGG(:lt_major_change.submit_to order by history_at);
+    is_black_box = ARRAY_AGG(:lt_major_change.is_black_box order by history_at);
+    vote_type_code = ARRAY_AGG(:lt_major_change.vote_type_code order by history_at);
+    color_code = ARRAY_AGG(:lt_major_change.color_code order by history_at);
+    register_from = ARRAY_AGG(:lt_major_change.register_from order by history_at);
+    register_to = ARRAY_AGG(:lt_major_change.register_to order by history_at);
+    is_register_auto_approve = ARRAY_AGG(:lt_major_change.is_register_auto_approve order by history_at);
+    form_code = ARRAY_AGG(:lt_major_change.form_code order by history_at);
+    resp_code = ARRAY_AGG(:lt_major_change.resp_code order by history_at);
+    reward_unit_code = ARRAY_AGG(:lt_major_change.reward_unit_code order by history_at);
+    title = ARRAY_AGG(:lt_major_change.name order by history_at);
+    short_name = ARRAY_AGG(:lt_major_change.short_name order by history_at);
+    description = ARRAY_AGG(:lt_major_change.description order by history_at);
+    idea_description_template = ARRAY_AGG(:lt_major_change.idea_description_template order by history_at);
+    history_db_event = ARRAY_AGG(:lt_major_change.phase_history_db_event order by history_at);
+    phase_code  = ARRAY_AGG(:lt_major_change.phase_code order by history_at);
+    evaluation_model_code  = ARRAY_AGG(:lt_major_change.evaluation_model_code order by history_at);
+    evaluation_model_code_old  = ARRAY_AGG(:lt_major_change.evaluation_model_code_old order by history_at);
+    auto_eval_pub_code  = ARRAY_AGG(:lt_major_change.auto_eval_pub_code order by history_at);
+    auto_eval_pub_code_old  = ARRAY_AGG(:lt_major_change.auto_eval_pub_code_old order by history_at);
+    voting_active = ARRAY_AGG(:lt_major_change.voting_active order by history_at);
+    voting_active_old = ARRAY_AGG(:lt_major_change.voting_active_old order by history_at);
+    show_idea_in_community = ARRAY_AGG(:lt_major_change.show_idea_in_community order by history_at);
+    show_idea_in_community_old = ARRAY_AGG(:lt_major_change.show_idea_in_community_old order by history_at);
+    idea_content_editable = ARRAY_AGG(:lt_major_change.idea_content_editable order by history_at);
+    idea_content_editable_old = ARRAY_AGG(:lt_major_change.idea_content_editable_old order by history_at);
+    self_evaluation_active = ARRAY_AGG(:lt_major_change.self_evaluation_active order by history_at);
+    self_evaluation_active_old = ARRAY_AGG(:lt_major_change.self_evaluation_active_old order by history_at);
+    reward = ARRAY_AGG(:lt_major_change.phase_reward order by history_at);
+    reward_old = ARRAY_AGG(:lt_major_change.phase_reward_old order by history_at);
+    sequence_no = ARRAY_AGG(:lt_major_change.sequence_no order by history_at);
+    sequence_no_old = ARRAY_AGG(:lt_major_change.sequence_no_old order by history_at);
+    page_history_at = ARRAY_AGG(:lt_major_change.page_history_at order by history_at);
+    
+    feed_index = 1;
+    for tab_index in 1.. CARDINALITY(:object_id) DO
+        if :valid_from[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_VALID_FROM_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_VALID_FROM';
+            ot_field1_value[:feed_index] = TO_NVARCHAR(:valid_from[:tab_index]);
+            ot_field1_value_option[:feed_index] = 'DATE';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :valid_to[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_VALID_TO_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_VALID_TO';
+            ot_field1_value[:feed_index] = TO_NVARCHAR(:valid_to[:tab_index]);
+            ot_field1_value_option[:feed_index] = 'DATE';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :submit_from[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_SUBMIT_FROM_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_SUBMIT_FROM';
+            ot_field1_value[:feed_index] = TO_NVARCHAR(:submit_from[:tab_index]);
+            ot_field1_value_option[:feed_index] = 'DATE';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :submit_to[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_SUBMIT_TO_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_SUBMI_TO';
+            ot_field1_value[:feed_index] = TO_NVARCHAR(:submit_to[:tab_index]);
+            ot_field1_value_option[:feed_index] = 'DATE';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :is_black_box[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_BLACK_BOX_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_BLACK_BOX';
+            ot_field1_value[:feed_index] = TO_NVARCHAR(:is_black_box[:tab_index]);
+            ot_field1_value_option[:feed_index] = 'BOOLEAN';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :vote_type_code[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_VOTE_TYPE_CODE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_VOTE_TYPE_CODE';
+            ot_field1_value[:feed_index] = :vote_type_code[:tab_index];
+            ot_field1_value_option[:feed_index] = 'sap.ino.xs.object.campaign.VoteType.Root';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :color_code[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_COLOR_CODE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_COLOR_CODE';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :register_from[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_REGISTER_FROM_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_REGISTER_FROM';
+            ot_field1_value[:feed_index] = TO_NVARCHAR(:register_from[:tab_index]);
+            ot_field1_value_option[:feed_index] = 'DATE';
+            ot_filter_type_code[:feed_index] = 'REGISTRATION';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :register_to[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_REGISTER_TO_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_REGISTER_TO';
+            ot_field1_value[:feed_index] = TO_NVARCHAR(:register_to[:tab_index]);
+            ot_field1_value_option[:feed_index] = 'DATE';
+            ot_filter_type_code[:feed_index] = 'REGISTRATION';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :is_register_auto_approve[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_IS_REGISTER_AUTO_APPROVE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_IS_REGISTER_AUTO_APPROVE';
+            ot_field1_value[:feed_index] = TO_NVARCHAR(:is_register_auto_approve[:tab_index]);
+            ot_field1_value_option[:feed_index] = 'BOOLEAN';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :form_code[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_FORM_CODE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_FORM_CODE';
+            ot_field1_value[:feed_index] = :form_code[:tab_index];
+            ot_field1_value_option[:feed_index] = 'sap.ino.xs.object.ideaform.IdeaForm.Root';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :resp_code[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_RESP_CODE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_RESP_CODE';
+            ot_field1_value[:feed_index] = :resp_code[:tab_index];
+            ot_field1_value_option[:feed_index] = 'sap.ino.xs.object.subresponsibility.ResponsibilityStage.Root';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :reward_unit_code[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_REWARD_UNIT_CODE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_REWARD_UNIT_CODE';
+            ot_field1_value[:feed_index] = :reward_unit_code[:tab_index];
+            ot_field1_value_option[:feed_index] = 'sap.ino.xs.object.basis.Unit.Root';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :title[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_TITLE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_TITLE';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :short_name[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_SHORT_TITLE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_SHORT_TITLE';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :description[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_DESCRIPTION_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_DESCRIPTION';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :idea_description_template[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_IDEA_DESCRIPTION_TEMPLATE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_IDEA_DESCRIPTION_TEMPLATE';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :history_db_event[:tab_index] is not null and :history_db_event[:tab_index] <> 'UPDATED' then 
+            ot_feed_code[:feed_index] = 'ACTION_PHASE_UPDATED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_PHASE';
+            ot_field1_value[:feed_index] = :phase_code[:tab_index];
+            ot_field1_value_option[:feed_index] = 'sap.ino.xs.object.campaign.Phase.Root';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :history_db_event[:tab_index] = 'UPDATED' and (
+            :evaluation_model_code[:tab_index] <> :evaluation_model_code_old[:tab_index] or
+            (:evaluation_model_code[:tab_index] is null and  :evaluation_model_code_old[:tab_index] is not null) or
+            (:evaluation_model_code[:tab_index] is not null and  :evaluation_model_code_old[:tab_index] is null)
+        )then 
+            ot_feed_code[:feed_index] = 'ACTION_PHASE_EVALUATION_METHOD_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_PHASE';
+            ot_field1_value[:feed_index] = :phase_code[:tab_index];
+            ot_field1_value_option[:feed_index] = 'sap.ino.xs.object.campaign.Phase.Root';
+            ot_field2_text[:feed_index] = 'EVALUATION_METHOD';
+            ot_field2_value[:feed_index] = :evaluation_model_code[:tab_index];
+            ot_field2_value_option[:feed_index] = 'sap.ino.xs.object.evaluation.Model.Root';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :history_db_event[:tab_index] = 'UPDATED' and (
+            :auto_eval_pub_code[:tab_index] <> :auto_eval_pub_code_old[:tab_index] or
+            (:auto_eval_pub_code[:tab_index] is null and  :auto_eval_pub_code_old[:tab_index] is not null) or
+            (:auto_eval_pub_code[:tab_index] is not null and  :auto_eval_pub_code_old[:tab_index] is null)
+        )then 
+            ot_feed_code[:feed_index] = 'ACTION_PHASE_AUTO_EVAL_PUB_CODE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_PHASE';
+            ot_field1_value[:feed_index] = :phase_code[:tab_index];
+            ot_field1_value_option[:feed_index] = 'sap.ino.xs.object.campaign.Phase.Root';
+            ot_field2_text[:feed_index] = 'AUTO_EVAL_PUB_CODE';
+            ot_field2_value[:feed_index] = :auto_eval_pub_code[:tab_index];
+            ot_field2_value_option[:feed_index] = 'sap.ino.xs.object.evaluation.AutoPublication.Root';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :history_db_event[:tab_index] = 'UPDATED' and 
+            :voting_active[:tab_index] <> :voting_active_old[:tab_index] then 
+            ot_feed_code[:feed_index] = 'ACTION_PHASE_VOTING_ACTIVE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_PHASE';
+            ot_field1_value[:feed_index] = :phase_code[:tab_index];
+            ot_field1_value_option[:feed_index] = 'sap.ino.xs.object.campaign.Phase.Root';
+            ot_field2_text[:feed_index] = 'VOTING_ACTIVE';
+            ot_field2_value[:feed_index] = TO_NVARCHAR(:voting_active[:tab_index]);
+            ot_field2_value_option[:feed_index] = 'BOOLEAN';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :history_db_event[:tab_index] = 'UPDATED' and 
+            :show_idea_in_community[:tab_index] <> :show_idea_in_community_old[:tab_index] then 
+            ot_feed_code[:feed_index] = 'ACTION_PHASE_SHOW_IDEA_IN_COMMUNITY_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_PHASE';
+            ot_field1_value[:feed_index] = :phase_code[:tab_index];
+            ot_field1_value_option[:feed_index] = 'sap.ino.xs.object.campaign.Phase.Root';
+            ot_field2_text[:feed_index] = 'SHOW_IDEA_IN_COMMUNITY';
+            ot_field2_value[:feed_index] = TO_NVARCHAR(:show_idea_in_community[:tab_index]);
+            ot_field2_value_option[:feed_index] = 'BOOLEAN';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :history_db_event[:tab_index] = 'UPDATED' and 
+            :idea_content_editable[:tab_index] <> :idea_content_editable_old[:tab_index] then 
+            ot_feed_code[:feed_index] = 'ACTION_PHASE_IDEA_CONTENT_EDITABLE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_PHASE';
+            ot_field1_value[:feed_index] = :phase_code[:tab_index];
+            ot_field1_value_option[:feed_index] = 'sap.ino.xs.object.campaign.Phase.Root';
+            ot_field2_text[:feed_index] = 'IDEA_CONTENT_EDITABLE';
+            ot_field2_value[:feed_index] = TO_NVARCHAR(:idea_content_editable[:tab_index]);
+            ot_field2_value_option[:feed_index] = 'BOOLEAN';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :history_db_event[:tab_index] = 'UPDATED' and 
+            :self_evaluation_active[:tab_index] <> :self_evaluation_active_old[:tab_index] then 
+            ot_feed_code[:feed_index] = 'ACTION_PHASE_SELF_EVALUATION_ACTIVE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_PHASE';
+            ot_field1_value[:feed_index] = :phase_code[:tab_index];
+            ot_field1_value_option[:feed_index] = 'sap.ino.xs.object.campaign.Phase.Root';
+            ot_field2_text[:feed_index] = 'SELF_EVALUATION_ACTIVE';
+            ot_field2_value[:feed_index] = TO_NVARCHAR(:self_evaluation_active[:tab_index]);
+            ot_field2_value_option[:feed_index] = 'BOOLEAN';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :history_db_event[:tab_index] = 'UPDATED' and 
+            :reward[:tab_index] <> :reward_old[:tab_index] then 
+            ot_feed_code[:feed_index] = 'ACTION_PHASE_REWARD_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_PHASE';
+            ot_field1_value[:feed_index] = :phase_code[:tab_index];
+            ot_field1_value_option[:feed_index] = 'sap.ino.xs.object.campaign.Phase.Root';
+            ot_field2_text[:feed_index] = 'REWARD';
+            ot_field2_value[:feed_index] = TO_NVARCHAR(:reward[:tab_index]);
+            ot_field2_value_option[:feed_index] = 'BOOLEAN';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :history_db_event[:tab_index] = 'UPDATED' and 
+            :sequence_no[:tab_index] <> :sequence_no_old[:tab_index] then 
+            ot_feed_code[:feed_index] = 'ACTION_PHASE_SEQUENCE_NO_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_PHASE';
+            ot_field1_value[:feed_index] = :phase_code[:tab_index];
+            ot_field1_value_option[:feed_index] = 'sap.ino.xs.object.campaign.Phase.Root';
+            ot_field2_text[:feed_index] = 'SEQUENCE_NO';
+            ot_field2_value[:feed_index] = TO_NVARCHAR(:sequence_no[:tab_index]);
+            ot_field2_value_option[:feed_index] = 'BOOLEAN';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+        
+        if :page_history_at[:tab_index] is not null then 
+            ot_feed_code[:feed_index] = 'ACTION_LANDING_PAGE_CHANGED';
+            ot_field1_text[:feed_index] = 'CAMPAIGN_LANDING_PAGE';
+            ot_filter_type_code[:feed_index] = 'FRONTOFFICE';
+            ot_object_type_code[:feed_index] = 'CAMPAIGN';
+            ot_object_id[:feed_index] = :object_id[:tab_index];
+            ot_campaign_id[:feed_index] = :object_id[:tab_index];
+            ot_event_at[:feed_index] = :event_at[:tab_index];
+            ot_history_actor_id[:feed_index] = :history_actor_id[:tab_index];
+            feed_index = feed_index + 1;
+        end if;
+    end for;
+    
+    lt_feeds = UNNEST(:ot_object_id, :ot_object_type_code, :ot_event_at, :ot_feed_code, :ot_history_actor_id, :ot_campaign_id, :ot_filter_type_code,
+        :ot_field1_name, :ot_field1_text, :ot_field1_value, :ot_field1_value_option, :ot_field2_name, :ot_field2_text, :ot_field2_value, :ot_field2_value_option
+    )
+    AS ("OBJECT_ID", "OBJECT_TYPE_CODE", "EVENT_AT", "FEED_CODE", "HISTORY_ACTOR_ID", "CAMPAIGN_ID", "FILTER_TYPE_CODE", 
+        "FIELD1_NAME", "FIELD1_TEXT", "FIELD1_VALUE", "FIELD1_VALUE_OPTION", "FIELD2_NAME", "FIELD2_TEXT", "FIELD2_VALUE", "FIELD2_VALUE_OPTION");
+    
+    ot_feeds = select distinct OBJECT_ID,
+        OBJECT_TYPE_CODE,
+        EVENT_AT,
+        FEED_CODE,
+        HISTORY_ACTOR_ID,
+        CAMPAIGN_ID,
+        FILTER_TYPE_CODE,
+        FIELD1_NAME,
+        FIELD1_TEXT,
+        FIELD1_VALUE,
+        FIELD1_VALUE_OPTION,
+        FIELD2_NAME,
+        FIELD2_TEXT,
+        FIELD2_VALUE,
+        FIELD2_VALUE_OPTION
+        from :lt_feeds;
+end;

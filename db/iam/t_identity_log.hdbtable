@@ -1,0 +1,20 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE; 
+table.description = "When personal data is changed via excel upload or SAML assertion, all these changes will be checked if it is configured to be stored and then stored in a new log table.";
+table.columns = [
+    {name = "ID";                       sqlType = INTEGER;              nullable = false;},
+    {name = "CREATED_AT";               sqlType = TIMESTAMP;            nullable = false;},
+    {name = "CREATED_BY_ID";            sqlType = INTEGER;              nullable = false;},
+    {name = "CHANGED_AT";               sqlType = TIMESTAMP;            nullable = false;},
+    {name = "CHANGED_BY_ID";            sqlType = INTEGER;              nullable = false;},
+    {name = "IDENTITY_ID";              sqlType = INTEGER;              nullable = false;},
+    {name = "CHANGED_ATTRIBUTE";        sqlType = VARCHAR;length=255;    nullable = false;},
+    {name = "CHANGED_ATTRIBUTE_TYPE";   sqlType = VARCHAR;length=6;     nullable = false;},
+    {name = "DATE_NEW_VALUE";           sqlType = TIMESTAMP;            nullable = true;},
+    {name = "DATE_OLD_VALUE";           sqlType = TIMESTAMP;            nullable = true;},
+    {name = "STRING_NEW_VALUE";         sqlType = NVARCHAR;length=300;  nullable = true;},
+    {name = "STRING_OLD_VALUE";         sqlType = NVARCHAR;length=300;  nullable = true;},
+    {name = "INT_NEW_VALUE";            sqlType = INTEGER;              nullable = true;},
+    {name = "INT_OLD_VALUE";            sqlType = INTEGER;              nullable = true;}
+ ]; 
+ table.primaryKey.pkcolumns = ["ID"];

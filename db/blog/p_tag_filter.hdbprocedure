@@ -1,0 +1,32 @@
+procedure "SAP_INO"."sap.ino.db.blog::p_tag_filter" (
+     in  it_blog_id SAP_INO."sap.ino.db.blog::tt_blog_id",
+     in  it_tag_id  SAP_INO."sap.ino.db.blog::tt_tag_id",
+     out ot_blog_id SAP_INO."sap.ino.db.basis::tt_object_id"
+ )
+ language sqlscript
+ sql security invoker
+ default schema SAP_INO
+ reads sql data as
+begin
+    declare lv_tag_count int;
+    select count(*) into lv_tag_count from :it_tag_id;
+
+    ot_blog_id =
+        select id from :it_blog_id
+            where
+                -- no input tags --> select all blogs, even those without any tags
+                lv_tag_count = 0
+        union all
+        select it_blog.id
+            from (select distinct id from :it_blog_id) as it_blog,
+                :it_tag_id                             as it_tag,
+                "sap.ino.db.tag::t_object_tag"         as blog_tag
+            where
+                -- determine all idea_ids for which ALL of the input tags are assigned
+                lv_tag_count              > 0          and
+                blog_tag.object_id        = it_blog.id and
+                blog_tag.tag_id           = it_tag.id  and
+                blog_tag.object_type_code = 'BLOG'
+            group by it_blog.id
+            having count(tag_id) = lv_tag_count;
+end;

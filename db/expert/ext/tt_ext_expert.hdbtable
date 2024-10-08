@@ -1,0 +1,19 @@
+table.schemaName = "SAP_INO_EXT";
+table.tableType = COLUMNSTORE;
+table.temporary = true;
+table.description = "Output table for expert IDs & names";
+table.columns = [
+    {name = "IDEA_ID";               sqlType = INTEGER;                nullable = false;},
+    {name = "TAG_ID";                sqlType = INTEGER;                nullable = true;},
+    {name = "TAG_NAME";              sqlType = NVARCHAR; length = 100; nullable = true;},
+    {name = "CREATED_AT";            sqlType = TIMESTAMP;              nullable = false;},
+    {name = "IDENTITY_ID";           sqlType = INTEGER;                nullable = false;},
+    {name = "IDENTITY_NAME";         sqlType = NVARCHAR; length = 100; nullable = true;},
+    {name = "IDENTITY_EMAIL";        sqlType = NVARCHAR; length = 256; nullable = true;},
+    {name = "IDENTITY_PHONE";        sqlType = NVARCHAR; length = 256; nullable = true;},
+    {name = "IDENTITY_MOBILE";       sqlType = NVARCHAR; length = 256; nullable = true;},
+    {name = "IDENTITY_OFFICE";       sqlType = NVARCHAR; length = 256; nullable = true;},
+    {name = "IDENTITY_ORGANIZATION"; sqlType = NVARCHAR; length = 100; nullable = true;},
+    {name = "IDENTITY_COST_CENTER";  sqlType = NVARCHAR; length = 100; nullable = true;},
+    {name = "IDENTITY_IMAGE_ID";     sqlType = INTEGER;                nullable = true;}
+];

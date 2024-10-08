@@ -1,0 +1,36 @@
+<core:View
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+    controllerName="sap.ino.vc.comment.RichComment"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+    displayBlock="true">
+	<VBox width="100%">
+		<VBox>
+			<!--<VBox id="rteContainer" visible="{=${device>/system/desktop}}" height="100%"  width="100%" />
+			<ino:MobileTextEditor visible="{=!${device>/system/desktop}}" showToolbar="false" value="{comment>/COMMENT}"
+                maxHeight="20rem" minHeight="10rem" openInDialog="true" />-->
+            <core:Fragment fragmentName="sap.ino.vc.comment.fragments.RichCommentCtrl" type="XML" />  
+			<core:Fragment fragmentName="sap.ino.vc.comment.fragments.RichCommentAttachment" type="XML" />
+		</VBox>
+		<List
+            showSeparators="All"
+            items="{path : 'data>Comments', sorter:[{path: 'CREATED_AT', descending: true}], templateShareable:'false'}"
+            id="commentList"
+            noDataText="{i18n>COMMENT_NO_DATA}"
+            inset="true"
+            backgroudDesign = "Translucent"
+            growing="true"
+            growingThreshold="3"
+            growingScrollToLoad="true"
+            enableBusyIndicator="true"
+            class="sapInoIdeaCommentList">
+			<items>
+				<CustomListItem class="sapInoIdeaCommentItem">
+					<content>
+					    <core:Fragment fragmentName="sap.ino.vc.comment.fragments.RichCommentItem" type="XML" />
+					</content>
+				</CustomListItem>
+			</items>
+		</List>
+	</VBox>
+</core:View>

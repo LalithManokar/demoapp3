@@ -1,0 +1,17 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "volunteers history";
+table.columns = [
+    {name = "HISTORY_DB_EVENT";         sqlType = VARCHAR;   length = 8;   nullable = false; comment = "Database event: CREATED, UPDATED, DELETED";},
+    {name = "HISTORY_BIZ_EVENT";        sqlType = VARCHAR;   length = 60;  nullable = false; comment = "Business event: CAMPAIGN_CREATED, ...";},
+    {name = "HISTORY_AT";               sqlType = TIMESTAMP;               nullable = false; comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID";         sqlType = INTEGER;                 nullable = false; comment = "Actor who did the changes";},
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "primary key";},
+    {name = "IDEA_ID"; sqlType = INTEGER; nullable = false; comment = "ideas id";},
+    {name = "IDENTITY_ID"; sqlType = INTEGER; nullable = false; comment = "volunteers' identity id";},
+    {name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "who created this object";},
+    {name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "created timestamp";}
+];
+table.indexes = [
+    {name="LOGKEY_VOLUNTEERS_H"; unique = false; indexColumns = ["ID","HISTORY_AT"];}
+];

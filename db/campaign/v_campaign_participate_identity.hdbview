@@ -1,0 +1,50 @@
+schema = "SAP_INO";
+query = "
+    select distinct
+        object.object_id as campaign_id,
+        object.id as id,
+        identity.id as identity_id, 
+        identity.name,
+        identity.first_name,
+        identity.last_name,
+        identity.user_name,
+        identity.email,
+        identity.is_external,
+        identity.type_code,
+        identity.phone,
+        identity.mobile,
+        identity.cost_center,
+        identity.organization,
+        identity.office,
+        identity.description,
+        identity_settings.image_id,
+         case when exists(select disabled from\"sap.ino.db.iam::v_object_identity_role_action\"as limitation 
+            where limitation.object_id = object.object_id and limitation.identity_id = identity.id and limitation.action_code = 'IDEA_VOTE')
+            then (select ABS(disabled - 1) from\"sap.ino.db.iam::v_object_identity_role_action\"as limitation 
+            where limitation.object_id = object.object_id and limitation.identity_id = identity.id and limitation.action_code = 'IDEA_VOTE')
+            else 1
+            end as CAN_VOTE,
+        case when exists(select disabled from\"sap.ino.db.iam::v_object_identity_role_action\"as limitation 
+            where limitation.object_id = object.object_id and limitation.identity_id = identity.id and limitation.action_code = 'IDEA_COMMENT')
+            then (select ABS(disabled - 1) from\"sap.ino.db.iam::v_object_identity_role_action\"as limitation 
+            where limitation.object_id = object.object_id and limitation.identity_id = identity.id and limitation.action_code = 'IDEA_COMMENT')
+            else 1
+            end as CAN_COMMENT,
+        case when exists(select disabled from\"sap.ino.db.iam::v_object_identity_role_action\"as limitation 
+            where limitation.object_id = object.object_id and limitation.identity_id = identity.id and limitation.action_code = 'CAMPAIGN_SUBMIT')
+            then (select ABS(disabled - 1) from\"sap.ino.db.iam::v_object_identity_role_action\"as limitation 
+            where limitation.object_id = object.object_id and limitation.identity_id = identity.id and limitation.action_code = 'CAMPAIGN_SUBMIT')
+            else 1
+            end as CAN_SUBMIT
+    from \"sap.ino.db.iam::t_object_identity_role\" as object 
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on object.identity_id = identity.id
+        left outer join \"sap.ino.db.iam::v_identity_settings\" as identity_settings
+             on identity_settings.identity_id = object.identity_id
+    where role_code = 'CAMPAIGN_USER' and object_type_code = 'CAMPAIGN'
+    with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity",
+					"sap.ino.db.iam::t_object_identity_role"];
+depends_on_view = ["sap.ino.db.iam::v_identity_settings",
+                   "sap.ino.db.iam::v_object_identity_role_action"];

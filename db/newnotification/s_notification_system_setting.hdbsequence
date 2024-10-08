@@ -1,0 +1,6 @@
+schema     = "SAP_INO";
+start_with = 1;
+minvalue   = 1;
+cycles     = false;
+reset_by= "select ifnull(max(id), 0) + 1 from \"sap.ino.db.newnotification::t_notification_system_setting\"";
+depends_on_table = "sap.ino.db.newnotification::t_notification_system_setting";

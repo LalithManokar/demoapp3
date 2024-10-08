@@ -1,0 +1,17 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "System level for API of Integration History Event";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "primary key";},
+    {name = "HISTORY_DB_EVENT";         sqlType = VARCHAR;   length = 8;   nullable = false; comment = "Database event: CREATED, UPDATED, DELETED";},
+    {name = "HISTORY_BIZ_EVENT";        sqlType = VARCHAR;   length = 60;  nullable = false; comment = "Business event: OBJECT_CREATE,OBJECT_UPDATE,OBJECT_DELETE ...";},
+    {name = "HISTORY_AT";               sqlType = TIMESTAMP;               nullable = false; comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID";         sqlType = INTEGER;                 nullable = false; comment = "Actor who did the changes";},
+    {name = "IDEA_ID"; sqlType = INTEGER; nullable = false; comment = "ideas id";},    
+    {name = "API_TECHNICAL_NAME";       sqlType = NVARCHAR; length = 128; nullable = false;                 comment = "Using For identify API ";},
+    {name = "INTEGRATION_OBJECT_UUID";               sqlType = VARCHAR;   length = 32;             nullable = false;                     comment = "uuid for assignment object on idea";},
+    {name = "CAMPAIGN_ID"; sqlType = INTEGER; nullable = true; comment = "Campaign to which this idea belongs. Foreign key to t_campaign.ID";}
+];
+table.indexes = [
+    {name="LOGKEY_INTEGRATION_OBJECT_H"; unique = false; indexColumns = ["ID","HISTORY_AT"];}
+];

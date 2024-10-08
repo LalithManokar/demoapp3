@@ -1,0 +1,42 @@
+PROCEDURE "SAP_INO"."sap.ino.db.campaign::p_campaign_intersection_participants"(
+		IN in_split "SAP_INO"."sap.ino.db.basis::tt_string", 
+		OUT ot_split "SAP_INO"."sap.ino.db.basis::tt_string"
+	)
+	LANGUAGE sqlscript
+	SQL SECURITY invoker
+	DEFAULT SCHEMA SAP_INO
+	READS SQL DATA
+AS
+BEGIN
+	DECLARE ARRAY_VALUE NVARCHAR(4096) ARRAY;
+	DECLARE V_INDEX INTEGER;
+	DECLARE SUM_VALUE DECIMAL := 0;
+
+	V_TSTTAB = SELECT *
+			FROM :in_split;
+			
+	ALL_PARTICIPANTS = SELECT DISTINCT g.campaign_id, 
+                	tr.member_id AS IDENTITY_ID
+                FROM (
+                		SELECT *
+                		FROM "sap.ino.db.campaign::v_campaign_participate_identity"
+                	) AS g
+                	INNER JOIN "sap.ino.db.iam::v_group_member_transitive" AS tr
+                	ON g.IDENTITY_ID = tr.group_id
+                	WHERE tr.type_code = 'USER';
+	ALL_SELECTED_PARTICIPANTS = SELECT DISTINCT IDENTITY_ID FROM :ALL_PARTICIPANTS;
+	
+	ARRAY_VALUE := ARRAY_AGG(:V_TSTTAB.STRING);
+	
+	FOR V_INDEX IN 1..CARDINALITY(:ARRAY_VALUE) DO
+		ALL_SELECTED_PARTICIPANTS = SELECT IDENTITY_ID
+				FROM :ALL_SELECTED_PARTICIPANTS
+				INTERSECT
+				SELECT IDENTITY_ID
+				FROM :ALL_PARTICIPANTS
+				WHERE CAMPAIGN_ID = :ARRAY_VALUE[:V_INDEX];
+	END FOR;
+	
+	ot_split = SELECT DISTINCT IDENTITY_ID AS STRING
+			FROM :ALL_SELECTED_PARTICIPANTS;
+END;

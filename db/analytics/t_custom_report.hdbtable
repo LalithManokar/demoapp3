@@ -1,0 +1,18 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "My Reports";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "IDENTITY_ID"; sqlType = INTEGER; nullable = true; comment = "Human readable identifier";},
+    {name = "CAMPAIGN_ID"; sqlType = INTEGER; nullable = true; comment = "Human readable identifier";},
+    {name = "CONFIGURATION"; sqlType = VARCHAR; length = 3000; nullable = true; comment = "do not use";},
+    {name = "CONFIG"; sqlType = NCLOB; nullable = true; comment = "JSON Configuration Object (new column)";},
+    {name = "ORDER_SEQUENCE"; sqlType = INTEGER; nullable = true; comment = "Positon of Tile in My Reports View";},
+    {name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an attachment has been created. Foreign key to t_identity.ID";},
+    {name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an attachment has been changed. Foreign key t_identity.ID";},
+    {name = "REPORT_TEMPLATE_CODE"; sqlType = VARCHAR;  length = 500;  nullable = true; comment = "Identifier";},
+    {name = "IS_USAGE_REPORT"; sqlType = TINYINT; nullable = true; comment = "Identifier 0 or 1 if it is a usage report";}
+];
+table.primaryKey.pkcolumns = ["ID"];

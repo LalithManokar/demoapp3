@@ -1,0 +1,487 @@
+procedure "SAP_INO"."sap.ino.db.newnotification::p_notification_status_create" ()
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    -- get all new notifications
+    lt_notifications_new = select *
+                                from "sap.ino.db.notification::t_notification"
+                                where status_code = 'NEW';
+                                
+    -- filter all new notification which contains less than 500 participants  
+    lt_notification_new_filter = select notification_filter.id from (
+                                        select  noti.id,noti.campaign_id,noti.action_code,count(receiver.role_code) as participants_num
+                                        from :lt_notifications_new as noti
+                                       inner join (select  
+                                                notification_receiver.action_code,
+                                                notification_receiver_role_mapping.ACTUAL_ROLE_CODE as role_code ,
+                                                notification_receiver.role_code as role_code_from_campaign 
+                                                from( select 
+                                                    distinct campaign_setting.action_code, 
+                                                    campaign_receiver.role_code 
+                                                    from "sap.ino.db.newnotification::t_notification_campaign_setting" as campaign_setting
+                                                    inner join "sap.ino.db.newnotification::t_notification_campaign_setting_receiver" as campaign_receiver
+                                                        on campaign_setting.id = campaign_receiver.ACTION_ID
+                                                    union all
+                                                    select 
+                                                        system_setting.action_code, system_receiver.role_code 
+                                                    from "sap.ino.db.newnotification::t_notification_system_setting" as system_setting
+                                                    inner join "sap.ino.db.newnotification::t_notification_system_setting_receiver" as system_receiver
+                                                        on system_setting.id = system_receiver.ACTION_ID) as notification_receiver
+                                                inner  join "sap.ino.db.newnotification::t_notification_receiver_role_mapping" as notification_receiver_role_mapping
+                                                on notification_receiver_role_mapping.role_code = notification_receiver.role_code) as receiver
+                                            on noti.action_code = receiver.action_code
+                                        inner join "sap.ino.db.iam::v_object_identity_role_transitive" as identity_role 
+                                            on identity_role.object_id = noti.campaign_id 
+                                            and identity_role.object_type_code = 'CAMPAIGN' 
+                                            and receiver.role_code = 'CAMPAIGN_USER' 
+                                            and receiver.role_code = identity_role.role_code
+                                        group by noti.id,noti.campaign_id,noti.action_code) as notification_filter
+                                where   participants_num > 500;     
+    
+    lt_notification_receiver = select  
+                                    notification_receiver.action_code,
+                                    notification_receiver_role_mapping.ACTUAL_ROLE_CODE as role_code ,
+                                    notification_receiver.role_code as role_code_from_campaign 
+                                from(select distinct 
+                                        campaign_setting.action_code, 
+                                        campaign_receiver.role_code 
+                                    from "sap.ino.db.newnotification::t_notification_campaign_setting" as campaign_setting
+                                    inner join "sap.ino.db.newnotification::t_notification_campaign_setting_receiver" as campaign_receiver
+                                        on campaign_setting.id = campaign_receiver.ACTION_ID
+                                    union all 
+                                    select system_setting.action_code, system_receiver.role_code 
+                                    from "sap.ino.db.newnotification::t_notification_system_setting" as system_setting
+                                    inner join "sap.ino.db.newnotification::t_notification_system_setting_receiver" as system_receiver
+                                        on system_setting.id = system_receiver.ACTION_ID) as notification_receiver
+                                inner  join "sap.ino.db.newnotification::t_notification_receiver_role_mapping" as notification_receiver_role_mapping
+                                    on notification_receiver_role_mapping.role_code = notification_receiver.role_code;
+    -- get identities for the notification code / biz event
+    lt_identities = 
+                    -- idea & campaign
+                    select role.identity_id, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, role.role_code,new_notif.action_code
+                        from "sap.ino.db.iam::t_object_identity_role" as role,
+                             :lt_notifications_new as new_notif
+                        inner join :lt_notification_receiver as notification_receiver
+                        on notification_receiver.action_code = new_notif.action_code
+                        where 
+                               --( role.object_type_code = 'IDEA' and (role.object_id = new_notif.object_id or role.object_id = new_notif.campaign_id) and role.role_code = notification_receiver.role_code ) or
+                               (
+                                   ( new_notif.object_type_code = 'CAMPAIGN' 
+                                       and ( role.object_id = new_notif.campaign_id and role.object_type_code = 'CAMPAIGN') 
+                                       and role.role_code = notification_receiver.role_code 
+                                    ) 
+                                    or ( (new_notif.object_type_code = 'EVAL_REQUEST_ITEM' or new_notif.object_type_code = 'EVAL_REQUEST') 
+                                        and ( 
+                                                (role.object_id = new_notif.object_id and ( role.object_type_code = 'EVAL_REQUEST_ITEM' or role.object_type_code = 'EVAL_REQUEST') 
+                                                and  (new_notif.action_code <> 'EVALUATION_REQUEST_DELETED' AND new_notif.action_code <> 'EVALUATION_REQUEST_CREATED') ) 
+                                            or (role.object_id = new_notif.involved_id and role.object_type_code = 'IDEA') 
+                                            OR ( role.object_id = new_notif.campaign_id and role.object_type_code = 'CAMPAIGN')) 
+                                        and role.role_code = notification_receiver.role_code ) 
+                                    or ( ( new_notif.object_type_code not in ('CAMPAIGN','FOLLOW','EVAL_REQUEST_ITEM','EVAL_REQUEST') ) 
+                                        and ( ( role.object_id = new_notif.object_id and role.object_type_code = 'IDEA' ) or ( role.object_id = new_notif.campaign_id and role.object_type_code = 'CAMPAIGN') ) 
+                                        and role.role_code = notification_receiver.role_code ) 
+                               ) and (notification_receiver.role_code <> 'CAMPAIGN_USER')
+                              -- ( role.object_type_code = 'EVAL_REQUEST_ITEM' and (role.object_id = new_notif.object_id or role.object_id = new_notif.campaign_id) and role.role_code = notification_receiver.role_code )
+                    union
+                    select role.identity_id, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, role.role_code,new_notif.action_code
+                        from "sap.ino.db.iam::t_object_identity_role_h" as role,
+                             :lt_notifications_new as new_notif
+                        left outer join "sap.ino.db.evaluation::t_evaluation_request_item_h" as eval_req_item
+                        on eval_req_item.eval_req_id = new_notif.object_id  and eval_req_item.history_biz_event = new_notif.notification_code
+                        inner join :lt_notification_receiver as notification_receiver
+                        on notification_receiver.action_code = new_notif.action_code
+                       where   
+                               role.history_biz_event = new_notif.notification_code
+                              and
+                              ( (role.object_id = eval_req_item.id  and  role.object_type_code = 'EVAL_REQUEST_ITEM' ) or role.object_id = new_notif.id )
+                              and  
+                              role.role_code = notification_receiver.role_code and( new_notif.action_code = 'EVALUATION_REQUEST_DELETED' or new_notif.action_code = 'EVALUATION_REQUEST_CREATED') 
+                    union          
+                    select role.identity_id, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, role.role_code,new_notif.action_code
+                        from "sap.ino.db.iam::t_object_identity_role_h" as role,
+                             :lt_notifications_new as new_notif
+                        inner join :lt_notification_receiver as notification_receiver
+                        on notification_receiver.action_code = new_notif.action_code
+                        where   
+                              ( role.object_type_code = 'IDEA' ) and
+                              (role.object_id = new_notif.object_id ) and  role.object_type_code = new_notif.object_type_code and 
+                              role.role_code = notification_receiver.role_code and new_notif.action_code = 'DELETE_IDEA' and role.history_biz_event = 'IDEA_DELETED'
+                    union 
+                    select vote.user_id, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, 'VOTER' as role_code,new_notif.action_code
+                        from "sap.ino.db.idea::t_vote" as vote,
+                             :lt_notifications_new as new_notif
+                        inner join :lt_notification_receiver as notification_receiver
+                        on notification_receiver.action_code = new_notif.action_code
+                        where   
+                              vote.idea_id = new_notif.object_id and notification_receiver.role_code = 'VOTER'
+                    union 
+                    select comment.created_by_id, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, 'COMMENTER' as role_code,new_notif.action_code
+                        from "sap.ino.db.comment::t_comment" as comment,
+                             :lt_notifications_new as new_notif
+                        inner join :lt_notification_receiver as notification_receiver
+                        on notification_receiver.action_code = new_notif.action_code
+                        where   
+                              comment.object_id = new_notif.object_id and notification_receiver.role_code = 'COMMENTER' and new_notif.object_type_code = comment.object_type_code
+                    union 
+                    -- generate follower for non-follow action 
+                    select follow.created_by_id, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, 'FOLLOWER' as role_code,new_notif.action_code
+                        from "sap.ino.db.follow::t_follow" as follow,
+                             :lt_notifications_new as new_notif
+                        inner join :lt_notification_receiver as notification_receiver
+                        on notification_receiver.action_code = new_notif.action_code
+                        where   
+                              follow.object_id = new_notif.object_id and new_notif.object_type_code = follow.object_type_code and notification_receiver.role_code = 'FOLLOWER'
+                    union 
+                    select role.identity_id, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, role.role_code,new_notif.action_code
+                        from "sap.ino.db.iam::t_object_identity_role" as role,
+                             :lt_notifications_new as new_notif
+                        where 
+                              ( role.object_type_code = 'IDEA' or role.object_type_code = 'CAMPAIGN' or role.object_type_code = 'EVAL_REQUEST_ITEM' or
+                                role.object_type_code = 'EVAL_REQUEST') and
+                              role.object_id = new_notif.object_id and new_notif.action_code = 'NOTIFY_AUTHOR' and role.role_code = 'IDEA_SUBMITTER'
+                     union 
+                     -- generate for follow action
+                    select new_notif.owner_id, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, 'FOLLOWER' AS role_code,new_notif.action_code
+                        from :lt_notifications_new as new_notif
+                        where new_notif.object_type_code = 'FOLLOW'
+                    union
+                     -- generate for follow up action
+                    select new_notif.actor_id, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, 'FOLLOW_UP_PERSON' AS role_code,new_notif.action_code
+                        from :lt_notifications_new as new_notif
+                        where new_notif.notification_code = 'IDEA_FOLLOW_UP'
+                     union 
+                    select new_notif.actor_id, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, 'VOLUNTEER' AS role_code,new_notif.action_code
+                        from :lt_notifications_new as new_notif
+                        where new_notif.action_code = 'ADD_VOLUNTEER'
+                     union 
+                    select INNO_MANAER.IDENTITY_ID, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, 'INNOVATION_MANAGER' AS role_code,new_notif.action_code
+                        from :lt_notifications_new as new_notif,
+                        (
+                            SELECT IDENTITY_ID FROM "sap.ino.db.iam::v_identity_static_roles" 
+                            where LOGICAL_ROLE_NAME = 'INNOVATION_MANAGER') AS INNO_MANAER
+                        where new_notif.action_code = 'CREATE_DRAFT_CAMPAIGN'
+                    union
+                    select role.identity_id, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, 'ASSIGNED_COACH' as role_code,new_notif.action_code
+                        from "sap.ino.db.iam::t_object_identity_role" as role,
+                             :lt_notifications_new as new_notif
+                        inner join :lt_notification_receiver as notification_receiver
+                        on notification_receiver.action_code = new_notif.action_code
+                        where role.role_code = 'IDEA_COACH' and 
+                        ( (role.object_id = new_notif.object_id and new_notif.object_type_code not in  ('EVAL_REQUEST_ITEM','EVAL_REQUEST')) or (role.object_id = new_notif.involved_id and new_notif.object_type_code  in  ('EVAL_REQUEST_ITEM','EVAL_REQUEST'))) and
+                        role.object_id = new_notif.object_id and role.object_type_code = 'IDEA' and notification_receiver.role_code = 'ASSIGNED_COACH'
+                    union
+                    select role.identity_id, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, 'ASSIGNED_EXPERT' as role_code,new_notif.action_code
+                        from "sap.ino.db.iam::t_object_identity_role" as role,
+                             :lt_notifications_new as new_notif
+                        inner join :lt_notification_receiver as notification_receiver
+                        on notification_receiver.action_code = new_notif.action_code
+                        where  role.role_code = 'IDEA_EXPERT' and 
+                        ( (role.object_id = new_notif.object_id and new_notif.object_type_code not in  ('EVAL_REQUEST_ITEM','EVAL_REQUEST')) or (role.object_id = new_notif.involved_id and new_notif.object_type_code  in  ('EVAL_REQUEST_ITEM','EVAL_REQUEST'))) and
+                        role.object_id = new_notif.object_id and role.object_type_code = 'IDEA' and notification_receiver.role_code = 'ASSIGNED_EXPERT'
+                    union
+                        SELECT DISTINCT
+                            role.identity_id AS identity_id, new_notif.id AS notification_id, new_notif.actor_id, new_notif.notification_code,'RL_EXPERT' AS role_code,new_notif.action_code
+                        FROM  
+                            :lt_notifications_new AS new_notif 
+                        INNER JOIN "sap.ino.db.idea::t_idea" as idea
+                            ON new_notif.OBJECT_ID = idea.ID
+                        INNER JOIN "sap.ino.db.subresponsibility::t_responsibility_value_stage" as resp_value
+                            ON idea.RESP_VALUE_CODE = resp_value.CODE 
+                        INNER JOIN "sap.ino.db.iam::t_object_identity_role" AS role
+                            ON resp_value.ID = role.OBJECT_ID
+                        inner join :lt_notification_receiver as notification_receiver
+                        on notification_receiver.action_code = new_notif.action_code
+                        WHERE 
+                            role.OBJECT_TYPE_CODE = 'RESPONSIBILITY'
+                            AND idea.RESP_VALUE_CODE IS NOT NULL and 
+                              role.role_code = 'RESP_EXPERT' and notification_receiver.role_code = 'RL_EXPERT'
+                    union
+                        SELECT DISTINCT
+                            role.identity_id AS identity_id, new_notif.id AS notification_id, new_notif.actor_id, new_notif.notification_code,'RL_COACH' AS role_code,new_notif.action_code
+                        FROM  
+                            :lt_notifications_new AS new_notif 
+                        INNER JOIN "sap.ino.db.idea::t_idea" as idea
+                            ON new_notif.OBJECT_ID = idea.ID
+                        INNER JOIN "sap.ino.db.subresponsibility::t_responsibility_value_stage" as resp_value
+                            ON idea.RESP_VALUE_CODE = resp_value.CODE 
+                        INNER JOIN "sap.ino.db.iam::t_object_identity_role" AS role
+                            ON resp_value.ID = role.OBJECT_ID
+                        inner join :lt_notification_receiver as notification_receiver
+                        on notification_receiver.action_code = new_notif.action_code
+                        WHERE 
+                            role.OBJECT_TYPE_CODE = 'RESPONSIBILITY'
+                            AND idea.RESP_VALUE_CODE IS NOT NULL and 
+                              role.role_code = 'RESP_COACH' and notification_receiver.role_code = 'RL_COACH'
+                    union
+                        SELECT DISTINCT
+                            role.identity_id AS identity_id, new_notif.id AS notification_id, new_notif.actor_id, new_notif.notification_code,role.ROLE_CODE AS role_code,new_notif.action_code
+                        FROM  
+                            :lt_notifications_new AS new_notif 
+                        INNER JOIN "sap.ino.db.campaign::t_campaign" as campaign
+                            ON new_notif.campaign_id = campaign.ID
+                        INNER JOIN "sap.ino.db.subresponsibility::t_responsibility_value_stage" as resp_value
+                            ON campaign.RESP_CODE = resp_value.RESP_CODE 
+                        INNER JOIN "sap.ino.db.iam::t_object_identity_role" AS role
+                            ON resp_value.ID = role.OBJECT_ID
+                        inner join :lt_notification_receiver as notification_receiver
+                        on notification_receiver.action_code = new_notif.action_code
+                        WHERE 
+                            role.OBJECT_TYPE_CODE = 'RESPONSIBILITY'
+                            AND campaign.RESP_CODE IS NOT NULL  and
+                              role.role_code = notification_receiver.role_code
+                    -- generate participants with filter conditions
+                    union 
+                        select  role.identity_id, new_notif.id as notification_id, new_notif.actor_id, new_notif.notification_code, role.role_code,new_notif.action_code
+                        from "sap.ino.db.iam::t_object_identity_role" as role,
+                             :lt_notifications_new as new_notif
+                        inner join :lt_notification_receiver as notification_receiver
+                        on notification_receiver.action_code = new_notif.action_code
+                        where new_notif.id not in (select id from :lt_notification_new_filter) and role.object_type_code = 'CAMPAIGN' and role.role_code = 'CAMPAIGN_USER' 
+                        and role.object_id = new_notif.campaign_id and role.role_code = notification_receiver.role_code
+                    
+                    -- generate follower of campaign when submit idea 
+                    UNION 
+                        SELECT follow.created_by_id AS identity_id, 
+                        	new_notif.id AS notification_id, 
+                        	new_notif.actor_id, 
+                        	new_notif.notification_code, 
+                        	'CAMPAIGN_FOLLOWER' AS role_code, 
+                        	new_notif.action_code
+                        FROM :lt_notification_receiver AS campaign_receiver
+                        	INNER JOIN :lt_notifications_new AS new_notif
+                        	    ON new_notif.ACTION_CODE = campaign_receiver.ACTION_CODE
+                        	INNER JOIN "sap.ino.db.follow::t_follow" AS follow
+                        	    ON follow.object_id = new_notif.CAMPAIGN_ID
+                        WHERE campaign_receiver.role_code = 'CAMPAIGN_FOLLOWER'
+                        	AND follow.object_type_code = 'CAMPAIGN'
+                    -- generate follower of tag which was used by campaign when publish campaign
+                    UNION 
+                        SELECT follow.created_by_id AS identity_id, 
+                        	new_notif.id AS notification_id, 
+                        	new_notif.actor_id, 
+                        	new_notif.notification_code, 
+                        	'TAG_FOLLOWER' AS role_code, 
+                        	new_notif.action_code
+                        FROM :lt_notification_receiver AS campaign_receiver
+                        	INNER JOIN :lt_notifications_new AS new_notif
+                      	        ON new_notif.ACTION_CODE = campaign_receiver.ACTION_CODE
+                        	INNER JOIN "sap.ino.db.tag::t_object_tag" AS tag
+                        	    ON tag.OBJECT_ID = new_notif.CAMPAIGN_ID
+                        	INNER JOIN "sap.ino.db.follow::t_follow" AS follow
+                        	    ON follow.object_id = tag.TAG_ID
+                        WHERE campaign_receiver.role_code = 'TAG_FOLLOWER'
+                        	AND follow.object_type_code = 'TAG'
+                        	AND tag.object_type_code = 'CAMPAIGN'
+                        ;
+
+    -- get group members from identities
+    lt_member = select member_id, group_id, lt_identities.notification_id, lt_identities.actor_id, lt_identities.notification_code, lt_identities.role_code
+                     from "sap.ino.db.iam::t_identity_group_member_transitive",
+                          :lt_identities as lt_identities
+                     where group_id = lt_identities.identity_id and
+                           group_id in ( select id from "sap.ino.db.iam::t_identity" 
+                                              where id in (select identity_id from :lt_identities) and 
+                                                    type_code = 'GROUP');
+
+
+    -- get users from identities and group members
+    lt_users = 
+        select distinct * from (
+            select t_identity.id as user_id, lt_identities.notification_id, lt_identities.actor_id, lt_identities.notification_code, lt_identities.role_code
+                    from "sap.ino.db.iam::t_identity" as t_identity,
+                         :lt_identities as lt_identities 
+                    where t_identity.id = lt_identities.identity_id and 
+                          type_code = 'USER'
+               union all
+               select member_id as user_id, notification_id, actor_id, notification_code, role_code
+                    from :lt_member as lt_member
+                    where lt_member.member_id in (select id as user_id
+                                                    from "sap.ino.db.iam::t_identity"
+                                                    where id in (select member_id from :lt_member) and 
+                                                          type_code = 'USER')
+        );
+
+    
+    -- lt_users = select user_id, notification_id, actor_id, notification_code, role_code from (
+    --     select user_id, notification_id, actor_id, notification_code, role_code, row_number() over (partition by user_id, notification_id order by ord asc) r
+    --     from (
+    --         select 
+    --             user.*, case when ord.ord is null then 5 else ord.ord end as ord
+    --         from 
+    --             :lt_users as user
+    --         left outer join (
+    --             select 'IDEA_SUBMITTER' as role_code, 0 as ord from dummy
+    --                 union all
+    --             select 'IDEA_CONTRIBUTOR' as role_code, 1 as ord from dummy
+    --                 union all
+    --             select 'IDEA_COACH' as role_code, 2 as ord from dummy
+    --                 union all
+    --             select 'IDEA_EXPERT' as role_code, 3 as ord from dummy
+    --                 union all
+    --             select 'RESP_COACH' as role_code, 4 as ord from dummy
+    --         ) as ord
+    --         on
+    --             ord.role_code = user.role_code
+    --     )
+    -- ) where r = 1;
+
+    -- write notification status
+    INSERT INTO "sap.ino.db.notification::t_notification_status"(ID,NOTIFICATION_ID,USER_ID,ROLE_CODE,STATUS_CODE,MAIL_STATUS_CODE)
+    SELECT 
+        "sap.ino.db.notification::s_notification_status".nextval AS id, 
+        users.notification_id, 
+        users.user_id, 
+        users.role_code, 
+        'UNREAD', 
+        'UNSENT'
+    FROM :lt_users as users,
+        :lt_notifications_new AS notification
+    WHERE 
+        notification.id = users.notification_id 
+        AND notification.action_code <> 'NOTIFY_AUTHOR' 
+        AND  notification.action_code <> 'SUBMIT_IDEA'
+    ORDER BY notification.event_at;
+    
+    lt_special_roles = SELECT 'ASSIGNED_COACH' AS ROLE_CODE FROM DUMMY
+        UNION
+        SELECT 'RL_COACH' AS ROLE_CODE FROM DUMMY
+        UNION
+        SELECT 'IDEA_COACH' AS ROLE_CODE FROM DUMMY
+        UNION
+        SELECT 'RESP_COACH' AS ROLE_CODE FROM DUMMY
+        UNION
+        SELECT 'CAMPAIGN_COACH' AS ROLE_CODE FROM DUMMY
+        UNION
+        SELECT 'IDEA_SUBMITTER' AS ROLE_CODE FROM DUMMY
+        UNION
+        SELECT 'IDEA_CONTRIBUTOR' AS ROLE_CODE FROM DUMMY
+        UNION
+        SELECT 'CAMPAIGN_MANAGER' AS ROLE_CODE FROM DUMMY;
+    
+    INSERT INTO "sap.ino.db.notification::t_notification_status"(ID,NOTIFICATION_ID,USER_ID,ROLE_CODE,STATUS_CODE,MAIL_STATUS_CODE)
+    SELECT 
+        "sap.ino.db.notification::s_notification_status".nextval AS id, 
+        users.notification_id, 
+        users.user_id, 
+        users.role_code, 
+        'UNREAD', 
+        'UNSENT'
+    FROM :lt_users as users
+    INNER JOIN :lt_notifications_new AS notification
+        ON  notification.id = users.notification_id AND  notification.action_code = 'SUBMIT_IDEA'	
+    WHERE EXISTS (SELECT camp.id
+    			FROM "sap.ino.db.campaign::t_campaign" AS camp
+    			WHERE notification.campaign_id = camp.id
+    				AND (camp.IS_BLACK_BOX IS NULL
+    					OR camp.IS_BLACK_BOX = 0
+    					OR (camp.IS_BLACK_BOX = 1 AND (users.ROLE_CODE IN (SELECT ROLE_CODE FROM :lt_special_roles)))))
+    	    AND EXISTS (SELECT camp.id
+    			FROM "sap.ino.db.campaign::t_campaign_phase" AS camp
+    			WHERE notification.campaign_id = camp.campaign_id
+    				AND camp.SEQUENCE_NO = 0
+    				AND (camp.SHOW_IDEA_IN_COMMUNITY = 1
+    					OR (camp.SHOW_IDEA_IN_COMMUNITY = 0 AND (users.ROLE_CODE IN (SELECT ROLE_CODE FROM :lt_special_roles)))))
+    ORDER BY notification.event_at ASC;
+    
+    
+    INSERT INTO "sap.ino.db.notification::t_notification_status"(ID,NOTIFICATION_ID,USER_ID,ROLE_CODE,STATUS_CODE,MAIL_STATUS_CODE)
+    SELECT 
+        "sap.ino.db.notification::s_notification_status".nextval AS id, 
+        users.notification_id, 
+        users.user_id, 
+        users.role_code, 
+        'READ', 
+        'UNSENT'
+    FROM :lt_users as users,
+        :lt_notifications_new AS notification
+    WHERE 
+        notification.id = users.notification_id 
+        AND notification.action_code = 'NOTIFY_AUTHOR'
+    ORDER BY notification.event_at;
+    
+    -- -- write notification status for delete idea
+    -- insert into "sap.ino.db.notification::t_notification_status"(ID,NOTIFICATION_ID,USER_ID,ROLE_CODE,STATUS_CODE,MAIL_STATUS_CODE)
+    --             select "sap.ino.db.notification::s_notification_status".nextval as id,
+    --                     new_notif.id,
+    --                     new_notif.owner_id,
+    --                     'IDEA_SUBMITTER', 'UNREAD', 'UNSENT'
+    --                     from "sap.ino.db.notification::t_notification" as new_notif
+    --                     where new_notif.status_code = 'NEW' and
+    --                           new_notif.notification_code = 'IDEA_DELETED' ;    
+    -- write notification status for follow
+    insert into "sap.ino.db.notification::t_notification_status"(ID,NOTIFICATION_ID,USER_ID,ROLE_CODE,STATUS_CODE,MAIL_STATUS_CODE)
+                select "sap.ino.db.notification::s_notification_status".nextval as id,
+                        new_notif.id,
+                        new_notif.owner_id,
+                        'FOLLOWER','UNREAD', 'SENT'
+                    from
+                        "sap.ino.db.notification::t_notification" as new_notif
+                    where
+                       new_notif.status_code = 'NEW'
+                   and
+                       new_notif.object_type_code = 'CAMPAIGN'
+                   and
+                      (new_notif.notification_code = 'FOLLOW_DATE_REACHED_SUBMIT_TO' or new_notif.notification_code = 'FOLLOW_DATE_REACHED_SUBMIT_FROM'
+                        or new_notif.notification_code = 'FOLLOW_DATE_REACHED_REGISTER_TO' or new_notif.notification_code = 'FOLLOW_DATE_REACHED_REGISTER_FROM'
+                        or new_notif.notification_code = 'FOLLOW_BLOG_MAJORPUBLISH' or new_notif.notification_code = 'FOLLOW_STATUS_ACTION_SUBMIT'
+                        or new_notif.notification_code = 'FOLLOW_DATE_REACHED_VALID_TO' ) ;
+    --write notification status for registration request
+    insert into "sap.ino.db.notification::t_notification_status"(ID,NOTIFICATION_ID,USER_ID,ROLE_CODE,STATUS_CODE,MAIL_STATUS_CODE)
+                select "sap.ino.db.notification::s_notification_status".nextval as id,
+                        new_notif.id,
+                        new_notif.actor_id,
+                        'APPLICANT','UNREAD', 'UNSENT'
+                    from
+                        "sap.ino.db.notification::t_notification" as new_notif
+                    where
+                      status_code = 'NEW'
+                    and new_notif.notification_code = 'CAMP_REGISTER_CREATED';
+    insert into "sap.ino.db.notification::t_notification_status"(ID,NOTIFICATION_ID,USER_ID,ROLE_CODE,STATUS_CODE,MAIL_STATUS_CODE)
+                select "sap.ino.db.notification::s_notification_status".nextval as id,
+                        new_notif.id,
+                        new_notif.owner_id,
+                        'APPLICANT','UNREAD', 'UNSENT'
+                    from
+                        "sap.ino.db.notification::t_notification" as new_notif
+                    where
+                       status_code = 'NEW'
+                    and new_notif.notification_code = 'CAMP_REGISTER_UPDATED';
+    -- insert into "sap.ino.db.notification::t_notification_status"(ID,NOTIFICATION_ID,USER_ID,ROLE_CODE,STATUS_CODE,MAIL_STATUS_CODE)
+    --             select "sap.ino.db.notification::s_notification_status".nextval as id,
+    --                     users.notification_id,
+    --                     users.user_id,
+    --                     'RECEIVER','UNREAD', 'UNSENT'
+    --                 from
+    --                     :lt_users as users,
+    --                     "sap.ino.db.notification::t_notification" as new_notif
+    --                 where
+    --                   status_code = 'NEW' and
+    --                   new_notif.notification_code = users.notification_code and
+    --                   new_notif.id = users.notification_id and
+    --                   ( new_notif.notification_code = 'EVAL_REQ_ITEM_CLARIFICATION_SENT' or new_notif.notification_code = 'EVAL_REQ_ITEM_CLARIFICATION_RECEIVED' or new_notif.notification_code = 'EVAL_REQ_ITEM_FORWARDED' );                    
+    -- --Get merged Votes tab
+    -- insert into "sap.ino.db.notification::t_notification_status"(ID,NOTIFICATION_ID,USER_ID,ROLE_CODE,STATUS_CODE,MAIL_STATUS_CODE)
+    --      select "sap.ino.db.notification::s_notification_status".nextval as id,idea_merge_voter.id,idea_merge_voter.user_id,'IDEA_VOTER','UNREAD', 'UNSENT' from 
+    --             (select  new_notif.id,
+    --                     idea_vote.user_id,
+    --                     new_notif.object_id,
+    --                     row_number() over (partition by user_id, object_id) as ROW
+    --                 from
+    --                     "sap.ino.db.notification::t_notification" as new_notif                        
+    --               inner join "sap.ino.db.idea::v_vote" as idea_vote on new_notif.involved_id = idea_vote.idea_id
+    --             where  new_notif.object_type_code = 'IDEA' 
+    --             and new_notif.status_code = 'NEW' 
+    --           and new_notif.notification_code = 'IDEA_RELATION_sap.ino.config.MERGED_SOURCE') AS idea_merge_voter where ROW = 1 ;  
+   -- update notification event latest time
+    update "sap.ino.db.notification::t_notification_latest_time"
+        set latest_event_at = (select max(event_at) from 
+                                   :lt_notifications_new)
+            where id = 1 and exists (select 1 from :lt_notifications_new WHERE event_at > latest_event_at);
+   -- set notifications from new to active
+    update "sap.ino.db.notification::t_notification"
+        set status_code = 'ACTIVE'
+        where id in (select id from :lt_notifications_new);
+    
+end;

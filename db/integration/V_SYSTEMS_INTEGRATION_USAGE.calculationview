@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_SYSTEMS_INTEGRATION_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="SCRIPT_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="V_SYSTEMS_INTEGRATION_USAGE"/>
+  <metadata changedAt="2019-09-24 14:37:32.236"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="NVARCHAR" id="API_TECHNICAL_NAME" length="128"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_NAME" length="128"/>
+        <viewAttribute datatype="INTEGER" id="USAGE_COUNT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition> 
+ /********* Begin Procedure Script ************/ 
+ BEGIN 
+ 	 var_out = 
+ 	 select
+ 	      technical_name as api_technical_name,
+ 	      campaign_id,
+ 	      object_name as campaign_name,
+ 	      usage_count
+ 	   from &quot;sap.ino.db.integration::v_system_integration_usage&quot;;	               
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="API_TECHNICAL_NAME" order="1">
+        <descriptions defaultDescription="api_technical_name"/>
+        <keyMapping columnObjectName="Script_View" columnName="API_TECHNICAL_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="2" semanticType="empty">
+        <descriptions defaultDescription="campaign_id"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="3">
+        <descriptions defaultDescription="campaign_name"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="USAGE_COUNT" order="4" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="usage_count"/>
+        <measureMapping columnObjectName="Script_View" columnName="USAGE_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

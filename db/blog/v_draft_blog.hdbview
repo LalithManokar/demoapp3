@@ -1,0 +1,5 @@
+schema = "SAP_INO";
+query  = "select blog.id as blog_id from \"sap.ino.db.blog::t_blog\" as blog where status_code = 'sap.ino.config.DRAFT'
+          with read only";
+          
+depends_on_table = ["sap.ino.db.blog::t_blog"];          

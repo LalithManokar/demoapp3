@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_CAMPAIGN_SEARCH_TEST2" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="Search for Campaigns"/>
+  <metadata changedAt="2017-12-14 11:29:49.082"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Token for Free Text Search"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="filterBackoffice" parameter="true">
+      <descriptions defaultDescription="Filter for Innovation Office"/>
+      <variableProperties datatype="TINYINT" defaultValue="0" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="SHORT_NAME" length="40"/>
+        <viewAttribute datatype="NVARCHAR" id="DESCRIPTION" length="5000"/>
+        <viewAttribute datatype="VARCHAR" id="LANG" length="2"/>
+        <viewAttribute datatype="TIMESTAMP" id="VALID_FROM"/>
+        <viewAttribute datatype="TIMESTAMP" id="VALID_TO"/>
+        <viewAttribute datatype="TIMESTAMP" id="SUBMIT_FROM"/>
+        <viewAttribute id="COMPLETED_IDEAS_COUNT" datatype="INTEGER"/>
+        <viewAttribute id="UNASSIGNED_IDEAS_COUNT" datatype="INTEGER"/>
+        <viewAttribute id="DISCONTINUED_IDEAS_COUNT" datatype="INTEGER"/>
+        <viewAttribute id="ALL_IDEAS_COUNT" datatype="INTEGER"/>
+        <viewAttribute id="PARTICIPANTS_COUNT" datatype="INTEGER"/>
+        <viewAttribute id="SUBMIT_TO" datatype="TIMESTAMP"/>
+        <viewAttribute id="REGISTER_FROM" datatype="TIMESTAMP"/>
+        <viewAttribute id="REGISTER_TO" datatype="TIMESTAMP"/>
+        <viewAttribute id="IS_OPEN_FOR_SUBMISSION" datatype="TINYINT"/>
+        <viewAttribute id="IS_OPEN_FOR_REGISTRATION" datatype="INTEGER"/>
+        <viewAttribute id="COLOR_CODE" datatype="VARCHAR" length="6"/>
+        <viewAttribute id="STATUS_CODE" datatype="VARCHAR" length="100"/>
+        <viewAttribute id="IS_BLACK_BOX" datatype="TINYINT"/>
+      
+        <viewAttribute id="VIEW_COUNT" datatype="INTEGER"/>
+      
+        <viewAttribute id="ACTIVE_PARTICIPANT_COUNT" datatype="INTEGER"/>
+        <viewAttribute id="RESP_CODE" datatype="VARCHAR" length="500"/>
+        <viewAttribute id="BLOG_COUNTS" datatype="INTEGER"/>
+      
+        <viewAttribute id="CHANGED_AT" datatype="TIMESTAMP"/>
+        <viewAttribute id="CREATED_AT" datatype="TIMESTAMP"/>
+        <viewAttribute id="REGISTER_STATUS" datatype="INTEGER"/>
+        <viewAttribute id="IS_REGIST_DISABLED" datatype="INTEGER"/>
+        <viewAttribute id="IS_OPEN_REGISTER_SETTING" datatype="INTEGER"/>
+        <viewAttribute id="FOLLOW" datatype="INTEGER"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <localVariable>#filterBackoffice</localVariable>
+      <definition>begin
+    
+    if length(:searchToken) = 0 then
+    lt_search_campaigns =  select id,1 as score
+        from &quot;sap.ino.db.campaign::t_campaign&quot; ;
+    else 
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.campaign::p_campaign_search_full&quot;(:searchToken, :lt_search_campaigns);
+    end if;
+   
+     v_managed_campaign = select id 
+                from &quot;sap.ino.db.campaign::t_campaign&quot; 
+                where :filterBackoffice = 0 
+            union all 
+            select distinct id 
+                from &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; 
+                where :filterBackoffice = 1;
+        
+    var_out = select
+                 search.score as search_score, 
+                 campaign.id,
+                 campaign.name,
+                 campaign.short_name,
+                 campaign.description as description,
+                 campaign.lang,
+                 campaign.valid_from,
+                 campaign.valid_to,
+                 campaign.submit_from,
+                 campaign.completed_ideas_count,
+                 campaign.unassigned_ideas_count,
+                 campaign.discontinued_ideas_count,
+                 campaign.all_ideas_count,
+                 campaign.participants_count,
+                 campaign.submit_to,
+                 campaign.register_from,
+                 campaign.register_to,
+                 campaign.is_open_for_submission,
+                 campaign.is_open_for_registration,
+                 campaign.color_code,
+                 campaign.status_code,
+                 campaign.is_black_box,
+                 ifnull(campaign.view_count,0) as view_count,
+                 campaign.active_participant_count,
+                 campaign.resp_code,
+                 camp_blog.blog_counts,
+                 campaign.changed_at,
+                 campaign.created_at,
+                 campaign.register_status,
+                 campaign.is_regist_disabled,
+                 campaign.IS_OPEN_REGISTER_SETTING,
+                 campaign.follow
+             from &quot;sap.ino.db.campaign.ext::v_ext_campaign_full_test&quot; as campaign 
+                inner join &quot;sap.ino.db.campaign::v_auth_campaigns_and_registrable&quot; as auth
+                    on campaign.id = auth.campaign_id
+                inner join :lt_search_campaigns as search
+                    on campaign.id = search.id
+                inner join :v_managed_campaign as filter
+                    on campaign.id = filter.id
+                left outer join &quot;sap.ino.db.campaign::V_CAMPAIGN_BLOG_COUNTS&quot; as camp_blog
+                    on  camp_blog.campaign_id = campaign.id AND camp_blog.status_code ='sap.ino.config.BLOG_PUBLISHED';
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions defaultDescription="Search Score"/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="3">
+        <descriptions defaultDescription="Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="SHORT_NAME" order="4">
+        <descriptions defaultDescription="Short Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="SHORT_NAME"/>
+      </attribute>
+      <attribute id="DESCRIPTION" order="5">
+        <descriptions defaultDescription="Description"/>
+        <keyMapping columnObjectName="Script_View" columnName="DESCRIPTION"/>
+      </attribute>
+      <attribute id="LANG" order="6">
+        <descriptions defaultDescription="Language"/>
+        <keyMapping columnObjectName="Script_View" columnName="LANG"/>
+      </attribute>
+      <attribute id="VALID_FROM" order="7">
+        <descriptions defaultDescription="Valid From"/>
+        <keyMapping columnObjectName="Script_View" columnName="VALID_FROM"/>
+      </attribute>
+      <attribute id="VALID_TO" order="8">
+        <descriptions defaultDescription="Valid To"/>
+        <keyMapping columnObjectName="Script_View" columnName="VALID_TO"/>
+      </attribute>
+      <attribute id="SUBMIT_FROM" order="9">
+        <descriptions defaultDescription="Submit From"/>
+        <keyMapping columnObjectName="Script_View" columnName="SUBMIT_FROM"/>
+      </attribute>
+      <attribute id="COMPLETED_IDEAS_COUNT" order="10">
+        <keyMapping columnObjectName="Script_View" columnName="COMPLETED_IDEAS_COUNT"/>
+      </attribute>
+      <attribute id="UNASSIGNED_IDEAS_COUNT" order="11">
+        <keyMapping columnObjectName="Script_View" columnName="UNASSIGNED_IDEAS_COUNT"/>
+      </attribute>
+      <attribute id="DISCONTINUED_IDEAS_COUNT" order="12">
+        <keyMapping columnObjectName="Script_View" columnName="DISCONTINUED_IDEAS_COUNT"/>
+      </attribute>
+      <attribute id="ALL_IDEAS_COUNT" order="13">
+        <keyMapping columnObjectName="Script_View" columnName="ALL_IDEAS_COUNT"/>
+      </attribute>
+      <attribute id="PARTICIPANTS_COUNT" order="14">
+        <keyMapping columnObjectName="Script_View" columnName="PARTICIPANTS_COUNT"/>
+      </attribute>
+      <attribute id="SUBMIT_TO" order="15">
+        <keyMapping columnObjectName="Script_View" columnName="SUBMIT_TO"/>
+      </attribute>
+      <attribute id="REGISTER_FROM" order="16">
+        <keyMapping columnObjectName="Script_View" columnName="REGISTER_FROM"/>
+      </attribute>
+      <attribute id="REGISTER_TO" order="17">
+        <keyMapping columnObjectName="Script_View" columnName="REGISTER_TO"/>
+      </attribute>
+      <attribute id="IS_OPEN_FOR_SUBMISSION" order="18">
+        <keyMapping columnObjectName="Script_View" columnName="IS_OPEN_FOR_SUBMISSION"/>
+      </attribute>
+      <attribute id="IS_OPEN_FOR_REGISTRATION" order="19">
+        <keyMapping columnObjectName="Script_View" columnName="IS_OPEN_FOR_REGISTRATION"/>
+      </attribute>
+      <attribute id="COLOR_CODE" order="20">
+        <keyMapping columnObjectName="Script_View" columnName="COLOR_CODE"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="21">
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="IS_BLACK_BOX" order="22">
+        <keyMapping columnObjectName="Script_View" columnName="IS_BLACK_BOX"/>
+      </attribute>
+    
+      <attribute id="VIEW_COUNT" order="23">
+    
+        <keyMapping columnObjectName="Script_View" columnName="VIEW_COUNT"/>
+    
+      </attribute>
+    
+      <attribute id="ACTIVE_PARTICIPANT_COUNT" order="24">
+    
+        <keyMapping columnObjectName="Script_View" columnName="ACTIVE_PARTICIPANT_COUNT"/>
+    
+      </attribute>
+      <attribute id="RESP_CODE" order="25">
+        <keyMapping columnObjectName="Script_View" columnName="RESP_CODE"/>
+      </attribute>
+    
+      <attribute id="BLOG_COUNTS" order="26" semanticType="empty">
+    
+        <keyMapping columnObjectName="Script_View" columnName="BLOG_COUNTS"/>
+    
+      </attribute>
+    
+      <attribute id="CHANGED_AT" order="27">
+    
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+    
+      </attribute>
+      <attribute id="CREATED_AT" order="28">
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="REGISTER_STATUS" order="29">
+        <descriptions defaultDescription="REGISTER_STATUS"/>
+        <keyMapping columnObjectName="Script_View" columnName="REGISTER_STATUS"/>
+      </attribute>
+      <attribute id="IS_REGIST_DISABLED" order="30">
+        <descriptions defaultDescription="IS_REGIST_DISABLED"/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_REGIST_DISABLED"/>
+      </attribute>
+      <attribute id="IS_OPEN_REGISTER_SETTING" order="31">
+        <descriptions defaultDescription="IS_OPEN_REGISTER_SETTING"/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_OPEN_REGISTER_SETTING"/>
+      </attribute>
+      <attribute id="FOLLOW" order="32">
+        <descriptions defaultDescription="FOLLOW"/>
+        <keyMapping columnObjectName="Script_View" columnName="FOLLOW"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

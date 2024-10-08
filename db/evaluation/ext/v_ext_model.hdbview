@@ -1,0 +1,8 @@
+schema = "SAP_INO_EXT";
+query = "
+select model.*
+from \"sap.ino.db.evaluation::t_model\" as model
+with read only 
+";
+
+depends_on_table = [ "sap.ino.db.evaluation::t_model"];

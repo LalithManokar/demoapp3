@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = "select idea_comment.*,
+                idea.name as idea_name,
+				idea.campaign_id as campaign_id, 
+				attachment.attachment_id as idea_title_image_id
+         from 
+             \"sap.ino.db.idea::v_idea_comment\" as idea_comment
+         inner join \"sap.ino.db.idea::t_idea\" as idea
+         	on idea.id = idea_comment.object_id
+	     left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as attachment 
+    	    on attachment.owner_id = idea.id and
+        	   attachment.owner_type_code = 'IDEA' and
+	           attachment.role_type_code = 'IDEA_TITLE_IMAGE'
+         with read only"; 
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment_assignment",
+                    "sap.ino.db.idea::t_idea"];
+
+depends_on_view  = ["sap.ino.db.idea::v_idea_comment"];

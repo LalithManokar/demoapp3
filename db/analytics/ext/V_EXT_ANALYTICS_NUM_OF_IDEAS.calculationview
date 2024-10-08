@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_NUM_OF_IDEAS" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <origin/>
+  <descriptions defaultDescription="V_EXT_ANALYTICS_NUM_OF_IDEAS"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="38"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.idea::t_idea" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_idea"/>
+    </DataSource>
+    <DataSource id="V_ANALYTICS_TEXT_CAMPAIGN_NAME" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_TEXT_CAMPAIGN_NAME</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.idea::v_auth_ideas_read" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::v_auth_ideas_read"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.iam::t_identity" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_identity"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_NAME"/>
+        <viewAttribute id="SUBMISSION_DATE"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="CAMPAIGN_NAME"/>
+        <viewAttribute id="CREATED_BY_ID"/>
+        <viewAttribute id="STATUS_CODE" transparentFilter="false"/>
+        <viewAttribute id="ID"/>
+        <viewAttribute hidden="true" id="JOIN$CAMPAIGN_ID$CAMPAIGN_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.idea::t_idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMISSION_DATE" source="CREATED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CREATED_BY_ID" source="CREATED_BY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_ID$CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+      </input>
+      <input node="#V_ANALYTICS_TEXT_CAMPAIGN_NAME">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_NAME" source="CAMPAIGN_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_ID$CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+      </input>
+      <joinAttribute name="JOIN$CAMPAIGN_ID$CAMPAIGN_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="IdeaWithCampaignName" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_NAME"/>
+        <viewAttribute id="SUBMISSION_DATE"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="CAMPAIGN_NAME"/>
+        <viewAttribute id="CREATED_BY_ID"/>
+        <viewAttribute id="STATUS_CODE" transparentFilter="false"/>
+        <viewAttribute id="ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_NAME" source="IDEA_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMISSION_DATE" source="SUBMISSION_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_NAME" source="CAMPAIGN_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CREATED_BY_ID" source="CREATED_BY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+      </input>
+      <filter>(&quot;STATUS_CODE&quot; !='sap.ino.config.DRAFT')</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_2" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="CREATED_BY_ID"/>
+        <viewAttribute id="CAMPAIGN_NAME"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="SUBMISSION_DATE"/>
+        <viewAttribute id="IDEA_NAME"/>
+        <viewAttribute hidden="true" id="JOIN$ID$IDEA_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#IdeaWithCampaignName">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CREATED_BY_ID" source="CREATED_BY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_NAME" source="CAMPAIGN_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMISSION_DATE" source="SUBMISSION_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_NAME" source="IDEA_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ID$IDEA_ID" source="ID"/>
+      </input>
+      <input node="#sap.ino.db.idea::v_auth_ideas_read">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ID$IDEA_ID" source="IDEA_ID"/>
+      </input>
+      <joinAttribute name="JOIN$ID$IDEA_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_3" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="IDEA_NAME"/>
+        <viewAttribute id="SUBMISSION_DATE"/>
+        <viewAttribute id="AUTHOR_NAME"/>
+        <viewAttribute id="AUTHOR_USER_NAME"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="CAMPAIGN_NAME"/>
+        <viewAttribute hidden="true" id="JOIN$CREATED_BY_ID$ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_2">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_NAME" source="IDEA_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMISSION_DATE" source="SUBMISSION_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_NAME" source="CAMPAIGN_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CREATED_BY_ID$ID" source="CREATED_BY_ID"/>
+      </input>
+      <input node="#sap.ino.db.iam::t_identity">
+        <mapping xsi:type="Calculation:AttributeMapping" target="AUTHOR_NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="AUTHOR_USER_NAME" source="USER_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CREATED_BY_ID$ID" source="ID"/>
+      </input>
+      <joinAttribute name="JOIN$CREATED_BY_ID$ID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_3">
+    <descriptions/>
+    <attributes>
+      <attribute id="IDEA_ID" hidden="false" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea ID"/>
+        <keyMapping columnObjectName="Join_3" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_NAME" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Name"/>
+        <keyMapping columnObjectName="Join_3" columnName="IDEA_NAME"/>
+      </attribute>
+      <attribute id="SUBMISSION_DATE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Submission Time"/>
+        <keyMapping columnObjectName="Join_3" columnName="SUBMISSION_DATE"/>
+      </attribute>
+      <attribute id="NAME" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Author Name"/>
+        <keyMapping columnObjectName="Join_3" columnName="AUTHOR_NAME"/>
+      </attribute>
+      <attribute id="USER_NAME" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Author User Name"/>
+        <keyMapping columnObjectName="Join_3" columnName="AUTHOR_USER_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping columnObjectName="Join_3" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping columnObjectName="Join_3" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures>
+      <measure id="IDEA_COUNT" hidden="false" order="8" aggregationType="sum" measureType="simple" aggregatable="true" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Number of Ideas"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="IDEA_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="120" y="180"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="120" y="616"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="IdeaWithCampaignName" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="120" y="520"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="120" y="410"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_3" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="120" y="290"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_IDENTITY_FULL" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <origin/>
+  <descriptions defaultDescription="V_ANALYTICS_IDENTITY_FULL"/>
+  <metadata changedAt="2016-08-10 16:21:42.596"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="IDENTITY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="IDENTITY_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="IDENTITY_FIRST_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="IDENTITY_LAST_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="IDENTITY_USER_NAME" length="256"/>
+        <viewAttribute datatype="NVARCHAR" id="IDENTITY_EMAIL" length="256"/>
+        <viewAttribute datatype="TINYINT" id="IDENTITY_IS_EXTERNAL"/>
+        <viewAttribute datatype="INTEGER" id="IDENTITY_IMAGE_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="IDENTITY_ORG" length="100"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition>begin
+    var_out = select identity.id as identity_id,
+                     identity.name as identity_name,
+                     identity.first_name as identity_first_name,
+                     identity.last_name as identity_last_name,
+                     identity.user_name as identity_user_name,
+                     identity.email as identity_email,
+                     identity.is_external as identity_is_external,
+                     identity.identity_image_id,
+                     identity.organization as identity_org
+               from
+                   &quot;sap.ino.db.iam::v_identity&quot; as identity
+               where
+                   identity.type_code = 'USER';
+end </definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="IDENTITY_ID" order="1" descriptionColumnName="IDENTITY_NAME">
+        <descriptions defaultDescription="Identity ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="IDENTITY_NAME" order="2">
+        <descriptions defaultDescription="Identity Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_NAME"/>
+      </attribute>
+      <attribute id="IDENTITY_FIRST_NAME" order="3">
+        <descriptions defaultDescription="First Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_FIRST_NAME"/>
+      </attribute>
+      <attribute id="IDENTITY_LAST_NAME" order="4">
+        <descriptions defaultDescription="Last Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_LAST_NAME"/>
+      </attribute>
+      <attribute id="IDENTITY_USER_NAME" order="5">
+        <descriptions defaultDescription="User Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_USER_NAME"/>
+      </attribute>
+      <attribute id="IDENTITY_EMAIL" order="6">
+        <descriptions defaultDescription="E-Mail Adress"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_EMAIL"/>
+      </attribute>
+      <attribute id="IDENTITY_IS_EXTERNAL" order="7">
+        <descriptions defaultDescription="Is External"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_IS_EXTERNAL"/>
+      </attribute>
+      <attribute id="IDENTITY_IMAGE_ID" order="8">
+        <descriptions defaultDescription="Identity Image ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_IMAGE_ID"/>
+      </attribute>
+      <attribute id="IDENTITY_ORG" order="9">
+        <descriptions defaultDescription="Identity Image ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_ORG"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

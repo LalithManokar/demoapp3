@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE; 
+table.temporary = true;
+table.description = "Table to transfer data between auto group procedures";
+table.columns = [
+    {name = "GROUP_NAME"; sqlType = NVARCHAR; length = 256; nullable = true; comment = "identifier";}
+];

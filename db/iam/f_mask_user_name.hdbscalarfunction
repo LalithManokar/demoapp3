@@ -1,0 +1,17 @@
+function "SAP_INO"."sap.ino.db.iam::f_mask_user_name"(USER_NAME NVARCHAR(256)) 
+	RETURNS userName NVARCHAR(256)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER AS
+BEGIN
+    IF(USER_NAME IS NULL OR LENGTH(USER_NAME) = 0) THEN
+        SELECT USER_NAME INTO userName FROM dummy;
+    ELSE
+      DECLARE LOCAL_VALUE NVARCHAR(5000);
+      SELECT value INTO  LOCAL_VALUE FROM "sap.ino.db.basis::v_local_system_setting_full" WHERE code = 'sap.ino.config.OPEN_MASK_USER_NAME_COMM_USER';
+	  IF(LOCAL_VALUE <> '1') THEN
+	    SELECT USER_NAME INTO userName FROM dummy;
+	  ELSE
+	    SELECT '********' INTO userName FROM dummy;
+	  END IF;
+	END IF;
+END;

@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.wall::t_wall_item_type";
+    file       = "sap.ino.db.wall:t_wall_item_type.csv";
+    header     = false;
+    delimField = ";";
+}]; 

@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Hana Query Hints";
+table.columns = [
+	{name = "HANA_VERSION"; sqlType = NVARCHAR; length = 256; nullable = false; comment = "Hana version";},
+	{name = "HANA_VERSION_SP"; sqlType = NVARCHAR; length = 16; nullable = false; comment = "Hana version sp";},
+	{name = "STATEMENT_HASH"; sqlType = VARCHAR; length = 32; nullable = false; comment = "MD5 hash value for STATEMENT_STRING";},
+	{name = "HINTS"; sqlType = NVARCHAR; length = 5000; nullable = false; comment = "Hints";},
+	{name = "STATEMENT"; sqlType = NCLOB; nullable = true; comment = "Statement String";}
+];
+table.primaryKey.pkcolumns = ["HANA_VERSION","HANA_VERSION_SP","STATEMENT_HASH"];

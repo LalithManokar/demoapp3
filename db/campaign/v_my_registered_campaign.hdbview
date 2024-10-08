@@ -1,0 +1,15 @@
+schema = "SAP_INO";
+query = "
+    select register.CAMPAIGN_ID
+    from
+        \"sap.ino.db.campaign::t_registration\" as register
+    inner join
+        \"sap.ino.db.iam::v_auth_application_user\" as auth_user
+    on
+        auth_user.id = register.APPLICANT_ID
+    and
+        register.STATUS = 'sap.ino.config.REGISTER_APPROVED'
+";
+
+depends_on_table = ["sap.ino.db.campaign::t_registration"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user"];

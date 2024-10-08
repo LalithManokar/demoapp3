@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "OBSOLETE: Use sap.ino.db.tag::t_object_tag";
+table.columns = [
+    {name = "ID";      sqlType = INTEGER; nullable = false;},
+    {name = "IDEA_ID"; sqlType = INTEGER; nullable = false;},
+    {name = "TAG_ID";  sqlType = INTEGER; nullable = false;}
+];
+table.primaryKey.pkcolumns = ["ID"];

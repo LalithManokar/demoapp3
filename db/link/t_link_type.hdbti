@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.link::t_link_type";
+    file       = "sap.ino.db.link:t_link_type.csv";
+    header     = false;
+    delimField = ";";
+}];

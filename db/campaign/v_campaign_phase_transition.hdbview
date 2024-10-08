@@ -1,0 +1,32 @@
+schema = "SAP_INO";
+query = "select phase_curr.campaign_id, 
+                phase_curr.phase_code as current_phase_code, 
+                phase_next.phase_code as next_phase_code, 
+                phase_next.status_code as next_init_status_code,
+                phase_prev.phase_code as prev_phase_code,
+                phase_prev.status_code as prev_init_status_code 
+        from \"sap.ino.db.campaign::t_campaign_phase\" as phase_curr 
+           left outer join (
+               select distinct campaign_phase.campaign_id, campaign_phase.phase_code, status.CODE as status_code 
+                   from \"sap.ino.db.campaign::t_campaign_phase\" as campaign_phase
+                   inner join \"sap.ino.db.status::t_status_model_transition\" as status_transition
+                   on campaign_phase.STATUS_MODEL_CODE = status_transition.STATUS_MODEL_CODE
+                   inner join \"sap.ino.db.status::t_status\" as status
+                   on status_transition.CURRENT_STATUS_CODE = status.CODE and (status.status_type = 'NEW' or status.code = 'sap.ino.config.NEW_IN_PHASE')
+           ) as phase_next 
+               on  phase_curr.campaign_id = phase_next.campaign_id and
+                   phase_curr.next_phase_code = phase_next.phase_code
+           left outer join (
+               select distinct campaign_phase.campaign_id, campaign_phase.phase_code, campaign_phase.next_phase_code, status.CODE as status_code 
+               from \"sap.ino.db.campaign::t_campaign_phase\" as campaign_phase
+                   inner join \"sap.ino.db.status::t_status_model_transition\" as status_transition
+                   on campaign_phase.STATUS_MODEL_CODE = status_transition.STATUS_MODEL_CODE
+                   inner join \"sap.ino.db.status::t_status\" as status
+                   on status_transition.CURRENT_STATUS_CODE = status.CODE and (status.status_type = 'NEW' or status.code = 'sap.ino.config.NEW_IN_PHASE')
+           ) as phase_prev 
+               on  phase_curr.campaign_id = phase_prev.campaign_id and
+                   phase_curr.phase_code = phase_prev.next_phase_code";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_phase",
+                    "sap.ino.db.status::t_status_model_transition",
+                    "sap.ino.db.status::t_status"];

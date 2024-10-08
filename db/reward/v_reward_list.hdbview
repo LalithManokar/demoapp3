@@ -1,0 +1,37 @@
+schema = "SAP_INO";
+query  = "
+          select 
+              reward_list.*,
+              status.default_text as reward_status_text,
+              phase.default_text as idea_phase_text,
+              idea.short_description as idea_description,
+              idea.name as idea_name,
+              reward_sum.reward_amount_total,
+              unit.default_text as reward_unit_text,
+              unit.default_long_text as reward_unit_description
+          from \"sap.ino.db.reward::t_reward_list\"  as reward_list
+          left outer join \"sap.ino.db.idea::t_idea\" as idea
+                on idea.id = reward_list.idea_id
+          left outer join \"sap.ino.db.status::t_status\" as status
+                on reward_list.status_code = status.code
+          left outer join \"sap.ino.db.campaign::t_phase\" as phase
+                on reward_list.idea_phase_code = phase.code
+          left outer join (
+            select reward_list2.id, sum(reward.reward_amount) as reward_amount_total
+                from \"sap.ino.db.reward::t_reward_list\"  as reward_list2
+            left outer join \"sap.ino.db.reward::t_reward\" as reward
+                on reward_list2.id = reward.reward_list_id
+            group by reward_list2.id
+          ) as reward_sum
+            on reward_sum.id = reward_list.id
+          left outer join \"sap.ino.db.basis::t_unit\" as unit
+                   on unit.code = reward_list.reward_unit
+           with read only"; 
+           
+depends_on_table = ["sap.ino.db.reward::t_reward_list",
+                    "sap.ino.db.status::t_status",
+					"sap.ino.db.campaign::t_phase",
+					"sap.ino.db.idea::t_idea",
+					"sap.ino.db.reward::t_reward",
+					"sap.ino.db.basis::t_unit"];
+					           

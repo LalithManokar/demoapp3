@@ -1,0 +1,222 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+	xmlns:ino="sap.ino.controls">
+	<l:Grid position="Left"  visible="{= ${view>/DISABLE_IDEA_IMAGE} &amp;&amp; !${device>/system/phone} &amp;&amp; ${view>/DISABLE_IDEA_IMAGE_HIDE_PHASE_BAR}}">
+		<VBox class="sapUiTinyMarginBeginEnd">
+			<HBox class="sapInoIdeaHeadVoteNoImageHeight">
+    			<ino:VoteNoImage
+            	    visible="{= !!${data>VOTE_TYPE_TYPE_CODE}}"
+                    enabled="{parts: [{path: 'object>STATUS'}, {path: 'object>VOTING_ACTIVE'},{path: 'object>PARTICIPANT_CAN_VOTE'},{path: 'object>OPEN_STATUS_SETTING'},{path: 'object>VOTING_HAS_PRIVILEGE'}], formatter: '.formatter.votingActive'}"
+    		        objectId="{object>ID}"
+    		        voteId="{object>VOTE_ID}"
+    		        tooltip="{parts: [{path: 'data>STATUS'},
+            						  {path: 'data>VOTING_HAS_PRIVILEGE'},
+            						  {path: 'data>VOTING_ACTIVE'},
+            						  {path: 'data>PHASE'},
+            						  {path: 'data>VOTE_TYPE_TYPE_CODE'},
+            						  {path: 'data>VOTE_COUNT'},
+            						  {path: 'data>SCORE'},
+            						  {path: 'data>USER_SCORE'},
+            						  {path: 'data>/DISPLAY_ONLY'},
+            						  {path: 'data>PARTICIPANT_CAN_VOTE'},
+            						  {path: 'data>OPEN_STATUS_SETTING'}], formatter: '.formatter.voteTooltip'}"
+    		        type="{object>VOTE_TYPE_TYPE_CODE}"
+    		        userVote="onUserVote"
+    		        value="{object>USER_SCORE}"
+    		        maxStar="{object>MAX_STAR_NO}"
+    		        />
+    		</HBox>
+			<HBox>
+				<ino:LabelledIcon
+			      visible="{:= ${path: 'data>NO', formatter: '.formatter.isUsageReportingActive'}}"
+			      iconUrl="sap-icon://show"
+			      label="{path: 'object>VIEW_COUNT', formatter: '.formatter.viewCount'}"
+			      tooltip="{i18n>COMMON_KYF_EXP_VIEWS}"/>
+				<ino:LabelledIcon
+			      iconUrl="sap-icon://comment"
+			      label="{path: 'object>COMMENT_COUNT', type:'sap.ui.model.type.Integer', formatOptions: {style: 'short'}}"
+			      tooltip="{i18n>COMMON_KYF_EXP_COMMENTS}"/>
+				<ino:LabelledIcon
+			      iconUrl="sap-icon://task"
+			      label="{path: 'object>EVALUATION_COUNT', type:'sap.ui.model.type.Integer', formatOptions: {style: 'short'}}"
+			      tooltip="{i18n>COMMON_KYF_EXP_EVALUATIONS}"/>
+				<ino:VoteDisplay
+			        likeVotes="{path: 'object>SCORE', formatter: '.formatter.toInt'}"
+			        negativeVotes="{path: 'object>NEG_VOTES', formatter: '.formatter.toInt'}"
+			        positiveVotes="{path: 'object>POS_VOTES', formatter: '.formatter.toInt'}"
+			        starVoteCount="{path: 'object>VOTE_COUNT', formatter: '.formatter.toInt'}"
+			        starVotes="{path: 'object>SCORE', formatter: '.formatter.toFloat'}"
+			        tooltip="{i18n>COMMON_KYF_EXP_VOTES}"
+			        type="{object>VOTE_TYPE_TYPE_CODE}"/>
+			</HBox>
+			<layoutData>
+				<l:GridData span="XL2 L2 M3 S12"/>
+			</layoutData>
+		</VBox>
+		<VBox class="sapUiTinyMarginBeginEnd">
+			<layoutData>
+				<l:GridData span="XL3 L3 M4 S12"/>
+			</layoutData>
+			<ino:ProcessIndicator 
+                    processSteps="{object>STEPS}"
+                    currentStep="{object>STEP}"
+                    displaySvg="{= !${view>/DISABLE_IDEA_IMAGE_HIDE_PHASE_BAR}}"
+                    processStopped="{parts: ['object>STATUS', 'object>STATUS_TYPE'], formatter: '.formatter.isIdeaProcessStoped'}"
+                    isDraft="{path: 'object>STATUS', formatter: '.formatter.isDraft'}"
+                    tooltip="{path: 'object>PHASE', formatter: '.formatter.ideaPhase'}"
+                    phase="{path: 'object>PHASE', formatter: '.formatter.ideaPhase'}"
+                    status="{path: 'object>STATUS', formatter: '.formatter.ideaStatus'}"
+                    displayStatus="{= ${view>/DISABLE_IDEA_IMAGE_HIDE_PHASE_BAR}}"
+                    visibleNewFlag="{=!!${object>SHOW_STATUSCHANGE_VIEWER}}"/>
+			<items>
+				<List class="sapInoStatusReasonLink" showNoData="false" items="{ path: 'object>Decisions', length: 1, sorter: [{path: 'ID', descending: true}]}">
+					<items>
+						<CustomListItem type="Active" press="onOpenDecisionQuickView">
+							<HBox visible="{parts: ['object>PHASE_CODE', 'object>STATUS_CODE', 'data>PHASE', 'data>STATUS',
+                                          'object>DECISION_REASON_LIST_VISIBLE', 'object>REASON_CODE',
+                                          'object>/property/nodes/Root/customProperties/backofficeCampaignPrivilege','object>REASON'], formatter:'.formatter.decisionQuickViewVisibility'}">
+								<Label text="{i18n>IDEA_OBJECT_FLD_DECISION}" class="sapUiTinyMarginEnd sapInoChangeDecisionBtnDistance"/>
+								<Link text="{i18n>IDEA_OBJECT_FLD_DECISION_DETAILS}" press="onOpenDecisionQuickView" class="sapInoChangeDecisionBtnDistance"/>
+							</HBox>
+						</CustomListItem>
+					</items>
+				</List>
+				<HBox visible="{= ${object>LINK_IDEA_STATUS} ? true : false }">
+					<Label text="{i18n>IDEA_OBJECT_TIT_LEADING_IDEA_STATUS}:&#xA0;"/>
+					<Text text="{parts: ['object>LINK_IDEA_STATUS'], formatter:'.formatter.ideaStatus'}"/>
+				</HBox>
+				<HBox visible="{= ${object>LINK_IDEA_NAME} ? true : false }">
+					<Label text="{i18n>IDEA_OBJECT_TIT_LEADING_IDEA_NAME}:&#xA0;"/>
+					<Link text="{object>LINK_IDEA_NAME}" press="onIdeaPressed" href="{path: 'object>LINK_IDEA_ID', formatter: '.formatter.ideaNavigationLink'}"/>
+				</HBox>
+			</items>
+		</VBox>
+		<VBox class="sapUiTinyMarginBeginEnd">
+			<layoutData>
+				<l:GridData span="XL3 L3 M6 S12" linebreakM="false"/>
+			</layoutData>
+			<items>
+				<HBox>
+					<Label text="{i18n>IDEA_OBJECT_TIT_SUBMITTED_AT}:&#xA0;"/>
+					<Text text="{parts: ['object>CREATED_AT', 'object>CREATED_AT'], formatter:'.formatter.alternativeDate'}"/>
+					<!--core:Icon src="sap-icon://InoIcons/idea-news"  class="sapInoIdeaLatestUpdateNewIcon" tooltip="{i18n>IDEA_OBJECT_LATEST_CREATE_NEW}" visible="{=!!${object>SHOW_CREATED_VIEWER}}"/-->
+				</HBox>
+				<HBox>
+					<Label text="{i18n>IDEA_OBJECT_TIT_CHANGED_ON}:&#xA0;"/>
+					<Text text="{parts: ['object>CHANGED_AT', 'object>CHANGED_AT'], formatter:'.formatter.alternativeDate'}"/>
+                    <core:Icon src="sap-icon://InoIcons/idea-news"  class="sapInoIdeaLatestUpdateNewIcon" tooltip="{i18n>IDEA_OBJECT_LATEST_UPDATE_NEW}" visible="{=!!${object>SHOW_UPDATED_VIEWER}}"/>
+				</HBox>
+				<HBox visible="{= ${object>FOLLOW_UP_DATE} ? true : false }">
+					<Label
+                        labelFor="ideaFollowUpDate"
+                        text="{i18n>IDEA_OBJECT_TIT_FOLLOW_UP_HEADER}:&#xA0;"/>
+					<Text
+                        class="sapInoIdeaFollowUpDate"
+                        text="{path: 'object>FOLLOW_UP_DATE', formatter: '.formatter.followUpDateHeader'}">
+						<customData>
+							<!-- writeToDom: looks funny, but prevents an error of writeToDom check if model is undefined -->
+							<core:CustomData
+                                key="passed"
+                                value="{path: 'object>FOLLOW_UP_DATE', formatter: '.formatter.followUpDateHeaderColor'}"
+                                writeToDom="{= ${object>FOLLOW_UP_DATE} === ${object>FOLLOW_UP_DATE} }"/>
+						</customData>
+					</Text>
+				</HBox>
+			</items>
+		</VBox>
+		<VBox class="sapUiTinyMarginBeginEnd">
+			<layoutData>
+				<l:GridData span="XL3 L3 M6 S12" linebreakM="false"/>
+			</layoutData>
+			<items>
+				<HBox visible="{= ${object>SUBMITTER_ID} > 0}">
+					<Label text="{i18n>IDEA_OBJECT_TIT_IDEA_Author}:&#xA0;"/>
+					<Link text="{object>SUBMITTER_NAME}" tooltip="{parts: ['object>SUBMITTER_NAME']}" press="onAuthorPressed">
+					</Link>
+				</HBox>
+				<HBox visible="{= ${object>SUBMITTER_ID} === 0}">
+					<Label text="{i18n>IDEA_OBJECT_TIT_IDEA_Author}:&#xA0;"/>
+					<Text text="{i18n>IDEA_OBJECT_TIT_IDEA_Anonymity}"/>
+				</HBox>
+				<HBox visible="{= ${view>/CO_AUTHOR} &amp;&amp; ${object>SUBMITTER_ID} > 0}">
+					<Label text="{i18n>IDEA_OBJECT_TIT_IDEA_CO_Author}:&#xA0;"/>
+					<!--Text  class="sapInoIdeaDisplayNowrap"
+					    tooltip="{parts: ['object>Contributors'], formatter:'.formatter.aContributorsTostring'}" 
+					    text="{parts: ['object>Contributors'], formatter:'.formatter.aContributorsTostring'}" / -->
+					<Link text="{parts: ['object>Contributors'], formatter:'.formatter.aContributorsFirstPerson'}"  tooltip="{parts: ['object>Contributors'], formatter:'.formatter.aContributorsTostring'}"  press="onCoauthorPressed"> 
+					</Link>
+				</HBox>
+				<HBox visible="{= ${object>SUBMITTER_ID} === 0}">
+					<Label text="{i18n>IDEA_OBJECT_TIT_IDEA_CO_Author}:&#xA0;"/>
+					<Text  class="sapInoIdeaDisplayNowrap"
+					    text="{i18n>IDEA_OBJECT_TIT_IDEA_Anonymity}" />
+				</HBox>
+				<HBox visible="{= ${object>COACH_ID} > 0}">
+					<Label text="{i18n>IDEA_OBJECT_TIT_IDEA_COACH}:&#xA0;" />
+				    <Link  tooltip="{parts: ['object>COACH_NAME']}" text="{parts: ['object>COACH_NAME']}" press="onCoachPressed" />
+				</HBox>
+			</items>
+		</VBox>
+		<core:ExtensionPoint name="extension_header_grid"/>				
+	</l:Grid>
+	<VBox  visible="{= ${view>/DISABLE_IDEA_IMAGE} &amp;&amp; ${device>/system/phone} &amp;&amp; ${view>/DISABLE_IDEA_IMAGE_HIDE_PHASE_BAR}}" class="sapInoPhoneIdeaText">
+		<VBox>
+			<HBox>
+				<Label text="{i18n>IDEA_OBJECT_TIT_STATUS}:&#xA0;"/>
+				<Text  text="{parts: ['object>STATUS', 'object>STATUS_COLOR'], formatter: '.formatter.ideaStatusColor'}"/>
+			</HBox>
+			<HBox>
+				<Label text="{i18n>IDEA_OBJECT_TIT_PHASE}:&#xA0;"/>
+				<Text text="{path: 'object>PHASE', formatter: '.formatter.ideaPhase'}"/>
+			</HBox>
+			<HBox visible="{= ${object>FOLLOW_UP_DATE} ? true : false }">
+				<Label
+                        labelFor="ideaFollowUpDate"
+                        text="{i18n>IDEA_OBJECT_TIT_FOLLOW_UP_HEADER}:&#xA0;"/>
+				<Text
+                        class="sapInoIdeaFollowUpDate"
+                        text="{path: 'object>FOLLOW_UP_DATE', formatter: '.formatter.followUpDateHeader'}">
+					<customData>
+						<!-- writeToDom: looks funny, but prevents an error of writeToDom check if model is undefined -->
+						<core:CustomData
+                                key="passed"
+                                value="{path: 'object>FOLLOW_UP_DATE', formatter: '.formatter.followUpDateHeaderColor'}"
+                                writeToDom="{= ${object>FOLLOW_UP_DATE} === ${object>FOLLOW_UP_DATE} }"/>
+					</customData>
+				</Text>
+			</HBox>
+		</VBox>
+		<core:ExtensionPoint name="extension_header_grid"/>
+		<VBox visible="{device>/system/phone}">
+			<layoutData>
+				<l:GridData span="XL1 L1 S1"/>
+			</layoutData>
+			<items>
+    			<ino:VoteNoImage
+        		    visible="{= !!${data>VOTE_TYPE_TYPE_CODE}}"
+                    enabled="{parts: [{path: 'object>STATUS'}, {path: 'object>VOTING_ACTIVE'},{path: 'object>PARTICIPANT_CAN_VOTE'},{path: 'object>OPEN_STATUS_SETTING'},{path: 'object>VOTING_HAS_PRIVILEGE'}], formatter: '.formatter.votingActive'}"
+    		        objectId="{object>ID}"
+    		        voteId="{object>VOTE_ID}"
+    		        tooltip="{parts: [{path: 'data>STATUS'},
+            						  {path: 'data>VOTING_HAS_PRIVILEGE'},
+            						  {path: 'data>VOTING_ACTIVE'},
+            						  {path: 'data>PHASE'},
+            						  {path: 'data>VOTE_TYPE_TYPE_CODE'},
+            						  {path: 'data>VOTE_COUNT'},
+            						  {path: 'data>SCORE'},
+            						  {path: 'data>USER_SCORE'},
+            						  {path: 'data>/DISPLAY_ONLY'},
+            						  {path: 'data>PARTICIPANT_CAN_VOTE'},
+            						  {path: 'data>OPEN_STATUS_SETTING'}], formatter: '.formatter.voteTooltip'}"
+    		        type="{object>VOTE_TYPE_TYPE_CODE}"
+    		        userVote="onUserVote"
+    		        value="{object>USER_SCORE}"
+    		        maxStar="{object>MAX_STAR_NO}"
+    		        />	            
+			</items>
+		</VBox>
+	</VBox>
+	<core:ExtensionPoint name="extension_header_line"/>		
+</core:FragmentDefinition>

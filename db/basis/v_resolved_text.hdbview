@@ -1,0 +1,38 @@
+schema = "SAP_INO";
+query = 
+    "select object_name, text_id, content from (
+        select object_name, text_id, content, row_number() over (partition by text_id order by layer desc, ord asc) r
+        from (
+            select 
+                tc.object_name, tc.text_id, tc.lang, tc.content, case when ext.layer is null then 0 else ext.layer end as layer, o.ord
+            from 
+                _sys_repo.active_content_text_content as tc
+            left outer join 
+                \"sap.ino.db.basis::t_package_extension\" as ext
+            on
+                ext.ext_package_id = tc.package_id
+            cross join (
+                select session_context('LOCALE') as lang, 1 as ord from dummy
+                    union all
+                select substr(session_context('LOCALE'),0,2) as lang, 1 as ord from dummy
+                    union all
+                select iso_code as lang, 2 as ord from \"sap.ino.db.basis::v_sys_default_language\"
+                    union all
+                select '' as lang, 3 as ord from dummy
+            ) as o
+            where
+                o.lang = tc.lang
+        )
+    ) where r = 1
+    union all
+    select 't_phase' as object_name, code as text_id, default_text as content from
+        \"sap.ino.db.campaign::t_phase\" where code not in (select text_id from _sys_repo.active_content_text_content)
+    union all
+    select 't_status' as object_name, code as text_id, default_text as content from
+        \"sap.ino.db.status::t_status\" where code not in (select text_id from _sys_repo.active_content_text_content)
+    union all
+    select 't_unit' as object_name, code as text_id, default_text as content from
+        \"sap.ino.db.basis::t_unit\" where code not in (select text_id from _sys_repo.active_content_text_content)";
+
+depends_on_table = ["sap.ino.db.basis::t_package_extension", "sap.ino.db.campaign::t_phase", "sap.ino.db.status::t_status", "sap.ino.db.basis::t_unit"];
+depends_on_view = ["sap.ino.db.basis::v_sys_default_language"];

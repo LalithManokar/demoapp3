@@ -1,0 +1,63 @@
+schema = "SAP_INO";
+query = "
+    select activities.campaign_id,
+        year ( current_date ) || '-' || month ( current_date ) as year_month,
+        campaign_views as campaign_views,
+        idea_views as idea_views,
+        sum(submitted) as submitted,
+        sum(completed) as completed,
+        sum(discontinued) as discontinued,
+        sum(merged) as merged
+    from (
+        select campaign.id as campaign_id,
+            case when idea_h.history_biz_event = 'STATUS_ACTION_SUBMIT' then 1 else 0 end as submitted,
+            case when idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.COMPLETE' and idea.status_code = 'sap.ino.config.COMPLETED' then 1 else 0 end as completed,
+            case when idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.DISCONTINUE' and idea.status_code = 'sap.ino.config.DISCONTINUED' then 1 else 0 end as discontinued,
+            case when idea_h.history_biz_event = 'RELATION_UPDATED' and idea.status_code = 'sap.ino.config.MERGED' then 1 else 0 end as merged
+        from (
+            select id, history_biz_event, max( history_at ) from 
+                \"sap.ino.db.idea::t_idea_h\"
+            where 
+                year ( history_at ) = year ( current_date ) and
+                month ( history_at ) = month ( current_date ) and
+                history_biz_event in ('RELATION_UPDATED', 'STATUS_ACTION_sap.ino.config.DISCONTINUE', 'STATUS_ACTION_sap.ino.config.COMPLETE', 'STATUS_ACTION_SUBMIT')
+            group by id, history_biz_event
+        ) as idea_h
+        inner join \"sap.ino.db.idea::t_idea\" as idea
+            on idea_h.id = idea.id
+        right outer join \"sap.ino.db.campaign::t_campaign\" as campaign
+            on campaign.id = idea.campaign_id    
+    ) as activities
+    full outer join (
+        select object_id,
+            sum (views) as campaign_views
+        from \"sap.ino.db.tracker::t_object_views\"
+        where object_type = 'CAMPAIGN'
+            and year = year ( current_date )
+            and month = month ( current_date )
+            and application is not null and application <> ''
+        group by object_id            
+    ) as campaign_views
+        on activities.campaign_id = campaign_views.object_id
+    full outer join (
+        select
+            campaign_id,
+            sum (views) as idea_views
+        from \"sap.ino.db.tracker::t_object_views\" as views
+        inner join \"sap.ino.db.idea::t_idea\" as idea
+            on views.object_id = idea.id
+            and views.object_type = 'IDEA'
+            and year = year ( current_date )
+            and month = month ( current_date )
+            and application is not null and application <> ''
+        group by campaign_id
+    ) as idea_views
+        on activities.campaign_id = idea_views.campaign_id
+        where activities.campaign_id is not null
+    group by activities.campaign_id, campaign_views, idea_views
+    with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea",
+                    "sap.ino.db.idea::t_idea_h",
+                    "sap.ino.db.tracker::t_object_views",
+                    "sap.ino.db.campaign::t_campaign"];

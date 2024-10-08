@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO";
+table.description = "Input table for assigning roles to users";
+table.tableType = ROWSTORE;
+table.temporary = true;
+table.columns = [
+    {name = "ID";           sqlType = INTEGER; nullable = false; comment = "technical identifier";}
+];

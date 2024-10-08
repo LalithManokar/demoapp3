@@ -1,0 +1,7 @@
+schema = "SAP_INO";
+query = "SELECT *
+    FROM \"sap.ino.db.integration::t_campaign_integration_api_attributes_layout\" ORDER BY DISPLAY_SEQUENCE ASC
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.integration::t_campaign_integration_api_attributes_layout"];   

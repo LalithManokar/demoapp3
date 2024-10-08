@@ -1,0 +1,10 @@
+procedure "SAP_INO"."sap.ino.db.notification::p_notification_settings_cleanup" () 
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    -- delete all notifications which do not have any identity reference any more
+    lt_orphaned_notification_settings_id = select id from "sap.ino.db.notification::t_notification_settings" where identity_id not in (select id from "sap.ino.db.iam::t_identity");
+    delete from "sap.ino.db.notification::t_notification_settings" where id in (select id from :lt_orphaned_notification_settings_id);
+end;

@@ -1,0 +1,25 @@
+schema = "SAP_INO";
+query = "select distinct idea.id as id,
+           case   when idea.CAMPAIGN_ID in (select id from\"sap.ino.db.idea::v_auth_idea_vote\") and 
+           ((not exists(select code from\"sap.ino.db.status::v_status_authorization_setting\" as status_setting where status_setting.value = 1 and status_setting.code = idea.status_code)) or(
+            idea.status_code in(select code as status_code from\"sap.ino.db.status::v_status_authorization_setting\" where value = 1)
+            and idea.id in (select distinct idea_id as id from\"sap.ino.db.status::v_auth_campaign_authorization_underStatus\" as campaign_underStatus
+                where campaign_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and campaign_underStatus.VALUE = 1
+                and campaign_underStatus.action_code = 'IDEA_VOTE' and campaign_underStatus.can_do_action = 1
+                UNION ALL 
+              select distinct idea_id as id from\"sap.ino.db.status::v_auth_idea_authorization_underStatus\" as idea_underStatus
+                where idea_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and idea_underStatus.VALUE = 1
+                and idea_underStatus.action_code = 'IDEA_VOTE' and idea_underStatus.can_do_action = 1)))
+            then 1
+            else 0
+            end as voting_active
+	from \"sap.ino.db.idea::t_idea\" as idea
+";
+
+depends_on_table = ["sap.ino.db.idea::t_idea"];
+depends_on_view = ["sap.ino.db.status::v_auth_campaign_authorization_underStatus",
+                    "sap.ino.db.status::v_status_authorization_setting",
+                    "sap.ino.db.idea::v_auth_idea_vote",
+                    "sap.ino.db.status::v_auth_campaign_authorization_underStatus",
+                    "sap.ino.db.status::v_auth_idea_authorization_underStatus",
+                    "sap.ino.db.status::v_status_authorization_setting"];

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_CAMPAIGN" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" runWithInvokerPrivileges="false" scriptParametersCaseSensitive="true">
+  <origin/>
+  <descriptions defaultDescription="V_ANALYTICS_CAMAPAIGNS_FULL"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_STATUS_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ALL_IDEAS_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_DRAFT_IDEAS_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_DISCONTINUED_IDEAS_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_COMPLETED_IDEAS_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_UNASSIGNED_IDEAS_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_PARTICIPANTS_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_VISITOR_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ACTIVE_PARTICIPANTS_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_VIEW_COUNT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition>begin
+    var_out = select campaign.id as campaign_id,
+                     campaign.status_code as campaign_status_code,
+                     campaign.all_ideas_count as campaign_all_ideas_count,
+                     campaign.draft_ideas_count as campaign_draft_ideas_count,
+                     campaign.discontinued_ideas_count as campaign_discontinued_ideas_count,
+                     campaign.completed_ideas_count as campaign_completed_ideas_count,
+                     campaign.unassigned_ideas_count as campaign_unassigned_ideas_count,
+                     campaign.participants_count as campaign_participants_count,
+                     campaign.visitor_count as campaign_visitor_count,
+                     campaign.active_participant_count as campaign_active_participants_count,
+                     campaign.view_count as campaign_view_count
+               from
+                   &quot;sap.ino.db.campaign::v_campaign_full&quot; as campaign
+               where
+                   campaign.status_code != 'sap.ino.config.CAMP_DRAFT';
+end </definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="CAMPAIGN_ID" order="1">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_STATUS_CODE" order="2">
+        <descriptions defaultDescription="Campaign Status Code"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_STATUS_CODE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="CAMPAIGN_ALL_IDEAS_COUNT" order="3" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Submitted Ideas"/>
+        <measureMapping columnObjectName="Script_View" columnName="CAMPAIGN_ALL_IDEAS_COUNT"/>
+      </measure>
+      <measure id="CAMPAIGN_DRAFT_IDEAS_COUNT" order="4" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Draft Ideas"/>
+        <measureMapping columnObjectName="Script_View" columnName="CAMPAIGN_DRAFT_IDEAS_COUNT"/>
+      </measure>
+      <measure id="CAMPAIGN_DISCONTINUED_IDEAS_COUNT" order="5" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Discontinued Ideas"/>
+        <measureMapping columnObjectName="Script_View" columnName="CAMPAIGN_DISCONTINUED_IDEAS_COUNT"/>
+      </measure>
+      <measure id="CAMPAIGN_COMPLETED_IDEAS_COUNT" order="6" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Completed Ideas"/>
+        <measureMapping columnObjectName="Script_View" columnName="CAMPAIGN_COMPLETED_IDEAS_COUNT"/>
+      </measure>
+      <measure id="CAMPAIGN_UNASSIGNED_IDEAS_COUNT" order="7" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Unassigned Ideas"/>
+        <measureMapping columnObjectName="Script_View" columnName="CAMPAIGN_UNASSIGNED_IDEAS_COUNT"/>
+      </measure>
+      <measure id="CAMPAIGN_PARTICIPANTS_COUNT" order="8" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Participants"/>
+        <measureMapping columnObjectName="Script_View" columnName="CAMPAIGN_PARTICIPANTS_COUNT"/>
+      </measure>
+      <measure id="CAMPAIGN_VISITOR_COUNT" order="9" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Active Participants"/>
+        <measureMapping columnObjectName="Script_View" columnName="CAMPAIGN_VISITOR_COUNT"/>
+      </measure>
+      <measure id="CAMPAIGN_ACTIVE_PARTICIPANTS_COUNT" order="10" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Participants"/>
+        <measureMapping columnObjectName="Script_View" columnName="CAMPAIGN_ACTIVE_PARTICIPANTS_COUNT"/>
+      </measure>
+      <measure id="CAMPAIGN_VIEW_COUNT" order="11" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Views"/>
+        <measureMapping columnObjectName="Script_View" columnName="CAMPAIGN_VIEW_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

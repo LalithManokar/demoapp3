@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="v_wall_global_search" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="Campaign Search"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Free text search token"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable></localVariables>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="5000"/>
+        <viewAttribute datatype="TINYINT" id="IS_LOCKED"/>
+        <viewAttribute datatype="VARCHAR" id="WALL_TYPE_CODE" length="5000"/>
+        <viewAttribute datatype="VARCHAR" id="BACKGROUND_IMAGE_URL" length="5000"/>
+        <viewAttribute datatype="DOUBLE" id="BACKGROUND_IMAGE_ZOOM"/>
+        <viewAttribute datatype="DOUBLE" id="BACKGROUND_IMAGE_POSITION_X"/>
+        <viewAttribute datatype="DOUBLE" id="BACKGROUND_IMAGE_POSITION_Y"/>
+        <viewAttribute datatype="DOUBLE" id="BACKGROUND_IMAGE_WIDTH"/>
+        <viewAttribute datatype="DOUBLE" id="BACKGROUND_IMAGE_HEIGHT"/>
+        <viewAttribute datatype="TINYINT" id="BACKGROUND_IMAGE_REPEAT"/>
+        <viewAttribute datatype="VARCHAR" id="BACKGROUND_COLOR" length="100"/>
+        <viewAttribute datatype="INTEGER" id="BACKGROUND_IMAGE_ATTACHMENT_ID"/>
+        <viewAttribute datatype="INTEGER" id="VIEW_COUNT"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CREATED_BY_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY_LAST_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY_FIRST_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY_EMAIL" length="256"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CHANGED_BY_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY_LAST_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY_FIRST_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY_EMAIL" length="256"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>begin
+
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.wall::p_wall_search&quot;(:searchToken, :lt_search_wall);
+
+    var_out = select 
+				    search.score as search_score, 
+    				wall.id,
+			        wall.name,
+					case when wall_assignment.id is null then 0 else 1 end as is_locked,
+			        wall.wall_type_code,
+			        wall.background_image_url,
+			        wall.background_image_zoom,
+			        wall.background_image_position_x,
+			        wall.background_image_position_y,
+			        wall.background_image_width,
+			        wall.background_image_height,
+			        wall.background_image_repeat,
+			        wall.background_color,
+                    assignment.attachment_id as background_image_attachment_id, 
+			        wall.view_count,
+			        
+			        wall.created_at,
+			        wall.created_by_id,
+			        wall.created_by_name,
+			        wall.created_by_last_name,
+			        wall.created_by_first_name,
+			        wall.created_by_email,
+			
+			        wall.changed_at,
+			        wall.changed_by_id,
+			        wall.changed_by_name,
+			        wall.changed_by_last_name,
+			        wall.changed_by_first_name,
+			        wall.changed_by_email
+    			from &quot;sap.ino.db.wall::v_wall&quot; as wall 
+	            inner join &quot;sap.ino.db.wall::v_auth_wall_read&quot; as auth 
+    	            on wall.id = auth.wall_id
+                inner join :lt_search_wall as search
+                    on wall.id = search.id
+                left outer join &quot;sap.ino.db.attachment::t_attachment_assignment&quot; as assignment
+                    on assignment.owner_id = wall.id and assignment.role_type_code = 'WALL_BG_IMAGE'
+				left outer join &quot;sap.ino.db.wall::t_wall_assignment&quot; as wall_assignment
+					on wall_assignment.wall_id = wall.id
+					order by search_score desc;
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions defaultDescription="Search Score"/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="3">
+        <descriptions defaultDescription="Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="IS_LOCKED" order="4">
+        <descriptions defaultDescription="IS_LOCKED"/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_LOCKED"/>
+      </attribute>
+      <attribute id="WALL_TYPE_CODE" order="5">
+        <descriptions defaultDescription="WALL_TYPE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="WALL_TYPE_CODE"/>
+      </attribute>
+      <attribute id="BACKGROUND_IMAGE_URL" order="6">
+        <descriptions defaultDescription="BACKGROUND_IMAGE_URL"/>
+        <keyMapping columnObjectName="Script_View" columnName="BACKGROUND_IMAGE_URL"/>
+      </attribute>
+      <attribute id="BACKGROUND_IMAGE_ZOOM" order="7">
+        <descriptions defaultDescription="BACKGROUND_IMAGE_ZOOM"/>
+        <keyMapping columnObjectName="Script_View" columnName="BACKGROUND_IMAGE_ZOOM"/>
+      </attribute>
+      <attribute id="BACKGROUND_IMAGE_POSITION_X" order="8">
+        <descriptions defaultDescription="BACKGROUND_IMAGE_POSITION_X"/>
+        <keyMapping columnObjectName="Script_View" columnName="BACKGROUND_IMAGE_POSITION_X"/>
+      </attribute>
+      <attribute id="BACKGROUND_IMAGE_POSITION_Y" order="9">
+        <descriptions defaultDescription="BACKGROUND_IMAGE_POSITION_Y"/>
+        <keyMapping columnObjectName="Script_View" columnName="BACKGROUND_IMAGE_POSITION_Y"/>
+      </attribute>
+      <attribute id="BACKGROUND_IMAGE_WIDTH" order="10">
+        <descriptions defaultDescription="BACKGROUND_IMAGE_WIDTH"/>
+        <keyMapping columnObjectName="Script_View" columnName="BACKGROUND_IMAGE_WIDTH"/>
+      </attribute>
+      <attribute id="BACKGROUND_IMAGE_HEIGHT" order="11">
+        <descriptions defaultDescription="BACKGROUND_IMAGE_HEIGHT"/>
+        <keyMapping columnObjectName="Script_View" columnName="BACKGROUND_IMAGE_HEIGHT"/>
+      </attribute>
+      <attribute id="BACKGROUND_IMAGE_REPEAT" order="12">
+        <descriptions defaultDescription="BACKGROUND_IMAGE_REPEAT"/>
+        <keyMapping columnObjectName="Script_View" columnName="BACKGROUND_IMAGE_REPEAT"/>
+      </attribute>
+      <attribute id="BACKGROUND_COLOR" order="13">
+        <descriptions defaultDescription="BACKGROUND_COLOR"/>
+        <keyMapping columnObjectName="Script_View" columnName="BACKGROUND_COLOR"/>
+      </attribute>
+      <attribute id="BACKGROUND_IMAGE_ATTACHMENT_ID" order="14">
+        <descriptions defaultDescription="BACKGROUND_IMAGE_ATTACHMENT_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="BACKGROUND_IMAGE_ATTACHMENT_ID"/>
+      </attribute>
+      <attribute id="VIEW_COUNT" order="15">
+        <descriptions defaultDescription="VIEW_COUNT"/>
+        <keyMapping columnObjectName="Script_View" columnName="VIEW_COUNT"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="16">
+        <descriptions defaultDescription="CREATED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CREATED_BY_ID" order="17">
+        <descriptions defaultDescription="CREATED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="CREATED_BY_NAME" order="18">
+        <descriptions defaultDescription="CREATED_BY_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_NAME"/>
+      </attribute>
+      <attribute id="CREATED_BY_LAST_NAME" order="19">
+        <descriptions defaultDescription="CREATED_BY_LAST_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_LAST_NAME"/>
+      </attribute>
+      <attribute id="CREATED_BY_FIRST_NAME" order="20">
+        <descriptions defaultDescription="CREATED_BY_FIRST_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_FIRST_NAME"/>
+      </attribute>
+      <attribute id="CREATED_BY_EMAIL" order="21">
+        <descriptions defaultDescription="CREATED_BY_EMAIL"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_EMAIL"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="22">
+        <descriptions defaultDescription="CHANGED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="23">
+        <descriptions defaultDescription="CHANGED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_BY_NAME" order="24">
+        <descriptions defaultDescription="CHANGED_BY_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_NAME"/>
+      </attribute>
+      <attribute id="CHANGED_BY_LAST_NAME" order="25">
+        <descriptions defaultDescription="CHANGED_BY_LAST_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_LAST_NAME"/>
+      </attribute>
+      <attribute id="CHANGED_BY_FIRST_NAME" order="26">
+        <descriptions defaultDescription="CHANGED_BY_FIRST_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_FIRST_NAME"/>
+      </attribute>
+      <attribute id="CHANGED_BY_EMAIL" order="27">
+        <descriptions defaultDescription="CHANGED_BY_EMAIL"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_EMAIL"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

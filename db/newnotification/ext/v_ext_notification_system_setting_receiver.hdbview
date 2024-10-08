@@ -1,0 +1,7 @@
+schema = "SAP_INO";
+query = "SELECT *
+    FROM \"sap.ino.db.newnotification::v_notification_system_setting_receiver\"
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.newnotification::v_notification_system_setting_receiver"];   

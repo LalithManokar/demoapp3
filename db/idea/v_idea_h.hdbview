@@ -1,0 +1,25 @@
+schema = "SAP_INO";
+query = "select 
+                idea_hc.history_db_event,
+                idea_hc.history_biz_event,
+                idea_hc.history_at,
+                idea_hc.history_actor_id,
+                idea_hc.id,
+                case idea_hc.created_at     when idea_hb.created_at     then null else idea_hc.created_at       end as created_at,
+                case idea_hc.created_by_id  when idea_hb.created_by_id  then null else idea_hc.created_by_id    end as created_by_id,
+                case idea_hc.changed_at     when idea_hb.changed_at     then null else idea_hc.changed_at       end as changed_at,
+                case idea_hc.changed_by_id  when idea_hb.changed_by_id  then null else idea_hc.changed_by_id    end as changed_by_id,
+                case idea_hc.name           when idea_hb.name           then null else idea_hc.name             end as name,
+                -- NCLOBs can only be compared with like
+                case when idea_hc.description like idea_hb.description  then null else idea_hc.description      end as description,
+                case idea_hc.campaign_id    when idea_hb.campaign_id    then null else idea_hc.campaign_id      end as campaign_id,
+                case idea_hc.phase_code     when idea_hb.phase_code  then null else idea_hc.phase_code          end as phase_code,
+                case idea_hc.status_code    when idea_hb.status_code then null else idea_hc.status_code         end as status_code 
+from (
+    select *, lag(history_at, 1, NULL) over (partition by id order by history_at asc ) as predecessor
+        from \"sap.ino.db.idea::t_idea_h\") as idea_hc 
+    left outer join \"sap.ino.db.idea::t_idea_h\" as idea_hb
+        on idea_hc.predecessor = idea_hb.history_at and 
+            idea_hc.id = idea_hb.id  with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea_h"];

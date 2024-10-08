@@ -1,0 +1,87 @@
+schema = "SAP_INO";
+query = "
+    select 
+        idea.id,
+        idea.name,
+        idea.created_at,
+        idea.changed_at,
+        to_date(idea.changed_at) as changed_at_dt,
+        to_date(idea.submitted_at) as submitted_at_dt,
+        ifnull(created_viewer.show_icon,0) as show_created_viewer,
+        ifnull(updated_viewer.show_icon,0) as show_updated_viewer,
+        ifnull(comment_viewer.show_icon,0) as show_comment_viewer,
+        ifnull(status_viewer.show_icon,0) as show_statuschange_viewer,
+        idea.campaign_id,
+        idea.phase_code as phase,
+        idea.status_code as status,
+        idea.evaluation_count,
+        evaluation.changed_at as last_publ_eval_at,
+        case
+            when status_obj.status_type is null then ''
+            else status_obj.status_type
+        end as status_type,
+        ifnull(vote.vote_count,0) as vote_count,
+        cast (vote.score as double) as score,
+        vote.exp_score,
+        idea.resp_value_code,
+        responsibility_value.default_text as resp_value_name,
+        campaign.form_code as campaign_form_code,
+        campaign.admin_form_code as campaign_admin_form_code,
+        --idea_follow.id as follow,
+        follow_up.date as follow_up_date,
+        to_date(follow_up.date) as follow_up_at_dt,
+        follow_up.id as follow_up_id,
+        idea_author.identity_id as submitter_id,
+        idea_caoch.identity_id as coach_id
+    from 
+        \"sap.ino.db.idea::t_idea\" as idea 
+    /*inner join
+    	\"sap.ino.db.idea::v_auth_ideas_read\" as auth_ideas
+    	on idea.id = auth_ideas.idea_id*/
+    left outer join \"sap.ino.db.followup::v_follow_up\" as follow_up 
+        on follow_up.object_type_code = 'IDEA' and
+           follow_up.object_id = idea.id
+    left outer join \"sap.ino.db.status::t_status\" as status_obj
+        on idea.status_code = status_obj.CODE
+    left outer join \"sap.ino.db.idea::v_vote_idea_score\" as vote
+        on vote.idea_id = idea.id 
+    left outer join \"sap.ino.db.campaign::t_campaign\" as campaign 
+        on campaign.id = idea.campaign_id
+    left outer join \"sap.ino.db.idea::v_idea_last_published_evaluation\" as last_publ_evaluation
+        on idea.id = last_publ_evaluation.id
+    left outer join \"sap.ino.db.evaluation::t_evaluation\" as evaluation
+        on last_publ_evaluation.evaluation_id = evaluation.id
+    left outer join \"sap.ino.db.subresponsibility::v_responsibility_value\" as responsibility_value
+    on idea.resp_value_code = responsibility_value.code
+    left outer join \"sap.ino.db.idea.optimize::v_idea_anonymous_submitter\" as idea_author   
+    on idea_author.idea_id = idea.id	
+    left outer join \"sap.ino.db.idea::v_idea_coach\" as idea_caoch
+    on idea_caoch.idea_id = idea.id
+    left outer join (select distinct object_id ,show_icon from \"sap.ino.db.idea::v_idea_latest_for_created_viewer\") as created_viewer
+    on created_viewer.object_id = idea.id
+    left outer join (select distinct object_id ,show_icon from\"sap.ino.db.idea::v_idea_latest_for_updated_viewer\") as updated_viewer
+    on updated_viewer.object_id = idea.id
+    left outer join (select distinct object_id ,show_icon from\"sap.ino.db.idea::v_idea_latest_for_comment_viewer\") as comment_viewer
+    on comment_viewer.object_id = idea.id
+    left outer join (select distinct object_id ,show_icon from\"sap.ino.db.idea::v_idea_latest_for_statuschange_viewer\") as status_viewer
+    on status_viewer.object_id = idea.id
+  
+";
+
+depends_on_table = [
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.status::t_status",
+                    "sap.ino.db.evaluation::t_evaluation"
+                    ];
+
+depends_on_view = ["sap.ino.db.idea::v_vote_idea_score",
+                    "sap.ino.db.subresponsibility::v_responsibility_value",
+                    "sap.ino.db.idea::v_idea_last_published_evaluation",
+                   "sap.ino.db.idea::v_idea_latest_for_created_viewer",
+                    "sap.ino.db.idea::v_idea_latest_for_updated_viewer",
+                    "sap.ino.db.idea::v_idea_latest_for_comment_viewer",
+                    "sap.ino.db.idea::v_idea_latest_for_statuschange_viewer",
+                    "sap.ino.db.followup::v_follow_up",
+                    "sap.ino.db.idea.optimize::v_idea_anonymous_submitter",
+                    "sap.ino.db.idea::v_idea_coach"]; 

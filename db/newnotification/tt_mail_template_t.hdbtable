@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Language dependend Mail Template";
+table.columns = [
+    {name = "PACKAGE_ID";        sqlType = NVARCHAR; length = 256; nullable = false; comment = "Package where content is delivered from";},
+    {name = "CODE";              sqlType = VARCHAR;  length = 500; nullable = false; comment = "Mail Template Identifier";},
+	{name = "MAIL_TEMPLATE_CODE";sqlType = VARCHAR;  length = 500; nullable = false; comment = "Template the language specific content belongs to. Foreign key to t_mail_template.code";},
+	{name = "LANG";              sqlType = VARCHAR;  length = 5;   nullable = false; comment = "Language. Foreign key to t_lang.CODE";},
+	{name = "TEMPLATE";          sqlType = NCLOB;                  nullable = true;  comment = "Template Text";}
+];
+table.primaryKey.pkcolumns = ["PACKAGE_ID", "CODE"];

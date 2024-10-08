@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="v_session_user_role_transitive" applyPrivilegeType="NONE" dataCategory="DEFAULT" schemaVersion="2.3" defaultClient="$$client$$" visibility="internal" calculationScenarioType="TREE_BASED" enforceSqlExecution="false">
+<descriptions defaultDescription="v_session_user_role_transitive"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="sap.ino.db.iam::t_object_identity_role" type="DATA_BASE_TABLE">
+    <viewAttributes allViewAttributes="true"/>
+    <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_object_identity_role"/>
+  </DataSource>
+  <DataSource id="sap.ino.db.iam::v_group_member_transitive" type="DATA_BASE_VIEW">
+    <viewAttributes allViewAttributes="true"/>
+    <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_group_member_transitive"/>
+  </DataSource>
+  <DataSource id="sap.ino.db.iam::v_auth_application_user" type="DATA_BASE_VIEW">
+    <viewAttributes allViewAttributes="true"/>
+    <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_auth_application_user"/>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="OBJECT_ID"/>
+      <viewAttribute id="OBJECT_TYPE_CODE"/>
+      <viewAttribute id="ROLE_CODE"/>
+      <viewAttribute id="MEMBER_ID"/>
+      <viewAttribute id="JOIN$IDENTITY_ID$MEMBER_ID" hidden="true"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="#sap.ino.db.iam::t_object_identity_role">
+      <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$IDENTITY_ID$MEMBER_ID" source="IDENTITY_ID"/>
+    </input>
+    <input node="#sap.ino.db.iam::v_group_member_transitive">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBER_ID" source="MEMBER_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$IDENTITY_ID$MEMBER_ID" source="MEMBER_ID"/>
+    </input>
+    <joinAttribute name="JOIN$IDENTITY_ID$MEMBER_ID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_2" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="OBJECT_ID"/>
+      <viewAttribute id="OBJECT_TYPE_CODE"/>
+      <viewAttribute id="ROLE_CODE"/>
+      <viewAttribute id="MEMBER_ID"/>
+      <viewAttribute id="JOIN$ID$MEMBER_ID" hidden="true"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="#sap.ino.db.iam::v_auth_application_user">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ID$MEMBER_ID" source="ID"/>
+    </input>
+    <input node="#Join_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MEMBER_ID" source="MEMBER_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ID$MEMBER_ID" source="MEMBER_ID"/>
+    </input>
+    <joinAttribute name="JOIN$ID$MEMBER_ID"/>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Join_2">
+  <attributes>
+    <attribute id="OBJECT_ID" order="1" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="OBJECT_ID"/>
+      <keyMapping columnObjectName="Join_2" columnName="OBJECT_ID"/>
+    </attribute>
+    <attribute id="OBJECT_TYPE_CODE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="OBJECT_TYPE_CODE"/>
+      <keyMapping columnObjectName="Join_2" columnName="OBJECT_TYPE_CODE"/>
+    </attribute>
+    <attribute id="ROLE_CODE" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ROLE_CODE"/>
+      <keyMapping columnObjectName="Join_2" columnName="ROLE_CODE"/>
+    </attribute>
+    <attribute id="MEMBER_ID" order="4" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MEMBER_ID"/>
+      <keyMapping columnObjectName="Join_2" columnName="MEMBER_ID"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <sharedDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="47" y="224"/>
+      <rectangleSize height="30" width="140"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="231" y="221"/>
+      <rectangleSize height="30" width="140"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

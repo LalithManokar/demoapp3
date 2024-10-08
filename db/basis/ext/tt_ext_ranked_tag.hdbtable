@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO_EXT";
+table.tableType = COLUMNSTORE;
+table.temporary = true;
+table.description = "tag names and ranks for use in tag cloud";
+table.columns = [
+    {name = "ID";   sqlType = INTEGER;               nullable = false; comment = "Human readable identifier";},
+    {name = "NAME"; sqlType = NVARCHAR; length = 50; nullable = false; comment = "Name of the tag";},
+    {name = "RANK"; sqlType = INTEGER;               nullable = false; comment = "rank of the tag starting with 1";}
+];

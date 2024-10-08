@@ -1,0 +1,10 @@
+schema = "SAP_INO_EXT";
+query = "select 
+        source_id,
+        id,
+        edit_distance,
+        name,
+        usage_count
+from \"sap.ino.db.tag::v_tag_similarity\" with read only";
+
+depends_on_view = ["sap.ino.db.tag::v_tag_similarity"];

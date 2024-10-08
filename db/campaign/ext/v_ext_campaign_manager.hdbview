@@ -1,0 +1,16 @@
+schema = "SAP_INO_EXT";
+query = "select  manager.campaign_id,
+        manager.id,
+        manager.identity_id, 
+        manager.name,
+        manager.user_name,
+        manager.is_external,
+        manager.type_code,
+        manager.description,
+        manager.image_id,
+        manager.email,
+        manager.erased          
+        from \"sap.ino.db.campaign::v_campaign_manager\" as manager
+            join \"sap.ino.db.campaign::v_auth_campaigns_and_registrable\" as auth
+                on manager.campaign_id = auth.campaign_id";
+depends_on_view = ["sap.ino.db.campaign::v_campaign_manager", "sap.ino.db.campaign::v_auth_campaigns","sap.ino.db.campaign::v_auth_campaigns_and_registrable"];

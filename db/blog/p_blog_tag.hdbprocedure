@@ -1,0 +1,14 @@
+procedure "SAP_INO"."sap.ino.db.blog::p_blog_tag" (
+     in  it_blog_id  SAP_INO."sap.ino.db.basis::tt_object_id",
+     out ot_blog_tag SAP_INO."sap.ino.db.basis::tt_object_tag"
+) 
+ language sqlscript
+ sql security invoker
+ default schema SAP_INO
+ reads sql data as
+begin
+    -- determine all relevant tag / blog combinations
+    ot_blog_tag = select tag.object_id as id, tag.tag_id 
+                           from "sap.ino.db.tag::t_object_tag" as tag, :it_blog_id as blog
+                           where tag.object_id = blog.id and tag.object_type_code = 'BLOG';
+end;

@@ -1,0 +1,9 @@
+schema = "SAP_INO_EXT";
+query  = "
+          select *
+            from \"sap.ino.db.evaluation::v_evaluation_request_response_time\" as evaluation_request
+          where evaluation_request.id in (select EVAL_REQ_ITEM_ID from \"sap.ino.db.evaluation::v_auth_evaluation_request_item_read\" )
+    with read only";
+    
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request_response_time",
+                   "sap.ino.db.evaluation::v_auth_evaluation_request_item_read"];

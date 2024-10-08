@@ -1,0 +1,55 @@
+schema = "SAP_INO";
+query = "
+    SELECT
+        idea.id as idea_id,
+        campaign.id as campaign_id,
+        campaign_phase.phase_code as campaign_phase_code,
+        model.code as model_code,
+        evaluation.id as evaluation_id,
+        evaluation.created_at as evaluation_created_at,
+        evaluation.created_by_id as evaluation_created_by_id,
+        evaluation.changed_at as evaluation_changed_at,
+        evaluation.changed_by_id as evaluation_changed_by_id,
+        evaluation.status_code as evaluation_status_code,
+        evaluation.comment as evaluation_comment,
+        criterion.code as criterion_code,
+        criterion.datatype_code as criterion_datatype_code,
+        criterion.is_overall_result as criterion_is_overall_result,
+        criterion.VALUE_OPTION_LIST_CODE,
+        criterion_value.text_value as criterion_text_value,
+        case criterion.datatype_code
+           when 'BOOLEAN' then criterion_value.bool_value
+           when 'INTEGER' then criterion_value.num_value
+           when 'NUMERIC' then criterion_value.num_value
+         end as criterion_value,
+         case criterion.datatype_code
+           when 'BOOLEAN' then CAST(criterion_value.bool_value AS NVARCHAR(1024))
+           when 'INTEGER' then CAST(criterion_value.num_value AS NVARCHAR(1024))
+           when 'NUMERIC' then CAST(criterion_value.num_value AS NVARCHAR(1024))
+           when 'TEXT' then criterion_value.text_value
+         end as criterion_all_value
+    FROM \"sap.ino.db.idea::t_idea\" as idea
+    INNER JOIN \"sap.ino.db.campaign::t_campaign\" as campaign
+          ON idea.campaign_id = campaign.id
+    INNER JOIN \"sap.ino.db.campaign::t_campaign_phase\" as campaign_phase 
+          ON campaign.id = campaign_phase.campaign_id
+    INNER JOIN \"sap.ino.db.evaluation::t_model\" as model
+          ON campaign_phase.evaluation_model_code = model.code
+    INNER JOIN \"sap.ino.db.evaluation::t_criterion\" as criterion
+          ON model.code = criterion.model_code
+    LEFT OUTER JOIN \"sap.ino.db.evaluation::t_evaluation\" as evaluation
+          ON idea.id = evaluation.idea_id and 
+             campaign_phase.phase_code = evaluation.idea_phase_code and 
+             evaluation.status_code <> 'sap.ino.config.EVAL_DRAFT'
+    LEFT OUTER JOIN \"sap.ino.db.evaluation::t_criterion_value\" as criterion_value
+          ON evaluation.id = criterion_value.evaluation_id and
+             criterion.code = criterion_value.criterion_code
+    with read only";
+
+depends_on_table = ["sap.ino.db.evaluation::t_criterion_value", 
+                    "sap.ino.db.evaluation::t_criterion",
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.campaign::t_campaign_phase",
+                    "sap.ino.db.evaluation::t_model",
+                    "sap.ino.db.evaluation::t_evaluation"];

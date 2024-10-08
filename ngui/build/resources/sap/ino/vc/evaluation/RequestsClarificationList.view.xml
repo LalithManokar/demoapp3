@@ -1,0 +1,49 @@
+<core:View
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:control="sap.ino.controls"
+    controllerName="sap.ino.vc.evaluation.RequestsClarificationList"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<List headerText="{i18n>EVALUATIONREQUESTS_HEADER_MIT_CLARIFICATION}"
+	    visible="{=${object>ExpertsClarifications}.length > 0}" 
+        items="{path : 'object>ExpertsClarifications', templateShareable: false, sorter:[{path: 'CREATED_AT', descending: false}]}"
+        id="clarificationsList">
+		<CustomListItem>
+			<control:EvalRequestFeedListItem
+    			    senderPress="onOpenCreatorInFirstClarification"
+		            iconPress="onOpenCreatorInFirstClarification"
+				    class="sapInoEvalRequestOutter"
+                    sender="{object>CREATED_BY_NAME}"
+                    icon="{ path:'object>CREATED_BY_IMAGE_ID', formatter:'.formatter.userIcon' }"
+                    iconDensityAware="false"
+                    timestamp="{path: 'object>CREATED_AT', type: 'sap.ui.model.type.Date', formatOptions: { relative: true}}"
+                    text="{object>CONTENT}" />
+			<VBox class="sapInoEvalRequestInner">
+				<List
+					visible="{=${object>Communications}.length > 0}" 
+					items="{path : 'object>Communications', templateShareable: false, sorter:[{path: 'CREATED_AT', descending: false}]}">
+					<control:EvalRequestFeedListItem
+    			            senderPress="onOpenCreatorInClarification"
+    			            iconPress="onOpenCreatorInClarification"
+                            sender="{object>CREATED_BY_NAME}"
+                            icon="{ path:'object>CREATED_BY_IMAGE_ID', formatter:'.formatter.userIcon' }"
+                            iconDensityAware="false"
+                            timestamp="{path: 'object>CREATED_AT', type: 'sap.ui.model.type.Date', formatOptions: { relative: true}}"
+                            text="{object>CONTENT}" />
+				</List>
+				<FeedInput 
+			        visible="{=${object>CLARIFICATION_ENABLED}===1}"
+                    post="onClarificationSubmit"
+                    placeholder="{i18n>EVAL_REQ_REPLY_INPUT_PLACEHOLDER}"
+                    icon="{ path:'view>/USER_IMAGE_ID', formatter:'.formatter.userIcon' }"
+                    class="sapUiSmallMarginTopBottom"
+                    maxLength="{object>/meta/nodes/Root/attributes/COMMENT/maxLength}">
+					<customData>
+						<core:CustomData key="ID" value="{object>EVAL_REQ_ITEM_ID}" />
+						<core:CustomData key="ToIdentity" value="{object>CREATED_BY_ID}" />
+					</customData>
+				</FeedInput>
+			</VBox>
+		</CustomListItem>
+	</List>
+</core:View>

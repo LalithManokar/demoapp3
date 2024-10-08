@@ -1,0 +1,31 @@
+schema = "SAP_INO_EXT";
+query = "
+          select distinct
+        action.object_id as campaign_id,
+        action.id,
+        action.disabled as register_disabled,
+        identity.id as identity_id, 
+        identity.name,
+        identity.first_name,
+        identity.last_name,
+        identity.user_name,
+        identity.email,
+        identity.is_external,
+        identity.type_code,
+        identity.phone,
+        identity.mobile,
+        identity.cost_center,
+        identity.organization,
+        identity.office,
+        identity.description,
+        identity_settings.image_id
+     from\"sap.ino.db.iam::t_object_identity_limitation_action\" as action
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on action.identity_id = identity.id
+        left outer join \"sap.ino.db.iam::v_identity_settings\" as identity_settings
+             on identity_settings.identity_id = action.identity_id
+    where action.action_code = 'CAMPAIGN_REGISTER' and object_type_code = 'CAMPAIGN' and action.disabled >= 0
+";
+depends_on_table = ["sap.ino.db.iam::t_identity",
+                    "sap.ino.db.iam::t_object_identity_limitation_action"];
+depends_on_view = [ "sap.ino.db.iam::v_identity_settings"];

@@ -1,0 +1,20 @@
+schema = "SAP_INO";
+query = " 
+	select distinct attachment.id as attachment_id
+		from 
+	    	\"sap.ino.db.attachment::t_attachment\" as attachment
+	    left outer join 
+	     	\"sap.ino.db.attachment::t_attachment_assignment\" as assignment
+	     	on assignment.attachment_id = attachment.id
+		inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role 
+			on attachment.id = object_role.object_id and object_role.object_type_code = 'ATTACHMENT'
+		inner join \"sap.ino.db.iam::t_role_privilege\" as role 
+			on role.role_code = object_role.role_code
+			and role.privilege = 'ATTACHMENT_READ' 
+	    where assignment.id is null and folder_id is null
+    with read only";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment",
+					"sap.ino.db.attachment::t_attachment_assignment", 
+					"sap.ino.db.iam::t_role_privilege"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];

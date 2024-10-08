@@ -1,0 +1,10 @@
+schema = "SAP_INO";
+query = "select distinct evaluation.idea_id as id, role.identity_id as identity_id
+	from \"sap.ino.db.iam::t_object_identity_role\" as role
+	inner join \"sap.ino.db.evaluation::v_evaluation\" as evaluation
+	on role.object_id = evaluation.id
+	where role.object_type_code = 'EVALUATION' 
+		and role.role_code = 'EVALUATION_OWNER'";
+
+depends_on_table = ["sap.ino.db.iam::t_object_identity_role"];
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation"];

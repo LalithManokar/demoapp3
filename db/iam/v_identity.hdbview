@@ -1,0 +1,63 @@
+schema = "SAP_INO";
+query = "
+    select
+        identity.id,
+        identity.name,
+        identity.first_name,
+        identity.last_name,
+        identity.user_name,
+        identity.email,
+        identity.is_external,
+        identity.type_code,
+        identity.staged,
+        identity.phone,
+        identity.mobile,
+        identity.cost_center,
+        identity.organization,
+        identity.office,
+        identity.description,
+        identity.source_type_code,
+        identity.company,
+        identity.street,
+        identity.city,
+        identity.country,
+        identity.zip_code,
+        identity.validation_to,
+        cast(OCCURRENCES_REGEXPR('^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w+)+)$' in trim(' ' from identity.email)) as TINYINT) as is_valid_email,
+        attachment_assign.id as image_assign_id,
+        attachment_assign.attachment_id as image_id,
+        attachment_assign.attachment_id as identity_image_id,
+		attachment.media_type as identity_image_media_type,
+		attachment.changed_at as identity_image_changed_at,
+
+        identity.created_at,
+        identity.created_by_id,
+        identity1.name as created_by_name,
+        identity1.last_name as created_by_last_name,
+        identity1.first_name as created_by_first_name,
+        identity1.email as created_by_email,
+        identity.changed_at,
+        identity.changed_by_id,
+        identity2.name as changed_by_name,
+        identity2.last_name as changed_by_last_name,
+        identity2.first_name as changed_by_first_name,
+        identity2.email as changed_by_email,
+        identity.last_login
+    from
+        \"sap.ino.db.iam::t_identity\" as identity
+        left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as attachment_assign
+        	on attachment_assign.owner_id = identity.id and
+           	   attachment_assign.owner_type_code = 'IDENTITY' and
+               attachment_assign.role_type_code = 'IDENTITY_IMAGE'
+	    left outer join \"sap.ino.db.attachment::t_attachment\" as attachment
+    	    on attachment.id = attachment_assign.attachment_id
+		left outer join \"sap.ino.db.iam::t_identity\" as identity1
+    		on identity1.id = identity.created_by_id 
+		left outer join \"sap.ino.db.iam::t_identity\" as identity2
+    		on identity2.id = identity.changed_by_id
+    where
+        identity.erased = 0 
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.iam::t_identity", "sap.ino.db.attachment::t_attachment_assignment", "sap.ino.db.attachment::t_attachment"];

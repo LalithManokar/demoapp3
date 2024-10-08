@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_IDEA_UNCHANGED" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="false" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_ANALYTICS_IDEA_UNCHANGED"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="IDEA_ID"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="VARCHAR" id="PHASE_CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="UNCHANGED_FOR_DAYS"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition> 
+ /********* Begin Procedure Script ************/ 
+ BEGIN 
+	var_out = select
+		id as idea_id,
+    	campaign_id,
+    	phase_code,
+    	status_code,
+    	days_between(changed_at, current_date) as unchanged_for_days
+	from
+		&quot;sap.ino.db.idea::t_idea&quot;
+	where
+		status_code not in ('sap.ino.config.DRAFT','sap.ino.config.COMPLETED','sap.ino.config.DISCONTINUED','sap.ino.config.MERGED');
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="IDEA_ID" order="1">
+        <descriptions defaultDescription="IDEA_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="2">
+        <descriptions defaultDescription="CAMPAIGN_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="PHASE_CODE" order="3">
+        <descriptions defaultDescription="PHASE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="PHASE_CODE"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="4">
+        <descriptions defaultDescription="STATUS_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="UNCHANGED_FOR_DAYS" order="5">
+        <descriptions defaultDescription="UNCHANGED_FOR_DAYS"/>
+        <keyMapping columnObjectName="Script_View" columnName="UNCHANGED_FOR_DAYS"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

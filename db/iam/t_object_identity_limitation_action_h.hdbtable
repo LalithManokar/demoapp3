@@ -1,0 +1,20 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "History of Joins identity and objects to roles: Someone has on something a certain role";
+table.columns = [
+    {name = "HISTORY_DB_EVENT";  sqlType = VARCHAR; length = 8;  nullable = false; comment = "Database event: CREATED, UPDATED, DELETED";},
+    {name = "HISTORY_BIZ_EVENT"; sqlType = VARCHAR; length = 60; nullable = false; comment = "Business event: IDEA_CREATED, IDEA_SUBMITTED ...";},
+    {name = "HISTORY_AT";        sqlType = TIMESTAMP;            nullable = false; comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID";  sqlType = INTEGER;              nullable = false; comment = "Actor who did the changes";},
+    {name = "ID";                sqlType = INTEGER;              nullable = false; comment = "Technical record ID";},
+    {name = "IDENTITY_ID";      sqlType = INTEGER;              nullable = true; comment = "Identity which has been limited for some action";},
+    {name = "OBJECT_ID";        sqlType = INTEGER;              nullable = true; comment = "Object on which an identity has been limited for some action. Foreign key to t_idea.ID and t_campaign.ID";},
+    {name = "OBJECT_ROLE_ID";   sqlType = INTEGER;              nullable = true; comment = "ID ,foreign key to t_object_identity_role";},
+    {name = "OBJECT_TYPE_CODE";  sqlType = VARCHAR; length = 100; nullable = false; comment = "Object type of link. Foreign key t_application_object.CODE";},
+    {name = "ACTION_CODE";         sqlType = VARCHAR; length = 20; nullable = false; comment = "Action type of limitation.";},
+    {name = "DISABLED";         sqlType = TINYINT;              nullable = false;  comment = "Determines whether the function is disabled.";}
+];
+table.indexes = [
+     {name="LOGKEY_OBJECT_IDENTITY_LIMITATION_ACTION_H"; unique = false; indexColumns = ["ID","HISTORY_AT"];}   
+];
+            

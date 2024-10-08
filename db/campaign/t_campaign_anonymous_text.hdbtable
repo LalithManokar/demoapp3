@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "CAMPAIGN ANONYMOUS UI TEXT SETTING";
+table.columns = [
+    {name = "ID";             sqlType = INTEGER;                nullable = false;},
+    {name = "CODE";           sqlType = VARCHAR; length = 500; nullable = false; comment = "System anonymous text code";},
+    {name = "CAMPAIGN_ID";  sqlType = INTEGER;  nullable = false; comment = "Human-readable identifier of campaign";}  
+];  
+table.primaryKey.pkcolumns = ["ID"];        

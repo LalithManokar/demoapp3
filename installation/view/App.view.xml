@@ -1,0 +1,13 @@
+<mvc:View
+   controllerName="sap.ino.installation.controller.App"
+	xmlns="sap.m"
+	xmlns:ino="sap.ino.installation.controls"
+	xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.f"
+	displayBlock="true">
+	<f:ShellBar id="myShell" secondTitle="{i18n>INNOVATION_MANAGEMENT_SYSTEM}" class="sapInoInstallationShell"
+                    	 homeIcon="/sap/ino/installation/img/logo.png"></f:ShellBar>	
+	<App id="app">
+	</App>
+</mvc:View>

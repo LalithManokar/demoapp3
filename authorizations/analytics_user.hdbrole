@@ -1,0 +1,71 @@
+role sap.ino.authorizations::analytics_user
+{
+catalog schema "_SYS_BI": SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_IDEAS_TIME_IN_PHASE.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_IDEAS_TIME_STATUS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_IDEAS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_IDEAS_EVALUATIONS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_PARTICIPANTS_SHARE.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_PARTICIPANTS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_TOP_PARTICIPANTS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_TOP_CONTRIBUTORS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_TOP_COMMENTATORS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_TOP_TAGS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_UNCHANGED_IDEAS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_CAMPAIGN_ACTIVITY.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_CAMPAIGN_IDEA_OVERVIEW.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_CAMPAIGN_RETURN.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_APPLICATION_VIEWS.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_EVALUATIONS_PER_EXPERT.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_CAMPAIGN_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_IDEA_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_COMMENT_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_CRITERION_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_GROUP_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_IDENTITY_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_PHASE_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_STATUS_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_TAG_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext:V_EXT_ANALYTICS_UNIT_DIMENSION.calculationview: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_IDEA_GROUP_VOTE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_IDEA_VOTE: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_TERM_AND_CONDITION: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_CRITERION_DIMENSIONS_ADDTIONAL: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics::V_ANALYTICS_IDEAS_EVALUATIONS_RESULT: //Objecttype: VIEW
+	SELECT;
+sql object sap.ino.db.analytics.ext::V_EXT_ANALYTICS_NUM_OF_IDEAS: //Objecttype: VIEW
+	SELECT;
+
+analytic privilege : sap.ino.db.analytics.ext:ap_ext_analytics_privilege.analyticprivilege;
+
+}

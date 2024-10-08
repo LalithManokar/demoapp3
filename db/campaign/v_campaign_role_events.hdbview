@@ -1,0 +1,59 @@
+schema = "SAP_INO";
+query = "
+select
+    edits.edit_timestamp,
+    object_history.history_db_event,
+    object_history.history_biz_event,
+    object_history.history_at,
+    object_history.history_actor_id,
+    object_history.id,
+    object_history.identity_id,
+    object_history.object_id as campaign_id,
+    object_history.role_code,
+    identity.user_name,
+    identity.name,
+    identity.first_name,
+    identity.last_name,
+    identity.email
+from
+(
+select distinct
+    edits.history_at as edit_timestamp,
+    edits.id as object_role_id,
+    max(history.history_at) as last_campaign_edit_timestamp
+from
+(
+select distinct
+        timestamps.history_at as history_at,
+        ids.id as id
+    from
+        \"sap.ino.db.iam::t_object_identity_role_h\" as timestamps,
+        \"sap.ino.db.iam::t_object_identity_role_h\" as ids
+    where 
+        ids.object_id = timestamps.object_id and
+        ids.role_code = timestamps.role_code and
+        (ids.role_code = 'CAMPAIGN_COACH' or
+         ids.role_code = 'CAMPAIGN_MANAGER' or
+         ids.role_code = 'CAMPAIGN_EXPERT' or
+         ids.role_code = 'CAMPAIGN_USER'
+        )
+) as edits,
+    \"sap.ino.db.iam::t_object_identity_role_h\" as history
+where
+    edits.history_at >= history.history_at
+and
+    edits.id=history.id
+group by edits.id, edits.history_at
+)
+as edits
+inner join \"sap.ino.db.iam::t_object_identity_role_h\" as object_history
+  on edits.object_role_id = object_history.id
+     and
+     edits.last_campaign_edit_timestamp = object_history.history_at
+left outer join \"sap.ino.db.iam::t_identity\" as identity
+            on object_history.identity_id = identity.id
+
+with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_object_identity_role_h",
+                    "sap.ino.db.iam::t_identity"];

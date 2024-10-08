@@ -1,0 +1,6 @@
+role sap.ino.authorizations::community_user extends role sap.hana.xs.admin.roles::HTTPDestViewer
+{
+
+application privilege: "sap.ino.xs.rest::execute";
+
+}

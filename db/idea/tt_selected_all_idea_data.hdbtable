@@ -1,0 +1,14 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.temporary = true;
+table.description = "Input table for select-all idea data";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "ID - Negative number for no input";},
+    {name = "CAMPAIGN_ID"; sqlType = INTEGER; nullable = false; comment = "Campaign to which this idea belongs. Foreign key to t_campaign.ID";},
+    {name = "PHASE"; sqlType = VARCHAR; length = 500; nullable = true; comment = "Phase Code";},
+    {name = "STATUS"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Status Code";},
+    {name = "FOLLOW_UP_DATE"; sqlType = DATE; nullable = true; comment = "Follow Up Date";}, 
+    {name = "RESP_VALUE_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Responsibility list code";},
+    {name = "SUBMITTER_ID"; sqlType = INTEGER; nullable = true; comment = "Idea submitter ID";},
+    {name = "SUBMITTER_NAME"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Idea submitter NAME";}
+];

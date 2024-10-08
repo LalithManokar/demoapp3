@@ -1,0 +1,32 @@
+schema = "SAP_INO";
+query = "
+    select
+        idea.campaign_id,
+        identity.id as identity_id,
+        attachment_assign.attachment_id as identity_image_id,
+        identity.name,
+        count(idea.id) as idea_count
+    from \"sap.ino.db.idea::t_idea\" as idea
+    inner join \"sap.ino.db.iam::t_identity\" as identity
+        on idea.created_by_id = identity.id
+    left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as attachment_assign
+        on attachment_assign.owner_id = identity.id and
+            attachment_assign.owner_type_code = 'IDENTITY' and
+            attachment_assign.role_type_code = 'IDENTITY_IMAGE'
+        left outer join \"sap.ino.db.attachment::t_attachment\" as attachment
+            on attachment.id = attachment_assign.attachment_id
+    inner join \"sap.ino.db.idea::v_auth_ideas_read\" as auth
+    	on idea.id = auth.idea_id
+    group by
+        idea.campaign_id,
+        identity.id,
+        attachment_assign.attachment_id,
+        identity.name
+    order by 
+        idea_count desc";
+
+depends_on_table = ["sap.ino.db.idea::t_idea",
+                    "sap.ino.db.iam::t_identity",
+                    "sap.ino.db.attachment::t_attachment_assignment",
+                    "sap.ino.db.attachment::t_attachment"];
+depends_on_view = ["sap.ino.db.idea::v_auth_ideas_read"];

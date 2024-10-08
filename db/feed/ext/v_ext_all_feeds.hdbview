@@ -1,0 +1,124 @@
+schema = "SAP_INO_EXT";
+query = "select 
+            followed_idea.key,
+            followed_idea.object_id,
+            followed_idea.object_type_code,
+            followed_idea.object_text,
+            case 
+        when settings.IS_ANONYMOUS = 'true' then  cast(0 as INTEGER) 
+        else followed_idea.actor_id
+        end as actor_id, 
+         case 
+        when settings.IS_ANONYMOUS = 'true' then  cast('Anonymity' as VARCHAR) 
+        else  followed_idea.actor_name
+        end as actor_name, 
+           case 
+        when settings.IS_ANONYMOUS = 'true' then  cast(0 as INTEGER) 
+        else followed_idea.actor_image_id
+        end as actor_image_id, 
+            followed_idea.involved_id,
+            followed_idea.involved_obj_type_code,
+            followed_idea.involved_obj_text, 
+            followed_idea.event_at,
+            followed_idea.feed_code, 
+            followed_idea.campaign_id,
+            followed_idea.field1_name,
+            followed_idea.field1_text,
+            followed_idea.field1_value,
+            followed_idea.field1_value_option,
+            followed_idea.field2_name,
+            followed_idea.field2_text,
+            followed_idea.field2_value,
+            followed_idea.field2_value_option,
+            followed_idea.filter_type_code, 
+            followed_idea.content,
+            followed_idea.sub_text,
+            followed_idea.sub_feed_code,
+            followed_idea.campaign_date,
+            followed_idea.followed_by_id,
+            followed_idea.followed_at,
+            followed_idea.latest_email_at
+        from \"sap.ino.db.idea::f_my_followed_idea_feeds\"()  as followed_idea
+         left outer join \"sap.ino.db.idea::v_idea_settings_test\" as settings 
+    on settings.idea_id = followed_idea.involved_id 
+        union all
+        select 
+            followed_campaign.key,
+            followed_campaign.object_id,
+            followed_campaign.object_type_code,
+            followed_campaign.object_text,
+            case 
+        when settings.IS_ANONYMOUS = 'true' then  cast(0 as INTEGER) 
+        else followed_campaign.actor_id
+        end as actor_id, 
+         case 
+        when settings.IS_ANONYMOUS = 'true' then  cast('Anonymity' as VARCHAR) 
+        else  followed_campaign.actor_name
+        end as actor_name, 
+           case 
+        when settings.IS_ANONYMOUS = 'true' then  cast(0 as INTEGER) 
+        else followed_campaign.actor_image_id
+        end as actor_image_id, 
+            followed_campaign.involved_id,
+            followed_campaign.involved_obj_type_code,
+            followed_campaign.involved_obj_text, 
+            followed_campaign.event_at,
+            followed_campaign.feed_code, 
+            followed_campaign.campaign_id,
+            followed_campaign.field1_name,
+            followed_campaign.field1_text,
+            followed_campaign.field1_value,
+            followed_campaign.field1_value_option,
+            followed_campaign.field2_name,
+            followed_campaign.field2_text,
+            followed_campaign.field2_value,
+            followed_campaign.field2_value_option,
+            followed_campaign.filter_type_code, 
+            followed_campaign.content,
+            followed_campaign.sub_text,
+            followed_campaign.sub_feed_code,
+            followed_campaign.campaign_date,
+            followed_campaign.followed_by_id,
+            followed_campaign.followed_at,
+            followed_campaign.latest_email_at
+        from \"sap.ino.db.campaign::f_my_followed_campaign_feeds\"() as followed_campaign
+         left outer join \"sap.ino.db.idea::v_idea_settings_test\" as settings 
+    on settings.idea_id = followed_campaign.involved_id 
+        union all
+            select 
+            key,
+            object_id,
+            object_type_code,
+            object_text,
+            actor_id,
+            actor_name,
+            actor_image_id,
+            involved_id,
+            involved_obj_type_code,
+            involved_obj_text, 
+            event_at,
+            feed_code, 
+            campaign_id,
+            field1_name,
+            field1_text,
+            field1_value,
+            field1_value_option,
+            field2_name,
+            field2_text,
+            field2_value,
+            field2_value_option,
+            filter_type_code, 
+            content,
+            sub_text,
+            sub_feed_code,
+            campaign_date,
+            followed_by_id,
+            followed_at,
+            latest_email_at
+        from \"sap.ino.db.tag::f_my_followed_tag_feeds\"()   
+        with read only";
+         
+depends_on_view  = ["sap.ino.db.campaign::f_my_followed_campaign_feeds",
+                    "sap.ino.db.tag::f_my_followed_tag_feeds",
+                    "sap.ino.db.idea::v_idea_settings_test",
+                    "sap.ino.db.idea::f_my_followed_idea_feeds"];

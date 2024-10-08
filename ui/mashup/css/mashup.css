@@ -1,0 +1,7 @@
+.sapUiInoRepeaterCenterAlign {
+    text-align: center;
+}
+
+.sapUiInoRepeaterCenterAlign .sapUiInoRepeaterItem {
+    text-align: initial;
+}

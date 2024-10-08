@@ -1,0 +1,6 @@
+schema = "SAP_INO";
+query = "
+    select * from\"sap.ino.db.status::t_status_object_action_role_code\"
+    with read only ";
+
+depends_on_table = ["sap.ino.db.status::t_status_object_action_role_code"];

@@ -1,0 +1,113 @@
+<core:FragmentDefinition xmlns="sap.m"
+                         xmlns:core="sap.ui.core"
+                         xmlns:mvc="sap.ui.core.mvc"
+                         xmlns:l="sap.ui.layout"
+                         xmlns:f="sap.ui.layout.form"
+                         xmlns:ino="sap.ino.controls">
+    <Panel id="expertDetails" expandable="true" expanded="false" expand="onExpertExpand" 
+        width="auto" class="sapUiResponsiveMargin sapInoExpertDetailPanel"
+        visible="{= !!${view>/IS_EVALUATION_REQUEST} || ${parts: [{path: 'proposedExperts>ID'}, {path: 'object>/property/nodes/Root/customProperties/backofficeChangeExpertPrivilege'}, {path: 'object>/Experts'}], formatter: '.isExpertActionable'}}">
+        <headerToolbar>
+            <Toolbar height="6rem">
+                <ino:IdentityActionCard 
+                    identityId="{proposedExperts>ID}" 
+                    userName="{proposedExperts>NAME}"
+                    userOrganization="{proposedExperts>ORGANIZATION}"
+                    userImageUrl="{ path: 'proposedExperts>IMAGE_ID', formatter: '.formatter.userImage' }"
+                    actionable="{parts: [{path: 'proposedExperts>ID'}, {path: 'object>/property/nodes/Root/customProperties/backofficeChangeExpertPrivilege'}, {path: 'object>/Experts'}], formatter: '.isExpertActionable'}"
+                    isAdd="true"
+                    mailable="{path: 'proposedExperts>IS_VALID_EMAIL', type:'sap.ino.commons.models.types.IntBooleanType'}"
+                    mailPressed="onMailPressed"
+                    addRemovePressed="onAddRemoveExpert"
+                    pinnable="{clipboard>/enabled}"
+                    isPinned="{ parts: [{path: 'proposedExperts>ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIsUserInClipboard' }"
+                    pinPressed="onUserPinPressed"
+                    identityPress="onOpenIdentityQuickView"
+                    visible="{= !${view>/IS_EVALUATION_REQUEST}}"
+                />
+                <ino:IdentityActionCard 
+                    identityId="{proposedExperts>ID}" 
+                    userName="{proposedExperts>NAME}"
+                    userOrganization="{proposedExperts>ORGANIZATION}"
+                    userImageUrl="{ path: 'proposedExperts>IMAGE_ID', formatter: '.formatter.userImage' }"
+                    actionable="{= ${proposedExperts>ID} !== -1}"
+                    pinnable="{clipboard>/enabled}"
+                    isPinned="{ parts: [{path: 'proposedExperts>ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIsUserInClipboard' }"
+                    pinPressed="onUserPinPressed"
+                    isAdd="{parts : [{path: 'proposedExperts>ID'}, {path: 'object>/Experts'}], formatter: '.isExpertAddedForDialog'}"
+                    mailable="{path: 'proposedExperts>IS_VALID_EMAIL', type:'sap.ino.commons.models.types.IntBooleanType'}"
+                    mailPressed="onMailPressed"
+                    addRemovePressed="onAddRemoveExpertForDialog"
+                    identityPress="onOpenIdentityQuickView"
+                    visible="{= !!${view>/IS_EVALUATION_REQUEST}}"
+                />
+    			<ToolbarSpacer visible="{=!${device>/system/phone}}" />
+                <HBox height="100%" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTopBottom sapUiResponsiveContentPadding"
+                    visible="{=!${device>/system/phone}}" >
+                    <VBox width="100%" class="sapUiTinyMarginBeginEnd" alignItems="End">
+        		        <Text text="{i18n>EXPERTS_OVERALL_ACTIVITIES}"/>
+                        <Text text="{i18n>EXPERTS_COACHED_IDEAS}: {proposedExperts>OVERALL_ACTIVITY/COACH_COUNT}" class="sapInoIdeaExpertDetails"/>
+                        <Text text="{i18n>EXPERTS_SUBMISSIONS}: {proposedExperts>OVERALL_ACTIVITY/AUTHOR_COUNT}" class="sapInoIdeaExpertDetails"/>
+                        <Text text="{i18n>EXPERTS_EVALUATIONS}: {proposedExperts>OVERALL_ACTIVITY/EVAL_COUNT}" class="sapInoIdeaExpertDetails"/>
+                        <Text text="{i18n>EXPERTS_COMMENTS}: {proposedExperts>OVERALL_ACTIVITY/COMMENT_COUNT}" class="sapInoIdeaExpertDetails"/>
+                    </VBox>
+                </HBox>
+    		</Toolbar>
+        </headerToolbar>
+        <content>
+	        <Text text="{i18n>EXPERTS_GRP_MATCHISBASEDON}" class="sapInoIdeaExpertDetails"/>
+            <Carousel visible="{=${device>/system/phone}}"
+	            width="100%" class="sapUiContentPadding" loop="true" 
+	            pages="{path: 'proposedExperts>CORRELATION', templateShareable: true, sorter: [{path: 'CREATED_AT', descending:true}]}">
+		        <pages>
+    		        <HBox class="sapInoIdeaExpertIdea">
+                        <ino:Image height="4rem" width="7rem" 
+                                foregroundColor="{path: 'proposedExperts>CAMPAIGN_COLOR', formatter: '.formatter.color'}"
+                                src="{=(${proposedExperts>IDEA/IMAGE_ID} > 0) ? '/' + ${config>/sap.ino.config.URL_PATH_XS_ATTACHMENT_TITLE_IMAGE_DOWNLOAD} + '/' + ${proposedExperts>IDEA/IMAGE_ID} : undefined}"
+                                objectName="{proposedExperts>IDEA/NAME}"
+                                objectId="{proposedExperts>IDEA/ID}"
+                                class="sapInoPhoneMarginTop">
+                        </ino:Image>
+                        <VBox class="sapInoIdeaExpertDetailsIdeaCardText sapUiSmallMarginBeginEnd">
+                            <Link text="{proposedExperts>IDEA/NAME}" press="onOpenIdea" />
+                            <Text text="{path: 'proposedExperts>EXPERT_ROLES', formatter: '.formatter.expertRolesKeyToText'}" class="sapInoIdeaExpertDetails sapUiTinyMarginBottom"/>
+                            <Text text="{i18n>EXPERTS_EVALUATIONS}: {proposedExperts>EVAL_COUNT}" class="sapInoIdeaExpertDetails"/>
+                            <Text text="{i18n>EXPERTS_COMMENTS}: {proposedExperts>COMMENT_COUNT}" class="sapInoIdeaExpertDetails"/>
+                        </VBox>
+    		        </HBox>
+		        </pages>
+	        </Carousel>
+            <l:Grid content="{path: 'proposedExperts>CORRELATION', templateShareable: true, sorter: [{path: 'CREATED_AT', descending:true}]}"
+                visible="{=!${device>/system/phone}}" 
+                hSpacing="0.5" vSpacing="0.5" position="Left" defaultSpan="{= !!${view>/IS_DIALOG} ? 'XL12 L12' : 'XL6 L6'}">
+                <HBox class="sapInoIdeaExpertIdea">
+                    <ino:Image height="5rem" width="9rem" 
+                            foregroundColor="{path: 'proposedExperts>CAMPAIGN_COLOR', formatter: '.formatter.color'}"
+                            src="{=(${proposedExperts>IDEA/IMAGE_ID} > 0) ? '/' + ${config>/sap.ino.config.URL_PATH_XS_ATTACHMENT_TITLE_IMAGE_DOWNLOAD} + '/' + ${proposedExperts>IDEA/IMAGE_ID} : undefined}"
+                            objectName="{proposedExperts>IDEA/NAME}"
+                            objectId="{proposedExperts>IDEA/ID}"
+                            class="sapInoPhoneMarginTop">
+                    </ino:Image>
+                    <VBox class="sapInoIdeaExpertIdeaText sapUiTinyMarginBeginEnd">
+                        <Link text="{proposedExperts>IDEA/NAME}" press="onOpenIdea"/>
+                        <Text text="{path: 'proposedExperts>EXPERT_ROLES', formatter: '.formatter.expertRolesKeyToText'}" class="sapInoIdeaExpertDetails sapUiTinyMarginBottom"/>
+                        <VBox class="sapUiNoMarginBeginEnd" visible="{=${view>/IDEACARD_SECTION_VISIBLE} === 'STAT'}">
+                            <!-- Idea-related statistics -->
+                            <Text text="{i18n>EXPERTS_EVALUATIONS}: {proposedExperts>EVAL_COUNT}" class="sapInoIdeaExpertDetails"/>
+                            <Text text="{i18n>EXPERTS_COMMENTS}: {proposedExperts>COMMENT_COUNT}" class="sapInoIdeaExpertDetails"/>
+                        </VBox>
+                        <VBox class="sapUiNoMarginBeginEnd" visible="{=${view>/IDEACARD_SECTION_VISIBLE} === 'TAG'}">
+                            <!-- Tag List -->
+                            <Text text="{i18n>EXPERTS_TAGS}:" class="sapInoIdeaExpertDetails"/>
+                            <Tokenizer tokens="{path: 'proposedExperts>TAGS', templateShareable: true}" editable="false"
+                                visible="{path: 'proposedExperts>TAGS', formatter: '.formatter.notEmpty'}">
+                                <Token key="{proposedExperts>ID}" text="{proposedExperts>NAME}" editable="false"/>
+                            </Tokenizer>
+
+                        </VBox>
+                    </VBox>
+                </HBox>
+            </l:Grid>
+        </content>
+    </Panel>
+</core:FragmentDefinition>

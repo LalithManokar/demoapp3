@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Tags assigned to ideas";
+table.columns = [
+    {name = "ID";               sqlType = INTEGER;                 nullable = false; comment = "Human-readable identifier";},
+    {name = "OBJECT_TYPE_CODE"; sqlType = VARCHAR; length = 100;   nullable = false; comment = "Object type of link. Foreign key t_application_object.CODE";},
+    {name = "OBJECT_ID";        sqlType = INTEGER;                 nullable = false; comment = "Object of link. Foreign key t_idea.ID, t_campaign.ID or t_identity.ID";},
+    {name = "TAG_ID";           sqlType = INTEGER;                 nullable = false; comment = "Human-readable identifier of tag";}
+];
+table.primaryKey.pkcolumns = ["ID"];

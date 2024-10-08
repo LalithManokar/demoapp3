@@ -1,0 +1,142 @@
+PROCEDURE "SAP_INO"."sap.ino.db.notification::p_notification_email_scheduled_service" (
+    IN current_seconds  integer
+)
+LANGUAGE SQLSCRIPT
+SQL SECURITY DEFINER
+DEFAULT SCHEMA SAP_INO AS
+BEGIN
+
+    UPDATE status
+    SET status.mail_status_code = 'DEACTIVATED', 
+    	status.CHANGED_BY_ID = :current_seconds, 
+    	status.MAIL_STATUS_REASON = 'the user do not want to receive email by unsubscribe to all emails'
+    FROM "sap.ino.db.notification::t_notification_status" AS status
+    	INNER JOIN "sap.ino.db.notification::t_notification" AS notification
+    	ON notification.id = status.notification_id
+    	INNER JOIN "sap.ino.db.notification::v_mail_notification_settings" AS identity_notification
+    	ON status.user_id = identity_notification.user_id
+    		AND identity_notification.value = 'inactive'
+    		AND notification.object_type_code <> 'MAIL'
+    		AND status.mail_status_code = 'UNSENT';
+    --SELECT all notifications that have not been processed before AND will not be sent AS an email
+    
+    --the following notification should been deactived
+    --1.the user who has been erased or whose email is missing
+    --2.the user doesn't want receive email by accout setting
+    --3.the campaign has been deleted
+    --4.the idea has been deleted
+    lt_deactivated_notifications =
+    SELECT
+	    status.id AS id,
+	    iden.user_name,
+	    setting.setting_value,
+	    campaign.id AS campaign_id,
+	    idea.id AS idea_id,
+	    notification.object_type_code
+	FROM     
+	    "sap.ino.db.notification::t_notification_status" AS status
+	INNER JOIN "sap.ino.db.notification::t_notification" AS notification
+	    ON notification.id = status.notification_id
+	LEFT OUTER JOIN "sap.ino.db.iam::t_identity" iden
+		ON (iden.erased = 1 OR iden.email IS NULL OR iden.email = 'erased') AND iden.ID = status.user_id		
+	LEFT OUTER JOIN "sap.ino.db.iam::t_personalize_setting" AS setting 
+		ON setting.TYPE_CODE = 'NOTIFICATION' AND setting.OBJECT_TYPE_CODE = 'NOTIFICATION_KEY' AND setting.IDENTITY_ID = status.user_id AND  setting.SETTING_VALUE = -1
+	LEFT OUTER JOIN "sap.ino.db.campaign::t_campaign" campaign
+		ON campaign.ID = notification.campaign_id    		
+	LEFT OUTER JOIN "sap.ino.db.idea::t_idea" idea
+		ON notification.object_type_code = 'IDEA' AND idea.ID = notification.object_id				
+	WHERE status.mail_status_code = 'UNSENT';
+	
+	lt_deactivated_notification_ids = 
+	SELECT 
+	    id 
+    FROM 
+        :lt_deactivated_notifications 
+    WHERE 
+        user_name IS NOT NULL OR setting_value IS NOT NULL OR (campaign_id IS NULL AND object_type_code='CAMPAIGN') OR (idea_id IS NULL AND object_type_code='IDEA');
+        
+    UPDATE status
+    SET
+        status.mail_status_code = 'DEACTIVATED',
+        status.CHANGED_BY_ID = :current_seconds, 
+        status.MAIL_STATUS_REASON = 'the user was erased or the email of user is missing or the user do not want to receive email' 
+    FROM
+        "sap.ino.db.notification::t_notification_status" AS status
+    INNER JOIN  :lt_deactivated_notification_ids AS deactived_id
+         ON  status.id = deactived_id.id
+    WHERE
+        status.mail_status_code = 'UNSENT';
+    
+    --find out the user who should receive email
+    ot_users =  SELECT status.user_id,existsSetting.SETTING_VALUE AS existsValue,setting.SETTING_VALUE noExistsValue
+            FROM
+                "sap.ino.db.notification::t_notification_status" AS status
+            INNER JOIN "sap.ino.db.notification::t_notification" AS notification
+                ON notification.id = status.notification_id
+            LEFT OUTER JOIN "sap.ino.db.iam::t_personalize_setting" AS existsSetting 
+                ON existsSetting.TYPE_CODE = 'NOTIFICATION' AND existsSetting.IDENTITY_ID = status.user_id AND 
+                    ((existsSetting.SETTING_VALUE = 0 AND existsSetting.OBJECT_TYPE_CODE = 'NOTIFICATION_KEY')
+                        OR (existsSetting.OBJECT_TYPE_CODE = 'NEXT_TIME' AND existsSetting.SETTING_VALUE < :current_seconds))
+            LEFT OUTER JOIN "sap.ino.db.iam::t_personalize_setting" AS setting 
+                ON setting.TYPE_CODE = 'NOTIFICATION' AND setting.OBJECT_TYPE_CODE = 'NOTIFICATION_KEY' AND setting.IDENTITY_ID = status.user_id
+            WHERE
+                status.mail_status_code = 'UNSENT';
+                
+    ot_user = SELECT DISTINCT user_id FROM :ot_users WHERE existsValue IS NOT NULL OR noExistsValue IS NULL;
+   
+    --update the next time
+    UPDATE setting
+    SET 
+        setting.SETTING_VALUE = setting.SETTING_VALUE + setting_key.SETTING_VALUE * 24 * 60 * 60
+    FROM
+        "sap.ino.db.iam::t_personalize_setting" AS setting
+    -- INNER JOIN :ot_user AS user
+    --     on user.user_id = setting.IDENTITY_ID
+    INNER JOIN  "sap.ino.db.iam::t_personalize_setting" AS setting_key
+        on setting_key.IDENTITY_ID = setting.IDENTITY_ID AND 
+        setting_key.TYPE_CODE = 'NOTIFICATION' AND setting_key.OBJECT_TYPE_CODE = 'NOTIFICATION_KEY' AND setting_key.SETTING_VALUE > 0
+    WHERE 
+        setting.TYPE_CODE = 'NOTIFICATION' AND setting.OBJECT_TYPE_CODE = 'NEXT_TIME' AND setting.SETTING_VALUE < :current_seconds;
+        
+    --update the notification of which status is processing doesn't process due to two days
+    --because some of situations where cause program was interrupted abruptly
+    UPDATE status
+    SET 
+        status.MAIL_STATUS_CODE = 'PROCESSING', 
+        status.CHANGED_BY_ID = :current_seconds, 
+        status.MAIL_STATUS_REASON = 'PROCESSING' 
+    FROM
+        "sap.ino.db.notification::t_notification_status" AS status
+    WHERE 
+        status.MAIL_STATUS_CODE = 'PROCESSING' AND status.CHANGED_BY_ID < :current_seconds - 2 * 24 * 60 * 60;
+    
+    --update the notification status into 'processing' which will been proceed 
+    UPDATE status
+    SET 
+        status.MAIL_STATUS_CODE = 'PROCESSING', 
+        status.CHANGED_BY_ID = :current_seconds, 
+        status.MAIL_STATUS_REASON = 'PROCESSING' 
+    FROM
+        "sap.ino.db.notification::t_notification_status" AS status
+    INNER JOIN :ot_user AS user
+        ON user.user_id = status.user_id
+    WHERE 
+        status.MAIL_STATUS_CODE = 'UNSENT';
+    
+    --update the notification status into 'skipped' when the user don't want to receive the special action email via accout setting
+    UPDATE status
+    SET 
+        status.mail_status_code = 'SKIPPED', 
+        status.MAIL_STATUS_REASON = 'the user do not want to receive the special action email via accout setting' 
+    FROM  "sap.ino.db.notification::t_notification_status" AS status
+    INNER JOIN "sap.ino.db.notification::t_notification" AS notification
+        ON notification.id = status.notification_id
+    INNER JOIN "sap.ino.db.iam::t_personalize_setting" AS setting
+        ON  setting.TYPE_CODE = 'NOTIFICATION' AND setting.IDENTITY_ID = status.USER_ID AND setting.OBJECT_TYPE_CODE != 'NOTIFICATION_KEY' 
+        AND setting.OBJECT_TYPE_CODE != 'NEXT_TIME' AND setting.SETTING_VALUE = 0
+    INNER JOIN "sap.ino.db.notification::t_notification_code_mapping_setting" AS mapping_setting
+        ON setting.OBJECT_TYPE_CODE = mapping_setting.MAPPING_SETTING_CODE AND mapping_setting.NOTIFICATION_CODE = notification.NOTIFICATION_CODE
+        AND mapping_setting.OBJECT_TYPE_CODE = notification.OBJECT_TYPE_CODE
+    WHERE 
+        status.mail_status_code = 'PROCESSING'  AND  status.CHANGED_BY_ID = :current_seconds;
+END;

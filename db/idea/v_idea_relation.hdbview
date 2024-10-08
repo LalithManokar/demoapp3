@@ -1,0 +1,26 @@
+schema = "SAP_INO";
+query = "select id, 
+				object_id as idea_id,
+				target_object_id as other_idea_id,
+				semantic,
+				1 as source
+    from \"sap.ino.db.link::t_link\"
+    where object_type_code = 'IDEA' and 
+    	  target_object_type_code = 'IDEA' and
+    	  type_code = 'OBJECT'
+    
+    union all 
+    
+    	 select id, 
+				target_object_id as idea_id,
+				object_id as other_idea_id,
+				semantic,
+				0 as source
+    from \"sap.ino.db.link::t_link\"
+    where object_type_code = 'IDEA' and 
+    	  target_object_type_code = 'IDEA' and 
+    	  type_code = 'OBJECT'
+    
+    with read only";
+
+depends_on_table = ["sap.ino.db.link::t_link"];

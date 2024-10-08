@@ -1,0 +1,273 @@
+procedure "SAP_INO_EXT"."sap.ino.db.expert.ext::p_ext_expert_data_service" (
+    -- idea ids input table type
+    IN it_idea_ids "SAP_INO_EXT"."sap.ino.db.expert.ext::tt_ext_expert_input",
+    -- whether result list should be filtered by ideas that have tags (unneded?)
+    IN iv_filter_by_tags TINYINT,
+    -- limit for maximum identity rank (as ties can happen, this is *not* a limit on persons)
+    IN iv_max_rank_identity INT,
+    -- limit for maximum ideas per identity (ties are not resolved)
+    IN iv_max_rank_ideas_per_identity INT,
+    -- identity - idea - role mapping ordered by weights
+    OUT ot_results TABLE (
+        IDENTITY_ID INT, 
+        IDEA_ID INT, 
+        INSTANCE_COUNT INT,
+        SIMSCORE DOUBLE, 
+        SUM_IDENT_QUANT INT, 
+        SUM_IDEA_QUANT INT,
+
+        COUNT_COACH INT,
+        COUNT_CONTRIBUTOR INT,
+        COUNT_SUBMITTER INT,
+        COUNT_COMMENTATOR INT,
+        COUNT_EVALUATOR INT,
+
+        IDEA_RELATIVE_SCORE DOUBLE, 
+        IDENTITY_RELATIVE_SCORE DOUBLE,
+        IDENTITY_END_SCORE DOUBLE,
+        IDENTITY_RANK INT,
+        IDEA_RANK INT,
+
+--        TAG_NAME NVARCHAR(32),
+--        TAG_ID INT,
+        TAG_NAMES NVARCHAR(1024),
+        TAG_IDS NVARCHAR(1024),
+        
+        OVERALL_COACH_COUNT INT,
+        OVERALL_COMMENT_COUNT INT,
+        OVERALL_EVAL_COUNT INT,
+        OVERALL_AUTHOR_COUNT INT,
+        
+        NAME NVARCHAR(255),
+        ORGANIZATION NVARCHAR(255),
+        IS_VALID_EMAIL TINYINT,
+        IDENTITY_IMAGE_ID INT,
+        
+        IDEA_IMAGE_ID INT,
+        IDEA_NAME NVARCHAR(100)     
+    )
+    )
+    language SQLSCRIPT
+    sql security INVOKER
+    reads sql data
+as begin
+    -- This procedure calculates the "historical" expert finder score based on the following formula:
+    -- Expert Score for EXPERT_i= ( SUM_QUANT_EXP_i / SUM_QUANT_IDEAS ) * ( SIMSCORE(Idea) / SUM(SIMSCORE(Idea)) )
+    -- where: 
+    -- SUM_QUANT_EXP_i are summed up quantifiers for expert's roles for a specific idea (e.g. submitter, coach, evaluator) 
+    -- SUM_QUANT_IDEAS are all contributing quantifiers (of all experts) for each idea
+    -- SIMSCORE(Idea) is the similarity score of a specific idea used to generate the input to all others, SUM(SIMSCORE(Idea)) is the
+    -- aggregated sum over all simscores.
+
+    declare lv_sum_simscore DOUBLE;
+    
+    declare lv_max_rank_identity INT := iv_max_rank_identity;
+    declare lv_max_rank_ideas_per_identity INT := iv_max_rank_ideas_per_identity;
+    
+    -- max rank number of identities to return
+    declare lv_max_rank_identity_threshold_hi INT := 1000;
+    -- default rank number of identities to return
+    declare lv_max_rank_identity_threshold_def INT := 25;
+    -- max rank number of ideas per identity
+    declare lv_max_idea_rank_threshold_hi INT := 100;
+    -- default rank number of ideas per identity
+    declare lv_max_idea_rank_threshold_def INT := 12;
+    
+    -- check bounds of identity rank limit
+    if lv_max_rank_identity < 1 then 
+        lv_max_rank_identity = :lv_max_rank_identity_threshold_def; 
+    elseif lv_max_rank_identity > lv_max_rank_identity_threshold_hi then 
+        lv_max_rank_identity = :lv_max_rank_identity_threshold_hi;
+    end if;
+    
+    -- check bounds of idea rank limit per identity
+    if lv_max_rank_ideas_per_identity < 1 then
+        lv_max_rank_ideas_per_identity = :lv_max_idea_rank_threshold_def;
+    elseif lv_max_rank_ideas_per_identity > lv_max_idea_rank_threshold_hi then
+        lv_max_rank_ideas_per_identity = :lv_max_idea_rank_threshold_hi;
+    end if;
+    
+    -- clean input data, getting one simscore for idea-related input and ignoring TAG_ID for now
+    lt_input_cleaned = select IDEA_ID, MAX(SIMSCORE) as SIMSCORE from :it_idea_ids group by IDEA_ID;
+    -- sum of simscore for normalization
+    select sum(SIMSCORE) into lv_sum_simscore from :lt_input_cleaned;
+    -- normalize sim scores
+    lt_input_cleaned = select IDEA_ID, SIMSCORE / :lv_sum_simscore as SIMSCORE from :lt_input_cleaned;
+
+    -- actors on ideas are quantified by role type
+    lt_person_role_quant = 
+        select 
+            IDENTITY_ID, OBJECT_ID as IDEA_ID, ROLE_CODE, 
+            case ROLE_CODE when 'IDEA_COACH' then 5 else 40 end as QUANTIFIER,
+            -- counts
+            case ROLE_CODE when 'IDEA_COACH' then 1 else 0 end as COUNT_COACH,
+            case ROLE_CODE when 'IDEA_CONTRIBUTOR' then 1 else 0 end as COUNT_CONTRIBUTOR,
+            case ROLE_CODE when 'IDEA_SUBMITTER' then 1 else 0 end as COUNT_SUBMITTER,
+            0 as COUNT_COMMENTATOR,
+            0 as COUNT_EVALUATOR
+        from "SAP_INO"."sap.ino.db.iam::t_object_identity_role" 
+        where (ROLE_CODE, OBJECT_TYPE_CODE) in (
+            ('IDEA_CONTRIBUTOR', 'IDEA'), 
+            ('IDEA_COACH', 'IDEA'), 
+            ('IDEA_SUBMITTER', 'IDEA')
+        )
+        union all
+        -- commentator
+        select 
+            CREATED_BY_ID as IDENTITY_ID, OBJECT_ID as IDEA_ID, 'IDEA_COMMENTATOR' as ROLE_CODE, 
+            1 as QUANTIFIER,
+            -- counts
+            0 as COUNT_COACH,
+            0 as COUNT_CONTRIBUTOR,
+            0 as COUNT_SUBMITTER,
+            1 as COUNT_COMMENTATOR,
+            0 as COUNT_EVALUATOR
+        from "SAP_INO"."sap.ino.db.comment::v_community_comment"
+        where OBJECT_TYPE_CODE = 'IDEA'
+        union all
+        -- evaluator
+        select 
+            CREATED_BY_ID as IDENTITY_ID, IDEA_ID, 'IDEA_EVALUATOR', 
+            20 as QUANTIFIER,
+            -- counts
+            0 as COUNT_COACH,
+            0 as COUNT_CONTRIBUTOR,
+            0 as COUNT_SUBMITTER,
+            0 as COUNT_COMMENTATOR,
+            1 as COUNT_EVALUATOR
+        from "SAP_INO"."sap.ino.db.evaluation::t_evaluation"
+        where STATUS_CODE in ('sap.ino.config.EVAL_PUB_SUBMITTER', 'sap.ino.config.EVAL_PUB_COMMUNITY');
+
+    -- end score is computed based on idea score and identity score
+    lt_base =
+        select 
+            base.*,
+            sum(IDEA_RELATIVE_SCORE) over (PARTITION BY IDENTITY_ID) as IDENTITY_END_SCORE
+        from (
+            select *,
+                -- idea score for each person (different for each person) based on similarity and ratio of user's influence
+                (SIMSCORE * SUM_IDENT_QUANT / SUM_IDEA_QUANT) as IDEA_RELATIVE_SCORE,
+                -- user's influence on the respective idea
+                SUM_IDENT_QUANT / SUM_IDEA_QUANT as IDENTITY_RELATIVE_SCORE
+            from (
+                select 
+                   roles.IDENTITY_ID, roles.IDEA_ID, 
+                   -- never hurts to have a count (corresponds to sum of COUNT_* fields)
+                   count(1) as INSTANCE_COUNT,
+                   -- respective similarity score is passed through (is constant per idea)
+                   MAX(input.SIMSCORE) as SIMSCORE, 
+                   -- accumulated quantifier for identities per idea
+                   SUM(roles.QUANTIFIER) as SUM_IDENT_QUANT,
+                   -- accumulated quantifiers for ideas
+                   SUM(SUM(roles.QUANTIFIER)) OVER (PARTITION BY roles.IDEA_ID) as SUM_IDEA_QUANT,
+                   -- counts for identity's roles on the respective idea
+                   SUM(COUNT_COACH) as COUNT_COACH,
+                   SUM(COUNT_CONTRIBUTOR) as COUNT_CONTRIBUTOR,
+                   SUM(COUNT_SUBMITTER) as COUNT_SUBMITTER,
+                   SUM(COUNT_COMMENTATOR) as COUNT_COMMENTATOR,
+                   SUM(COUNT_EVALUATOR) as COUNT_EVALUATOR
+                from :lt_person_role_quant roles
+                join :lt_input_cleaned input
+                   -- filter on input ideas
+                   on roles.IDEA_ID = input.IDEA_ID
+                group by roles.IDENTITY_ID, roles.IDEA_ID
+            )
+        ) base
+        -- and filter unprivileged ideas
+        join "SAP_INO"."sap.ino.db.idea::v_auth_ideas_read" auth
+            on base.IDEA_ID = auth.IDEA_ID;
+    
+    -- compute rank for limit thresholds
+    lt_score = 
+        select base.*,
+            dense_rank() over (ORDER BY base.IDENTITY_END_SCORE DESC) as identity_rank,
+            dense_rank() over (PARTITION BY base.IDENTITY_ID ORDER BY base.IDEA_RELATIVE_SCORE DESC) as idea_rank,
+            tag.NAME as TAG_NAME,
+            tag.TAG_ID as TAG_ID
+        from :lt_base base
+        left outer join "SAP_INO_EXT"."sap.ino.db.idea.ext::v_ext_idea_tag" tag
+            on base.IDEA_ID = tag.IDEA_ID
+        ;
+    
+    -- only if requested: remove tags which are not used in tag search
+    if iv_filter_by_tags > 0 then
+        lt_score =
+            select score.* 
+            from :lt_score score
+            join :it_idea_ids input
+                on score.IDEA_ID = input.IDEA_ID
+                    and score.TAG_ID = input.TAG_ID;
+    end if;
+    
+    -- aggregate tags into one row
+    lt_tags = 
+        select 
+            IDENTITY_ID, IDEA_ID, 
+            MAX(INSTANCE_COUNT) as INSTANCE_COUNT,
+            MAX(SIMSCORE) as SIMSCORE, 
+            MAX(SUM_IDENT_QUANT) as SUM_IDENT_QUANT, 
+            MAX(SUM_IDEA_QUANT) as SUM_IDEA_QUANT,
+            MAX(COUNT_COACH) as COUNT_COACH,
+            MAX(COUNT_CONTRIBUTOR) as COUNT_CONTRIBUTOR,
+            MAX(COUNT_SUBMITTER) as COUNT_SUBMITTER,
+            MAX(COUNT_COMMENTATOR) as COUNT_COMMENTATOR,
+            MAX(COUNT_EVALUATOR) as COUNT_EVALUATOR,
+            MAX(IDEA_RELATIVE_SCORE) as IDEA_RELATIVE_SCORE, 
+            MAX(IDENTITY_RELATIVE_SCORE) as IDENTITY_RELATIVE_SCORE,
+            MAX(IDENTITY_END_SCORE) as IDENTITY_END_SCORE,
+            MAX(IDENTITY_RANK) as IDENTITY_RANK,
+            MAX(IDEA_RANK) as IDEA_RANK,
+            -- one row for all tags!
+            STRING_AGG(TAG_NAME, ',') as TAG_NAMES,
+            STRING_AGG(TAG_ID, ',') as TAG_IDS
+        from :lt_score
+        group by IDENTITY_ID, IDEA_ID;
+    
+    -- add overall counts, enrich with identity information and cut ranks at thresholds
+    ot_counts = 
+        select 
+            score.*, 
+            overall.OVERALL_COACH_COUNT, overall.OVERALL_COMMENT_COUNT, overall.OVERALL_EVAL_COUNT, overall.OVERALL_AUTHOR_COUNT,
+            ident.NAME, ident.ORGANIZATION,
+            cast(OCCURRENCES_REGEXPR('^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$' in ident.email) as TINYINT) as IS_VALID_EMAIL
+        from :lt_tags score
+        -- add additional information we need to have
+        left outer join "SAP_INO"."sap.ino.db.iam::t_identity" ident
+            on score.IDENTITY_ID = ident.ID
+        join (
+            -- compute overall counts
+            select 
+                IDENTITY_ID, 
+                SUM(COUNT_COACH) as OVERALL_COACH_COUNT, 
+                SUM(COUNT_COMMENTATOR) as OVERALL_COMMENT_COUNT, 
+                SUM(COUNT_EVALUATOR) as OVERALL_EVAL_COUNT, 
+                SUM(COUNT_SUBMITTER) + SUM(COUNT_CONTRIBUTOR) as OVERALL_AUTHOR_COUNT 
+            from :lt_tags
+            group by IDENTITY_ID
+        ) overall
+            on score.IDENTITY_ID = overall.IDENTITY_ID
+        -- cut ranks at upper bounds of given limits (number of identities / ideas per identity)
+        where score.IDENTITY_RANK <= :lv_max_rank_identity
+            and score.IDEA_RANK <= :lv_max_rank_ideas_per_identity
+        ;
+    
+    -- assemble with Image IDs for idea and identity and idea name
+    ot_results =
+        select 
+            counts.*,
+            attmnt2.ATTACHMENT_ID as IDENTITY_IMAGE_ID,
+            attmnt.ATTACHMENT_ID as IDEA_IMAGE_ID,
+            idea.NAME as IDEA_NAME
+        from :ot_counts counts
+        join "SAP_INO"."sap.ino.db.idea::t_idea" idea
+            on counts.IDEA_ID = idea.ID
+        -- idea title image
+        left outer join "SAP_INO"."sap.ino.db.attachment::t_attachment_assignment" attmnt
+            on counts.IDEA_ID = attmnt.OWNER_ID and attmnt.OWNER_TYPE_CODE = 'IDEA' and attmnt.ROLE_TYPE_CODE = 'IDEA_TITLE_IMAGE'
+        -- identity image
+        left outer join "SAP_INO"."sap.ino.db.attachment::t_attachment_assignment" attmnt2
+            on counts.IDENTITY_ID = attmnt2.OWNER_ID and attmnt2.OWNER_TYPE_CODE = 'IDENTITY' and attmnt2.ROLE_TYPE_CODE = 'IDENTITY_IMAGE'
+        -- filter drafts
+        where idea.STATUS_CODE != 'sap.ino.config.DRAFT'
+        order by counts.IDENTITY_RANK asc, counts.IDENTITY_ID asc, counts.IDEA_RANK asc, counts.IDEA_ID asc;
+end;

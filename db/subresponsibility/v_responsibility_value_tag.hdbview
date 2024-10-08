@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "select resp_tag.object_id as resp_value_id, resp_tag.id, resp_tag.tag_id, tag.name 
+    from \"sap.ino.db.tag::t_object_tag\" as resp_tag 
+       inner join \"sap.ino.db.tag::t_tag\" as tag
+        on resp_tag.tag_id = tag.id and resp_tag.object_type_code = 'RESPONSIBILITY'";
+
+depends_on_table = ["sap.ino.db.tag::t_tag",
+                    "sap.ino.db.tag::t_object_tag"];

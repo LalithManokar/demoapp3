@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_VALUE_OPTION_LIST_STATUS_MODEL_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="Value option lists (Staging Object) and their usage in campaigns"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="sap.ino.db.basis::v_value_option_list_status_model_usage" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_status_model_usage"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="sap.ino.db.basis::v_value_option_list_status_model_usage">
+    <attributes>
+      <attribute id="VALUE_LIST_CODE" order="1" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="Value list Code"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_status_model_usage" columnName="VALUE_LIST_CODE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_PHASE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="Campaign Phase"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_status_model_usage" columnName="CAMPAIGN_PHASE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="Campaign Id"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_status_model_usage" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="5" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_status_model_usage" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="STATUS_MODEL_CODE" order="6" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="Status Model Code"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_status_model_usage" columnName="STATUS_MODEL_CODE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="STATUS_MODEL_COUNT" order="3" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number Of Status Model"/>
+        <measureMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_status_model_usage" columnName="STATUS_MODEL_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

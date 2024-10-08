@@ -1,0 +1,21 @@
+schema="SAP_INO";
+query="
+    select latest.id, 
+		latest.object_id,
+		latest.type_code, 
+		latest.created_at as acted_at, 
+		1 as show_icon, 
+		node.identity_id as actor_id 
+    from \"sap.ino.db.idea::t_idea_latest\" as latest
+	inner join (select viewer.id as node_id, viewer.object_id, viewer.identity_id from (
+		select id, object_id, identity_id from \"sap.ino.db.idea::t_idea_latest_statuschange_viewer\") as viewer
+        inner join \"sap.ino.db.iam::v_auth_application_user\" as app_user
+        on app_user.id = viewer.identity_id
+        ) as node
+    on latest.id = node.object_id 
+	with read only
+";
+
+depends_on_table=["sap.ino.db.idea::t_idea_latest_statuschange_viewer",
+				"sap.ino.db.idea::t_idea_latest"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user"];

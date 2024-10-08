@@ -1,0 +1,7 @@
+schema = "SAP_INO";
+query = "select object_id as idea_id, count(distinct identity_id) as view_count
+    from \"sap.ino.db.tracker::t_action_log\"
+    where object_type = 'IDEA'
+    and action_type = 'VIEW'
+    group by object_id";
+depends_on_table = ["sap.ino.db.tracker::t_action_log"]; 

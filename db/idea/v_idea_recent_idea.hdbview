@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "select idea.*, 
+                attachment.attachment_id as idea_title_image_id
+         from 
+             \"sap.ino.db.idea::v_idea_full\" as idea
+         left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as attachment 
+            on attachment.owner_id = idea.id and
+               attachment.owner_type_code = 'IDEA' and
+               attachment.role_type_code = 'IDEA_TITLE_IMAGE'
+         with read only"; 
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment_assignment"];
+depends_on_view  = ["sap.ino.db.idea::v_idea_full"];

@@ -1,0 +1,76 @@
+schema = "SAP_INO";
+query = "
+    select * from (
+        select
+            idea_campaign.* 
+        from (
+            select
+                idea.id as idea_id,
+                campaign.id,
+                campaign.short_name
+            from
+                \"sap.ino.db.idea::t_idea\" as idea,
+                \"sap.ino.db.campaign::v_campaign_small_idea_assign\" as campaign
+        ) as idea_campaign
+        inner join
+            \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as role
+        on
+            role.object_id = idea_campaign.idea_id and
+            role.object_type_code = 'IDEA' and
+            role.role_code in ('IDEA_SUBMITTER', 'IDEA_CONTRIBUTOR')
+        union distinct
+        select
+            idea_campaign.* 
+        from (
+            select
+                idea.id as idea_id,
+                campaign.id,
+                campaign.short_name
+            from
+                \"sap.ino.db.idea::t_idea\" as idea,
+                \"sap.ino.db.campaign::v_campaign_small_idea_reassign\" as campaign
+        ) as idea_campaign
+        inner join
+            \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as role
+        on
+            role.object_id = idea_campaign.id and
+            role.object_type_code = 'CAMPAIGN' and
+            role.role_code in ('CAMPAIGN_COACH', 'CAMPAIGN_MANAGER')
+            
+      union distinct 
+        select
+            idea_campaign.* 
+        from (
+            select
+                idea.id as idea_id,
+                campaign.id,
+                campaign.short_name
+            from
+                \"sap.ino.db.idea::t_idea\" as idea,
+                \"sap.ino.db.campaign::v_campaign_small\" as campaign where campaign.is_open_for_submission = 1
+        ) as idea_campaign
+        inner join 
+        ( select distinct idea.id as idea_id , idea.campaign_id as id from \"sap.ino.db.idea::t_idea\" as idea
+           inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as role 
+            on role.object_id = idea.campaign_id and role.object_type_code = 'CAMPAIGN' and role.role_code in ('CAMPAIGN_COACH', 'CAMPAIGN_MANAGER')
+        ) as camp_coach_manager on camp_coach_manager.idea_id = idea_campaign.idea_id
+    
+    )
+    union distinct
+    select
+        idea.id as idea_id,
+        campaign.id,
+        campaign.short_name
+    from
+        \"sap.ino.db.idea::t_idea\" as idea
+    inner join
+        \"sap.ino.db.campaign::v_campaign_small\" as campaign
+        on
+            idea.campaign_id = campaign.id
+with read only";
+
+depends_on_view = [ "sap.ino.db.campaign::v_campaign_small_idea_assign",
+                    "sap.ino.db.campaign::v_campaign_small_idea_reassign",
+                    "sap.ino.db.campaign::v_campaign_small",
+                    "sap.ino.db.iam::v_auth_application_user_role_transitive"];
+depends_on_table = ["sap.ino.db.idea::t_idea"];

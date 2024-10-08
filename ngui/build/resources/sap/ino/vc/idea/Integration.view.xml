@@ -1,0 +1,218 @@
+<mvc:View
+    controllerName="sap.ino.vc.idea.Integration"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:ino="sap.ino.controls"
+	xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<List noDataText="{i18n>IDEA_OBJECT_INTEGRATION_NO_DATA}" id="integrationObjectsList"
+	items = "{integration>/}">
+		<CustomListItem class="sapInoIntegrationListGap">
+			<content>
+				<HBox class="sapInoIntegrationlineHBox">
+			    <l:Grid
+                        defaultSpan="XL12 L12 M12 S12"
+                        hSpacing="0"
+                        vSpacing="0">
+						<l:content>				
+					<HBox >
+						<Label  class="sapInoIntegrationHeaderName" wrapping="true" tooltip="{integration>1/displayName}" text = "{integration>1/displayName}:"/>
+						<Label  class="sapInoIntegrationHeaderValue sapInoIntegrationHeaderName" 
+						        tooltip="{parts:['integration>1/value','integration>1/fieldCode'],formatter:'.formatDate'}" 
+						        text = "{parts:['integration>1/value','integration>1/fieldCode'],formatter:'.formatDate'}" 
+						        visible="{path:'integration>1/fieldCode',formatter:'.visibleText'}"/>
+					    <Link  class="sapInoIntegrationHeaderLink" tooltip="{integration>1/value}" text = "{integration>1/value}" href="{integration>1/value}" target = "_blank"
+					          visible ="{path:'integration>1/fieldCode',formatter:'.visibleLink'}" enabled="{path:'integration>1/value',formatter:'.enableLink'}" />						
+						<layoutData>
+					    	<l:GridData
+                                span="XL10 L10 M12 S12"/>
+						</layoutData>						
+					</HBox>
+					<HBox >
+						<Button text="{i18n>IDEA_OBJECT_INTEGRATION_BTN_REFRESH}" type="Emphasized" press="onPressRefresh"
+						enabled="{path:'integration>QUERY_ENABLE',formatter:'.visibleRefresh'}">
+						</Button>
+						<Button class="sapInoIntegrationBtnRemove" text = "{i18n>IDEA_OBJECT_INTEGRATION_BTN_REMOVE}" 
+						enabled="{path:'integration>QUERY_ENABLE',formatter:'.enableRemove'}" press="onPressRemove"/>
+						<layoutData>
+							<l:GridData
+                            span="XL2 L2 M12 S12"/>
+						</layoutData>
+					</HBox>
+			       </l:content>
+			     </l:Grid >					
+				</HBox>
+				<HBox class="sapInoIntegrationHeaderHbox sapInoIntegrationlineHBox">
+			      <l:Grid
+                        defaultSpan="XL12 L12 M12 S12"
+                        hSpacing="0"
+                        vSpacing="0">
+						<l:content>
+						
+					<HBox  visible="{path:'integration>2/fieldCode',formatter:'.visibleField'}" >
+						<Label   wrapping="true" tooltip="{integration>2/displayName}" text="{integration>2/displayName}:"/>
+						<Label  class="sapInoIntegrationValue" 
+						        tooltip="{parts:['integration>2/value','integration>2/fieldCode'],formatter:'.formatDate'}" 
+						        text = "{parts:['integration>2/value','integration>2/fieldCode'],formatter:'.formatDate'}" 
+						        visible="{path:'integration>2/fieldCode',formatter:'.visibleText'}"/>
+					    <Link   class="sapInoIntegrationLink" tooltip="{integration>2/value}" text = "{integration>2/value}" href="{integration>2/value}" target = "_blank"
+					          visible ="{path:'integration>2/fieldCode',formatter:'.visibleLink'}" enabled ="{path:'integration>2/value',formatter:'.enableLink'}" />
+					   <layoutData>
+							<l:GridData
+                                span="XL4 L4 M12 S12"/>
+						</layoutData>
+					</HBox>
+					
+					<HBox  visible="{path:'integration>3/fieldCode',formatter:'.visibleField'}">
+						<Label   wrapping="true" tooltip="{integration>3/displayName}" text="{integration>3/displayName}:"/>
+						<Label  class="sapInoIntegrationValue" 
+						        tooltip="{parts:['integration>3/value','integration>3/fieldCode'],formatter:'.formatDate'}" 
+						        text = "{parts:['integration>3/value','integration>3/fieldCode'],formatter:'.formatDate'}" 
+						        visible="{path:'integration>3/fieldCode',formatter:'.visibleText'}"/>
+					    <Link   class="sapInoIntegrationLink" tooltip="{integration>3/value}" text = "{integration>3/value}" href="{integration>3/value}" target = "_blank"
+					          visible ="{path:'integration>3/fieldCode',formatter:'.visibleLink'}" enabled ="{path:'integration>3/value',formatter:'.enableLink'}" />
+						<layoutData>
+							<l:GridData
+                            span="XL4 L4 M12 S12"/>
+						</layoutData>					
+					</HBox>
+					<HBox  visible="{path:'integration>4/fieldCode',formatter:'.visibleField'}">
+						<Label    wrapping="true" tooltip="{integration>4/displayName}" text="{integration>4/displayName}:"/>
+						<Label  class="sapInoIntegrationValue"  
+						        tooltip="{parts:['integration>4/value','integration>4/fieldCode'],formatter:'.formatDate'}" 
+						        text = "{parts:['integration>4/value','integration>4/fieldCode'],formatter:'.formatDate'}" 
+						        visible="{path:'integration>4/fieldCode',formatter:'.visibleText'}"/>
+					    <Link   class="sapInoIntegrationLink" tooltip="{integration>4/value}" text = "{integration>4/value}" href="{integration>4/value}" target = "_blank"
+					          visible ="{path:'integration>4/fieldCode',formatter:'.visibleLink'}" enabled ="{path:'integration>4/value',formatter:'.enableLink'}" />
+						<layoutData>
+							<l:GridData
+                            span="XL4 L4 M12 S12"/>
+						</layoutData>					
+					</HBox>
+			     </l:content>
+			     </l:Grid >						
+				</HBox>
+				<HBox class="sapInoIntegrationHeaderHbox sapInoIntegrationlineHBox">
+			      <l:Grid
+                        defaultSpan="XL12 L12 M12 S12"
+                        hSpacing="0"
+                        vSpacing="0">
+						<l:content>		
+					<HBox  visible="{path:'integration>5/fieldCode',formatter:'.visibleField'}">
+						<Label  wrapping="true" tooltip="{integration>5/displayName}" text="{integration>5/displayName}:"/>
+						<Label  class="sapInoIntegrationValue" 
+						       tooltip="{parts:['integration>5/value','integration>5/fieldCode'],formatter:'.formatDate'}" 
+						       text="{parts:['integration>5/value','integration>5/fieldCode'],formatter:'.formatDate'}" 
+						       visible="{path:'integration>5/fieldCode',formatter:'.visibleText'}"/>
+					    <Link   class="sapInoIntegrationLink" tooltip="{integration>5/value}" text = "{integration>5/value}" href="{integration>5/value}" target = "_blank"
+					          visible ="{path:'integration>5/fieldCode',formatter:'.visibleLink'}" enabled ="{path:'integration>5/value',formatter:'.enableLink'}"/>
+						<layoutData>
+							<l:GridData
+                            span="XL4 L4 M12 S12"/>
+						</layoutData>					
+					</HBox>						
+					<HBox    visible="{path:'integration>6/fieldCode',formatter:'.visibleField'}">
+						<Label   wrapping="true" tooltip="{integration>6/displayName}" text="{integration>6/displayName}:"/>
+						<Label  class="sapInoIntegrationValue" 
+						        tooltip="{parts:['integration>6/value','integration>6/fieldCode'],formatter:'.formatDate'}" 
+						        text = "{parts:['integration>6/value','integration>6/fieldCode'],formatter:'.formatDate'}" 
+						        visible="{path:'integration>6/fieldCode',formatter:'.visibleText'}"/>
+					    <Link   class="sapInoIntegrationLink" tooltip="{integration>6/value}" text = "{integration>6/value}" href="{integration>6/value}" target = "_blank"
+					          visible ="{path:'integration>6/fieldCode',formatter:'.visibleLink'}"  enabled ="{path:'integration>6/value',formatter:'.enableLink'}" />
+						<layoutData>
+							<l:GridData
+                            span="XL4 L4 M12 S12"/>
+						</layoutData>					          
+					</HBox>
+					<HBox   visible="{path:'integration>7/fieldCode',formatter:'.visibleField'}">
+						<Label   wrapping="true" tooltip="{integration>7/displayName}" text="{integration>7/displayName}:"/>
+						<Label  class="sapInoIntegrationValue" 
+						        tooltip="{parts:['integration>7/value','integration>7/fieldCode'],formatter:'.formatDate'}" 
+						        text = "{parts:['integration>7/value','integration>7/fieldCode'],formatter:'.formatDate'}" 
+						        visible="{path:'integration>7/fieldCode',formatter:'.visibleText'}"/>
+					    <Link   class="sapInoIntegrationLink" tooltip="{integration>7/value}" text = "{integration>7/value}" href="{integration>7/value}" target = "_blank"
+					          visible ="{path:'integration>7/fieldCode',formatter:'.visibleLink'}" enabled ="{path:'integration>7/value',formatter:'.enableLink'}"/>
+						<layoutData>
+							<l:GridData
+                            span="XL4 L4 M12 S12"/>
+						</layoutData>					          
+					</HBox>
+			     </l:content>
+			     </l:Grid >						
+				</HBox>
+				<HBox class="sapInoIntegrationHeaderHbox sapInoIntegrationlineHBox">
+			      <l:Grid
+                        defaultSpan="XL12 L12 M12 S12"
+                        hSpacing="0"
+                        vSpacing="0">
+						<l:content>	
+					<HBox  visible="{path:'integration>8/fieldCode',formatter:'.visibleField'}">
+						<Label   wrapping="true" tooltip="{integration>8/displayName}" text="{integration>8/displayName}:"/>
+						<Label  class="sapInoIntegrationValue"  
+						        tooltip="{parts:['integration>8/value','integration>8/fieldCode'],formatter:'.formatDate'}" 
+						        text = "{parts:['integration>8/value','integration>8/fieldCode'],formatter:'.formatDate'}" 
+						        visible="{path:'integration>8/fieldCode',formatter:'.visibleText'}"/>
+					    <Link   class="sapInoIntegrationLink" tooltip="{integration>8/value}" text = "{integration>8/value}" href="{integration>8/value}" target = "_blank"
+					          visible ="{path:'integration>8/fieldCode',formatter:'.visibleLink'}" enabled ="{path:'integration>8/value',formatter:'.enableLink'}"/>
+						<layoutData>
+							<l:GridData
+                            span="XL4 L4 M12 S12"/>
+						</layoutData>					          
+					</HBox>						
+					<HBox   visible="{path:'integration>9/fieldCode',formatter:'.visibleField'}">
+						<Label    wrapping="true" tooltip="{integration>9/displayName}" text="{integration>9/displayName}:"/>
+						<Label  class="sapInoIntegrationValue" 
+						        tooltip="{parts:['integration>9/value','integration>9/fieldCode'],formatter:'.formatDate'}" 
+						        text = "{parts:['integration>9/value','integration>9/fieldCode'],formatter:'.formatDate'}" 						
+						       visible="{path:'integration>9/fieldCode',formatter:'.visibleText'}"/>
+					    <Link   class="sapInoIntegrationLink" tooltip="{integration>9/value}" text = "{integration>9/value}" href="{integration>9/value}" target = "_blank"
+					          visible ="{path:'integration>9/fieldCode',formatter:'.visibleLink'}" enabled ="{path:'integration>9/value',formatter:'.enableLink'}"/>
+						<layoutData>
+							<l:GridData
+                            span="XL4 L4 M12 S12"/>
+						</layoutData>					          
+					</HBox>
+					<HBox    visible="{path:'integration>10/fieldCode',formatter:'.visibleField'}">
+						<Label   wrapping="true" tooltip="{integration>10/displayName}" text="{integration>10/displayName}:"/>
+						<Label  class="sapInoIntegrationValue" 
+						        tooltip="{parts:['integration>10/value','integration>10/fieldCode'],formatter:'.formatDate'}" 
+						        text = "{parts:['integration>10/value','integration>10/fieldCode'],formatter:'.formatDate'}" 						
+						        visible="{path:'integration>10/fieldCode',formatter:'.visibleText'}"/>
+					    <Link   class="sapInoIntegrationLink" tooltip="{integration>10/value}" text = "{integration>10/value}" href="{integration>10/value}" target = "_blank"
+					          visible ="{path:'integration>10/fieldCode',formatter:'.visibleLink'}" enabled ="{path:'integration>10/value',formatter:'.enableLink'}"/>
+						<layoutData>
+							<l:GridData
+                            span="XL4 L4 M12 S12"/>
+						</layoutData>					          
+					</HBox>
+			     </l:content>
+			     </l:Grid >						
+				</HBox>	
+               <HBox class="sapInoIntegrationHeaderHbox sapInoIntegrationlineHBox">
+			      <l:Grid
+                        defaultSpan="XL12 L12 M12 S12"
+                        hSpacing="0"
+                        vSpacing="0">
+						<l:content>	
+					<HBox  visible="{path:'integration>11/fieldCode',formatter:'.visibleField'}">
+						<Label   wrapping="true" tooltip="{integration>11/displayName}" text="{integration>11/displayName}:"/>
+						<Label  class="sapInoIntegrationValue"  
+						        tooltip="{parts:['integration>11/value','integration>11/fieldCode'],formatter:'.formatDate'}" 
+						        text = "{parts:['integration>11/value','integration>11/fieldCode'],formatter:'.formatDate'}" 
+						        visible="{path:'integration>11/fieldCode',formatter:'.visibleText'}"/>
+					    <Link   class="sapInoIntegrationLink" tooltip="{integration>11/value}" text = "{integration>11/value}" href="{integration>11/value}" target = "_blank"
+					          visible ="{path:'integration>11/fieldCode',formatter:'.visibleLink'}" enabled ="{path:'integration>11/value',formatter:'.enableLink'}"/>
+						<layoutData>
+							<l:GridData
+                            span="XL4 L4 M12 S12"/>
+						</layoutData>					          
+					</HBox>						
+			     </l:content>
+			     </l:Grid >						
+				</HBox>	
+			</content>
+		</CustomListItem>
+	</List>
+</mvc:View>

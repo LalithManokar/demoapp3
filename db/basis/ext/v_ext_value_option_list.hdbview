@@ -1,0 +1,8 @@
+schema = "SAP_INO_EXT";
+query = "
+    select * from \"sap.ino.db.basis::v_value_option_list\"
+    with read only
+    -- no instance authorization necessary
+";
+
+depends_on_view = ["sap.ino.db.basis::v_value_option_list"];

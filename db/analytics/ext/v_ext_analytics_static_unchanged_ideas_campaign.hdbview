@@ -1,0 +1,19 @@
+schema = "SAP_INO_EXT";
+query = "
+    select 
+        data.campaign_id,
+        count(data.ideas_1) as ideas_1,
+        count(data.ideas_2_7) as ideas_2_7,
+        count(data.ideas_8_30) as ideas_8_30,
+        count(data.ideas_31) as ideas_31
+    from  
+        \"sap.ino.db.analytics::v_analytics_static_unchanged_ideas\" as data
+    inner join
+        \"sap.ino.db.idea::v_auth_backoffice_campaign_privilege\" as auth
+        on data.campaign_id = auth.campaign_id
+    group by
+        data.campaign_id
+    with read only";
+
+depends_on_view = ["sap.ino.db.analytics::v_analytics_static_unchanged_ideas",
+                   "sap.ino.db.idea::v_auth_backoffice_campaign_privilege"];

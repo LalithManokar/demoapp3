@@ -1,0 +1,87 @@
+schema = "SAP_INO_EXT";
+query = "
+            -- this view is a specialized, performance-optimized variant for community 
+            -- current_user. It may therefore *NOT* be used in procedural context
+            select 
+                IDEA.ID,
+                IDEA.NAME,
+                IDEA.SHORT_DESCRIPTION,
+                IDEA.DESCRIPTION,
+                IDEA.ANONYMOUS_FOR,
+                IDEA.CREATED_AT,
+                IDEA.CHANGED_AT,
+                IDEA.CHANGED_AT_DT,
+                IDEA.SUBMITTED_AT,
+                IDEA.SUBMITTED_AT_DT,
+                IDEA.SUBMITTER_ID, 
+                IDEA.SUBMITTER_NAME, 
+                IDEA.COACH_ID,
+                IDEA.COACH_NAME,            
+                IDEA.CAMPAIGN_ID,
+                IDEA.CAMPAIGN_NAME,
+                IDEA.CAMPAIGN_SHORT_NAME,
+                IDEA.CAMPAIGN_COLOR,
+                IDEA.CAMPAIGN_REWARD_UNIT_CODE,
+                IDEA.CAMPAIGN_REWARD_UNIT_TEXT,
+                IDEA.PHASE,
+                IDEA.STEP,
+                IDEA.STEPS,
+                IDEA.STATUS,
+                IDEA.STATUS_CODE,
+                IDEA.STATUS_COLOR,
+                IDEA.BASE_PACKAGE,
+                IDEA.STATUS_TYPE,
+                IDEA.TITLE_IMAGE_ASSIGN_ID,
+                IDEA.TITLE_IMAGE_ID,
+                IDEA.TITLE_IMAGE_MEDIA_TYPE,
+                IDEA.TITLE_IMAGE_CHANGED_AT,
+                IDEA.VOTE_TYPE_TYPE_CODE,
+                IDEA.VOTED_BY_GROUP,
+                IDEA.MAX_STAR_NO,
+                IDEA.PUBLIC_VOTE,
+                IDEA.PUBLISH_VOTE,
+                IDEA.AUTO_FOLLOW,
+                IDEA.VOTE_COMMENT_TYPE,
+                IDEA.VOTE_REASON_CODE,
+                IDEA.SCORE,
+                IDEA.VOTE_COUNT,
+                IDEA.POS_VOTES,
+                IDEA.NEG_VOTES,
+                IDEA.EXP_SCORE,
+                IDEA.EXP_VOTE_COUNT,
+                IDEA.EXP_POS_SCORE,
+                IDEA.EXP_NEG_SCORE,
+                IDEA.USER_SCORE,
+                IDEA.VOTE_ID,
+                IDEA.COMMENT_HAS_PRIVILEGE,
+                IDEA.VOTING_HAS_PRIVILEGE,
+                IDEA.VOTING_ACTIVE,
+                IDEA.COMMENT_COUNT,
+                IDEA.VIEW_COUNT,
+                IDEA.FOLLOW,
+                IDEA.IS_OPEN_FOR_CONTRIBUTORS,
+                IDEA.VOLUNTEER_ID,
+                IDEA.RESP_VALUE_CODE,
+                IDEA.RESP_VALUE_NAME,
+                IDEA.RESP_NAME,
+                IDEA.REASON_CODE,
+                IDEA.REASON_COMMENT,
+                IDEA.STATUS_REASON,
+                IDEA.CAMPAIGN_FORM_CODE,
+                IDEA.CAMPAIGN_ADMIN_FORM_CODE,
+                idea_extension.*
+            from \"sap.ino.db.idea::v_idea_community\" as idea
+            inner join \"sap.ino.db.idea::v_my_followed_ideas\" as followed_idea
+              on idea.id = followed_idea.idea_id
+	        -- for performance reasons extension fields are joined on outermost view
+    	    left outer join \"sap.ino.db.basis::t_extension\" as idea_extension
+                on idea_extension._object_id = idea.id and 
+                   idea_extension._object_type_code = 'IDEA'
+            where idea.id in (select * from \"sap.ino.db.idea::v_auth_ideas_read\")
+            with read only";
+
+depends_on_table = ["sap.ino.db.basis::t_extension"];
+
+depends_on_view = [ "sap.ino.db.idea::v_idea_community", 
+                    "sap.ino.db.idea::v_auth_ideas_read",
+                    "sap.ino.db.idea::v_my_followed_ideas"];

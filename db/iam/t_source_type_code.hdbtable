@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Identity Source Type Code";
+table.columns = [
+    {name = "CODE";              sqlType = VARCHAR;  length =  20; nullable = false; comment = "Identity source type code";},
+    {name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default Text for Identity Source Type";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true;  comment = "Default Long Text for Identity Source Type";}
+   ];
+table.primaryKey.pkcolumns = ["CODE"];

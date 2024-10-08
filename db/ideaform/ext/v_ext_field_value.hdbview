@@ -1,0 +1,44 @@
+schema = "SAP_INO_EXT";
+query = "
+    select  field_value.ID,
+            field_value.IDEA_ID,
+            field_value.FIELD_CODE,
+            field_value.NUM_VALUE as NUM_VALUE, 
+            field_value.BOOL_VALUE as BOOL_VALUE, 
+            field_value.TEXT_VALUE as TEXT_VALUE, 
+            cast(field_value.RICH_TEXT_VALUE as VARCHAR) as RICH_TEXT_VALUE, 
+            field_value.DATE_VALUE as DATE_VALUE, 
+            field_value.COMMENT as COMMENT,
+            field_value.STATE_OF_PUBLISH,
+            field_value.FIELD_TYPE_CODE,
+            field_value.CODE,
+            field_value.FORM_CODE,
+            field_value.SEQUENCE_NO,
+            field_value.DEFAULT_TEXT,
+            field_value.DEFAULT_LONG_TEXT,
+            field_value.MANDATORY,
+            field_value.DATATYPE_CODE,
+            field_value.VALUE_OPTION_LIST_CODE,
+            field_value.NUM_VALUE_MIN,
+            field_value.NUM_VALUE_MAX,
+            field_value.NUM_VALUE_STEP_SIZE,
+            field_value.UOM_CODE,
+            field_value.IS_PUBLISH,
+            0 as IS_HIDDEN,
+            field_value.IS_HIDDEN as IS_HIDDEN_SETTING,
+            field_value.VALUE_LIST_DEFAULT_TEXT,
+            field_value.VALUE_LIST_DEFAULT_LONG_TEXT,
+            field_value.IS_ADMIN_FORM,
+            field_value.CAMPAIGN_ID,        
+            field_value.IS_DISPLAY_ONLY,
+            field_value.DISPLAY_TEXT,
+            field_value.IS_ACTIVE
+    from \"sap.ino.db.ideaform::v_field_value\"  as field_value
+    left outer join \"sap.ino.db.ideaform::v_auth_field_value\" as auth_field
+    on auth_field.id = field_value.id
+    where field_value.idea_id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\") and
+    (field_value.IS_ADMIN_FORM is null or field_value.IS_ADMIN_FORM <> 1) and auth_field.can_read_field = 1
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.ideaform::v_field_value","sap.ino.db.ideaform::v_auth_field_value"];

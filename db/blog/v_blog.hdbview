@@ -1,0 +1,35 @@
+schema = "SAP_INO";
+query  = "
+    select
+        blog.id,
+        blog.title,
+        blog.description,
+        blog.short_description,
+        blog.description_mime_type,
+        blog.is_major_change,
+        blog.status_code,
+        blog.object_id,
+        blog.object_type_code,
+        blog.published_at,
+        blog.created_at,
+        blog.created_by_id,
+        blog.comment_count,
+        creator.name       as created_by_name,
+        creator.last_name  as created_by_last_name,
+        creator.first_name as created_by_first_name,
+        creator.email      as created_by_email,
+        blog.changed_at,
+        blog.changed_by_id,
+        changer.name       as changed_by_name,
+        changer.last_name  as changed_by_last_name,
+        changer.first_name as changed_by_first_name,
+        changer.email      as changed_by_email
+      from \"sap.ino.db.blog::t_blog\" as blog
+      left outer join \"sap.ino.db.iam::t_identity\" as creator
+        on blog.created_by_id = creator.id
+      left outer join \"sap.ino.db.iam::t_identity\" as changer
+        on blog.changed_by_id = changer.id
+      with read only";
+
+depends_on_table = ["sap.ino.db.blog::t_blog",
+                    "sap.ino.db.iam::t_identity"];

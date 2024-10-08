@@ -1,0 +1,27 @@
+.sapInoProcessIndicatorActive {
+	fill: lighten(desaturate(@sapInoPositiveElement, 5%), 5%);
+}
+
+.sapInoProcessIndicatorInactive {
+	fill: @sapInoExtraLightBorder;
+}
+
+.sapInoProcessIndicatorStopped {
+	fill: darken(@sapInoNegativeElement, 10%);
+}
+
+.sapMLIBActive .sapInoProcessIndicatorActive,
+.sapMLIBActive .sapInoProcessIndicatorInactive,
+.sapMLIBActive .sapInoProcessIndicatorStopped {
+    fill: @sapInoTextInverted;
+}
+
+.sapMLIBActive .sapInoProcessIndicatorLabel .sapMLabel,
+.sapMLIBActive .sapInoProcessIndicatorText .sapMText {
+    color: @sapInoLightText;
+}
+
+.sapInoProcessIndicatorStatusLabel, 
+.sapInoProcessIndicatorPhaseLabel {
+    margin-right: 4px;
+}

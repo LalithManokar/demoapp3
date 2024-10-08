@@ -1,0 +1,56 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_identity_determine_ids" (
+    in  it_identities    SAP_INO."sap.ino.db.iam::t_identity",
+    out ot_identities    SAP_INO."sap.ino.db.iam::t_identity",
+    out ot_generated_ids SAP_INO."sap.ino.db.basis::tt_generated_id" 
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+reads sql data as
+begin
+    ot_generated_ids =
+        select
+            id                                   as handle_id,
+            "sap.ino.db.iam::s_identity".nextval as generated_id
+        from 
+            :it_identities
+        where
+            id < 0;
+
+    ot_identities =
+        select
+            ifnull(gen_ids.generated_id, identity.id) as id,
+            created_at,
+            created_by_id,
+            changed_at,
+            changed_by_id as changed_by_id,
+            type_code as type_code,
+            name,
+            first_name,
+            last_name,
+            email,
+            user_name,
+            is_external,
+            erased,
+            phone,
+            mobile,
+            cost_center,
+            organization,
+            office,
+            description,
+            staged,
+            source_type_code,            
+            company,           
+            street,           
+            city,              
+            country,         
+            zip_code,
+            validation_to,
+            LAST_LOGIN
+        from 
+            :it_identities as identity
+        left outer join 
+            :ot_generated_ids as gen_ids
+        on
+            identity.id = gen_ids.handle_id;
+end;

@@ -1,0 +1,99 @@
+schema = "SAP_INO";
+query = " 
+select * from (
+        select 
+            replace(object_id || object_type_code || event_at || feed_code || IFNULL(involved_id, 0),  ' ','_') as key,
+            feed.object_id,
+            feed.object_type_code,
+            feed.object_text,
+            feed.actor_id,
+            feed.actor_name,
+            feed.actor_image_id,
+            feed.involved_id,
+            feed.involved_obj_type_code,
+            feed.involved_obj_text,
+            feed.event_at,
+            feed.feed_code, 
+            feed.campaign_id,
+            feed.field1_name,
+            feed.field1_text,
+            feed.field1_value,
+            feed.field1_value_option,
+            null as field2_name,
+            null as field2_text,
+            null as field2_value,
+            null as field2_value_option,
+            feed.filter_type_code, 
+            feed.content,
+            involved_obj_text as sub_text,
+            null as sub_feed_code,
+            null as campaign_date
+      --from \"sap.ino.db.idea::v_idea_biz_feeds\" as feed
+        from \"sap.ino.db.idea.ext::f_idea_biz_feeds\"() as feed 
+        
+        union all
+        select 
+            replace(object_id || object_type_code || event_at || feed_code || IFNULL(involved_id, 0),  ' ','_') as key,
+            feed.object_id,
+            feed.object_type_code,
+            feed.object_text,
+            feed.actor_id,
+            feed.actor_name,
+            feed.actor_image_id,
+            feed.involved_id,
+            feed.involved_obj_type_code,
+            feed.involved_obj_text,
+            feed.event_at,
+            feed.feed_code, 
+            feed.campaign_id,
+            feed.field1_name,
+            feed.field1_text,
+            feed.field1_value,
+            feed.field1_value_option,
+            feed.field2_name,
+            feed.field2_text,
+            feed.field2_value,
+            feed.field2_value_option,
+            feed.filter_type_code, 
+            feed.content,
+            involved_obj_text as sub_text,
+            null as sub_feed_code,
+            feed.campaign_date
+        from \"sap.ino.db.campaign::v_campaign_biz_feeds\" as feed
+        
+        union all
+        select 
+            replace(object_id || object_type_code || event_at || feed_code || IFNULL(involved_id, 0),  ' ','_') as key,
+            feed.object_id,
+            feed.object_type_code,
+            feed.object_text,
+            feed.actor_id,
+            feed.actor_name,
+            feed.identity_image_id as actor_image_id,
+            feed.involved_id,
+            feed.involved_obj_type_code,
+            feed.sub_text as involved_obj_text,
+            feed.event_at,
+            feed.feed_code, 
+            feed.campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            null as field2_name,
+            null as field2_text,
+            null as field2_value,
+            null as field2_value_option,
+            feed.filter_type_code, 
+            null as content,
+            feed.sub_text,
+            null as sub_feed_code,
+            feed.campaign_date
+        from \"sap.ino.db.tag::v_tag_biz_feeds\" as feed
+)with read only"; 
+
+depends_on_view =  ["sap.ino.db.iam::v_identity",
+                    "sap.ino.db.tag::v_tag_biz_feeds",
+                    "sap.ino.db.idea::v_idea_biz_feeds",
+                    "sap.ino.db.campaign::v_campaign_biz_feeds",
+                    "sap.ino.db.idea.ext::f_idea_biz_feeds"];            

@@ -1,0 +1,15 @@
+schema = "SAP_INO";
+query = "
+   select
+        assignment_tag.tag_group_id as assigned_group_id,
+        assignment_tag.id as id,
+        tag_group.name as assigned_group_name,
+        assignment_tag.tag_id as group_id
+    from \"sap.ino.db.tag::t_assignment_tag\" as assignment_tag
+        inner join \"sap.ino.db.tag::v_group_tag\" as tag_group
+            on (tag_group.id = assignment_tag.tag_group_id and assignment_tag.object_type_code = 'TAG_GROUP')
+with read only";
+
+
+depends_on_table = ["sap.ino.db.tag::t_assignment_tag"];
+depends_on_view = ["sap.ino.db.tag::v_group_tag"];

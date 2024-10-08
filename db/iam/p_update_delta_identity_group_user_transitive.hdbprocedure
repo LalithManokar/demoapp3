@@ -1,0 +1,52 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_update_delta_identity_group_user_transitive" (
+    in it_user_id SAP_INO."sap.ino.db.iam::tt_id_set_input"
+)
+language sqlscript 
+sql security invoker
+default schema SAP_INO
+as
+begin
+    -- Attention:
+    --     This procedure assumes that the existing transitive closure is
+    --     consistent with regard to the groups and their parents. It also
+    --     assumes that only the users in it_user_id may need to be fixed.
+    --     If this is the case it will result restore consistency of
+    --     the transitive closure.
+    
+    --     This procedure assumes that all IDs are user IDs.
+    --     In this case it is sufficient to recompute only recompute the lowest level
+    --     of the transitive closure. This is because users are
+    --     always leaves of the group membership graph.
+
+    -- step 1: compute new closure
+    -- step 2: wipe old closure
+    -- step 3: store new closure
+    
+    -- step 1: compute new closure
+    --   1a) users must be in their own transitive closure
+    lt_user_self_reference =
+        select "ID" as member_id, "ID" as group_id from :it_user_id;
+
+    --   1b) join the parent's transitive closure to get the rest of the user's closure
+    lt_all_parent_references =
+        select u.id as member_id, tc.group_id as group_id from
+            :it_user_id                                          as u,
+            "sap.ino.db.iam::t_identity_group_member"            as tm,
+            "sap.ino.db.iam::t_identity_group_member_transitive" as tc
+        where
+            u.id        = tm.member_id
+        and tm.group_id = tc.member_id;
+
+    lt_closure =
+        select * from :lt_user_self_reference
+        union all
+        select * from :lt_all_parent_references;
+
+    -- step 2: wipe old closure
+    delete from "sap.ino.db.iam::t_identity_group_member_transitive"
+        where member_id in (select id from :it_user_id);
+    
+    -- step 3: store new closure
+    insert into "sap.ino.db.iam::t_identity_group_member_transitive" (member_id, group_id)
+        select distinct member_id, group_id from :lt_closure;
+end;

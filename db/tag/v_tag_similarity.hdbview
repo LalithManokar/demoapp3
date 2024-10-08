@@ -1,0 +1,29 @@
+schema = "SAP_INO";
+query = "
+    select
+        tag_similarity.source_id,
+        tag_similarity.target_id as id,
+        tag_similarity.edit_distance,
+        target_tag.name,
+        target_tag.created_at,
+        target_tag.created_by_id,
+        target_tag.changed_at,
+        target_tag.changed_by_id,
+        created_by_identity.name as created_by, 
+        changed_by_identity.name as changed_by,
+        target_tag.usage_count
+    from \"sap.ino.db.tag::t_tag_similarity\" as tag_similarity
+        inner join \"sap.ino.db.tag::t_tag\" as source_tag
+            on tag_similarity.source_id = source_tag.id
+        inner join \"sap.ino.db.tag::v_tag\" as target_tag
+            on tag_similarity.target_id = target_tag.id    
+        left outer join \"sap.ino.db.iam::t_identity\" as created_by_identity
+            on target_tag.created_by_id = created_by_identity.id
+        left outer join \"sap.ino.db.iam::t_identity\" as changed_by_identity
+            on target_tag.changed_by_id = changed_by_identity.id
+    with read only";
+
+depends_on_table = ["sap.ino.db.tag::t_tag_similarity",
+                    "sap.ino.db.tag::t_tag",
+                    "sap.ino.db.iam::t_identity"];
+depends_on_view = ["sap.ino.db.tag::v_tag"];

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_MONITOR_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_MONITOR_SEARCH"/>
+  <metadata changedAt="2019-10-17 19:20:00.346"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="searchToken"/>
+      <variableProperties datatype="VARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="INTEGER" id="STATUS"/>
+        <viewAttribute datatype="NCLOB" id="RESPONSE_MESSAGE"/>
+        <viewAttribute datatype="INTEGER" id="OBJECT_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="PATH" length="1024"/>
+        <viewAttribute datatype="NVARCHAR" id="DIRECTION_PATH" length="16"/>
+        <viewAttribute datatype="NVARCHAR" id="INTERFACE_NAME" length="512"/>
+        <viewAttribute datatype="NVARCHAR" id="OPERATOR_BY" length="100"/>
+        <viewAttribute id="OPERATOR_BY_ID" datatype="INTEGER"/>
+        <viewAttribute datatype="TIMESTAMP" id="OPERATOR_AT"/>
+      
+        <viewAttribute id="OBJECT_PAYLOAD_JSON" datatype="NCLOB"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>begin
+    search_result =
+        select
+            id,
+            1 as search_score
+        from
+            &quot;sap.ino.db.integration::v_monitor_integration&quot; 
+        where
+            length(:searchToken) = 0 
+        union all
+        select
+            id,
+            1 as search_score
+        from
+            &quot;sap.ino.db.integration::v_monitor_integration&quot; 
+        where
+            length(:searchToken) &gt; 0 and length(ltrim(:searchToken,'0123456789')) &lt;=0 and
+            cast(id as nvarchar) = :searchToken
+        union all    
+        select
+            id,
+            score() as search_score
+        from
+            &quot;sap.ino.db.integration::v_monitor_integration&quot; 
+        where length(:searchToken) &gt; 0 and (
+            contains(PATH, :searchToken, fuzzy(0.8), weight(1.0)) or
+            contains(DIRECTION_PATH, :searchToken, fuzzy(0.8), weight(1.0)) or
+            contains(INTERFACE_NAME, :searchToken, fuzzy(0.8), weight(1.0)) or
+            contains(OPERATOR_BY, :searchToken, fuzzy(0.8), weight(1.0)) or
+            contains(STATUS, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+            contains(OBJECT_ID, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+            contains(PATH, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+            contains(DIRECTION_PATH, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+            contains(INTERFACE_NAME, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+            contains(OPERATOR_BY, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)));
+
+    var_out = 
+        select 
+            sr.search_score,	
+            sr.id,
+            monitor_integration.STATUS,
+            monitor_integration.RESPONSE_MESSAGE,
+            monitor_integration.OBJECT_ID,
+            monitor_integration.PATH,
+            monitor_integration.DIRECTION_PATH,
+            monitor_integration.INTERFACE_NAME,
+            monitor_integration.OPERATOR_BY,
+            monitor_integration.OPERATOR_BY_ID,
+            monitor_integration.OPERATOR_AT,
+            monitor_integration.OBJECT_PAYLOAD_JSON
+        from 
+            &quot;sap.ino.db.integration::v_monitor_integration&quot; as monitor_integration
+        inner join
+            :search_result as sr
+        on
+            monitor_integration.id = sr.id; 
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="STATUS" order="3">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS"/>
+      </attribute>
+      <attribute id="RESPONSE_MESSAGE" order="4">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="RESPONSE_MESSAGE"/>
+      </attribute>
+      <attribute id="OBJECT_ID" order="5">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="OBJECT_ID"/>
+      </attribute>
+      <attribute id="PATH" order="6">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="PATH"/>
+      </attribute>
+      <attribute id="DIRECTION_PATH" order="7">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="DIRECTION_PATH"/>
+      </attribute>
+      <attribute id="INTERFACE_NAME" order="8">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="INTERFACE_NAME"/>
+      </attribute>
+      <attribute id="OPERATOR_BY" order="9">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="OPERATOR_BY"/>
+      </attribute>
+      <attribute id="OPERATOR_BY_ID" order="10">
+        <keyMapping columnObjectName="Script_View" columnName="OPERATOR_BY_ID"/>
+      </attribute>
+      <attribute id="OPERATOR_AT" order="11">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="OPERATOR_AT"/>
+      </attribute>
+    
+      <attribute id="OBJECT_PAYLOAD_JSON" order="12">
+    
+        <keyMapping columnObjectName="Script_View" columnName="OBJECT_PAYLOAD_JSON"/>
+    
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

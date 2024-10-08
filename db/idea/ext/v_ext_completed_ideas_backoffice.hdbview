@@ -1,0 +1,9 @@
+schema = "SAP_INO_EXT";
+query = "select distinct idea.id as id
+	from \"sap.ino.db.idea::v_completed_ideas_backoffice\" as idea
+	  inner join \"sap.ino.db.idea::v_auth_ideas_read\" as auth_idea
+	    on idea.id = auth_idea.idea_id
+	  with read only";
+
+depends_on_view = ["sap.ino.db.idea::v_completed_ideas_backoffice",
+                   "sap.ino.db.idea::v_auth_ideas_read"];

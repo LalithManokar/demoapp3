@@ -1,0 +1,5 @@
+{
+    "exposed":true,
+    "authentication" : null,
+    "enable_etags" : false
+}

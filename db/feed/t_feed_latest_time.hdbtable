@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Notification Latest Time";
+
+table.columns = [
+    {name = "CODE";             sqlType = VARCHAR;  length = 128;  nullable = false; comment = "THE KEY OF DATA";},
+    {name = "LATEST_EVENT_AT";  sqlType = TIMESTAMP; nullable = false; comment = "Timestamp when event occurred";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

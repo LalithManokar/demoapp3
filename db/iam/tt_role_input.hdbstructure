@@ -1,0 +1,5 @@
+table.schemaName = "SAP_INO";
+table.description = "Table of role codes";
+table.columns = [
+    {name = "ROLE_CODE"; sqlType = VARCHAR; length = 20; nullable = false; comment = "Role to which identity is assigned in t_object_identity_role";}
+];

@@ -1,0 +1,38 @@
+schema = "SAP_INO";
+query = "select comment.ID,
+                comment.CREATED_AT,
+                comment.CHANGED_AT,
+                comment.CHANGED_BY_ID,
+                comment.OBJECT_ID,
+                comment.COMMENT,
+                comment.OBJECT_TYPE_CODE,
+                comment.TYPE_CODE,
+                comment.PARENT_ID,
+                comment.SOURCE_ID,
+	
+             camp_small.name as campaign_name,
+             changed_user.name as changed_by_name,
+             changed_user.identity_image_id as changed_by_image_id,
+             case when can_update.comment_id is not null then 1 else 0 end as can_update,
+             case when can_delete.comment_id is not null then 1 else 0 end as can_delete
+         from 
+             \"sap.ino.db.comment::v_community_comment\" as comment
+         left outer join
+             \"sap.ino.db.iam::v_identity\" as changed_user
+         on 
+             changed_user.id = comment.changed_by_id
+       left outer join 
+             \"sap.ino.db.campaign::v_auth_comment_update\" as can_update
+         on 
+           can_update.comment_id = comment.id  
+        left outer join
+             \"sap.ino.db.campaign::v_auth_comment_delete\" as can_delete
+         on 
+             can_delete.comment_id = comment.id
+        left outer join
+        \"sap.ino.db.campaign::v_campaign_small\" as camp_small on comment.object_id =  camp_small.id
+         where comment.OBJECT_TYPE_CODE = 'CAMPAIGN'    
+         with read only"; 
+
+depends_on_table = ["sap.ino.db.iam::t_identity"];
+depends_on_view  = ["sap.ino.db.comment::v_community_comment", "sap.ino.db.campaign::v_auth_comment_update", "sap.ino.db.campaign::v_auth_comment_delete", "sap.ino.db.iam::v_identity","sap.ino.db.campaign::v_campaign_small"];

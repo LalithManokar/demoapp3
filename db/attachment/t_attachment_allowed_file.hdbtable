@@ -1,0 +1,12 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Attachment Allowed File - Customer Values";
+table.columns = [
+    {name = "CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "File Type Code";},
+    {name = "DEFAULT_TEXT"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Default Text for File Type";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true; comment = "Default Long Text for File Type";},
+    {name = "FILE_EXT"; sqlType = VARCHAR; length = 32; nullable = false; comment = "File extension of the attachment";},
+    {name = "MEDIA_TYPE"; sqlType = VARCHAR; length = 100; nullable = true; comment = "Media type of the attachment";},
+    {name = "MAX_FILE_SIZE"; sqlType = DOUBLE; nullable = true; comment = "Maximum file size for the attachment";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

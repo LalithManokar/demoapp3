@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_ANALYTICS_CAMPAIGN_ACTIVE_PARTICIPANTS" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" runWithInvokerPrivileges="false" scriptParametersCaseSensitive="true">
+  <origin/>
+  <descriptions defaultDescription="Active Participants for each Campaign"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="INTEGER" id="IDENTITY_ID"/>
+        <viewAttribute datatype="INTEGER" id="CAMP_ACTIVE_PARTICIPANT"/>
+        <viewAttribute datatype="INTEGER" id="CAMP_AUTHOR"/>
+        <viewAttribute datatype="INTEGER" id="CAMP_COAUTHOR"/>
+        <viewAttribute datatype="INTEGER" id="CAMP_COMMENTATOR"/>
+        <viewAttribute datatype="INTEGER" id="CAMP_EVALUATOR"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition>begin
+    var_out = select
+		campaign_id,
+		identity_id,
+		1 as camp_active_participant,
+		max(camp_author) as camp_author,
+		max(camp_contributor) as camp_coauthor,
+		max(camp_commentator) as camp_commentator,
+		max(camp_evaluator) as camp_evaluator
+	from
+		(
+		select
+			campaign_id,
+			identity_id,
+			case role_code when 'IDEA_SUBMITTER' then 1 else 0 end as camp_author, 
+			case role_code when 'IDEA_CONTRIBUTOR' then 1 else 0 end as camp_contributor,
+			case role_code when 'COMMENT_OWNER' then 1 else 0 end as camp_commentator,
+			case role_code when 'EVALUATION_OWNER' then 1 else 0 end as camp_evaluator
+		from
+			(select distinct campaign_id, identity_id, role_code from &quot;sap.ino.db.analytics::V_ANALYTICS_IDEA_ACTOR&quot;)
+	)
+	group by campaign_id, identity_id;
+end </definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="CAMPAIGN_ID" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="IDENTITY_ID" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="CAMP_ACTIVE_PARTICIPANT" order="3">
+        <descriptions defaultDescription="ACTIVE_CAMP_PARTICIPANT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMP_ACTIVE_PARTICIPANT"/>
+      </attribute>
+      <attribute id="CAMP_AUTHOR" order="4">
+        <descriptions defaultDescription="CAMP_AUTHOR"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMP_AUTHOR"/>
+      </attribute>
+      <attribute id="CAMP_COAUTHOR" order="5">
+        <descriptions defaultDescription="CAMP_COAUTHOR"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMP_COAUTHOR"/>
+      </attribute>
+      <attribute id="CAMP_COMMENTATOR" order="6">
+        <descriptions defaultDescription="CAMP_COMMENTATOR"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMP_COMMENTATOR"/>
+      </attribute>
+      <attribute id="CAMP_EVALUATOR" order="7">
+        <descriptions defaultDescription="CAMP_EVALUATOR"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMP_EVALUATOR"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

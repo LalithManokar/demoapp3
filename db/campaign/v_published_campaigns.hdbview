@@ -1,0 +1,9 @@
+schema = "SAP_INO";
+query = "select distinct campaign.ID
+            from \"sap.ino.db.campaign::t_campaign\" as campaign 
+            inner join \"sap.ino.db.campaign::v_auth_campaigns_and_registrable\" as auth
+            on campaign.id = auth.campaign_id 
+            where campaign.status_code = 'sap.ino.config.CAMP_PUBLISHED'";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign"];
+depends_on_view = ["sap.ino.db.campaign::v_auth_campaigns_and_registrable"];

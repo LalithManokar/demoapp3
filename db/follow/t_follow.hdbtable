@@ -1,0 +1,13 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "follow";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "follow id";},
+	{name = "OBJECT_TYPE_CODE"; sqlType = VARCHAR; length = 100; nullable = false; comment = "Object type of campaign. idea , tag";},
+	{name = "OBJECT_ID"; sqlType = INTEGER; nullable = false; comment = "Object of follow , t_idea.ID, t_campaign.ID or t_tag.ID";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by whom followed the object ";},
+ 	{name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Created follow timestamp";},
+ 	{name = "EMAIL_AT"; sqlType = TIMESTAMP; nullable = true; comment = "Send email timestamp";},
+ 	{name = "INST_EMAIL_AT"; sqlType = TIMESTAMP; nullable = true; comment = "Send instance email timestamp";}
+]; 
+table.primaryKey.pkcolumns = ["ID"]; 

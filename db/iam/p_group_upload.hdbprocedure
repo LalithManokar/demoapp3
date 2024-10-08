@@ -1,0 +1,398 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_group_upload" (
+    in  iv_appl_user_id     INTEGER,
+    in  iv_replace_groups   TINYINT,
+    in  iv_source_type_code VARCHAR(20) DEFAULT 'UPLOAD',
+    in  it_group            "SAP_INO"."sap.ino.db.iam::tt_group_import_input",
+    out ot_group_message    "SAP_INO"."sap.ino.db.iam::tt_group_import_output"
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    -- create the error messages for all invalid groups
+    lt_message_invalid_group =
+        select
+            input.LINE_NO,
+            input.GROUP_NAME,
+            input.MEMBER_TYPE_CODE,
+            input.MEMBER_NAME,
+            'E' as "TYPE",
+            'MSG_IDENTITY_GROUP_NAME_MANDATORY' as "MESSAGE",
+            'GROUP_NAME'     as "REF_FIELD",
+            input.GROUP_NAME as "PARAM_0",
+            ''               as "PARAM_1",
+            ''               as "PARAM_2",
+            ''               as "PARAM_3"
+        from :it_group as input
+            where (input.group_name = '' or input.group_name is null);
+            
+    -- determine which groups already exist on the DB
+    lt_group_historic_data =
+        select
+            grp.id,
+            grp.name,
+            grp.created_at,
+            grp.created_by_id,
+            grp.source_type_code,
+            grp.staged
+        from
+            "SAP_INO"."sap.ino.db.iam::t_identity" as grp
+        where 
+            grp.type_code = 'GROUP'
+        and grp.name in (select group_name from :it_group);
+     
+    -- ensure groups with 'UPLOAD' as source type code do not overwrite 'AUTOMATIC' groups 
+    lt_message_group_not_changeable =
+        select
+            input.LINE_NO,
+            input.GROUP_NAME,
+            input.MEMBER_TYPE_CODE,
+            input.MEMBER_NAME,
+            'E' as "TYPE",
+            'MSG_IDENTITY_NOT_CHANGEABLE' as "MESSAGE",
+            'SOURCE_TYPE_CODE'      as "REF_FIELD",
+            grp.SOURCE_TYPE_CODE    as "PARAM_0",
+            ''                      as "PARAM_1",
+            ''                      as "PARAM_2",
+            ''                      as "PARAM_3"
+        from :it_group as input
+        inner join :lt_group_historic_data as grp
+            on input.group_name = grp.name
+            and grp.source_type_code = 'AUTOMATIC'
+            and :iv_source_type_code = 'UPLOAD';
+
+    -- get all groups to upsert the identity table
+    lt_groups_to_upsert =
+        select distinct
+            input.GROUP_NAME
+        from :it_group as input
+        where input.group_name not in (select group_name from :lt_message_group_not_changeable);
+
+    -- for existing groups do not touch the id, created_at, created_by_id fields
+    lt_group_for_update =
+        select
+            hist.id              as id,
+            hist.created_at      as created_at,
+            hist.created_by_id   as created_by_id,
+            current_utctimestamp as changed_at,
+            :iv_appl_user_id     as changed_by_id,
+            'GROUP'              as type_code,
+            grp.group_name       as name,
+            ''                   as first_name,
+            ''                   as last_name,
+            ''                   as email,
+            ''                   as user_name,
+            0                    as is_external,
+            0                    as erased,
+            ''                   as phone,
+            ''                   as mobile,
+            ''                   as cost_center,
+            ''                   as organization,
+            ''                   as office,
+            ''                   as description,
+            0                    as staged,
+            :iv_source_type_code as source_type_code
+        from :lt_groups_to_upsert as grp
+        inner join :lt_group_historic_data as hist
+            on grp.group_name = hist.name;
+
+    -- for new groups fill all fields, especially generate a new ID
+    lt_group_for_insert =
+        select
+            "SAP_INO"."sap.ino.db.iam::s_identity".nextval as id,
+            current_utctimestamp as created_at,
+            :iv_appl_user_id     as created_by_id,
+            current_utctimestamp as changed_at,
+            :iv_appl_user_id     as changed_by_id,
+            'GROUP'              as type_code,
+            grp.group_name       as name,
+            ''                   as first_name,
+            ''                   as last_name,
+            ''                   as email,
+            ''                   as user_name,
+            0                    as is_external,
+            0                    as erased,
+            ''                   as phone,
+            ''                   as mobile,
+            ''                   as cost_center,
+            ''                   as organization,
+            ''                   as office,
+            ''                   as description,
+            0                    as staged,
+            :iv_source_type_code as source_type_code
+        from :lt_groups_to_upsert as grp
+        where grp.group_name not in (select name from :lt_group_historic_data);
+
+    -- collect all record both old and new
+    lt_all_group_records =
+        select * from :lt_group_for_insert
+        union all
+        select * from :lt_group_for_update;
+    
+    -- upsert everything, upsert should never be slower than insert as insert
+    -- will also check for record existence
+    upsert "SAP_INO"."sap.ino.db.iam::t_identity" 
+        (id, created_at, created_by_id, changed_at, changed_by_id, type_code, 
+         name, first_name, last_name, email, user_name, is_external, erased, 
+         phone, mobile, cost_center, organization, office, description, 
+         staged, source_type_code)
+    select
+        id, created_at, created_by_id, changed_at, changed_by_id, type_code, 
+        name, first_name, last_name, email, user_name, is_external, erased, 
+        phone, mobile, cost_center, organization, office, description, 
+        staged, source_type_code 
+    from :lt_all_group_records;
+    
+    -- write history records
+    insert into "SAP_INO"."sap.ino.db.iam::t_identity_h"
+        (history_db_event, history_biz_event, history_at, history_actor_id,
+         id, created_at, created_by_id, changed_at, changed_by_id, type_code,
+         name, first_name, last_name, email, user_name, is_external, erased,
+         phone, mobile, cost_center, organization, office, description,
+         staged, source_type_code)
+        select
+            'UPSERT'            as history_db_event,
+            'UPLOAD'            as history_biz_event,
+            changed_at          as history_at,
+            changed_by_id       as history_actor_id,
+            id                  as id,
+            created_at          as created_at,
+            created_by_id       as created_by_id,
+            changed_at          as changed_at,
+            changed_by_id       as changed_by_id,
+            type_code           as type_code,
+            name                as name,
+            first_name          as first_name,
+            last_name           as last_name,
+            email               as email,
+            user_name           as user_name,
+            is_external         as is_external,
+            erased              as erased,
+            phone               as phone,
+            mobile              as mobile,
+            cost_center         as cost_center,
+            organization        as organization,
+            office              as office,
+            description         as description,
+            staged              as staged,
+            source_type_code    as source_type_code
+        from :lt_all_group_records;
+
+    -- create the error messages for all duplicate members
+    lt_message_duplicate_member =
+        select
+            input.LINE_NO,
+            input.GROUP_NAME,
+            input.MEMBER_TYPE_CODE,
+            input.MEMBER_NAME,
+            'W' as "TYPE",
+            'MSG_IDENTITY_USER_NAME_UNIQUE' as "MESSAGE",
+            'MEMBER_NAME'           as "REF_FIELD",
+            input.MEMBER_TYPE_CODE  as "PARAM_0",
+            input.MEMBER_NAME       as "PARAM_1",
+            ''                      as "PARAM_2",
+            ''                      as "PARAM_3"
+        from :it_group as input
+            where input.member_name in (select member_name from :it_group where line_no < input.line_no and group_name = input.group_name)
+            -- and input.member_name is not null
+            and input.member_name != '';  --ignore the empty input names as they imply deletion
+
+    -- get all valid members
+    lt_valid_user_members =
+        select
+            member.id as MEMBER_ID,
+            input.MEMBER_NAME,
+            grp.id as GROUP_ID,
+            input.GROUP_NAME
+        from :it_group as input
+        inner join "SAP_INO"."sap.ino.db.iam::t_identity" as member
+            on  member.user_name = input.member_name 
+            and member.type_code = 'USER'
+            and member.erased = 0
+        inner join "SAP_INO"."sap.ino.db.iam::t_identity" as grp
+            on (grp.name = input.group_name and grp.type_code = 'GROUP')
+        where input.member_name != '' -- and input.member_name is not null
+          and input.group_name != ''  --andr input.group_name is not null
+          and input.member_type_code = 'USER'
+          and (input.line_no not in (select line_no from :lt_message_duplicate_member));
+ 
+    lt_valid_group_members = 
+        select
+            member.id as MEMBER_ID,
+            input.MEMBER_NAME,
+            grp.id as GROUP_ID,
+            input.GROUP_NAME
+        from :it_group as input
+        inner join "SAP_INO"."sap.ino.db.iam::t_identity" as member
+            on  member.name = input.member_name 
+            and member.type_code = 'GROUP'
+            and member.erased = 0
+        inner join "SAP_INO"."sap.ino.db.iam::t_identity" as grp
+            on (grp.name = input.group_name and grp.type_code = 'GROUP')
+        where input.member_name != '' -- and input.member_name is not null
+          and input.group_name != ''  -- and input.group_name is not null
+          and input.member_type_code = 'GROUP'
+          and (input.line_no not in (select line_no from :lt_message_duplicate_member));
+    
+    lt_valid_members =
+        select * from :lt_valid_user_members
+        union all 
+        select * from :lt_valid_group_members;
+
+    -- create the error messages for all invalid members
+    lt_message_invalid_member =
+        select
+            input.LINE_NO,
+            input.GROUP_NAME,
+            input.MEMBER_TYPE_CODE,
+            input.MEMBER_NAME,
+            'E' as "TYPE",
+            'MSG_IDENTITY_MEMBER_NOT_EXISTS' as "MESSAGE",
+            'MEMBER_NAME'           as "REF_FIELD",
+            input.MEMBER_TYPE_CODE  as "PARAM_0",
+            input.MEMBER_NAME       as "PARAM_1",
+            input.GROUP_NAME        as "PARAM_2",
+            ''                      as "PARAM_3"
+        from :it_group as input
+        left outer join :lt_valid_members as valid
+           on input.member_name = valid.member_name
+        where valid.member_name is null --anti join via left outer join
+        -- and input.member_name is not null
+        and input.member_name != ''; --ignore the empty input names as they mean deletion
+
+
+     -- create the error messages for all members with invalid type code
+    lt_message_invalid_member_type_code =
+        select
+            input.LINE_NO,
+            input.GROUP_NAME,
+            input.MEMBER_TYPE_CODE,
+            input.MEMBER_NAME,
+            'E' as "TYPE",
+            'MSG_IDENTITY_TYPE_NOT_EXISTS' as "MESSAGE",
+            'MEMBER_TYPE_CODE'     as "REF_FIELD",
+            input.MEMBER_TYPE_CODE as "PARAM_0",
+            ''                     as "PARAM_1",
+            ''                     as "PARAM_2",
+            ''                     as "PARAM_3"
+        from :it_group as input
+            where input.member_type_code != 'GROUP' and member_type_code != 'USER'
+            -- and input.member_name is not null
+            and input.member_name != ''; --ignore the empty input names as they mean deletion
+
+    -- determine which group memberships already exist on the DB
+    lt_group_member_historic_data =
+        select
+            id,
+            member_id,
+            group_id
+        from
+            "SAP_INO"."sap.ino.db.iam::t_identity_group_member"
+        where group_id in (select id from :lt_all_group_records);
+
+    -- select all group members that are on the data base and not in the valid members table
+    -- (will also delete no longer wanted members)
+    lt_group_members_to_delete =
+        select
+            hist.id
+        from :lt_group_member_historic_data as hist
+        left outer join :lt_valid_members as valid
+            on  hist.member_id = valid.member_id
+            and hist.group_id = valid.group_id
+        where :iv_replace_groups = 1
+           and valid.member_id is null; --anti join via left outer join
+
+    -- select all members to insert
+    lt_group_members_to_insert =
+        select
+            "SAP_INO"."sap.ino.db.iam::s_identity_group_member".nextval as id,
+            member.member_id    as member_id,
+            member.group_id     as group_id
+        from :lt_valid_members  as member
+        left outer join :lt_group_member_historic_data as hist
+        on hist.member_id = member.member_id
+        and hist.group_id = member.group_id
+        where hist.member_id is null; --anti join via left outer join
+
+    delete from "SAP_INO"."sap.ino.db.iam::t_identity_group_member"
+        where id in (select id from :lt_group_members_to_delete);
+        
+    insert into "SAP_INO"."sap.ino.db.iam::t_identity_group_member" (id, member_id, group_id)
+        select id, member_id, group_id from :lt_group_members_to_insert;    
+
+    -- write history records
+    lt_group_member_history_delete =
+        select
+            'DELETE'             as history_db_event,
+            'UPLOAD'             as history_biz_event,
+            current_utctimestamp as history_at,
+            :iv_appl_user_id     as history_actor_id,
+            grp.id               as id,
+            0                    as member_id,
+            0                    as group_id
+        from :lt_group_members_to_delete as grp;
+        
+    lt_group_member_history_insert =
+        select
+            'INSERT'             as history_db_event,
+            'UPLOAD'             as history_biz_event,
+            current_utctimestamp as history_at,
+            :iv_appl_user_id     as history_actor_id,
+            grp.id               as id,
+            grp.member_id        as member_id,
+            grp.group_id         as group_id
+        from :lt_group_members_to_insert as grp;
+        
+    lt_group_member_history =
+        select * from :lt_group_member_history_delete
+        union all
+        select * from :lt_group_member_history_insert;
+
+    insert into "SAP_INO"."sap.ino.db.iam::t_identity_group_member_h" (history_db_event, history_biz_event, history_at, history_actor_id, id, member_id, group_id)
+          select history_db_event, history_biz_event, history_at, history_actor_id, id, member_id, group_id from :lt_group_member_history;
+
+    -- collect all error messages
+    lt_group_failed =
+        select * from :lt_message_invalid_group
+            union all 
+        select * from :lt_message_group_not_changeable
+            union all 
+        select * from :lt_message_invalid_member
+            union all 
+        select * from :lt_message_duplicate_member
+            union all
+        select * from :lt_message_invalid_member_type_code;
+
+    -- rows without an error are considered good
+    lt_group_ok =
+        select * from :it_group as user
+        where line_no not in (select line_no from :lt_group_failed);
+
+    call "SAP_INO"."sap.ino.db.iam::p_update_identity_group_member_transitive" ();
+
+    -- echo the successful user entries
+    lt_group_no_message =
+        select
+            "LINE_NO",
+            "GROUP_NAME",
+            "MEMBER_TYPE_CODE",
+            "MEMBER_NAME",
+            '' as "TYPE",
+            '' as "MESSAGE",
+            '' as "REF_FIELD",
+            '' as "PARAM_0",
+            '' as "PARAM_1",
+            '' as "PARAM_2",
+            '' as "PARAM_3"
+        from :lt_group_ok;
+
+    -- collect all messages
+    ot_group_message = select * from
+        (
+            select * from :lt_group_failed 
+            union all
+            select * from :lt_group_no_message
+        )
+        order by line_no asc;
+end;

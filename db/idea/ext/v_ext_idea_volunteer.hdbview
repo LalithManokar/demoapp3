@@ -1,0 +1,8 @@
+schema = "SAP_INO_EXT";
+query = "
+    select distinct * from \"sap.ino.db.idea::v_idea_lean_volunteer\"
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.idea::v_idea_lean_volunteer"];
+

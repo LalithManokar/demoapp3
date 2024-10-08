@@ -1,0 +1,21 @@
+schema = "SAP_INO";
+query = "
+    select  
+        resp_value.*,
+        case resp_value.is_deactive
+            when 1 then 0 else 1 end as is_active,
+        case parent_resp_value.is_deactive
+            when 1 then 0 else 1 end as is_parent_active,
+        created_by_identity.name as created_by, 
+        changed_by_identity.name as changed_by 
+    from \"sap.ino.db.subresponsibility::t_responsibility_value_stage\" as resp_value
+        left outer join \"sap.ino.db.iam::t_identity\" as created_by_identity
+            on resp_value.created_by_id = created_by_identity.id
+        left outer join \"sap.ino.db.iam::t_identity\" as changed_by_identity
+            on resp_value.changed_by_id = changed_by_identity.id
+        left outer join \"sap.ino.db.subresponsibility::t_responsibility_value_stage\" as parent_resp_value
+            on resp_value.PARENT_VALUE_ID = parent_resp_value.id     
+    with read only";
+
+depends_on_table = ["sap.ino.db.subresponsibility::t_responsibility_value_stage",
+                    "sap.ino.db.iam::t_identity"];

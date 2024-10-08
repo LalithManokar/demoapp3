@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "The one and only configuration package for which configuration content maybe maintained in this system.";
+table.columns = [ 
+    {name = "PACKAGE_ID"; sqlType = NVARCHAR; nullable = false; length = 256;}
+];
+table.primaryKey.pkcolumns = ["PACKAGE_ID"];

@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Idea_Setting";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+	{name = "ANONYMOUS_FOR"; sqlType = VARCHAR; length = 500; nullable = false; defaultValue = "NONE" ; comment = "indecate anonymity";},
+	{name = "IDEA_ID"; sqlType = INTEGER; nullable = false; comment = "Human-readable identifier of idea";}
+];
+table.primaryKey.pkcolumns = ["ID"];

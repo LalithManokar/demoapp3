@@ -1,0 +1,598 @@
+schema="SAP_INO";
+query="select 
+		change_event, 
+		change_object, 
+		events.changed_at, 
+		events.id, 
+		events.phase_code, 
+		events.status_code, 
+		identity.name as changed_by, 
+		events.changed_by_id,
+		identity.organization as changed_by_organization,
+		id_role.role_code as changed_by_role_code,
+		id_image.attachment_id as changed_by_image_id,
+		events.campaign_id, 
+		campaign.name as campaign_name, 
+		-- variable payload - filled as needed with parameters
+		param_0, param_0_id, param_1, param_1_id,
+		-- override auth_stage for drafts
+		case events.status_code when 'sap.ino.config.DRAFT'
+			-- exception: idea created should be shown
+			then case change_event when 'IDEA_CREATED'
+				then 1
+				else 2
+			end
+			else auth_stage
+		end as auth_stage,
+		-- origin denotes the part of the statement where the result comes from for debugging etc.
+		origin,
+		events.change_code
+	from (
+	    select
+	        'IDEA_CREATED' as change_event,
+	        0 as origin,
+	        'IDEA' as change_object,
+	        idea_h.history_at as changed_at,
+	        idea_h.id as id,
+	        idea_h.phase_code as phase_code,
+	        idea_h.status_code as status_code,
+	        idea_h.history_actor_id as changed_by_id,
+	        null as param_0,
+	        null as param_0_id,
+	        null as param_1,
+	        null as param_1_id,
+	        idea_h.campaign_id as campaign_id,
+	        1 as auth_stage,
+		    idea_h.history_biz_event as change_code
+	    from \"sap.ino.db.idea::t_idea_h\" as idea_h 
+	    where idea_h.history_db_event = 'CREATED'
+	        and idea_h.history_biz_event = 'IDEA_CREATED'
+	
+	    union all
+	
+		-- coach, expert & contributor assigned / unassigned
+		select 
+			idea_role_h.role_code || '_' || idea_role_h.history_db_event as change_event,
+			1 as origin,
+			'IDEA' as change_object,
+			idea_h.history_at as changed_at,
+			idea_h.id as id,
+			idea_h.phase_code as phase_code,
+			idea_h.status_code as status_code,
+			idea_h.history_actor_id as changed_by_id,
+			identity.name as param_0,
+			identity.id as param_0_id,
+			-- organization string and image id
+			identity.organization as param_1,
+			id_image.attachment_id as param_1_id,
+			idea_h.campaign_id as campaign_id,
+			1 as auth_stage,
+		    idea_h.history_biz_event as change_code
+		from \"sap.ino.db.idea::t_idea_h\" as idea_h 
+		join \"sap.ino.db.iam::t_object_identity_role_h\" as idea_role_h 
+			on idea_h.history_actor_id = idea_role_h.history_actor_id 
+				and idea_role_h.history_at = idea_h.history_at
+				and idea_role_h.object_id = idea_h.id
+		join \"sap.ino.db.iam::t_identity\" as identity 
+			on idea_role_h.identity_id = identity.id
+		left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as id_image
+            on identity.id = id_image.owner_id
+                and id_image.owner_type_code = 'IDENTITY'
+                and id_image.role_type_code = 'IDENTITY_IMAGE'
+		where 
+			-- subset of actions that we want to grab here
+			idea_h.history_biz_event in ('COACH_ASSIGNED', 'AUTO_COACH_ASSIGNED', 'COACH_UNASSIGNED', 'IDEA_CREATED', 'IDEA_DELETED', 'IDEA_UPDATED') 
+			AND idea_role_h.role_code in ('IDEA_COACH', 'IDEA_CONTRIBUTOR', 'IDEA_EXPERT')
+			AND idea_role_h.object_type_code = 'IDEA' 
+		
+		union all 
+		
+		-- event indicating phase change
+		select distinct 
+			idea_h.history_biz_event as change_event,
+			2 as origin,
+			'IDEA' as change_object,
+			idea_h.history_at as changed_at,
+			idea_h.id as id,
+			idea_h.phase_code as phase_code,
+			idea_h.status_code as status_code,
+			idea_h.history_actor_id as changed_by_id,
+			idea_h.phase_code as param_0,
+			-- decision id
+			decision.id as param_0_id,
+			SUBSTR_AFTER(idea_h.history_biz_event, 'STATUS_ACTION_') as param_1,
+			-- the real decider
+			decision.decider_id as param_1_id,    
+			idea_h.campaign_id as campaign_id,
+			1 as auth_stage,
+		    idea_h.history_biz_event as change_code
+		from \"sap.ino.db.idea::t_idea_h\" as idea_h 
+		left outer join \"sap.ino.db.idea::t_decision\" as decision 
+			on idea_h.id = decision.idea_id
+			   and idea_h.history_at = decision.created_at 
+		where idea_h.history_biz_event LIKE 'STATUS_ACTION%' 
+		
+		union all 
+		
+		-- evaluation, one of eval submission, published to author / community
+		select
+			idea_evaluation.change_event as change_event,
+			3 as origin,
+			'EVALUATION' as change_object,
+			idea_evaluation.changed_at as changed_at,
+			idea_history.id as id,
+			idea_history.phase_code as phase_code,
+			idea_history.status_code as status_code,
+			-- real actor is the one who changed the evaluation, *not* the idea
+			idea_evaluation.changed_by_id as changed_by_id,
+			idea_evaluation.status_code as param_0,
+			idea_evaluation.evaluation_id as param_0_id,
+			idea_evaluation.status_action_code as param_1,
+			null as param_1_id,
+			idea_history.campaign_id as campaign_id,
+			-- visibility depends on publication audience
+			case idea_evaluation.status_action_code when 'sap.ino.config.EVAL_PUB_COMMUNITY' then 1 else 
+                case idea_evaluation.status_action_code when 'sap.ino.config.EVAL_PUB_SUBMITTER' then 2 else
+                3 end end as auth_stage,
+		    idea_evaluation.change_code
+		from (
+			select
+				idea_h.id as idea_id,
+				evaluation.id as evaluation_id,
+				max(idea_h.history_at) as last_changed_at,
+				evaluation.history_biz_event as change_event,
+				evaluation.history_at as changed_at,
+				evaluation.idea_phase_code as phase_code,
+				evaluation.history_actor_id as changed_by_id,
+				evaluation.status_code as status_code,
+				SUBSTR_AFTER(evaluation.history_biz_event, 'STATUS_ACTION_') as status_action_code,
+		        evaluation.history_biz_event as change_code
+			from \"sap.ino.db.evaluation::t_evaluation_h\" as evaluation 
+			inner join \"sap.ino.db.idea::t_idea_h\" as idea_h 
+				on idea_h.id = evaluation.idea_id 
+			where idea_h.history_at < evaluation.history_at 
+				and evaluation.history_biz_event LIKE 'STATUS_ACTION%' 
+			group by idea_h.id,
+				evaluation.id,
+				evaluation.history_biz_event,
+				evaluation.history_at,
+				evaluation.history_actor_id,
+				evaluation.idea_phase_code,
+				evaluation.status_code 
+		) as idea_evaluation 
+		inner join \"sap.ino.db.idea::t_idea_h\" as idea_history 
+			on idea_evaluation.idea_id = idea_history.id 
+			and idea_history.history_at = idea_evaluation.last_changed_at 
+		
+		union all 
+		
+		-- reassign ideas to another campaign
+		select 
+			'IDEA_CAMPAIGN_REASSIGN' as change_event,
+			4 as origin,
+			'IDEA' as change_object,
+			idea_h.history_at as changed_at,
+			idea_h.id as id,
+			coalesce(idea_h.phase_code, idea_h.phase_code_old) as phase_code,
+			coalesce(idea_h.status_code, idea_h.status_code_old) as status_code,
+			idea_h.history_actor_id as changed_by_id,
+			null as param_0,    -- old campaign name is known and added outside
+			idea_h.campaign_id_old as param_0_id,
+			campaign.name as param_1,
+			campaign.campaign_id as param_1_id,
+			idea_h.campaign_id as campaign_id,
+			1 as auth_stage,
+	        idea_h.history_biz_event as change_code
+		from \"sap.ino.db.idea::v_idea_delta_h\" as idea_h 
+		inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign 
+			on idea_h.campaign_id = campaign.campaign_id 
+		where 
+			((idea_h.history_biz_event = 'IDEA_UPDATED' 
+			and idea_h.campaign_id is not null) OR idea_h.history_biz_event = 'IDEA_CAMPAIGN_REASSIGN' )
+		
+		union all 
+		
+		-- underlying campaign has been changed (vote mode, process model or status model)
+		select
+			idea_h.history_biz_event as change_event,
+			5 as origin,
+			'CAMPAIGN' as change_object,
+			idea_h.history_at as changed_at,
+			idea_h.id as id,
+			idea_h.phase_code as phase_code,
+			idea_h.status_code as status_code,
+			idea_h.history_actor_id as changed_by_id,
+			idea_h.phase_code as param_0,
+			null as param_0_id,
+			idea_h.status_code as param_1,
+			null as param_1_id,
+			idea_h.campaign_id as campaign_id,
+			1 as auth_stage,
+	        idea_h.history_biz_event as change_code
+		from \"sap.ino.db.idea::t_idea_h\" as idea_h 
+		where idea_h.history_biz_event in (
+		    'CAMPAIGN_STATUS_MODEL_CODE_REPLACEMENT', 'CAMPAIGN_PHASE_CODE_REPLACEMENT',
+			'CAMPAIGN_VOTE_TYPE_REPLACEMENT', 'CAMPAIGN_PROCESS_CHANGE') 
+		
+		union all 
+		
+		-- Idea was set to phase {1} due to a change in the campaign process.
+		select
+			idea_h.history_biz_event as change_event,
+			6 as origin,
+			'CAMPAIGN' as change_object,
+			idea_h.history_at as changed_at,
+			idea_h.id as id,
+			idea_h.phase_code,
+			idea_h.status_code as status_code,
+			idea_h.history_actor_id as changed_by_id,
+			idea_h.phase_code_old as param_0,
+			null as param_0_id,
+			idea_h.phase_code as param_1,
+			null as param_1_id,
+			idea_h.campaign_id as campaign_id,
+			1 as auth_stage,
+	        idea_h.history_biz_event as change_code
+		from \"sap.ino.db.idea::v_idea_delta_h\" as idea_h 
+		where (idea_h.history_biz_event = 'CAMPAIGN_PHASE_CODE_REPLACEMENT') 
+		
+		union all 
+		
+		-- idea relations were changed (copy, merge, ...)
+		-- TODO: may be a problem, as target idea is only written to history table on 'merged'
+		select 
+			-- determine whether source or target
+			case relation_h.source 
+				when 1 
+				then relation_h.history_db_event || '_' || semantic || '_SOURCE' 
+				else relation_h.history_db_event || '_' || semantic || '_TARGET' 
+			end as change_event,
+			7 as origin,
+			'IDEA' as change_object,
+			relation_h.history_at as changed_at,
+			idea.id as id,
+			idea.phase_code as phase_code,
+			idea.status_code as status_code,
+			relation_h.history_actor_id as changed_by_id,
+			other_idea.name as param_0,
+			other_idea.id as param_0_id,
+			idea.name as param_1,
+			idea.id as param_1_id,
+			idea.campaign_id as campaign_id,
+			1 as auth_stage,
+	        relation_h.history_biz_event as change_code
+		from \"sap.ino.db.link::v_relation_h\" as relation_h 
+		left outer join \"sap.ino.db.idea::t_idea\" as idea 
+			on relation_h.object_id = idea.id 
+--             and relation_h.history_at = idea.history_at
+		left outer join \"sap.ino.db.idea::t_idea\" as other_idea 
+			on relation_h.other_object_id = other_idea.id 
+--             and idea.history_at = other_idea.history_at
+		where relation_h.history_biz_event in ('RELATION_UPDATED', 'IDEA_CREATED')
+		    -- filter deleted copied/merged status, as this makes no sense (original idea has been deleted)
+		    and (relation_h.history_db_event, relation_h.semantic) in (
+		        ('CREATED', 'sap.ino.config.DUPLICATE'),
+		        ('DELETED', 'sap.ino.config.DUPLICATE'),
+		        ('CREATED', 'sap.ino.config.COPIED'),
+		        ('CREATED', 'sap.ino.config.MERGED')
+		    )
+			and relation_h.history_db_event <> 'UPDATED' 
+			and relation_h.object_type_code = 'IDEA' 
+			and relation_h.other_object_type_code = 'IDEA' 
+		
+		union all 
+		
+		-- idea title or description were changed
+		select
+			case when history.name is not null and history.description is not null 
+				then 'IDEA_NAME_DESCRIPTION_CHANGED'
+				else case when history.name is not null 
+					then 'IDEA_NAME_CHANGED' 
+					else 'IDEA_DESCRIPTION_CHANGED'
+				end
+			end as change_event,
+			8 as origin,
+			'IDEA' as change_object,
+			history.history_at as changed_at,
+			history.id as id,
+			coalesce(history.phase_code, history.phase_code_old) as phase_code,
+			coalesce(history.status_code, history.status_code_old) as status_code,
+			history.history_actor_id as changed_by_id,
+			case when history.name is not null
+				then history.name
+				-- do not return description, as it is not displayed
+				-- else TO_NVARCHAR(SUBSTRING(history.description, 1, 5000))
+				else null
+			end as param_0,
+			null as param_0_id,
+			case when history.name is not null
+				then history.name_old 
+				-- do not return description, as it is not displayed
+				-- else TO_NVARCHAR(SUBSTRING(history.description_old, 1, 5000))
+				else null
+			end as param_1,
+			null as param_1_id,
+			coalesce(history.campaign_id, history.campaign_id_old) as campaign_id,
+			1 as auth_stage,
+	        history.history_biz_event as change_code
+		from \"sap.ino.db.idea::v_idea_delta_h\" as history 
+		where 
+			(history.name is not null or history.description is not null)
+			and history.history_biz_event = 'IDEA_UPDATED' 
+		
+		union all 
+
+		-- link added to idea 
+		select 
+			('LINK_' || link.history_db_event) as change_event,
+			9 as origin,
+			'LINK' as change_object,
+			link.history_at as changed_at,
+			history.id as id,
+			history.phase_code as phase_code,
+			history.status_code as status_code,
+			link.history_actor_id as changed_by_id,
+			link.label as param_0,
+			null as param_0_id,
+			link.url as param_1,
+			null as param_1_id,
+			history.campaign_id as campaign_id,
+			1 as auth_stage,
+	        history.history_biz_event as change_code
+		from \"sap.ino.db.link::t_link_h\" as link 
+		inner join \"sap.ino.db.idea::t_idea_h\" as history 
+			on history.id = link.object_id 
+				and link.object_type_code = 'IDEA' 
+				-- prevent duplicates of copied / merged / etc. ideas
+				and link.type_code = 'URL'
+				and history.history_at = link.history_at 
+		union all
+		
+		-- walls
+		select
+			case wall_ass.history_db_event when 'CREATED'
+				then 'WALL_ASSIGNED'
+				else 'WALL_UNASSIGNED'
+			end as change_event,
+			10 as origin,
+			'WALL' as change_object,
+			wall_ass.history_at as changed_at,
+			idea_h.id as id,
+			idea_h.phase_code as phase_code,
+			idea_h.status_code as status_code,
+			wall_ass.history_actor_id as changed_by_id,
+			wall.name as param_0,
+			wall.id as param_0_id,
+			null as param_1,
+			null as param_1_id,
+			idea_h.campaign_id as campaign_id,
+			-- BACKOFFICE walls are excluded from general visibility
+			case wall_ass.filter_type_code when 'BACKOFFICE' then 3 else 1 end as auth_stage,
+	        idea_h.history_biz_event as change_code
+		from \"sap.ino.db.wall::t_wall_assignment_h\" wall_ass
+		inner join \"sap.ino.db.idea::t_idea_h\" as idea_h
+			on idea_h.id = wall_ass.owner_id
+				and idea_h.history_at = wall_ass.history_at
+		left outer join \"sap.ino.db.wall::t_wall_h\" as wall
+			on wall_ass.wall_id = wall.id
+				and wall_ass.history_at = wall.history_at
+		where 
+			wall_ass.owner_type_code = 'IDEA'
+			
+		union all
+		
+		-- attachments
+		select 
+			case att_ass.history_db_event when 'CREATED'
+				then coalesce(att_ass.role_type_code, 'ATTACHMENT') || '_ASSIGNED'
+				else coalesce(att_ass.role_type_code, 'ATTACHMENT') || '_UNASSIGNED'
+			end as change_event,
+			11 as origin,
+			'ATTACHMENT' as change_object,
+			att_ass.history_at as changed_at,
+			idea_h.id as id,
+			idea_h.phase_code as phase_code,
+			idea_h.status_code as status_code,
+			att_ass.history_actor_id as changed_by_id,
+			att.file_name as param_0,
+			att.id as param_0_id,
+			null as param_1,
+			null as param_1_id,
+			idea_h.campaign_id as campaign_id,
+			-- BACKOFFICE attachments are excluded from general visibility
+			case att_ass.filter_type_code when 'BACKOFFICE' then 3 else 1 end as auth_stage,
+	        idea_h.history_biz_event as change_code
+		from \"sap.ino.db.attachment::t_attachment_assignment_h\" att_ass
+		inner join \"sap.ino.db.idea::t_idea_h\" as idea_h
+			on idea_h.id = att_ass.owner_id
+				and idea_h.history_at = att_ass.history_at
+		left outer join \"sap.ino.db.attachment::t_attachment\" as att
+			on att_ass.attachment_id = att.id
+		where 
+			att_ass.owner_type_code = 'IDEA'   
+			
+		union all 
+		
+		-- idea sub responsebility list were changed
+		select
+			'IDEA_RESP_VALUE_CODE_CHANGED' as change_event,
+			13 as origin,
+			'IDEA' as change_object,
+			history.history_at as changed_at,
+			history.id as id,
+			coalesce(history.phase_code, history.phase_code_old) as phase_code,
+			coalesce(history.status_code, history.status_code_old) as status_code,
+			history.history_actor_id as changed_by_id,
+			history.resp_value_code as param_0,
+			null as param_0_id,
+			history.resp_value_code_old as param_1,
+			null as param_1_id,
+			coalesce(history.campaign_id, history.campaign_id_old) as campaign_id,
+			1 as auth_stage,
+	        history.history_biz_event as change_code
+		from \"sap.ino.db.idea::v_idea_delta_h\" as history 
+		where 
+			history.resp_value_code is not null and history.history_biz_event = 'IDEA_UPDATED' 
+			
+        union all 
+		
+		-- idea AUTHOR were changed
+		select
+			'IDEA_CHANGE_AUTHOR' as change_event,
+			14 as origin,
+			'IDEA' as change_object,
+			history.history_at as changed_at,
+			history.id as id,
+			coalesce(history.phase_code, history.phase_code_old) as phase_code,
+			coalesce(history.status_code, history.status_code_old) as status_code,
+			history.history_actor_id as changed_by_id,
+			identity.name as param_0,
+			identity.id as param_0_id,
+			-- organization string and image id
+			identity.organization as param_1,
+			id_image.attachment_id as param_1_id,
+			history.campaign_id as campaign_id,
+			1 as auth_stage,
+		    history.history_biz_event as change_code
+		from \"sap.ino.db.idea::v_idea_delta_h\" as history 
+		join \"sap.ino.db.iam::t_identity\" as identity 
+			on history.CREATED_BY_ID = identity.id
+		left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as id_image
+            on identity.id = id_image.owner_id
+                and id_image.owner_type_code = 'IDENTITY'
+                and id_image.role_type_code = 'IDENTITY_IMAGE'
+		where 
+		    history.history_biz_event = 'IDEA_CHANGE_AUTHOR' 
+		    
+       union all
+		-- idea Decision were changed
+		select
+			'IDEA_CHANGE_DECISION' as change_event,
+			15 as origin,
+			'IDEA' as change_object,
+			history.history_at as changed_at,
+			history.id as id,
+			coalesce(history.phase_code, history.phase_code_old) as phase_code,
+			coalesce(history.status_code, history.status_code_old) as status_code,
+			history.history_actor_id as changed_by_id,
+			null as param_0,
+			decision.id as param_0_id,
+			null as param_1,
+			decision.decider_id as param_1_id,   
+			history.campaign_id as campaign_id,
+			1 as auth_stage,
+	        history.history_biz_event as change_code
+		from \"sap.ino.db.idea::v_idea_delta_h\" as history 
+		left outer join \"sap.ino.db.idea::v_decision\" as decision
+			on history.id = decision.idea_id
+			   and history.created_at = decision.created_at 		
+		where 
+        history.history_biz_event = 'CHANGE_DECISION'
+        
+        union all 
+		
+		-- evaluation request
+		select
+			idea_evaluation_request.change_event as change_event,
+			16 as origin,
+			'EVALUATION_REQUEST' as change_object,
+			idea_evaluation_request.changed_at as changed_at,
+			idea_history.id as id,
+			idea_history.phase_code as phase_code,
+			idea_history.status_code as status_code,
+			-- real actor is the one who changed the evaluation request, *not* the idea
+			idea_evaluation_request.changed_by_id as changed_by_id,
+			idea_evaluation_request.phase_code as param_0,
+			idea_evaluation_request.evaluationrequest_id as param_0_id,
+			idea_evaluation_request.description as param_1,
+			null as param_1_id,
+			idea_history.campaign_id as campaign_id,
+            1 as auth_stage,
+		    idea_evaluation_request.change_code
+		from (
+			select
+				idea_h.id as idea_id,
+				evaluationrequest.id as evaluationrequest_id,
+				max(idea_h.history_at) as last_changed_at,
+				evaluationrequest.history_biz_event as change_event,
+				evaluationrequest.history_at as changed_at,
+				evaluationrequest.idea_phase_code as phase_code,
+				evaluationrequest.history_actor_id as changed_by_id,
+				-- evaluationrequest.status_code as status_code,
+				SUBSTR_AFTER(evaluationrequest.history_biz_event, 'EVAL_REQ_') as status_action_code,
+		        evaluationrequest.history_biz_event as change_code,
+		        evaluationrequest.description as description
+			from \"sap.ino.db.evaluation::t_evaluation_request_h\" as evaluationrequest
+			inner join \"sap.ino.db.idea::t_idea_h\" as idea_h 
+				on idea_h.id = evaluationrequest.idea_id 
+			where idea_h.history_at < evaluationrequest.history_at 
+				and evaluationrequest.history_biz_event in ('EVAL_REQ_CREATED','EVAL_REQ_UPDATED','EVAL_REQ_DELETED')
+			group by idea_h.id,
+				evaluationrequest.id,
+				evaluationrequest.history_biz_event,
+				evaluationrequest.history_at,
+				evaluationrequest.history_actor_id, 
+				evaluationrequest.idea_phase_code,
+				evaluationrequest.description
+		) as idea_evaluation_request 
+		inner join \"sap.ino.db.idea::t_idea_h\" as idea_history 
+			on idea_evaluation_request.idea_id = idea_history.id 
+			and idea_history.history_at = idea_evaluation_request.last_changed_at 
+			
+	) as events
+	
+	-- filter by draft status
+	inner join \"sap.ino.db.idea::t_idea\" current_idea
+		on current_idea.id = events.id
+		   
+	-- left outer due to 0 campaign
+	left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign 
+		on events.campaign_id = campaign.campaign_id 
+	left outer join \"sap.ino.db.iam::t_identity\" as identity
+		on events.changed_by_id = identity.id
+	-- we need the identity image id
+    left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as id_image
+        on identity.id = id_image.owner_id
+            and id_image.owner_type_code = 'IDENTITY'
+            and id_image.role_type_code = 'IDENTITY_IMAGE'
+    --left outer join \"sap.ino.db.iam::t_object_identity_role\" as id_role
+    --    on identity.id = id_role.identity_id
+    --        and events.id = id_role.object_id
+    --        and id_role.object_type_code = 'IDEA'
+    left outer join (
+        select identity_id, object_id, string_agg(role_code, ',' order by role_code asc) as role_code
+        from \"sap.ino.db.iam::t_object_identity_role\" 
+        where object_type_code = 'IDEA' 
+        group by identity_id, object_id
+    ) as id_role
+        on identity.id = id_role.identity_id
+            and events.id = id_role.object_id
+    
+	-- draft handling: if original is draft, show all drafts, otherwise hide drafts
+	where (
+		 -- current idea is draft: show all draft ideas with respective auth_stage
+		 current_idea.status_code = 'sap.ino.config.DRAFT' 
+		 -- hide draft
+		 or events.status_code != 'sap.ino.config.DRAFT'
+		 -- we want the creation event, although possibly a draft
+		 or events.change_event = 'IDEA_CREATED' 
+	)      
+WITH READ ONLY";
+depends_on_table = [
+    "sap.ino.db.iam::t_identity",
+    "sap.ino.db.attachment::t_attachment",
+    "sap.ino.db.attachment::t_attachment_assignment",
+    "sap.ino.db.attachment::t_attachment_assignment_h",
+    "sap.ino.db.evaluation::t_evaluation_h",
+    "sap.ino.db.idea::t_idea",
+    "sap.ino.db.idea::t_idea_h",
+    "sap.ino.db.link::t_link_h",
+    "sap.ino.db.iam::t_object_identity_role",
+    "sap.ino.db.iam::t_object_identity_role_h",
+    "sap.ino.db.wall::t_wall_h",
+    "sap.ino.db.wall::t_wall_assignment_h"];
+depends_on_view = [
+    "sap.ino.db.campaign::v_campaign_t_locale",
+    "sap.ino.db.idea::v_idea_delta_h",
+    "sap.ino.db.link::v_relation_h",
+    "sap.ino.db.idea::v_decision"];

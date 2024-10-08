@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_IDENTITY_DIMENSION" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="Identity Dimension"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="V_ANALYTICS_IDENTITY_FULL" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDENTITY_FULL</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="V_ANALYTICS_IDENTITY_FULL">
+    <descriptions/>
+    <attributes>
+      <attribute id="IDENTITY_ID" key="true" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Identity ID"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDENTITY_FULL" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="IDENTITY_NAME" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Name"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDENTITY_FULL" columnName="IDENTITY_NAME"/>
+      </attribute>
+      <attribute id="IDENTITY_FIRST_NAME" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="First Name"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDENTITY_FULL" columnName="IDENTITY_FIRST_NAME"/>
+      </attribute>
+      <attribute id="IDENTITY_LAST_NAME" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Last Name"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDENTITY_FULL" columnName="IDENTITY_LAST_NAME"/>
+      </attribute>
+      <attribute id="IDENTITY_USER_NAME" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="User Name"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDENTITY_FULL" columnName="IDENTITY_USER_NAME"/>
+      </attribute>
+      <attribute id="IDENTITY_EMAIL" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="E-Mail Adress"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDENTITY_FULL" columnName="IDENTITY_EMAIL"/>
+      </attribute>
+      <attribute id="IDENTITY_IS_EXTERNAL" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Is External"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDENTITY_FULL" columnName="IDENTITY_IS_EXTERNAL"/>
+      </attribute>
+      <attribute id="IDENTITY_IMAGE_ID" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Image ID"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDENTITY_FULL" columnName="IDENTITY_IMAGE_ID"/>
+      </attribute>
+    
+      <attribute id="IDENTITY_ORG" order="9" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="Organization"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDENTITY_FULL" columnName="IDENTITY_ORG"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

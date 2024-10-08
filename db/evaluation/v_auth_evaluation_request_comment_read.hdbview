@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "
+        select 
+            comment.id as comment_id,
+            eval_req_read.eval_req_id
+        from \"sap.ino.db.comment::v_community_comment\" as comment 
+        inner join \"sap.ino.db.evaluation::v_auth_evaluation_request_read\" as eval_req_read
+        on eval_req_read.eval_req_id = comment.object_id and
+           comment.object_type_code = 'EVAL_REQUEST'        
+        with read only";
+
+depends_on_view = ["sap.ino.db.comment::v_community_comment", 
+                   "sap.ino.db.evaluation::v_auth_evaluation_request_read"]; 

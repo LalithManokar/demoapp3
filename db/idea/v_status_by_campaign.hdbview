@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = "
+-- Filter idea status codes so that only those are shown which are used in a campaign
+select distinct code, campaign_id from 
+(
+    select current_status_code as code, campaign_id
+    from \"sap.ino.db.idea::v_status_model_transition_static\"
+    union all 
+    select next_status_code as code, campaign_id
+    from \"sap.ino.db.idea::v_status_model_transition_static\"
+    union all
+    select 'sap.ino.config.DRAFT' as code, campaign.id as campaign_id from dummy cross join \"sap.ino.db.campaign::t_campaign\" as campaign
+    union all
+    select 'sap.ino.config.MERGED' as code, campaign.id as campaign_id from dummy cross join \"sap.ino.db.campaign::t_campaign\" as campaign
+)
+";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign"];
+depends_on_view = ["sap.ino.db.idea::v_status_model_transition_static"];

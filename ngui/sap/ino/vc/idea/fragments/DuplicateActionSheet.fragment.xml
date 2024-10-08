@@ -1,0 +1,21 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+    <ActionSheet
+		title="{i18n>IDEA_OBJECT_TIT_DUPLCATE_GENERAL}"
+		showCancelButton="true"
+		placement="VerticalPreferredTop">
+		<buttons>
+		    <Button
+		        enabled="{= ${duplicate>/actions/markAsDuplicate/enabled}}" 
+                text="{i18n>IDEA_OBJECT_BTN_MARK_AS_DUPLICATE}"
+                type="Transparent"
+                press="onMarkAsDuplicate"/>
+			<Button
+			    enabled="{= ${duplicate>/actions/unmarkAsDuplicate/enabled}}"
+                text="{i18n>IDEA_OBJECT_BTN_UNMARK_AS_DUPLICATE}"
+                type="Transparent"
+                press="onUnmarkAsDuplicate"/>
+		</buttons>
+	</ActionSheet>
+</core:FragmentDefinition>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="V_EXT_MASHUP_TOP_CONTRIBUTORS" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="2.3" defaultClient="crossClient" visibility="reportingEnabled" outputViewType="Aggregation" calculationScenarioType="TREE_BASED" enforceSqlExecution="false">
+<descriptions defaultDescription="Top Contributors"/>
+<defaultSchema schemaName="SAP_INO_EXT"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="V_MASHUP_TOP_CONTRIBUTORS_SMALL" type="CALCULATION_VIEW">
+    <viewAttributes allViewAttributes="true"/>
+    <resourceUri>/sap.ino.db.mashup/calculationviews/V_MASHUP_TOP_CONTRIBUTORS_SMALL</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews/>
+<logicalModel id="V_MASHUP_TOP_CONTRIBUTORS_SMALL">
+  <attributes>
+    <attribute id="CAMPAIGN_ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Campaign ID"/>
+      <keyMapping schemaName="undefined" columnObjectName="V_MASHUP_TOP_CONTRIBUTORS_SMALL" columnName="CAMPAIGN_ID"/>
+    </attribute>
+    <attribute id="CONTRIBUTOR_NAME" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Contributor Name"/>
+      <keyMapping schemaName="undefined" columnObjectName="V_MASHUP_TOP_CONTRIBUTORS_SMALL" columnName="CONTRIBUTOR_NAME"/>
+    </attribute>
+    <attribute id="CONTRIBUTOR_IMAGE_ID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Contributor Image ID"/>
+      <keyMapping schemaName="undefined" columnObjectName="V_MASHUP_TOP_CONTRIBUTORS_SMALL" columnName="CONTRIBUTOR_IMAGE_ID"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="IDEA_COUNT" order="4" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Number of Ideas"/>
+      <measureMapping schemaName="undefined" columnObjectName="V_MASHUP_TOP_CONTRIBUTORS_SMALL" columnName="IDEA_COUNT"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup" expanded="true">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

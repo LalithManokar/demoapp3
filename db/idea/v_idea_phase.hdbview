@@ -1,0 +1,28 @@
+schema = "SAP_INO";
+query = "
+    select 
+        idea.id as idea_id,
+        campaign_phase.phase_code,
+        campaign_phase.sequence_no as sequence_no,
+        case when campaign_phase.sequence_no < current_campaign_phase.sequence_no 
+            then 1
+            else 0
+        end as is_previous_phase,
+        case when campaign_phase.sequence_no = current_campaign_phase.sequence_no 
+            then 1
+            else 0
+        end as is_current_phase,
+        case when campaign_phase.sequence_no > current_campaign_phase.sequence_no 
+            then 1
+            else 0
+        end as is_future_phase
+    from \"sap.ino.db.idea::t_idea\" as idea
+        left outer join \"sap.ino.db.campaign::t_campaign_phase\" as campaign_phase
+            on campaign_phase.campaign_id = idea.campaign_id 
+        left outer join \"sap.ino.db.campaign::t_campaign_phase\" as current_campaign_phase
+            on  current_campaign_phase.campaign_id = idea.campaign_id and 
+                current_campaign_phase.phase_code = idea.phase_code
+    with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea",
+                    "sap.ino.db.campaign::t_campaign_phase"];

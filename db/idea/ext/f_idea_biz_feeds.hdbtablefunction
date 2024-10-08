@@ -1,0 +1,20 @@
+function "SAP_INO"."sap.ino.db.idea.ext::f_idea_biz_feeds" () 
+    returns table ( object_id integer, object_type_code nvarchar(63),object_text nvarchar(100),actor_id integer,actor_name nvarchar(100),
+                    actor_image_id integer, involved_id integer, involved_obj_type_code nvarchar(63), involved_obj_text nvarchar(30), event_at timestamp,
+                    feed_code nvarchar(63), campaign_id integer, field1_name nvarchar(100), field1_text nvarchar(500), field1_value nvarchar(500),
+                    field1_value_option nvarchar(100),filter_type_code nvarchar(63),content nvarchar(5000))
+    language sqlscript
+    sql security definer as
+begin
+        declare lv_user_name nvarchar(32) default '';
+        lv_user_name := session_context('APPLICATIONUSER');
+        if lv_user_name = '' then
+                return select null as object_id, null as object_type_code, null as object_text, null as actor_id,
+                                null as actor_name, null as actor_image_id, null as involved_id, null as involved_obj_type_code,
+                                null as involved_obj_text, null as event_at, null as feed_code, null as campaign_id,
+                                null as field1_name, null as field1_text, null as field1_value, null as field1_value_option, null as filter_type_code, 
+                                null as content from dummy where 1=0;
+        else
+                return select * from sap_ino."sap.ino.db.idea::v_idea_biz_feeds";
+        end if;
+end;

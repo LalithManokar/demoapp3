@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "group attribute";
+table.columns = [
+    {name = "ID";                   sqlType = INTEGER; nullable = false; comment = "Technical record ID";},
+    {name = "GROUP_ID";             sqlType = INTEGER; nullable = false; comment = "Group Id, Foreign key to t_identity.ID";},
+    {name = "IS_PUBLIC";            sqlType = TINYINT; nullable = true; comment = "indicate that this group is public to community user";},
+    {name = "IS_MANAGER_PUBLIC";    sqlType = TINYINT; nullable = true; comment = "indicate that this group is public to CAMPAIGN MANAGER";}
+];  
+table.primaryKey.pkcolumns = ["ID"];   

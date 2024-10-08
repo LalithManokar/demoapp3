@@ -1,0 +1,215 @@
+<core:FragmentDefinition
+	xmlns="sap.m" 
+	xmlns:core="sap.ui.core"
+	xmlns:ino="sap.ino.controls"
+	xmlns:l="sap.ui.layout">
+	<NavContainer
+        class="sapInoFilterSidePanelNavContainer"
+        id="navContainer"
+        height="100%"
+        width="100%">
+		<Page
+            id="main"
+            showHeader="false">
+			<!-- height: 99% to avoid unneccessary scrollbars during zoom -->
+			<VBox
+                id="mainContainer"
+                class="sapInoFilterSidePanelContent"
+                width="100%"
+                alignItems="Start"
+                justifyContent="SpaceBetween">
+				<VBox class="sapInoFilterSidePanelItemsMainSection" width="100%" visible = "{=!${component>/SHOW_BACKOFFICE} }">
+						<Bar>
+							<contentLeft>
+								<HBox>
+									<Label 
+										class="sapUiSmallMarginBegin sapUiIdeaFilterManageLabel"
+										text="{i18n>IDEA_QUCIK_LINK_LABEL}"/>
+									<Button
+    									icon="sap-icon://InoIcons/information" 
+    									press="onQuickLinkInformationPopoverOpen"/>
+								</HBox>
+							</contentLeft>
+							<contentRight>
+								<Button 
+									class="quickLinkStandListBtn"
+									icon="sap-icon://InoIcons/quicklink" 
+									press="onQuickLinkStandListDialogOpen">
+								</Button>
+							</contentRight> 
+						</Bar>
+					<Bar>
+						<contentLeft>
+							<!--Label class="sapUiSmallMarginBegin" text="{path : 'list>/NAME', formatter : '.formatter.text'}"/-->
+							<Label class="sapUiSmallMarginBegin" 
+							       text="{parts:[{path:'view>/List/IDEA_FILTER_COMMUNITY_GROUP_VIEW_VISIBLE'},{path:'view>/List/IS_IDEA_FILTER_COMMUNITY_GROUP_VIEW'}
+                                       ], formatter : '.formatter.getIdeaListTitleText'}"/>
+						</contentLeft>
+                        <contentRight>
+                            <ToggleButton class="sapUiIdeaFilterChangeIcon"
+                                    icon="sap-icon://journey-change"
+                                    visible="{= ${view>/List/IDEA_FILTER_COMMUNITY_GROUP_VIEW_VISIBLE}}"
+                                    tooltip="{parts:[{path:'view>/List/IS_IDEA_FILTER_COMMUNITY_GROUP_VIEW'}
+                                       ], formatter : '.formatter.getCommunityGroupViewTooltip'}"
+                                    pressed="{parts:[{path:'view>/List/IS_IDEA_FILTER_COMMUNITY_GROUP_VIEW'}
+                                       ], formatter : '.formatter.getCommunityGroupViewToggle'}" 
+                                    press="activeIdeaFilterCommunityGroupView">
+                            </ToggleButton>
+                        </contentRight> 						
+					</Bar>
+					<List
+						id="communityQuickLinkIdeaList"
+                        class="sapUiTinyMarginBottom sapUiSmallMarginTop"
+                        mode="SingleSelectMaster"
+                        itemPress="onVariantBasePress"
+                        items="{
+                            path: 'list>/Variants/Values',
+                            sorter: { path: 'SEQUENCE', descending : false }
+                        }"
+                        width="100%"
+                        showSeparators="None">
+						<CustomListItem
+                            ariaLabelledBy="showHeader"
+                            type="{= ${list>ENABLED} === 1 ? 'Active' : 'Inactive'}"
+                            visible="{= ${path:'list>ACTION', formatter: '.formatter.ideaCheckVisibleText'} &amp;&amp; ${list>VISIBLE} &amp;&amp; ${list>ACTIVE}}"
+                            selected="{parts:['list>ACTION', 'list>ID', 'view>/List/VARIANT', 'view>/Search/VARIANT', 'view>/NEWQUICKLINKFUNCTION', 'view>/List/SELECTQUICKLINKID'], formatter:'.formatter.quickLinkListSelected'}"
+                            tooltip="{parts:['list>FILTER_INFO', 'list>ACTIVE', 'list>/Filter/Status', 'list>/Operator/Values'], formatter:'.formatter.quickLinkFilterInfo'}">
+							<content>
+							    <HBox alignItems="Start" justifyContent="SpaceBetween">
+    							    <ObjectStatus
+                        				class="sapUiSmallMarginBegin sapUiTinyMarginTopBottom sapInoHierarchyLabel"
+                        				text="{parts : [{path : 'list>TEXT'}, {path: 'list>LINK_TEXT'},{path: 'list>DISPLAY_LABEL'}], formatter : '.formatter.quickLinkTextFormate'}"
+                        				state="None"
+                        				icon="sap-icon://InoIcons/{= ${list>TYPE_CODE} === 'QUICK_LINK_CUSTOM_IDEA' ? 'quicklink-custom' : 'quicklink-standard'}">
+                        				<customData>
+    										<core:CustomData key="object" value="{list>OBJECT}"/>
+    									</customData>
+                        			</ObjectStatus>
+    								<Label
+                                        text="{path: 'list>COUNT'}"
+                                        textAlign="End"
+                                        class="sapUiLargeMarginBeginEnd sapUiTinyMarginTopBottom sapInoHierarchyLabel"></Label>
+                                </HBox>
+							</content>
+						</CustomListItem>
+					</List>
+				</VBox>
+				
+				<VBox class="sapInoFilterSidePanelItemsMainSection" width="100%" visible = "{=${path : 'list>/NAME', formatter : '.formatter.checkList'} &amp;&amp; !!${component>/SHOW_BACKOFFICE} }">
+						<Bar>
+							<contentLeft>
+								<HBox>
+									<Label 
+										class="sapUiSmallMarginBegin sapUiIdeaFilterManageLabel"
+										text="{i18n>IDEA_QUCIK_LINK_LABEL}"/> 
+									<Button
+    									icon="sap-icon://InoIcons/information" 
+    									press="onQuickLinkInformationPopoverOpen"/>
+								</HBox>
+							</contentLeft>
+							<contentRight>
+								<Button 
+									class="quickLinkStandListBtn"
+									icon="sap-icon://InoIcons/quicklink" 
+									press="onQuickLinkStandListDialogOpen">
+								</Button>
+							</contentRight> 
+						</Bar>
+					<Bar>
+						<contentLeft>
+							<Label 
+            					class="sapUiSmallMarginBegin sapUiIdeaFilterManageLabel"
+            					tooltip="{parts:[{path : 'list>/MANAGEDNAME'},{path:'view>/List/IDEA_FILTER_NEW_AND_INPROCESS'}
+                                       ], formatter : '.formatter.getManageTextTooltip'}"
+                                text="{parts:[{path : 'list>/MANAGEDNAME'},{path:'view>/List/IDEA_FILTER_NEW_AND_INPROCESS'}
+                                       ], formatter : '.formatter.getManageContinuesText'}"
+                                /> 
+                        </contentLeft>
+                        <contentRight>
+                            <ToggleButton class="sapUiIdeaFilterChangeIcon"
+                                    icon="sap-icon://journey-change"
+                                    tooltip="{parts:[{path : 'list>/MANAGEDNAME'},{path:'view>/List/IDEA_FILTER_NEW_AND_INPROCESS'}
+                                       ], formatter : '.formatter.getManageContinuesTooltip'}"
+                                    pressed="{parts:[{path : 'list>/MANAGEDNAME'},{path:'view>/List/IDEA_FILTER_NEW_AND_INPROCESS'}
+                                       ], formatter : '.formatter.getManageContinuesToggle'}" 
+                                    press="activeIdeaFilterSwitchChange">
+                            </ToggleButton>
+                        </contentRight> 
+					</Bar>
+					<List
+					    id="backOfficeQuickLinkIdeaList"
+                        class="sapUiTinyMarginBottom sapUiSmallMarginTop"
+                        mode="SingleSelectMaster"
+                        itemPress="onVariantBasePress"
+                        items="{
+                            path: 'list>/Variants/Values',
+                            sorter: { path: 'SEQUENCE', descending : false }
+                        }"
+                        width="100%"
+                        showSeparators="None">
+						<CustomListItem
+                            ariaLabelledBy="showHeader"
+                            type="{= ${list>ENABLED} === 1 ? 'Active' : 'Inactive'}"
+                            visible="{= ${path:'list>ACTION', formatter: '.formatter.ideaCheckVisibleText2'} &amp;&amp; ${list>VISIBLE} &amp;&amp; ${list>ACTIVE}}"
+                            selected="{parts:['list>ACTION', 'list>ID', 'view>/List/VARIANT', 'view>/Search/VARIANT', 'view>/NEWQUICKLINKFUNCTION', 'view>/List/SELECTQUICKLINKID'], formatter:'.formatter.quickLinkListSelected'}"
+                            tooltip="{parts:['list>FILTER_INFO', 'list>ACTIVE', 'list>/Filter/Status', 'list>/Operator/Values'], formatter:'.formatter.quickLinkFilterInfo'}">
+							<content>
+							    <HBox alignItems="Start" justifyContent="SpaceBetween">
+    							    <ObjectStatus
+                        				class="sapUiSmallMarginBegin sapUiTinyMarginTopBottom sapInoHierarchyLabel"
+                        				text="{parts : [{path : 'list>TEXT'}, {path: 'list>LINK_TEXT'},{path: 'list>DISPLAY_LABEL'}], formatter : '.formatter.quickLinkTextFormate'}"
+                        				state="None"
+                        				icon="sap-icon://InoIcons/{= ${list>TYPE_CODE} === 'QUICK_LINK_CUSTOM_IDEA' ? 'quicklink-custom' : 'quicklink-standard'}">
+                        				<customData>
+    										<core:CustomData key="object" value="{list>OBJECT}"/>
+    									</customData>
+                        			</ObjectStatus>
+    								<Label
+                                        text="{path: 'list>COUNT'}"
+                                        textAlign="End"
+                                        class="sapUiLargeMarginEnd sapUiTinyMarginTopBottom sapInoHierarchyLabel"/>
+                                </HBox>
+							</content>
+						</CustomListItem>
+					</List>
+				</VBox>
+			</VBox>
+			<VBox class="sapInoFilterSidePanelItemsMainSection" width="100%">
+				<Bar
+                    visible="{= ${view>/List/TAGCLOUD} === true}"
+                    class="sapInoNoBoxShadow sapUiSmallMarginTop"
+                    design="Header">
+					<contentLeft>
+						<Label text="{i18n>LIST_TIT_FILTER_TAG_HEADER}"
+            			    class="sapUiSmallMarginBegin sapInoIdeaListFilterTagTitle"
+            			    id="sapInmIdeaListTagGroupListFragLabel"/>
+					</contentLeft>
+				</Bar>
+				<core:Fragment fragmentName="sap.ino.vc.commons.fragments.TagGroupList" type="XML"/>
+				<l:VerticalLayout
+                    
+                    class="sapInoFilterSidePanelTagSelection sapUiTinyMarginBottom"
+                    width="100%">
+					<Bar
+                        class="sapInoNoBoxShadow sapInoFilterSidePanelFilterTagSelectionsBar"
+                        design="Header"
+                        visible="{= ${view>/List/IS_TAGS_SELECTION}}">
+						<contentLeft>
+							<Label 
+                		        text="{i18n>LIST_TIT_FILTER_TAG_SELECTION}"
+                		        class="sapUiSmallMarginBegin"/>
+						</contentLeft>
+					</Bar>
+					<core:Fragment fragmentName="sap.ino.vc.commons.fragments.TagSelection" type="XML" />
+				</l:VerticalLayout>
+			</VBox>
+			<!-- dummy element to achieve correct layout -->
+			<l:VerticalLayout
+                visible="{= ${view>/List/TAGCLOUD} !== true }"/>
+			<l:VerticalLayout
+                visible="{= ${view>/List/TAGCLOUD} !== true }"
+                class="sapInoFilterSidePanelTagSelection"
+                width="100%"/>
+		</Page>
+	</NavContainer>
+</core:FragmentDefinition>

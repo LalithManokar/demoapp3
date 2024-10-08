@@ -1,0 +1,12 @@
+schema = "SAP_INO_EXT";
+query = "
+        select distinct
+           campaign.id as campaign_id,
+           campaign.short_name as campaign_name
+         from \"sap.ino.db.campaign::v_campaign_full\" as campaign
+         inner join \"sap.ino.db.campaign::v_auth_campaigns\" as auth
+             on campaign.id = auth.campaign_id
+";
+
+depends_on_view = ["sap.ino.db.campaign::v_campaign_full", 
+                   "sap.ino.db.campaign::v_auth_campaigns"];

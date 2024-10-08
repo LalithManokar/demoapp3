@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Notification Codes";
+table.columns = [
+    {name = "CODE"; sqlType = VARCHAR;  length = 500;  nullable = false; comment = "Identifier";},
+    {name = "BIZ_EVENT"; sqlType = VARCHAR; length = 600; nullable = false; comment = "Code that references the executed action";},
+    {name = "ROLE_CODE"; sqlType = VARCHAR; length = 20; nullable = false; comment = "Code that references the role";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

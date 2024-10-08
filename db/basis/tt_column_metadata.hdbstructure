@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.description = "Column Metadata";
+table.columns = [
+    {name = "ID";                   sqlType = INTEGER;                               nullable = false;                     comment = "id";},
+    {name = "COLUMN_NAME";          sqlType = NVARCHAR;     length = 256;            nullable = false;                     comment = "Column Name";},
+    {name = "COLUMN_TITLE";         sqlType = NVARCHAR;     length = 256;            nullable = false;                     comment = "Column Title";},
+    {name = "DATA_TYPE_NAME";       sqlType = VARCHAR;      length = 16;             nullable = false;                     comment = "Datatype Name";}
+];
+table.primaryKey.pkcolumns = ["ID"];

@@ -1,0 +1,21 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:uxap="sap.uxap"
+	xmlns:ino="sap.ino.controls"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<HBox  visible="{= ${view>/DISABLE_IDEA_IMAGE}}">
+		<ToggleButton 
+            type="Transparent" 
+            icon="sap-icon://pushpin-off" 
+            visible="{clipboard>/enabled}" 
+            tooltip="{ parts: [{path: 'object>ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIdeaPinTooltip'}"
+            pressed="{ parts: [{path: 'object>ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIsIdeaInClipboard'}" 
+            press="onIdeaPinPressed"
+            class="sapInoPinBtn"
+            app:model="object"
+            />
+		<ino:Follow onlyIcon="true" visible="true" value="{object>FOLLOW}" styleType="ideaDetailFollow" type="IDEA" objectId="{object>ID}" enabled="true" follow="onFollow" />
+		<ino:IdeaVolunteer styleClass="sapInoIdeaVolunteer" key="{object>VOLUNTEER_ID}" ideaId="{object>ID}" enabled="true" visible="true" onlyIcon="true" value="{= !!${object>VOLUNTEER_ID}}" volunteer="toggleVolunteer" />
+	</HBox>
+</core:FragmentDefinition>

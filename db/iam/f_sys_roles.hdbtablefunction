@@ -1,0 +1,10 @@
+function "SAP_INO"."sap.ino.db.iam::f_sys_roles" ( ) 
+    returns table ( role_name nvarchar(256) )
+    language sqlscript
+    sql security definer as
+begin
+    -- we wrap this access in a table function with security DEFINER 
+    -- privileges as otherwise sys.roles returns different data 
+    -- depending on the user calling it 
+    return select role_name from sys.roles;
+end;

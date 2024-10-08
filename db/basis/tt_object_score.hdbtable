@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Output table for Object IDs and scores";
+table.temporary = true;
+table.columns = [
+        {name = "ID";    sqlType = INTEGER; nullable = false; comment = "Object ID";},
+        {name = "SCORE"; sqlType = DOUBLE;  nullable = false; comment = "Object Search Score";}
+];

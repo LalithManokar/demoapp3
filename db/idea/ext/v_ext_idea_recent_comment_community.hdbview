@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT";
+query = "select idea_comment.*
+         from \"sap.ino.db.idea::v_idea_recent_comment_community\" as idea_comment
+         where idea_comment.object_id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")
+         with read only"; 
+         
+depends_on_view = ["sap.ino.db.idea::v_idea_recent_comment_community", "sap.ino.db.idea::v_auth_ideas_read"];

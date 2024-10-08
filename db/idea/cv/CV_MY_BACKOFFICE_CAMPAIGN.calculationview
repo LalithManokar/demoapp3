@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="CV_MY_BACKOFFICE_CAMPAIGN" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" dimensionType="STANDARD" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="cv_"/>
+  <metadata changedAt="2021-05-21 11:18:55.977"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="31"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.iam::t_identity_group_member_transitive" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_identity_group_member_transitive"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.iam::t_object_identity_role" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_object_identity_role"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.iam::v_auth_application_user" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_auth_application_user"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:JoinView" id="Role" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="ID"/>
+        <viewAttribute hidden="true" id="JOIN$GROUP_ID$IDENTITY_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.iam::t_identity_group_member_transitive">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="MEMBER_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$GROUP_ID$IDENTITY_ID" source="GROUP_ID"/>
+      </input>
+      <input node="#sap.ino.db.iam::t_object_identity_role">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$GROUP_ID$IDENTITY_ID" source="IDENTITY_ID"/>
+      </input>
+      <joinAttribute name="JOIN$GROUP_ID$IDENTITY_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Role_Auth" cardinality="CN_1" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute hidden="true" id="JOIN$IDENTITY_ID$ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Role">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$IDENTITY_ID$ID" source="IDENTITY_ID"/>
+      </input>
+      <input node="#sap.ino.db.iam::v_auth_application_user">
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$IDENTITY_ID$ID" source="ID"/>
+      </input>
+      <joinAttribute name="JOIN$IDENTITY_ID$ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_1" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="ROLE_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Role_Auth">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+      </input>
+      <filter>(&quot;OBJECT_TYPE_CODE&quot; ='CAMPAIGN') AND (&quot;ROLE_CODE&quot; ='CAMPAIGN_COACH' OR &quot;ROLE_CODE&quot; = 'CAMPAIGN_MANAGER')</filter>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Aggregation_1">
+    <descriptions/>
+    <attributes>
+      <attribute id="ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Object on which an identity has role ROLE_ID. Foreign key to t_idea.ID and t_campaign.ID"/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="OBJECT_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="120"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Role" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="70" y="400"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="false" modelObjectName="Role_Auth" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="60" y="320"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Aggregation_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="60" y="213"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

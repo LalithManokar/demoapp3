@@ -1,0 +1,17 @@
+schema = "SAP_INO";
+query = "
+    select
+      form_code.code as code,
+      coalesce(form_stage.default_text, form.default_text) as default_text,
+      coalesce(form_stage.default_long_text, form.default_long_text) as default_long_text
+    from (select code from \"sap.ino.db.ideaform::t_form\"
+          union
+          select code from \"sap.ino.db.ideaform::t_form_stage\") as form_code
+    left outer join \"sap.ino.db.ideaform::t_form\" as form 
+          on form_code.code = form.code
+    left outer join \"sap.ino.db.ideaform::t_form_stage\" as form_stage 
+          on form_code.code = form_stage.code
+    with read only ";
+
+depends_on_table = ["sap.ino.db.ideaform::t_form",
+                    "sap.ino.db.ideaform::t_form_stage"];

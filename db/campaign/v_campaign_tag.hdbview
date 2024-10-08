@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "select campaign_tag.object_id as campaign_id, campaign_tag.id, campaign_tag.tag_id, tag.name 
+    from \"sap.ino.db.tag::t_object_tag\" as campaign_tag 
+       inner join \"sap.ino.db.tag::t_tag\" as tag
+        on campaign_tag.tag_id = tag.id and campaign_tag.object_type_code = 'CAMPAIGN'";
+
+depends_on_table = ["sap.ino.db.tag::t_tag",
+                    "sap.ino.db.tag::t_object_tag"];

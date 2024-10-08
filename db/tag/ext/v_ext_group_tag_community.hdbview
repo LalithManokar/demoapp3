@@ -1,0 +1,14 @@
+schema = "SAP_INO_EXT";
+query = "
+    select 
+        ID,
+        NAME,
+        DESCRIPTION,
+        TOP_NUMBER,
+        COUNT_OF_TAGS,
+        tags_count
+    from \"sap.ino.db.tag::v_group_tag\"
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.tag::v_group_tag"];

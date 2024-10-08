@@ -1,0 +1,81 @@
+schema = "SAP_INO";
+query  = "
+          select 
+           CASE 
+        when settings.IS_ANONYMOUS = 'true' then  cast(0 as INTEGER) 
+        else  author.id
+        end as employee_id, 
+           case 
+        when settings.IS_ANONYMOUS = 'true' then  cast('Anonymity' as VARCHAR) 
+        else author.name
+        end as employee_name, 
+            case 
+        when settings.IS_ANONYMOUS = 'true' then  cast('Anonymity' as VARCHAR) 
+        else author.email
+        end as employee_email, 
+            case 
+        when settings.IS_ANONYMOUS = 'true' then  cast('Anonymity' as VARCHAR) 
+        else author.user_name
+        end as user_name, 
+              reward.id,
+              reward.reward_list_id,
+              reward_list.idea_phase_code,
+              phase.default_text as idea_phase_text,
+              reward_list.status_code,
+              status.default_text as reward_status_text,
+              reward_list.idea_id,
+              idea.name as idea_name,
+              idea.campaign_id,
+              campaign_text.short_name as campaign_name,
+              reward.reward_amount,
+              unit.default_text as reward_unit,
+              unit.default_long_text as reward_unit_description,
+              reward.reward_share,
+              reward.download_count, 
+              IFNULL(contribution_share.percentage,ori_contribution_share.percentage) as contribution_share,
+              reward_list.created_at, 
+              reward_group_orders.group_order as group_order
+          from \"sap.ino.db.reward::t_reward\"                             as reward
+              inner join \"sap.ino.db.reward::t_reward_list\"              as reward_list
+                on reward_list.id = reward.reward_list_id
+              inner join \"sap.ino.db.iam::t_identity\"                    as author
+                on reward.author_id = author.id
+              inner join \"sap.ino.db.status::t_status\"                   as status
+                on reward_list.status_code = status.code
+              inner join \"sap.ino.db.campaign::t_phase\"                  as phase
+                on reward_list.idea_phase_code = phase.code
+              inner join \"sap.ino.db.idea::t_idea\"                       as idea
+                on reward_list.idea_id = idea.id
+              inner join \"sap.ino.db.campaign::t_campaign\"               as campaign
+                on idea.campaign_id = campaign.id
+              left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign_text
+                on campaign.id = campaign_text.campaign_id
+              left outer join \"sap.ino.db.idea::v_idea_contribution_share\" as contribution_share
+                on contribution_share.idea_id = reward_list.idea_id
+                   and contribution_share.author_id = reward.author_id
+              LEFT OUTER JOIN \"sap.ino.db.idea::v_idea_contribution_share\" AS ori_contribution_share
+            	ON ori_contribution_share.idea_id = reward_list.idea_id
+            		AND ori_contribution_share.author_id = idea.created_by_id
+              left outer join \"sap.ino.db.basis::t_unit\" as unit
+                   on unit.code = reward.reward_unit
+              left outer join (
+                select idea_id, idea_phase_code, ROW_NUMBER() over (partition by idea_id order by last_date desc) as group_order from (
+                select max(changed_at) last_date, idea_phase_code, idea_id from \"sap.ino.db.reward::t_reward_list\" group by idea_phase_code, idea_id
+                )  ) as reward_group_orders
+                    on reward_list.idea_id = reward_group_orders.idea_id and reward_list.idea_phase_code = reward_group_orders.idea_phase_code
+              left outer join \"sap.ino.db.idea::v_idea_settings_test\" as settings 
+                 on settings.idea_id =   reward_list.idea_id
+           with read only";
+           
+depends_on_table = ["sap.ino.db.reward::t_reward",
+                    "sap.ino.db.reward::t_reward_list",
+					"sap.ino.db.status::t_status",
+					"sap.ino.db.campaign::t_phase",
+					"sap.ino.db.idea::t_idea",
+					"sap.ino.db.campaign::t_campaign",
+					"sap.ino.db.basis::t_unit",
+					"sap.ino.db.iam::t_identity"];
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale",
+                   "sap.ino.db.idea::v_idea_contribution_share",
+                   "sap.ino.db.idea::v_idea_settings_test"];					
+					           

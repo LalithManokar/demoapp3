@@ -1,0 +1,33 @@
+/* ================================================= */
+/* CSS for control sap.ino.wall/WallItemGroup.control */
+/* ================================================= */
+
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWallItemGroup.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWallItemGroup.back {
+    outline: @sapUiHighlight solid 2px;
+}
+
+.sapInoWallWIGTitle .sapInoWallWITitle {
+	background: @sapUiBaseBG;
+	color: @sapUiLightText;
+}
+
+.sapInoWallWallItemGroup.back {
+	background: @sapUiBaseBG;
+}
+
+.back.sapInoWallWallItemGroup .sapInoWallWIBTitle {
+    background-color: transparent;
+}
+
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiTextInverted; 
+}
+
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiText; 
+}

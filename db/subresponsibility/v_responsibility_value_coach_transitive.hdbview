@@ -1,0 +1,20 @@
+schema = "SAP_INO";
+query = "SELECT code AS resp_value_code, 
+        	identity.*, 
+        	identity_settings.image_id
+        FROM \"sap.ino.db.iam::v_object_identity_role_transitive\" AS role_transitive
+        	INNER JOIN \"sap.ino.db.iam::t_identity\" AS identity
+        	ON role_transitive.identity_id = identity.id
+        	LEFT OUTER JOIN \"sap.ino.db.iam::v_identity_settings\" AS identity_settings
+        	ON identity_settings.identity_id = role_transitive.identity_id
+        	LEFT OUTER JOIN \"sap.ino.db.subresponsibility::t_responsibility_value_stage\" AS resp_value
+        	ON role_transitive.object_id = resp_value.id
+        WHERE role_code = 'RESP_COACH'
+        	AND object_type_code = 'RESPONSIBILITY'
+        	AND identity.type_code = 'USER' 
+	        with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity",
+                    "sap.ino.db.subresponsibility::t_responsibility_value_stage"];
+depends_on_view = ["sap.ino.db.iam::v_object_identity_role_transitive",
+                   "sap.ino.db.iam::v_identity_settings"]; 

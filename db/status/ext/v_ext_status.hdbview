@@ -1,0 +1,6 @@
+schema = "SAP_INO_EXT";
+query = "
+    select * from \"sap.ino.db.status::t_status\" 
+    with read only ";
+
+depends_on_table = ["sap.ino.db.status::t_status"];

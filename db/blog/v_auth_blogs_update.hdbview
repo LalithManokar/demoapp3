@@ -1,0 +1,27 @@
+schema = "SAP_INO";
+query  = "
+        select distinct blog.id as blog_id
+            from \"sap.ino.db.blog::t_blog\" as blog
+            inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role
+                on  blog.object_type_code = \'CAMPAIGN\'
+                and object_role.object_type_code = \'CAMPAIGN\' and blog.object_id = object_role.object_id
+            inner join \"sap.ino.db.iam::t_role_privilege\" as role
+                on role.role_code = object_role.role_code
+                    and role.privilege = \'CAMP_BLOG_UPDATE\' and blog.status_code != \'sap.ino.config.DRAFT\'
+union
+        select distinct blog.id as blog_id
+            from \"sap.ino.db.blog::t_blog\" as blog
+            inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role
+                on  blog.object_id = object_role.object_id and object_role.object_type_code = \'CAMPAIGN\'
+            inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role2
+                on  blog.id = object_role2.object_id 
+                and object_role2.identity_id = object_role.identity_id 
+                and object_role2.object_type_code = \'BLOG\'
+            inner join \"sap.ino.db.iam::t_role_privilege\" as role
+                on role.role_code = object_role.role_code
+                    and role.privilege = \'CAMP_BLOG_UPDATE\' and blog.status_code = \'sap.ino.config.DRAFT\'
+         with read only";
+         
+depends_on_table = ["sap.ino.db.iam::t_role_privilege",
+                    "sap.ino.db.blog::t_blog"];
+depends_on_view  = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];

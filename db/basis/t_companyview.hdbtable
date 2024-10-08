@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Company View Code";
+table.columns = [
+    {name = "CODE";                sqlType = VARCHAR;  length = 500; nullable = false; comment = "Company Code Value";},
+    {name = "COMPANY_VIEW_OPTION"; sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default option for Company View";},
+    {name = "DEFAULT_TEXT";        sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Text for  Company View";},
+    {name = "DEFAULT_LONG_TEXT";   sqlType = NVARCHAR; length = 500; nullable = true;  comment = "Long Text for Company View";}
+    
+];
+table.primaryKey.pkcolumns = ["CODE"];

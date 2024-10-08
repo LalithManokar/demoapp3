@@ -1,0 +1,29 @@
+schema = "SAP_INO";
+query = "
+    select
+        igm.id,
+        igm.group_id,
+        grp.type_code as group_type_code,
+        grp.name as group_name,
+        igm.member_id,
+        member.type_code as member_type_code,
+        member.user_name as user_name,
+        member.name as member_name
+    from
+        \"sap.ino.db.iam::t_identity_group_member\" as igm
+
+    left outer join
+        \"sap.ino.db.iam::t_identity\" as grp
+    on
+        grp.id = igm.group_id
+
+    left outer join
+        \"sap.ino.db.iam::t_identity\" as member
+    on
+        member.id = igm.member_id
+";
+
+depends_on_table = [
+    "sap.ino.db.iam::t_identity",
+    "sap.ino.db.iam::t_identity_group_member"
+];

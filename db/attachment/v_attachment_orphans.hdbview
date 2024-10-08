@@ -1,0 +1,23 @@
+schema = "SAP_INO";
+query = " 
+	select attachment.id
+		from \"SAP_INO\".\"sap.ino.db.attachment::t_attachment\" as attachment
+		left outer join \"SAP_INO\".\"sap.ino.db.attachment::t_attachment_assignment\" as assignment
+			on attachment.id = assignment.attachment_id
+		where 
+			folder_id is null and 
+			label is null and 
+			assignment.attachment_id is null and
+			attachment.id not in ( SELECT distinct attachment_id FROM \"SAP_INO\".\"sap.ino.db.idea::f_attachments_in_idea_description\"() union
+			                       SELECT distinct attachment_id FROM \"SAP_INO\".\"sap.ino.db.blog::f_attachments_in_blog_description\"() UNION 
+			                       SELECT ASSIGN.ATTACHMENT_ID FROM \"sap.ino.db.attachment::t_attachment_assignment\" AS ASSIGN
+                                    WHERE ASSIGN.OWNER_TYPE_CODE = 'DIMENSION_BADGE'
+                                    	AND (ASSIGN.OWNER_ID NOT IN (SELECT ID
+                                    			FROM \"sap.ino.db.gamification::t_badge\"))) and
+			CURRENT_DATE > ADD_DAYS(created_at, 7)			
+    with read only";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment_assignment",
+					"sap.ino.db.attachment::t_attachment"];
+depends_on_view = ["sap.ino.db.blog::f_attachments_in_blog_description",
+			       "sap.ino.db.idea::f_attachments_in_idea_description"];

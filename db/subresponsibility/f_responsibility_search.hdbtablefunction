@@ -1,0 +1,59 @@
+FUNCTION "SAP_INO"."sap.ino.db.subresponsibility::f_responsibility_search" ( searchToken nvarchar(100), respCode varchar(500)) 
+	RETURNS TABLE ( search_score double, id integer )
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER AS
+BEGIN
+/***************************** 
+	Write your function logic
+ *****************************/
+ return 
+    select max(search_score) as search_score, id from (
+      select score() as search_score,
+             resp.id
+      from            "sap.ino.db.subresponsibility::t_responsibility_value_stage" as resp
+      left outer join "sap.ino.db.tag::t_object_tag" as resp_tag
+             on resp.id = resp_tag.object_id and resp_tag.object_type_code = 'RESPONSIBILITY'
+      left outer join "sap.ino.db.tag::t_tag"        as tag
+             on tag.id = resp_tag.tag_id
+      where contains(tag.name,               :searchToken, fuzzy(0.8), weight(1.0)) or
+            contains(resp.default_text,      :searchToken, fuzzy(0.8), weight(1.0)) or
+            contains(resp.default_long_text, :searchToken, fuzzy(0.8), weight(1.0))
+      union all
+      select 
+             1 as search_score,
+             resp.id
+      from   "sap.ino.db.subresponsibility::t_responsibility_value_stage" as resp
+      left outer join "sap.ino.db.tag::t_object_tag" as resp_tag
+             on resp.id = resp_tag.object_id and resp_tag.object_type_code = 'RESPONSIBILITY'
+      left outer join "sap.ino.db.tag::t_tag"        as tag
+             on tag.id = resp_tag.tag_id
+      where  (lcase(tag.name)                 like '%' || lcase(:searchToken) || '%' or
+              lcase(resp.default_text)        like '%' || lcase(:searchToken) || '%' or
+              lcase(resp.default_long_text)   like '%' || lcase(:searchToken) || '%')             
+    ) where length(:respCode) = 0 group by id 
+    union all
+    select max(search_score) as search_score, id from (
+      select score() as search_score,
+             resp.id
+      from            "sap.ino.db.subresponsibility::t_responsibility_value_stage" as resp
+      left outer join "sap.ino.db.tag::t_object_tag" as resp_tag
+             on resp.id = resp_tag.object_id and resp_tag.object_type_code = 'RESPONSIBILITY'
+      left outer join "sap.ino.db.tag::t_tag"        as tag
+             on tag.id = resp_tag.tag_id
+      where (contains(tag.name,               :searchToken, fuzzy(0.8), weight(1.0)) or
+             contains(resp.default_text,      :searchToken, fuzzy(0.8), weight(1.0)) or
+             contains(resp.default_long_text, :searchToken, fuzzy(0.8), weight(1.0))) and resp.resp_code = :respCode
+      union all
+      select 
+             1 as search_score,
+             resp.id
+      from   "sap.ino.db.subresponsibility::t_responsibility_value_stage" as resp
+      left outer join "sap.ino.db.tag::t_object_tag" as resp_tag
+             on resp.id = resp_tag.object_id and resp_tag.object_type_code = 'RESPONSIBILITY'
+      left outer join "sap.ino.db.tag::t_tag"        as tag
+             on tag.id = resp_tag.tag_id
+      where  (lcase(tag.name)                 like '%' || lcase(:searchToken) || '%' or
+              lcase(resp.default_text)        like '%' || lcase(:searchToken) || '%' or
+              lcase(resp.default_long_text)   like '%' || lcase(:searchToken) || '%') and resp.resp_code = :respCode           
+    )  where length(:respCode) > 0 group by id ;
+END;

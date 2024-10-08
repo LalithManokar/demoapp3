@@ -1,0 +1,15 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Tag Group";
+table.columns = [
+    {name = "ID";                sqlType = INTEGER;                 nullable = false; comment = "Human readable identifier";},
+    {name = "NAME";              sqlType = NVARCHAR;  length = 30;  nullable = false; comment = "Name of the tag";},
+    {name = "CREATED_AT";        sqlType = TIMESTAMP;               nullable = true;  comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID";     sqlType = INTEGER;                 nullable = true;  comment = "Identity by which content has been created.";},
+    {name = "CHANGED_AT";        sqlType = TIMESTAMP;               nullable = true;  comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID";     sqlType = INTEGER;                 nullable = true;  comment = "Identity by which content has been changed.";},
+    {name = "DESCRIPTION";       sqlType = NVARCHAR;  length = 100; nullable = true;  comment = "Group Description.";},
+    {name = "TOP_NUMBER";        sqlType = INTEGER;                 nullable = true;  comment = "Top number of tags to display.";},
+    {name = "COUNT_OF_TAGS";     sqlType = INTEGER;                 nullable = true;  comment = "Contains all tags count";}
+];
+table.primaryKey.pkcolumns = ["ID"];

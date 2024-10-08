@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_ANALYTICS_COMMENT_FULL" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <origin/>
+  <descriptions defaultDescription="V_ANALYTICS_COMMENT_FULL"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="COMMENT_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="COMMENT_TEXT" length="500"/>
+        <viewAttribute datatype="INTEGER" id="COMMENTATOR_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="COMMENTATOR_NAME" length="100"/>
+        <viewAttribute datatype="TIMESTAMP" id="COMMENT_CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_ID"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition>begin
+    var_out = select comment.id as comment_id,
+                     comment.comment as comment_text,
+                     comment.created_by_id as commentator_id,
+                     identity.name as commentator_name,
+                     comment.created_at as comment_created_at,
+                     comment.object_id as idea_id,
+                     idea.campaign_id as campaign_id
+               from
+                   &quot;sap.ino.db.comment::v_community_comment&quot; as comment
+               inner join
+                   &quot;sap.ino.db.idea::t_idea&quot; as idea
+               on
+                   comment.object_id = idea.id
+                   and comment.object_type_code = 'IDEA'
+               inner join
+                   &quot;sap.ino.db.iam::t_identity&quot; as identity
+               on
+                   comment.created_by_id = identity.id
+               union all
+               select comment.id as comment_id,
+                     comment.comment as comment_text,
+                     comment.created_by_id as commentator_id,
+                     identity.name as commentator_name,
+                     comment.created_at as comment_created_at,
+                     null as idea_id,
+                     comment.object_id as campaign_id
+               from
+                   &quot;sap.ino.db.comment::v_community_comment&quot; as comment
+               inner join
+                   &quot;sap.ino.db.iam::t_identity&quot; as identity
+               on
+                   comment.created_by_id = identity.id
+                   and comment.object_type_code = 'CAMPAIGN';
+end </definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="COMMENT_ID" order="1" descriptionColumnName="COMMENT_TEXT">
+        <descriptions defaultDescription="Comment ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="COMMENT_ID"/>
+      </attribute>
+      <attribute id="COMMENT_TEXT" order="2">
+        <descriptions defaultDescription="Comment Text"/>
+        <keyMapping columnObjectName="Script_View" columnName="COMMENT_TEXT"/>
+      </attribute>
+      <attribute id="COMMENTATOR_ID" order="3" descriptionColumnName="COMMENTATOR_NAME">
+        <descriptions defaultDescription="Commentator ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="COMMENTATOR_ID"/>
+      </attribute>
+      <attribute id="COMMENTATOR_NAME" order="4">
+        <descriptions defaultDescription="Commentator Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="COMMENTATOR_NAME"/>
+      </attribute>
+      <attribute id="COMMENT_CREATED_AT" order="5">
+        <descriptions defaultDescription="Comment Creation Date"/>
+        <keyMapping columnObjectName="Script_View" columnName="COMMENT_CREATED_AT"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="6" descriptionColumnName="CAMPAIGN_ID">
+        <descriptions defaultDescription="Comment Idea ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="7">
+        <descriptions defaultDescription="Comment IDea Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

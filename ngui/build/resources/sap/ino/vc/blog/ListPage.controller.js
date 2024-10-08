@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ino/vc/blog/List.controller","sap/ino/vc/commons/TopLevelPageFacet"],function(B,T){"use strict";return B.extend("sap.ino.vc.blog.ListPage",jQuery.extend({},T,{routes:["bloglist","bloglistvariant"],onRouteMatched:function(e){this.setGlobalFilter([]);this.setHelp("BLOG_LIST");this.show(e);}}));});

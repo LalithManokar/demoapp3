@@ -1,0 +1,10 @@
+schema = "SAP_INO";
+query = "
+    select text.*, lang.default_text as lang_text 
+        from \"sap.ino.db.campaign::t_campaign_page_t\" as text
+        left outer join \"sap.ino.db.basis::v_languages\" as lang
+            on lang.iso_code = text.lang
+    with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_page_t"];
+depends_on_view  = ["sap.ino.db.basis::v_languages"];

@@ -1,0 +1,26 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Idea";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+	{name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";},
+	{name = "NAME"; sqlType = NVARCHAR; length = 100; nullable = false; comment = "Name of the idea";},
+	{name = "DESCRIPTION"; sqlType = NCLOB; nullable = false; comment = "Description";},
+	{name = "CAMPAIGN_ID"; sqlType = INTEGER; nullable = false; comment = "Campaign to which this idea belongs. Foreign key to t_campaign.ID";},
+	{name = "PHASE_CODE"; sqlType = VARCHAR; length = 500; nullable = true; comment = "Phase Code";},
+	{name = "STATUS_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Status Code";},
+	{name = "DESCRIPTION_MIME_TYPE"; sqlType = VARCHAR; length = 100; nullable = true; defaultValue = "text/html"; comment = "Mime type of description (to be used in text analysis indices";},
+	{name = "SUBMITTED_AT"; sqlType = TIMESTAMP; nullable = true; comment = "Submission timestamp";},
+	{name = "SHORT_DESCRIPTION"; sqlType = NVARCHAR; length = 500; nullable = true; comment = "Unformatted summary description";},
+	{name = "COMMENT_COUNT"; sqlType = INTEGER; nullable = true; comment = "Comment count";},
+    {name = "VIEW_COUNT"; sqlType = INTEGER; nullable = true; comment = "View count";},
+    {name = "EVALUATION_COUNT"; sqlType = INTEGER; nullable = true; comment = "Evaluation count";},
+    {name = "EVALUATION_IN_PHASE_COUNT"; sqlType = INTEGER; nullable = true; comment = "Evaluation phase count";},
+    {name = "RESP_VALUE_CODE";           sqlType = VARCHAR;  length = 500; nullable = true; comment = "Identifier of SAP Sub responsibility value";},
+    {name = "IS_OPEN_FOR_CONTRIBUTORS"; sqlType = TINYINT;  nullable = true;  comment = "Indicates whether idea is open for contributors";},
+    {name = "REWARD_DISMISSED";         sqlType = TINYINT;  nullable = true;  comment = "Indicates whether idea is dismissed for rewards";}
+];
+table.primaryKey.pkcolumns = ["ID"];

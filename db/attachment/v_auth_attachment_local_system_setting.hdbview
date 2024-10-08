@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = " 
+	select distinct
+	    assignment.attachment_id
+    from
+        \"sap.ino.db.attachment::t_attachment_assignment\" as assignment
+    where
+        assignment.owner_type_code = 'LOCAL_SYSTEM_SETTING' and
+	    (assignment.role_type_code = 'LOGO_IMG' or
+	     assignment.role_type_code = 'BACKGROUND_IMG' or
+	     assignment.role_type_code = 'SMALL_BACKGROUND_IMG')
+    with read only";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment_assignment"];

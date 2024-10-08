@@ -1,0 +1,28 @@
+schema = "SAP_INO";
+query = "select vote.*,
+        vote_type.VOTED_BY_GROUP,
+        user.NAME,
+        user.ORGANIZATION,
+        user.company as user_company,
+        user.cost_center,
+        user.office,
+        user.identity_image_id,
+        user_attribute.company,
+        vote_type.PUBLIC_VOTE,
+        vote_type.PUBLISH_VOTE        
+	    from \"sap.ino.db.idea::t_vote\" as vote
+	    inner join \"sap.ino.db.idea::t_idea\" as idea
+	            on vote.IDEA_ID = idea.ID
+	    inner join \"sap.ino.db.campaign::t_campaign\" as campaign
+	            on idea.CAMPAIGN_ID = campaign.ID
+	    inner join \"sap.ino.db.campaign::t_vote_type\" as vote_type
+	            on campaign.VOTE_TYPE_CODE = vote_type.CODE
+        left outer join \"sap.ino.db.iam::v_identity\" as user 
+                on vote.USER_ID = user.id
+        left outer join \"sap.ino.db.iam::v_auth_identity_attribute\" as user_attribute 
+                on vote.USER_ID = user_attribute.id        
+        with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_vote", "sap.ino.db.idea::t_idea", "sap.ino.db.campaign::t_campaign", "sap.ino.db.campaign::t_vote_type"];
+                    
+depends_on_view = ["sap.ino.db.iam::v_identity", "sap.ino.db.iam::v_auth_identity_attribute"];

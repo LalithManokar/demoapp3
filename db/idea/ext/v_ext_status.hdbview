@@ -1,0 +1,3 @@
+schema = "SAP_INO_EXT";
+query = "select * from \"sap.ino.db.idea::v_status\" with read only";
+depends_on_view = ["sap.ino.db.idea::v_status"];

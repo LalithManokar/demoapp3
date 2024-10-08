@@ -1,0 +1,150 @@
+schema = "SAP_INO";
+query = "
+        --feeds for tag idea assignment
+        select  
+            assign.tag_id as object_id, 'TAG' as object_type_code,
+            assign.history_actor_id as actor_id,
+            tag.name as object_text,
+            object.name as sub_text,
+            object.id as involved_id,
+            assign.history_at as event_at, 'TAG_' || assign.history_db_event as feed_code,
+            null as sub_feed_code,
+            'IDEA' as involved_obj_type_code,
+            object.campaign_id as campaign_id, 
+            null as campaign_date,
+            'FRONTOFFICE' as filter_type_code,
+            0 as has_detail,
+            actor.name as actor_name,
+            actor.identity_image_id as identity_image_id
+            from 
+                \"sap.ino.db.tag::t_object_tag_h\" as assign
+            inner join 
+                \"sap.ino.db.tag::t_tag\" as tag
+                on assign.tag_id = tag.id
+            inner join 
+                \"sap.ino.db.idea::t_idea_h\" as object
+                on assign.object_id = object.id and
+                assign.object_type_code = 'IDEA'  
+            inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on assign.history_actor_id = actor.id   
+        where assign.history_db_event = 'CREATED' and object.status_code <> 'sap.ino.config.DRAFT'  
+              and object.history_biz_event = 'IDEA_UPDATED' and object.history_at = assign.history_at
+        --tag assigned to draft idea and then idea was submitted
+        union all
+        select  
+            assign.tag_id as object_id, 'TAG' as object_type_code,
+            object.history_actor_id as actor_id,
+            tag.name as object_text,
+            object.name as sub_text,
+            object.id as involved_id,
+            object.history_at as event_at, 'TAG_CREATED' as feed_code,
+            null as sub_feed_code,
+            'IDEA' as involved_obj_type_code,
+            object.campaign_id as campaign_id, 
+            null as campaign_date,
+            'FRONTOFFICE' as filter_type_code,
+            0 as has_detail,
+            actor.name as actor_name,
+            actor.identity_image_id as identity_image_id
+            from 
+                \"sap.ino.db.idea::t_idea_h\" as object
+            inner join 
+                \"sap.ino.db.tag::t_object_tag_h\" as assign
+                on assign.object_id = object.id and 
+                assign.object_type_code = 'IDEA' and assign.history_db_event = 'CREATED'
+                and object.history_at >= assign.history_at
+            left outer join
+                \"sap.ino.db.tag::t_object_tag_h\" as assign_delete
+                on assign_delete.object_id = assign.object_id and assign.object_type_code = 'IDEA'
+                 and assign_delete.id = assign.id and assign.history_db_event = 'CREATED'
+                 and assign_delete.history_db_event = 'DELETED'
+                 and object.history_at >= assign_delete.history_at
+            inner join 
+                \"sap.ino.db.tag::t_tag\" as tag
+                on assign.tag_id = tag.id    
+            inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on object.history_actor_id = actor.id   
+        where object.history_biz_event = 'STATUS_ACTION_SUBMIT' and assign_delete.id is null
+        union all
+        --feeds for tag campaign assignment
+        select 
+            assign.tag_id as object_id, 'TAG' as object_type_code,
+            assign.history_actor_id as actor_id,
+            tag.name as object_text,
+            camp_locale.name as sub_text,
+            object.id as involved_id,
+            assign.history_at as event_at, 'TAG_' || assign.history_db_event as feed_code,
+            null as sub_feed_code,
+            'CAMPAIGN' as involved_obj_type_code,
+            object.id as campaign_id, 
+            null as campaign_date,
+            'FRONTOFFICE' as filter_type_code,
+            0 as has_detail,
+            actor.name as actor_name,
+            actor.identity_image_id as identity_image_id
+            from 
+                \"sap.ino.db.tag::t_object_tag_h\" as assign
+            inner join 
+                \"sap.ino.db.tag::t_tag\" as tag
+                on assign.tag_id = tag.id
+            inner join 
+                \"sap.ino.db.campaign::t_campaign_h\" as object
+                on assign.object_id = object.id and
+                assign.object_type_code = 'CAMPAIGN' 
+            inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as camp_locale
+                          on object.id = camp_locale.campaign_id    
+            inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+                on assign.history_actor_id = actor.id  
+            where assign.history_db_event = 'CREATED' and object.status_code <> 'sap.ino.config.CAMP_DRAFT'  
+                and object.history_biz_event = 'CAMP_MAJOR_PUBLISH' and object.history_at = assign.history_at
+        --tag assigned to draft campaign and then campaign was published
+        union all
+        select  
+            assign.tag_id as object_id, 'TAG' as object_type_code,
+            object.history_actor_id as actor_id,
+            tag.name as object_text,
+            camp_locale.name as sub_text,
+            object.id as involved_id,
+            object.history_at as event_at, 'TAG_CREATED' as feed_code,
+            null as sub_feed_code,
+            'CAMPAIGN' as involved_obj_type_code,
+            object.id as campaign_id, 
+            null as campaign_date,
+            'FRONTOFFICE' as filter_type_code,
+            0 as has_detail,
+            actor.name as actor_name,
+            actor.identity_image_id as identity_image_id
+            from 
+                \"sap.ino.db.campaign::t_campaign_h\" as object
+            inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as camp_locale
+                          on object.id = camp_locale.campaign_id     
+            inner join 
+                \"sap.ino.db.tag::t_object_tag_h\" as assign
+                on assign.object_id = object.id and 
+                assign.object_type_code = 'CAMPAIGN' and assign.history_db_event = 'CREATED'
+                 and object.history_at >= assign.history_at   
+            left outer join
+                \"sap.ino.db.tag::t_object_tag_h\" as assign_delete
+                on assign_delete.object_id = assign.object_id and assign.object_type_code = 'CAMPAIGN'
+                 and assign_delete.id = assign.id and assign.history_db_event = 'CREATED'
+                 and assign_delete.history_db_event = 'DELETED'
+                 and object.history_at >= assign_delete.history_at
+            inner join 
+                \"sap.ino.db.tag::t_tag\" as tag
+                on assign.tag_id = tag.id    
+            inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on object.history_actor_id = actor.id   
+        where object.history_biz_event = 'CAMP_SUBMITTED' and assign_delete.id is null
+with read only";
+
+depends_on_table = ["sap.ino.db.tag::t_object_tag_h",
+                    "sap.ino.db.tag::t_tag",
+                    "sap.ino.db.campaign::t_campaign_h",
+                    "sap.ino.db.idea::t_idea_h"];
+
+depends_on_view =  ["sap.ino.db.iam::v_identity",
+                    "sap.ino.db.campaign::v_campaign_t_locale"];        

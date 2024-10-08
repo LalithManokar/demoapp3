@@ -1,0 +1,27 @@
+procedure "SAP_INO"."sap.ino.db.followup::p_follow_up_notification_cleanup" () 
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+
+    update "SAP_INO"."sap.ino.db.followup::t_follow_up" set is_notification_generated = 1 where id in (
+        select
+            follow_up.id
+        from
+            "SAP_INO"."sap.ino.db.followup::t_follow_up" as follow_up
+          inner join
+            "SAP_INO"."sap.ino.db.notification::t_notification" as notification
+          on
+            follow_up.object_type_code = 'IDEA'
+          and
+            (notification.notification_code = 'IDEA_FOLLOW_UP_OVERDUE' OR ACTION_CODE = 'IDEA_FOLLOW_UP')
+          and
+            follow_up.object_id = notification.object_id
+          and
+            follow_up.created_by_id = notification.actor_id
+          and
+            (follow_up.is_notification_generated is null or follow_up.is_notification_generated = 0)
+    );
+    
+end;

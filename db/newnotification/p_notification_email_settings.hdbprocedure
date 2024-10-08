@@ -1,0 +1,69 @@
+PROCEDURE "SAP_INO"."sap.ino.db.newnotification::p_notification_email_settings" (
+    OUT ot_mail_template "SAP_INO"."sap.ino.db.newnotification::tt_mail_template_t",
+    OUT ot_txt_module "SAP_INO"."sap.ino.db.newnotification::tt_text_module_t",
+    OUT ot_sys_settings "SAP_INO"."sap.ino.db.newnotification::tt_notification_system_setting",
+    OUT ot_sys_receiver "SAP_INO"."sap.ino.db.newnotification::tt_notification_system_setting_receiver",
+    OUT ot_camp_settings "SAP_INO"."sap.ino.db.newnotification::tt_notification_campaign_setting",
+    OUT ot_camp_receiver "SAP_INO"."sap.ino.db.newnotification::tt_notification_campaign_setting_receiver",
+    OUT ot_status_module "SAP_INO"."sap.ino.db.newnotification::tt_notification_campaign_status_setting",
+    OUT ot_status_model_tran "SAP_INO"."sap.ino.db.newnotification::tt_status_model_transition"
+)
+LANGUAGE SQLSCRIPT
+SQL SECURITY DEFINER
+DEFAULT SCHEMA SAP_INO AS
+BEGIN
+    ot_mail_template = SELECT 
+    	"PACKAGE_ID",
+    	"CODE",
+    	"MAIL_TEMPLATE_CODE",
+    	"LANG",
+    	"TEMPLATE"
+    FROM "SAP_INO"."sap.ino.db.notification::t_mail_template_t_stage";
+    
+    ot_txt_module =SELECT "PACKAGE_ID", 
+    	"CODE", 
+    	"TEXT_MODULE_CODE", 
+    	"LANG", 
+    	"TEXT_MODULE"
+    FROM "sap.ino.db.basis::t_text_module_t_stage";
+        
+    ot_sys_settings = SELECT "ID", 
+    	"ACTION_CODE", 
+    	"ACTION_TYPE_CODE", 
+    	"ALLOW_INBOX_NOTIFICATION", 
+    	"ALLOW_EMAIL_NOTIFICATION", 
+    	"EMAIL_TEMPLATE_CODE", 
+    	"TEXT_MODULE_CODE"
+    FROM "sap.ino.db.newnotification::v_notification_system_setting";
+        
+    ot_sys_receiver = SELECT "ACTION_ID", 
+    	"ROLE_CODE", 
+    	"IS_RECEIVE_EMAIL"
+    FROM "sap.ino.db.newnotification::v_notification_system_setting_receiver";
+        
+    ot_camp_settings = SELECT "ID", 
+    	"ACTION_CODE", 
+    	"TEXT_MODULE_CODE", 
+    	"CAMPAIGN_ID"
+    FROM "sap.ino.db.newnotification::v_notification_campaign_setting";
+        
+    ot_camp_receiver = SELECT "ID", 
+    	"ACTION_ID", 
+    	"ROLE_CODE", 
+    	"IS_RECEIVE_EMAIL"
+    FROM "sap.ino.db.newnotification::v_notification_campaign_setting_receiver";
+
+    ot_status_module = SELECT DISTINCT setting."ID",
+    	setting."TEXT_MODULE_CODE",
+    	setting."CAMPAIGN_PHASE_ID",
+    	setting."STATUS_ACTION_CODE",
+    	phase."CAMPAIGN_ID"
+    FROM "SAP_INO"."sap.ino.db.newnotification::t_notification_campaign_status_setting" AS setting
+	INNER JOIN "sap.ino.db.campaign::t_campaign_phase" AS phase
+	ON setting.CAMPAIGN_PHASE_ID = phase.ID;
+	
+	ot_status_model_tran = SELECT "CODE", 
+    	"INCLUDE_RESPONSE",
+    	"NEXT_STATUS_CODE"
+    FROM "sap.ino.db.status::t_status_model_transition_stage" AS tran;
+END;

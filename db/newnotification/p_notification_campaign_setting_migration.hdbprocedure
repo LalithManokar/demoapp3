@@ -1,0 +1,71 @@
+PROCEDURE "SAP_INO"."sap.ino.db.newnotification::p_notification_campaign_setting_migration"(
+		IN it_target_campaign_id "SAP_INO"."sap.ino.db.campaign::tt_campaign_id_input", 
+		IN it_source_campaign_id INTEGER
+	)
+	LANGUAGE sqlscript
+	SQL SECURITY definer
+	DEFAULT SCHEMA SAP_INO
+AS
+ARRAY_NEW_ACTION_IDS INTEGER ARRAY;
+V_INDEX INTEGER;
+CURSOR CUR_TARGET_CAMP_PHASES FOR SELECT ID,PHASE_CODE,SEQUENCE_NO,STATUS_MODEL_CODE FROM "sap.ino.db.campaign::t_campaign_phase" WHERE CAMPAIGN_ID IN (SELECT ID FROM :it_target_campaign_id) ORDER BY SEQUENCE_NO;
+BEGIN
+	UPDATE A
+    SET A.MAIL_TEMPLATE_CODE = B.MAIL_TEMPLATE_CODE
+    FROM "sap.ino.db.campaign::t_campaign" AS A
+    		INNER JOIN :it_target_campaign_id AS C
+    		ON A.ID = C.ID,
+    		"sap.ino.db.campaign::t_campaign" AS B
+    WHERE B.ID = :it_source_campaign_id;
+		
+	DELETE FROM "sap.ino.db.newnotification::t_notification_campaign_setting_receiver"
+	WHERE ACTION_ID IN (SELECT ID FROM "sap.ino.db.newnotification::t_notification_campaign_setting" WHERE CAMPAIGN_ID IN (SELECT ID FROM :it_target_campaign_id));	
+	
+    DELETE FROM "sap.ino.db.newnotification::t_notification_campaign_setting"
+    WHERE CAMPAIGN_ID IN (SELECT ID FROM :it_target_campaign_id);
+    
+    UPSERT "sap.ino.db.newnotification::t_notification_campaign_setting"("ID", "ACTION_CODE", "TEXT_MODULE_CODE", "CAMPAIGN_ID", "CHANGED_AT", "CHANGED_BY_ID")
+	SELECT "sap.ino.db.newnotification::s_notification_campaign_setting".nextval, 
+			NS."ACTION_CODE", 
+			NS."TEXT_MODULE_CODE", 
+			CAMPS.ID, 
+			CURRENT_UTCTIMESTAMP, 
+			NS."CHANGED_BY_ID"
+		FROM "sap.ino.db.newnotification::t_notification_campaign_setting" AS NS, :it_target_campaign_id AS CAMPS
+		WHERE NS.CAMPAIGN_ID = :it_source_campaign_id;
+	
+	DELETE FROM "sap.ino.db.newnotification::t_notification_campaign_status_setting"
+	WHERE CAMPAIGN_PHASE_ID IN (SELECT ID FROM "sap.ino.db.campaign::t_campaign_phase" WHERE CAMPAIGN_ID IN (SELECT ID FROM :it_target_campaign_id));
+	
+    FOR CUR AS CUR_TARGET_CAMP_PHASES DO
+        UPSERT "sap.ino.db.newnotification::t_notification_campaign_status_setting"("ID",
+    	"TEXT_MODULE_CODE",
+    	"CAMPAIGN_PHASE_ID",
+    	"STATUS_ACTION_CODE")
+    	SELECT "sap.ino.db.newnotification::s_notification_campaign_status_setting".nextval, 
+    			NS."TEXT_MODULE_CODE", 
+    			CUR.ID, 
+    			NS."STATUS_ACTION_CODE"
+    		FROM "sap.ino.db.newnotification::t_notification_campaign_status_setting" AS NS
+    		WHERE NS.CAMPAIGN_PHASE_ID IN (SELECT ID FROM "sap.ino.db.campaign::t_campaign_phase" WHERE CAMPAIGN_ID = :it_source_campaign_id
+    		    AND STATUS_MODEL_CODE = CUR.STATUS_MODEL_CODE AND SEQUENCE_NO = CUR.SEQUENCE_NO AND PHASE_CODE = CUR.PHASE_CODE
+    		);
+	END FOR;
+	
+	NEW_ACTION_IDS = SELECT ID FROM "sap.ino.db.newnotification::t_notification_campaign_setting" WHERE CAMPAIGN_ID IN (SELECT ID FROM :it_target_campaign_id);
+	ARRAY_NEW_ACTION_IDS := ARRAY_AGG(:NEW_ACTION_IDS.ID);
+
+     FOR V_INDEX IN 1 .. CARDINALITY(:ARRAY_NEW_ACTION_IDS) DO
+        UPSERT "sap.ino.db.newnotification::t_notification_campaign_setting_receiver"("ID",
+    	"ACTION_ID",
+    	"ROLE_CODE",
+    	"IS_RECEIVE_EMAIL")
+    	SELECT "sap.ino.db.newnotification::s_notification_campaign_setting_receiver".nextval, 
+    			:ARRAY_NEW_ACTION_IDS[:V_INDEX], 
+    			NS.ROLE_CODE, 
+    			NS."IS_RECEIVE_EMAIL"
+    		FROM "sap.ino.db.newnotification::t_notification_campaign_setting_receiver" AS NS
+    		WHERE NS.ACTION_ID IN (SELECT ID FROM "sap.ino.db.newnotification::t_notification_campaign_setting" WHERE CAMPAIGN_ID = :it_source_campaign_id 
+    		                        AND ACTION_CODE IN (SELECT ACTION_CODE FROM "sap.ino.db.newnotification::t_notification_campaign_setting" WHERE ID = :ARRAY_NEW_ACTION_IDS[:V_INDEX]));
+     END FOR;
+END;

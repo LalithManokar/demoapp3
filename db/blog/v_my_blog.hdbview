@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "select object_id as blog_id from \"sap.ino.db.iam::v_object_identity_role_transitive\" as role
+            inner join \"sap.ino.db.iam::v_auth_application_user\" as curr_user 
+                on role.identity_id = curr_user.id 
+            where object_type_code = 'BLOG' and 
+                  role_code = 'BLOG_AUTHOR' with read only";
+
+depends_on_view = ["sap.ino.db.iam::v_object_identity_role_transitive", "sap.ino.db.iam::v_auth_application_user"];

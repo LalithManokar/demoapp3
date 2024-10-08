@@ -1,0 +1,233 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_group_upload_delete" (
+    in  iv_appl_user_id  INTEGER,
+    in  it_group         "SAP_INO"."sap.ino.db.iam::tt_group_delete_input",
+    out ot_group_message "SAP_INO"."sap.ino.db.iam::tt_group_delete_output"
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    -- create the error messages for all invalid groups
+    lt_message_invalid_group =
+        select
+            input.LINE_NO,
+            input.GROUP_NAME,
+            'E' as "TYPE",
+            'MSG_IDENTITY_GROUP_NAME_MANDATORY' as "MESSAGE",
+            'GROUP_NAME'     as "REF_FIELD",
+            input.GROUP_NAME as "PARAM_0",
+            ''               as "PARAM_1",
+            ''               as "PARAM_2",
+            ''               as "PARAM_3"
+        from :it_group as input
+            where (input.group_name = '' or input.group_name is null);
+
+    -- create warnings for not existing groups
+    lt_message_group_unknown =
+        select
+            input.LINE_NO,
+            input.GROUP_NAME,
+            'W' as "TYPE",
+            'MSG_IDENTITY_GROUP_NAME_UNKNOWN' as "MESSAGE",
+            'GROUP_NAME'     as "REF_FIELD",
+            input.GROUP_NAME as "PARAM_0",
+            ''               as "PARAM_1",
+            ''               as "PARAM_2",
+            ''               as "PARAM_3"
+        from :it_group as input
+        where
+            input.group_name not in (select name from "SAP_INO"."sap.ino.db.iam::t_identity" where type_code = 'GROUP' and erased = 0)
+        -- and input.group_name is not null
+        and input.group_name != '';
+        
+    --make sure groups with source type code 'AUTOMATIC' are only deleted if they are empty
+    lt_message_group_not_changeable =
+        select
+            input.LINE_NO,
+            input.GROUP_NAME,
+            'E' as "TYPE",
+            'MSG_IDENTITY_NOT_CHANGEABLE' as "MESSAGE",
+            'SOURCE_TYPE_CODE'    as "REF_FIELD",
+            grp.SOURCE_TYPE_CODE  as "PARAM_0",
+            ''                    as "PARAM_1",
+            ''                    as "PARAM_2",
+            ''                    as "PARAM_3"
+        from :it_group as input
+        inner join "SAP_INO"."sap.ino.db.iam::t_identity" as grp
+              on  grp.name = input.group_name
+              and grp.type_code = 'GROUP'
+              and grp.source_type_code = 'AUTOMATIC'
+              and grp.id in (select group_id from "SAP_INO"."sap.ino.db.iam::t_identity_group_member");
+
+    -- collect all messages
+    lt_group_failed =
+        select * from :lt_message_invalid_group
+            union
+        select * from :lt_message_group_unknown
+            union
+        select * from :lt_message_group_not_changeable;
+
+    -- rows without an error are considered good
+    lt_group_ok =
+        select * from :it_group as user
+        where line_no not in (select line_no from :lt_group_failed);
+
+    -- determine which users already exist on the DB
+    lt_group_historic_data =
+        select
+            id,
+            created_at,
+            created_by_id,
+            name,
+            staged
+        from
+            "SAP_INO"."sap.ino.db.iam::t_identity"
+        where name in (select group_name from :lt_group_ok)
+        and type_code = 'GROUP';
+
+    -- for existing groups do not touch the id, created_at, created_by_id fields
+    lt_group_for_erase =
+        select
+            hist.id              as id,
+            hist.created_at      as created_at,
+            hist.created_by_id   as created_by_id,
+            current_utctimestamp as changed_at,
+            :iv_appl_user_id     as changed_by_id,
+            'GROUP'              as type_code,
+            'erased'             as name,
+            ''                   as first_name,
+            ''                   as last_name,
+            ''                   as email,
+            ''                   as user_name,
+            0                    as is_external,
+            1                    as erased,
+            ''                   as phone,
+            ''                   as mobile,
+            ''                   as cost_center,
+            ''                   as organization,
+            ''                   as office,
+            ''                   as description,
+            0                    as staged,
+            'UPLOAD'             as source_type_code
+        from :lt_group_ok as grp
+        inner join :lt_group_historic_data as hist
+        on grp.group_name = hist.name;
+
+    -- upsert to 'erased'
+    upsert "SAP_INO"."sap.ino.db.iam::t_identity" 
+        (id, created_at, created_by_id, changed_at, changed_by_id, type_code, 
+         name, first_name, last_name, email, user_name, is_external, erased, 
+         phone, mobile, cost_center, organization, office, description, 
+         staged, source_type_code)
+    select 
+        id, created_at, created_by_id, changed_at, changed_by_id, type_code, 
+        name, first_name, last_name, email, user_name, is_external, erased, 
+        phone, mobile, cost_center, organization, office, description, 
+        staged, source_type_code 
+    from :lt_group_for_erase;
+
+    -- write history records
+    insert into "sap.ino.db.iam::t_identity_h"
+        (history_db_event, history_biz_event, history_at, history_actor_id,
+         id, created_at, created_by_id, changed_at, changed_by_id, type_code, 
+         name, first_name, last_name, email, user_name, is_external, erased, 
+         phone, mobile, cost_center, organization, office, description, 
+         staged, source_type_code)
+        select
+            'UPSERT'            as history_db_event,
+            'UPLOAD'            as history_biz_event,
+            changed_at          as history_at,
+            changed_by_id       as history_actor_id,
+            id                  as id,
+            created_at          as created_at,
+            created_by_id       as created_by_id,
+            changed_at          as changed_at,
+            changed_by_id       as changed_by_id,
+            type_code           as type_code,
+            name                as name,
+            first_name          as first_name,
+            last_name           as last_name,
+            email               as email,
+            user_name           as user_name,
+            is_external         as is_external,
+            0                   as erased,
+            phone               as phone,
+            mobile              as mobile,
+            cost_center         as cost_center,
+            organization        as organization,
+            office              as office,
+            description         as description,
+            staged              as staged,
+            source_type_code    as source_type_code
+        from :lt_group_for_erase;
+
+    -- determine group memberships already exist on the DB for the group to delete
+    lt_group_member_historic_data_group =
+        select
+            id,
+            member_id,
+            group_id
+        from
+            "SAP_INO"."sap.ino.db.iam::t_identity_group_member"
+        where group_id in (select id from :lt_group_for_erase);
+        
+    --get all entries where the group is a member
+    lt_group_member_historic_data_group_member =
+        select
+            id,
+            member_id,
+            group_id
+        from
+            "SAP_INO"."sap.ino.db.iam::t_identity_group_member"
+        where member_id in (select id from :lt_group_for_erase);
+
+    lt_group_member_historic_data =
+        select * from :lt_group_member_historic_data_group
+            union all
+        select * from :lt_group_member_historic_data_group_member;
+
+    --delete all members to this group
+    delete from "SAP_INO"."sap.ino.db.iam::t_identity_group_member"
+        where id in (select id from :lt_group_member_historic_data);
+        
+    -- write history records
+    lt_group_member_history_delete = 
+        select
+            'DELETE'             as history_db_event,
+            'UPLOAD'             as history_biz_event,
+            current_utctimestamp as history_at,
+            :iv_appl_user_id     as history_actor_id,
+            grp.id               as id,
+            0                    as member_id,
+            0                    as group_id
+        from :lt_group_member_historic_data as grp;
+        
+    insert into "SAP_INO"."sap.ino.db.iam::t_identity_group_member_h" (history_db_event, history_biz_event, history_at, history_actor_id, id, member_id, group_id)
+          select history_db_event, history_biz_event, history_at, history_actor_id, id, member_id, group_id from :lt_group_member_history_delete;
+
+    call "SAP_INO"."sap.ino.db.iam::p_update_identity_group_member_transitive" ();
+
+    -- echo the successful group entries
+    lt_group_no_message =
+        select
+            "LINE_NO",
+            "GROUP_NAME",
+            '' as "TYPE",
+            '' as "MESSAGE",
+            '' as "REF_FIELD",
+            '' as "PARAM_0",
+            '' as "PARAM_1",
+            '' as "PARAM_2",
+            '' as "PARAM_3"
+        from :lt_group_ok;
+
+    -- collect all messages
+    ot_group_message = select * from
+        (
+            select * from :lt_group_failed 
+            union all
+            select * from :lt_group_no_message
+        )
+        order by line_no asc;
+end;

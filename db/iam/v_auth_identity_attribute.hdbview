@@ -1,0 +1,222 @@
+schema = "SAP_INO";
+query = "
+select identity.ID,
+        identity.NAME,
+        identity.FIRST_NAME,
+        identity.LAST_NAME,
+        identity.USER_NAME,
+        identity.IS_EXTERNAL,
+        identity.ORGANIZATION,
+        identity.DESCRIPTION,
+        identity.STAGED,
+        identity.SOURCE_TYPE_CODE,
+        case user.IS_EXTERNAL
+            -- external user can only see public user profile
+            when 1 then 
+                case public_EMAIL
+                    when 1 then identity.email
+                    else null
+                end    
+            else 
+                case (userPrivilege.backofficePrivilege - identity.IS_EXTERNAL)
+                    -- internal community user can only see external user's public profile
+                    when -1 then 
+                        case public_EMAIL
+                            when 1 then identity.email
+                            else null
+                        end
+                    else identity.email
+                end
+        end as EMAIL,
+        case user.IS_EXTERNAL
+            -- external user can only see public user profile
+            when 1 then 
+                case public_PHONE
+                    when 1 then identity.PHONE
+                    else null
+                end    
+            else 
+                case (userPrivilege.backofficePrivilege - identity.IS_EXTERNAL)
+                    -- internal community user can only see external user's public profile
+                    when -1 then 
+                        case public_PHONE
+                            when 1 then identity.PHONE
+                            else null
+                        end
+                    else identity.PHONE
+                end
+        end as PHONE,
+        case user.IS_EXTERNAL
+            -- external user can only see public user profile
+            when 1 then 
+                case public_MOBILE
+                    when 1 then identity.MOBILE
+                    else null
+                end    
+            else 
+                case (userPrivilege.backofficePrivilege - identity.IS_EXTERNAL)
+                    -- internal community user can only see external user's public profile
+                    when -1 then 
+                        case public_MOBILE
+                            when 1 then identity.MOBILE
+                            else null
+                        end
+                    else identity.MOBILE
+                end
+        end as MOBILE,
+        case user.IS_EXTERNAL
+            -- external user can only see public user profile
+            when 1 then 
+                case public_COST_CENTER
+                    when 1 then identity.COST_CENTER
+                    else null
+                end    
+            else 
+                case (userPrivilege.backofficePrivilege - identity.IS_EXTERNAL)
+                    -- internal community user can only see external user's public profile
+                    when -1 then 
+                        case public_COST_CENTER
+                            when 1 then identity.COST_CENTER
+                            else null
+                        end
+                    else identity.COST_CENTER
+                end
+        end as COST_CENTER,
+        case user.IS_EXTERNAL
+            -- external user can only see public user profile
+            when 1 then 
+                case public_OFFICE
+                    when 1 then identity.OFFICE
+                    else null
+                end    
+            else 
+                case (userPrivilege.backofficePrivilege - identity.IS_EXTERNAL)
+                    -- internal community user can only see external user's public profile
+                    when -1 then 
+                        case public_OFFICE
+                            when 1 then identity.OFFICE
+                            else null
+                        end
+                    else identity.OFFICE
+                end
+        end as OFFICE,
+        case user.IS_EXTERNAL
+            -- external user can only see public user profile
+            when 1 then 
+                case public_COMPANY
+                    when 1 then identity.COMPANY
+                    else null
+                end    
+            else 
+                case (userPrivilege.backofficePrivilege - identity.IS_EXTERNAL)
+                    -- internal community user can only see external user's public profile
+                    when -1 then 
+                        case public_COMPANY
+                            when 1 then identity.COMPANY
+                            else null
+                        end
+                    else identity.COMPANY
+                end
+        end as COMPANY,
+        case user.IS_EXTERNAL
+            -- external user can only see public user profile
+            when 1 then 
+                case public_STREET
+                    when 1 then identity.STREET
+                    else null
+                end    
+            else 
+                case (userPrivilege.backofficePrivilege - identity.IS_EXTERNAL)
+                    -- internal community user can only see external user's public profile
+                    when -1 then 
+                        case public_STREET
+                            when 1 then identity.STREET
+                            else null
+                        end
+                    else identity.STREET
+                end
+        end as STREET,
+        case user.IS_EXTERNAL
+            -- external user can only see public user profile
+            when 1 then 
+                case public_CITY
+                    when 1 then identity.CITY
+                    else null
+                end    
+            else 
+                case (userPrivilege.backofficePrivilege - identity.IS_EXTERNAL)
+                    -- internal community user can only see external user's public profile
+                    when -1 then 
+                        case public_CITY
+                            when 1 then identity.CITY
+                            else null
+                        end
+                    else identity.CITY
+                end
+        end as CITY,
+        case user.IS_EXTERNAL
+            -- external user can only see public user profile
+            when 1 then 
+                case public_COUNTRY
+                    when 1 then identity.COUNTRY
+                    else null
+                end    
+            else 
+                case (userPrivilege.backofficePrivilege - identity.IS_EXTERNAL)
+                    -- internal community user can only see external user's public profile
+                    when -1 then 
+                        case public_COUNTRY
+                            when 1 then identity.COUNTRY
+                            else null
+                        end
+                    else identity.COUNTRY
+                end
+        end as COUNTRY,
+        case user.IS_EXTERNAL
+            -- external user can only see public user profile
+            when 1 then 
+                case public_ZIP_CODE
+                    when 1 then identity.ZIP_CODE
+                    else null
+                end    
+            else 
+                case (userPrivilege.backofficePrivilege - identity.IS_EXTERNAL)
+                    -- internal community user can only see external user's public profile
+                    when -1 then 
+                        case public_ZIP_CODE
+                            when 1 then identity.ZIP_CODE
+                            else null
+                        end
+                    else identity.ZIP_CODE
+                end
+        end as ZIP_CODE
+    from \"sap.ino.db.iam::t_identity\" as identity,
+        \"sap.ino.db.iam::v_auth_application_user\" as user,
+        (select 
+        case backofficePrivilege
+            when 0 then 0 else 1 end as backofficePrivilege
+        from
+            (select count(*) as backofficePrivilege 
+                from \"sap.ino.db.iam::v_auth_application_user_application_privilege\" 
+                where privilege = 'sap.ino.ui::backoffice.access')) as userPrivilege,
+    (select 
+        (select IS_PUBLIC from \"sap.ino.db.iam.ext::v_ext_identity_attribute\" where code = 'sap.ino.config.COMPANY') as public_company,
+        (select IS_PUBLIC from \"sap.ino.db.iam.ext::v_ext_identity_attribute\" where code = 'sap.ino.config.COST_CENTER') as public_COST_CENTER,
+        (select IS_PUBLIC from \"sap.ino.db.iam.ext::v_ext_identity_attribute\" where code = 'sap.ino.config.OFFICE') as public_OFFICE,
+        (select IS_PUBLIC from \"sap.ino.db.iam.ext::v_ext_identity_attribute\" where code = 'sap.ino.config.PHONE') as public_PHONE,
+        (select IS_PUBLIC from \"sap.ino.db.iam.ext::v_ext_identity_attribute\" where code = 'sap.ino.config.MOBILE') as public_MOBILE,
+        (select IS_PUBLIC from \"sap.ino.db.iam.ext::v_ext_identity_attribute\" where code = 'sap.ino.config.EMAIL') as public_EMAIL,
+        (select IS_PUBLIC from \"sap.ino.db.iam.ext::v_ext_identity_attribute\" where code = 'sap.ino.config.STREET') as public_STREET,
+        (select IS_PUBLIC from \"sap.ino.db.iam.ext::v_ext_identity_attribute\" where code = 'sap.ino.config.ZIP_CODE') as public_ZIP_CODE,
+        (select IS_PUBLIC from \"sap.ino.db.iam.ext::v_ext_identity_attribute\" where code = 'sap.ino.config.CITY') as public_CITY,
+        (select IS_PUBLIC from \"sap.ino.db.iam.ext::v_ext_identity_attribute\" where code = 'sap.ino.config.COUNTRY') as public_COUNTRY
+        from dummy) as attribute            
+where identity.type_code = 'USER'
+with read only";
+
+
+depends_on_table = ["sap.ino.db.iam::t_identity"];
+                    
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_application_privilege",
+                    "sap.ino.db.iam.ext::v_ext_identity_attribute",
+                   "sap.ino.db.iam::v_auth_application_user"];                    

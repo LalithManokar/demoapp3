@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = "
+select CAMPAIGN_PHASES.CAMPAIGN_ID, CAMPAIGN_PHASES.PHASE_CODE, CAMPAIGN_PHASES.SEQUENCE_NO, IFNULL(CAMPAIGN_IDEA_COUNT.PHASE_COUNT, 0) AS PHASE_COUNT 
+	from \"sap.ino.db.campaign::t_campaign_phase\" AS CAMPAIGN_PHASES 
+		left outer join (
+			select CAMPAIGN_ID, PHASE_CODE, count(*) as PHASE_COUNT 
+				from \"sap.ino.db.idea::t_idea\"   
+					Where STATUS_CODE <> 'sap.ino.config.DRAFT' 
+						GROUP BY PHASE_CODE, CAMPAIGN_ID) AS CAMPAIGN_IDEA_COUNT 
+						ON CAMPAIGN_PHASES.CAMPAIGN_ID    = CAMPAIGN_IDEA_COUNT.CAMPAIGN_ID AND 
+						   CAMPAIGN_IDEA_COUNT.PHASE_CODE = CAMPAIGN_PHASES.PHASE_CODE
+    with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea", "sap.ino.db.campaign::t_campaign_phase"];

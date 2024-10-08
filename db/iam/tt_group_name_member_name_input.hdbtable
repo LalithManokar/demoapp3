@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE; 
+table.temporary = true;
+table.description = "Input table to associate identities to groups by name";
+table.columns = [
+    {name = "GROUP_NAME";  sqlType = NVARCHAR; length = 100; nullable = false; comment = "identifier";},
+    {name = "TYPE_CODE";   sqlType = VARCHAR;  length = 20;  nullable = true;  comment = "Either GROUP or USER";},
+    {name = "MEMBER_NAME"; sqlType = NVARCHAR; length = 100; nullable = true;  comment = "identifier";}
+];

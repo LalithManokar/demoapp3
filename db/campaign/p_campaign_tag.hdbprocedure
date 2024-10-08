@@ -1,0 +1,14 @@
+procedure "SAP_INO"."sap.ino.db.campaign::p_campaign_tag" (
+     in it_campaign_id SAP_INO."sap.ino.db.basis::tt_object_id",
+     out ot_campaign_tag SAP_INO."sap.ino.db.basis::tt_object_tag"
+) 
+ language sqlscript
+ sql security invoker
+ default schema SAP_INO
+ reads sql data as
+begin
+    -- determine all relevant tag / campaign combinations
+    ot_campaign_tag = select tag.object_id as id, tag.tag_id 
+                           from "sap.ino.db.tag::t_object_tag" as tag, :it_campaign_id as campaign
+                           where tag.object_id = campaign.id and tag.object_type_code = 'CAMPAIGN';
+end;

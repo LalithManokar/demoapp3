@@ -1,0 +1,80 @@
+<mvc:View
+    controllerName="sap.ino.vc.shell.Settings"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:u="sap.ui.unified"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core" 
+    xmlns:ino="sap.ino.controls">
+    <l:Grid id="userSettings" hSpacing="1" vSpacing="1">
+	    <l:content>
+	       <l:VerticalLayout>
+                <l:layoutData>
+                    <l:GridData span="XL4 L5 M5 S12" />
+	            </l:layoutData>
+                <core:Icon id="imageSettingPlaceHolderIcon" 
+                    src="sap-icon://person-placeholder"
+                    visible="{= !${object>/Settings/TITLE_IMAGE_ID} }"
+                    class="sapInoColorLightGray" 
+                    size="10rem"/>
+	            <ino:ImageCropping
+                    id="imageSettingCropping"
+                    url="{parts : ['object>/Settings/TITLE_IMAGE_ID', 'object>/Settings/TITLE_IMAGE_CHANGED_AT'], formatter : '.formatter.userIconEdit'}"
+                    visible="{= ${object>/Settings/TITLE_IMAGE_ID} > 0 }"
+                    height="10rem" 
+                    width="10rem" 
+                    showZoom="true"
+                    showMove="false"
+                    showClear="true"
+                    showCrop="false"
+                    zoomStep="5"
+                    moveStep="5"
+                    clear="onImageSettingClear"
+                    enabled="true"/>
+
+                <u:FileUploader 
+                    id="imageSettingUploader"
+                    uploadUrl="{view>/ATTACHMENT_UPLOAD_URL}" 
+                    multiple="false"
+                    buttonOnly="true" 
+                    buttonText="{i18n>SETTINGS_BTN_CHANGE_PHOTO}" 
+                    icon="sap-icon://upload"
+                    change=".onFileUploaderChange" 
+                    uploadComplete=".onFileUploaderComplete" 
+                    uploadOnChange="true"
+                    useMultipart="false" 
+                    sendXHR="true"
+                    mimeType="image/*"
+                    enabled="true"/>
+            </l:VerticalLayout>
+
+	        <l:VerticalLayout width="100%">
+                <l:layoutData>
+                    <l:GridData span="XL8 L7 M7 S12" />
+	            </l:layoutData>
+	            <l:Grid hSpacing="0" vSpacing="0">
+	                <l:content>
+    		            <Label text="{i18n>SETTINGS_LBL_LANGUAGE}" class="sapUiTinyMarginTop sapUiTinyMarginBegin">
+        		            <layoutData>
+            		            <l:GridData span="XL4 L4 M5 S12" />
+        		            </layoutData>
+    		            </Label>
+                        <Select id="settingLOCALE" selectedKey="{object>Settings/LOCALE}"
+                            items="{data>/Locale}" width="100%">
+        		            <layoutData>
+            		            <l:GridData span="XL8 L8 M7 S12" />
+        		            </layoutData>
+                            <items>
+                                <core:Item key="{data>LOCALE}" 
+                                    text="{parts : [{path : 'data>DEFAULT_TEXT'}, {path : 'data>LOCALE'}], formatter : '.formatter.mailLanguageText'}" />
+                            </items>
+                        </Select>
+                    </l:content>
+                </l:Grid>
+                <!--<CheckBox id="settingMAIL" text="{i18n>SETTINGS_LBL_SUBSCRIBE_EMAIL}" selected="{= ${object>Settings/MAIL} === 'active'}" />-->
+                <CheckBox id="settingHCB" text="{i18n>SETTINGS_LBL_HCB}" selected="{= ${object>Settings/THEME}  === 'sap_hcb'}" />
+            </l:VerticalLayout>
+	    </l:content>
+    </l:Grid>
+</mvc:View>

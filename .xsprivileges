@@ -1,0 +1,5 @@
+{
+    "privileges": [
+        { "name": "debug",   "description": "debug - only needed by development and support" }
+    ]
+}

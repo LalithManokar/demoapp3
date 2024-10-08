@@ -1,0 +1,13 @@
+{
+    "name": "sap.ui.ino",
+    "version": "@UI_VERSION@",
+    "description": "SAP Innovation Management",
+    "keywords": [
+        "SAP",
+        "Innovation",
+        "Management",
+        "INO"
+    ],
+    "dependencies": {
+    }
+}

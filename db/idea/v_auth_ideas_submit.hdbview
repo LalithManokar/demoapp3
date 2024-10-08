@@ -1,0 +1,30 @@
+schema = "SAP_INO";
+query = "select distinct * from(
+select  idea.id as idea_id, object_role.identity_id
+            from \"sap.ino.db.idea::t_idea\" as idea
+            inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role 
+                on idea.id = object_role.object_id and object_role.object_type_code = 'IDEA'
+            inner join \"sap.ino.db.iam::t_role_privilege\" as role 
+                on role.role_code = object_role.role_code
+                    and role.privilege = 'IDEA_SUBMIT'
+            union all 
+select  idea.id as idea_id, object_role_camp.identity_id
+            from \"sap.ino.db.idea::t_idea\" as idea
+            inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role_camp 
+                on idea.campaign_id = object_role_camp.object_id and object_role_camp.object_type_code = 'CAMPAIGN'
+            inner join \"sap.ino.db.iam::t_role_privilege\" as role_camp
+                on role_camp.role_code = object_role_camp.role_code
+                    and role_camp.privilege = 'CAMP_IDEA_SUBMIT'
+            where idea.campaign_id in 
+                        (select id from\"sap.ino.db.campaign::t_campaign\"
+                        where id not in (select object_id from\"sap.ino.db.iam::v_auth_object_identity_limitation_action\" as limitation
+                            where limitation.object_type_code = 'CAMPAIGN' and limitation.action_code = 'CAMPAIGN_SUBMIT')
+                        union all
+                         (select distinct object_id as id
+                        from\"sap.ino.db.iam::v_auth_object_identity_limitation_action\" as limitation
+                where limitation.object_type_code = 'CAMPAIGN' and limitation.action_code = 'CAMPAIGN_SUBMIT' and limitation.disabled = 0)))
+with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea", "sap.ino.db.iam::t_role_privilege"];
+
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];

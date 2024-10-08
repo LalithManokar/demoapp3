@@ -1,0 +1,12 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Contribution Share";
+table.columns	= [
+	{name = "ID";	        sqlType = INTEGER;	    nullable = false;               	comment = "Human readable identifier";},
+	{name = "IDEA_ID";		sqlType = INTEGER;  	nullable = false; 					comment = "idea where the reward belongs to. Foreign key to t_idea.ID";},
+	{name = "AUTHOR_ID";	sqlType = INTEGER;	    nullable = false;               	comment = "author where the reward belongs to. Foreign key to t_identity.ID";},
+	{name = "PERCENTAGE";	sqlType = DOUBLE;	    nullable = true;					comment = "contribution share percentage";}
+];
+table.primaryKey.pkcolumns = ["ID"];
+
+

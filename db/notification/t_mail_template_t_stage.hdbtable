@@ -1,0 +1,20 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Language dependend Mail Template";
+table.columns = [
+    {name = "PACKAGE_ID";        sqlType = NVARCHAR; length = 256; nullable = false; comment = "Package where content is delivered from";},
+    {name = "CODE";              sqlType = VARCHAR;  length = 500; nullable = false; comment = "Mail Template Identifier";},
+    {name = "ID";                sqlType = INTEGER;                nullable = true;  comment = "Human-readable identifier of language dependend mail teplate";},
+	{name = "MAIL_TEMPLATE_CODE";sqlType = VARCHAR;  length = 500; nullable = false; comment = "Template the language specific content belongs to. Foreign key to t_mail_template.code";},
+	{name = "MAIL_TEMPLATE_ID";  sqlType = INTEGER;                nullable = true; comment = "ID of the template the language specific content belongs to.";},
+	{name = "LANG";              sqlType = VARCHAR;  length = 5;   nullable = false; comment = "Language. Foreign key to t_lang.CODE";},
+	{name = "TEMPLATE";          sqlType = NCLOB;                  nullable = true;  comment = "Template Text";},
+	{name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default Text for Unit of Measure";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true;  comment = "Default Long Text for Unit of Measure";},
+	{name = "PLAIN_CODE";        sqlType = VARCHAR;  length = 100; nullable = true;  comment = "Code key without package and naming prefix for UI maintenance";},
+	{name = "CREATED_AT";        sqlType = TIMESTAMP;              nullable = true;  comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID";     sqlType = INTEGER;                nullable = true;  comment = "Identity by which content has been created.";},
+    {name = "CHANGED_AT";        sqlType = TIMESTAMP;              nullable = true;  comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID";     sqlType = INTEGER;                nullable = true;  comment = "Identity by which content has been changed.";}
+];
+table.primaryKey.pkcolumns = ["PACKAGE_ID", "CODE"];

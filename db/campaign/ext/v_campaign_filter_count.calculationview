@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="v_campaign_filter_count" applyPrivilegeType="NONE" dataCategory="DEFAULT" schemaVersion="2.3" defaultClient="crossClient" visibility="internal" calculationScenarioType="SCRIPT_BASED" scriptParametersCaseSensitive="true" enforceSqlExecution="false">
+<descriptions defaultDescription="v_campaign_filter"/>
+<defaultSchema schemaName=""/>
+<localVariables>
+  <variable id="campaign_id" parameter="true">
+    <descriptions defaultDescription="campaign_id"/>
+    <variableProperties datatype="NVARCHAR" mandatory="true" length="100">
+      <valueDomain type="empty"/>
+      <selection multiLine="false"/>
+      <defaultRange/>
+    </variableProperties>
+  </variable>
+</localVariables>
+<variableMappings/>
+<dataSources/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+    <viewAttributes>
+      <viewAttribute id="AMOUNT" datatype="VARCHAR" length="100"/>
+    
+      <viewAttribute id="FILTER_NAME" datatype="VARCHAR" length="100"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <localVariable>#campaign_id</localVariable>
+    <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+    
+    var_out =  select CAST(COUNT(distinct idea.id) AS VARCHAR) AMOUNT ,'all' FILTER_NAME  
+                  from &quot;sap.ino.db.idea::t_idea&quot; as idea
+                  where idea.status_code &lt;&gt; 'sap.ino.config.DRAFT' and idea.campaign_id = :campaign_id
+               	union all
+               select CAST(COUNT(distinct idea.id) AS VARCHAR) AMOUNT ,'myAuthoredIdeas' FILTER_NAME  
+                   from &quot;sap.ino.db.idea::v_my_authored_ideas&quot; as idea
+                   where idea.campaign_id = :campaign_id
+                   union all
+               select CAST(COUNT(*) AS VARCHAR) AMOUNT ,'myVotedIdeas' FILTER_NAME 
+               		from &quot;sap.ino.db.idea::v_my_voted_ideas&quot; as idea
+               		 where  idea.idea_id in (select idea_id from &quot;sap.ino.db.idea::v_auth_ideas_read&quot;) 
+               		 and idea.idea_id in(select id from &quot;sap.ino.db.idea::t_idea&quot; where campaign_id = :campaign_id) 
+               			 union all
+               select CAST(COUNT(*) AS VARCHAR) AMOUNT ,'myCommentedIdeas' FILTER_NAME
+               from &quot;sap.ino.db.idea::f_my_commented_ideas&quot;() as idea
+               where idea.idea_id in(select id from &quot;sap.ino.db.idea::t_idea&quot; where campaign_id = :campaign_id)
+              
+                    union all
+                    select CAST(COUNT(distinct idea.id) AS VARCHAR) AMOUNT ,'ideasIcanVoteFor' FILTER_NAME  
+                   from &quot;sap.ino.db.idea::t_idea&quot; as idea
+                  inner join  &quot;sap.ino.db.idea::v_vote_ideas&quot; as filter
+                  on idea.id = filter.id
+                  where idea.id in (select idea_id from &quot;sap.ino.db.idea::v_auth_ideas_read&quot;)
+                  and idea.status_code &lt;&gt; 'sap.ino.config.DRAFT'and idea.campaign_id = :campaign_id
+                    union all
+                    
+                    select CAST(COUNT(distinct idea.id) AS VARCHAR) AMOUNT ,'completedIdeas' FILTER_NAME 
+                   from &quot;sap.ino.db.idea::t_idea&quot; as idea
+                   inner join &quot;sap.ino.db.idea::v_completed_ideas&quot; as filter
+                   on filter.ID = idea.ID
+                    -- left outer join &quot;sap.ino.db.idea::v_decision_latest&quot; as decision
+                    --     on idea.id = decision.idea_id
+                   where
+                         idea.id in (select idea_id from &quot;sap.ino.db.idea::v_auth_ideas_read&quot;) and idea.campaign_id = :campaign_id
+                    union all
+               select CAST(COUNT(distinct idea.id) AS VARCHAR) AMOUNT ,'myEvaluatedIdeas' FILTER_NAME  
+                   from &quot;sap.ino.db.idea::v_my_evaluated_ideas&quot; as idea
+                    where  idea.campaign_id = :campaign_id
+               union all
+               select CAST(COUNT(distinct idea.id) AS VARCHAR) AMOUNT ,'myEvaluatableIdeas' FILTER_NAME  
+                   from &quot;sap.ino.db.idea::v_my_evaluation_pending&quot; as idea
+                   where  idea.campaign_id = :campaign_id
+                  union all
+                select CAST(COUNT(distinct idea.id) AS VARCHAR) AMOUNT ,'IdeaTobeManaged' FILTER_NAME  
+               from &quot;sap.ino.db.idea::t_idea&quot; as idea
+                  left outer join &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; as my_backoffice_campaign
+                    on idea.campaign_id = my_backoffice_campaign.id
+                  left outer join &quot;sap.ino.db.idea::v_my_backoffice_responsibility_idea&quot; as my_backoffice_responsibility_idea
+                    on idea.id = my_backoffice_responsibility_idea.id
+                  where (
+                 		idea.campaign_id = my_backoffice_campaign.id or 
+                       	idea.campaign_id is null or 
+                       	idea.campaign_id &lt;= 0 or
+                        idea.id = my_backoffice_responsibility_idea.id
+                        ) and idea.status_code &lt;&gt; 'sap.ino.config.DRAFT'and idea.campaign_id = :campaign_id
+                        union all
+               select CAST(COUNT(distinct idea.id) AS VARCHAR) AMOUNT ,'followedupIdeas' FILTER_NAME  
+                from &quot;sap.ino.db.idea::v_followed_up_ideas&quot; as idea 
+                  where
+                         idea.id in (select idea_id from &quot;sap.ino.db.idea::v_auth_ideas_read&quot;) 
+                          and idea.id in(select id from &quot;sap.ino.db.idea::t_idea&quot; where campaign_id = :campaign_id) 
+                  union all
+               select CAST(COUNT(distinct idea.id) AS VARCHAR) AMOUNT ,'unassignedCoach' FILTER_NAME  
+                   from &quot;sap.ino.db.idea::t_idea&quot; as idea
+                   left outer join &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; as backoffice_campaign
+                   on backoffice_campaign.ID = idea.CAMPAIGN_ID
+                   left outer join &quot;sap.ino.db.idea::v_my_backoffice_responsibility_idea&quot; as responsibility_idea
+                   on responsibility_idea.ID = idea.ID
+                   inner join &quot;sap.ino.db.idea::v_idea_medium_opt&quot; as opt
+                   on opt.ID = idea.ID
+                    left outer join &quot;sap.ino.db.idea::v_decision_latest&quot; as decision
+                        on idea.id = decision.idea_id
+                   where
+                         idea.id not in (select object_id from &quot;sap.ino.db.iam::t_object_identity_role&quot; where
+                                                             object_type_code = 'IDEA' and 
+                                                             role_code = 'IDEA_COACH')  and (idea.id in (select idea_id from &quot;sap.ino.db.idea::v_auth_ideas_read&quot;) 
+                                                             and (
+                 		idea.campaign_id = backoffice_campaign.id or 
+                       	idea.campaign_id is null or 
+                       	idea.campaign_id &lt;= 0 or
+                        idea.id = responsibility_idea.id
+                 )) and idea.status_code &lt;&gt; 'sap.ino.config.DRAFT'and idea.campaign_id = :campaign_id
+                  
+                  union all
+               
+               select CAST(COUNT(distinct idea.id) AS VARCHAR) AMOUNT ,'coachedIdeasByMe' FILTER_NAME 
+                    from &quot;sap.ino.db.idea::t_idea&quot; as idea
+                        left outer join &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; as backoffice_campaign
+                   on backoffice_campaign.ID = idea.CAMPAIGN_ID
+                   left outer join &quot;sap.ino.db.idea::v_my_backoffice_responsibility_idea&quot; as responsibility_idea
+                   on responsibility_idea.ID = idea.ID
+                   inner join &quot;sap.ino.db.idea::v_my_coached_ideas&quot;  as filter
+                   on filter.ID = idea.ID
+                    left outer join &quot;sap.ino.db.idea::v_decision_latest&quot; as decision
+                        on idea.id = decision.idea_id
+                   where  idea.id in (select idea_id from &quot;sap.ino.db.idea::v_auth_ideas_read&quot;) and (
+                 		idea.campaign_id = backoffice_campaign.id or 
+                       	idea.campaign_id is null or 
+                       	idea.campaign_id &lt;= 0 or
+                        idea.id = responsibility_idea.id
+                 )and idea.campaign_id = :campaign_id
+                   
+                 union all
+                      select CAST(COUNT(distinct idea.id) AS VARCHAR) AMOUNT ,'evaluatedIdeas' FILTER_NAME 
+                      from &quot;sap.ino.db.idea::t_idea&quot; as idea
+                        left outer join &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; as backoffice_campaign
+                  on backoffice_campaign.ID = idea.CAMPAIGN_ID
+                  left outer join &quot;sap.ino.db.idea::v_my_backoffice_responsibility_idea&quot; as responsibility_idea
+                  on responsibility_idea.ID = idea.ID
+                  inner join &quot;sap.ino.db.idea::v_evaluated_ideas&quot;  as filter
+                  on filter.ID = idea.ID
+                    left outer join &quot;sap.ino.db.idea::v_decision_latest&quot; as decision
+                        on idea.id = decision.idea_id
+                  where  idea.id in (select idea_id from &quot;sap.ino.db.idea::v_auth_ideas_read&quot;) and (
+                 		idea.campaign_id = backoffice_campaign.id or 
+                      	idea.campaign_id is null or 
+                      	idea.campaign_id &lt;= 0 or
+                        idea.id = responsibility_idea.id
+                 ) and idea.campaign_id = :campaign_id; 
+    
+END /********* End Procedure Script ************/</definition>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Script_View">
+  <attributes>
+    <attribute id="AMOUNT" order="1" semanticType="empty">
+      <descriptions defaultDescription="COL"/>
+      <keyMapping columnObjectName="Script_View" columnName="AMOUNT"/>
+    </attribute>
+    <attribute id="FILTER_NAME" order="2">
+      <keyMapping columnObjectName="Script_View" columnName="FILTER_NAME"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/></logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

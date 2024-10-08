@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "
+    select id, group_id, is_public, is_manager_public
+    from \"sap.ino.db.iam::t_group_attribute\"
+    with read only 
+";
+
+depends_on_table = ["sap.ino.db.iam::t_group_attribute"];

@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO";
+table.description = "IDEA Sub responsibility";
+table.columns = [
+    {name = "IDEA_ID";               sqlType = INTEGER;                 nullable = false;                     comment = "technical user identifier - must never be exposed to end users";},
+    {name = "RESP_NAME";             sqlType = NVARCHAR; length = 100;   nullable = false;                     comment = "Resp name";},
+    {name = "RESP_VALUE_NAME";       sqlType = NVARCHAR; length = 100;   nullable = true;                      comment = "Resp value name";}
+];
+table.primaryKey.pkcolumns = ["IDEA_ID"];

@@ -1,0 +1,17 @@
+schema = "SAP_INO";
+query  = "
+           select 
+                  blog_tag.object_id as blog_id,
+                  blog_tag.id,
+                  blog_tag.tag_id,
+                  tag.name
+            from 
+                  \"sap.ino.db.tag::t_object_tag\" as blog_tag
+            inner join 
+                  \"sap.ino.db.tag::t_tag\"        as tag
+                  on blog_tag.tag_id           = tag.id and
+                     blog_tag.object_type_code = 'BLOG'
+           with read only";
+           
+depends_on_table = ["sap.ino.db.tag::t_object_tag",
+                    "sap.ino.db.tag::t_tag"];           

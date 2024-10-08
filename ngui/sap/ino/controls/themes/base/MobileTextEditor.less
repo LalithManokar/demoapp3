@@ -1,0 +1,72 @@
+/* ============================================= */
+/* CSS for control TextEditor.control */
+/* ============================================= */
+
+/* Fixes prevention of text selection in UI5 for editable content of nicEdit-main (using !important) */
+/* Deactivates the following CSS of UI5: html.sap-phone *, html.sap-tablet * { -webkit-user-select: none; } */
+.sapInoMTE .nicEdit-main,
+.sapInoMTE .nicEdit-main * {
+	-webkit-user-select: text !important;
+	-moz-user-select: text !important;
+}
+
+.sapInoMTE .nicEdit-main * {
+    margin: 0px !important;
+}
+
+/* remove additional focus outline in the UI5 textbox */
+.sapInoMTEContent.sapMTextAreaInner div:focus {
+    outline: 0;
+}
+
+.sapInoMTE .nicEdit-main {
+    overflow-x: visible !important;
+}
+
+.sapInoMTE .nicEdit-panelContain {
+    display: none;
+}
+
+.sapInoMTEControls {
+    .sapMTB {
+        border: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .sapMIBar .sapMBarChild:first-child {
+        margin-left: 0;
+    }
+}
+
+div.sapInoMTEContent div {
+	border-width: 0px 0px 0px 0px !important;
+    width:100% !important;
+    overflow-x:visible !important;
+}
+
+.sapMTextAreaInner.sapInoMTEContent.sapMInputBaseInner {
+    padding-top: 0.75rem
+}
+
+textarea.sapInoMTEContent {
+	width: 100%;
+	height: 100%;
+}
+
+.sapInoMTEButtonUnderline{
+    text-decoration:underline;
+}
+
+.sapInoMTEButtonItalic {
+    font-style: italic;
+}
+
+.sapInoMTEButtonItalic {
+    font-weight: bold;
+}
+
+.sapInoMTEDialog {
+  margin-top: 0;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}

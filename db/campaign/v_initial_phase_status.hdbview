@@ -1,0 +1,9 @@
+schema = "SAP_INO";
+query = "
+select campaign_id, phase_code, 
+       'sap.ino.config.NEW_IN_PHASE' as status_code -- this could be adapted 
+from \"sap.ino.db.campaign::t_campaign_phase\" 
+where sequence_no = 0
+";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_phase"];

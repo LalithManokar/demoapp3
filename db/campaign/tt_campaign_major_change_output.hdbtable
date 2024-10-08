@@ -1,0 +1,21 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.temporary = true;
+table.description = "out put table of PROCUDURE p_campaign_major_change";
+table.columns = [
+    {name = "OBJECT_ID";              sqlType = INTEGER;                 nullable = false; comment = "Foreign key e.g. to t_idea.ID and t_campaign.ID";},
+    {name = "OBJECT_TYPE_CODE";       sqlType = VARCHAR;  length = 100;  nullable = false; comment = "Object type. Foreign key t_application_object.CODE";},
+    {name = "EVENT_AT";               sqlType = TIMESTAMP;               nullable = false; comment = "Timestamp when event occurred";},
+    {name = "FEED_CODE";              sqlType = VARCHAR;  length = 60;   nullable = false; comment = "Code of a Feed e.g. a business event: IDEA_CREATED, COACH_ASSIGNED...";},
+    {name = "HISTORY_ACTOR_ID";       sqlType = INTEGER;                 nullable = false; comment = "Id of actor who triggered the biz event";},
+    {name = "CAMPAIGN_ID";            sqlType = INTEGER;                 nullable = false; comment = "Campaign ID";},
+    {name = "FILTER_TYPE_CODE";       sqlType = VARCHAR;  length = 12;   nullable = false; comment = "Backoffice privilege or frontoffice privilege";},
+    {name = "FIELD1_NAME";            sqlType = NVARCHAR; length = 100;  nullable = true;  comment = "Field name of the changed field";},
+    {name = "FIELD1_TEXT";            sqlType = VARCHAR;  length = 100;  nullable = true;  comment = "Field description of changed field";},
+    {name = "FIELD1_VALUE";           sqlType = NVARCHAR; length = 5000; nullable = true;  comment = "Field value of changed field";},
+    {name = "FIELD1_VALUE_OPTION";    sqlType = VARCHAR;  length = 600;  nullable = true;  comment = "Field type of changed field";},
+    {name = "FIELD2_NAME";            sqlType = NVARCHAR; length = 100;  nullable = true;  comment = "Field name of the changed field";},
+    {name = "FIELD2_TEXT";            sqlType = VARCHAR;  length = 100;  nullable = true;  comment = "Field description of changed field";},
+    {name = "FIELD2_VALUE";           sqlType = NVARCHAR; length = 5000; nullable = true;  comment = "Field value of changed field";},
+    {name = "FIELD2_VALUE_OPTION";    sqlType = VARCHAR;  length = 600;  nullable = true;  comment = "Field type of changed field";}
+];  

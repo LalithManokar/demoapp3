@@ -1,0 +1,26 @@
+schema = "SAP_INO";
+query = "select distinct
+             idea.id as idea_id,
+             object_identity_role.object_id as campaign_id,
+             object_identity_role.identity_id, 
+             identity.name,
+             'CAMPAIGN_EXPERT' as role_code,
+             identity_settings.image_id,
+             identity.type_code,
+             cast(OCCURRENCES_REGEXPR('^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w+)+)$' in identity.email) as TINYINT) as is_valid_email,
+             identity.email
+         from \"sap.ino.db.iam::t_object_identity_role\" as object_identity_role
+         inner join \"sap.ino.db.iam::t_identity\" as identity 
+         	on identity.id = object_identity_role.identity_id 
+            	and object_identity_role.role_code = 'CAMPAIGN_EXPERT'
+				and object_identity_role.object_type_code = 'CAMPAIGN'
+         inner join \"sap.ino.db.idea::t_idea\" as idea
+         	on idea.campaign_id = object_identity_role.object_id 
+         left outer join \"sap.ino.db.iam::v_identity_settings\" as identity_settings
+             on identity_settings.identity_id = object_identity_role.identity_id
+         with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity",
+					"sap.ino.db.iam::t_object_identity_role",
+                    "sap.ino.db.idea::t_idea"];
+depends_on_view = ["sap.ino.db.iam::v_identity_settings"];

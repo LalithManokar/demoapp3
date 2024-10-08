@@ -1,0 +1,14 @@
+<mvc:View
+   controllerName="sap.ino.installation.controller.MainShell"
+	xmlns="sap.m"
+	xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.f"
+	displayBlock="true">
+			<Page showHeader="false" title="{i18n>SET_UP_INNOVATION_MANAGEMENT_SYSTEM}" class="sapInoInstallationPage">
+				<content>
+				</content>
+			</Page>
+
+
+</mvc:View>

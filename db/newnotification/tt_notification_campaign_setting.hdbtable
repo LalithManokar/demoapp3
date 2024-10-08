@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Notification Campaign Setting";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "ACTION_CODE";         sqlType = VARCHAR; length = 128; nullable = false; comment = "Action Code ---the executed action";},
+    {name = "TEXT_MODULE_CODE";     sqlType = VARCHAR;  length = 500; nullable = true; comment = "Text Module for Action";},
+    {name = "CAMPAIGN_ID"; sqlType = INTEGER; nullable = false; comment = "Campaign id";}
+];
+table.primaryKey.pkcolumns = ["ID"];

@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Attachment Filter Type";
+table.columns = [
+	{name = "CODE"; sqlType = VARCHAR; length = 50; nullable = false; comment = "Human readable identifier";},
+	{name = "DESCRIPTION"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Description of the role";},
+	{name = "MEDIA_TYPE_RESTRICTION"; sqlType = VARCHAR; length = 100; nullable = true; comment = "Restriction to media types, comma separated";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:AccessControl="http://www.sap.com/ndb/SQLCoreModelAccessControl.ecore" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="CV_IDEA_ANONYMOUS_FOR_COACH_POOL" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <origin/>
+  <descriptions defaultDescription="CV_IDEA_SETTINGS_TEST"/>
+  <metadata changedAt="2021-05-11 22:05:49.237"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="63"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.idea::t_ideas_setting" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_ideas_setting"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.idea::t_idea" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_idea"/>
+    </DataSource>
+    <DataSource id="Join_2$$$$sap.ino.db.idea::t_idea$$" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_idea"/>
+    </DataSource>
+    <DataSource id="CV_CAMPAIGN_MANAGER_TRANSITIVE" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.cv/calculationviews/CV_CAMPAIGN_MANAGER_TRANSITIVE</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.iam::t_object_identity_role" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_object_identity_role"/>
+    </DataSource>
+    <DataSource id="Join_4$$$$sap.ino.db.idea::t_ideas_setting$$" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_ideas_setting"/>
+    </DataSource>
+    <DataSource id="Join_4$$$$sap.ino.db.idea::t_idea$$" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_idea"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.subresponsibility::t_responsibility_value_stage" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.subresponsibility::t_responsibility_value_stage"/>
+    </DataSource>
+    <DataSource id="CV_OBJECT_IDENTITY_ROLE_TRANSITIVE" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.ext/calculationviews/CV_OBJECT_IDENTITY_ROLE_TRANSITIVE</resourceUri>
+    </DataSource>
+    <DataSource id="Join_7$$$$CV_OBJECT_IDENTITY_ROLE_TRANSITIVE$$" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.ext/calculationviews/CV_OBJECT_IDENTITY_ROLE_TRANSITIVE</resourceUri>
+    </DataSource>
+    <DataSource id="Join_8$$$$CV_OBJECT_IDENTITY_ROLE_TRANSITIVE$$" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.ext/calculationviews/CV_OBJECT_IDENTITY_ROLE_TRANSITIVE</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.iam::v_auth_application_user" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_auth_application_user"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:AggregationView" id="coachSetting">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ANONYMOUS_FOR">
+          <filter xsi:type="AccessControl:SingleValueFilter" including="true" value="COACH_POOL"/>
+        </viewAttribute>
+        <viewAttribute id="IDEA_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.idea::t_ideas_setting">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ANONYMOUS_FOR" source="ANONYMOUS_FOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="idea">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.idea::t_idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="CREATED_BY_ID"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_2" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute hidden="true" id="JOIN$CAMPAIGN_ID$CAMPAIGN_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_2$$$$sap.ino.db.idea::t_idea$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_ID$CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+      </input>
+      <input node="#CV_CAMPAIGN_MANAGER_TRANSITIVE">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_ID$CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+      </input>
+      <joinAttribute name="JOIN$CAMPAIGN_ID$CAMPAIGN_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="OBJECT_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.iam::t_object_identity_role">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+      </input>
+      <filter>&quot;ROLE_CODE&quot; ='IDEA_CONTRIBUTOR'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_4" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="RESP_VALUE_CODE"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_4$$$$sap.ino.db.idea::t_ideas_setting$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+      </input>
+      <input node="#Join_4$$$$sap.ino.db.idea::t_idea$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_VALUE_CODE" source="RESP_VALUE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="ID"/>
+      </input>
+      <joinAttribute name="IDEA_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_5" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="RESP_VALUE_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_4">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_VALUE_CODE" source="RESP_VALUE_CODE"/>
+      </input>
+      <input node="#sap.ino.db.subresponsibility::t_responsibility_value_stage">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_VALUE_CODE" source="CODE"/>
+      </input>
+      <joinAttribute name="RESP_VALUE_CODE"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_6" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute hidden="true" id="JOIN$CAMPAIGN_ID$OBJECT_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_5">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_ID$OBJECT_ID" source="CAMPAIGN_ID"/>
+      </input>
+      <input node="#CV_OBJECT_IDENTITY_ROLE_TRANSITIVE">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_ID$OBJECT_ID" source="OBJECT_ID"/>
+      </input>
+      <joinAttribute name="JOIN$CAMPAIGN_ID$OBJECT_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_7" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_5">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+      </input>
+      <input node="#Join_7$$$$CV_OBJECT_IDENTITY_ROLE_TRANSITIVE$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="OBJECT_ID"/>
+      </input>
+      <joinAttribute name="IDEA_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_8" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute hidden="true" id="JOIN$ID$OBJECT_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_5">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ID$OBJECT_ID" source="ID"/>
+      </input>
+      <input node="#Join_8$$$$CV_OBJECT_IDENTITY_ROLE_TRANSITIVE$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ID$OBJECT_ID" source="OBJECT_ID"/>
+      </input>
+      <joinAttribute name="JOIN$ID$OBJECT_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:UnionView" id="Union_2">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID" transparentFilter="false"/>
+        <viewAttribute id="OBJECT_ID" transparentFilter="false"/>
+        <viewAttribute id="IDENTITY_ID" transparentFilter="false"/>
+        <viewAttribute id="ROLE_CODE" transparentFilter="false"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input emptyUnionBehavior="NO_ROW" node="#Join_6">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Join_7">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Join_8">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_2" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ROLE_CODE" transparentFilter="false"/>
+        <viewAttribute id="IDENTITY_ID" transparentFilter="false"/>
+        <viewAttribute id="OBJECT_ID" transparentFilter="false"/>
+        <viewAttribute id="IDEA_ID" transparentFilter="false"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Union_2">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+      </input>
+      <filter>(&quot;ROLE_CODE&quot; ='RESP_COACH' OR &quot;ROLE_CODE&quot; = 'CAMPAIGN_COACH' OR &quot;ROLE_CODE&quot; = 'IDEA_COACH')</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:UnionView" id="Union_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID" transparentFilter="false"/>
+        <viewAttribute id="IDENTITY_ID" transparentFilter="false"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input emptyUnionBehavior="NO_ROW" node="#idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Join_2">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Projection_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Aggregation_2">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID" transparentFilter="false"/>
+        <viewAttribute id="IDENTITY_ID" transparentFilter="false"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Union_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDENTITY_ID" transparentFilter="false"/>
+        <viewAttribute id="IDEA_ID" transparentFilter="false"/>
+        <viewAttribute id="ANONYMOUS_FOR"/>
+        <viewAttribute hidden="true" id="JOIN$IDEA_ID$IDEA_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#coachSetting">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ANONYMOUS_FOR" source="ANONYMOUS_FOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$IDEA_ID$IDEA_ID" source="IDEA_ID"/>
+      </input>
+      <input node="#Aggregation_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$IDEA_ID$IDEA_ID" source="IDEA_ID"/>
+      </input>
+      <joinAttribute name="JOIN$IDEA_ID$IDEA_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_3" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDENTITY_ID" transparentFilter="false"/>
+        <viewAttribute id="IDEA_ID" transparentFilter="false"/>
+        <viewAttribute id="NAME"/>
+        <viewAttribute id="ANONYMOUS_FOR"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="IS_ANONYMOUS" length="10" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(isNull(&quot;NAME&quot;),'true','false')</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#Join_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ANONYMOUS_FOR" source="ANONYMOUS_FOR"/>
+      </input>
+      <input node="#sap.ino.db.iam::v_auth_application_user">
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="ID"/>
+      </input>
+      <joinAttribute name="IDENTITY_ID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_3">
+    <descriptions/>
+    <attributes>
+      <attribute id="IDENTITY_ID" order="1" attributeHierarchyActive="false" displayAttribute="false" transparentFilter="false">
+        <descriptions defaultDescription="Identity by which an identity has been created. Foreign key to t_identity.ID"/>
+        <keyMapping columnObjectName="Join_3" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="2" attributeHierarchyActive="false" displayAttribute="false" transparentFilter="false">
+        <descriptions defaultDescription="Human readable identifier"/>
+        <keyMapping columnObjectName="Join_3" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IS_ANONYMOUS" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IS_ANONYMOUS"/>
+        <keyMapping columnObjectName="Join_3" columnName="IS_ANONYMOUS"/>
+      </attribute>
+      <attribute id="ANONYMOUS_FOR" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ANONYMOUS_FOR"/>
+        <keyMapping columnObjectName="Join_3" columnName="ANONYMOUS_FOR"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="coachSetting" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="30" y="520"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="idea" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="200" y="664"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="360" y="663"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="520" y="672"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Union_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="360" y="520"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Aggregation_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="360" y="423"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="340"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_3" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="50" y="220"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_4" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="800" y="1253"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_5" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="800" y="1143"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_6" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="631" y="973"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_7" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="800" y="983"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_8" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="971" y="993"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Union_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="791" y="849"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Aggregation_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="740" y="681"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

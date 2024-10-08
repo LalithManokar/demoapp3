@@ -1,0 +1,12 @@
+schema = "SAP_INO";
+query = "
+        select 
+            comment.id as comment_id,
+            idea_read.idea_id
+        from \"sap.ino.db.comment::v_community_comment\" as comment 
+        inner join \"sap.ino.db.idea::v_auth_ideas_read\" as idea_read
+        on idea_read.idea_id = comment.object_id and
+           comment.object_type_code = 'IDEA'        
+        with read only";
+
+depends_on_view = ["sap.ino.db.comment::v_community_comment", "sap.ino.db.idea::v_auth_ideas_read"];

@@ -1,0 +1,16 @@
+schema = "SAP_INO_EXT";
+query = " 
+	select 
+	ID,
+	FILE_NAME,
+	FILE_SIZE,
+	MEDIA_TYPE,
+	LABEL,
+	CUSTOM_INFO,
+	FOLDER_ID
+	from \"sap.ino.db.attachment::t_attachment\" as attachment
+    where attachment.id in (select attachment_id from \"sap.ino.db.attachment::v_auth_attachment\")
+    with read only"; 
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment"];
+depends_on_view = ["sap.ino.db.attachment::v_auth_attachment"];

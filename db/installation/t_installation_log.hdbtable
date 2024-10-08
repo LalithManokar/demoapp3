@@ -1,0 +1,15 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "INSTALLATION LOGS";
+table.columns = [
+    {name = "ID";                sqlType = INTEGER; nullable = false; comment = "Human readable Identifier";},
+    {name = "VERSION";           sqlType = INTEGER; nullable = false;},
+    {name = "VERSION_SP";        sqlType = INTEGER; nullable = false;},
+    {name = "VERSION_PATCH";     sqlType = INTEGER; nullable = false;},
+    {name = "TIME";              sqlType = TIMESTAMP; nullable = true; },
+    {name = "ACTION_CODE";       sqlType = NVARCHAR; length = 16; nullable = false; comment = "";},
+    {name = "STATUS";            sqlType = INTEGER; nullable = false; comment = "1--finished|2--error";},
+    {name = "MESSAGE";           sqlType = NVARCHAR; length = 4096; nullable = false; comment = "ERROR MESSAGE";},
+    {name = "RUNNING_TIME";      sqlType = INTEGER; nullable = true;}
+];
+table.primaryKey.pkcolumns = ["ID"];

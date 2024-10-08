@@ -1,0 +1,12 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "STATUS AUTHORIZATION";
+table.columns = [
+    {name = "ID";             sqlType = INTEGER;                nullable = false;},
+    {name = "ID_OF_STATUS_AUTHORIZATION_STAGE";  sqlType = INTEGER;          nullable = false;},
+    {name = "ACTION_CODE"; sqlType = VARCHAR; length = 100; nullable = false; comment = "Action code";},
+    {name = "ROLE_CODE"; sqlType = VARCHAR; length = 100; nullable = false; comment = "Role code";},
+    {name = "CAN_DO_ACTION";  sqlType = INTEGER;          nullable = false;}
+];  
+table.primaryKey.pkcolumns = ["ID_OF_STATUS_AUTHORIZATION_STAGE","ACTION_CODE","ROLE_CODE","CAN_DO_ACTION"];  
+            

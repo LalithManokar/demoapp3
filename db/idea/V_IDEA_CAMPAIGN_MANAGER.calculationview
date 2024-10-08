@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_IDEA_CAMPAIGN_MANAGER" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <origin/>
+  <descriptions defaultDescription="V_IDEA_CAMPAIGN_MANAGER"/>
+  <metadata changedAt="2018-06-12 16:30:36.599"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.iam::v_object_identity_role_transitive" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_object_identity_role_transitive"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.idea::v_idea_medium" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::v_idea_medium"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="RolePeople" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="OBJECT_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.iam::v_object_identity_role_transitive">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+      </input>
+      <filter>&quot;ROLE_CODE&quot;='CAMPAIGN_MANAGER'and &quot;OBJECT_TYPE_CODE&quot; = 'CAMPAIGN'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="ideaCampaignInfo" joinOrder="OUTSIDE_IN" joinType="referential">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute hidden="true" id="JOIN$OBJECT_ID$CAMPAIGN_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#RolePeople">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$OBJECT_ID$CAMPAIGN_ID" source="OBJECT_ID"/>
+      </input>
+      <input node="#sap.ino.db.idea::v_idea_medium">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$OBJECT_ID$CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+      </input>
+      <joinAttribute name="JOIN$OBJECT_ID$CAMPAIGN_ID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="ideaCampaignInfo">
+    <descriptions/>
+    <attributes>
+      <attribute id="ROLE_CODE" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ROLE_CODE"/>
+        <keyMapping columnObjectName="ideaCampaignInfo" columnName="ROLE_CODE"/>
+      </attribute>
+      <attribute id="IDENTITY_ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDENTITY_ID"/>
+        <keyMapping columnObjectName="ideaCampaignInfo" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="OBJECT_TYPE_CODE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="OBJECT_TYPE_CODE"/>
+        <keyMapping columnObjectName="ideaCampaignInfo" columnName="OBJECT_TYPE_CODE"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_ID"/>
+        <keyMapping columnObjectName="ideaCampaignInfo" columnName="ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CAMPAIGN_ID"/>
+        <keyMapping columnObjectName="ideaCampaignInfo" columnName="CAMPAIGN_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="71" y="90"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="RolePeople" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="31" y="380"/>
+        <rectangleSize height="64" width="220"/>
+      </shape>
+      <shape expanded="true" modelObjectName="ideaCampaignInfo" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="20" y="200"/>
+        <rectangleSize height="91" width="241"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

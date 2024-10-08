@@ -1,0 +1,156 @@
+.front.sapInoWallWIArrow,
+.back.sapInoWallWIArrow {
+	min-width: 0px;
+	min-height: 0px;
+	max-width: 5000px;
+	max-height: 5000px;
+	border: 0;
+}
+
+.back.sapInoWallWIArrow {
+	position: absolute;
+}
+
+.sapInoWallWIB.sapInoWallWIArrow {	
+	min-height: 0px;
+	min-width: 0px;
+	pointer-events: none;
+}
+
+.back.sapInoWallWIArrow {
+	overflow: visible;
+	pointer-events: all;
+}
+
+.sapInoWallWIArrowMarker {
+	overflow: visible;
+	pointer-events: none;
+	position: absolute;	
+}
+
+.sapInoWallWIArrowStartHandle,
+.sapInoWallWIArrowEndHandle { 
+	width: 35px;
+	height: 35px;
+	background-color: transparent;
+    position: absolute;
+    opacity: 0.5;
+    cursor: move;
+    cursor: grab;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    pointer-events: all;
+}
+
+.sapInoWallWIArrowStartHandle.dragCursor,
+.sapInoWallWIArrowEndHandle.dragCursor {
+    cursor: grabbing;
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+}
+
+.sapInoWallWIArrowMoveHandle {
+	background-color: transparent;
+    position: absolute;
+    text-align: center;
+    font-size: 25px;
+    line-height: 35px;
+    margin-top: -12px;
+    pointer-events: all;
+}
+
+/* image and button overrides for zooming */
+.sapInoWallWIArrowButton {
+	/* button overrides for zooming */
+	width: 46px;
+	min-width: inherit;
+	height: 46px;
+	padding: 0;
+	margin-top: 8px;
+}
+
+.sapInoWallWIArrowButton .sapMBtnIcon {
+	font-size: 1.375rem;
+	line-height: 40px;
+	width: 36px;
+	max-height: 36px;
+	padding-top: 4px;
+	margin-left:4px; 
+	margin-top: 0px; 
+}
+
+.sapInoWallWIArrowButton .sapMBtnInner {
+	height: 46px;
+	min-width: 46px;
+}
+
+.sapUiSizeCompact .sapInoWallWIArrowButton.sapMBtn {
+	height: 46px;
+	min-width: 46px;
+	padding: 0;
+}
+
+.sapUiSizeCompact .sapInoWallWIArrowButton .sapMBtnInner {
+	padding: 0;
+}
+
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonEnd {
+	margin-right: 8px;
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonFlip {
+    position: absolute;
+    top: 0px;
+    right: -50px;
+    min-width: 46px;
+    margin-top: 1px;
+}
+
+.sapInoWallWIArrowButton:not(.sapInoWallWIArrowButtonFlip) .sapMBtnInner, 
+.sapUiSizeCompact .sapInoWallWIArrowButton:not(.sapInoWallWIArrowButtonFlip).sapMBtn {
+	margin-right: 4px;
+}
+
+.sapInoWallWITitleEditArrow {
+	min-width: 200px;
+}
+
+.sapInoWallWIStyleEdit, 
+.sapInoWallWIThicknessEdit,
+.sapInoWallWIHeadStyleEdit,
+.sapInoWallWIColorEdit,
+.sapInoWallWIFlipEdit {
+	display: inline-block;
+	white-space: nowrap;	
+	margin-right: 10px;
+}
+
+.sapInoWallWIFlipEdit {
+    min-width: 200px;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+}
+
+/* override: remove gradient for color picker */
+.sapInoWallWIArrowColorSelectorButton .sapMBtnInner,
+.sapInoWallWIArrowColorSelectorButton.sapMBtn:hover>.sapMBtnHoverable,
+.sapInoWallWIArrowColorSelectorButton.sapMBtn:focus>.sapMBtnInner.sapMFocusable {
+	background: none;
+	background-color: inherit;
+}
+
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowButton.sapInoWallWIArrowColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiText;
+    line-height: 34px;
+}
+
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowButton.sapInoWallWIArrowColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+    color: @sapUiTextInverted;
+    line-height: 34px; 
+}

@@ -1,0 +1,27 @@
+schema = "SAP_INO";
+query = "
+SELECT cri.CODE, 
+	MODEL_CODE, 
+	VALUE_OPTION_LIST_CODE, 
+	OP.DEFAULT_TEXT,
+	case li.datatype_code
+       when 'BOOLEAN' then CAST(op.BOOL_VALUE AS NVARCHAR(1024))
+       when 'INTEGER' then CAST(op.NUM_VALUE AS NVARCHAR(1024))
+       when 'NUMERIC' then CAST(op.NUM_VALUE AS NVARCHAR(1024))
+       when 'TEXT' then op.text_value
+     end as criterion_all_value
+FROM \"sap.ino.db.evaluation::t_criterion\" AS cri
+	INNER JOIN \"sap.ino.db.basis::t_value_option_list\" AS li
+	ON cri.VALUE_OPTION_LIST_CODE = li.code
+	INNER JOIN \"sap.ino.db.basis::t_value_option\" AS op
+	ON cri.VALUE_OPTION_LIST_CODE = op.list_code
+WHERE VALUE_OPTION_LIST_CODE IS NOT NULL
+    with read only";
+
+depends_on_table = ["sap.ino.db.evaluation::t_criterion_value", 
+                    "sap.ino.db.evaluation::t_criterion",
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.campaign::t_campaign_phase",
+                    "sap.ino.db.evaluation::t_model",
+                    "sap.ino.db.evaluation::t_evaluation"];

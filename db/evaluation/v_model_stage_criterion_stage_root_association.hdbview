@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = "
+    select 
+        model.id as model_id,
+        model.code as model_code,
+        criterion.id as criterion_id,
+        criterion.code as criterion_code
+    from \"sap.ino.db.evaluation::t_model_stage\" as model
+        inner join \"sap.ino.db.evaluation::t_criterion_stage\" as criterion 
+            on model.code = criterion.model_code
+    where criterion.parent_criterion_code is null or criterion.parent_criterion_code = ''
+    with read only";
+
+depends_on_table = ["sap.ino.db.evaluation::t_model_stage", "sap.ino.db.evaluation::t_criterion_stage"];

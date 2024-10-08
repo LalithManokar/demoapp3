@@ -1,0 +1,99 @@
+PROCEDURE "SAP_INO"."sap.ino.db.idea.ext::p_idea_filter_form"(
+		IN firstCode VARCHAR(512), 
+		IN firstOperator INTEGER, 
+		IN firstValue NVARCHAR(128), 
+		IN secondCode VARCHAR(512), 
+		IN secondOperator INTEGER, 
+		IN secondValue NVARCHAR(128), 
+		IN thirdCode VARCHAR(512), 
+		IN thirdOperator INTEGER, 
+		IN thirdValue NVARCHAR(128), 
+		OUT ot_idea_id SAP_INO."sap.ino.db.basis::tt_object_id"
+	)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER
+	DEFAULT SCHEMA SAP_INO
+	READS SQL DATA
+AS
+BEGIN
+	IF (LENGTH(:firstCode) > 0) THEN
+		DECLARE var_filter1 NVARCHAR(3072);
+		DECLARE var_filter2 NVARCHAR(3072);
+		DECLARE var_filter3 NVARCHAR(3072);
+		
+		SELECT "SAP_INO"."sap.ino.db.idea.ext::f_idea_form_concat_filter"(
+					:firstCode, 
+					:firstOperator, 
+					:firstValue
+				) 
+			INTO var_filter1
+			FROM DUMMY;
+			
+		SELECT "SAP_INO"."sap.ino.db.idea.ext::f_idea_form_concat_filter"(
+    			:secondCode, 
+    			:secondOperator, 
+    			:secondValue
+    		) 
+			INTO var_filter2
+			FROM DUMMY;	
+			
+		SELECT "SAP_INO"."sap.ino.db.idea.ext::f_idea_form_concat_filter"(
+				:thirdCode, 
+				:thirdOperator, 
+				:thirdValue
+			)
+			INTO var_filter3
+			FROM DUMMY;
+			
+		var_temp1 = APPLY_FILTER(
+				"SAP_INO"."sap.ino.db.ideaform::t_field_value", 
+				:var_filter1
+			);
+		var_temp2 = APPLY_FILTER(
+				"SAP_INO"."sap.ino.db.ideaform::t_field_value", 
+				:var_filter2
+			);
+		var_temp3 = APPLY_FILTER(
+				"SAP_INO"."sap.ino.db.ideaform::t_field_value", 
+				:var_filter3
+			);
+			
+		var_temp_group = SELECT one.IDEA_ID FROM :var_temp1 one;
+		IF (LENGTH(:secondCode) > 0 AND :secondOperator > -1 AND LENGTH(:secondValue) > 0) THEN
+    		var_temp_group = SELECT grp.IDEA_ID FROM :var_temp_group as grp
+        	    inner join :var_temp2 as two
+        	    on grp.idea_id= two.idea_id;
+        END IF; 
+        
+        IF (LENGTH(:thirdCode) > 0 AND :thirdOperator > -1 AND LENGTH(:thirdValue) > 0) THEN
+    		var_temp_group = SELECT grp.IDEA_ID FROM :var_temp_group as grp
+        	    inner join :var_temp3 as three
+        	    on grp.idea_id= three.idea_id;
+        END IF;
+	        
+		ot_idea_id = SELECT DISTINCT F_VALUE.IDEA_ID AS ID
+		            FROM :var_temp_group AS group_idea
+                    INNER JOIN :var_temp1 AS F_VALUE
+                        ON group_idea.IDEA_ID=F_VALUE.IDEA_ID
+                	INNER JOIN "sap.ino.db.ideaform::t_field_stage" AS F_FIELD
+                	    ON F_VALUE.FIELD_CODE = F_FIELD.CODE
+                	INNER JOIN "sap.ino.db.idea::t_idea" AS IDEA
+                	    ON F_VALUE.IDEA_ID = IDEA.ID
+                    WHERE IS_HIDDEN IS NULL
+                    		OR IS_HIDDEN = 0
+                    		OR (IS_HIDDEN = 1
+                    		AND (EXISTS (SELECT 1
+                    					FROM "sap.ino.db.iam::v_auth_application_user_role_transitive"
+                    					WHERE OBJECT_ID = F_VALUE.IDEA_ID
+                    						AND OBJECT_TYPE_CODE = 'IDEA'
+                    						AND (ROLE_CODE = 'IDEA_SUBMITTER'
+                    							OR ROLE_CODE = 'IDEA_CONTRIBUTOR'))
+                    			OR EXISTS (SELECT 1
+                    					FROM "sap.ino.db.iam::v_auth_application_user_role_transitive"
+                    					WHERE OBJECT_ID = IDEA.CAMPAIGN_ID
+                    						AND (ROLE_CODE = 'CAMPAIGN_MANAGER'
+                    							OR ROLE_CODE = 'CAMPAIGN_COACH'
+                    							OR ROLE_CODE = 'RESP_COACH')
+                    						AND OBJECT_TYPE_CODE = 'CAMPAIGN')));
+	END IF;
+END;

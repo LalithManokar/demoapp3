@@ -1,0 +1,7 @@
+{
+    "exposed": true,
+    "prevent_xsrf": false,
+    "authorization": [
+        "sap.ino.setup.rest::execute"
+    ]
+}

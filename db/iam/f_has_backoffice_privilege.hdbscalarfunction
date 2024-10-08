@@ -1,0 +1,13 @@
+function sap_ino."sap.ino.db.iam::f_has_backoffice_privilege" ( ) 
+	returns has_privilege integer
+	language sqlscript
+	sql security invoker as
+begin
+
+	select count(*) into has_privilege
+		from SYS.EFFECTIVE_PRIVILEGES
+		where user_name	=session_context('APPLICATIONUSER') 		and
+        	object_type = 'APPLICATIONPRIVILEGE' 					and
+        	privilege   = 'sap.ino.ui::backoffice.access'      		and
+        	is_valid    = 'TRUE';
+end;

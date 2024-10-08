@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_REPORT_GAMIFICATION_DETAIL" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_REPORT_GAMIFICATION_DETAIL"/>
+  <metadata changedAt="2020-10-16 15:42:10.254"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="dimensionId" parameter="true">
+      <descriptions defaultDescription="dimensionId"/>
+      <variableProperties datatype="INTEGER" defaultValue="undefined" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="identityId" parameter="true">
+      <descriptions defaultDescription="identityId"/>
+      <variableProperties datatype="INTEGER" defaultValue="undefined" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="searchLanguage" parameter="true">
+      <descriptions defaultDescription="searchLanguage"/>
+      <variableProperties datatype="VARCHAR" defaultValue="‘’" length="10" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID" datatype="INTEGER"/>
+        <viewAttribute datatype="NVARCHAR" id="ACTIVITY_ID" length="256"/>
+        <viewAttribute datatype="NVARCHAR" id="DIMENSION_NAME" length="128"/>
+        <viewAttribute datatype="VARCHAR" id="DIMENSION_TECH_NAME" length="128"/>
+        <viewAttribute datatype="NVARCHAR" id="DIMENSION_UNIT" length="500"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CAMPAIGN_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="IDEA_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="DIMENSION_ID"/>
+        <viewAttribute datatype="INTEGER" id="IDENTITY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="ACTIVITY_CODE" length="128"/>
+        <viewAttribute datatype="INTEGER" id="WITHIN_TIME"/>
+        <viewAttribute datatype="VARCHAR" id="TIME_UNIT" length="16"/>
+        <viewAttribute id="WITHIN_TIME_TEXT" datatype="NVARCHAR" length="126"/>
+        <viewAttribute datatype="DECIMAL" id="VALUE" length="34"/>
+        <viewAttribute datatype="NVARCHAR" id="PHASE_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="CONSUMED_VALUE"/>
+        <viewAttribute datatype="NVARCHAR" id="CONSUMED_REFERENCE_NO" length="256"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+      
+        <viewAttribute id="ACTIVITY_TEXT" datatype="NVARCHAR" length="4000"/>
+        <viewAttribute id="PHASE_TEXT" datatype="NVARCHAR" length="100"/>
+        <viewAttribute id="COMMENTS" datatype="NVARCHAR" length="4000"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#dimensionId</localVariable>
+      <localVariable>#identityId</localVariable>
+      <localVariable>#searchLanguage</localVariable>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+
+    lt_gamification_detail = select
+                    gami_transaction.id as id,
+                    gami_transaction.transaction_no as activity_id,
+                    dimension.name as dimension_name,
+                    dimension.technical_name as dimension_tech_name,
+                    unit.default_text as dimension_unit,    
+                    null as campaign_id,
+                    null as campaign_name,
+                    null as idea_id,
+                    null as idea_name, 
+                    gami_transaction.dimension_id, 
+                    gami_transaction.identity_id, 
+                    'CONSUMED_API' as activity_code, 
+                    null as within_time,
+                    null as within_time_blank,                    
+                    null as time_unit,
+                    null as value,
+                    null as phase_code,
+                    IFNULL(gami_transaction.consumed_value,0) as consumed_value,
+                    consumed_reference_no,
+                    gami_transaction.comment as comments,
+                    gami_transaction.created_at
+    from &quot;sap.ino.db.gamification::t_gamification_transaction&quot; as gami_transaction 
+       left outer join &quot;sap.ino.db.gamification::t_dimension&quot; as dimension on gami_transaction.dimension_id = dimension.id
+       left outer join &quot;sap.ino.db.basis::t_unit&quot; as unit on unit.code = dimension.unit
+       where gami_transaction.dimension_id = :dimensionId and gami_transaction.identity_id = :identityId
+    union 
+    select          
+                    id,
+                   cast(activity_id  as NVARCHAR(256)),
+                    dimension_name,
+                    dimension_tech_name,
+                    dimension_unit,
+                    campaign_id,
+                    campaign_name,
+                    idea_id,
+                    idea_name,
+                    dimension_id,
+                    identity_id,
+                    activity_code,
+                    within_time,
+                    concat(within_time,' ') as within_time_blank,
+                    time_unit,
+                    value,
+                    phase_code,
+                    null as consumed_value,
+                    null as consumed_reference_no,
+                    null as comments,
+                    created_at
+         from
+           &quot;sap.ino.db.gamification.ext::v_ext_report_user_participates_detail&quot;
+            where dimension_id = :dimensionId and identity_id = :identityId;
+
+   var_out = select  
+                    id,
+                    activity_id,
+                    dimension_name,
+                    dimension_tech_name,
+                    dimension_unit,
+                    campaign_id,
+                    campaign_name,
+                    idea_id,
+                    idea_name,
+                    dimension_id,
+                    identity_id,
+                    activity_code,
+                    within_time,
+                    time_unit,
+                    concat(within_time_blank, TIME_UNIT_CODE_TEXT.content) AS within_time_text, 
+                    value,
+                    phase_code,
+                    consumed_value,
+                    consumed_reference_no,
+                    created_at,
+                    ACTIVITY_CODE_TEXT.content as activity_text,
+                    phase.default_text as phase_text,
+                    comments
+         from 
+           :lt_gamification_detail AS detail
+           left outer join &quot;_SYS_REPO&quot;.&quot;ACTIVE_CONTENT_TEXT_CONTENT&quot; AS ACTIVITY_CODE_TEXT
+           on (ACTIVITY_CODE_TEXT.TEXT_ID = CONCAT('ACTIVITY_CODE_TEXT_',detail.activity_code)
+           and ACTIVITY_CODE_TEXT.PACKAGE_ID = 'sap.ino.text' and ACTIVITY_CODE_TEXT.object_name = 'nguii18n'
+           and ACTIVITY_CODE_TEXT.LANG = :searchLanguage )
+           left outer join &quot;_SYS_REPO&quot;.&quot;ACTIVE_CONTENT_TEXT_CONTENT&quot; AS TIME_UNIT_CODE_TEXT
+           on (TIME_UNIT_CODE_TEXT.TEXT_ID = CONCAT('GAMIFICATION_TEXT_TIME_',detail.time_unit)
+           and TIME_UNIT_CODE_TEXT.PACKAGE_ID = 'sap.ino.text' and TIME_UNIT_CODE_TEXT.object_name = 'nguii18n'
+           and TIME_UNIT_CODE_TEXT.LANG = :searchLanguage )
+           LEFT OUTER JOIN &quot;sap.ino.db.campaign::t_phase&quot; as phase on detail.phase_code = phase.code;
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="ID" order="1">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="ACTIVITY_ID" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ACTIVITY_ID"/>
+      </attribute>
+      <attribute id="DIMENSION_NAME" order="3">
+        <descriptions defaultDescription="DIMENSION_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="DIMENSION_NAME"/>
+      </attribute>
+      <attribute id="DIMENSION_TECH_NAME" order="4">
+        <descriptions defaultDescription="DIMENSION_TECH_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="DIMENSION_TECH_NAME"/>
+      </attribute>
+      <attribute id="DIMENSION_UNIT" order="5">
+        <descriptions defaultDescription="DIMENSION_UNIT"/>
+        <keyMapping columnObjectName="Script_View" columnName="DIMENSION_UNIT"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="7">
+        <descriptions defaultDescription="CAMPAIGN_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="IDEA_NAME" order="9">
+        <descriptions defaultDescription="IDEA_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_NAME"/>
+      </attribute>
+      <attribute id="ACTIVITY_CODE" order="12">
+        <descriptions defaultDescription="ACTIVITY_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="ACTIVITY_CODE"/>
+      </attribute>
+      <attribute id="TIME_UNIT" order="14">
+        <descriptions defaultDescription="TIME_UNIT"/>
+        <keyMapping columnObjectName="Script_View" columnName="TIME_UNIT"/>
+      </attribute>
+      <attribute id="WITHIN_TIME_TEXT" order="15">
+        <keyMapping columnObjectName="Script_View" columnName="WITHIN_TIME_TEXT"/>
+      </attribute>
+      <attribute id="PHASE_CODE" order="17">
+        <descriptions defaultDescription="PHASE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="PHASE_CODE"/>
+      </attribute>
+      <attribute id="CONSUMED_VALUE" order="18">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CONSUMED_VALUE"/>
+      </attribute>
+      <attribute id="CONSUMED_REFERENCE_NO" order="19">
+        <descriptions defaultDescription="CONSUMED_REFERENCE_NO"/>
+        <keyMapping columnObjectName="Script_View" columnName="CONSUMED_REFERENCE_NO"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="20">
+        <descriptions defaultDescription="CREATED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+    
+      <attribute id="ACTIVITY_TEXT" order="21">
+    
+        <keyMapping columnObjectName="Script_View" columnName="ACTIVITY_TEXT"/>
+    
+      </attribute>
+      <attribute id="PHASE_TEXT" order="22">
+        <keyMapping columnObjectName="Script_View" columnName="PHASE_TEXT"/>
+      </attribute>
+      <attribute id="COMMENTS" order="23">
+        <keyMapping columnObjectName="Script_View" columnName="COMMENTS"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="CAMPAIGN_ID" order="6" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="CAMPAIGN_ID"/>
+        <measureMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </measure>
+      <measure id="IDEA_ID" order="8" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="IDEA_ID"/>
+        <measureMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+      </measure>
+      <measure id="DIMENSION_ID" order="10" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="DIMENSION_ID"/>
+        <measureMapping columnObjectName="Script_View" columnName="DIMENSION_ID"/>
+      </measure>
+      <measure id="IDENTITY_ID" order="11" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="IDENTITY_ID"/>
+        <measureMapping columnObjectName="Script_View" columnName="IDENTITY_ID"/>
+      </measure>
+      <measure id="WITHIN_TIME" order="13" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="WITHIN_TIME"/>
+        <measureMapping columnObjectName="Script_View" columnName="WITHIN_TIME"/>
+      </measure>
+      <measure id="VALUE" order="16" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="VALUE"/>
+        <measureMapping columnObjectName="Script_View" columnName="VALUE"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

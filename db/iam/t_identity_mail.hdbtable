@@ -1,0 +1,13 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "User sent email via background service";
+table.columns = [
+    {name = "ID";               sqlType = INTEGER;                nullable = false; comment = "technical user identifier - must never be exposed to end users";},
+    {name = "SUBJECT";          sqlType = VARCHAR;  length = 500; nullable = false;  comment = "Email Subject";},
+    {name = "CONTENT";          sqlType = NCLOB;                  nullable = true;  comment = "Email Content";},
+    {name = "TO_IDENTITY";      sqlType = INTEGER;                nullable = false; comment = "Email sent to";},
+    {name = "CREATED_AT";       sqlType = TIMESTAMP;              nullable = false; comment = "Email Record created at timestamp";},
+    {name = "CREATED_BY_ID";    sqlType = INTEGER;                nullable = false; comment = "Email Record created by id";},
+    {name = "MAIL_SENT_AT";     sqlType = TIMESTAMP;              nullable = true;  comment = "Email Sent timestamp";}
+];
+table.primaryKey.pkcolumns = ["ID"];

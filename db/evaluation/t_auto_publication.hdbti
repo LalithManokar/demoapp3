@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.evaluation::t_auto_publication";
+    file       = "sap.ino.db.evaluation:t_auto_publication.csv";
+    header     = false;
+    delimField = ";";
+}];

@@ -1,0 +1,11 @@
+procedure "SAP_INO"."sap.ino.db.feed::p_feed_service" ()
+language sqlscript
+sql security definer
+default schema sap_ino
+as
+begin
+    -- call "sap.ino.db.feed::p_campaign_dates_feed" ();
+    -- call "sap.ino.db.feed::p_feed_create" ();
+    -- call "sap.ino.db.feed::p_feed_status_create" ();
+    -- call "sap.ino.db.feed::p_feed_cleanup" ();
+end;

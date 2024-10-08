@@ -1,0 +1,24 @@
+procedure "SAP_INO"."sap.ino.db.attachment::p_init_exists_object_assignment" (
+    in  IT_ASSIGNMENT_IDS "SAP_INO"."sap.ino.db.attachment::tt_attachment_assignment"
+)
+    language sqlscript 
+    sql security definer
+    default schema SAP_INO
+    as
+begin
+    INSERT INTO "SAP_INO"."sap.ino.db.attachment::t_attachment_assignment"
+	SELECT "SAP_INO"."sap.ino.db.attachment::s_attachment_assignment".nextval, 
+			ATTACHMENT_ID, 
+			OWNER_ID, 
+			OWNER_TYPE_CODE, 
+			ROLE_TYPE_CODE, 
+			FILTER_TYPE_CODE
+		FROM :IT_ASSIGNMENT_IDS AS B
+		WHERE NOT (EXISTS (SELECT 1
+				FROM "sap.ino.db.attachment::t_attachment_assignment"
+				WHERE ATTACHMENT_ID = B.ATTACHMENT_ID
+					AND OWNER_ID = B.OWNER_ID
+					AND OWNER_TYPE_CODE = B.OWNER_TYPE_CODE
+					AND ROLE_TYPE_CODE = B.ROLE_TYPE_CODE
+					AND FILTER_TYPE_CODE = B.FILTER_TYPE_CODE));
+end;

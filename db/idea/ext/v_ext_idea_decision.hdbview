@@ -1,0 +1,33 @@
+schema = "SAP_INO_EXT";
+query = "select 
+         idea_decision.id,
+         idea_decision.idea_id,
+         idea_decision.decider_id,
+         idea_decision.decider_name,
+         idea_decision.decision_date,
+         case when auth.auth_level < 4 and idea_decision.DECISION_REASON_LIST_VISIBLE < 1 then null else idea_decision.reason_code end as reason_code,
+         case when auth.auth_level < 4 and idea_decision.DECISION_REASON_LIST_VISIBLE < 1 then null else idea_decision.decision_reason_list_code end as decision_reason_list_code,
+         case when auth.auth_level < 4 and idea_decision.DECISION_REASON_LIST_VISIBLE < 1 then null else idea_decision.decision_reason_list_visible end as decision_reason_list_visible,
+         case when auth.auth_level < 4 and idea_decision.DECISION_REASON_LIST_VISIBLE < 1 then null else idea_decision.link_label end as link_label,
+         case when auth.auth_level < 4 and idea_decision.DECISION_REASON_LIST_VISIBLE < 1 then null else idea_decision.link_url end as link_url,
+         
+         -- shield internal reason from the underprivileged
+         case when auth.auth_level < 4 and idea_decision.DECISION_REASON_LIST_VISIBLE < 1 then null else idea_decision.reason end as reason,
+         
+         idea_decision.status_action_code,
+         idea_decision.text_module_code,
+         idea_decision.phase_code,
+         idea_decision.status_code,
+         
+         -- response info should only be available to authors/contributors and above
+         case when auth.auth_level < 2 then null else idea_decision.send_response end as send_response,
+         case when auth.auth_level < 2 then null else idea_decision.response end as response
+         
+         from \"sap.ino.db.idea::v_decision\" as idea_decision
+         inner join \"sap.ino.db.idea::v_auth_ideas_read_staged\" as auth
+            on idea_decision.idea_id = auth.idea_id
+         -- where idea_decision.idea_id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")
+         with read only";
+
+depends_on_view = [ "sap.ino.db.idea::v_decision", 
+                    "sap.ino.db.idea::v_auth_ideas_read_staged"];

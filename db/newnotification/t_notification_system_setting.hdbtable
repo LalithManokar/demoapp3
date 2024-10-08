@@ -1,0 +1,15 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Notification System Setting";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";}, 
+    {name = "ACTION_CODE";         sqlType = VARCHAR; length = 128; nullable = false; comment = "Action Code ---the executed action";},
+    {name = "ALLOW_INBOX_NOTIFICATION";      sqlType = INTEGER; nullable = true;  comment = "Timestamp when event occurred";},
+    {name = "ALLOW_EMAIL_NOTIFICATION"; sqlType = INTEGER;        nullable = true; comment = "Code of a notification e.g. a business event: IDEA_CREATED, COACH_ASSIGNED...";},
+    {name = "EMAIL_TEMPLATE_CODE";  sqlType = VARCHAR; length = 500; nullable = true;  comment = "Mail Template for Action. Foreing key to t_mail_template.CODE ";},
+    {name = "TEXT_MODULE_CODE";     sqlType = VARCHAR;  length = 500; nullable = true; comment = "Text Module for Action";},
+    {name = "CHANGED_AT";       sqlType = TIMESTAMP;              nullable = true;                     comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID";    sqlType = INTEGER;                nullable = true;                     comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";},
+    {name = "ACTION_TYPE_CODE";         sqlType = VARCHAR; length = 128; nullable = true; comment = "Action Tpye Code to indentify action";}    
+];
+table.primaryKey.pkcolumns = ["ID"];

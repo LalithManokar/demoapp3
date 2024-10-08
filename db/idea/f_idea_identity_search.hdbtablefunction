@@ -1,0 +1,28 @@
+function "SAP_INO"."sap.ino.db.idea::f_idea_identity_search" ( iv_search_term nvarchar(1024) ) 
+    returns table ( id integer, score double )
+    language sqlscript
+    sql security definer as
+begin
+    lt_identities = select 
+        id,
+        search_score as score
+    from
+        "sap.ino.db.iam::f_identity_search"(:iv_search_term)
+    where
+        (select value from "SAP_INO"."sap.ino.db.basis::v_local_system_setting" where code = 'sap.ino.config.SEARCH_BY_IDENTITY_ACTIVE') = 1;
+
+    lt_ideas = select
+            object_identity_role.object_id as id, 
+            case when role_code = 'IDEA_SUBMITTER' then identities.score
+                 when role_code = 'IDEA_CONTRIBUTOR' then identities.score * 0.8
+                 when role_code = 'IDEA_COACH' then identities.score * 0.5
+                 else identities.score * 0.2
+            end as score
+                from "sap.ino.db.iam::t_object_identity_role" as object_identity_role
+                inner join (select id, score 
+                    from :lt_identities) as identities 
+                    on object_identity_role.identity_id = identities.id and 
+                       object_identity_role.object_type_code = 'IDEA';
+
+    return select id, max(score) as score from :lt_ideas group by id;
+end;

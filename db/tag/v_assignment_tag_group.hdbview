@@ -1,0 +1,20 @@
+schema = "SAP_INO";
+query = "
+    select
+        assignment_tag.*,
+        tag_group.NAME,
+        tag_group.DESCRIPTION,
+        tag_group.CREATED_AT, 
+        tag_group.CREATED_BY_ID,
+        tag_group.CHANGED_AT,
+        tag_group.CHANGED_BY_ID,
+        tag_group.CREATED_BY,
+        tag_group.CHANGED_BY,
+        tag_group.TAGS_COUNT
+    from \"sap.ino.db.tag::t_assignment_tag\" as assignment_tag
+        left outer join \"sap.ino.db.tag::v_group_tag\" as tag_group
+            on tag_group.id = assignment_tag.tag_group_id
+    with read only";
+
+depends_on_table = ["sap.ino.db.tag::t_assignment_tag"];
+depends_on_view = ["sap.ino.db.tag::v_group_tag"];

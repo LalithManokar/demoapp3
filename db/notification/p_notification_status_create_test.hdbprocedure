@@ -1,0 +1,34 @@
+procedure "SAP_INO"."sap.ino.db.notification::p_notification_status_create_test" ()
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+	lt_deactivated_notifications =
+    SELECT
+	    status.id AS id,
+	    iden.user_name,
+	    setting.setting_value,
+	    campaign.id as campaign_id,
+	    idea.id as idea_id
+	FROM     
+	    "sap.ino.db.notification::t_notification_status" AS status
+	INNER JOIN "sap.ino.db.notification::t_notification" AS notification
+	    ON notification.id = status.notification_id
+	LEFT OUTER JOIN "sap.ino.db.iam::t_identity" iden
+		ON iden.erased = 1 AND iden.ID = status.user_id		
+	LEFT OUTER JOIN "sap.ino.db.iam::t_personalize_setting" AS setting 
+		ON setting.TYPE_CODE = 'NOTIFICATION' AND setting.OBJECT_TYPE_CODE = 'NOTIFICATION_KEY' AND setting.IDENTITY_ID = status.user_id AND  setting.SETTING_VALUE = -1
+	LEFT OUTER JOIN "sap.ino.db.campaign::t_campaign" campaign
+		ON campaign.ID = notification.campaign_id    		
+	LEFT OUTER JOIN "sap.ino.db.idea::t_idea" idea
+		ON notification.object_type_code = 'IDEA' AND idea.ID = notification.object_id				
+	WHERE status.mail_status_code = 'UNSENT' ;
+	
+	SELECT 
+	    id 
+    FROM 
+        :lt_deactivated_notifications 
+    WHERE 
+        user_name IS NOT NULL OR setting_value IS NOT NULL OR campaign_id IS NULL OR idea_id IS NULL;
+end;

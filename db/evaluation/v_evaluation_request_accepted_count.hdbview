@@ -1,0 +1,12 @@
+schema = "SAP_INO";
+query  = "
+        select 
+            eval_req_id, 
+            ACCEPTED_ON_TIME, 
+            count(*) as eval_req_accepted_count
+        from \"sap.ino.db.evaluation::v_evaluation_request_full_item\" 
+        where accepted_on_time is not null 
+        group by eval_req_id, ACCEPTED_ON_TIME order by eval_req_id
+    with read only";
+    
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request_full_item"];    

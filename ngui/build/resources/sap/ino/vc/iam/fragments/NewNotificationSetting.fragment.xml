@@ -1,0 +1,79 @@
+<core:FragmentDefinition
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+	xmlns:ino="sap.ino.controls"
+	xmlns:f="sap.ui.layout.form">
+	<VBox class="sapInoScheduledNotificationSetting">
+	    <Text text="{i18n>NOTIFICATION_SETTING_WARNING}" class="sapInoPersonalizeSettingLabel sapInoPersonalizeWarning"/>
+		<Panel class="sapInoFilterPanel" expandable="false"  width="100%">
+			<headerToolbar>
+				<Toolbar>
+					<Label text="{i18n>NEWNOTIFICATION_SETTING_SCHEDULE_TITLE}" labelFor="scheduleSelectBtn"/>
+				</Toolbar>
+			</headerToolbar>
+			<RadioButtonGroup id="scheduleSelectBtn" columns="4"  width="100%" selectedIndex="{NEWNOTIFICATION>/setting/NEWKEY/0/SETTING_VALUE}" class="sapUiSmallMarginBottom">
+				<buttons>
+					<RadioButton text="{i18n>NOTIFICATION_SETTING_SCHEDULE_IMMEDIATE}" tooltip="{i18n>NOTIFICATION_SETTING_SCHEDULE_IMMEDIATE}"/>
+					<RadioButton text="{i18n>NOTIFICATION_SETTING_SCHEDULE_DAILY}" tooltip="{i18n>NOTIFICATION_SETTING_SCHEDULE_DAILY}"/>
+					<RadioButton text="{i18n>NOTIFICATION_SETTING_SCHEDULE_WEEKLY}" tooltip="{i18n>NOTIFICATION_SETTING_SCHEDULE_WEEKLY}"/>
+					<RadioButton text="{i18n>NOTIFICATION_SETTING_SCHEDULE_NEVER}" tooltip="{i18n>NOTIFICATION_SETTING_SCHEDULE_NEVER}"/>
+				</buttons>
+			</RadioButtonGroup>
+		</Panel>
+		<Panel class="sapInoFilterPanel" expandable="false" visible="{=${NEWNOTIFICATION>/setting/FOLLOW}.length >= 1}" width="100%">
+			<headerToolbar>
+				<Toolbar>
+					<Label text="{i18n>NEWNOTIFICATION_SETTING_ACTIONS_GROUP_TITLE}"/>
+				</Toolbar>
+			</headerToolbar>
+			<ino:WrappingList wrapping="true" class="sapUiSmallMarginBottom"
+			    items="{ path: 'NEWNOTIFICATION>/setting/FOLLOW', sorter:[{ path: 'ACTION_TYPE_CODE', descending:false, group: true}], templateShareable: false, groupHeaderFactory: '.getNewGroupHeader' }">
+				<CustomListItem>
+					<CheckBox 
+					    tooltip="{path: 'NEWNOTIFICATION>ACTION_CODE', formatter: '.formatNewMappingSettingCode'}"
+					    enabled="{path: 'NEWNOTIFICATION>/setting/NEWKEY/0/SETTING_VALUE', formatter: '.formatEnableMappingSettingValue'}"
+    				    text="{path: 'NEWNOTIFICATION>ACTION_CODE', formatter: '.formatNewMappingSettingCode'}" 
+    				    selected="{ path: 'NEWNOTIFICATION>SETTING_VALUE', type: 'sap.ino.commons.models.types.IntBooleanType'}" />
+				</CustomListItem>
+			</ino:WrappingList>
+		</Panel>
+		<Panel class="sapInoFilterPanel" expandable="false" visible="{=${NEWNOTIFICATION>/setting/STATUS}.length >= 1}" width="100%">
+			<ino:WrappingList wrapping="true" class="sapUiSmallMarginBottom"
+			    items="{ path: 'NEWNOTIFICATION>/setting/STATUS', sorter:[{ path: 'ACTION_TYPE_CODE', descending:false, group: true}], templateShareable: false, groupHeaderFactory: '.getNewGroupHeader' }">
+				<CustomListItem>
+					<CheckBox 
+					    tooltip="{path: 'NEWNOTIFICATION>ACTION_CODE', formatter: '.formatNewMappingSettingCode'}"
+					    enabled="{path: 'NEWNOTIFICATION>/setting/NEWKEY/0/SETTING_VALUE', formatter: '.formatEnableMappingSettingValue'}"
+    				    text="{path: 'NEWNOTIFICATION>ACTION_CODE', formatter: '.formatNewMappingSettingCode'}" 
+    				    selected="{ path: 'NEWNOTIFICATION>SETTING_VALUE', type: 'sap.ino.commons.models.types.IntBooleanType'}" />
+				</CustomListItem>
+			</ino:WrappingList>
+		</Panel>
+		<Panel class="sapInoFilterPanel" expandable="false" visible="{=${NEWNOTIFICATION>/setting/IDEA}.length >= 1}" width="100%">
+			<ino:WrappingList wrapping="true" class="sapUiSmallMarginBottom"
+			    items="{ path: 'NEWNOTIFICATION>/setting/IDEA', sorter:[{ path: 'ACTION_TYPE_CODE', descending:false, group: true}], templateShareable: false, groupHeaderFactory: '.getNewGroupHeader' }">
+				<CustomListItem>
+					<CheckBox 
+					    tooltip="{path: 'NEWNOTIFICATION>ACTION_CODE', formatter: '.formatNewMappingSettingCode'}"
+					    enabled="{path: 'NEWNOTIFICATION>/setting/NEWKEY/0/SETTING_VALUE', formatter: '.formatEnableMappingSettingValue'}"
+    				    text="{path: 'NEWNOTIFICATION>ACTION_CODE', formatter: '.formatNewMappingSettingCode'}" 
+    				    selected="{ path: 'NEWNOTIFICATION>SETTING_VALUE', type: 'sap.ino.commons.models.types.IntBooleanType'}" />
+				</CustomListItem>
+			</ino:WrappingList>
+		</Panel>
+		<Panel class="sapInoFilterPanel" expandable="false" visible="{=${NEWNOTIFICATION>/setting/CAMPAIGN}.length >= 1}" width="100%">
+			<ino:WrappingList wrapping="true" class="sapUiSmallMarginBottom" 
+			    items="{ path: 'NEWNOTIFICATION>/setting/CAMPAIGN', sorter:{ path: 'ACTION_TYPE_CODE', descending:false, group: true}, templateShareable: false, groupHeaderFactory: '.getNewGroupHeader' }">
+				<CustomListItem>
+					<CheckBox 
+					    tooltip="{path: 'NEWNOTIFICATION>ACTION_CODE', formatter: '.formatNewMappingSettingCode'}"
+					    enabled="{path: 'NEWNOTIFICATION>/setting/NEWKEY/0/SETTING_VALUE', formatter: '.formatEnableMappingSettingValue'}"
+    				    text="{path: 'NEWNOTIFICATION>ACTION_CODE', formatter: '.formatNewMappingSettingCode'}" 
+    				    selected="{ path: 'NEWNOTIFICATION>SETTING_VALUE', type: 'sap.ino.commons.models.types.IntBooleanType' }" />
+				</CustomListItem>
+			</ino:WrappingList>
+		</Panel>
+	</VBox>
+</core:FragmentDefinition>

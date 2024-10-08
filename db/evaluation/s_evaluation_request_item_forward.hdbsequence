@@ -1,0 +1,5 @@
+schema   = "SAP_INO";
+minvalue = 1;
+cycles   = false;
+reset_by = "select ifnull(max(id), 0) + 1 from \"sap.ino.db.evaluation::t_evaluation_request_item_forward\"";
+depends_on_table = "sap.ino.db.evaluation::t_evaluation_request_item_forward";

@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "role code of Statuses object action ";
+table.columns = [
+    {name = "ACTION_CODE"; sqlType = VARCHAR; length = 100; nullable = false; comment = "Object Action Code";},
+    {name = "ROLE_CODE"; sqlType = VARCHAR; length = 100; nullable = false; comment = "Role code for action ";},
+    {name = "STATUS_TYPE"; sqlType = VARCHAR; length = 100; nullable = false; comment = "The Predefined Ststus Type ";}
+];
+
+table.primaryKey.pkcolumns = ["ACTION_CODE","ROLE_CODE","STATUS_TYPE"]; 

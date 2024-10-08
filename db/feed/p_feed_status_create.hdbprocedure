@@ -1,0 +1,93 @@
+procedure "SAP_INO"."sap.ino.db.feed::p_feed_status_create" (
+    in  iv_object_id integer,
+    in  iv_object_type_code varchar(100),
+    in  iv_campaign_id integer
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    lt_follow = select created_by_id,object_id,object_type_code,CREATED_AT,inst_email_at,email_at from "sap.ino.db.follow::t_follow"
+        where object_id = iv_object_id and object_type_code = iv_object_type_code;
+        
+    lt_new_feed = select * from "sap.ino.db.feed::t_feed_update"  
+        where is_new = 1 and object_id = iv_object_id and object_type_code = iv_object_type_code and campaign_id = iv_campaign_id; 
+        
+    if not IS_EMPTY(:lt_follow) then   
+       if not IS_EMPTY(:lt_new_feed) then
+        lt_identity_campaign_read = select distinct identity_id || campaign_id as id 
+            from "sap.ino.db.campaign::v_identity_campaign_read" 
+            where campaign_id = iv_campaign_id;
+            
+        lt_identity_campaign_backoffice = select distinct identity_id || campaign_id as id
+            from "sap.ino.db.campaign::v_backoffice_campaign_privilege"
+            where campaign_id = iv_campaign_id;
+            
+        lt_identity_idea_read = 
+            -- select identity_id || idea_id as id
+            -- from "sap.ino.db.idea::v_identity_idea_read"
+            -- where idea_id = iv_object_id and iv_object_type_code = 'IDEA'
+            -- union all 
+            select distinct identity_id || idea_id as id
+            from "sap.ino.db.idea::v_identity_idea_read" as role
+            inner join :lt_new_feed as feed
+            on role.idea_id = feed.involved_id and feed.involved_obj_type_code = 'IDEA';
+        
+        lt_auth_new_feed = select distinct
+                        feed.id as feed_id,
+                        follow.created_by_id,
+                        case 
+                            when (feed.feed_code like '%DATE_REACHED%' or
+                                    ( feed.feed_code like '%STATUS_ACTION%' and feed.feed_code not like '%sap.ino.config.EVA%' )
+                                    or feed.feed_code = 'BLOG_MAJORPUBLISH') 
+                            then 1 else 0
+                        end as IS_INSTANCE,
+                        case
+                            when (feed.feed_code like '%DATE_REACHED%' or
+                                    ( feed.feed_code like '%STATUS_ACTION%' and feed.feed_code not like '%sap.ino.config.EVA%' )
+                                    or feed.feed_code = 'BLOG_MAJORPUBLISH') 
+                            then 
+                                case 
+                                    when (feed.event_at > follow.inst_email_at or follow.inst_email_at is null) then 'UNSENT'
+                                    else 'SENT'
+                                end
+                            else 
+                                case 
+                                    when (feed.event_at > follow.email_at or follow.email_at is null) then 'UNSENT'
+                                    else 'SENT'
+                                end
+                        end as mail_status_code
+        from :lt_new_feed as feed
+        inner join :lt_follow as follow
+        on feed.object_id = follow.object_id and feed.object_type_code = follow.object_type_code and feed.event_at >= follow.CREATED_AT
+        where 
+        feed.actor_id <> follow.created_by_id
+        and
+        (
+            (feed.filter_type_code = 'BACKOFFICE' and follow.created_by_id || feed.campaign_id in (select id from :lt_identity_campaign_backoffice)) or
+            (feed.filter_type_code <> 'BACKOFFICE' and follow.created_by_id || feed.campaign_id in (select id from :lt_identity_campaign_read))
+        ) and 
+        (
+            (feed.involved_obj_type_code = 'CAMPAIGN' and follow.created_by_id || feed.involved_id in (select id from :lt_identity_campaign_read)) or 
+            (feed.involved_obj_type_code = 'IDEA' and follow.created_by_id || feed.involved_id in (select id from :lt_identity_idea_read)) or 
+            (feed.involved_obj_type_code <> 'IDEA' and feed.involved_obj_type_code <> 'CAMPAIGN') or 
+                feed.involved_obj_type_code is null
+        );
+
+        insert into "sap.ino.db.feed::t_feed_status"(ID,FEED_ID,USER_ID,MAIL_STATUS_CODE, IS_INSTANCE,CREATED_AT)
+              select "sap.ino.db.feed::s_feed_status".nextval as id, 
+                    feed_id,
+                    created_by_id,
+                    mail_status_code, 
+                    IS_INSTANCE,
+                    CURRENT_UTCTIMESTAMP as CREATED_AT
+                  from :lt_auth_new_feed;
+                  
+      end if;
+    end if;
+                  
+    update "sap.ino.db.feed::t_feed_update" 
+    set is_new = 0
+    where id in (select id from :lt_new_feed);
+end;

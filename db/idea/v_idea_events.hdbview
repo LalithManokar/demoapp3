@@ -1,0 +1,283 @@
+schema = "SAP_INO";
+query = "
+select * from (
+		select distinct
+			('ACTION_' || history.history_biz_event) as change_event,
+			'IDEA' as change_object,
+    		history.history_at as changed_at,
+	    	history.id as id,
+	    	history.phase_code as phase_code,
+    		identity_actor.name as changed_by,
+    		'' as reason,
+	    	0 as is_decision,
+	    	identity.name as param_0,
+	    	campaign.name as campaign_name
+	   	from \"sap.ino.db.idea::t_idea_h\" as history
+	   		left outer join \"sap.ino.db.iam::t_object_identity_role_h\" as idea_role_h
+	   			on history.history_actor_id = idea_role_h.history_actor_id
+			left outer join \"sap.ino.db.iam::t_identity\" as identity_actor
+				on history.history_actor_id = identity_actor.id
+	   		left outer join \"sap.ino.db.iam::t_identity\" as identity
+	   			on idea_role_h.identity_id = identity.id
+            inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+              on history.campaign_id = campaign.campaign_id
+	   	where (history.history_biz_event = 'COACH_ASSIGNED' or history.history_biz_event = 'COACH_UNASSIGNED') AND
+	   		idea_role_h.history_at = history.history_at AND
+	   		idea_role_h.role_code = 'IDEA_COACH' AND
+        	idea_role_h.object_type_code = 'IDEA' 
+ 	union all
+ 		select distinct
+ 			history.history_biz_event as change_event,
+ 			'IDEA' as change_object,
+    		history.history_at as changed_at,
+	    	history.id as id,
+	    	history.phase_code as phase_code,
+    		identity.name as changed_by,    		
+    		case when decision.reason is null then '' else decision.reason end as reason,
+	    	case when decision.id is null then 0 else 1 end as is_decision,
+	    	history.status_code as param_0,
+	    	campaign.name as campaign_name
+		from \"sap.ino.db.idea::t_idea_h\" as history
+			left outer join \"sap.ino.db.iam::t_identity\" as identity
+				on history.history_actor_id = identity.id
+    		left outer join \"sap.ino.db.idea::v_decision\" as decision
+	        	on history.history_at = decision.created_at
+            inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+              on history.campaign_id = campaign.campaign_id
+		where history.history_biz_event LIKE 'STATUS_ACTION%'
+	union all
+        select
+            idea_evaluation.change_event as change_event,
+	        'EVALUATION' as change_object,
+	        idea_evaluation.changed_at as changed_at,
+	        idea_evaluation.idea_id as id,
+	        idea_evaluation.phase_code as phase_code,
+	        idea_evaluation.changed_by as changed_by,
+            '' as reason,
+	        0 as is_decision,
+	        idea_evaluation.param_0 as param_0,
+	        campaign.name as campaign_name
+        from 
+            (select idea.id as idea_id,
+                evaluation.id as evaluation_id,
+                max(idea.history_at) as last_changed_at,
+                evaluation.history_biz_event as change_event,
+	            evaluation.history_at as changed_at,
+                evaluation.idea_phase_code as phase_code,
+                identity.name as changed_by,
+ 	            evaluation.status_code as param_0
+            from \"sap.ino.db.evaluation::t_evaluation_h\" as evaluation
+                inner join \"sap.ino.db.idea::t_idea_h\" as idea
+                    on idea.id = evaluation.idea_id
+                left outer join \"sap.ino.db.iam::t_identity\" as identity
+                    on evaluation.history_actor_id = identity.id
+                where idea.history_at < evaluation.history_at and
+                      evaluation.history_biz_event LIKE 'STATUS_ACTION%'
+                group by idea.id, 
+                    evaluation.id,
+                    evaluation.history_biz_event,
+                    evaluation.history_at,
+                    evaluation.idea_phase_code,
+                    identity.name,
+                    evaluation.status_code
+            ) as idea_evaluation
+            inner join \"sap.ino.db.idea::t_idea_h\" as idea_history
+                on idea_evaluation.idea_id = idea_history.id and
+                   idea_history.history_at = idea_evaluation.last_changed_at
+            inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+                on idea_history.campaign_id = campaign.campaign_id
+	union all
+	    select distinct
+            'IDEA_CAMPAIGN_REASSIGN' as change_event,
+            'IDEA' as change_object,
+            idea_h.history_at as changed_at,
+	    	idea_h.id as id,
+	    	idea.phase_code as phase_code,
+            actor_identity.name as changed_by,
+    		'' as reason,
+	    	0 as is_decision,
+	    	campaign.name as param_0,
+	    	campaign.name as campaign_name
+        from \"sap.ino.db.idea::v_idea_h\" as idea_h
+            inner join \"sap.ino.db.iam::t_identity\" as actor_identity
+              on idea_h.history_actor_id = actor_identity.id
+            inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign 
+                    on idea_h.campaign_id = campaign.campaign_id
+            inner join \"sap.ino.db.idea::t_idea_h\" as idea
+              on idea_h.id = idea.id
+        where idea.history_at = idea_h.history_at and
+              idea.status_code <> 'sap.ino.config.DRAFT' and
+              idea_h.history_biz_event = 'IDEA_UPDATED' and 
+              idea_h.campaign_id is not null		
+    union all
+       select idea_h.history_biz_event as change_event,
+            'CAMPAIGN' as change_object,
+            idea_h.history_at as changed_at,
+            idea_h.id as id,
+            idea_h.phase_code as phase_code,
+            identity.name as changed_by,
+            '' as reason,
+            0 as is_decision,
+            case when idea_h.history_biz_event = 'CAMPAIGN_STATUS_MODEL_CODE_REPLACEMENT' 
+                then 'code>sap.ino.xs.object.idea.Status.Root:sap.ino.config.NEW_IN_PHASE'
+                else null
+            end as param_0,
+            campaign.name as campaign_name
+        from \"sap.ino.db.idea::t_idea_h\" as idea_h
+        left outer join \"sap.ino.db.iam::t_identity\" as identity
+                on idea_h.history_actor_id = identity.id
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+              on idea_h.campaign_id = campaign.campaign_id
+        where (idea_h.history_biz_event = 'CAMPAIGN_STATUS_MODEL_CODE_REPLACEMENT' or
+               idea_h.history_biz_event = 'CAMPAIGN_VOTE_TYPE_REPLACEMENT' or
+               idea_h.history_biz_event = 'CAMPAIGN_PROCESS_CHANGE')   
+     union all
+        select idea_h.history_biz_event as change_event,
+            'CAMPAIGN' as change_object,
+            idea_h.history_at as changed_at,
+            idea_h.id as id,
+            idea_h.pre_phase_code as phase_code,
+            identity.name as changed_by,
+            '' as reason,
+            0 as is_decision,
+            concat('code>sap.ino.xs.object.campaign.Phase.Root:', idea_h.phase_code) as param_0,
+            campaign.name as campaign_name
+        from (
+            select * 
+                from (
+                      select *, lag(phase_code, 1, NULL) over (partition by id order by history_at asc) as pre_phase_code
+                      from \"sap.ino.db.idea::t_idea_h\" )) as idea_h
+        left outer join \"sap.ino.db.iam::t_identity\" as identity
+                on idea_h.history_actor_id = identity.id
+        inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+              on idea_h.campaign_id = campaign.campaign_id
+        where (idea_h.history_biz_event = 'CAMPAIGN_PHASE_CODE_REPLACEMENT')
+	
+	union all
+		select distinct
+			case relation_h.source 
+            	when 1 then relation_h.history_db_event || '_' || semantic || '_SOURCE' 
+            	else relation_h.history_db_event || '_' || semantic || '_TARGET'
+            end as change_event,
+			'IDEA' as change_object,
+    		relation_h.history_at as changed_at,
+	    	idea.id as id,
+	    	idea.phase_code as phase_code,
+    		identity.name as changed_by,
+    		'' as reason,
+	    	0 as is_decision,
+			other_idea.name as param_0,
+	    	campaign.name as campaign_name
+		from \"sap.ino.db.link::v_relation_h\" as relation_h
+		left outer join \"sap.ino.db.iam::t_identity\" as identity
+			on relation_h.history_actor_id = identity.id
+		left outer join \"sap.ino.db.idea::t_idea\" as idea
+			on relation_h.object_id = idea.id
+		left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+        	on idea.campaign_id = campaign.campaign_id
+		left outer join \"sap.ino.db.idea::t_idea\" as other_idea
+			on relation_h.other_object_id = other_idea.id
+		where (relation_h.history_biz_event = 'RELATION_UPDATED' or relation_h.history_biz_event = 'IDEA_CREATED') and 
+	        -- filter deleted copied/merged status, as this makes no sense (original idea has been deleted)
+		    (relation_h.history_db_event, relation_h.semantic) in (
+		        ('CREATED', 'sap.ino.config.DUPLICATE'),
+		        ('DELETED', 'sap.ino.config.DUPLICATE'),
+		        ('CREATED', 'sap.ino.config.COPIED'),
+		        ('CREATED', 'sap.ino.config.MERGED')
+		    ) and
+            relation_h.history_db_event <> 'UPDATED' and 
+            relation_h.object_type_code = 'IDEA' and 
+            relation_h.other_object_type_code = 'IDEA'
+
+    union all
+
+      	select distinct
+			'ACTION_IDEA_TITLE_CHANGED' as change_event,
+			'IDEA' as change_object,
+    		history.history_at as changed_at,
+	    	history.id as id,
+	    	history.phase_code as phase_code,
+    		identity.name as changed_by,
+    		'' as reason,
+	    	0 as is_decision,
+	    	'' as param_0,
+	    	campaign.name as campaign_name
+	   	from \"sap.ino.db.idea::t_idea_h\" as history
+	   		left outer join \"sap.ino.db.iam::t_identity\" as identity
+                on history.history_actor_id = identity.id
+            inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+                on history.campaign_id = campaign.campaign_id
+            inner join \"sap.ino.db.idea::v_idea_h\" as history_delta
+                on history.id = history_delta.id
+                and 
+                history.history_at = history_delta.history_at
+                and 
+                history_delta.name is not null
+                and 
+                history_delta.history_biz_event = 'IDEA_UPDATED'
+                
+    union all
+
+      	select distinct
+			'ACTION_IDEA_DESCRIPTION_CHANGED' as change_event,
+			'IDEA' as change_object,
+    		history.history_at as changed_at,
+	    	history.id as id,
+	    	history.phase_code as phase_code,
+    		identity.name as changed_by,
+    		'' as reason,
+	    	0 as is_decision,
+	    	'' as param_0,
+	    	campaign.name as campaign_name
+	   	from \"sap.ino.db.idea::t_idea_h\" as history
+	   		left outer join \"sap.ino.db.iam::t_identity\" as identity
+                on history.history_actor_id = identity.id
+            inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+                on history.campaign_id = campaign.campaign_id
+            inner join \"sap.ino.db.idea::v_idea_h\" as history_delta
+                on history.id = history_delta.id
+                and 
+                history.history_at = history_delta.history_at
+                and 
+                history_delta.description is not null
+                and 
+                history_delta.history_biz_event = 'IDEA_UPDATED'
+
+    union all
+
+		select distinct
+			('ACTION_LINK_' || link.history_db_event) as change_event,
+			'LINK' as change_object,
+    		link.history_at as changed_at,
+	    	history.id as id,
+	    	history.phase_code as phase_code,
+    		identity.name as changed_by,
+    		'' as reason,
+	    	0 as is_decision,
+	    	link.label as param_0,
+	    	campaign.name as campaign_name
+	   	from \"sap.ino.db.link::t_link_h\" as link
+ 	   	    inner join \"sap.ino.db.idea::t_idea_h\" as history
+ 	   	      on history.id = link.object_id
+                and 
+                link.object_type_code = 'IDEA'
+                and 
+                history.history_at = link.history_at
+	   		left outer join \"sap.ino.db.iam::t_identity\" as identity
+                on link.history_actor_id = identity.id
+            inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+                on history.campaign_id = campaign.campaign_id
+
+) with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea",
+					"sap.ino.db.idea::t_idea_h",
+					"sap.ino.db.link::t_link_h",
+                    "sap.ino.db.iam::t_object_identity_role_h",
+                    "sap.ino.db.iam::t_identity",
+                    "sap.ino.db.evaluation::t_evaluation_h"];
+
+depends_on_view =  ["sap.ino.db.campaign::v_campaign_t_locale",
+                    "sap.ino.db.idea::v_idea_h",
+                    "sap.ino.db.idea::v_decision",
+                    "sap.ino.db.link::v_relation_h"];

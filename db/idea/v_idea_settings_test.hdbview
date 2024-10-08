@@ -1,0 +1,236 @@
+schema = "SAP_INO";
+query = "select original_setting.id,
+                  original_setting.idea_id,
+                  original_setting.ANONYMOUS_FOR,
+                  case
+                when user.app_user not in (select idea.CREATED_BY_ID as Identity_id
+                  --visible to assigned coach 
+                  FROM \"sap.ino.db.idea::t_idea\"
+                  as idea WHERE original_setting.idea_id = idea.ID union all select manager.identity_id as Identity_id FROM \"sap.ino.db.idea::t_idea\"
+                  as idea inner join \"sap.ino.db.campaign::v_campaign_manager_transitive\"
+                  as manager on idea.campaign_id = manager.campaign_id WHERE original_setting.idea_id = idea.ID union all SELECT identity_id from \"sap.ino.db.iam::t_object_identity_role\"
+                  where(role_code = 'IDEA_CONTRIBUTOR'
+                    OR role_code = 'IDEA_COACH') and object_id = original_setting.idea_id
+                )
+                then cast('true' as VARCHAR)
+                else cast('false' as VARCHAR)
+                end as IS_ANONYMOUS
+                from \"sap.ino.db.idea::t_ideas_setting\"
+                as original_setting
+                inner join \"sap.ino.db.idea::v_application_user_for_anonymous\"
+                as user
+                on user.idea_id = original_setting.idea_id
+                where original_setting.ANONYMOUS_FOR = 'COACH'
+                union
+         select original_setting.id,
+                  original_setting.idea_id,
+                  original_setting.ANONYMOUS_FOR,
+                  case
+                when user.app_user not in (select idea.CREATED_BY_ID as Identity_id
+                  --visible to assigned coach and expert 
+                  FROM \"sap.ino.db.idea::t_idea\"
+                  as idea WHERE original_setting.idea_id = idea.ID union all select manager.identity_id as Identity_id FROM \"sap.ino.db.idea::t_idea\"
+                  as idea inner join \"sap.ino.db.campaign::v_campaign_manager_transitive\"
+                  as manager on idea.campaign_id = manager.campaign_id WHERE original_setting.idea_id = idea.ID union all SELECT identity_id from \"sap.ino.db.iam::t_object_identity_role\"
+                  where(role_code = 'IDEA_CONTRIBUTOR') and object_id = original_setting.idea_id union all SELECT identity_id from \"sap.ino.db.idea::v_anonymous_idea_coach_pool\"
+                  as coach_pool where original_setting.idea_id = coach_pool.idea_id
+                )
+                then cast('true'  as VARCHAR)
+                else cast('false'  as VARCHAR)
+                end as IS_ANONYMOUS
+                from \"sap.ino.db.idea::t_ideas_setting\"
+                as original_setting
+                inner join \"sap.ino.db.idea::v_application_user_for_anonymous\"
+                as user
+                on user.idea_id = original_setting.idea_id
+                where original_setting.ANONYMOUS_FOR = 'COACH_POOL'
+                union
+                select original_setting.id,
+                  original_setting.idea_id,
+                  original_setting.ANONYMOUS_FOR,
+                  case
+                when user.app_user not in (select idea.CREATED_BY_ID as Identity_id
+                  --visible to assigned coach and expert 
+                  FROM \"sap.ino.db.idea::t_idea\"
+                  as idea WHERE original_setting.idea_id = idea.ID union all select manager.identity_id as Identity_id FROM \"sap.ino.db.idea::t_idea\"
+                  as idea inner join \"sap.ino.db.campaign::v_campaign_manager_transitive\"
+                  as manager on idea.campaign_id = manager.campaign_id WHERE original_setting.idea_id = idea.ID union all SELECT identity_id from \"sap.ino.db.iam::t_object_identity_role\"
+                  where(role_code = 'IDEA_CONTRIBUTOR') and object_id = original_setting.idea_id union all SELECT identity_id from \"sap.ino.db.idea::v_anonymous_idea_expert_pool\"
+                  as expert_pool where original_setting.idea_id = expert_pool.idea_id
+                )
+                then cast('true' as VARCHAR)
+                else cast('false'  as VARCHAR)
+                end as IS_ANONYMOUS
+                from \"sap.ino.db.idea::t_ideas_setting\"
+                as original_setting
+                inner join \"sap.ino.db.idea::v_application_user_for_anonymous\"
+                as user
+                on user.idea_id = original_setting.idea_id
+                where original_setting.ANONYMOUS_FOR = 'EXPERT_POOL'
+                union
+                select original_setting.id,
+                  original_setting.idea_id,
+                  original_setting.ANONYMOUS_FOR,
+                  case
+                when user.app_user not in (select idea.CREATED_BY_ID as Identity_id
+                  --visible to assigned coach and expert 
+                  FROM \"sap.ino.db.idea::t_idea\"
+                  as idea WHERE original_setting.idea_id = idea.ID union all select manager.identity_id as Identity_id FROM \"sap.ino.db.idea::t_idea\"
+                  as idea inner join \"sap.ino.db.campaign::v_campaign_manager_transitive\"
+                  as manager on idea.campaign_id = manager.campaign_id WHERE original_setting.idea_id = idea.ID union all SELECT identity_id from \"sap.ino.db.iam::t_object_identity_role\"
+                  where(role_code = 'IDEA_CONTRIBUTOR') and object_id = original_setting.idea_id union all SELECT identity_id from \"sap.ino.db.idea::v_anonymous_idea_coach_pool\"
+                  as coach_pool where original_setting.idea_id = coach_pool.idea_id union all SELECT identity_id from \"sap.ino.db.idea::v_anonymous_idea_expert_pool\"
+                  as expert_pool where original_setting.idea_id = expert_pool.idea_id
+                )
+                then cast('true' as VARCHAR)
+                else cast('false' as VARCHAR)
+                end as IS_ANONYMOUS
+                from \"sap.ino.db.idea::t_ideas_setting\"
+                as original_setting
+                inner join \"sap.ino.db.idea::v_application_user_for_anonymous\"
+                as user
+                on user.idea_id = original_setting.idea_id
+                where original_setting.ANONYMOUS_FOR = 'COACH_POOL_AND_EXPERT_POOL'
+                union
+                
+                
+                select original_setting.id,
+                  original_setting.idea_id,
+                  original_setting.ANONYMOUS_FOR,
+                  case
+                when user.app_user not in (select idea.CREATED_BY_ID as Identity_id
+                  --visible to assigned coach and expert 
+                  FROM \"sap.ino.db.idea::t_idea\"
+                  as idea WHERE original_setting.idea_id = idea.ID union all select manager.identity_id as Identity_id FROM \"sap.ino.db.idea::t_idea\"
+                  as idea inner join \"sap.ino.db.campaign::v_campaign_manager_transitive\"
+                  as manager on idea.campaign_id = manager.campaign_id WHERE original_setting.idea_id = idea.ID union all SELECT identity_id from \"sap.ino.db.iam::t_object_identity_role\"
+                  where(role_code = 'IDEA_CONTRIBUTOR'
+                    OR role_code = 'IDEA_COACH'
+                    OR role_code = 'IDEA_EXPERT') and object_id = original_setting.idea_id
+                )
+                then cast('true' as VARCHAR)
+                else cast('false'  as VARCHAR)
+                end as IS_ANONYMOUS
+                from \"sap.ino.db.idea::t_ideas_setting\"
+                as original_setting
+                inner join \"sap.ino.db.idea::v_application_user_for_anonymous\"
+                as user
+                on user.idea_id = original_setting.idea_id
+                where original_setting.ANONYMOUS_FOR = 'COACH_AND_EXPERT'
+                union
+                
+                
+                select original_setting.id,
+                  original_setting.idea_id,
+                  original_setting.ANONYMOUS_FOR,
+                  case
+                when user.app_user not in (select idea.CREATED_BY_ID as Identity_id
+                  --visible to assigned expert 
+                  FROM \"sap.ino.db.idea::t_idea\"
+                  as idea WHERE original_setting.idea_id = idea.ID union all select manager.identity_id as Identity_id FROM \"sap.ino.db.idea::t_idea\"
+                  as idea inner join \"sap.ino.db.campaign::v_campaign_manager_transitive\"
+                  as manager on idea.campaign_id = manager.campaign_id WHERE original_setting.idea_id = idea.ID union all SELECT identity_id from \"sap.ino.db.iam::t_object_identity_role\"
+                  where(role_code = 'IDEA_CONTRIBUTOR'
+                    OR role_code = 'IDEA_EXPERT') and object_id = original_setting.idea_id
+                )
+                then cast('true'  as VARCHAR)
+                else cast('false' as VARCHAR)
+                end as IS_ANONYMOUS
+                from \"sap.ino.db.idea::t_ideas_setting\"
+                as original_setting
+                inner join \"sap.ino.db.idea::v_application_user_for_anonymous\"
+                as user
+                on user.idea_id = original_setting.idea_id
+                where original_setting.ANONYMOUS_FOR = 'EXPERT'
+                union
+                select original_setting.id,
+                  original_setting.idea_id,
+                  original_setting.ANONYMOUS_FOR,
+                  case
+                when user.app_user not in (select idea.CREATED_BY_ID as Identity_id
+                  --visible to participants 
+                  FROM \"sap.ino.db.idea::t_idea\"
+                  as idea WHERE original_setting.idea_id = idea.ID union all select manager.identity_id as Identity_id FROM \"sap.ino.db.idea::t_idea\"
+                  as idea inner join \"sap.ino.db.campaign::v_campaign_manager_transitive\"
+                  as manager on idea.campaign_id = manager.campaign_id WHERE original_setting.idea_id = idea.ID union all select participants.identity_id as Identity_id FROM \"sap.ino.db.idea::t_idea\"
+                  as idea inner join \"sap.ino.db.campaign::v_campaign_participants_user_transitive\"
+                  as participants on idea.campaign_id = participants.object_id WHERE original_setting.idea_id = idea.ID union all SELECT identity_id from \"sap.ino.db.iam::t_object_identity_role\"
+                  where role_code = 'IDEA_CONTRIBUTOR'
+                  and object_id = original_setting.idea_id
+                )
+                then cast('true' as VARCHAR)
+                else cast('false' as VARCHAR)
+                end as IS_ANONYMOUS
+                from \"sap.ino.db.idea::t_ideas_setting\"
+                as original_setting
+                inner join \"sap.ino.db.idea::v_application_user_for_anonymous\"
+                as user
+                on user.idea_id = original_setting.idea_id
+                where original_setting.ANONYMOUS_FOR = 'PARTICIPANT'
+                union
+                
+                select original_setting.id,
+                  original_setting.idea_id,
+                  original_setting.ANONYMOUS_FOR,
+                  case
+                when user.app_user not in (select idea.CREATED_BY_ID as Identity_id
+                  --visible to campaign manager 
+                  FROM \"sap.ino.db.idea::t_idea\"
+                  as idea WHERE original_setting.idea_id = idea.ID union all select manager.identity_id as Identity_id FROM \"sap.ino.db.idea::t_idea\"
+                  as idea inner join \"sap.ino.db.campaign::v_campaign_manager_transitive\"
+                  as manager on idea.campaign_id = manager.campaign_id WHERE original_setting.idea_id = idea.ID union all SELECT identity_id from \"sap.ino.db.iam::t_object_identity_role\"
+                  where role_code = 'IDEA_CONTRIBUTOR'
+                  and object_id = original_setting.idea_id
+                )
+                then cast('true' as VARCHAR)
+                else cast('false' as VARCHAR)
+                end as IS_ANONYMOUS
+                from \"sap.ino.db.idea::t_ideas_setting\"
+                as original_setting
+                inner join \"sap.ino.db.idea::v_application_user_for_anonymous\"
+                as user
+                on user.idea_id = original_setting.idea_id
+                where original_setting.ANONYMOUS_FOR = 'PARTLY'
+                union
+                --fully anonymous
+                select original_setting.id,
+                  original_setting.idea_id,
+                  original_setting.ANONYMOUS_FOR,
+                  case
+                when user.app_user not in (select idea.CREATED_BY_ID as Identity_id from \"sap.ino.db.idea::t_idea\"
+                  as idea WHERE original_setting.idea_id = idea.ID union all SELECT identity_id from \"sap.ino.db.iam::t_object_identity_role\"
+                  where role_code = 'IDEA_CONTRIBUTOR'
+                  and object_id = original_setting.idea_id
+                )
+                then cast('true' as VARCHAR)
+                else cast('false' as VARCHAR)
+                end as IS_ANONYMOUS
+                from \"sap.ino.db.idea::t_ideas_setting\"
+                as original_setting
+                inner join \"sap.ino.db.idea::v_application_user_for_anonymous\"
+                as user
+                on user.idea_id = original_setting.idea_id
+                where original_setting.ANONYMOUS_FOR = 'ALL'
+                union
+                --fully anonymous
+                select original_setting.id,
+                  original_setting.idea_id,
+                  original_setting.ANONYMOUS_FOR,
+                
+                  cast('false' as VARCHAR) as IS_ANONYMOUS
+                from \"sap.ino.db.idea::t_ideas_setting\"
+                as original_setting
+                
+                where original_setting.ANONYMOUS_FOR = 'NONE'
+
+            with read only";
+ 
+depends_on_table = ["sap.ino.db.idea::t_ideas_setting",
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.iam::t_object_identity_role"];
+
+depends_on_view = ["sap.ino.db.idea::v_application_user_for_anonymous",
+                   "sap.ino.db.campaign::v_campaign_manager_transitive",
+                   "sap.ino.db.campaign::v_campaign_participants_user_transitive",
+                   "sap.ino.db.idea::v_anonymous_idea_coach_pool",
+                   "sap.ino.db.idea::v_anonymous_idea_expert_pool"];

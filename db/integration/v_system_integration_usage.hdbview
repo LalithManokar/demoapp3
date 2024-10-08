@@ -1,0 +1,54 @@
+schema = "SAP_INO";
+query = "
+    select
+        campaign_integration.id,
+        campaign_integration.TECHNICAL_NAME,
+        campaign_integration.created_at,
+        campaign_integration.created_by_id,
+        campaign_integration.changed_at,
+        campaign_integration.changed_by_id,
+        created_by_identity.name as created_by, 
+        changed_by_identity.name as changed_by,
+        object.name as object_type_name,
+        object.description as object_type_description,
+        campaign_integration.campaign_id,
+        campaign_text.name as object_name,
+        count(campaign_integration.campaign_id) as usage_count
+    from \"sap.ino.db.integration::t_campaign_integration\" as campaign_integration
+        left outer join \"sap.ino.db.iam::t_identity\" as created_by_identity
+            on campaign_integration.created_by_id = created_by_identity.id
+        left outer join \"sap.ino.db.iam::t_identity\" as changed_by_identity
+            on campaign_integration.changed_by_id = changed_by_identity.id
+        left outer join \"sap.ino.db.integration::t_system_integration\" as system_integration
+            on system_integration.TECHNICAL_NAME = campaign_integration.TECHNICAL_NAME 
+        left outer join \"sap.ino.db.aof::t_application_object\" as object
+            on object.code = 'CAMPAIGN'
+        left outer join \"sap.ino.db.campaign::v_auth_campaigns\" as campaign_auth
+            on  campaign_integration.campaign_id = campaign_auth.campaign_id
+        left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign_text 
+            on campaign_auth.campaign_id = campaign_text.campaign_id,
+        (select content from \"sap.ino.db.basis::v_resolved_text\" where object_name = 'uitexts' and text_id = 'BO_COMMON_NOT_AUTHORIZED') as not_authorized
+     group by
+        campaign_integration.id,
+        campaign_integration.TECHNICAL_NAME,
+        campaign_integration.created_at,
+        campaign_integration.created_by_id,
+        campaign_integration.changed_at,
+        campaign_integration.changed_by_id,
+        created_by_identity.name, 
+        changed_by_identity.name,
+        object.name,
+        object.description,
+        campaign_integration.campaign_id,
+        campaign_text.name,
+        not_authorized.content
+    with read only";
+
+depends_on_table = ["sap.ino.db.integration::t_system_integration",
+                    "sap.ino.db.iam::t_identity",
+                    "sap.ino.db.integration::t_campaign_integration",
+                    "sap.ino.db.aof::t_application_object"];
+                    
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale",
+                    "sap.ino.db.campaign::v_auth_campaigns",
+                    "sap.ino.db.basis::v_resolved_text"];

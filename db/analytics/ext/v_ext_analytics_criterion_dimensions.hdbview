@@ -1,0 +1,51 @@
+schema = "SAP_INO_EXT";
+query = "
+    SELECT CODE, 
+    	MODEL_CODE, 
+    	DATATYPE_CODE, 
+    	PARENT_CRITERION_CODE, 
+    	SEQUENCE_NO, 
+    	IS_OVERALL_RESULT, 
+    	UOM_CODE, 
+    	VALUE_OPTION_LIST_CODE, 
+    	AGGREGATION_TYPE, 
+    	NUM_VALUE_MIN, 
+    	NUM_VALUE_MAX, 
+    	X_AXIS_CRITERION_CODE, 
+    	X_AXIS_SEGMENT_NO, 
+    	Y_AXIS_CRITERION_CODE, 
+    	Y_AXIS_SEGMENT_NO, 
+    	VIS_PARAM_1_CRITERION_CODE, 
+    	VIS_PARAM_2_CRITERION_CODE, 
+    	DEFAULT_TEXT, 
+    	DEFAULT_LONG_TEXT,
+    	IFNULL(WEIGHT, 0) AS WEIGHT
+    FROM \"sap.ino.db.evaluation::t_criterion\"
+    
+    UNION
+
+    SELECT DISTINCT 'FORMULA_CODE' AS CODE, 
+        CODE AS MODEL_CODE, 
+        'NUMERIC' AS DATATYPE_CODE, 
+        NULL AS PARENT_CRITERION_CODE, 
+        1 AS SEQUENCE_NO, 
+        1 AS IS_OVERALL_RESULT, 
+        NULL AS UOM_CODE, 
+        NULL AS VALUE_OPTION_LIST_CODE, 
+        NULL AS AGGREGATION_TYPE, 
+        NULL AS NUM_VALUE_MIN, 
+        NULL AS NUM_VALUE_MAX, 
+        NULL AS X_AXIS_CRITERION_CODE, 
+        NULL AS X_AXIS_SEGMENT_NO, 
+        NULL AS Y_AXIS_CRITERION_CODE, 
+        NULL AS Y_AXIS_SEGMENT_NO, 
+        NULL AS VIS_PARAM_1_CRITERION_CODE, 
+        NULL AS VIS_PARAM_2_CRITERION_CODE, 
+        'Overall Result by Formula' AS DEFAULT_TEXT, 
+        'Overall Result by Formula' AS DEFAULT_LONG_TEXT,
+        0 AS WEIGHT
+    FROM \"sap.ino.db.evaluation::t_model\"
+    WHERE ENABLE_FORMULA = 1;
+
+";
+

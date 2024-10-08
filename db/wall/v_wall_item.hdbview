@@ -1,0 +1,38 @@
+schema = "SAP_INO";
+query = "
+    select
+        item.id,
+        item.wall_id,
+        item.parent_wall_item_id,
+        item.name,
+        wall.name as wall_name,
+        item.wall_item_type_code,
+        item.content,
+        item.position_x,
+        item.position_y,
+        item.width,
+        item.height,
+        item.zindex,
+        item.ref_object_type_code,
+        item.ref_object_id,
+        
+        item.created_at,
+        item.created_by_id,
+        identity1.name as created_by_name,
+
+        item.changed_at,
+        item.changed_by_id,
+        identity2.name as changed_by_name
+    
+    from \"sap.ino.db.wall::t_wall_item\" as item
+    inner join \"sap.ino.db.wall::t_wall\" as wall
+		on item.wall_id = wall.id
+    left outer join \"sap.ino.db.iam::t_identity\" as identity1
+        on identity1.id = item.created_by_id 
+    left outer join \"sap.ino.db.iam::t_identity\" as identity2
+        on identity2.id = item.changed_by_id
+    with read only ";
+        
+depends_on_table = ["sap.ino.db.wall::t_wall",
+					"sap.ino.db.wall::t_wall_item",
+                    "sap.ino.db.iam::t_identity"];

@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Input table for idea status codes";
+table.temporary = true;
+table.columns = [
+    {name = "ID"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Status code";}
+];

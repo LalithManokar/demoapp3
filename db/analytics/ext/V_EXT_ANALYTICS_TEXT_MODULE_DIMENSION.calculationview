@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_TEXT_MODULE_DIMENSION" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="V_EXT_ANALYTICS_TEXT_MODULE_DIMENSION"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.basis::t_text_module" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::t_text_module"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="sap.ino.db.basis::t_text_module">
+    <descriptions/>
+    <attributes>
+      <attribute id="TERM_CODE" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Term code"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::t_text_module" columnName="CODE"/>
+      </attribute>
+      <attribute id="TERM_NAME" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Name for term and condition"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::t_text_module" columnName="DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="TERM_DESCRIPTION" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Description for term and condition"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::t_text_module" columnName="DEFAULT_LONG_TEXT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE;
+table.temporary = true;
+table.description = "Output table to hold generated ideas";
+table.columns = [
+    {name = "HANDLE_ID";    sqlType = INTEGER;},
+    {name = "GENERATED_ID"; sqlType = INTEGER;}
+];

@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "The provided field from INM";
+table.columns = [
+    {name = "FIELD_CODE";       sqlType = NVARCHAR;     length=64;          nullable = false;                     comment = "Identify the field ";},
+    {name = "TEXT_CODE";        sqlType = NVARCHAR;     length=64;          nullable = true;                     comment = "Text bundle code for translation";},
+    {name = "TYPE_CODE";        sqlType = NVARCHAR;     length=64;          nullable = false;                     comment = "Identify request mapping or response mapping";}
+];
+table.primaryKey.pkcolumns = ["FIELD_CODE"];

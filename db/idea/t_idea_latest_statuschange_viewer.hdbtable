@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Viewers for latest idea with status change";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Primary key";},
+	{name = "IDENTITY_ID"; sqlType = INTEGER; nullable = false; comment = "Viewer's id";},
+	{name = "OBJECT_ID"; sqlType = INTEGER; nullable = false; comment = "Foreign key to latest idea table";}
+];
+table.primaryKey.pkcolumns = ["ID"];

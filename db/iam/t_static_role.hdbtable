@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE;
+table.description = "Innovation Management Logical Static Roles";
+table.columns = [
+    {name = "LOGICAL_ROLE_NAME"; sqlType = NVARCHAR; length = 256; nullable = false; comment = "Logical role name";},
+    {name = "TECHNICAL_ROLE_NAME"; sqlType = NVARCHAR; length = 256; nullable = false; comment = "Technical role name without package prefix";}
+];
+table.primaryKey.pkcolumns = ["LOGICAL_ROLE_NAME"];

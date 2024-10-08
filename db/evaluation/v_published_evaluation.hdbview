@@ -1,0 +1,9 @@
+schema = "SAP_INO";
+query = "
+select * from \"sap.ino.db.evaluation::v_evaluation\" 
+	where 
+		status_code = \'sap.ino.config.EVAL_PUB_SUBMITTER\' or 
+		status_code = \'sap.ino.config.EVAL_PUB_COMMUNITY\'
+    with read only";
+
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation"];

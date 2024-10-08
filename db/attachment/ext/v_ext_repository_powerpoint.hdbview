@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT";
+query = " 
+	select powerpoint.*
+	from \"sap.ino.db.attachment::v_repository_powerpoint\" as powerpoint
+    with read only"; 
+
+depends_on_view = ["sap.ino.db.attachment::v_repository_powerpoint"];

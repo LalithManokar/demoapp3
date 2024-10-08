@@ -1,0 +1,51 @@
+PROCEDURE "SAP_INO"."sap.ino.db.tracker::p_identity_consumption" () 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER    
+	DEFAULT SCHEMA SAP_INO
+	AS
+BEGIN
+    total_count = SELECT 
+        COUNT(1) AS count 
+    FROM "sap.ino.db.iam::t_identity" ;
+    
+    deletion = SELECT 
+        COUNT(1) AS count 
+    FROM "sap.ino.db.iam::t_identity" 
+        WHERE ERASED = 1 ;
+        
+    total_view = SELECT 
+        COUNT(DISTINCT IDEN.IDENTITY_ID) AS  count 
+    FROM  "sap.ino.db.tracker::t_identity_views" AS iden 
+    WHERE 
+	    iden.ACCESSED_AT >= ADD_SECONDS(ADD_DAYS(CURRENT_UTCDATE, -1),0)
+        AND iden.ACCESSED_AT < ADD_SECONDS(CURRENT_UTCDATE, 0) ;
+        
+    innovation_view = SELECT 
+        COUNT(DISTINCT role_transitive.identity_id) AS count 
+    FROM "sap.ino.db.iam::v_object_identity_role_transitive" AS role_transitive 
+    INNER JOIN "sap.ino.db.iam::t_role_privilege" AS role_priv 
+    	ON role_priv.role_code = role_transitive.role_code 
+    INNER JOIN "sap.ino.db.tracker::t_identity_views" AS iden 
+        ON iden.identity_id = role_transitive.identity_id 
+    WHERE 
+    	(role_transitive.object_type_code = 'CAMPAIGN' OR role_transitive.object_type_code = 'RESPONSIBILITY' )  
+    	AND role_priv.privilege = 'CAMP_IDEA_BACKOFFICE' 
+    	AND Iden.ACCESSED_AT >= ADD_SECONDS(ADD_DAYS(CURRENT_UTCDATE, -1),0)
+    	AND iden.ACCESSED_AT < ADD_SECONDS(CURRENT_UTCDATE, 0);
+    	
+	INSERT INTO "sap.ino.db.tracker::t_identity_consumption"(GLAS_ID,EXECUTTION_AT,YEAR,MONTH,WEEK,DAY,TOTAL_USER,DELETION_USER,COMMUNITY_USER,INNOVATION_OFFICE_USER)
+	SELECT
+	    'H071',
+	    CURRENT_UTCTIMESTAMP,
+	    EXTRACT (year FROM ADD_SECONDS(CURRENT_UTCDATE, -1)),
+	    EXTRACT (month FROM ADD_SECONDS(CURRENT_UTCDATE, -1)),
+	    WEEK(ADD_SECONDS(CURRENT_UTCDATE, -1)),
+	    EXTRACT (day FROM ADD_SECONDS(CURRENT_UTCDATE, -1)),
+	    totalCount.count,
+	    deletionCount.count,
+	    totalView.count - innoView.count,
+	    innoView.count
+    FROM :total_count as totalCount, :deletion as deletionCount, :total_view as totalView, :innovation_view as innoView;
+	    
+END
+

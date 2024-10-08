@@ -1,0 +1,18 @@
+schema = "SAP_INO";
+query = 
+"
+select eval_req_item.id as EVAL_REQ_ITEM_ID
+from \"sap.ino.db.evaluation::t_evaluation_request_item\" as eval_req_item
+inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as role_eval
+    on  role_eval.object_id = eval_req_item.id and
+        role_eval.object_type_code = 'EVAL_REQUEST_ITEM'
+inner join \"sap.ino.db.iam::t_role_privilege\" as role_privilege
+    on  role_privilege.role_code = role_eval.role_code 
+where role_privilege.privilege = 'IDEA_EVAL_REQ_ITEM_UPDATE'
+with read only
+";
+
+depends_on_table = ["sap.ino.db.evaluation::t_evaluation_request_item",
+                    "sap.ino.db.iam::t_role_privilege"];
+
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];

@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = "
+select 
+    evaluations.id,
+    status_trans.*
+from \"sap.ino.db.evaluation::t_evaluation\" as evaluations 
+    inner join \"sap.ino.db.status::t_status_model_transition\" as status_trans
+        on status_trans.current_status_code = evaluations.status_code 
+    inner join \"sap.ino.db.idea::t_idea\" as idea
+    	on idea.id = evaluations.idea_id and
+    	   (idea.phase_code = evaluations.idea_phase_code 
+    	    or (     idea.phase_code != evaluations.idea_phase_code 
+    	         and status_trans.next_status_code != 'sap.ino.config.EVAL_DRAFT'
+    	         and status_trans.current_status_code != 'sap.ino.config.EVAL_DRAFT'))  	
+	where status_trans.status_model_code = 'sap.ino.config.EVALUATION'";
+
+depends_on_table =  ["sap.ino.db.status::t_status_model_transition",
+					 "sap.ino.db.idea::t_idea",
+                     "sap.ino.db.evaluation::t_evaluation"];

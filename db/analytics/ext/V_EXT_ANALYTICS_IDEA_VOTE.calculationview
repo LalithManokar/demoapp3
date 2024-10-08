@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_IDEA_VOTE" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED">
+  <descriptions defaultDescription="V_EXT_ANALYTICS_IDEA_VOTE"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="V_ANALYTICS_IDEA_VOTE" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_VOTE</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:AggregationView" id="IDEA_VOTE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="USER_ID"/>
+        <viewAttribute id="VOTE_ID"/>
+        <viewAttribute id="EXPERT_VOTE_ID"/>
+        <viewAttribute id="VOTE_AT"/>
+        <viewAttribute id="SCORE"/>
+        <viewAttribute id="EXPERT_SCORE"/>
+        <viewAttribute id="VOTE_COMMENT"/>
+        <viewAttribute id="VOTE_REASON"/>
+        <viewAttribute id="VOTE_REASON_TEXT"/></viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#V_ANALYTICS_IDEA_VOTE">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="USER_ID" source="USER_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VOTE_ID" source="VOTE_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EXPERT_VOTE_ID" source="EXPERT_VOTE_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VOTE_AT" source="VOTE_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SCORE" source="SCORE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EXPERT_SCORE" source="EXPERT_SCORE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VOTE_COMMENT" source="VOTE_COMMENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VOTE_REASON" source="VOTE_REASON"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VOTE_REASON_TEXT" source="VOTE_REASON_TEXT"/></input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="IDEA_VOTE">
+    <descriptions/>
+    <attributes>
+      <attribute id="VOTE_ID" hidden="true" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="VOTE_ID"/>
+        <keyMapping columnObjectName="IDEA_VOTE" columnName="VOTE_ID"/>
+      </attribute>
+      <attribute id="EXPERT_VOTE_ID" hidden="true" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="EXPERT_VOTE_ID"/>
+        <keyMapping columnObjectName="IDEA_VOTE" columnName="EXPERT_VOTE_ID"/>
+      </attribute>
+      <attribute id="VOTE_AT" hidden="true" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Changed timestamp"/>
+        <keyMapping columnObjectName="IDEA_VOTE" columnName="VOTE_AT"/>
+      </attribute>
+      <attribute id="VOTE_COMMENT" order="14" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Vote Comment"/>
+        <keyMapping columnObjectName="IDEA_VOTE" columnName="VOTE_COMMENT"/>
+      </attribute>
+      <attribute id="VOTE_REASON" order="15" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Vote Reason"/>
+        <keyMapping columnObjectName="IDEA_VOTE" columnName="VOTE_REASON"/>
+      </attribute>
+      <attribute id="VOTE_REASON_TEXT" order="16" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Vote Reason Text"/>
+        <keyMapping columnObjectName="IDEA_VOTE" columnName="VOTE_REASON_TEXT"/>
+      </attribute>
+      <attribute id="IDEA_ID$local">
+        <keyMapping columnObjectName="IDEA_VOTE" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID$local">
+        <keyMapping columnObjectName="IDEA_VOTE" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="USER_ID$local">
+        <keyMapping columnObjectName="IDEA_VOTE" columnName="USER_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes>
+      <calculatedAttribute id="DATE_YEAR" hidden="false" order="11" semanticType="empty" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Year of Vote"/>
+        <keyCalculation datatype="VARCHAR" length="4" expressionLanguage="COLUMN_ENGINE">
+          <formula>component(&quot;VOTE_AT&quot;,1)</formula>
+        </keyCalculation>
+      </calculatedAttribute>
+      <calculatedAttribute id="DATE_MONTH" hidden="false" order="12" semanticType="empty" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Month of Vote"/>
+        <keyCalculation datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+          <formula>component(&quot;VOTE_AT&quot;,2)</formula>
+        </keyCalculation>
+      </calculatedAttribute>
+      <calculatedAttribute id="DATE_YEAR_MONTH" hidden="false" order="13" semanticType="empty" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Year-Month of Vote"/>
+        <keyCalculation datatype="VARCHAR" length="7" expressionLanguage="COLUMN_ENGINE">
+          <formula>&quot;DATE_YEAR&quot; + '-' + if(&quot;DATE_MONTH&quot;&lt;10,'0','') + string(&quot;DATE_MONTH&quot;)</formula>
+        </keyCalculation>
+      </calculatedAttribute>
+    </calculatedAttributes>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="SCORE_SUM" hidden="true" order="6" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="SCORE"/>
+        <measureMapping columnObjectName="IDEA_VOTE" columnName="SCORE"/>
+      </measure>
+      <measure id="EXPERT_SCORE_SUM" hidden="true" order="9" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="EXPERT_SCORE"/>
+        <measureMapping columnObjectName="IDEA_VOTE" columnName="EXPERT_SCORE"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures>
+      <measure id="IDEA_COUNT" hidden="false" order="1" aggregationType="sum" measureType="simple" aggregatable="true" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Number of Ideas"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="IDEA_ID" dimensionUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="VOTE_COUNT" hidden="false" order="2" aggregationType="sum" measureType="simple" aggregatable="true" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Number of Votes"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="VOTE_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="EXP_VOTE_COUNT" hidden="false" order="3" aggregationType="sum" measureType="simple" aggregatable="true" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Number of Expert Votes"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="EXPERT_VOTE_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="EXP_SCORE" hidden="false" order="4" aggregationType="sum" measureType="simple" datatype="FLOAT" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Average Expert Score"/>
+        <formula>round(&quot;EXPERT_SCORE_SUM&quot;/&quot;EXP_VOTE_COUNT&quot;,2)</formula>
+      </measure>
+      <measure id="SCORE" hidden="false" order="5" aggregationType="sum" measureType="simple" datatype="FLOAT" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Average Score"/>
+        <formula>&quot;SCORE_SUM&quot;/&quot;VOTE_COUNT&quot;</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+    <sharedDimensions>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION">
+        <attributes>
+          <attributeRef>#IDEA_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDEA_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinType="referential" cardinality="CN_1" joinOperator="Equal"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION">
+        <attributes>
+          <attributeRef>#CAMPAIGN_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>CAMPAIGN_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinType="inner" cardinality="CN_1" joinOperator="Equal"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION">
+        <attributes>
+          <attributeRef>#USER_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDENTITY_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinType="referential" cardinality="CN_1" joinOperator="Equal"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+    </sharedDimensions>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="IDEA_VOTE" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="40" y="220"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape modelObjectName="IDEA_VOTE" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+        <upperLeftCorner x="518" y="222"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="1" y="23"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="898" y="11"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="0" y="30"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

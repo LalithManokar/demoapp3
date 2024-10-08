@@ -1,0 +1,22 @@
+procedure "SAP_INO"."sap.ino.db.idea::p_vote_update_aggr_score" (
+    in it_ideas     SAP_INO."sap.ino.db.basis::tt_object_id" 
+) 
+    language sqlscript
+    sql security invoker 
+    default schema SAP_INO 
+    as
+begin
+
+    lt_aggr_score = 
+        select aggr_score.* 
+        from "sap.ino.db.idea::v_vote_aggr_score" aggr_score
+            inner join :it_ideas as ideas
+                on ideas.id = aggr_score.idea_id;
+
+    upsert "sap.ino.db.idea::t_vote_aggr_score" 
+        select  idea_id, 
+                score, pos_score, neg_score, vote_count,
+                exp_score, exp_pos_score, exp_neg_score, exp_vote_count, group_score
+        from :lt_aggr_score;
+
+end;

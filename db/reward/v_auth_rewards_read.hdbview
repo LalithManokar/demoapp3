@@ -1,0 +1,40 @@
+schema = "SAP_INO";
+query = 
+"
+        select 
+            reward_list.id as reward_list_id,
+            role_privilege.role_code,
+            role_privilege.privilege
+        from \"sap.ino.db.reward::t_reward_list\" as reward_list
+        inner join \"sap.ino.db.idea::t_idea\" as idea
+            on idea.id = reward_list.idea_id
+        left outer join \"sap.ino.db.subresponsibility::t_responsibility_value_stage\" as resp_value
+            on resp_value.code = idea.resp_value_code
+        left outer join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as role_idea
+            on role_idea.object_id = reward_list.idea_id and
+               role_idea.object_type_code = 'IDEA'
+        left outer join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as role_camp
+        on  (role_camp.object_id = idea.campaign_id and
+            role_camp.object_type_code = 'CAMPAIGN') 
+            or (role_camp.object_id = resp_value.id and role_camp.object_type_code = 'RESPONSIBILITY')
+        inner join \"sap.ino.db.iam::t_role_privilege\"  as role_privilege
+            on  role_privilege.role_code = role_idea.role_code or 
+                role_privilege.role_code = role_camp.role_code 
+        where   ( role_privilege.privilege = 'IDEA_REWARD_SUBMITTER_READ' and
+                ( reward_list.status_code = 'sap.ino.config.REWARD_PUB_AUTHOR' or
+                  reward_list.status_code = 'sap.ino.config.REWARD_PUB_COMMUNITY' ) ) or 
+              ( role_privilege.privilege = 'CAMP_REWARD_PUBLIC_READ' and
+                reward_list.status_code = 'sap.ino.config.REWARD_PUB_COMMUNITY' ) or
+              ( role_privilege.privilege = 'CAMP_REWARD_PROTECTED_READ' and
+                (reward_list.status_code = 'sap.ino.config.REWARD_SUBMITTED' or
+                 reward_list.status_code = 'sap.ino.config.REWARD_PUB_AUTHOR' or
+                 reward_list.status_code = 'sap.ino.config.REWARD_PUB_COMMUNITY')) 
+with read only
+";
+
+depends_on_table = ["sap.ino.db.idea::t_idea",
+                    "sap.ino.db.reward::t_reward_list",
+                    "sap.ino.db.iam::t_role_privilege",
+                    "sap.ino.db.subresponsibility::t_responsibility_value_stage"];
+
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];

@@ -1,0 +1,6 @@
+schema = "SAP_INO_EXT";
+query = "
+    select * from \"sap.ino.db.evaluation::v_model_stage\"
+";
+
+depends_on_view = ["sap.ino.db.evaluation::v_model_stage"];

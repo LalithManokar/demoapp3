@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.temporary = true;
+table.description = "Holds current application user";
+table.columns = [
+    {name = "NAME";       sqlType = NVARCHAR;  length = 256; nullable = true;  comment = "Name of application user"; }
+];

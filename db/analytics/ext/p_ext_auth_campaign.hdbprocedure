@@ -1,0 +1,53 @@
+procedure "SAP_INO_EXT"."sap.ino.db.analytics.ext::p_ext_auth_campaign" (
+    out ot_campaign_ids "SAP_INO_EXT"."sap.ino.db.analytics.ext::tt_ext_campaign_id"
+) 
+language sqlscript
+sql security definer
+default schema sap_ino_ext
+reads sql data
+as
+begin
+    declare lv_result_count int;
+    declare lv_is_technical_user int;
+    
+    select
+        count(username) into lv_is_technical_user
+    from 
+        "_SYS_XS"."SQL_CONNECTIONS" as connections
+    where
+        connections.username = session_user and
+        connections.name like 'sap.ino.xs.xslib::dbuser';
+
+    lt_campaign_ids = 
+        select
+            campaign_id
+        from (
+            select object_id as campaign_id
+            from "sap.ino.db.iam::v_auth_application_user_role_transitive" as object_identity_role
+            inner join "sap.ino.db.iam::t_role_privilege" as role_privilege
+                on  object_identity_role.role_code = role_privilege.role_code and
+                    object_identity_role.object_type_code = 'CAMPAIGN' and
+                    role_privilege.privilege = 'CAMP_IDEA_BACKOFFICE'
+            inner join "sap.ino.db.iam::t_identity" as identity
+                on object_identity_role.identity_id = identity.id and
+                ((identity.user_name = session_user and
+                    :lv_is_technical_user = 0) or
+                (identity.user_name = session_context('APPLICATIONUSER') and
+                    :lv_is_technical_user > 0))
+        ) union (
+            select campaign.id as campaign_id
+            from "sap.ino.db.campaign::t_campaign" as campaign,
+                    "PUBLIC"."EFFECTIVE_ROLES" as roles
+                where
+                    ((roles.user_name = session_user and
+                        :lv_is_technical_user = 0) or
+                    (roles.user_name = session_context('APPLICATIONUSER') and
+                        :lv_is_technical_user > 0)) and 
+                    roles.role_name = 'sap.ino.authorizations::innovation_manager'
+        );
+
+    ot_campaign_ids = 
+        select 0 as campaign_id from dummy where (select count(*) from :lt_campaign_ids) = 0
+        union
+        select distinct campaign_id from :lt_campaign_ids where (select count(*) from :lt_campaign_ids) > 0;
+end;

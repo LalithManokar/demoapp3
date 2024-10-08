@@ -1,0 +1,10 @@
+schema = "SAP_INO";
+query = "
+    select vote.*
+    from \"sap.ino.db.idea::t_vote\" as vote
+        inner join \"sap.ino.db.iam::v_auth_application_user\" as user
+            on vote.user_id = user.id
+";
+
+depends_on_table = ["sap.ino.db.idea::t_vote"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user"];

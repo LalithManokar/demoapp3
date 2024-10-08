@@ -1,0 +1,7 @@
+schema = "SAP_INO";
+query = "select coalesce(text.text_id, phase.default_text) as text_id, text.content
+			from \"sap.ino.db.basis::v_resolved_text\" as text
+			left outer join \"sap.ino.db.campaign::t_phase\" as phase
+				on phase.code = text.text_id";
+depends_on_table = ["sap.ino.db.campaign::t_phase"];
+depends_on_view = ["sap.ino.db.basis::v_resolved_text"];

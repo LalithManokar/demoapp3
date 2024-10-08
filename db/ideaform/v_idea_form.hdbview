@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = "
+    select idea_form.code     as form_code, 
+           form_field.idea_id as idea_id 
+              from \"sap.ino.db.ideaform::t_form\" as idea_form
+                 left outer join ( select distinct t_field.form_code as form_code, t_field_value.idea_id as idea_id
+                                            from \"sap.ino.db.ideaform::t_field_value\" as t_field_value
+                                            left outer join \"sap.ino.db.ideaform::t_field\" as t_field
+                                            on t_field_value.field_code = t_field.code ) as form_field
+                 on idea_form.code = form_field.form_code
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.ideaform::t_form","sap.ino.db.ideaform::t_field","sap.ino.db.ideaform::t_field_value"];

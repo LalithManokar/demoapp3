@@ -1,0 +1,24 @@
+FUNCTION "SAP_INO"."sap.ino.db.blog::f_attachments_in_blog_description" ( ) 
+	RETURNS TABLE (blog_id integer, attachment_id integer )
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER AS
+BEGIN
+/***************************** 
+	Write your function logic
+ *****************************/
+ declare lv_regex nvarchar(100) := '<img\s+src="[^"''\s]+\.xsjs\/(\d+)".+?\s*\/?>';
+ declare lv_description nclob;
+ declare lv_blog_id integer;
+ declare cursor c_blog_description for
+     select id as blog_id, description from "sap.ino.db.blog::t_blog" as idea where OCCURRENCES_REGEXPR(:lv_regex IN idea.description) > 0;
+ lt_id = SELECT CAST(NULL AS INTEGER) AS blog_id, CAST(NULL AS INTEGER) AS attachment_id FROM DUMMY;
+ for cur_row as c_blog_description do
+   lv_blog_id        := cur_row.blog_id;
+   lv_description    := cur_row.description;
+   lt_attachment      = select id as attachment_id from "sap.ino.db.basis::f_substr_regexpr"(:lv_regex, 1, :lv_description);
+   lt_blog_id         = select :lv_blog_id as blog_id from dummy;
+   lt_blog_attachment = select blog_id, attachment_id from :lt_attachment, :lt_blog_id;
+   lt_id              = select * from :lt_id union select * from :lt_blog_attachment;
+ end for;
+ return select blog_id, attachment_id from :lt_id where blog_id is not null;
+END;

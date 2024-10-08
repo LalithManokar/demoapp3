@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Identity View - Identity View log data ";
+table.columns = [
+    {name = "ID";               sqlType = INTEGER;      nullable = false;       comment = "technical user identifier - must never be exposed to end users";},
+    {name = "IDENTITY_ID";      sqlType = INTEGER;      nullable = false;       comment = "Identity by which an identity has been changed. Foreign key to t_identity.ID";},
+    {name = "DISCLOSED_AT";     sqlType = TIMESTAMP;    nullable = false;       comment = "Disclosed timestamp";},
+    {name = "DISCLOSED_BY_ID";  sqlType = INTEGER;      nullable = false;       comment = "Ideneitty by which an identity disclosed. Foreign key to t_identity.ID";}
+];
+table.primaryKey.pkcolumns = ["ID"];

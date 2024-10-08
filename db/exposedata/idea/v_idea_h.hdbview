@@ -1,0 +1,27 @@
+schema = "SAP_INO";
+query = "select 
+                idea_hc.history_db_event,
+                idea_hc.history_biz_event,
+                idea_hc.history_at,
+                idea_hc.history_actor_id,
+                idea_hc.id,
+                idea_hc.created_at        as created_at,
+                idea_hc.created_by_id     as created_by_id,
+                idea_hc.changed_at        as changed_at,
+                idea_hc.changed_by_id     as changed_by_id,
+                idea_hc.name              as name,
+                idea_hc.description       as description,
+                idea_hc.campaign_id       as campaign_id,
+                idea_hc.phase_code           as phase_code,
+                idea_hc.status_code          as status_code,
+                --this predecessor field is not necessary depending on your requirement
+                idea_hc.predecessor       as predecessor_history_at,
+                status.DEFAULT_TEXT as status_name
+from (
+    select *, lag(history_at, 1, NULL) over (partition by id order by history_at asc ) as predecessor
+        from \"sap.ino.db.idea::t_idea_h\") as idea_hc 
+    left outer join \"sap.ino.db.status::t_status_stage\" as status
+    on status.code = idea_hc.status_code
+            with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea_h", "sap.ino.db.status::t_status_stage"];

@@ -1,0 +1,37 @@
+procedure "SAP_INO"."sap.ino.db.campaign::p_completed_campaign_add_participate" (
+    in  iv_userid INTEGER
+)
+
+LANGUAGE SQLSCRIPT
+SQL SECURITY INVOKER
+DEFAULT SCHEMA sap_ino
+AS
+begin
+    declare iv_appl_user_id INTEGER default 1000;
+    lt_campaigns = select campaign.id as campaign_id from "sap.ino.db.campaign::t_campaign" as campaign where valid_to <= CURRENT_UTCTIMESTAMP 
+                                         and status_code != 'sap.ino.config.CAMP_DRAFT' 
+                                         and not exists (select 1 from "sap.ino.db.iam::t_object_identity_role" as role 
+                                                         where role.identity_id=:iv_userid and object_id=campaign.id 
+                                                         and role.object_type_code='CAMPAIGN' and 
+                                                         (role.role_code='CAMPAIGN_USER' or role.role_code='CAMPAIGN_IDEA_READER'));
+     insert into "SAP_INO"."sap.ino.db.iam::t_object_identity_role"
+        (id, identity_id, object_id, object_type_code, role_code)
+        select  "SAP_INO"."sap.ino.db.iam::s_object_identity_role".nextval as id,:iv_userid AS identity_id,campaign.campaign_id,'CAMPAIGN' AS object_type_code,'CAMPAIGN_USER' AS role_code
+        from :lt_campaigns as campaign;
+         
+     insert into "SAP_INO"."sap.ino.db.iam::t_object_identity_role"
+        (id, identity_id, object_id, object_type_code, role_code)
+        select  "SAP_INO"."sap.ino.db.iam::s_object_identity_role".nextval as id,:iv_userid AS identity_id,campaign.campaign_id,'CAMPAIGN' AS object_type_code,'CAMPAIGN_IDEA_READER' AS role_code
+        from :lt_campaigns as campaign;
+     insert into "SAP_INO"."sap.ino.db.iam::t_object_identity_role_h"
+        (history_db_event,history_biz_event,history_at,history_actor_id,id, identity_id, object_id, object_type_code, role_code)
+        select  'CREATED','CAMP_UPDATED', CURRENT_UTCTIMESTAMP,:iv_appl_user_id, 
+        "SAP_INO"."sap.ino.db.iam::s_object_identity_role".nextval,:iv_userid,campaign.campaign_id,'CAMPAIGN','CAMPAIGN_USER'
+        from :lt_campaigns as campaign;
+     insert into "SAP_INO"."sap.ino.db.iam::t_object_identity_role_h"
+        (history_db_event,history_biz_event,history_at,history_actor_id,id, identity_id, object_id, object_type_code, role_code)
+        select  'CREATED','CAMP_UPDATED', CURRENT_UTCTIMESTAMP,:iv_appl_user_id, 
+        "SAP_INO"."sap.ino.db.iam::s_object_identity_role".nextval,:iv_userid AS identity_id,campaign.campaign_id,'CAMPAIGN','CAMPAIGN_IDEA_READER'
+        from :lt_campaigns as campaign;         
+         
+end;

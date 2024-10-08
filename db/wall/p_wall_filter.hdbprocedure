@@ -1,0 +1,33 @@
+procedure "SAP_INO"."sap.ino.db.wall::p_wall_filter" (
+     in  iv_filter_name nvarchar(1024),
+     out ot_wall_id  SAP_INO."sap.ino.db.basis::tt_object_id"
+ )
+ language sqlscript
+ sql security invoker
+ default schema SAP_INO
+ reads sql data as
+begin
+    ot_wall_id = select id 
+                         from "sap.ino.db.wall::t_wall"
+                         where :iv_filter_name <> 'myWalls' and 
+                         	   :iv_filter_name <> 'sharedWalls' and
+                         	   :iv_filter_name <> 'myWallTemplates' and
+                         	   :iv_filter_name <> 'sharedWallTemplates'
+                     union all
+                     select id 
+                         from "sap.ino.db.wall::v_my_walls"
+                         where :iv_filter_name = 'myWalls'
+                     union all
+                     select id 
+                         from "sap.ino.db.wall::v_shared_walls"
+                         where :iv_filter_name = 'sharedWalls'
+                     union all
+                     select id 
+                         from "sap.ino.db.wall::v_my_wall_templates"
+                         where :iv_filter_name = 'myWallTemplates'
+                     union all
+                     select id 
+                         from "sap.ino.db.wall::v_shared_wall_templates"
+                         where :iv_filter_name = 'sharedWallTemplates'
+                ;
+end;

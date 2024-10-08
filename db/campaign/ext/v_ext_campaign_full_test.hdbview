@@ -1,0 +1,133 @@
+schema = "SAP_INO";
+query = "
+    select 
+                 campaign.id,
+                 descr.name,
+                 descr.short_name,
+                 descr.description as description,
+                 descr.lang,
+                 campaign.valid_from,
+                 campaign.valid_to,
+                 campaign.submit_from,
+                 completed_ideas_count.count                as completed_ideas_count,
+                 unassigned_ideas_count.count               as unassigned_ideas_count,
+                 discontinued_ideas_count.count             as discontinued_ideas_count,
+                 all_ideas_count.count                      as all_ideas_count,
+                 draft_ideas_count.count                    as draft_ideas_count,
+                  participants_count.count                   as participants_count,
+                 campaign.submit_to,
+                 campaign.register_from,
+                 campaign.register_to,
+                         case
+            when ifnull(submittable.campaign_id, 0)  = 0 then 0
+            else 1
+        end as submittable,
+                case 
+            when campaign.status_code = 'sap.ino.config.CAMP_PUBLISHED' 
+                and campaign.submit_from <= current_utctimestamp 
+                and current_utctimestamp <= campaign.submit_to
+            then 1
+            else 0 
+        end as is_open_for_submission,
+        case
+            when campaign.ID in (
+                select campaign_id from \"sap.ino.db.campaign::v_auth_registration_campaign_privilege\"
+            )
+            then 1
+            else 0
+        end as is_open_for_registration,
+        campaign_register.id as register_id,
+         case 
+            when     campaign.ID in ( select limitation.object_id as id from \"sap.ino.db.iam::v_auth_object_identity_limitation_action\" as limitation
+            where campaign.id = limitation.object_id and 
+            limitation.object_type_code = 'CAMPAIGN' and 
+            limitation.action_code = 'CAMPAIGN_REGISTER' and 
+            limitation.disabled = 0) 
+            then 0
+            else 1
+        end as is_regist_disabled,
+        case
+            when campaign_register.status is null then 0
+            when campaign_register.status = 'sap.ino.config.REGISTER_NEW' then 1
+            when campaign_register.status = 'sap.ino.config.REGISTER_APPROVED' then 2
+            when campaign_register.status = 'sap.ino.config.REGISTER_REJECTED' then 3
+            else -1
+        end as register_status,
+                 campaign.color_code,
+                 campaign.status_code,
+                 campaign.is_black_box,
+                 ifnull(camp_view_count.view_count,0) as view_count,
+                 ifnull(camp_active_participant_count.active_participant_count, 0) as active_participant_count,
+                 campaign.resp_code,
+                 campaign.changed_at,
+                 campaign.created_at,
+                 attachment.id                              as campaign_image_assign_id,
+                 attachment.attachment_id                   as campaign_image_id,
+                campaign_follow.id                         as follow,
+                campaign.IS_OPEN_REGISTER_SETTING           as IS_OPEN_REGISTER_SETTING
+                 from \"sap.ino.db.campaign::t_campaign\" as campaign
+        left outer join \"sap.ino.db.campaign::v_campaign_view_count\" as camp_view_count
+            on camp_view_count.campaign_id = campaign.id
+        left outer join \"sap.ino.db.campaign::v_campaign_active_participant_count\" as camp_active_participant_count
+            on campaign.id = camp_active_participant_count.campaign_id
+        left outer join \"sap.ino.db.follow::v_follow\" as campaign_follow
+            on  campaign.id = campaign_follow.object_id
+            and campaign_follow.object_type_code = 'CAMPAIGN'
+                 left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as descr
+            on campaign.id = descr.campaign_id
+                 left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as attachment 
+                    on attachment.owner_id = campaign.id and
+                       attachment.owner_type_code = 'CAMPAIGN' and
+                       attachment.role_type_code = 'CAMPAIGN_DETAIL_IMG'
+                       left outer join (
+            select count(id) as count, campaign_id from \"sap.ino.db.idea::t_idea\" where status_code <> 'sap.ino.config.DRAFT' group by campaign_id
+        ) as all_ideas_count
+            on all_ideas_count.campaign_id = campaign.id
+        left outer join (
+            select count(id) as count, campaign_id from \"sap.ino.db.idea::t_idea\" where status_code = 'sap.ino.config.DRAFT' group by campaign_id
+        ) as draft_ideas_count
+            on draft_ideas_count.campaign_id = campaign.id
+        left outer join (
+            select count(id) as count, campaign_id from \"sap.ino.db.idea::t_idea\" as idea
+                inner join \"sap.ino.db.status::t_status\" as status
+                on idea.status_code = status.code
+                and (status.code = 'sap.ino.config.DISCONTINUED' or status.status_type = 'DISCONTINUED')
+                group by campaign_id
+        ) as discontinued_ideas_count
+            on discontinued_ideas_count.campaign_id = campaign.id
+        left outer join \"sap.ino.db.campaign::v_auth_submittable_campaign\" as submittable
+            on submittable.campaign_id = campaign.id
+        left outer join (
+            select count(id) as count, campaign_id from \"sap.ino.db.idea::t_idea\" as idea
+                inner join \"sap.ino.db.status::t_status\" as status
+                on idea.status_code = status.code
+                and (status.code = 'sap.ino.config.COMPLETED' or status.status_type = 'COMPLETED')
+                group by campaign_id
+        ) as completed_ideas_count
+            on completed_ideas_count.campaign_id = campaign.id
+        left outer join (
+            select count(id) as count, campaign_id from \"sap.ino.db.idea::v_uncoached_ideas\" where status_code <> 'sap.ino.config.DRAFT' group by campaign_id
+        ) as unassigned_ideas_count
+            on unassigned_ideas_count.campaign_id = campaign.id
+        left outer join (
+            select count(distinct member_id) as count, id as campaign_id from \"sap.ino.db.campaign::v_campaign_participants_user_transitive_test\" group by id
+        ) as participants_count
+            on participants_count.campaign_id = campaign.id
+         left outer join \"sap.ino.db.campaign::v_auth_register\" as campaign_register
+            on campaign.id = campaign_register.campaign_id
+                with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.attachment::t_attachment_assignment",
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.status::t_status"];
+
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale",
+                   "sap.ino.db.campaign::v_campaign_participants_user_transitive_test",
+                   "sap.ino.db.idea::v_uncoached_ideas", 
+                   "sap.ino.db.campaign::v_auth_registration_campaign_privilege",
+                   "sap.ino.db.campaign::v_auth_submittable_campaign",
+                   "sap.ino.db.follow::v_follow",
+                   "sap.ino.db.iam::v_auth_object_identity_limitation_action",
+                   "sap.ino.db.campaign::v_auth_register",
+                   "sap.ino.db.campaign::v_campaign_view_count"];

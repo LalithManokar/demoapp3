@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Link Semantics";
+table.columns = [
+	{name = "CODE"; sqlType = VARCHAR; length = 40; nullable = false; comment = "Link Type Code";},
+	{name = "DESCRIPTION"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Description of the role";}
+];
+table.primaryKey.pkcolumns = ["CODE"]; 

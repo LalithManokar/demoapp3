@@ -1,0 +1,17 @@
+schema = "SAP_INO";
+query = "
+    select
+        role_join.object_id        as object_id, 
+        role_join.object_type_code as object_type_code, 
+        role_join.role_code        as role_code,
+        role_join.id               as id,
+        ident.member_id            as identity_id
+    from
+        \"sap.ino.db.iam::t_identity_group_member_transitive\" as ident
+    inner join
+        \"sap.ino.db.iam::t_object_identity_role\" as role_join
+    on
+        role_join.identity_id = ident.group_id";
+
+depends_on_table = ["sap.ino.db.iam::t_identity_group_member_transitive",
+                    "sap.ino.db.iam::t_object_identity_role"]; 

@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "activity log for identity";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "ACTIVITY_ID"; sqlType = INTEGER; nullable = false; comment = "Activity ID to indicate activity";},
+    {name = "IDENTITY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity ID to indicate user";}
+];
+table.primaryKey.pkcolumns = ["ID"];

@@ -1,0 +1,26 @@
+schema = "SAP_INO";
+query = "
+    select
+        members.id,
+        members.group_id,
+        grp.name as group_name,
+        members.member_id,
+        identity.name as member_name,
+        identity.type_code,
+        identity.description,
+        identity.user_name,
+        identity.email
+    from
+        \"sap.ino.db.iam::t_identity_group_member\" as members
+    inner join \"sap.ino.db.iam::t_identity\" as identity
+        on members.member_id = identity.id
+    inner join \"sap.ino.db.iam::t_identity\" as grp
+        on members.group_id = grp.id
+    where
+        identity.erased = 0
+    and grp.erased = 0 
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.iam::t_identity_group_member",
+                    "sap.ino.db.iam::t_identity"];

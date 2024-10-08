@@ -1,0 +1,71 @@
+procedure "SAP_INO_EXT"."sap.ino.db.campaign.ext::p_ext_campaign_tag_cloud_by_group" ( 
+     in  iv_searchterm       nvarchar(1024),
+     in  iv_filtername       nvarchar(1024),
+     --in  it_tag              SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_tag_id_input",
+     in  iv_tag_str            nvarchar(4096),
+     --in  it_excl_status      SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_excl_status_code_input",
+     in  iv_excl_status_str    nvarchar(4096),
+     in     iv_resp_value_code      varchar(512),
+     in     iv_has_blog             varchar(1),
+     out ov_without_taggroup nvarchar(1),
+     out ot_ranked_tag       SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_ranked_tag_and_group"
+)
+language sqlscript
+sql security definer
+default schema SAP_INO
+reads sql data as
+begin
+    declare lv_tag_group_count int;
+    declare lv_has_blog int;
+    if length(:iv_searchterm) = 0 then
+    lt_search_prefiltered =  select id,1 as score
+        from "sap.ino.db.campaign::t_campaign" ;
+    else 
+    call "SAP_INO"."sap.ino.db.campaign::p_campaign_search_full"(:iv_searchterm, :lt_search_prefiltered);
+    end if;
+    if iv_has_blog = '' or iv_has_blog is null then 
+        lv_has_blog = -1;
+     else
+        lv_has_blog = cast(iv_has_blog as int);
+     end if;
+    
+    call "SAP_INO"."sap.ino.db.campaign::p_campaign_filter"(:iv_filtername, :lt_filter_prefiltered);
+    call "sap.ino.db.idea::p_excl_status_string_splitter"(:iv_excl_status_str, ';', :lt_excl_status);
+    call "sap.ino.db.idea::p_tag_string_splitter"(:iv_tag_str, ';', :lt_tag);
+    lt_filtered_2 =
+        select campaign.id
+            from
+                "sap.ino.db.campaign::v_auth_campaigns_and_registrable" as auth
+            inner join
+                "sap.ino.db.campaign::t_campaign"       as campaign
+            on 
+                auth.campaign_id = campaign.id and 
+                --((select count(*) from :it_excl_status) = 0 or campaign.status_code not in (select code from :it_excl_status))
+                ((select count(*) from :lt_excl_status) = 0 or campaign.status_code not in (select code from :lt_excl_status))
+            inner join
+                :lt_search_prefiltered                  as prefilter
+            on 
+                auth.campaign_id = prefilter.id
+            inner join
+                :lt_filter_prefiltered                  as prefilter2
+            on
+                auth.campaign_id = prefilter2.id 
+            left outer join "sap.ino.db.campaign::V_CAMPAIGN_BLOG_COUNTS" as camp_count
+                on campaign.id = camp_count.campaign_id
+            where (length(:iv_resp_value_code) = 0 or campaign.resp_code = :iv_resp_value_code)
+                and (lv_has_blog = -1 or (lv_has_blog > -1 and (camp_count.campaign_id is null  or (camp_count.campaign_id is not null and camp_count.status_code !='sap.ino.config.BLOG_PUBLISHED')) and lv_has_blog = 0) or (camp_count.campaign_id is not null and camp_count.blog_counts > 0 and camp_count.status_code ='sap.ino.config.BLOG_PUBLISHED' and lv_has_blog = 1));
+
+    --call "SAP_INO"."sap.ino.db.campaign::p_tag_filter"(:lt_filtered_2, :it_tag, :lt_filtered_3);
+    call "SAP_INO"."sap.ino.db.campaign::p_tag_filter"(:lt_filtered_2, :lt_tag, :lt_filtered_3);
+    call "SAP_INO"."sap.ino.db.campaign::p_campaign_tag"(:lt_filtered_3, :lt_campaign_tag);
+    call "SAP_INO"."sap.ino.db.basis::p_tag_cloud_by_group"(:lt_campaign_tag, :ot_ranked_tag);
+
+    ot_ranked_tag = select * from :ot_ranked_tag order by name asc;
+    
+    select count(*) into lv_tag_group_count from "sap.ino.db.tag::t_group_tag";
+    if lv_tag_group_count <= 0 then
+       ov_without_taggroup = 'X';
+    else
+       ov_without_taggroup = '';
+    end if;
+end;

@@ -1,0 +1,9 @@
+schema = "SAP_INO";
+query = "
+select vote.*,
+       case when (vote.score > 0) then 1 end as pos_score,
+       case when (vote.score < 0) then 1 end as neg_score
+from \"sap.ino.db.idea::t_vote\" as vote
+";
+
+depends_on_table = ["sap.ino.db.idea::t_vote"];

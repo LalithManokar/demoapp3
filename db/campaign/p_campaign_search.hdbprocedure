@@ -1,0 +1,62 @@
+procedure "SAP_INO"."sap.ino.db.campaign::p_campaign_search" (
+     in  iv_search_term nvarchar(1024),
+     out ot_campaign_score  SAP_INO."sap.ino.db.basis::tt_object_score"
+ )
+ language sqlscript
+ sql security invoker
+ default schema SAP_INO
+ reads sql data as
+begin
+    ot_campaign_score = select id, sum(score) / count(score) as score from (
+                        select id, score
+                            from (
+                                select id, 1 as score
+                                    from "sap.ino.db.campaign::t_campaign"
+                                    where length(:iv_search_term) = 0 
+                                union all
+                                select id, 1 as score
+                                    from "sap.ino.db.campaign::t_campaign"
+                                    where length(:iv_search_term) > 0 and length(ltrim(:iv_search_term,'0123456789')) <=0 and                               
+                                          cast(id as nvarchar) = :iv_search_term
+                                 union all
+                                 select campaign_id as id, score()
+                                     from "sap.ino.db.campaign::t_campaign_t"
+                                     where (length(:iv_search_term) > 0 and (contains(name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(1.0)) or 
+                                         contains(short_name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(1.0)) or
+                                         contains(description, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(0.5))))
+                                  )
+                        union all
+                        select campaign.id as id, score() as score
+                            from "sap.ino.db.campaign::t_campaign" as campaign
+                                left outer join "sap.ino.db.tag::t_object_tag" as campaign_tag
+                                    on campaign.id = campaign_tag.object_id and
+                                       'CAMPAIGN'  = campaign_tag.object_type_code
+                                left outer join "sap.ino.db.tag::t_tag" as tag
+                                    on campaign_tag.tag_id = tag.id
+                                left outer join "sap.ino.db.subresponsibility::t_responsibility_stage" as responsibility
+                                    on responsibility.code = campaign.resp_code
+                             left outer join "sap.ino.db.blog::t_blog" as blog
+                               on blog.object_id = campaign.id                                    
+                                where (length(:iv_search_term) > 0 and (contains(responsibility.default_text, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(1.0)) or
+                                    contains(responsibility.default_long_text, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(0.5))
+                                 or contains(tag.name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(1.0)))
+                                    or contains(blog.title, :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'), weight(1.0)) 
+                                    /* As DESCRIPTION is a BLOB the contains operator only is allowed when a fulltext index exists.
+               Fulltext indices are created after import and thus the following line is "activated" by the 
+               after import method "sap.ino.setup.01_activate_p_campaign_search" after the fulltext index has been created */
+                      or contains(blog.description, :iv_search_term, fuzzy(0.8,'similarCalculationMode=search'), weight(0.5))
+                                )
+                        union all 
+                        /*Campaign Manager*/
+                        select  camp_manager.campaign_id as id, score() as score
+                        from "sap.ino.db.campaign::v_campaign_manager" as camp_manager
+                        where ( length(:iv_search_term) > 0     and  (        contains((name), :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare')) OR
+                                  contains((first_name), :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare')) OR
+                                 contains((last_name), :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare')) OR
+                                 contains((user_name), :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare')) OR
+                           contains((email), :iv_search_term, fuzzy(0.8,'similarCalculationMode=searchCompare'))))
+                        union all select camp_manager.campaign_id as id, 1 as score from "sap.ino.db.campaign::v_campaign_manager" as camp_manager 
+                              where length(:iv_search_term) > 0 and  length(ltrim(:iv_search_term,'0123456789')) <=0 and cast(identity_id as nvarchar) = :iv_search_term
+    ) group by id;
+
+end;

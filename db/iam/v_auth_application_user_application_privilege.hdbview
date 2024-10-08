@@ -1,0 +1,6 @@
+schema = "SAP_INO";
+query = "
+select * 
+from sys.effective_application_privileges as privs
+where user_name = session_context('APPLICATIONUSER')
+";

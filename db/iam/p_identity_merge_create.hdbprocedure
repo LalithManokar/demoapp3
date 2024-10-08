@@ -1,0 +1,42 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_identity_merge_create" (
+    in  it_identities        SAP_INO."sap.ino.db.iam::tt_identity_input",
+    out ot_merged_identities SAP_INO."sap.ino.db.iam::t_identity"
+) 
+language sqlscript
+sql security invoker
+default schema sap_ino
+reads sql data as
+BEGIN
+    ot_merged_identities =
+        SELECT
+            id,
+            null as created_at,
+            null as created_by_id,
+            null as changed_at,
+            null as changed_by_id,
+            type_code,
+            name,
+            first_name,
+            last_name,
+            email,
+            user_name,
+            is_external,
+            0 as erased,
+            phone              as phone,
+            mobile             as mobile,
+            cost_center        as cost_center,
+            organization       as organization,
+            office             as office,
+            description        as description,
+            1                  as staged,
+            'UPLOAD'           as source_type_code,
+            company            as company,
+            street             as street,
+            city               as city,
+            country            as country,
+            zip_code           as zip_code,
+            validation_to      as validation_to,
+            null                as LAST_LOGIN
+         FROM
+            :it_identities;
+END;

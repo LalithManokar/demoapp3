@@ -1,0 +1,71 @@
+<mvc:View
+        controllerName="sap.ino.vc.idea.Activities"
+        xmlns="sap.m"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns:core="sap.ui.core"
+        xmlns:ino="sap.ino.controls"
+        xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+        >
+        <List id="ideaActivitiesList" class="sapInoIdeaActivitiesList" 
+            items="{ path: 'data>Activities', sorter: [{path: 'CHANGED_AT', descending: true}, {path: 'data>ORIGIN', descending: true}] }" 
+            noDataText="{i18n>ACTIVITIES_LBL_NO_ACTIVITIES_FOUND}"
+            growing="true" growingScrollToLoad="true" growingThreshold="10">
+            <items>
+                <CustomListItem class="ideaActivityListItem">
+                    <Panel expandable="{path: 'data>', formatter: '.isExpandable'}" expanded="false" width="auto" expand=".onExpand">
+                        <headerToolbar>
+                            <OverflowToolbar height="100%" press=".onExpand">
+                                <FlexBox alignItems="Start" justifyContent="SpaceBetween" wrap="NoWrap" width="100%">
+                                    <items>
+                                        <VBox height="100%" wrap="Wrap">
+                                            <HBox visible="{= ${data>CHANGED_BY_ID} > 0}">
+                                                <Text  visible="{= ${data>CHANGE_CODE} !== 'AUTO_COACH_ASSIGNED' }" text="{data>CHANGED_BY}" class="sapInoIdentityName" />
+                                                <Text text="{path: 'data>', formatter: '.msgformatter'}" class="sapInoActivityMessage"/>
+                                            </HBox>
+                                            <HBox visible="{= ${data>CHANGED_BY_ID} === 0}">
+                                                <Text text="{i18n>IDEA_OBJECT_TIT_IDEA_Anonymity} &#xA0;" class="sapInoActivityMessage"/>
+                                                <Text text="{path: 'data>', formatter: '.msgformatter'}" class="sapInoActivityMessage"/>
+                                            </HBox>
+                                            <Label text="{path: 'data>CHANGED_AT', type: 'sap.ui.model.type.DateTime', formatOptions: { relative: false }}"
+                                                class="sapInoTimestamp"/>
+                                        </VBox>
+                                        <!-- actor identity item - not visible on phone -->
+                                        
+                                        <ino:IdentityActionCard 
+                                            visible="{= !${device>/system/phone} &amp;&amp; ${data>CHANGE_CODE} !== 'AUTO_COACH_ASSIGNED' &amp;&amp; ${data>CHANGED_BY_ID} > 0}"
+                                            identityId="{data>CHANGED_BY_ID}" 
+                                            userOrganization="{data>CHANGED_BY_ORGANIZATION}"
+                                            userRole="{ path: 'data>CHANGED_BY_ROLE_CODE', formatter: '.formatter.multipleRoleCodes' }"
+                                            userName="{data>CHANGED_BY}"
+                                            userImageUrl="{ path: 'data>CHANGED_BY_IMAGE_ID', formatter: '.formatter.userImage' }"
+                                            actionable="false"
+                                            pinnable="{clipboard>/enabled}"
+                                            isPinned="{ parts: [{path: 'data>CHANGED_BY_ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIsUserInClipboard' }"
+                                            pinPressed="onUserPinPressed"
+                                            identityPress="onOpenIdentityQuickView"
+                                        />
+                                        
+                                        <ino:IdentityActionCard 
+                                            visible="{= !${device>/system/phone} &amp;&amp; ${data>CHANGE_CODE} !== 'AUTO_COACH_ASSIGNED' &amp;&amp; ${data>CHANGED_BY_ID} === 0}"
+                                            identityId="{data>CHANGED_BY_ID}" 
+                                            userOrganization="{i18n>IDEA_OBJECT_TIT_IDEA_Anonymity}"
+                                            userRole="{ path: 'data>CHANGED_BY_ROLE_CODE', formatter: '.formatter.multipleRoleCodes' }"
+                                            userName="{i18n>IDEA_OBJECT_TIT_IDEA_Anonymity}"
+                                            userImageUrl="{ path: 'data>CHANGED_BY_IMAGE_ID', formatter: '.formatter.userImage' }"
+                                            actionable="false"
+                                            pinnable="{clipboard>/enabled}"
+                                            isPinned="{ parts: [{path: 'data>CHANGED_BY_ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIsUserInClipboard' }"
+                                            pinPressed="onUserPinPressed"
+                                        />
+                                        
+                                    </items>
+                                </FlexBox>
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <content />
+                    </Panel>
+                </CustomListItem>
+            </items>
+        </List>
+        
+</mvc:View>

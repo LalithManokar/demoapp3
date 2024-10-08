@@ -1,0 +1,84 @@
+FUNCTION "SAP_INO"."sap.ino.db.idea::f_my_followed_idea_feeds" ( ) 
+	RETURNS TABLE (
+	    KEY NVARCHAR(5000),OBJECT_ID INTEGER, OBJECT_TYPE_CODE NVARCHAR(63),OBJECT_TEXT NVARCHAR(100),ACTOR_ID INTEGER,ACTOR_NAME NVARCHAR(100),
+        ACTOR_IMAGE_ID INTEGER, INVOLVED_ID INTEGER, INVOLVED_OBJ_TYPE_CODE NVARCHAR(63), INVOLVED_OBJ_TEXT NVARCHAR(5000), EVENT_AT TIMESTAMP,
+        FEED_CODE NVARCHAR(63), CAMPAIGN_ID INTEGER, FIELD1_NAME NVARCHAR(100), FIELD1_TEXT NVARCHAR(500), FIELD1_VALUE NVARCHAR(500),
+        FIELD1_VALUE_OPTION NVARCHAR(100), FIELD2_NAME NVARCHAR(100), FIELD2_TEXT NVARCHAR(500), FIELD2_VALUE NVARCHAR(500),
+        FIELD2_VALUE_OPTION NVARCHAR(100), FILTER_TYPE_CODE NVARCHAR(63),CONTENT NVARCHAR(5000) , SUB_TEXT NVARCHAR(5000), SUB_FEED_CODE VARCHAR(1), 
+        CAMPAIGN_DATE TIMESTAMP, FOLLOWED_BY_ID INTEGER, FOLLOWED_AT TIMESTAMP, LATEST_EMAIL_AT TIMESTAMP
+	)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER
+	DEFAULT SCHEMA SAP_INO	
+	AS
+BEGIN
+/***************************** 
+	Write your function logic
+ *****************************/
+ lt_followed_ideas = select object_id,
+                               CREATED_AT,
+                               created_by_id,
+                               EMAIL_AT
+                            from "sap.ino.db.follow::t_follow" 
+                            where created_by_id in (select id from "sap.ino.db.iam::v_auth_application_user")
+                                and OBJECT_TYPE_CODE = 'IDEA';
+                             
+    lt_idea_feeds = select feeds.*,
+                            ideas.created_by_id as followed_by_id,
+                            ideas.CREATED_AT as followed_at,
+                            ideas.EMAIL_AT as latest_email_at,
+                            case filter_type_code
+                                when 'BACKOFFICE' then campaign.campaign_id
+                                when 'FRONTOFFICE' then idea.idea_id   
+                                else null
+                            end as object_privilege,
+                            case involved_obj_type_code
+                                when 'CAMPAIGN' then involved_campaign.campaign_id
+                                when 'IDEA' then involved_idea.idea_id   
+                                else 1
+                            end as involved_obj_privilege
+                        from "sap.ino.db.idea::v_idea_feeds" as feeds
+                            inner join :lt_followed_ideas as ideas 
+                                on feeds.object_id = ideas.object_id and feeds.event_at >= ideas.CREATED_AT
+                            left outer join "sap.ino.db.campaign::v_auth_backoffice_campaign_privilege" as campaign
+                                on feeds.campaign_id = campaign.campaign_id and feeds.filter_type_code = 'BACKOFFICE'
+                            left outer join "sap.ino.db.idea::v_auth_ideas_read" as idea
+                                on feeds.object_id = idea.idea_id and filter_type_code = 'FRONTOFFICE'
+                            left outer join "sap.ino.db.campaign::v_auth_campaigns_and_registrable" as involved_campaign
+                                on feeds.involved_id = involved_campaign.campaign_id and involved_obj_type_code = 'CAMPAIGN'
+                            left outer join "sap.ino.db.idea::v_auth_ideas_read" as involved_idea
+                                on feeds.involved_id = involved_idea.idea_id and involved_obj_type_code = 'IDEA'
+                        WHERE feeds.feed_code <> 'STATUS_ACTION_SUBMIT';
+    return select 
+            replace(object_id || object_type_code || event_at || feed_code || TO_NVARCHAR(IFNULL(involved_id, 0)),  ' ','_') as key,
+            feed.object_id,
+            feed.object_type_code,
+            feed.object_text,
+            feed.actor_id,
+            feed.actor_name,
+            feed.actor_image_id,
+            feed.involved_id,
+            feed.involved_obj_type_code,
+            feed.involved_obj_text,
+            feed.event_at,
+            feed.feed_code, 
+            feed.campaign_id,
+            feed.field_name as field1_name,
+            feed.field_text as field1_text,
+            feed.field_value as field1_value,
+            feed.field_value_option as field1_value_option,
+            null as field2_name,
+            null as field2_text,
+            null as field2_value,
+            null as field2_value_option,
+            feed.filter_type_code, 
+            feed.content,
+            involved_obj_text as sub_text,
+            null as sub_feed_code,
+            null as campaign_date,
+            feed.followed_by_id,
+            feed.followed_at,
+            feed.latest_email_at
+                from :lt_idea_feeds as feed where object_privilege is not null and involved_obj_privilege is not null; 
+
+END;

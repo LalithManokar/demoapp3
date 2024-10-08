@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "
+           select 
+                distinct followed_idea.object_id as id
+            from \"sap.ino.db.follow::v_follow\" as followed_idea
+                 inner join \"sap.ino.db.idea::t_idea\" as idea
+                   on followed_idea.object_id = idea.id
+            where followed_idea.object_type_code = 'IDEA'
+            with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea"];
+
+depends_on_view = [ "sap.ino.db.idea::f_my_followed_ideas"];

@@ -1,0 +1,558 @@
+.rounded-corners(@radius) {
+    -moz-border-radius: @radius;
+    -webkit-border-radius: @radius;
+    -khtml-border-radius: @radius;
+    border-radius: @radius;
+}
+
+.sapUiInoFileUploader,
+.sapUiBtnS.sapUiBtnNorm.sapUiInoFileUploader {
+    position: relative;
+    cursor: pointer;
+}
+
+.sapUiInoFileUploaderAttachment,
+.sapUiBtnS.sapUiBtnNorm.sapUiInoFileUploaderAttachment {
+    width: 98px;
+    height: 68px;
+    background-color : @sapUiExtraLightBG;
+    border: 1px solid @sapUiLightBorder;
+    display: inline-block;
+}
+
+.sapUiInoFileUploaderAttachmentTitleImage,
+.sapUiBtnS.sapUiBtnNorm.sapUiInoFileUploaderAttachmentTitleImage {
+    width: 98px;
+    height: 68px;
+    background-color : @sapUiExtraLightBG;
+    border: 1px solid @sapUiLightBorder;
+    display: inline-block;
+}
+
+.sapUiInoFileUploaderAttachmentTitleVideo,
+.sapUiBtnS.sapUiBtnNorm.sapUiInoFileUploaderAttachmentTitleVideo {
+    width: 98px;
+    height: 68px;
+    background-color : @sapUiExtraLightBG;
+    border: 1px solid @sapUiLightBorder;
+    display: inline-block;
+}
+
+.sapUiInoFileUploaderIdeaTitleImage,
+.sapUiBtnS.sapUiBtnNorm.sapUiInoFileUploaderIdeaTitleImage {
+	width: 216px;
+	height: 121px;
+	background-color : transparent;
+	border: none;
+}
+
+.sapUiInoFileUploaderCampaignDetailImage,
+.sapUiBtnS.sapUiBtnNorm.sapUiInoFileUploaderCampaignDetailImage {
+	width: 216px;
+	height: 121px;
+	background-color : @sapUiExtraLightBG;
+	border: 1px solid @sapUiLightBorder;
+	display: inline-block;
+}
+
+.sapUiInoFileUploaderUserImage,
+.sapUiBtnS.sapUiBtnNorm.sapUiInoFileUploaderUserImage {
+	width: 80px;
+	height: 103px;
+	background-color : transparent;
+	border: 1px solid @sapUiLightBorder;
+}
+
+.sapUiInoFileUploader.sapUiInoFileUploaderUserImage {
+	overflow: hidden;
+}
+
+.sapUiInoFileUploaderCampaignTitleImage,
+.sapUiBtnS.sapUiBtnNorm.sapUiInoFileUploaderCampaignTitleImage {
+	width: 472px;
+	height: 160px;
+	background-color : transparent;
+	border: 1px solid @sapUiLightBorder;
+}
+
+.sapUiInoFileUploaderDimensionBadgeImage,
+.sapUiBtnS.sapUiBtnNorm.sapUiInoFileUploaderDimensionBadgeImage {
+	width: 100px;
+	height: 100px;
+	background-color : transparent;
+	border: 1px solid @sapUiLightBorder;
+}
+
+.sapUiInoFileUploader.sapUiInoFileUploaderCampaignTitleImage {
+	overflow: hidden;
+}
+
+.sapUiInoFileUploader.sapUiInoFileUploaderDimensionBadgeImage {
+	overflow: hidden;
+}
+
+.sapUiInoFileUploaderCampaignListImage,
+.sapUiBtnS.sapUiBtnNorm.sapUiInoFileUploaderCampaignListImage {
+	width: 160px;
+	height: 213px;
+	background-color : transparent;
+	border: 1px solid @sapUiLightBorder;
+}
+
+.sapUiInoFileUploader.sapUiInoFileUploaderCampaignListImage {
+	overflow: hidden;
+}
+
+.sapUiInoFileUploaderDragOver {
+	border-color: @sapUiHighlight;
+	border-style: solid;
+	border-width: 1px;
+	outline-color: @sapUiHighlight;
+	outline-width: 2px;
+	outline-style: dotted;
+}
+ 
+.sapUiInoFileUploaderAttachment.sapUiInoFileUploaderDragOver {
+} 
+
+.sapUiInoFileUploaderIdeaTitleImage.sapUiInoFileUploaderDragOver {
+	width: 212px;
+	height: 117px;
+	top: 1px;
+	left: 1px;
+}
+
+.sapUiInoFileUploaderCampaignDetailImage.sapUiInoFileUploaderDragOver {
+	width: 948px;
+	height: 331px;
+}
+
+.sapUiInoFileUploaderCropImageContainerHidden {
+    visibility: hidden;
+}
+
+.sapUiInoFileUploaderCropImageContainer {
+    background-color: #FFFFFF;
+    width: 100%;
+    height: 100%;
+	cursor: -webkit-grab;
+	cursor: grab;
+	overflow: hidden;
+}
+
+.sapUiInoFileUploaderIdeaTitleImage .sapUiInoFileUploaderCropImageContainer:focus {
+    width: 214px;
+	height: 119px;
+	border: 1px @sapUiHighlight solid;
+	overflow : hidden;
+}
+
+.sapUiInoFileUploaderIdeaTitleImage .sapUiInoFileUploaderCampaignDetailImage:focus {
+    width: 214px;
+	height: 119px;
+	border: 1px @sapUiHighlight solid;
+	overflow : hidden;
+}
+
+.sapUiInoFileUploaderCampaignTitleImage .sapUiInoFileUploaderCropImageContainer:focus {
+	width: 470px;
+	height: 158px;
+	border: 1px @sapUiHighlight solid;
+	overflow: hidden;
+}
+
+.sapUiInoFileUploaderCampaignListImage .sapUiInoFileUploaderCropImageContainer:focus {
+	width: 158px;
+	height: 211px;
+	border: 1px @sapUiHighlight solid;
+	overflow: hidden;
+}
+
+.sapUiInoFileUploaderCropImageContainer:focus .sapUiInoFileUploaderCropImage {
+    margin: -1px;
+}
+
+.sapUiInoFileUploaderCropImageContainer:active {
+	cursor: -webkit-grabbing;
+	cursor: grabbing;
+}
+
+.sapUiInoFileUploaderCropImage {
+}
+
+.sapUiInoFileUploaderPreview.sapUiInoFileUploaderIdeaTitleImage,
+.sapUiInoFileUploaderPreview,
+.sapUiBtnS.sapUiBtnNorm.sapUiInoFileUploaderPreview,
+.sapUiBtnS.sapUiBtnNorm.sapUiInoFileUploaderPreview.sapUiInoFileUploaderIdeaTitleImage,
+.sapUiBtn.sapUiBtnS.sapUiBtnNorm.sapUiBtnStd.sapUiInoFileUploaderIdeaTitleImage.sapUiInoFileUploaderPreview:hover,
+.sapUiBtn.sapUiBtnS.sapUiBtnNorm.sapUiBtnStd.sapUiInoFileUploaderIdeaTitleImage.sapUiInoFileUploaderPreview.sapUiBtnStdHover,
+.sapUiBtn.sapUiBtnS.sapUiBtnNorm.sapUiBtnAct.sapUiInoFileUploaderIdeaTitleImage.sapUiInoFileUploaderPreview:hover,
+.sapUiBtnS.sapUiBtnNorm.sapUiBtnStd.sapUiInoFileUploaderIdeaTitleImage.sapUiInoFileUploaderPreview:focus, 
+.sapUiBtnS.sapUiBtnNorm.sapUiBtnStd.sapUiInoFileUploaderIdeaTitleImage.sapUiInoFileUploaderPreview.sapUiBtnStdFocus {
+	background-color : @sapUiExtraLightBG;
+	background-size : cover;
+	background-repeat : no-repeat;
+}
+
+.sapUiInoFileUploaderAttachment input,
+.sapUiInoFileUploaderAttachmentTitleImage input,
+.sapUiInoFileUploaderAttachmentTitleVideo input,
+.sapUiInoFileUploaderIdeaTitleImage input,
+.sapUiInoFileUploaderCampaignDetailImage input {
+	left: 0px;
+	top: 0px;
+	width: 0px;
+	height: 0px;
+	position: absolute;
+	font-size: 400px;
+	cursor: pointer;
+	opacity: 0;
+}
+
+.sapUiInoFileUploaderInputContainer {
+	width: 0px;
+	height: 0px;
+	display: none;
+}
+
+.sapUiInoFileUploaderClick {
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
+.sapUiInoFileUploaderNameContainer {
+	text-align: center;
+}
+
+.sapUiInoFileUploaderName {
+	text-align: center;
+	text-decoration: none;
+	font-size: @sapUiFontSize;
+	font-weight: normal;
+	color: @sapUiLightText;
+	/*
+	word-wrap: break-word;
+	word-wrap: break-all;
+	*/
+	background-color : transparent;
+	width: 100px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	margin-top: 1px;	
+}
+
+a.sapUiInoFileUploaderName,
+.sapUiFupInp {
+    cursor: pointer;
+}
+
+a.sapUiInoFileUploaderName:focus,
+a.sapUiInoFileUploaderName:hover,
+a.sapUiInoFileUploaderName:active {
+	text-decoration: underline;
+}
+
+.sapUiInoFileUploaderClear {
+	width: 16px;
+	height: 16px;
+	float: right;
+	margin: 0px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+.sapUiInoFileUploaderClear {
+	width: 16px;
+	height: 16px;
+	float: right;
+	margin: 0px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+.sapUiInoFileUploaderClear,
+.sapUiBtnS.sapUiBtnLite.sapUiInoFileUploaderClear {
+	margin: 1px;
+	background-color:  @sapUiBaseBG;
+	.rounded-corners(50%);
+}
+
+.sapUiBtnS.sapUiBtnDsbl.sapUiInoFileUploaderClear {
+	opacity: 0.7;
+}
+
+
+.sapUiInoFileUploaderCrop {
+	width: 16px;
+	height: 16px;
+	float: right;
+	margin: 0px;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+}
+
+.sapUiInoFileUploaderCrop {
+	width: 16px;
+	height: 16px;
+	float: right;
+	margin: 0px;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+}
+
+.sapUiInoFileUploaderCrop,
+.sapUiBtnS.sapUiBtnLite.sapUiInoFileUploaderCrop {
+	margin: 1px;
+	background-color:  @sapUiBaseBG;
+	.rounded-corners(50%);
+}
+
+.sapUiBtnS.sapUiBtnDsbl.sapUiInoFileUploaderCrop {
+	opacity: 0.7;
+}
+
+.sapUiInoFileUploaderCropImageZoomPlus {
+	width: 16px;
+	height: 16px;
+	float: left;
+	margin: 0px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.sapUiInoFileUploaderCropImageZoomPlus,
+.sapUiBtnS.sapUiBtnLite.sapUiInoFileUploaderCropImageZoomPlus {
+	margin: 1px;
+	background-color:  @sapUiBaseBG;
+	.rounded-corners(50%);
+}
+
+.sapUiBtnS.sapUiBtnDsbl.sapUiInoFileUploaderCropImageZoomPlus {
+	opacity: 0.7;
+}
+
+.sapUiInoFileUploaderCropImageZoomMinus {
+	width: 16px;
+	height: 16px;
+	float: left;
+	margin: 0px;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+}
+
+.sapUiInoFileUploaderCropImageZoomMinus,
+.sapUiBtnS.sapUiBtnLite.sapUiInoFileUploaderCropImageZoomMinus {
+	margin: 1px;
+	background-color:  @sapUiBaseBG;
+	.rounded-corners(50%);
+}
+
+.sapUiBtnS.sapUiBtnDsbl.sapUiInoFileUploaderCropImageZoomMinus {
+	opacity: 0.7;
+}
+
+.sapUiInoFileUploaderCropImageMoveUp {
+	width: 16px;
+	height: 16px;
+	float: left;
+	margin: 0px;
+	position: absolute;
+	top: 0px;
+	left: calc(~"50% - 14px");
+}
+
+.sapUiInoFileUploaderCropImageMoveUp,
+.sapUiBtnS.sapUiBtnLite.sapUiInoFileUploaderCropImageMoveUp {
+	margin: 1px;
+	background-color:  @sapUiBaseBG;
+	.rounded-corners(50%);
+}
+
+.sapUiBtnS.sapUiBtnDsbl.sapUiInoFileUploaderCropImageMoveUp {
+	opacity: 0.7;
+}
+
+.sapUiInoFileUploaderCropImageMoveDown {
+	width: 16px;
+	height: 16px;
+	float: left;
+	margin: 0px;
+	position: absolute;
+	bottom: 0px;
+	left: calc(~"50% - 14px");
+}
+
+.sapUiInoFileUploaderCropImageMoveDown,
+.sapUiBtnS.sapUiBtnLite.sapUiInoFileUploaderCropImageMoveDown {
+	margin: 1px;
+	background-color:  @sapUiBaseBG;
+	.rounded-corners(50%);
+}
+
+.sapUiBtnS.sapUiBtnDsbl.sapUiInoFileUploaderCropImageMoveDown {
+	opacity: 0.7;
+}
+
+.sapUiInoFileUploaderCropImageMoveLeft {
+	width: 16px;
+	height: 16px;
+	float: left;
+	margin: 0px;
+	position: absolute;
+	top: calc(~"50% - 14px");
+	left: 0px;
+}
+
+.sapUiInoFileUploaderCropImageMoveLeft,
+.sapUiBtnS.sapUiBtnLite.sapUiInoFileUploaderCropImageMoveLeft {
+	margin: 1px;
+	background-color:  @sapUiBaseBG;
+	.rounded-corners(50%);
+}
+
+.sapUiBtnS.sapUiBtnDsbl.sapUiInoFileUploaderCropImageMoveLeft {
+	opacity: 0.7;
+}
+
+.sapUiInoFileUploaderCropImageMoveRight {
+	width: 16px;
+	height: 16px;
+	right: left;
+	margin: 0px;
+	position: absolute;
+	top: calc(~"50% - 14px");
+	right: 0px;
+}
+
+.sapUiInoFileUploaderCropImageMoveRight,
+.sapUiBtnS.sapUiBtnLite.sapUiInoFileUploaderCropImageMoveRight {
+	margin: 1px;
+	background-color:  @sapUiBaseBG;
+	.rounded-corners(50%);
+}
+
+.sapUiBtnS.sapUiBtnDsbl.sapUiInoFileUploaderCropImageMoveRight {
+	opacity: 0.7;
+}
+
+.sapUiInoFileUploaderControl {
+}
+
+.sapUiInoFileUploaderControlClear {
+	position: absolute;
+	right: 0px;
+}
+
+.sapUiInoFileUploaderInput {
+	display: none;
+}
+
+.sapUiBtnS.sapUiBtnNorm.sapUiInoFileUploaderButton {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: -1px;
+	margin-right: -1px;
+	border-radius: 0px;
+}
+
+.sapUiBtn.sapUiBtnS.sapUiBtnNorm.sapUiBtnStd.sapUiInoFileUploaderButton:hover,
+.sapUiBtn.sapUiBtnS.sapUiBtnNorm.sapUiBtnStd.sapUiInoFileUploaderButton.sapUiBtnStdHover,
+.sapUiBtn.sapUiBtnS.sapUiBtnNorm.sapUiBtnAct.sapUiInoFileUploaderButton:hover,
+.sapUiBtnS.sapUiBtnNorm.sapUiBtnStd.sapUiInoFileUploaderButton:focus,
+.sapUiBtnS.sapUiBtnNorm.sapUiBtnStd.sapUiInoFileUploaderButton.sapUiBtnStdFocus {
+	border-color: @sapUiLightBorder;
+}
+
+.sapUiBtnS.sapUiBtnStd.sapUiInoFileUploaderCrop:hover,
+.sapUiBtnS.sapUiBtnStd.sapUiInoFileUploaderCrop.sapUiBtnStdHover,
+.sapUiBtnS.sapUiBtnAct.sapUiInoFileUploaderCrop:hover,
+.sapUiBtnS.sapUiBtnStd.sapUiInoFileUploaderClearfocus,
+.sapUiBtnS.sapUiBtnStd.sapUiInoFileUploaderCrop.sapUiBtnStdFocus {
+	background-color: transparent;
+}
+
+.sapUiBtnS.sapUiBtnStd.sapUiInoFileUploaderClear:hover,
+.sapUiBtnS.sapUiBtnStd.sapUiInoFileUploaderClear.sapUiBtnStdHover,
+.sapUiBtnS.sapUiBtnAct.sapUiInoFileUploaderClear:hover,
+.sapUiBtnS.sapUiBtnStd.sapUiInoFileUploaderClearfocus,
+.sapUiBtnS.sapUiBtnStd.sapUiInoFileUploaderClear.sapUiBtnStdFocus {
+	background-color: transparent;
+}
+
+.sapUiInoFileUploaderControl .sapUiFupInp {
+	top: 0px;
+}
+
+.sapUiInoFileUploaderControl .sapUiFupGroup>div>div:first-child {
+	width: 0px !important;
+	overflow: hidden;
+}
+
+.sapUiInoFileUploaderControl .sapUiFupGroup>div>div:first-child>div {
+	width: 0px !important;
+}
+
+.sapUiInoFileUploaderControl .sapUiFupGroup>div>div:last-child {
+	padding-left: 0px;
+	left: -1px;
+  	position: relative;
+}
+
+.sapMBtn.sapMBtnBase.sapUiInoImageCropButton {
+	position: absolute;
+	margin: 2px;
+}
+
+.sapUiSizeCozy .sapUiInoImageCropButton .sapMBtnIcon {
+	font-size: 16px;
+	width: 16px;
+	line-height: 22px;
+}
+
+.sapMBtnDisabled.sapUiInoImageCropButton {
+	opacity: 0.6;
+}
+
+.sapUiSizeCompact .sapUiInoImageCropButton > .sapMBtnInner {
+	height: 25px;
+    min-width: 25px;
+    padding: 0px;
+}
+
+.sapUiSizeCompact .sapUiInoImageCropButton.sapMBtn {
+	height: 25px;
+	padding: 0px;
+}
+
+.sapUiInoImageCropZoomPlus {
+	top: 0px;
+	left: 0px;
+}
+
+.sapUiInoImageCropZoomMinus {
+	bottom: 0px;
+	left: 0px;
+}
+
+.sapUiInoImageCropClear {
+	top: 0px;
+	right: 0px;
+}
+
+.sapUiInoImageCropCrop {
+	bottom: 0px;
+	right: 0px;
+}
+.sapUiInoUploadFileButton {
+    display: inline;
+}
+.sapUiInoUploadFileControlsText {
+    line-height: 2rem;
+}

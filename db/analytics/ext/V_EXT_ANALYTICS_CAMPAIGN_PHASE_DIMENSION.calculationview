@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_CAMPAIGN_PHASE_DIMENSION" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="Phase Dimension"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="34"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.campaign::t_phase" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::t_phase"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.analytics_V_ANALYTICS_RESOLVED_TEXT_WRAPPER" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_RESOLVED_TEXT_WRAPPER</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.campaign::t_campaign_phase" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::t_campaign_phase"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CODE"/>
+        <viewAttribute id="DEFAULT_TEXT"/>
+        <viewAttribute id="DEFAULT_LONG_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.campaign::t_phase">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_TEXT" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_LONG_TEXT" source="DEFAULT_LONG_TEXT"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CODE"/>
+        <viewAttribute id="DEFAULT_TEXT"/>
+        <viewAttribute id="DEFAULT_LONG_TEXT"/>
+        <viewAttribute id="CONTENT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="TEXT" length="4000" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(isnull(&quot;CONTENT&quot;),&quot;CODE&quot;,&quot;CONTENT&quot;)</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#Projection_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_TEXT" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_LONG_TEXT" source="DEFAULT_LONG_TEXT"/>
+      </input>
+      <input node="#sap.ino.db.analytics_V_ANALYTICS_RESOLVED_TEXT_WRAPPER">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CONTENT" source="CONTENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="TEXT_ID"/>
+      </input>
+      <joinAttribute name="CODE"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_2" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="PHASE_TEXT"/>
+        <viewAttribute id="PHASE_DEFAULT_TEXT"/>
+        <viewAttribute id="PHASE_DEFAULT_LONG_TEXT"/>
+        <viewAttribute id="PHASE_TEXT_LABEL"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.campaign::t_campaign_phase">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_TEXT" source="SEQUENCE_NO"/>
+      </input>
+      <input node="#Join_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_DEFAULT_TEXT" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_DEFAULT_LONG_TEXT" source="DEFAULT_LONG_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_TEXT_LABEL" source="TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="CODE"/>
+      </input>
+      <joinAttribute name="PHASE_CODE"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_2">
+    <descriptions/>
+    <attributes>
+      <attribute id="PHASE_CAMPAIGN_ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping columnObjectName="Join_2" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="PHASE_CODE" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Phase Code"/>
+        <keyMapping columnObjectName="Join_2" columnName="PHASE_CODE"/>
+      </attribute>
+      <attribute id="PHASE_TEXT" order="3" attributeHierarchyActive="false" descriptionColumnName="PHASE_TEXT_LABEL" displayAttribute="false">
+        <descriptions defaultDescription="Phase"/>
+        <keyMapping columnObjectName="Join_2" columnName="PHASE_TEXT"/>
+      </attribute>
+      <attribute id="PHASE_DEFAULT_TEXT" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Phase Default Text"/>
+        <keyMapping columnObjectName="Join_2" columnName="PHASE_DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="PHASE_DEFAULT_LONG_TEXT" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Phase Long Text"/>
+        <keyMapping columnObjectName="Join_2" columnName="PHASE_DEFAULT_LONG_TEXT"/>
+      </attribute>
+      <attribute id="PHASE_TEXT_LABEL" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Phase"/>
+        <keyMapping columnObjectName="Join_2" columnName="PHASE_TEXT_LABEL"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="22" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="340"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="false" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="274"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="180"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

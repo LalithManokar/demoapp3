@@ -1,0 +1,10 @@
+schema = "SAP_INO_EXT";
+
+query = "
+    -- no instance authorization check is needed
+    select * 
+    from \"sap.ino.db.evaluation::v_criterion_value_template\"  
+    with read only 
+";
+
+depends_on_view = [ "sap.ino.db.evaluation::v_criterion_value_template"];

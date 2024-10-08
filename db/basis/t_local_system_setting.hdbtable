@@ -1,0 +1,14 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Local System Settings";
+table.columns = [
+    {name = "ID";            sqlType = INTEGER;                 nullable = false; comment = "ID used for UI maintenance";},
+    {name = "CODE";          sqlType = VARCHAR;  length = 500;  nullable = false; comment = "Code of local system setting";},
+    {name = "VALUE";         sqlType = NVARCHAR; length = 5000; nullable = true;  comment = "Value of local system setting";},
+    {name = "CREATED_AT";    sqlType = TIMESTAMP;               nullable = true;  comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID"; sqlType = INTEGER;                 nullable = true;  comment = "Identity by which content has been created.";},
+    {name = "CHANGED_AT";    sqlType = TIMESTAMP;               nullable = true;  comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID"; sqlType = INTEGER;                 nullable = true;  comment = "Identity by which content has been changed.";}
+];
+
+table.primaryKey.pkcolumns = ["ID"];

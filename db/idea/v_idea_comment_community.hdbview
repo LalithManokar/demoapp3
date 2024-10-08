@@ -1,0 +1,57 @@
+schema = "SAP_INO";
+query = "select 
+             idea_comment.ID,
+             idea_comment.CREATED_AT as created_at,
+			 idea_comment.CREATED_BY_ID,
+			 idea_comment.CHANGED_AT as changed_at,
+			 idea_comment.CHANGED_BY_ID,
+             idea_comment.OBJECT_ID as object_id,
+             idea_comment.COMMENT as comment,
+             idea_comment.PARENT_ID as parent_id,
+             idea_comment.source_id as source_id,
+            
+             changed_user.name as changed_by_name,
+             changed_user.identity_image_id as changed_by_image_id,
+
+             created_user.name as created_by_name,
+             created_user.identity_image_id as created_by_image_id,
+             
+             case 
+             when exists(select attachment.attachment_id 
+             from \"sap.ino.db.attachment::t_attachment_assignment\" as attachment 
+             where (idea_comment.ID = attachment.OWNER_ID or idea_comment.source_id = attachment.OWNER_ID) 
+             and attachment.role_type_code='ATTACHMENT' and attachment.owner_type_code='COMMENT')
+            then 1 else 0 end as has_attachments,
+            
+             case
+             when exists(select ID from \"sap.ino.db.comment::v_community_comment\" where parent_id = idea_comment.ID)
+             then 1 else 0 end as has_replies,
+             
+             case when can_update.comment_id is not null and idea_comment.source_id is null then 1 else 0 end as can_update,
+             case when can_delete.comment_id is not null and idea_comment.source_id is null then 1 else 0 end as can_delete
+         from 
+             \"sap.ino.db.comment::v_community_comment\" as idea_comment 
+         left outer join
+             \"sap.ino.db.iam::v_identity\" as changed_user
+         on 
+             changed_user.id = idea_comment.changed_by_id
+         left outer join
+             \"sap.ino.db.iam::v_identity\" as created_user
+         on 
+             created_user.id = idea_comment.created_by_id  
+         left outer join 
+             \"sap.ino.db.idea::v_auth_comment_update\" as can_update
+         on 
+             can_update.comment_id = idea_comment.id  
+         left outer join
+             \"sap.ino.db.idea::v_auth_comment_delete\" as can_delete
+         on 
+             can_delete.comment_id = idea_comment.id  
+             where idea_comment.OBJECT_TYPE_CODE = 'IDEA' 
+         with read only"; 
+depends_on_table  = ["sap.ino.db.attachment::t_attachment_assignment"];
+depends_on_view  = ["sap.ino.db.comment::v_community_comment",
+                    "sap.ino.db.idea::v_auth_comment_update", 
+                    "sap.ino.db.idea::v_auth_comment_delete", 
+                    "sap.ino.db.iam::v_identity",
+                    "sap.ino.db.idea::V_IDEA_CAMPAIGN_MANAGER"];

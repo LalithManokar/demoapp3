@@ -1,0 +1,301 @@
+schema = "SAP_INO"; 
+query= " select * from ( 
+         select idea_h.id, 
+                case idea_h.history_biz_event 
+                    when 'IDEA_CREATED' then 'IDEA_CREATED'
+                    else
+						case idea_h.history_biz_event 
+                    		when 'IDEA_UPDATED' then	 
+		                        case when   idea_h.description is not null and  
+		                                    idea_h.name is not null
+		                            then 'IDEA_CHANGED_NAME_DESCRIPTION'
+		                        else
+		                            case when idea_h.description is not null 
+		                                then 'IDEA_CHANGED_DESCRIPTION'
+		                                else 
+		                                    'IDEA_CHANGED_NAME'
+		                                end
+		                        end
+		                    else idea_h.history_biz_event
+		        		end
+                end as feed_event,
+                actor_identity.name as feed_actor_name,
+                idea_h.history_at as feed_at,
+                case when ( idea_h.history_biz_event = 'IDEA_CREATED' or 
+                            idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.START_NEXT_PHASE' or 
+                            idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.DISCONTINUE' or
+                            idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.COMPLETE' or
+                            idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.RESTART_PREV_PHASE') 
+                            then 1 else 0 
+                end as feed_important,
+                case when ( idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.START_NEXT_PHASE' or
+                            idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.RESTART_PREV_PHASE')
+                            then idea_h.phase_code else idea_h.name 
+                end as param_0,
+                case when ( idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.START_NEXT_PHASE'  or
+                            idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.RESTART_PREV_PHASE')
+                            then 'sap.ino.xs.object.campaign.Phase.Root' else null 
+                end as param_0_bundle
+             from \"sap.ino.db.idea::v_idea_h\" as idea_h
+                inner join \"sap.ino.db.iam::t_identity\" as actor_identity
+                    on idea_h.history_actor_id = actor_identity.id
+                    where idea_h.history_biz_event = 'IDEA_CREATED' or 
+                          idea_h.history_biz_event = 'IDEA_DELETED' or 
+                        ( idea_h.history_biz_event = 'IDEA_UPDATED' and 
+                          ( idea_h.name is not null or 
+                          idea_h.description is not null ) ) or 
+                          idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.START_NEXT_PHASE'  or
+                          idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.DISCONTINUE' or
+                          idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.COMPLETE' or
+                          idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.RESTART_PHASE' or
+                          idea_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.RESTART_PREV_PHASE'
+          union all
+          	select 
+                idea_h.id as id,
+                'IDEA_SUBMITTED' as feed_event,
+                actor_identity.name as feed_actor_name,
+                idea_h.history_at as feed_at,
+                1 as feed_important,
+                campaign.name as param_0,
+                null as param_0_bundle
+            from \"sap.ino.db.idea::t_idea_h\" as idea_h
+                inner join \"sap.ino.db.iam::t_identity\" as actor_identity
+                	on idea_h.history_actor_id = actor_identity.id
+                inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign 
+                    on idea_h.campaign_id = campaign.campaign_id
+                where history_biz_event = 'STATUS_ACTION_SUBMIT' and history_db_event = 'UPDATED'
+          union all
+            select idea_h.id,
+                   idea_h.history_biz_event as feed_event,
+                   actor_identity.name as feed_actor_name,
+                   idea_h.history_at as feed_at,
+                   0 as feed_important,
+                   case when idea_h.history_biz_event = 'CAMPAIGN_PHASE_CODE_REPLACEMENT' 
+                       then idea_h.phase_code
+                       else case when idea_h.history_biz_event = 'CAMPAIGN_STATUS_MODEL_CODE_REPLACEMENT' 
+                           then 'sap.ino.config.NEW_IN_PHASE'
+                           else null
+                       end
+                   end as param_0,
+                   case when idea_h.history_biz_event = 'CAMPAIGN_PHASE_CODE_REPLACEMENT' 
+                       then 'sap.ino.xs.object.campaign.Phase.Root' 
+                       else case when idea_h.history_biz_event = 'CAMPAIGN_STATUS_MODEL_CODE_REPLACEMENT' 
+                           then 'sap.ino.xs.object.idea.Status.Root'
+                           else null
+                       end
+                   end as param_0_bundle
+            from \"sap.ino.db.idea::v_idea_h\" as idea_h
+            inner join \"sap.ino.db.iam::t_identity\" as actor_identity
+                on idea_h.history_actor_id = actor_identity.id
+            where 
+                idea_h.history_biz_event = 'CAMPAIGN_PHASE_CODE_REPLACEMENT' or 
+                idea_h.history_biz_event = 'CAMPAIGN_STATUS_MODEL_CODE_REPLACEMENT' or 
+                idea_h.history_biz_event = 'CAMPAIGN_VOTE_TYPE_REPLACEMENT' or 
+                idea_h.history_biz_event = 'CAMPAIGN_PROCESS_CHANGE'
+        union all
+            select idea_h.id,
+                   'SAP_RESTART_IN_PHASE' as feed_event,
+                   actor_identity.name as feed_actor_name,
+                   idea_h.history_at as feed_at,
+                   1 as feed_important,
+                   idea_h.phase_code as param_0,
+                   'sap.ino.xs.object.campaign.Phase.Root' as param_0_bundle
+            from (
+                select * 
+                from (
+                      select *, lag(status_code, 1, NULL) over (partition by id order by history_at asc) as pre_status
+                      from \"sap.ino.db.idea::t_idea_h\" ) 
+                where pre_status = 'SAP_COMPLETED' or pre_status = 'SAP_DISCONTINUED' ) as idea_h
+            inner join \"sap.ino.db.iam::t_identity\" as actor_identity
+                on idea_h.history_actor_id = actor_identity.id
+          union all 
+             select 
+                object_id as id,
+                case history_db_event when 'CREATED' then 'CONTRIBUTOR_ADDED' else 'CONTRIBUTOR_REMOVED' end as feed_event,
+                actor_identity.name as feed_actor_name,
+                idea_role_h.history_at as feed_at,
+                0 as feed_important,
+                role_identity.name as param_0,
+                null as param_0_bundle
+             from \"sap.ino.db.iam::t_object_identity_role_h\" as idea_role_h 
+                inner join \"sap.ino.db.iam::t_identity\" as role_identity
+                    on idea_role_h.identity_id = role_identity.id 
+                inner join \"sap.ino.db.iam::t_identity\" as actor_identity
+                    on idea_role_h.history_actor_id = actor_identity.id 
+                where history_biz_event = 'IDEA_UPDATED' and history_db_event <> 'UPDATED' and 
+                      idea_role_h.role_code = 'IDEA_CONTRIBUTOR' and
+                      idea_role_h.object_type_code = 'IDEA'
+		   union all 
+             select 
+                object_id as id,
+                case history_db_event when 'CREATED' then 'EXPERT_ASSIGNED' else 'EXPERT_UNASSIGNED' end as feed_event,
+                actor_identity.name as feed_actor_name,
+                idea_role_h.history_at as feed_at,
+                0 as feed_important,
+                role_identity.name as param_0,
+                null as param_0_bundle
+             from \"sap.ino.db.iam::t_object_identity_role_h\" as idea_role_h 
+                inner join \"sap.ino.db.iam::t_identity\" as role_identity
+                    on idea_role_h.identity_id = role_identity.id 
+                inner join \"sap.ino.db.iam::t_identity\" as actor_identity
+                    on idea_role_h.history_actor_id = actor_identity.id 
+                where history_biz_event = 'IDEA_UPDATED' and history_db_event <> 'UPDATED' and 
+                      idea_role_h.role_code = 'IDEA_EXPERT' and
+                      idea_role_h.object_type_code = 'IDEA'
+          union all 
+             select 
+                object_id as id,
+                case history_db_event when 'CREATED' then 'COACH_ASSIGNED' else 'COACH_UNASSIGNED' end as feed_event,
+                actor_identity.name as feed_actor_name,
+                idea_role_h.history_at as feed_at,
+                0 as feed_important,
+                role_identity.name as param_0,
+                null as param_0_bundle
+             from \"sap.ino.db.iam::t_object_identity_role_h\" as idea_role_h 
+                inner join \"sap.ino.db.iam::t_identity\" as role_identity
+                    on idea_role_h.identity_id = role_identity.id 
+                inner join \"sap.ino.db.iam::t_identity\" as actor_identity
+                    on idea_role_h.history_actor_id = actor_identity.id 
+                where ( history_biz_event = 'COACH_ASSIGNED' OR history_biz_event = 'COACH_UNASSIGNED' ) AND  
+                        idea_role_h.role_code = 'IDEA_COACH' and
+                        idea_role_h.object_type_code = 'IDEA'
+	      union all 
+             select 
+                object_id as id,
+                case history_db_event when 'CREATED' then 'COACH_ASSIGNED' else 'COACH_UNASSIGNED' end as feed_event,
+                actor_identity.name as feed_actor_name,
+                idea_role_h.history_at as feed_at,
+                0 as feed_important,
+                role_identity.name as param_0,
+                null as param_0_bundle
+             from \"sap.ino.db.iam::t_object_identity_role_h\" as idea_role_h 
+                inner join \"sap.ino.db.iam::t_identity\" as role_identity
+                    on idea_role_h.identity_id = role_identity.id 
+                inner join \"sap.ino.db.iam::t_identity\" as actor_identity
+                    on idea_role_h.history_actor_id = actor_identity.id 
+                where history_biz_event = 'IDEA_UPDATED' and history_db_event <> 'UPDATED' and 
+                      idea_role_h.role_code = 'IDEA_COACH' and
+                      idea_role_h.object_type_code = 'IDEA'
+          union all
+            select 
+                evaluation_h.idea_id as id,
+                evaluation_h.history_biz_event as feed_event,
+                actor_identity.name as feed_actor_name,
+                evaluation_h.history_at as feed_at,
+                1 as feed_important,
+                null as param_0,
+                null as param_0_bundle
+             from \"sap.ino.db.evaluation::t_evaluation_h\" as evaluation_h 
+                inner join \"sap.ino.db.iam::t_identity\" as actor_identity 
+                    on evaluation_h.history_actor_id = actor_identity.id 
+             where history_biz_event = 'STATUS_ACTION_sap.ino.config.EVAL_PUB_SUBMITTER' or 
+                   history_biz_event = 'STATUS_ACTION_sap.ino.config.EVAL_PUB_COMMUNITY'
+          union all 
+             select 
+                owner_id as id,
+				case attachment_assignment_h.assignment_type 
+					when 'ATTACHMENT' then
+                		case history_db_event 
+                			when 'CREATED' then 'ATTACHMENT_ADDED' 
+                			else 
+                				case history_db_event
+                					when 'DELETED' then 'ATTACHMENT_REMOVED'                					
+             						else 'TITLE_IMAGE_REMOVED'
+                				end
+                		end
+					else
+                		case history_db_event
+                			when 'CREATED' then 'TITLE_IMAGE_SET' 
+                			else 
+                				case history_db_event
+                					when 'DELETED' then 'TITLE_IMAGE_REMOVED'
+                					else 'TITLE_IMAGE_CHANGED'
+                				end
+                		end
+                	end as feed_event,
+                actor_identity.name as feed_actor_name,
+                attachment_assignment_h.history_at as feed_at,
+                0 as feed_important,
+                null as param_0,
+                null as param_0_bundle
+             from \"sap.ino.db.attachment::v_attachment_assignment_h\" as attachment_assignment_h 
+                inner join \"sap.ino.db.iam::t_identity\" as actor_identity
+                    on attachment_assignment_h.history_actor_id = actor_identity.id 
+                where history_biz_event = 'IDEA_UPDATED' and 
+                	  (history_db_event <> 'UPDATED' or attachment_assignment_h.attachment_id is not null or
+                	   attachment_assignment_h.role_type_code is not null) and
+                	   attachment_assignment_h.owner_type_code = 'IDEA'
+      	union all 
+             select 
+                object_id as id,
+            	case history_db_event 
+            		when 'CREATED' then 'LINK_ADDED' 
+            		else 'LINK_REMOVED'
+            	end as feed_event,
+                actor_identity.name as feed_actor_name,
+                link_h.history_at as feed_at,
+                0 as feed_important,
+                null as param_0,
+                null as param_0_bundle
+             from \"sap.ino.db.link::t_link_h\" as link_h 
+                inner join \"sap.ino.db.iam::t_identity\" as actor_identity
+                    on link_h.history_actor_id = actor_identity.id 
+                where history_biz_event = 'IDEA_UPDATED' and 
+                	  history_db_event <> 'UPDATED' and 
+                	  link_h.object_type_code = 'IDEA' and 
+                	  link_h.type_code = 'URL'
+		union all 
+             select 
+                object_id as id,
+                case v_relation_h.source 
+            		when 1 then history_db_event || '_' || semantic || '_SOURCE' 
+            		else history_db_event || '_' || semantic || '_TARGET'
+            	end as feed_event,
+                actor_identity.name as feed_actor_name,
+                v_relation_h.history_at as feed_at,
+                0 as feed_important,
+                null as param_0,
+                null as param_0_bundle
+             from \"sap.ino.db.link::v_relation_h\" as v_relation_h 
+                inner join \"sap.ino.db.iam::t_identity\" as actor_identity
+                    on v_relation_h.history_actor_id = actor_identity.id 
+                where (history_biz_event = 'RELATION_UPDATED' or history_biz_event = 'IDEA_CREATED') and 
+                    -- filter deleted copied/merged status, as this makes no sense (original idea has been deleted)
+        		    (v_relation_h.history_db_event, v_relation_h.semantic) in (
+        		        ('CREATED', 'sap.ino.config.DUPLICATE'),
+        		        ('DELETED', 'sap.ino.config.DUPLICATE'),
+        		        ('CREATED', 'sap.ino.config.COPIED'),
+        		        ('CREATED', 'sap.ino.config.MERGED')
+        		    ) and
+                	history_db_event <> 'UPDATED' and 
+                	v_relation_h.object_type_code = 'IDEA' and 
+                	v_relation_h.other_object_type_code = 'IDEA' 
+      	union all
+      	    select
+      	       idea_h.id, 
+               case idea_h.history_biz_event 
+                   when 'IDEA_UPDATED' then
+                       case when idea_h.campaign_id is not null then 'IDEA_CAMPAIGN_REASSIGN'
+                       else idea_h.history_biz_event
+                   end
+               end as feed_event,
+               actor_identity.name as feed_actor_name,
+               idea_h.history_at as feed_at,
+               1 as feed_important,
+               campaign.name as param_0,
+               null as param_0_bundle
+            from \"sap.ino.db.idea::v_idea_h\" as idea_h
+                inner join \"sap.ino.db.iam::t_identity\" as actor_identity
+                    on idea_h.history_actor_id = actor_identity.id
+                inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign 
+                    on idea_h.campaign_id = campaign.campaign_id
+                inner join \"sap.ino.db.idea::t_idea_h\" as idea
+                    on idea_h.id = idea.id where idea.history_at = idea_h.history_at and idea.status_code <> 'sap.ino.config.DRAFT'
+            ) 
+              where id is not null and 
+                    feed_event is not null and
+                    feed_at is not null     
+                with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity", "sap.ino.db.evaluation::t_evaluation_h", "sap.ino.db.idea::t_idea_h", "sap.ino.db.link::t_link_h", "sap.ino.db.iam::t_object_identity_role_h"];
+depends_on_view = ["sap.ino.db.attachment::v_attachment_assignment_h", "sap.ino.db.campaign::v_campaign_t_locale", "sap.ino.db.idea::v_idea_h", "sap.ino.db.link::v_relation_h"];

@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "select distinct uncoach.id, uncoach.campaign_id
+	        from \"sap.ino.db.idea::v_uncoached_ideas\" as uncoach
+        	inner join \"sap.ino.db.idea::v_auth_coach_assign\" as auth_coach
+        	    on uncoach.id = auth_coach.idea_id and uncoach.status_code <> 'sap.ino.config.DRAFT'";
+
+depends_on_view = ["sap.ino.db.idea::v_uncoached_ideas",
+				   "sap.ino.db.idea::v_auth_coach_assign"];

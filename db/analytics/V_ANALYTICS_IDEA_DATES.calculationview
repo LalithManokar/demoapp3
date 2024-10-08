@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_IDEA_DATES" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="V_ANALYTICS_IDEA"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="V_ANALYTICS_IDEAS_FULL" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEAS_FULL</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.analytics_V_ANALYTICS_RESOLVED_TEXT_WRAPPER" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_RESOLVED_TEXT_WRAPPER</resourceUri>
+    </DataSource>
+    <DataSource id="Change_Date_Text$$sap.ino.db.analytics_V_ANALYTICS_RESOLVED_TEXT_WRAPPER$$V_ANALYTICS_RESOLVED_TEXT_WRAPPER$$" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_RESOLVED_TEXT_WRAPPER</resourceUri>
+    </DataSource>
+    <DataSource id="V_ANALYTICS_IDEA_FINAL_STATUS" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_FINAL_STATUS</resourceUri>
+    </DataSource>
+    <DataSource id="Final_Status_Month_Text$$sap.ino.db.analytics_V_ANALYTICS_RESOLVED_TEXT_WRAPPER$$V_ANALYTICS_RESOLVED_TEXT_WRAPPER$$" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_RESOLVED_TEXT_WRAPPER</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Idea">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT"/>
+        <viewAttribute id="IDEA_CHANGED_AT"/>
+        <viewAttribute id="IDEA_CHANGED_AT_WEEK"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_WEEK"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_YEAR"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_MONTH_NUMBER"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_DAY"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_HOUR"/>
+        <viewAttribute id="IDEA_CHANGED_AT_YEAR"/>
+        <viewAttribute id="IDEA_CHANGED_AT_MONTH_NUMBER"/>
+        <viewAttribute id="IDEA_CHANGED_AT_DAY"/>
+        <viewAttribute id="IDEA_CHANGED_AT_HOUR"/>
+        <viewAttribute id="IDEA_RESPONSIBILITY_CODE"/>
+        <viewAttribute id="IDEA_RESPONSIBILITY_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="IDEA_SUBMITTED_AT_YEAR_MONTH" length="7" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(int(&quot;IDEA_SUBMITTED_AT_MONTH_NUMBER&quot;) &lt; 10, string(&quot;IDEA_SUBMITTED_AT_YEAR&quot;) + '-0' + string(&quot;IDEA_SUBMITTED_AT_MONTH_NUMBER&quot;), string(&quot;IDEA_SUBMITTED_AT_YEAR&quot;) + '-' + string(&quot;IDEA_SUBMITTED_AT_MONTH_NUMBER&quot;))</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="IDEA_SUBMITTED_AT_MONTH_TEXT_CODE" length="50" expressionLanguage="COLUMN_ENGINE">
+          <formula>'BO_ANA_FLD_CHAR_MONTH_' + string(&quot;IDEA_SUBMITTED_AT_MONTH_NUMBER&quot;) + '_SHORT'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="IDEA_CHANGED_AT_YEAR_MONTH" length="7" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(int(&quot;IDEA_CHANGED_AT_MONTH_NUMBER&quot;) &lt; 10, string(&quot;IDEA_CHANGED_AT_YEAR&quot;) + '-0' + string(&quot;IDEA_CHANGED_AT_MONTH_NUMBER&quot;), string(&quot;IDEA_CHANGED_AT_YEAR&quot;) + '-' + string(&quot;IDEA_CHANGED_AT_MONTH_NUMBER&quot;))</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="IDEA_CHANGED_AT_MONTH_TEXT_CODE" length="50" expressionLanguage="COLUMN_ENGINE">
+          <formula>'BO_ANA_FLD_CHAR_MONTH_' + string(&quot;IDEA_CHANGED_AT_MONTH_NUMBER&quot;) + '_SHORT'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="IDEA_SUBMITTED_AT_DATE" length="10" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(&quot;IDEA_SUBMITTED_AT_DAY&quot; &lt; 10, &quot;IDEA_SUBMITTED_AT_YEAR_MONTH&quot; + '-0' + string(&quot;IDEA_SUBMITTED_AT_DAY&quot;), &quot;IDEA_SUBMITTED_AT_YEAR_MONTH&quot; + '-' + string(&quot;IDEA_SUBMITTED_AT_DAY&quot;))</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="IDEA_CHANGED_AT_DATE" length="10" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(&quot;IDEA_CHANGED_AT_DAY&quot; &lt; 10, &quot;IDEA_CHANGED_AT_YEAR_MONTH&quot; + '-0' + string(&quot;IDEA_CHANGED_AT_DAY&quot;), &quot;IDEA_CHANGED_AT_YEAR_MONTH&quot; + '-' + string(&quot;IDEA_CHANGED_AT_DAY&quot;))</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="IDEA_SUBMITTED_AT_TIME" length="5" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(int(&quot;IDEA_SUBMITTED_AT_HOUR&quot;) &lt; 10, '0' + string(&quot;IDEA_SUBMITTED_AT_HOUR&quot;) + ':00:00', string(&quot;IDEA_SUBMITTED_AT_HOUR&quot;) + ':00:00')</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="IDEA_CHANGED_AT_TIME" length="5" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(int(&quot;IDEA_CHANGED_AT_HOUR&quot;) &lt; 10, '0' + string(&quot;IDEA_CHANGED_AT_HOUR&quot;) + ':00:00', string(&quot;IDEA_CHANGED_AT_HOUR&quot;) + ':00:00')</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="IDEA_SUBMITTED_AT_DATETIME" length="16" expressionLanguage="COLUMN_ENGINE">
+          <formula>&quot;IDEA_SUBMITTED_AT_DATE&quot; + ' ' +&quot;IDEA_SUBMITTED_AT_TIME&quot;</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="IDEA_CHANGED_AT_DATETIME" length="16" expressionLanguage="COLUMN_ENGINE">
+          <formula>&quot;IDEA_CHANGED_AT_DATE&quot; + ' ' +&quot;IDEA_CHANGED_AT_TIME&quot;</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="IDEA_SUBMITTED_AT_YEAR_WEEK" length="7" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(&quot;IDEA_SUBMITTED_AT_WEEK&quot; &lt; 10, string(&quot;IDEA_SUBMITTED_AT_YEAR&quot;) + '-0' + string(&quot;IDEA_SUBMITTED_AT_WEEK&quot;), string(&quot;IDEA_SUBMITTED_AT_YEAR&quot;) + '-' + string(&quot;IDEA_SUBMITTED_AT_WEEK&quot;))</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="IDEA_CHANGED_AT_YEAR_WEEK" length="7" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(&quot;IDEA_CHANGED_AT_WEEK&quot; &lt; 10, string(&quot;IDEA_CHANGED_AT_YEAR&quot;) + '-0' + string(&quot;IDEA_CHANGED_AT_WEEK&quot;), string(&quot;IDEA_CHANGED_AT_YEAR&quot;) + '-' + string(&quot;IDEA_CHANGED_AT_WEEK&quot;))</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="TINYINT" id="IDEA_CHANGED_INDICATOR" expressionLanguage="COLUMN_ENGINE">
+          <formula>IF(&quot;IDEA_SUBMITTED_AT&quot;&lt; &quot;IDEA_CHANGED_AT&quot;, 1, 0)</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#V_ANALYTICS_IDEAS_FULL">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT" source="IDEA_SUBMITTED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT" source="IDEA_CHANGED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_WEEK" source="IDEA_CHANGED_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_WEEK" source="IDEA_SUBMITTED_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_YEAR" source="IDEA_SUBMITTED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_MONTH_NUMBER" source="IDEA_SUBMITTED_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_DAY" source="IDEA_SUBMITTED_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_HOUR" source="IDEA_SUBMITTED_AT_HOUR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_YEAR" source="IDEA_CHANGED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_MONTH_NUMBER" source="IDEA_CHANGED_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_DAY" source="IDEA_CHANGED_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_HOUR" source="IDEA_CHANGED_AT_HOUR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_RESPONSIBILITY_CODE" source="IDEA_RESPONSIBILITY_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_RESPONSIBILITY_TEXT" source="IDEA_RESPONSIBILITY_TEXT"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Submission_Date_Text" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT"/>
+        <viewAttribute id="IDEA_CHANGED_AT"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_YEAR_MONTH"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_YEAR"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_MONTH_NUMBER"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_MONTH_TEXT_CODE"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_MONTH"/>
+        <viewAttribute id="IDEA_CHANGED_AT_YEAR_MONTH"/>
+        <viewAttribute id="IDEA_CHANGED_AT_YEAR"/>
+        <viewAttribute id="IDEA_CHANGED_AT_MONTH_NUMBER"/>
+        <viewAttribute id="IDEA_CHANGED_AT_MONTH_TEXT_CODE"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_DATE"/>
+        <viewAttribute id="IDEA_CHANGED_AT_DATE"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_TIME"/>
+        <viewAttribute id="IDEA_CHANGED_AT_TIME"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_DATETIME"/>
+        <viewAttribute id="IDEA_CHANGED_AT_DATETIME"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_YEAR_WEEK"/>
+        <viewAttribute id="IDEA_CHANGED_AT_YEAR_WEEK"/>
+        <viewAttribute id="IDEA_CHANGED_AT_WEEK"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_WEEK"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_DAY"/>
+        <viewAttribute id="IDEA_CHANGED_AT_DAY"/>
+        <viewAttribute id="IDEA_CHANGED_INDICATOR"/>
+        <viewAttribute id="IDEA_RESPONSIBILITY_CODE"/>
+        <viewAttribute id="IDEA_RESPONSIBILITY_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT" source="IDEA_SUBMITTED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT" source="IDEA_CHANGED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_YEAR_MONTH" source="IDEA_SUBMITTED_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_YEAR" source="IDEA_SUBMITTED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_MONTH_NUMBER" source="IDEA_SUBMITTED_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_MONTH_TEXT_CODE" source="IDEA_SUBMITTED_AT_MONTH_TEXT_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_YEAR_MONTH" source="IDEA_CHANGED_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_YEAR" source="IDEA_CHANGED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_MONTH_NUMBER" source="IDEA_CHANGED_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_MONTH_TEXT_CODE" source="IDEA_CHANGED_AT_MONTH_TEXT_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_DATE" source="IDEA_SUBMITTED_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_DATE" source="IDEA_CHANGED_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_TIME" source="IDEA_SUBMITTED_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_TIME" source="IDEA_CHANGED_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_DATETIME" source="IDEA_SUBMITTED_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_DATETIME" source="IDEA_CHANGED_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_YEAR_WEEK" source="IDEA_SUBMITTED_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_YEAR_WEEK" source="IDEA_CHANGED_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_WEEK" source="IDEA_CHANGED_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_WEEK" source="IDEA_SUBMITTED_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_DAY" source="IDEA_SUBMITTED_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_DAY" source="IDEA_CHANGED_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_INDICATOR" source="IDEA_CHANGED_INDICATOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_RESPONSIBILITY_CODE" source="IDEA_RESPONSIBILITY_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_RESPONSIBILITY_TEXT" source="IDEA_RESPONSIBILITY_TEXT"/>
+      </input>
+      <input node="#sap.ino.db.analytics_V_ANALYTICS_RESOLVED_TEXT_WRAPPER">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_MONTH" source="CONTENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_MONTH_TEXT_CODE" source="TEXT_ID"/>
+      </input>
+      <joinAttribute name="IDEA_SUBMITTED_AT_MONTH_TEXT_CODE"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Change_Date_Text" cardinality="CN_1" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT"/>
+        <viewAttribute id="IDEA_CHANGED_AT"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_YEAR_MONTH"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_YEAR"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_MONTH_NUMBER"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_MONTH"/>
+        <viewAttribute id="IDEA_CHANGED_AT_YEAR_MONTH"/>
+        <viewAttribute id="IDEA_CHANGED_AT_YEAR"/>
+        <viewAttribute id="IDEA_CHANGED_AT_MONTH_NUMBER"/>
+        <viewAttribute id="IDEA_CHANGED_AT_MONTH_TEXT_CODE"/>
+        <viewAttribute id="IDEA_CHANGED_AT_MONTH"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_DATE"/>
+        <viewAttribute id="IDEA_CHANGED_AT_DATE"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_TIME"/>
+        <viewAttribute id="IDEA_CHANGED_AT_TIME"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_DATETIME"/>
+        <viewAttribute id="IDEA_CHANGED_AT_DATETIME"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_YEAR_WEEK"/>
+        <viewAttribute id="IDEA_CHANGED_AT_YEAR_WEEK"/>
+        <viewAttribute id="IDEA_CHANGED_AT_WEEK"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_WEEK"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_DAY"/>
+        <viewAttribute id="IDEA_CHANGED_AT_DAY"/>
+        <viewAttribute id="IDEA_CHANGED_INDICATOR"/>
+        <viewAttribute id="IDEA_RESPONSIBILITY_CODE"/>
+        <viewAttribute id="IDEA_RESPONSIBILITY_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Submission_Date_Text">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT" source="IDEA_SUBMITTED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT" source="IDEA_CHANGED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_YEAR_MONTH" source="IDEA_SUBMITTED_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_YEAR" source="IDEA_SUBMITTED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_MONTH_NUMBER" source="IDEA_SUBMITTED_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_MONTH" source="IDEA_SUBMITTED_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_YEAR_MONTH" source="IDEA_CHANGED_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_YEAR" source="IDEA_CHANGED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_MONTH_NUMBER" source="IDEA_CHANGED_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_MONTH_TEXT_CODE" source="IDEA_CHANGED_AT_MONTH_TEXT_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_DATE" source="IDEA_SUBMITTED_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_DATE" source="IDEA_CHANGED_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_TIME" source="IDEA_SUBMITTED_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_TIME" source="IDEA_CHANGED_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_DATETIME" source="IDEA_SUBMITTED_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_DATETIME" source="IDEA_CHANGED_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_YEAR_WEEK" source="IDEA_SUBMITTED_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_YEAR_WEEK" source="IDEA_CHANGED_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_WEEK" source="IDEA_CHANGED_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_WEEK" source="IDEA_SUBMITTED_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_DAY" source="IDEA_SUBMITTED_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_DAY" source="IDEA_CHANGED_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_INDICATOR" source="IDEA_CHANGED_INDICATOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_RESPONSIBILITY_CODE" source="IDEA_RESPONSIBILITY_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_RESPONSIBILITY_TEXT" source="IDEA_RESPONSIBILITY_TEXT"/>
+      </input>
+      <input node="#Change_Date_Text$$sap.ino.db.analytics_V_ANALYTICS_RESOLVED_TEXT_WRAPPER$$V_ANALYTICS_RESOLVED_TEXT_WRAPPER$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_MONTH" source="CONTENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_MONTH_TEXT_CODE" source="TEXT_ID"/>
+      </input>
+      <joinAttribute name="IDEA_CHANGED_AT_MONTH_TEXT_CODE"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="FINAL_STATUS">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="FINAL_STATUS_AT"/>
+        <viewAttribute id="FINAL_STATUS_AT_WEEK"/>
+        <viewAttribute id="FINAL_STATUS_AT_YEAR"/>
+        <viewAttribute id="FINAL_STATUS_AT_DAY"/>
+        <viewAttribute id="FINAL_STATUS_AT_HOUR"/>
+        <viewAttribute id="FINAL_STATUS_AT_MONTH_NUMBER"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="FINAL_STATUS_AT_YEAR_MONTH" length="7" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(int(&quot;FINAL_STATUS_AT_MONTH_NUMBER&quot;) &lt; 10, string(&quot;FINAL_STATUS_AT_YEAR&quot;) + '-0' + string(&quot;FINAL_STATUS_AT_MONTH_NUMBER&quot;), string(&quot;FINAL_STATUS_AT_YEAR&quot;) + '-' + string(&quot;FINAL_STATUS_AT_MONTH_NUMBER&quot;))</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FINAL_STATUS_AT_MONTH_TEXT_CODE" length="50" expressionLanguage="COLUMN_ENGINE">
+          <formula>'BO_ANA_FLD_CHAR_MONTH_' + string(&quot;FINAL_STATUS_AT_MONTH_NUMBER&quot;) + '_SHORT'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="TINYINT" id="FINAL_STATUS_INDICATOR" expressionLanguage="COLUMN_ENGINE">
+          <formula>1</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FINAL_STATUS_AT_DATE" length="10" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(&quot;FINAL_STATUS_AT_DAY&quot; &lt; 10, &quot;FINAL_STATUS_AT_YEAR_MONTH&quot; + '-0' + string(&quot;FINAL_STATUS_AT_DAY&quot;), &quot;FINAL_STATUS_AT_YEAR_MONTH&quot; + '-' + string(&quot;FINAL_STATUS_AT_DAY&quot;))</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FINAL_STATUS_AT_TIME" length="5" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(&quot;FINAL_STATUS_AT_HOUR&quot; &lt; 10, '0' + string(&quot;FINAL_STATUS_AT_HOUR&quot;) + ':00:00', string(&quot;FINAL_STATUS_AT_HOUR&quot;) + ':00:00')</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FINAL_STATUS_AT_DATETIME" length="16" expressionLanguage="COLUMN_ENGINE">
+          <formula>&quot;FINAL_STATUS_AT_DATE&quot; + ' ' +&quot;FINAL_STATUS_AT_TIME&quot;</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FINAL_STATUS_AT_YEAR_WEEK" length="7" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(&quot;FINAL_STATUS_AT_WEEK&quot; &lt; 10, string(&quot;FINAL_STATUS_AT_YEAR&quot;) + '-0' + string(&quot;FINAL_STATUS_AT_WEEK&quot;), string(&quot;FINAL_STATUS_AT_YEAR&quot;) + '-' + string(&quot;FINAL_STATUS_AT_WEEK&quot;))</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#V_ANALYTICS_IDEA_FINAL_STATUS">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT" source="FINAL_STATUS_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_WEEK" source="FINAL_STATUS_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_YEAR" source="FINAL_STATUS_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_DAY" source="FINAL_STATUS_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_HOUR" source="FINAL_STATUS_AT_HOUR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_MONTH_NUMBER" source="FINAL_STATUS_AT_MONTH"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Final_Status_Month_Text" cardinality="CN_1" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="FINAL_STATUS_AT_YEAR"/>
+        <viewAttribute id="FINAL_STATUS_AT_MONTH_NUMBER"/>
+        <viewAttribute id="FINAL_STATUS_AT_YEAR_MONTH"/>
+        <viewAttribute id="FINAL_STATUS_AT_MONTH_TEXT_CODE"/>
+        <viewAttribute id="FINAL_STATUS_AT_MONTH"/>
+        <viewAttribute id="FINAL_STATUS_INDICATOR"/>
+        <viewAttribute id="FINAL_STATUS_AT"/>
+        <viewAttribute id="FINAL_STATUS_AT_DAY"/>
+        <viewAttribute id="FINAL_STATUS_AT_DATE"/>
+        <viewAttribute id="FINAL_STATUS_AT_TIME"/>
+        <viewAttribute id="FINAL_STATUS_AT_DATETIME"/>
+        <viewAttribute id="FINAL_STATUS_AT_YEAR_WEEK"/>
+        <viewAttribute id="FINAL_STATUS_AT_WEEK"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#FINAL_STATUS">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_YEAR" source="FINAL_STATUS_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_MONTH_NUMBER" source="FINAL_STATUS_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_YEAR_MONTH" source="FINAL_STATUS_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_MONTH_TEXT_CODE" source="FINAL_STATUS_AT_MONTH_TEXT_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_INDICATOR" source="FINAL_STATUS_INDICATOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT" source="FINAL_STATUS_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_DAY" source="FINAL_STATUS_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_DATE" source="FINAL_STATUS_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_TIME" source="FINAL_STATUS_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_DATETIME" source="FINAL_STATUS_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_YEAR_WEEK" source="FINAL_STATUS_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_WEEK" source="FINAL_STATUS_AT_WEEK"/>
+      </input>
+      <input node="#Final_Status_Month_Text$$sap.ino.db.analytics_V_ANALYTICS_RESOLVED_TEXT_WRAPPER$$V_ANALYTICS_RESOLVED_TEXT_WRAPPER$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_MONTH" source="CONTENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_MONTH_TEXT_CODE" source="TEXT_ID"/>
+      </input>
+      <joinAttribute name="FINAL_STATUS_AT_MONTH_TEXT_CODE"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_4" cardinality="CN_1" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT"/>
+        <viewAttribute id="IDEA_CHANGED_AT"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_YEAR_MONTH"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_YEAR"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_MONTH_NUMBER"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_MONTH"/>
+        <viewAttribute id="IDEA_CHANGED_AT_YEAR_MONTH"/>
+        <viewAttribute id="IDEA_CHANGED_AT_YEAR"/>
+        <viewAttribute id="IDEA_CHANGED_AT_MONTH_NUMBER"/>
+        <viewAttribute id="IDEA_CHANGED_AT_MONTH"/>
+        <viewAttribute id="FINAL_STATUS_AT_YEAR_MONTH"/>
+        <viewAttribute id="FINAL_STATUS_AT_YEAR"/>
+        <viewAttribute id="FINAL_STATUS_AT_MONTH_NUMBER"/>
+        <viewAttribute id="FINAL_STATUS_AT_MONTH"/>
+        <viewAttribute id="FINAL_STATUS_INDICATOR"/>
+        <viewAttribute id="FINAL_STATUS_AT"/>
+        <viewAttribute id="FINAL_STATUS_AT_DAY"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_DATE"/>
+        <viewAttribute id="IDEA_CHANGED_AT_DATE"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_TIME"/>
+        <viewAttribute id="IDEA_CHANGED_AT_TIME"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_DATETIME"/>
+        <viewAttribute id="IDEA_CHANGED_AT_DATETIME"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_YEAR_WEEK"/>
+        <viewAttribute id="IDEA_CHANGED_AT_YEAR_WEEK"/>
+        <viewAttribute id="FINAL_STATUS_AT_DATE"/>
+        <viewAttribute id="FINAL_STATUS_AT_TIME"/>
+        <viewAttribute id="FINAL_STATUS_AT_DATETIME"/>
+        <viewAttribute id="FINAL_STATUS_AT_YEAR_WEEK"/>
+        <viewAttribute id="IDEA_CHANGED_AT_WEEK"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_WEEK"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT_DAY"/>
+        <viewAttribute id="IDEA_CHANGED_AT_DAY"/>
+        <viewAttribute id="FINAL_STATUS_AT_WEEK"/>
+        <viewAttribute id="IDEA_CHANGED_INDICATOR"/>
+        <viewAttribute id="IDEA_RESPONSIBILITY_CODE"/>
+        <viewAttribute id="IDEA_RESPONSIBILITY_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Change_Date_Text">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT" source="IDEA_SUBMITTED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT" source="IDEA_CHANGED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_YEAR_MONTH" source="IDEA_SUBMITTED_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_YEAR" source="IDEA_SUBMITTED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_MONTH_NUMBER" source="IDEA_SUBMITTED_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_MONTH" source="IDEA_SUBMITTED_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_YEAR_MONTH" source="IDEA_CHANGED_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_YEAR" source="IDEA_CHANGED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_MONTH_NUMBER" source="IDEA_CHANGED_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_MONTH" source="IDEA_CHANGED_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_DATE" source="IDEA_SUBMITTED_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_DATE" source="IDEA_CHANGED_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_TIME" source="IDEA_SUBMITTED_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_TIME" source="IDEA_CHANGED_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_DATETIME" source="IDEA_SUBMITTED_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_DATETIME" source="IDEA_CHANGED_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_YEAR_WEEK" source="IDEA_SUBMITTED_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_YEAR_WEEK" source="IDEA_CHANGED_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_WEEK" source="IDEA_CHANGED_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_WEEK" source="IDEA_SUBMITTED_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT_DAY" source="IDEA_SUBMITTED_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT_DAY" source="IDEA_CHANGED_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_INDICATOR" source="IDEA_CHANGED_INDICATOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_RESPONSIBILITY_CODE" source="IDEA_RESPONSIBILITY_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_RESPONSIBILITY_TEXT" source="IDEA_RESPONSIBILITY_TEXT"/>
+      </input>
+      <input node="#Final_Status_Month_Text">
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_YEAR_MONTH" source="FINAL_STATUS_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_YEAR" source="FINAL_STATUS_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_MONTH_NUMBER" source="FINAL_STATUS_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_MONTH" source="FINAL_STATUS_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_INDICATOR" source="FINAL_STATUS_INDICATOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT" source="FINAL_STATUS_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_DAY" source="FINAL_STATUS_AT_DAY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_DATE" source="FINAL_STATUS_AT_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_TIME" source="FINAL_STATUS_AT_TIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_DATETIME" source="FINAL_STATUS_AT_DATETIME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_YEAR_WEEK" source="FINAL_STATUS_AT_YEAR_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_AT_WEEK" source="FINAL_STATUS_AT_WEEK"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+      </input>
+      <joinAttribute name="IDEA_ID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_4">
+    <descriptions/>
+    <attributes>
+      <attribute id="CAMPAIGN_ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CAMPAIGN_ID"/>
+        <keyMapping columnObjectName="Join_4" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_ID"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="PHASE_CODE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="PHASE_CODE"/>
+        <keyMapping columnObjectName="Join_4" columnName="PHASE_CODE"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="STATUS_CODE"/>
+        <keyMapping columnObjectName="Join_4" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_SUBMITTED_AT"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_SUBMITTED_AT"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_CHANGED_AT"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_CHANGED_AT"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_YEAR_MONTH" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_SUBMITTED_AT_YEAR_MONTH"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_SUBMITTED_AT_YEAR_MONTH"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_YEAR" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_SUBMITTED_AT_YEAR"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_SUBMITTED_AT_YEAR"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_MONTH_NUMBER" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_SUBMITTED_AT_MONTH_NUMBER"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_SUBMITTED_AT_MONTH_NUMBER"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_MONTH" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_SUBMITTED_AT_MONTH"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_SUBMITTED_AT_MONTH"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_YEAR_MONTH" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_CHANGED_AT_YEAR_MONTH"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_CHANGED_AT_YEAR_MONTH"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_YEAR" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_CHANGED_AT_YEAR"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_CHANGED_AT_YEAR"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_MONTH_NUMBER" order="13" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_CHANGED_AT_MONTH_NUMBER"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_CHANGED_AT_MONTH_NUMBER"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_MONTH" order="14" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_CHANGED_AT_MONTH"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_CHANGED_AT_MONTH"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_YEAR_MONTH" order="15" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FINAL_STATUS_AT_YEAR_MONTH"/>
+        <keyMapping columnObjectName="Join_4" columnName="FINAL_STATUS_AT_YEAR_MONTH"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_YEAR" order="16" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FINAL_STATUS_AT_YEAR"/>
+        <keyMapping columnObjectName="Join_4" columnName="FINAL_STATUS_AT_YEAR"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_MONTH_NUMBER" order="17" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FINAL_STATUS_AT_MONTH_NUMBER"/>
+        <keyMapping columnObjectName="Join_4" columnName="FINAL_STATUS_AT_MONTH_NUMBER"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_MONTH" order="18" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FINAL_STATUS_AT_MONTH"/>
+        <keyMapping columnObjectName="Join_4" columnName="FINAL_STATUS_AT_MONTH"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_INDICATOR" order="19" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FINAL_STATUS_INDICATOR"/>
+        <keyMapping columnObjectName="Join_4" columnName="FINAL_STATUS_INDICATOR"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT" order="20" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FINAL_STATUS_AT"/>
+        <keyMapping columnObjectName="Join_4" columnName="FINAL_STATUS_AT"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_DAY" order="21" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FINAL_STATUS_AT_DAY"/>
+        <keyMapping columnObjectName="Join_4" columnName="FINAL_STATUS_AT_DAY"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_DATE" order="22" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_SUBMITTED_AT_DATE"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_SUBMITTED_AT_DATE"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_DATE" order="23" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_CHANGED_AT_DATE"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_CHANGED_AT_DATE"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_TIME" order="24" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_SUBMITTED_AT_TIME"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_SUBMITTED_AT_TIME"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_TIME" order="25" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_CHANGED_AT_TIME"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_CHANGED_AT_TIME"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_DATETIME" order="26" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_SUBMITTED_AT_DATETIME"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_SUBMITTED_AT_DATETIME"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_DATETIME" order="27" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_CHANGED_AT_DATETIME"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_CHANGED_AT_DATETIME"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_YEAR_WEEK" order="28" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_SUBMITTED_AT_YEAR_WEEK"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_SUBMITTED_AT_YEAR_WEEK"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_YEAR_WEEK" order="29" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_CHANGED_AT_YEAR_WEEK"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_CHANGED_AT_YEAR_WEEK"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_DATE" order="30" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FINAL_STATUS_AT_DATE"/>
+        <keyMapping columnObjectName="Join_4" columnName="FINAL_STATUS_AT_DATE"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_TIME" order="31" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FINAL_STATUS_AT_TIME"/>
+        <keyMapping columnObjectName="Join_4" columnName="FINAL_STATUS_AT_TIME"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_DATETIME" order="32" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FINAL_STATUS_AT_DATETIME"/>
+        <keyMapping columnObjectName="Join_4" columnName="FINAL_STATUS_AT_DATETIME"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_YEAR_WEEK" order="33" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FINAL_STATUS_AT_YEAR_WEEK"/>
+        <keyMapping columnObjectName="Join_4" columnName="FINAL_STATUS_AT_YEAR_WEEK"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_WEEK" order="35" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_CHANGED_AT_WEEK"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_CHANGED_AT_WEEK"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_WEEK" order="36" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_SUBMITTED_AT_WEEK"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_SUBMITTED_AT_WEEK"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT_DAY" order="37" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_SUBMITTED_AT_DAY"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_SUBMITTED_AT_DAY"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT_DAY" order="38" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_CHANGED_AT_DAY"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_CHANGED_AT_DAY"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_WEEK" order="39" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FINAL_STATUS_AT_WEEK"/>
+        <keyMapping columnObjectName="Join_4" columnName="FINAL_STATUS_AT_WEEK"/>
+      </attribute>
+      <attribute id="IDEA_RESPONSIBILITY_CODE" order="41" attributeHierarchyActive="false" descriptionColumnName="IDEA_RESPONSIBILITY_TEXT" displayAttribute="false">
+        <descriptions defaultDescription="Idea Responsibility List Value "/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_RESPONSIBILITY_CODE"/>
+      </attribute>
+      <attribute id="IDEA_RESPONSIBILITY_TEXT" order="42" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_RESPONSIBILITY_TEXT"/>
+        <keyMapping columnObjectName="Join_4" columnName="IDEA_RESPONSIBILITY_TEXT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="IDEA_CHANGED_INDICATOR" order="40" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="IDEA_CHANGED_INDICATOR"/>
+        <measureMapping columnObjectName="Join_4" columnName="IDEA_CHANGED_INDICATOR"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures>
+      <measure id="IDEA_COUNT" hidden="false" order="34" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Number of Ideas"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="IDEA_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="99" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Idea" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="453"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Submission_Date_Text" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="357"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Change_Date_Text" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="261"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="FINAL_STATUS" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="176" y="357"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Final_Status_Month_Text" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="176" y="261"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_4" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="99" y="165"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

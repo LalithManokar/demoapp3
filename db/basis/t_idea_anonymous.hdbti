@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.basis::t_idea_anonymous";
+    file       = "sap.ino.db.basis:t_idea_anonymous.csv";
+    header     = false;
+    delimField = ";";
+}];

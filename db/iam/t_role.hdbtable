@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Role. System wide roles of identities.";
+table.columns = [
+    {name = "CODE"; sqlType = VARCHAR; length = 20; nullable = false; unique = true; comment = "Role code";},
+    {name = "CARDINALITY_CODE"; sqlType = VARCHAR; length = 20; nullable = true; comment = "Cardinality of role assignment: ZERO_OR_ONE, ONE, ZERO_TO_MANY, ONE_TO_MANY";}
+]; 
+table.primaryKey.pkcolumns = ["CODE"];

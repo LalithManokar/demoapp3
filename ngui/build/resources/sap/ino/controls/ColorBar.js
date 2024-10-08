@@ -1,0 +1,4 @@
+/*!
+ * SAP Innovation Management (c) Copyright 2014 SAP AG. All rights reserved.
+ */
+sap.ui.define(["sap/ino/controls/util/ColorSupport","sap/m/OverflowToolbar","sap/m/OverflowToolbarRenderer","sap/ui/Device"],function(C,B,a,D){"use strict";return B.extend("sap.ino.controls.ColorBar",{metadata:{properties:{"backgroundColor":{type:"sap.ui.core.CSSColor"},"enablePhone":{type:"boolean",defaultValue:false}}},renderer:a,onAfterRendering:function(){var $=jQuery(this.getDomRef());$.addClass("sapInoColorBar");if(this.getProperty("enablePhone")){$.addClass("sapInoColorBarPhoneEnabled");}if(!D.system.phone||this.getProperty("enablePhone")){var b=this.getProperty("backgroundColor");if(b&&b.length===7){var t=C.calculateTitleTextColor(b.substr(1,2),b.substr(3,2),b.substr(5,2));$.css("background-color",b);$.css("background",b);$.addClass("sapInoColorBarText"+t);}}},onfocusin:function(){}});});

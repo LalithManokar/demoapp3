@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = " 
+	select distinct attachment.id as attachment_id
+	    from 
+	    	\"sap.ino.db.attachment::t_attachment\" as attachment
+	    inner join 
+	     	\"sap.ino.db.attachment::t_attachment_assignment\" as assignment
+	    	on assignment.attachment_id = attachment.id and
+	    	   assignment.owner_type_code = 'MILESTONE' 
+	    inner join \"sap.ino.db.campaign::v_campaign_milestone\" as camp_mils
+	        on camp_mils.id = assignment.owner_id
+ 	    inner join \"sap.ino.db.campaign::v_auth_campaigns\" as auth 
+	    	on camp_mils.campaign_id = auth.campaign_id
+    with read only";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment",
+					"sap.ino.db.attachment::t_attachment_assignment"];
+depends_on_view = ["sap.ino.db.campaign::v_auth_campaigns",
+                   "sap.ino.db.campaign::v_campaign_milestone"];

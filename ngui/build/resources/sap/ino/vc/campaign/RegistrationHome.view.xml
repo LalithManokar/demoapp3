@@ -1,0 +1,63 @@
+<mvc:View
+    id="campaigncommunity"
+    controllerName="sap.ino.vc.campaign.RegistrationHome"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:ino="sap.ino.controls"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Page 
+        class="sapInoCampaignHomepage"
+        id="communityhomepage"
+        showHeader="false"
+        showSubHeader="false"
+        app:aofSmartControl="true"
+        app:aofModel="data"
+        app:aofObject="sap.ino.xs.object.campaign.Campaign"
+        >
+        <HBox 
+            visible="{view>/objectExists}"
+            class="sapInoBaseHomepageContent sapInoCampaignHomepageContent"
+            alignItems="Start"
+			justifyContent="Center">
+			<VBox>
+			    <HBox>
+			        <VBox class="sapInoBaseHomepageLeft sapInoCampaignHomepageLeft">
+                        <VBox id="leftProfileContainer">
+                            <core:Fragment id="RegistrationProfileFragment" fragmentName="sap.ino.vc.campaign.fragments.RegistrationProfile" type="XML" class="sapInoFloatingBackground" />
+                        </VBox>
+                        <VBox id="leftCampaignManagerContainer">
+                            <core:Fragment id="CampaignManagersFragment" fragmentName="sap.ino.vc.campaign.fragments.CampaignManagers" type="XML"/>
+                        </VBox>
+                    </VBox>
+                    <VBox
+                        class="sapInoBaseHomepageCenter sapInoCampaignHomepageCenter">
+                        <core:Fragment id="bannerFragment" fragmentName="sap.ino.vc.campaign.fragments.Banner" type="XML" />
+                        <VBox width="100%" id="milestoneContainer"></VBox>
+                        <Carousel
+                            id="campaignBannerList"
+                            visible="{= ${data>PAGE_COUNT_LOCALE} > 0 }"
+                            class="sapInoCampaignBannerCarousel sapInoFloatingBackground sapBannerList"
+                            loop="true"
+                            pages="{path : 'data>Pages', sorter:[{path: 'PAGE_NO', descending: false}]}"
+                            pageChanged="onChangePage" 
+                            onload="onBannerLoad">
+                            <pages>
+                                <VBox
+                                    class="sapInoCampaignBannerPage">
+                                    <core:HTML content="{ path:'data>HTML_CONTENT', formatter: '.formatter.wrapHTML'}" sanitizeContent="true"/>
+                                </VBox>
+                            </pages>
+                        </Carousel>
+                        <VBox id="centerProfileContainer" class="sapUiSmallMarginTop"/>
+                        <VBox id="centerCampaignManagerContainer" class="sapUiSmallMarginTop"/>
+                        <!--core:Fragment id="blogsFragment" fragmentName="sap.ino.vc.blog.fragments.BlogsCommunity" type="XML" /-->                         
+                    </VBox>
+                </HBox>
+            </VBox>
+        </HBox>
+        <core:Fragment fragmentName="sap.ino.vc.commons.fragments.ObjectNotExists"
+                       type="XML"/>
+    </Page>
+</mvc:View>

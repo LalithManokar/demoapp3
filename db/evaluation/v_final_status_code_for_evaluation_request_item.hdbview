@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query  = "
+          select 'sap.ino.config.EVAL_REQ_REJECTED' as status_code from dummy
+          union
+          select 'sap.ino.config.EVAL_REQ_COMPLETED' as status_code from dummy
+          union
+          select 'sap.ino.config.EVAL_REQ_EXPIRED'   as status_code from dummy
+          with read only";

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_IDEA_FINAL_STATUS" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="V_ANALYTICS_IDEAS_FINAL_STATUS_DATE"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="IDEA_ID"/>
+        <viewAttribute datatype="TIMESTAMP" id="FINAL_STATUS_AT"/>
+        <viewAttribute datatype="INTEGER" id="FINAL_STATUS_AT_YEAR"/>
+        <viewAttribute datatype="INTEGER" id="FINAL_STATUS_AT_MONTH"/>
+        <viewAttribute datatype="INTEGER" id="FINAL_STATUS_AT_WEEK"/>
+        <viewAttribute datatype="INTEGER" id="FINAL_STATUS_AT_DAY"/>
+        <viewAttribute datatype="INTEGER" id="FINAL_STATUS_AT_HOUR"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition>begin
+    var_out = select idea.id as idea_id,
+                     max(history.history_at) as final_status_at,
+                     EXTRACT (year FROM max(history.history_at)) as final_status_at_year,
+                     EXTRACT (month FROM max(history.history_at)) as final_status_at_month,
+                     week(max(history.history_at)) as final_status_at_week,
+                     EXTRACT (day FROM max(history.history_at)) as final_status_at_day,
+                     EXTRACT (hour FROM max(history.history_at)) as final_status_at_hour
+              from &quot;sap.ino.db.idea::t_idea&quot; as idea
+              inner join &quot;sap.ino.db.idea::t_idea_h&quot; as history
+                  on idea.id = history.id and
+                     idea.status_code = history.status_code
+              inner join &quot;sap.ino.db.campaign::t_campaign_phase&quot; as phase
+                  on history.phase_code = phase.phase_code and 
+                     history.campaign_id = phase.campaign_id
+              where (phase.next_phase_code is null and
+                  idea.status_code = 'sap.ino.config.COMPLETED' and 
+                  history.history_biz_event = 'STATUS_ACTION_sap.ino.config.COMPLETE') or
+                  (idea.status_code = 'sap.ino.config.DISCONTINUED' and 
+                  history.history_biz_event = 'STATUS_ACTION_sap.ino.config.DISCONTINUE')or
+                  (idea.status_code = 'sap.ino.config.MERGED' and 
+                  history.history_biz_event = 'RELATION_UPDATED')
+              group by (idea.id); 
+end </definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="IDEA_ID" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT" order="2">
+        <descriptions defaultDescription="Final Status at"/>
+        <keyMapping columnObjectName="Script_View" columnName="FINAL_STATUS_AT"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_YEAR" order="3">
+        <descriptions defaultDescription="Final Status at Year"/>
+        <keyMapping columnObjectName="Script_View" columnName="FINAL_STATUS_AT_YEAR"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_MONTH" order="4">
+        <descriptions defaultDescription="Final Status at Month"/>
+        <keyMapping columnObjectName="Script_View" columnName="FINAL_STATUS_AT_MONTH"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_WEEK" order="5">
+        <descriptions defaultDescription="Final Status at Week"/>
+        <keyMapping columnObjectName="Script_View" columnName="FINAL_STATUS_AT_WEEK"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_DAY" order="6">
+        <descriptions defaultDescription="Final Status at Day"/>
+        <keyMapping columnObjectName="Script_View" columnName="FINAL_STATUS_AT_DAY"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_AT_HOUR" order="7">
+        <descriptions defaultDescription="Final Status at Hour"/>
+        <keyMapping columnObjectName="Script_View" columnName="FINAL_STATUS_AT_HOUR"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

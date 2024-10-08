@@ -1,0 +1,24 @@
+schema = "SAP_INO";
+query = "
+select 
+	phase.code, 
+	phase.default_text, 
+	phase.default_long_text, 
+	camp_phase.campaign_id,
+	camp_phase.sequence_no
+from \"sap.ino.db.campaign::t_phase\" as phase 
+inner join \"sap.ino.db.campaign::t_campaign_phase\" as camp_phase 
+	on phase.code = camp_phase.phase_code
+union all
+select 
+	'' as code, 
+	'' as default_text, 
+	'' as default_long_text, 
+	camp.id as campaign_id,
+	0  as sequence_no 
+from \"sap.ino.db.campaign::t_campaign\" as camp
+with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_phase",
+					"sap.ino.db.campaign::t_campaign_phase",
+					"sap.ino.db.campaign::t_campaign"];

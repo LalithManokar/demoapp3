@@ -1,0 +1,9 @@
+schema = "SAP_INO";
+query  = " 
+          select id
+                   from \"sap.ino.db.evaluation::v_evaluation_request_item\"
+                   where ((status_code = 'sap.ino.config.EVAL_REQ_REQUESTED' or status_code = 'sap.ino.config.EVAL_REQ_IN_CLARIFICATION') and current_date > accept_date ) or
+                         ((status_code = 'sap.ino.config.EVAL_REQ_ACCEPTED'  or status_code = 'sap.ino.config.EVAL_REQ_IN_PROCESS')       and current_date > complete_date )
+           with read only";
+           
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request_item"];           

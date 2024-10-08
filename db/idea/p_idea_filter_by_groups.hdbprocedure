@@ -1,0 +1,123 @@
+PROCEDURE "SAP_INO"."sap.ino.db.idea::p_idea_filter_by_groups" (
+    IN iv_show_backoffice INT,
+    IN filter_by_group_token NVARCHAR(128),
+    IN filter_by_group_name_type INT,
+    IN filter_by_group_role_type INT,
+    OUT ot_idea_id  SAP_INO."sap.ino.db.basis::tt_object_id"
+ ) 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA SAP_INO
+	READS SQL DATA AS
+-- 	IDENTITY_ARRAY NVARCHAR(100) ARRAY;
+BEGIN
+/***************************** 
+	Write your procedure logic 
+ *****************************/
+ 
+    idea_filter = SELECT ID, CREATED_BY_ID FROM "sap.ino.db.idea::t_idea";
+    
+    IF :iv_show_backoffice = 1 THEN
+        IF LENGTH(:filter_by_group_token) > 0 THEN
+            -- ORGANIZATION
+            IF :filter_by_group_name_type = 2 THEN
+                lt_user = SELECT ID FROM "sap.ino.db.iam::t_identity" 
+                    WHERE 
+                        TYPE_CODE = 'USER' AND ORGANIZATION = :filter_by_group_token;
+            END IF;
+            
+            -- COMPANY
+            IF :filter_by_group_name_type = 1 THEN
+                lt_user = SELECT ID FROM "sap.ino.db.iam::t_identity" 
+                    WHERE 
+                        TYPE_CODE = 'USER' AND COMPANY = :filter_by_group_token;
+            END IF;
+        ELSE
+            lt_user = SELECT ID FROM "sap.ino.db.iam::t_identity";
+        END IF;
+    END IF;
+    
+    IF :iv_show_backoffice = 0 THEN
+        t_app_user = SELECT 
+                TOP 1 ID, ORGANIZATION, COMPANY 
+            FROM "sap.ino.db.iam::t_identity" 
+            WHERE 
+                USER_NAME = session_context('APPLICATIONUSER');
+        
+        -- ORGANIZATION
+        IF :filter_by_group_name_type = 2 THEN
+            -- IDENTITY_ARRAY := ARRAY_AGG(:t_app_user.ORGANIZATION);
+            lt_user = SELECT ID FROM "sap.ino.db.iam::t_identity" 
+                WHERE 
+                    TYPE_CODE = 'USER' AND ORGANIZATION IN (SELECT ORGANIZATION FROM :t_app_user);
+        END IF;
+        
+        -- COMPANY
+        IF :filter_by_group_name_type = 1 THEN
+            -- IDENTITY_ARRAY := ARRAY_AGG(:t_app_user.COMPANY);
+            lt_user = SELECT ID FROM "sap.ino.db.iam::t_identity" 
+                WHERE 
+                    TYPE_CODE = 'USER' AND COMPANY IN (SELECT COMPANY FROM :t_app_user);
+        END IF;
+    END IF;
+    
+    -- ALL
+    IF :filter_by_group_role_type = 999 THEN
+        idea_filter = SELECT 
+            idea.id, idea.CREATED_BY_ID
+        FROM :idea_filter AS idea
+        INNER JOIN :lt_user AS iden
+            ON idea.CREATED_BY_ID = iden.id
+        UNION 
+        SELECT 
+            idea.id, idea.CREATED_BY_ID
+        FROM :idea_filter AS idea
+        INNER JOIN "sap.ino.db.idea::t_vote" AS vote
+            ON idea.id = vote.IDEA_ID
+        INNER JOIN :lt_user AS iden
+            ON iden.id = vote.USER_ID
+        UNION
+        SELECT 
+            idea.id, idea.CREATED_BY_ID
+        FROM :idea_filter as idea
+        INNER JOIN "sap.ino.db.comment::t_comment" AS comm
+            ON idea.id = comm.OBJECT_ID
+        INNER JOIN :lt_user AS iden
+            ON iden.id = comm.CREATED_BY_ID
+        WHERE comm.type_code = 'COMMUNITY_COMMENT' AND comm.OBJECT_TYPE_CODE = 'IDEA';
+    END IF;
+    
+    -- SUBMITTER
+    IF :filter_by_group_role_type = 1 THEN
+        idea_filter = SELECT 
+            idea.id, idea.CREATED_BY_ID
+        FROM :idea_filter AS idea
+        INNER JOIN :lt_user AS iden
+            ON idea.CREATED_BY_ID = iden.id;
+    END IF;
+    
+    -- VOTER
+    IF :filter_by_group_role_type = 2 THEN
+        idea_filter = SELECT 
+            idea.id, idea.CREATED_BY_ID
+        FROM :idea_filter AS idea
+        INNER JOIN "sap.ino.db.idea::t_vote" AS vote
+            ON idea.id = vote.IDEA_ID
+        INNER JOIN :lt_user AS iden
+            ON iden.id = vote.USER_ID;
+    END IF;
+    
+    -- COMMENTER
+    IF :filter_by_group_role_type = 3 THEN
+        idea_filter = SELECT 
+            idea.id, idea.CREATED_BY_ID
+        FROM :idea_filter as idea
+        INNER JOIN "sap.ino.db.comment::t_comment" AS comm
+            ON idea.id = comm.OBJECT_ID
+        INNER JOIN :lt_user AS iden
+            ON iden.id = comm.CREATED_BY_ID
+        WHERE comm.type_code = 'COMMUNITY_COMMENT' AND comm.OBJECT_TYPE_CODE = 'IDEA';
+    END IF;
+    
+    ot_idea_id = SELECT DISTINCT ID FROM :idea_filter;
+END;

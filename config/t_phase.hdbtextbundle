@@ -1,0 +1,21 @@
+# TRANSLATE
+# XTXT, 100
+sap.ino.config.PRE_SCREENING=Pre-Screening
+# XTXT, 100
+sap.ino.config.ASSESSMENT=Assessment
+# XTXT, 100
+sap.ino.config.PROJECT=Project
+# XTXT, 100
+sap.ino.config.PRODUCTIFICATION=Productification Preparation
+# XTXT, 100
+sap.ino.config.PORTFOLIO=Portfolio Decision
+# XTXT, 300
+sap.ino.config.PRE_SCREENING_LONG=Pre-Screening
+# XTXT, 300
+sap.ino.config.ASSESSMENT_LONG=Assessment
+# XTXT, 300
+sap.ino.config.PROJECT_LONG=Project
+# XTXT, 300
+sap.ino.config.PRODUCTIFICATION_LONG=Productification Preparation
+# XTXT, 300
+sap.ino.config.PORTFOLIO_LONG=Portfolio Decision

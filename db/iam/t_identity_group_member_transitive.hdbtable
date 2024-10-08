@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Transitive closure of the identity-group relation";
+table.columns = [
+    {name = "MEMBER_ID"; sqlType = INTEGER; nullable = true;  comment = "Identity which is member of group specified in GROUP_ID. Foreign key to t_identity.ID";},
+    {name = "GROUP_ID";  sqlType = INTEGER; nullable = false; comment = "Identity which is the group the identity in MEMBER_ID is member of. A user may not be a group. UUID handle. Foreign key to t_identity.ID";}
+];
+table.primaryKey.pkcolumns = ["MEMBER_ID", "GROUP_ID"];

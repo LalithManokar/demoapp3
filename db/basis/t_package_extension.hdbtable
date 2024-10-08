@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Package Extensions. Only one extensibility level is supported at the moment.";
+table.columns = [
+    {name = "EXT_PACKAGE_ID";  sqlType = NVARCHAR; length = 256; nullable = false; comment = "Extension package";},
+    {name = "BASE_PACKAGE_ID"; sqlType = NVARCHAR; length = 256; nullable = false; comment = "Base package of extension package";},
+    {name = "LAYER";           sqlType = INTEGER;                nullable = false;}
+];
+
+table.primaryKey.pkcolumns = ["EXT_PACKAGE_ID"];

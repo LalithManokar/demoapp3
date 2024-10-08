@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_CAMPAIGNS_FULL" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="V_ANALYTICS_CAMAPAIGNS_FULL"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CAMPAIGN_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="CAMPAIGN_SHORT_NAME" length="40"/>
+        <viewAttribute datatype="TIMESTAMP" id="CAMPAIGN_VALID_FROM"/>
+        <viewAttribute datatype="TIMESTAMP" id="CAMPAIGN_VALID_TO"/>
+        <viewAttribute datatype="TIMESTAMP" id="CAMPAIGN_SUBMIT_FROM"/>
+        <viewAttribute datatype="TIMESTAMP" id="CAMPAIGN_SUBMIT_TO"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_CREATED_BY_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_CHANGED_BY_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_VOTE_TYPE_CODE" length="500"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition>begin
+    var_out = select campaign.id as campaign_id,
+                     campaign.name as campaign_name,
+                     campaign.short_name as campaign_short_name,
+                     campaign.valid_from as campaign_valid_from,
+                     campaign.valid_to as campaign_valid_to,
+                     campaign.submit_from as campaign_submit_from,
+                     campaign.submit_to as campaign_submit_to,
+                     campaign.created_by_name as campaign_created_by_name,
+                     campaign.changed_by_name as campaign_changed_by_name,
+                     campaign.vote_type_code as campaign_vote_type_code
+               from
+                   &quot;sap.ino.db.campaign::v_campaign_full&quot; as campaign
+               left outer join
+                   &quot;sap.ino.db.basis::v_resolved_text&quot; as status_text
+                   on campaign.status_code = status_text.text_id
+               where
+                   campaign.status_code != 'sap.ino.config.CAMP_DRAFT';
+end </definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="CAMPAIGN_ID" order="1" descriptionColumnName="CAMPAIGN_NAME">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="2">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_SHORT_NAME" order="3">
+        <descriptions defaultDescription="Campaign Short Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_SHORT_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_VALID_FROM" order="4">
+        <descriptions defaultDescription="Valid from"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_VALID_FROM"/>
+      </attribute>
+      <attribute id="CAMPAIGN_VALID_TO" order="5">
+        <descriptions defaultDescription="Valid to"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_VALID_TO"/>
+      </attribute>
+      <attribute id="CAMPAIGN_SUBMIT_FROM" order="6">
+        <descriptions defaultDescription="Submit from"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_SUBMIT_FROM"/>
+      </attribute>
+      <attribute id="CAMPAIGN_SUBMIT_TO" order="7">
+        <descriptions defaultDescription="Submit to"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_SUBMIT_TO"/>
+      </attribute>
+      <attribute id="CAMPAIGN_CREATED_BY_NAME" order="8">
+        <descriptions defaultDescription="Created By"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_CREATED_BY_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_CHANGED_BY_NAME" order="9">
+        <descriptions defaultDescription="Changed By"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_CHANGED_BY_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_VOTE_TYPE_CODE" order="10">
+        <descriptions defaultDescription="Vote Type"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_VOTE_TYPE_CODE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

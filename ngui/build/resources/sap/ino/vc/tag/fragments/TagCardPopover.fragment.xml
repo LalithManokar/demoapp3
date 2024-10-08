@@ -1,0 +1,14 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:ino="sap.ino.controls">
+    <Popover id="popTagCard" class="sapUiPopupWidthPadding" showHeader="false" templateShareable="true">
+        <content>
+            <ino:TagCard tagId="{Tag>/ID}" tagName="{Tag>/NAME}" campaignCount="{Tag>/CAMPAIGN_USAGE_COUNT}" ideaCount="{Tag>/IDEA_USAGE_COUNT}" openIdea="navigateToIdea" openCampaign="navigateToCampaign">
+                <ino:followPlaceholder>
+                    <ino:Follow onlyIcon="false" value="{Tag>/FOLLOW}" type="TAG" objectId="{Tag>/ID}" enabled="true" follow="doFollow" styleType="tagListFollow" /> 
+                </ino:followPlaceholder>
+            </ino:TagCard>
+        </content>
+    </Popover>
+</core:FragmentDefinition>

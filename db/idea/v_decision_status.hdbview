@@ -1,0 +1,43 @@
+schema = "SAP_INO";
+query = "
+    SELECT 
+        ID,
+        CREATED_AT,
+        CREATED_BY_ID,
+        IDEA_ID,
+        DECIDER_ID,
+        DECISION_DATE,
+        REASON,
+        STATUS_ACTION_CODE,
+        PHASE_CODE,
+        STATUS_CODE,
+        SEND_RESPONSE,
+        RESPONSE,
+        TEXT_MODULE_CODE,
+        REASON_CODE,
+        DECISION_REASON_LIST_CODE,
+        DECISION_REASON_LIST_VISIBLE,
+        LINK_LABEL,
+        LINK_URL,
+        DECIDER_NAME,
+        DECIDER_FIRST_NAME,
+        DECIDER_LAST_NAME,
+        CHANGED_AT,
+        CHANGED_BY_ID
+    FROM 
+        (SELECT 
+            ROW_NUMBER() OVER (PARTITION BY decision.IDEA_ID,decision.STATUS_CODE,decision.PHASE_CODE,decision.HISTORY_AT ORDER BY decision.HISTORY_AT DESC) ROW_ORDER,
+            decision.*,
+            iden.NAME AS DECIDER_NAME,
+            iden.FIRST_NAME AS DECIDER_FIRST_NAME,
+            iden.LAST_NAME AS DECIDER_LAST_NAME
+        FROM
+            \"sap.ino.db.idea::t_decision_h\" AS decision
+        LEFT OUTER JOIN \"sap.ino.db.iam::t_identity\" AS iden
+            ON decision.DECIDER_ID = iden.ID
+        WHERE decision.history_biz_event LIKE 'STATUS_ACTION%')
+    WHERE ROW_ORDER = 1
+with read only
+";
+
+depends_on_table = ["sap.ino.db.idea::t_decision", "sap.ino.db.iam::t_identity"];

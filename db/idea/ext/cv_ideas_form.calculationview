@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="cv_ideas_form" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="2.3" defaultClient="crossClient" visibility="reportingEnabled" calculationScenarioType="SCRIPT_BASED" scriptParametersCaseSensitive="true" enforceSqlExecution="false">
+<descriptions defaultDescription="cv_ideas_form"/>
+<defaultSchema schemaName="SAP_INO"/>
+<localVariables>
+  <variable id="campaignId" parameter="true">
+    <variableProperties datatype="INTEGER">
+      <valueDomain type="empty"/>
+      <selection multiLine="false"/>
+    </variableProperties>
+  </variable>
+</localVariables>
+<variableMappings/>
+<dataSources/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+    <viewAttributes>
+      <viewAttribute id="IDEA_ID" datatype="INTEGER"/>
+    
+      <viewAttribute id="IDEA_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="CAMPAIGN_ID" datatype="INTEGER"/>
+      <viewAttribute id="CAMPAIGN_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="FIELD_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="FIELD_VALUE" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="COMMENT" datatype="NVARCHAR" length="1024"/>
+      <viewAttribute id="FIELD_TYPE_CODE" datatype="VARCHAR" length="20"/>
+      <viewAttribute id="FORM_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="PHASE_NAME" datatype="NVARCHAR" length="100"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <localVariable>#campaignId</localVariable>
+    <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+   var_out = select
+        idea.id as idea_id, 
+        idea.name as idea_name,
+        idea.campaign_id as campaign_id,
+        camp.name AS campaign_name,
+        field.default_text as field_name,
+        case when value_option.code &lt;&gt; ''
+            then value_option.default_text
+            else 
+            (case field.datatype_code
+            when 'TEXT' then field_value.text_value
+            when 'BOOLEAN' then (case when field_value.bool_value = 1 then 'yes' else 'no' end)
+            when 'NUMERIC' then field_value.num_value
+            when 'RICHTEXT' then field_value.rich_text_value
+            when 'INTEGER' then field_value.num_value
+            when 'DATE' then field_value.date_value
+            else ''
+            end
+            )
+        end as field_value,
+        field_value.comment,
+        field_value.field_type_code,
+        form.DEFAULT_TEXT as form_name,
+        phase.default_text as phase_name
+    from &quot;sap.ino.db.ideaform::t_field_value&quot; as field_value
+        inner join &quot;sap.ino.db.ideaform::t_field&quot; as field 
+            on field.code = field_value.field_code
+        inner join &quot;sap.ino.db.ideaform::t_form&quot; as form
+            on field.FORM_CODE = form.CODE
+        inner join &quot;sap.ino.db.idea::t_idea&quot; as idea
+           on idea.id = field_value.idea_id
+        left outer join &quot;sap.ino.db.campaign::v_campaign_t_locale&quot; as camp 
+           on camp.campaign_id = idea.campaign_id
+        left outer join &quot;sap.ino.db.idea::v_idea_phase&quot; as idea_phase
+            on idea.id = idea_phase.idea_id
+        inner join &quot;sap.ino.db.campaign::t_phase&quot; as phase
+            on idea_phase.phase_code = phase.code
+        left outer join &quot;sap.ino.db.basis::t_value_option&quot; as value_option
+            on value_option.list_code = field.value_option_list_code and (field_value.num_value = value_option.num_value or field_value.bool_value = value_option.bool_value or field_value.text_value = value_option.text_value)
+    where idea.campaign_id = :campaignId; 
+
+END /********* End Procedure Script ************/</definition>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Script_View">
+  <attributes>
+    <attribute id="IDEA_NAME" order="2">
+      <descriptions defaultDescription="COL"/>
+      <keyMapping columnObjectName="Script_View" columnName="IDEA_NAME"/>
+    </attribute>
+    <attribute id="CAMPAIGN_ID" order="3">
+      <descriptions defaultDescription="COL"/>
+      <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+    </attribute>
+    <attribute id="CAMPAIGN_NAME" order="4">
+      <descriptions defaultDescription="COL"/>
+      <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+    </attribute>
+    <attribute id="FIELD_NAME" order="5">
+      <keyMapping columnObjectName="Script_View" columnName="FIELD_NAME"/>
+    </attribute>
+    <attribute id="FIELD_VALUE" order="6">
+      <keyMapping columnObjectName="Script_View" columnName="FIELD_VALUE"/>
+    </attribute>
+    <attribute id="COMMENT" order="7">
+      <keyMapping columnObjectName="Script_View" columnName="COMMENT"/>
+    </attribute>
+    <attribute id="FIELD_TYPE_CODE" order="8">
+      <keyMapping columnObjectName="Script_View" columnName="FIELD_TYPE_CODE"/>
+    </attribute>
+    <attribute id="FORM_NAME" order="9">
+      <keyMapping columnObjectName="Script_View" columnName="FORM_NAME"/>
+    </attribute>
+    <attribute id="PHASE_NAME" order="10">
+      <keyMapping columnObjectName="Script_View" columnName="PHASE_NAME"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="IDEA_ID" order="1" aggregationType="count" measureType="simple">
+      <descriptions defaultDescription="COL"/>
+      <measureMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

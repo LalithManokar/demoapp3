@@ -1,0 +1,28 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" xmlns:ino="sap.ino.controls" xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+	<Dialog title="{dialog>/title}" resizable="false" modal="true" class="sapInoWallSettingsActionDialog">
+		<content>
+			<HBox>
+				<Label text="{dialog>/label}"
+					class="sapInoWallSettingsDialogLabel sapUiTinyMarginBeginEnd sapUiTinyMarginTop">
+				</Label>
+				<Input value="{dialog>/value}" required="true" width="300px"
+					maxLength="{object>/meta/nodes/Root/attributes/NAME/maxLength}"
+					liveChange="actionDialogValueLiveChange" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop">
+				</Input>
+			</HBox>
+		</content>
+		<buttons>
+			<Button text="{dialog>/okBtnTitle}"
+				enabled="{ path:'dialog>/value', formatter:'.formatter.notEmpty' }"
+				press="actionDialogOnOK">
+			</Button>
+			<Button text="{dialog>/okOpenBtnTitle}"
+				enabled="{ path:'dialog>/value', formatter:'.formatter.notEmpty' }"
+				press="actionDialogOnOKOpen">
+			</Button>
+			<Button text="{i18n>BTN_CANCEL}" press="actionDialogOnCancel" />
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,23 @@
+schema = "SAP_INO_EXT";
+query = "
+	select  assignment.ID,
+			assignment.OWNER_ID as IDEA_ID,
+			assignment.ROLE_TYPE_CODE as ROLE_TYPE_CODE,
+			assignment.FILTER_TYPE_CODE as FILTER_TYPE_CODE,
+			attachment.ID as ATTACHMENT_ID,
+			attachment.FILE_NAME,
+			attachment.FILE_SIZE,
+			attachment.MEDIA_TYPE,
+			attachment.LABEL,
+			attachment.CUSTOM_INFO,
+			attachment.FOLDER_ID			
+	    from \"sap.ino.db.attachment::v_attachment\" as attachment
+	    inner join \"sap.ino.db.attachment::t_attachment_assignment\" as assignment
+	    	on assignment.attachment_id = attachment.id and assignment.owner_type_code = 'IDEACONTENT'
+	    where (assignment.filter_type_code is null or assignment.filter_type_code = 'FRONTOFFICE') and  
+	    	attachment.id in (select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_idea\") 
+    with read only";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment_assignment"];
+depends_on_view = ["sap.ino.db.attachment::v_attachment",
+				   "sap.ino.db.attachment::v_auth_attachment_idea"];

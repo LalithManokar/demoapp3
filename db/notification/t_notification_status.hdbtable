@@ -1,0 +1,16 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Notification Status";
+
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "NOTIFICATION_ID"; sqlType = INTEGER; nullable = false; comment = "Identifier of referenced notification";},
+    {name = "USER_ID"; sqlType = INTEGER; nullable = false; comment = "Receipient (user) of Notification. Foreign key to t_identity.ID";},
+    {name = "ROLE_CODE"; sqlType = VARCHAR; length = 20; nullable = false; comment = "Role the user has for this notification";},
+    {name = "STATUS_CODE"; sqlType = VARCHAR; length = 16; nullable = false; comment = "Status of user-notification-interaction. Currently either READ, UNREAD";},
+    {name = "MAIL_STATUS_CODE"; sqlType = VARCHAR; length = 16; nullable = true; comment = "Currently either UNSENT, SENT, DEACTIVATED, PROCESSING";},
+    {name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = true; comment = "who change this record";},
+    {name = "MAIL_STATUS_REASON"; sqlType = NVARCHAR; length = 3096; nullable = true; comment = "REASON";}
+];
+
+table.primaryKey.pkcolumns = ["ID"];

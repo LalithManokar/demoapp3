@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_IDENTITY_SEARCH_ORG_COMPANY" applyPrivilegeType="NONE" checkAnalyticPrivileges="true" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_IDENTITY_SEARCH_ORG_COMPANY"/>
+  <metadata changedAt="2021-02-18 14:49:57.018"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="searchToken"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="true" defaultValue="undefined">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute id="TYPENAME" datatype="VARCHAR" length="16"/>
+        <viewAttribute datatype="NVARCHAR" id="COMPANY" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="ORGANIZATION" length="100"/>
+      
+        <viewAttribute id="DISPLAYLABEL" datatype="NVARCHAR" length="256"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>BEGIN
+    search_result =
+        SELECT MAX(search_score) AS search_score, COMPANY, ORGANIZATION,typeName,displayLabel FROM (
+            SELECT
+                SCORE() AS search_score,
+                COMPANY,
+                ORGANIZATION,
+                '1' AS typeName,
+                CONCAT(IFNULL(company,''), CONCAT(CONCAT('(' , IFNULL(organization,'')) , ')')) AS displayLabel
+            FROM
+                &quot;sap.ino.db.iam::t_identity&quot;
+            WHERE
+                CONTAINS((company), :searchToken, FUZZY(0.8,'similarCalculationMode=search')) 
+                
+            UNION ALL
+            
+            SELECT
+                1 AS search_score,
+                COMPANY,
+                ORGANIZATION,
+                '1' AS typeName,
+                CONCAT(IFNULL(company,''), CONCAT(CONCAT('(' , IFNULL(organization,'')) , ')')) AS displayLabel
+            FROM
+                &quot;sap.ino.db.iam::t_identity&quot;
+            WHERE
+                LCASE(company) LIKE LCASE(:searchToken) || '%' 
+                
+            UNION ALL
+            
+            SELECT
+                SCORE() AS search_score,
+                COMPANY,
+                ORGANIZATION,
+                '2' AS typeName,
+                CONCAT(IFNULL(ORGANIZATION,''), CONCAT(CONCAT('(' , IFNULL(COMPANY,'')) , ')')) AS displayLabel
+            FROM
+                &quot;sap.ino.db.iam::t_identity&quot;
+            WHERE
+                CONTAINS((organization), :searchToken, FUZZY(0.8,'similarCalculationMode=search'))
+                
+            UNION ALL
+            
+            SELECT
+                1 as search_score,
+                COMPANY,
+                ORGANIZATION,
+                '2' AS typeName,
+                CONCAT(IFNULL(ORGANIZATION,''), CONCAT(CONCAT('(' , IFNULL(COMPANY,'')) , ')')) AS displayLabel
+            FROM
+                &quot;sap.ino.db.iam::t_identity&quot;
+            WHERE
+                LCASE(organization) LIKE LCASE(:searchToken) || '%' 
+        ) GROUP BY COMPANY, ORGANIZATION,typeName,displayLabel ORDER BY search_score DESC;
+
+    var_out =
+        SELECT DISTINCT
+            sr.search_score,
+            sr.typeName,
+            sr.company,
+            sr.organization,
+            sr.displayLabel
+         FROM  :search_result AS sr
+        ORDER BY search_score DESC;
+END</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="TYPENAME" order="2">
+        <keyMapping columnObjectName="Script_View" columnName="TYPENAME"/>
+      </attribute>
+      <attribute id="COMPANY" order="3">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="COMPANY"/>
+      </attribute>
+      <attribute id="ORGANIZATION" order="4">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ORGANIZATION"/>
+      </attribute>
+    
+      <attribute id="DISPLAYLABEL" order="5">
+        <keyMapping columnObjectName="Script_View" columnName="DISPLAYLABEL"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="SEARCH_SCORE" order="1" aggregationType="sum" measureType="simple">
+        <descriptions/>
+        <measureMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/></logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

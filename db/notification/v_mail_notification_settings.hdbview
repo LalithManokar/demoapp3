@@ -1,0 +1,20 @@
+schema = "SAP_INO";
+query = "
+    select default_settings.user_id, coalesce(user_parameter.value, default_settings.value) as value from
+        (select identity.id as user_id, system_settings.value from
+            \"sap.ino.db.iam::t_identity\" as identity,
+            (select 
+                coalesce(setting.value, default.value) as value
+            from 
+                (select 'active' as value from dummy) as default
+            left outer join 
+                (select case when value = '0' then 'inactive' else 'active' end as value from \"sap.ino.db.basis::v_local_system_setting\" where code = 'sap.ino.config.NOTIFICATION_MAIL_ACTIVE') as setting
+            on 1 = 1) as system_settings
+        where identity.type_code = 'USER') as default_settings
+    left outer join
+        (select user_id, value from \"sap.ino.db.basis::t_user_parameter\" where section = 'notification' and key = 'mail') as user_parameter
+    on default_settings.user_id = user_parameter.user_id
+    with read only";
+depends_on_table = ["sap.ino.db.iam::t_identity",
+                    "sap.ino.db.basis::t_user_parameter"];
+depends_on_view = ["sap.ino.db.basis::v_local_system_setting"];

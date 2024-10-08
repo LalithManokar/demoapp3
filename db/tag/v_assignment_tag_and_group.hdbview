@@ -1,0 +1,35 @@
+schema = "SAP_INO";
+query = "
+    select
+        assignment_tag.*,
+        tag.NAME,
+         '' as DESCRIPTION,
+        tag.CREATED_AT, 
+        tag.CREATED_BY_ID,
+        tag.CHANGED_AT,
+        tag.CHANGED_BY_ID,
+        tag.CREATED_BY,
+        tag.CHANGED_BY,
+        cast( tag.USAGE_COUNT as integer ) AS USAGE_COUNT
+    from \"sap.ino.db.tag::t_assignment_tag\" as assignment_tag
+        inner join \"sap.ino.db.tag::v_tag\" as tag
+            on tag.id = assignment_tag.tag_id and (assignment_tag.object_type_code = 'TAG' or assignment_tag.object_type_code is null )
+union all
+   select
+        assignment_tag.*,
+        tag_group.name,
+        tag_group.DESCRIPTION,  
+        tag_group.created_at,
+        tag_group.created_by_id,
+        tag_group.changed_at,
+        tag_group.changed_by_id,        
+        tag_group.created_by,
+        tag_group.changed_by,
+        0 AS USAGE_COUNT
+    from \"sap.ino.db.tag::t_assignment_tag\" as assignment_tag
+        inner join \"sap.ino.db.tag::v_group_tag\" as tag_group
+            on (tag_group.id = assignment_tag.tag_id and assignment_tag.object_type_code = 'TAG_GROUP')
+    with read only";
+
+depends_on_table = ["sap.ino.db.tag::t_assignment_tag"];
+depends_on_view = ["sap.ino.db.tag::v_tag","sap.ino.db.tag::v_group_tag"];

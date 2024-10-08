@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = " 
+    select distinct attachment.id as attachment_id
+    	from 
+    		\"sap.ino.db.attachment::t_attachment\" as attachment
+		join 
+			\"sap.ino.db.attachment::t_attachment_assignment\" as assignment
+	   		on (assignment.owner_type_code = 'IDEA' or assignment.owner_type_code = 'IDEACONTENT' )and
+	   	   	   assignment.attachment_id = attachment.id
+	    join \"sap.ino.db.idea::v_auth_ideas_read\" as auth
+	   		on assignment.owner_id = auth.idea_id
+			where assignment.filter_type_code is null or
+				  assignment.filter_type_code = 'FRONTOFFICE' 
+	with read only";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment",
+					"sap.ino.db.attachment::t_attachment_assignment"];
+					
+depends_on_view = ["sap.ino.db.idea::v_auth_ideas_read"];

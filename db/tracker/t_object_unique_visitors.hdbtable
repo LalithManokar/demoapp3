@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Recorded Views for unique visitors on an object";
+table.columns = [
+	{name = "OBJECT_ID"; sqlType = INTEGER; nullable = false;},
+	{name = "OBJECT_TYPE"; sqlType = NVARCHAR; nullable = false; length=100;},
+	{name = "IDENTITY_ID"; sqlType = INTEGER; nullable = false; comment = "technical user identifier - must never be exposed to end users";}
+];  
+
+table.primaryKey.pkcolumns = ["OBJECT_ID", "OBJECT_TYPE", "IDENTITY_ID"];  

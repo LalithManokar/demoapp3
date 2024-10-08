@@ -1,0 +1,4 @@
+/*!
+ * SAP Innovation Management (c) Copyright 2014 SAP AG. All rights reserved.
+ */
+sap.ui.define(["sap/ui/unified/ShellHeadItem"],function(S){"use strict";return S.extend("sap.ino.controls.NotificationHeadItem",{metadata:{properties:{notificationCount:{type:"string"}}},setNotificationCount:function(c){if(c){this.setProperty("notificationCount",c,true);}return this._refreshIcon();},_refreshIcon:function(){var i=S.prototype._refreshIcon.apply(this,arguments);var c=this.getNotificationCount();if(c===undefined){return i;}var C=parseInt(c,10);if(jQuery("#notificationCount").length===0&&C===0){return i;}if(jQuery("#notificationCount").length===0&&C>0){this.$().append("<div id='notificationCount'/>");}if(C>0){jQuery("#notificationCount").addClass("sapInoNotificationCount");jQuery("#notificationCount").text(c);}else{jQuery("#notificationCount").remove();}return i;}});});

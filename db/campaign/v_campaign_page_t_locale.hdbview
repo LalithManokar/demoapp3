@@ -1,0 +1,15 @@
+schema = "SAP_INO";
+query = "select campaign_id,
+                page_no,
+                is_visible,
+                html_content,
+                lang
+            from \"sap.ino.db.campaign::t_campaign_page_t\" 
+            where lang = substr(session_context('LOCALE'),0,2)
+               or ( lang = (select iso_code from \"sap.ino.db.basis::v_sys_default_language\") 
+                    and campaign_id not in (select campaign_id from \"sap.ino.db.campaign::t_campaign_page_t\" where lang = substr(session_context('LOCALE'),0,2)))
+         with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_page_t"];
+depends_on_view = ["sap.ino.db.basis::v_sys_default_language"];
+

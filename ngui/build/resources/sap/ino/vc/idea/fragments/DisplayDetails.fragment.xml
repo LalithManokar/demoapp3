@@ -1,0 +1,101 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:ino="sap.ino.controls"
+	xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<!-- TO BE USED FROM SAP UI5 1.34 adjustLabelSpan="false" singleContainerFullSize="false"-->
+	<HBox>
+	<VBox width="70%">
+	<f:SimpleForm editable="false"
+                layout="{view>/Layouts/SimpleFormLayout/layout}"
+                labelSpanL="{view>/Layouts/SimpleFormLayout/labelSpanL}"
+                labelSpanM="{view>/Layouts/SimpleFormLayout/labelSpanM}"
+                emptySpanL="{view>/Layouts/SimpleFormLayout/emptySpanL}"
+                emptySpanM="{view>/Layouts/SimpleFormLayout/emptySpanM}"
+                class="sapInoIdeaDetails">
+		<f:content>
+			<core:ExtensionPoint name="extension_details_top"/>
+			<Label text="{i18n>IDEA_OBJECT_TIT_DESCRIPTION}" />
+			<core:HTML id="DESCRIPTION"  
+			    preferDOM="false"
+                content="{ path: 'object>DESCRIPTION', formatter: '.formatter.wrapHTML'}"
+                sanitizeContent="true"/>
+			<Label text="{i18n>IDEA_OBJECT_TIT_TAGS}" visible="{path: 'object>Tags', formatter: '.formatter.notEmpty'}"/>
+			<Tokenizer id="Tags" class="sapInoWrap" tokens="{object>Tags}" editable="false" visible="{path: 'object>Tags', formatter: '.formatter.notEmpty'}">
+				<tokens>
+					<Token key="{object>TAG_ID}" text="{object>NAME}" editable="false" press="showPopupTagCard" />
+				</tokens>
+			</Tokenizer>
+			<Label text="{i18n>IDEA_OBJECT_TIT_LINKS}" visible="{path: 'object>Links', formatter: '.formatter.notEmpty'}"/>
+			<l:VerticalLayout id="Links" content="{object>Links}" visible="{path: 'object>Links', formatter: '.formatter.notEmpty'}">
+				<l:content>
+					<Link text="{ parts : [{path: 'object>LABEL'}, {path: 'object>URL'}] , formatter : '.formatter.linkLabel' }" href="{object>URL}" target="_blank"
+					visible="{path: 'object>URL', formatter: '.formatter.urlVisible'}"/>
+				</l:content>
+			</l:VerticalLayout>
+			<Label tooltip="{path: 'object>RESP_DESCRIPTION'}" text="{path: 'object>RESP_NAME'}" visible="{= ${object>RESP_NAME} ? true : false }"/>
+			<l:HorizontalLayout class="sapIdeaDisplaySubRespHLayout">
+			<Text
+			    tooltip="{path: 'object>RESP_VALUE_DESCRIPTION'}"
+                text="{path: 'object>RESP_VALUE_NAME'}"
+                visible="{= ${object>RESP_VALUE_NAME} ? true : false }">
+            </Text>
+            <Button icon="sap-icon://hint" tooltip="{i18n>IDEA_RESP_LIST_TITLE_HINT}" visible ="{=!!${object>RESP_VALUE_NAME}}"
+                enabled="{=!!${object>RESP_VALUE_NAME}}" class="sapUiTinyMarginBegin" press="onRespListHint">
+			</Button>
+			</l:HorizontalLayout>
+			<VBox class="sapUiMediumMarginTopBottom" id="vBoxFormIdeals" alignItems="Stretch" justifyContent="Start">
+				<layoutData>
+					<l:GridData span="XL11 L11 M11 S12"/>
+				</layoutData>
+			</VBox>
+			<VBox class="sapUiMediumMarginTopBottom" id="vBoxAdminFormIdeals" alignItems="Stretch" justifyContent="Start">
+				<layoutData>
+					<l:GridData span="XL11 L11 M11 S12"/>
+				</layoutData>
+			</VBox>
+			<core:ExtensionPoint name="extension_details_bottom"/>
+		</f:content>
+	</f:SimpleForm>
+	<customData>
+	<core:CustomData 
+    key="style-ideadetail-class" 
+    value="{parts:
+			                 [{path: 'object>/property/nodes/Root/customProperties/backofficeCampaignPrivilege'},
+			                  {path: 'object>Decisions'},
+			                  {path: 'object>PHASE'},
+                              {path: 'object>STATUS'}], formatter:'.formatter.adjustDesWidth' }" 
+    writeToDom="true"/>
+	</customData>
+	</VBox>
+	
+	<VBox class="sapInoIdeaDetailDecision" 
+	     items="{ path: 'object>Decisions', length: 1, sorter: [{path: 'ID', descending: true}]}"
+	      visible="{parts:
+			                 [{path: 'object>/property/nodes/Root/customProperties/backofficeCampaignPrivilege'},
+			                  {path: 'object>Decisions'},
+			                  {path: 'object>PHASE'},
+                              {path: 'object>STATUS'}], formatter:'.formatter.visibleDecision' }">
+        <VBox class="sapUiMediumMarginBegin sapUiSmallMarginTop">
+        <Label class="sapInoDetailDescisionTitle" text="{i18n>IDEA_OBJECT_FLD_REASON_DETAILS}"/>
+        <Label class="sapInoDetailDecisionDisplayCtrl" text="{i18n>IDEA_OBJECT_FLD_DECISION_MAKER}:"/>
+        <Link class="sapInoDetailDecisionDisplayCtrl" text="{object>DECIDER_NAME}" press="onOpenDecisionMaker"/>
+        <Label class="sapInoDetailDecisionDisplayCtrl" text="{i18n>IDEA_OBJECT_FLD_DECISION_DATE}:"/>
+        <Text class="sapInoDetailDecisionDisplayCtrl" text="{path:'object>DECISION_DATE'}"/>
+        <Label class="sapInoDetailDecisionDisplayCtrl" text="{i18n>IDEA_OBJECT_FLD_DECISION_REASON}:"/>
+        <Text class="sapInoDetailDecisionDisplayCtrl" text="{path: 'object>REASON_CODE', formatter: '.formatter.valueOption'}"
+							visible="{=${object>REASON_CODE} ? true : false}"/>   
+        <Label class="sapInoDetailDecisionDisplayCtrl" text="{i18n>IDEA_OBJECT_FLD_REASON_COMMENTS}:"/>
+        <Text class="sapInoDetailDecisionDisplayCtrl" text="{object>REASON}" visible="{=${object>REASON} ? true : false}"/>  							
+        <Label class="sapInoDetailDecisionDisplayCtrl" text="{i18n>IDEA_OBJECT_FLD_REASON_LINK}:"/>
+        <Link class="sapInoDetailDecisionDisplayCtrl" text="{ parts : [{path: 'object>LINK_LABEL'}, {path: 'object>LINK_URL'}] , formatter : '.formatter.linkLabel' }" 
+              target="_blank"
+              href="{path:'object>LINK_URL'}"
+							visible="{path: 'object>LINK_URL', formatter: '.formatter.urlVisible'}"/> 
+        </VBox>
+	</VBox>
+	</HBox>
+</core:FragmentDefinition>

@@ -1,0 +1,34 @@
+schema = "SAP_INO";
+query  = "
+    select
+        blog.id,
+        blog.title,
+        blog.short_description,
+        blog.is_major_change,
+        blog.status_code,
+        blog.object_id,
+        blog.object_type_code,
+        blog.object_id as campaign_id,
+        blog.published_at,
+        blog.created_at,
+        blog.created_by_id,
+        blog.created_by_name,
+        blog.changed_at,
+        blog.changed_by_id,
+        blog.changed_by_name,
+        blog.comment_count, 
+        camp.name AS campaign_name,
+        camp.short_name AS campaign_short_name,
+        camp.description AS campaign_description,
+        campaign.color_code AS campaign_color
+    from 
+       \"sap.ino.db.blog::v_blog\" as blog
+    left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as camp 
+        on camp.campaign_id = blog.object_id
+    left outer join \"sap.ino.db.campaign::t_campaign\" as campaign 
+        on campaign.id = blog.object_id
+    where object_type_code = 'CAMPAIGN'
+     with read only";
+
+depends_on_view = ["sap.ino.db.blog::v_blog","sap.ino.db.campaign::v_campaign_t_locale"];
+depends_on_table = ["sap.ino.db.campaign::t_campaign"];

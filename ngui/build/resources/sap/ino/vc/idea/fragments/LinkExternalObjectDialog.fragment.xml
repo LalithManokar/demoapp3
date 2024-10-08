@@ -1,0 +1,44 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog
+        id="integrationLinkObjectDialog"
+        title="{i18n>IDEA_OBJECT_TIT_LINK_EXTERNAL_OBJECT}"
+        verticalScrolling="true"
+		horizontalScrolling="false">
+		<VBox id="LinkToExternalObejectBox">
+			<f:SimpleForm  maxContainerCols="2" editable="true">
+				<Label text="{i18n>LINK_TO_TARGET_SYSTEM}" />
+				<ComboBox
+                showSecondaryValues= "true"
+                items="{path: 'ExternalObjectModel>/RESULT'}"
+                selectedKey="{ExternalObjectModel>/LINK_OBJECT_INFO/API_TECHNICAL_NAME}"
+                change="onTargetSystemChange" >
+					<core:ListItem key="{ExternalObjectModel>TECHNICAL_NAME}" 
+                      text="{ExternalObjectModel>APINAME}" additionalText="{ExternalObjectModel>targetSystemName}"/>
+				</ComboBox>
+				<!--Text id="ExternaSystemLink" value="{ExternalObjectModel>/ExternalObjectText}" visible="{ExternalObjectModel>/enableExternalObjectText}"  /-->
+				<Label text="{i18n>EXTERNAL_OBJECT_ID}"/>
+				<Input value = "{path:'ExternalObjectModel>/LINK_OBJECT_INFO/OBJECT_ID',
+	                             type:'sap.ui.model.type.String',
+	        	                  constraints : {
+                                      minLength: 1} }"  
+                                      liveChange="onObjectIdChange"/>
+				<Label text="{i18n>EXTERNAL_OBJECT_TYPE}"/>
+				<Input value = "{ExternalObjectModel>/LINK_OBJECT_INFO/OBJECT_TYPE}"   />
+			</f:SimpleForm>
+		</VBox>
+		<buttons>
+			<Button
+                id="objectSave"
+                text="{i18n>LINK_EXTERNAL_OBJECT_BTN_SAVE}"
+                type="Accept"
+                enabled="{parts:[{path:'ExternalObjectModel>/LINK_OBJECT_INFO/API_TECHNICAL_NAME'}], formatter: '.formatter.enableLinkObject'}"   
+                press="onLinkExternalObjectSave"/>
+			<Button
+                text="{i18n>BTN_CANCEL}"
+                press="onLinkExternalObjectDialogClose"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

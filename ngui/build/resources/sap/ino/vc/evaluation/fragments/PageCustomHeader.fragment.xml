@@ -1,0 +1,18 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:ino="sap.ino.controls">
+    <ino:ColorBar backgroundColor="{:= ${path: 'object>CAMPAIGN_COLOR', formatter: '.formatter.color'}}">
+		<core:Fragment
+		    fragmentName="sap.ino.vc.commons.fragments.NavBackButton"
+		    type="XML"/>
+        <ToolbarSpacer/>
+        <Link
+            href="{:= ${path: 'object>CAMPAIGN_ID', formatter: '.formatter.campaignNavigationLink'}}"
+            text="{:= ${object>CAMPAIGN_NAME}}"/>
+        <ToolbarSpacer/>
+        <core:Fragment
+            fragmentName="sap.ino.vc.commons.fragments.FullScreenButton"
+            type="XML"/>
+    </ino:ColorBar>
+</core:FragmentDefinition>

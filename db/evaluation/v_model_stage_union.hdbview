@@ -1,0 +1,17 @@
+schema = "SAP_INO";
+query = "
+    select
+      model_code.code,
+      coalesce(model_stage.default_text, model.default_text) as default_text,
+      coalesce(model_stage.default_long_text, model.default_long_text) as default_long_text
+    from (select code from \"sap.ino.db.evaluation::t_model\"
+          union
+          select code from \"sap.ino.db.evaluation::t_model_stage\") as model_code
+    left outer join \"sap.ino.db.evaluation::t_model\" as model 
+          on model_code.code = model.code
+    left outer join \"sap.ino.db.evaluation::t_model_stage\" as model_stage 
+          on model_code.code = model_stage.code
+    with read only ";
+
+depends_on_table = ["sap.ino.db.evaluation::t_model",
+                    "sap.ino.db.evaluation::t_model_stage"];

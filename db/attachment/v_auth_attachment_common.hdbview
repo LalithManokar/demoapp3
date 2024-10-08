@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query  = " 
+        SELECT DISTINCT 
+            attachment.id as attachment_id
+        FROM 
+         \"sap.ino.db.attachment::t_attachment\"  as attachment
+         WHERE attachment.label='HOME_PAGE_WIDGET' 
+             OR attachment.label='LANDING_PAGE' 
+             OR attachment.label='CAMP_TEMP_DESC'
+             OR attachment.label='CUSTOM_REPORT'
+             OR attachment.label='IDEA_FORM_DESC'
+         with read only";
+         
+depends_on_table = ["sap.ino.db.attachment::t_attachment"];

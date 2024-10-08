@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Attachment Role Type Media Restriction Type";
+table.columns = [
+	{name = "CODE"; sqlType = VARCHAR; length = 50; nullable = false; comment = "Human readable identifier";},
+	{name = "MEDIA_TYPE"; sqlType = VARCHAR; length = 100; nullable = true; comment = "Restriction to media type";}
+];
+table.primaryKey.pkcolumns = ["CODE", "MEDIA_TYPE"];

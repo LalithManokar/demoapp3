@@ -1,0 +1,19 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Status Models";
+table.columns = [
+    {name = "CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Status Model Transition Code";},
+    {name = "STATUS_MODEL_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Status Model Code";},
+    {name = "CURRENT_STATUS_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Current Status Code";},
+    {name = "NEXT_STATUS_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Next Status Code";},
+    {name = "STATUS_ACTION_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Status Action Code ";},
+    {name = "DECISION_RELEVANT"; sqlType = TINYINT; nullable = true; comment = "Relevant for decision log";},
+    {name = "DECISION_REASON_LIST_CODE"; sqlType = VARCHAR; length = 500; nullable = true; comment = "Decision Reason Code";},
+    {name = "TEXT_MODULE_CODE"; sqlType = VARCHAR; length = 500; nullable = true; comment = "Text Module Code";},
+    {name = "DECISION_REASON_LIST_VISIBLE"; sqlType = TINYINT; nullable = true; comment = "Decision Reason visible to community";},
+    {name = "INCLUDE_RESPONSE"; sqlType = TINYINT; nullable = true; comment = "Response will be sent to Author";},
+    {name = "DEFAULT_TEXT"; sqlType = NVARCHAR; length = 100; nullable = true; comment = "Default Text";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true; comment = "Default Long Text";},
+    {name = "SEQUENCE_NO"; sqlType = INTEGER; nullable = true; comment = "Sequence number of this transition in the status model";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

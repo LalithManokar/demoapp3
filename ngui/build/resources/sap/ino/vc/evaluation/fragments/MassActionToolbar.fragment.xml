@@ -1,0 +1,65 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<OverflowToolbar class="sapMBar" design="Auto" visible="{= !${device>/system/phone} &amp;&amp; !!${view>/List/MANAGE} }">
+	    <core:Fragment fragmentName="sap.ino.vc.commons.fragments.MessageLog" type="XML"/>
+	    <ToolbarSpacer/>
+        <HBox>
+            <Button 
+                id="sapInoMassDeleteBtn"
+                text="{i18n>EVAL_REQ_LIST_BTN_MASS_DELETE_BUTTON}"
+                tooltip="{i18n>EVAL_REQ_LIST_BTN_MASS_DELETE_BUTTON}"
+                enabled="false"
+                visible="{ !!${view>/List/HAS_BACKOFFICE} &amp;&amp; !!${view>/List/IS_EVAL_REQ_LIST_BY_ME}  }"
+                press="onMassDelete">
+                <layoutData>
+                    <OverflowToolbarLayoutData moveToOverflow="true" />
+                </layoutData>
+            </Button>
+            <Button 
+                id="sapInoAcceptBtn"
+                text="{i18n>EVAL_REQ_LIST_BTN_MASS_ACCEPT_BUTTON}"
+                tooltip="{i18n>EVAL_REQ_LIST_BTN_MASS_ACCEPT_BUTTON}"
+                visible="{= !!${view>/List/IS_EVAL_REQ_LIST_FOR_ME} }"
+                enabled="false"
+                press="onAccept">
+                <layoutData>
+                    <OverflowToolbarLayoutData moveToOverflow="true" />
+                </layoutData>
+            </Button>
+            <Button 
+                id="sapInoRejectBtn"
+                text="{i18n>EVAL_REQ_LIST_BTN_MASS_REJECT_BUTTON}"
+                tooltip="{i18n>EVAL_REQ_LIST_BTN_MASS_REJECT_BUTTON}"
+                enabled="false"
+                visible="{= !!${view>/List/IS_EVAL_REQ_LIST_FOR_ME} }"
+                press="onReject">
+                <layoutData>
+                    <OverflowToolbarLayoutData moveToOverflow="true" />
+                </layoutData>
+            </Button>
+            <Button 
+                id="sapInoFowardBtn"
+                text="{i18n>EVAL_REQ_LIST_BTN_MASS_FORWARD_BUTTON}"
+                tooltip="{i18n>EVAL_REQ_LIST_BTN_MASS_FORWARD_BUTTON}"
+                enabled="false"
+                visible="{= !!${view>/List/IS_EVAL_REQ_LIST_FOR_ME} }"
+                press="onForward">
+                <layoutData>
+                    <OverflowToolbarLayoutData moveToOverflow="true" />
+                </layoutData>
+            </Button>
+            <Button 
+                id="sapInoCreateBtn"
+                text="{i18n>EVAL_REQ_LIST_BTN_MASS_CREATE_BUTTON}"
+                tooltip="{i18n>EVAL_REQ_LIST_BTN_MASS_CREATE_BUTTON}"
+                enabled="false"
+                visible="{= !!${view>/List/IS_EVAL_REQ_LIST_FOR_ME} }"
+                press="onCreateEvaluation">
+                <layoutData>
+                    <OverflowToolbarLayoutData moveToOverflow="true" />
+                </layoutData>
+            </Button>
+        </HBox>
+    </OverflowToolbar>
+</core:FragmentDefinition>

@@ -1,0 +1,17 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Campaign Task for Milestones";
+table.columns     = [
+    {name = "ID";                       sqlType = INTEGER;                nullable = false; comment = "Human readable identifier";},
+    {name = "CAMPAIGN_TASK_ID";         sqlType = INTEGER;                nullable = false; comment = "Campaign Task id, foreign key to t_campaign_task";},
+    {name = "MILESTONE_CODE";           sqlType = VARCHAR;  length = 50;  nullable = true;  comment = "Milestone Code for system default milestone, foreign key to t_milestone";},
+    {name = "MILESTONE_NAME";           sqlType = NVARCHAR; length = 100; nullable = false; comment = "Milestone Name";},
+    {name = "DATE_TYPE_CODE";           sqlType = VARCHAR;  length = 500; nullable = false; comment = "Datetype code, foreign key to Datetype Model";},
+    {name = "MILESTONE_DATE";           sqlType = TIMESTAMP;              nullable = false; comment = "Real Milestone date for display";},
+    {name = "MILESTONE_QUARTER_CODE";   sqlType = VARCHAR;  length = 500; nullable = true;  comment = "Milestone Quarter if the date type is quarter";},
+    {name = "MILESTONE_MONTH_CODE";     sqlType = VARCHAR;  length = 500; nullable = true;  comment = "Milestone Quarter if the date type is month";},
+    {name = "MILESTONE_YEAR";           sqlType = VARCHAR;  length = 4;   nullable = true;  comment = "Milestone Quarter if the date type is quarter or month";},
+    {name = "IS_MILESTONE_DISPLAY";     sqlType = TINYINT;                nullable = false; comment = "Display indicator for this campaign task milestone";},
+    {name = "MILESTONE_COLOR_CODE";     sqlType = VARCHAR; length = 6;    nullable = true;  comment = "Optional HEX Code for campaign color w/o leading # ";}
+]; 
+table.primaryKey.pkcolumns = ["ID"];

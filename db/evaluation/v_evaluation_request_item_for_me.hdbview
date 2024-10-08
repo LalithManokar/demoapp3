@@ -1,0 +1,10 @@
+schema = "SAP_INO";
+query = "
+select
+    evaluation_req_item.id
+from \"sap.ino.db.evaluation::v_evaluation_request_item\"       as evaluation_req_item
+where evaluation_req_item.expert_id in ( select id from \"sap.ino.db.iam::v_auth_application_user\")
+    with read only";
+
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request_item",
+                   "sap.ino.db.iam::v_auth_application_user"];

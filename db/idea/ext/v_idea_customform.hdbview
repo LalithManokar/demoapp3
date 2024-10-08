@@ -1,0 +1,2375 @@
+schema = "SAP_INO";
+query = "
+	select
+		idea.id as idea_id,
+		idea.name as idea_name,
+		idea.campaign_id as campaign_id,
+		camp.name as campaign_name,
+		field_value.comment,
+		field_value.field_type_code as field_type,
+		form.DEFAULT_TEXT as form_name,
+		phase.default_text as phase_name,
+
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ADMIN_FORM_TEST_SYLVAI_1227.CHECKBOX'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ADMIN_FORM_TEST_SYLVAI_1227.CHECKBOX\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ADMIN_FORM_TEST_SYLVAI_1227.CHECK_WITH_VALUELIST'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ADMIN_FORM_TEST_SYLVAI_1227.CHECK_WITH_VALUELIST\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ADMIN_FORM_TEST_SYLVAI_1227.RICHTEXT1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ADMIN_FORM_TEST_SYLVAI_1227.RICHTEXT1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ADMIN_FORM_TEST_SYLVAI_1227.TEXT1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ADMIN_FORM_TEST_SYLVAI_1227.TEXT1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ADMIN_FORM_TEST_SYLVAI_1227.TEXT1_WITH_VALUELIST'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ADMIN_FORM_TEST_SYLVAI_1227.TEXT1_WITH_VALUELIST\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ADMIN_FORM_TEST_SYLVAI_1227.TEXT2_NOT_HIDDEN'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ADMIN_FORM_TEST_SYLVAI_1227.TEXT2_NOT_HIDDEN\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.AF.AL1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"AF.AL1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.AF.AL2'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"AF.AL2\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.AF.BF'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"AF.BF\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.AF.CF'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"AF.CF\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.Allen_test1.CHECKBOX1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"Allen_test1.CHECKBOX1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.Allen_test1.TEXT1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"Allen_test1.TEXT1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.AwesomenessScale.Frank_Test_AwesomenessScale'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"AwesomenessScale.Frank_Test_AwesomenessScale\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.COPY_ADMIN_FORM_TEST_SYLVAI_1227.CHECKBOX'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"COPY_ADMIN_FORM_TEST_SYLVAI_1227.CHECKBOX\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.COPY_ADMIN_FORM_TEST_SYLVAI_1227.CHECK_WITH_VALUELIST'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"COPY_ADMIN_FORM_TEST_SYLVAI_1227.CHECK_WITH_VALUELIST\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.COPY_ADMIN_FORM_TEST_SYLVAI_1227.TEXT1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"COPY_ADMIN_FORM_TEST_SYLVAI_1227.TEXT1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.COPY_ADMIN_FORM_TEST_SYLVAI_1227.TEXT1_WITH_VALUELIST'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"COPY_ADMIN_FORM_TEST_SYLVAI_1227.TEXT1_WITH_VALUELIST\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.COPY_ADMIN_FORM_TEST_SYLVAI_1227.TEXT2_NOT_HIDDEN'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"COPY_ADMIN_FORM_TEST_SYLVAI_1227.TEXT2_NOT_HIDDEN\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.COPY_COPY_DRUM_FIN.DRUM_INT'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"COPY_COPY_DRUM_FIN.DRUM_INT\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.COPY_COPY_DRUM_FIN.DRUM_NUM'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"COPY_COPY_DRUM_FIN.DRUM_NUM\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.COPY_DRUM_FIN.DRUM_INT'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"COPY_DRUM_FIN.DRUM_INT\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.COPY_DRUM_FIN.DRUM_NUM'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"COPY_DRUM_FIN.DRUM_NUM\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.COPY_lucy_test.LUCY_TEST'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"COPY_lucy_test.LUCY_TEST\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.COPY_lucy_test.LUCY_TEST_INT'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"COPY_lucy_test.LUCY_TEST_INT\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.COPY_lucy_test.LUCY_TEST_TEXT'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"COPY_lucy_test.LUCY_TEST_TEXT\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.DAN_MIT.Date'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"DAN_MIT.Date\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.DRUM_FIN.DRUM_INT'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"DRUM_FIN.DRUM_INT\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.DRUM_FIN.DRUM_NUM'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"DRUM_FIN.DRUM_NUM\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.DRUM_GO.DRUM_GO'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"DRUM_GO.DRUM_GO\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.DevCents.DeliveryCenter'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"DevCents.DeliveryCenter\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ECIF.CN'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ECIF.CN\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ECIF.IN'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ECIF.IN\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ECIF.RE'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ECIF.RE\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.Frank_Test_Custom_Form_Advance.Frank_Test_Custom_Form_Integer'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"Frank_Test_Custom_Form_Advance.Frank_Test_Custom_Form_Integer\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.Frank_Test_Custom_Form_Advance.Frank_Test_Custom_Form_Numberic'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"Frank_Test_Custom_Form_Advance.Frank_Test_Custom_Form_Numberic\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.Frank_Test_Custom_Form_Advance.Frank_Test_Custom_Form_Text'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"Frank_Test_Custom_Form_Advance.Frank_Test_Custom_Form_Text\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.Frank_Test_Custom_Form_Advance.Frank_Test_Custom_Form_Text_List_Option'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"Frank_Test_Custom_Form_Advance.Frank_Test_Custom_Form_Text_List_Option\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.Frank_Test_Form_Field_Unit.Frank_Test_Form_Field_Value_Unit'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"Frank_Test_Form_Field_Unit.Frank_Test_Form_Field_Value_Unit\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_ADMIN_FORM_TEST0905.CHECKBOX'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_ADMIN_FORM_TEST0905.CHECKBOX\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_ADMIN_FORM_TEST0905.CHECK_WITH_VALUELIST'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_ADMIN_FORM_TEST0905.CHECK_WITH_VALUELIST\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_ADMIN_FORM_TEST0905.RICHTEXT1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_ADMIN_FORM_TEST0905.RICHTEXT1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_ADMIN_FORM_TEST0905.TEXT1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_ADMIN_FORM_TEST0905.TEXT1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_ADMIN_FORM_TEST0905.TEXT1_WITH_VALUELIST'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_ADMIN_FORM_TEST0905.TEXT1_WITH_VALUELIST\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_ADMIN_FORM_TEST0905.TEXT2_NOT_HIDDEN'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_ADMIN_FORM_TEST0905.TEXT2_NOT_HIDDEN\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_DES.HQ_BOOL'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_DES.HQ_BOOL\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_DES.HQ_INT'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_DES.HQ_INT\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_DES.HQ_NUMRIC'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_DES.HQ_NUMRIC\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_DES.HQ_test)_Date'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_DES.HQ_test)_Date\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_DES.TXT_VALUE'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_DES.TXT_VALUE\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_DES.TYPE_THE_REASON_HQ'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_DES.TYPE_THE_REASON_HQ\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_IDEAFORM_VALUELIST.HQ_BOOL'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_IDEAFORM_VALUELIST.HQ_BOOL\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_IDEAFORM_VALUELIST.HQ_INT'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_IDEAFORM_VALUELIST.HQ_INT\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_IDEAFORM_VALUELIST.HQ_NUMRIC'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_IDEAFORM_VALUELIST.HQ_NUMRIC\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_IDEAFORM_VALUELIST.HQ_test)_Date'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_IDEAFORM_VALUELIST.HQ_test)_Date\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_IDEAFORM_VALUELIST.TXT_VALUE'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_IDEAFORM_VALUELIST.TXT_VALUE\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_IDEAFORM_VALUELIST.TYPE_THE_REASON_HQ'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_IDEAFORM_VALUELIST.TYPE_THE_REASON_HQ\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_MAD_VL.HQ_BOOL'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_MAD_VL.HQ_BOOL\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_MAD_VL.HQ_INT'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_MAD_VL.HQ_INT\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_MAD_VL.HQ_NUMRIC'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_MAD_VL.HQ_NUMRIC\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_MAD_VL.TXT_VALUE'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_MAD_VL.TXT_VALUE\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_NO_MAD_VL.HQ_BOOL'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_NO_MAD_VL.HQ_BOOL\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_NO_MAD_VL.HQ_INT'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_NO_MAD_VL.HQ_INT\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_NO_MAD_VL.HQ_NUMRIC'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_NO_MAD_VL.HQ_NUMRIC\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_NO_MAD_VL.TXT_VALUE'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_NO_MAD_VL.TXT_VALUE\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_admin_form_valuelist.HQ_BOOL'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_admin_form_valuelist.HQ_BOOL\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_admin_form_valuelist.HQ_INT'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_admin_form_valuelist.HQ_INT\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_admin_form_valuelist.HQ_NUMRIC'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_admin_form_valuelist.HQ_NUMRIC\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_admin_form_valuelist.HQ_test)_Date'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_admin_form_valuelist.HQ_test)_Date\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_admin_form_valuelist.TXT_VALUE'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_admin_form_valuelist.TXT_VALUE\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.HQ_TEST_admin_form_valuelist.TYPE_THE_REASON_HQ'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"HQ_TEST_admin_form_valuelist.TYPE_THE_REASON_HQ\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IDEA_FORM_TEST_SYLVAI_1227.CHECKBOX'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IDEA_FORM_TEST_SYLVAI_1227.CHECKBOX\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IDEA_FORM_TEST_SYLVAI_1227.CHECK_WITH_VALUELIST'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IDEA_FORM_TEST_SYLVAI_1227.CHECK_WITH_VALUELIST\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IDEA_FORM_TEST_SYLVAI_1227.RICHTEXT1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IDEA_FORM_TEST_SYLVAI_1227.RICHTEXT1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IDEA_FORM_TEST_SYLVAI_1227.TEXT1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IDEA_FORM_TEST_SYLVAI_1227.TEXT1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IDEA_FORM_TEST_SYLVAI_1227.TEXT1_WITH_VALUELIST'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IDEA_FORM_TEST_SYLVAI_1227.TEXT1_WITH_VALUELIST\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IDEA_FORM_TEST_SYLVAI_1227.TEXT2_NOT_HIDDEN'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IDEA_FORM_TEST_SYLVAI_1227.TEXT2_NOT_HIDDEN\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IF_NJ08.IF_01'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IF_NJ08.IF_01\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IF_NJ08.IF_02'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IF_NJ08.IF_02\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IF_NJ08.IF_03'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IF_NJ08.IF_03\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IF_NJ08.IF_04'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IF_NJ08.IF_04\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IF_NJ08.IF_05'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IF_NJ08.IF_05\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IF_NJ08.IF_06'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IF_NJ08.IF_06\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IF_NJ08.IF_07'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IF_NJ08.IF_07\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IF_NJ08.IF_08'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IF_NJ08.IF_08\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IF_NJ08.IF_09'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IF_NJ08.IF_09\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IF_NJ08.IF_10'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IF_NJ08.IF_10\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IF_NJ08.IF_11'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IF_NJ08.IF_11\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.IF_NJ08.IF_12'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"IF_NJ08.IF_12\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.Idea_Form_Admin.Category'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"Idea_Form_Admin.Category\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.Idea_Form_Admin.Idea_Type'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"Idea_Form_Admin.Idea_Type\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.LF01.Date1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"LF01.Date1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.NOV_BY_HQTEST.TEST1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"NOV_BY_HQTEST.TEST1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.NOV_BY_HQTEST.TEST3'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"NOV_BY_HQTEST.TEST3\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.NOV_BY_HQTEST.TESTE2'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"NOV_BY_HQTEST.TESTE2\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.NOV_BY_HQTEST.test'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"NOV_BY_HQTEST.test\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.NOV_BY_HQTEST_ADMIN.TEST1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"NOV_BY_HQTEST_ADMIN.TEST1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.NOV_BY_HQTEST_ADMIN.TEST3'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"NOV_BY_HQTEST_ADMIN.TEST3\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.NOV_BY_HQTEST_ADMIN.TESTE2'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"NOV_BY_HQTEST_ADMIN.TESTE2\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.NOV_BY_HQTEST_ADMIN.test'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"NOV_BY_HQTEST_ADMIN.test\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYLVIA_TEST_A.VALUE'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYLVIA_TEST_A.VALUE\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYLVIA_TEST_A.detail'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYLVIA_TEST_A.detail\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYLVIA_TEST_B.VALUE'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYLVIA_TEST_B.VALUE\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYLVIA_TEST_B.detail'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYLVIA_TEST_B.detail\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYLVIA_TEST_B.text'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYLVIA_TEST_B.text\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYL_TEST0523.RICHTEXT_M'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYL_TEST0523.RICHTEXT_M\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYL_TEST0523.TEXT'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYL_TEST0523.TEXT\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYL_TEST0523.TEXT_M'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYL_TEST0523.TEXT_M\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYL_TEST_FOR_TEXT0523.RICH_TEXT_2'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYL_TEST_FOR_TEXT0523.RICH_TEXT_2\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYL_TEST_FOR_TEXT0523.RICH_TEXT_3'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYL_TEST_FOR_TEXT0523.RICH_TEXT_3\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYL_TEST_FOR_TEXT0523.RICH_TEXT_4'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYL_TEST_FOR_TEXT0523.RICH_TEXT_4\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYL_TEST_FOR_TEXT0523.RICH_TEXT_5'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYL_TEST_FOR_TEXT0523.RICH_TEXT_5\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYL_TEST_FOR_TEXT0523.RICH_TEXT_M'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYL_TEST_FOR_TEXT0523.RICH_TEXT_M\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYL_TEST_FOR_TEXT0523.TEXT_2'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYL_TEST_FOR_TEXT0523.TEXT_2\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYL_TEST_FOR_TEXT0523.TEXT_3'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYL_TEST_FOR_TEXT0523.TEXT_3\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.SYL_TEST_FOR_TEXT0523.TEXT_M'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"SYL_TEST_FOR_TEXT0523.TEXT_M\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.Showmeyouvalue.Showmeyourvalue'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"Showmeyouvalue.Showmeyourvalue\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.TEst01.Com'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"TEst01.Com\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.TEst01.Coun01'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"TEst01.Coun01\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.Test00001.Country'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"Test00001.Country\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.Test00001.Industry'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"Test00001.Industry\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ell_test_01.u_1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ell_test_01.u_1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ell_test_01.u_2'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ell_test_01.u_2\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ellen_test.y_1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ellen_test.y_1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ellen_test.y_2'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ellen_test.y_2\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.ellen_test.y_3'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"ellen_test.y_3\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08.boolean'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08.boolean\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08.boolean_vl'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08.boolean_vl\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08.date'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08.date\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08.integer'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08.integer\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08.integer_vl'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08.integer_vl\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08.numeric'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08.numeric\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08.numeric_vl'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08.numeric_vl\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08.richtxt'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08.richtxt\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08.txt'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08.txt\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08_admin.boolean_a'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08_admin.boolean_a\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08_admin.boolean_vl_a'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08_admin.boolean_vl_a\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08_admin.date_a'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08_admin.date_a\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08_admin.integer_a'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08_admin.integer_a\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08_admin.integer_vl_a'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08_admin.integer_vl_a\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08_admin.numeric_a'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08_admin.numeric_a\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08_admin.numeric_vl_a'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08_admin.numeric_vl_a\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08_admin.richtxt_a'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08_admin.richtxt_a\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.if_test_nj08_admin.txt_a'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"if_test_nj08_admin.txt_a\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.krystal.krystal'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"krystal.krystal\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.lucy_test.LUCY_TEST'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"lucy_test.LUCY_TEST\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.lucy_test.LUCY_TEST_INT'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"lucy_test.LUCY_TEST_INT\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.numeric-unit.numeric-unit'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"numeric-unit.numeric-unit\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.numeric.numeric'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"numeric.numeric\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.numeric.numeric2'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"numeric.numeric2\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.starTestBO.starTestBOFiled'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"starTestBO.starTestBOFiled\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test.detail'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test.detail\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test1_1217.detail'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test1_1217.detail\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test1_1217.value'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test1_1217.value\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test_for_all_hidden.boolean'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test_for_all_hidden.boolean\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test_for_all_hidden.date'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test_for_all_hidden.date\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test_for_all_hidden.integer'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test_for_all_hidden.integer\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test_for_all_hidden.numeric_value'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test_for_all_hidden.numeric_value\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test_for_all_hidden.rich_text'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test_for_all_hidden.rich_text\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test_for_all_hidden.text'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test_for_all_hidden.text\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test_for_all_hidden.text_visible'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test_for_all_hidden.text_visible\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test_hidden.text'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test_hidden.text\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test_hidden.text_hidden'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test_hidden.text_hidden\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test_hidden.value'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test_hidden.value\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.sylvia_test_idea_form.value'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"sylvia_test_idea_form.value\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.test_value_option.1'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"test_value_option.1\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.test_value_option.2'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"test_value_option.2\",
+        case when field.code = 'sandbox.bestfleisch.config.cust1.wx_GO.DRUM_GO'
+        then case when value_option.code <> ''
+        	then value_option.default_text
+        	else
+        		case field.datatype_code
+        			when 'BOOLEAN' then cast ((case when field_value.bool_value = 1 then 'yes' else 'no' end) as nvarchar(1024))
+        			when 'TEXT' then cast (field_value.text_value as nvarchar(1024))
+        			when 'INTEGER' then cast (field_value.num_value as nvarchar(1024))
+        			when 'NUMERIC' then cast (field_value.num_value as nvarchar(1024)) 
+        			when 'RICHTEXT' then cast (field_value.rich_text_value as nvarchar(1024)) 
+        			else cast ('' as nvarchar(1024))
+        			end
+        	end
+        end as \"wx_GO.DRUM_GO\"
+    from \"sap.ino.db.ideaform::t_field_value\" as field_value
+    inner join \"sap.ino.db.ideaform::t_field\" as field
+    on field.code = field_value.field_code
+    inner join \"sap.ino.db.ideaform::t_form\" as form
+    on field.FORM_CODE = form.CODE
+    left outer join \"sap.ino.db.idea::t_idea\" as idea
+    on idea.id = field_value.idea_id
+    left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as camp
+    on camp.campaign_id = idea.campaign_id
+    left outer join \"sap.ino.db.campaign::t_phase\" as phase
+    on idea.phase_code = phase.code
+    left outer join \"sap.ino.db.basis::t_value_option\" as value_option
+    on field.value_option_list_code = value_option.list_code and (field_value.num_value = value_option.num_value or field_value.bool_value = value_option.bool_value or field_value.text_value = value_option.text_value)
+    with read only ";
+            
+depends_on_table = ["sap.ino.db.ideaform::t_field_value",
+                    "sap.ino.db.ideaform::t_field",
+                    "sap.ino.db.ideaform::t_form",
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.campaign::t_phase",
+                    "sap.ino.db.basis::t_value_option"
+                    ];
+
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale"];
+

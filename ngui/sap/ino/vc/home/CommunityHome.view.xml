@@ -1,0 +1,63 @@
+<mvc:View
+	id="homecommunity"
+    controllerName="sap.ino.vc.home.CommunityHome"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:ino="sap.ino.controls">
+    <Page 
+        class="sapInoHomeHomepage"
+        id="communityhomepage"
+        showHeader="false"
+        showSubHeader="false">
+        <HBox 
+            class="sapInoBaseHomepageContent sapInoHomeHomepageContent"
+            alignItems="Start"
+			justifyContent="Center">
+			<VBox>
+			    <VBox
+            	    alignItems="End"
+            	    justifyContent="Center">
+            		<HBox
+            		    class="sapInoBaseHomepageButtons"
+            		    visible="{user>/privileges/sap.ino.ui::backoffice.access}">
+            		    <core:Fragment id="backofficeButton" fragmentName="sap.ino.vc.commons.fragments.BackofficeToggleButton" type="XML" />
+            	        <core:Fragment id="backofficeSettingsButton" fragmentName="sap.ino.vc.commons.fragments.BackofficeSettingsButton" type="XML" />
+            		</HBox>
+            	</VBox>
+			    <HBox>	
+			        <VBox
+                        class="sapInoBaseHomepageLeft sapInoHomeHomepageLeft">
+                        <VBox id="leftProfileContainer"/>
+                    </VBox>
+                    <VBox
+                        class="sapInoBaseHomepageCenter sapInoHomeHomepageCenter">
+                        <VBox id ="centerProfileContainer">
+                            <core:Fragment id="identityProfileFragment" fragmentName="sap.ino.vc.iam.fragments.IdentityProfile" type="XML" class="sapInoFloatingBackground"/>
+                        </VBox>
+                        <VBox visible="{= !${widget>/IS_VISIBLE}}">
+                            <core:Fragment id="campaignsListFragment" fragmentName="sap.ino.vc.campaign.fragments.CampaignList" type="XML"  />
+                        </VBox>
+                        <VBox visible="{widget>/IS_VISIBLE}" class="sapInoHomepageWidget">
+                            <core:Fragment fragmentName="sap.ino.vc.home.fragments.HomepageWidget" type="XML" />
+                        </VBox>
+                        <core:Fragment id="feedsFragment" fragmentName="sap.ino.vc.home.fragments.FeedList" type="XML" />
+                        <core:Fragment id="ideasFragment" fragmentName="sap.ino.vc.idea.fragments.IdeasCommunity" type="XML" />
+                        <VBox id="centerBlogContainer"/>
+                        <VBox id="centerTopContributorContainer"/>
+                    </VBox>
+                    <VBox
+                        class="sapInoBaseHomepageRight sapInoHomeHomepageRight">
+                        <VBox id="rightTopContributorContainer">
+                            <core:Fragment id="topContributorFragment" fragmentName="sap.ino.vc.home.fragments.TopContributors" type="XML"/>
+                        </VBox>
+                        <VBox id="rightTopBlogContainer">
+                            <core:Fragment id="blogsFragment" fragmentName="sap.ino.vc.blog.fragments.BlogsCommunity" type="XML" />
+                        </VBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </HBox>
+    </Page>
+</mvc:View>

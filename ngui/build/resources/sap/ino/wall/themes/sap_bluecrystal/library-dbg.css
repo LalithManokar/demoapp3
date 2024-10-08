@@ -1,0 +1,3723 @@
+/*!
+ * SAP UI development toolkit for HTML5 (SAPUI5)
+ *
+ * (c) Copyright 2009-2024 SAP SE. All rights reserved
+ */
+/*!
+ * SAP UI development toolkit for HTML5 (SAPUI5)
+ *
+ * (c) Copyright 2009-2024 SAP SE. All rights reserved
+ */
+/* =========================== */
+/* Global CSS for 'base' theme */
+/* =========================== */
+/* ============================================= */
+/* CSS for control sap.ino.wall/ColorPicker.control */
+/* ============================================= */
+/* override: add a small padding left and right */
+.sapInoWallColorPickerPopover .sapMInput {
+  padding-left: 0.125rem;
+  padding-right: 0.125rem;
+  height: 40px;
+}
+/* override: centered and bold input field */
+.sapInoWallColorPickerPopover .sapMInput > input {
+  text-align: center;
+  font-weight: bold;
+}
+.sapMPopover.sapInoWallColorPickerPopover {
+  padding: 4px;
+  bottom: 0px;
+  right: 0px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  max-height: 207px;
+  max-width: 150px;
+  overflow: visible;
+  z-index: 90020 !important;
+}
+.sapMPopover.sapInoWallColorPickerPopover .sapMPopoverCont {
+  border: 2px solid #808080;
+}
+.sapInoWallColorPickerPopoverPanel > .sapMPanelContent {
+  background-color: #f2f2f2;
+  padding: 4px 4px 10px 4px;
+  overflow: hidden;
+}
+.sapInoWallColorPickerPopover .sapMPopoverScroll {
+  background-color: #f2f2f2;
+}
+.sapInoWallColorPickerPopoverPanel .sapUiColorPicker-ColorPickerSlider.sapUiSliHori .sapUiSliBar {
+  margin-left: 6px;
+  margin-right: 6px;
+}
+/* override: this fixes a bug in safari and chrome where the popover arrow is distorted strangely */
+html .sapInoWallColorPickerPopover .sapMPopoverArr {
+  display: none;
+}
+.sapUiSizeCompact .sapInoWallColorPickerPopover .sapMInputBaseInner {
+  height: 36px;
+  padding: 0 0;
+}
+.sapInoWallColorPickerPopover .sapMInput,
+.sapInoWallColorPickerPopover .sapInoColorPickerLiteButtonContainer {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+/* ============================================= */
+/* CSS for control sap.ino.wall/DragButton.control */
+/* ============================================= */
+.sapInoWallDragButton,
+.sapUiSizeCompact .sapInoWallDragButton {
+  width: 90px;
+  height: 90px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  padding: 0px;
+}
+.sapInoWallDragButton > div,
+.sapUiSizeCompact .sapInoWallDragButton > div {
+  background: none;
+  border: none;
+  width: 90px;
+  height: 90px;
+  padding: 5px;
+}
+.sapInoWallDragButton img,
+.sapUiSizeCompact .sapInoWallDragButton img {
+  width: 80px;
+  height: 80px;
+  min-height: 80px;
+  margin: 0px;
+}
+.sapInoWallDragButton > .sapMBtnHoverable {
+  background-image: none;
+  background: none;
+}
+.sapInoWallDragButton img {
+  pointer-events: none;
+  user-drag: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+}
+/* ============================================= */
+/* CSS for control DropUpload.control */
+/* ============================================= */
+.sapInoWallDropUpload .sapInoWallDropUploadForm {
+  position: absolute;
+  visibility: hidden;
+}
+.sapInoWallDropUpload .sapInoWallDropUploadArea {
+  height: 100%;
+  border: 2px solid #888888;
+  background: #efefef;
+  /* Old browsers */
+  filter: none;
+  /* TODO: check if this works in IE9 */
+}
+.sapInoWallDropUpload .sapInoWallDropUploadAreaInner.noflip {
+  color: #666666;
+}
+.sapInoWallDropUpload .sapInoWallDropUploadAreaInner {
+  margin: 0px auto;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #aaaaaa;
+}
+.sapInoWallDropUpload.sapUiNoFlex .sapInoWallDropUploadAreaInner {
+  top: 50%;
+  position: relative;
+  margin-top: initial;
+  margin-bottom: initial;
+}
+/* vertically stretch area */
+.sapInoWallDropUpload {
+  flex-grow: 99999;
+  -ms-flex-grow: 99999;
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+  min-height: 44px;
+}
+/* vertically center icon */
+.sapInoWallDropUpload .sapInoWallDropUploadArea {
+  flex-grow: 99999;
+  -ms-flex-grow: 99999;
+  display: flex;
+  display: -ms-flex;
+  flex-direction: row;
+  -ms-flex-direction: row;
+  align-items: center;
+  -ms-align-items: center;
+  height: 0%;
+}
+.sapInoWallDropUpload .sapInoWallItemImageDropInner {
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+}
+/* ============================================= */
+/* CSS for control Hoverable.control */
+/* ============================================= */
+/* ============================================= */
+/* CSS for control LightBox.control */
+/* ============================================= */
+/* center the image on phone (stretched dialog) */
+.sap-phone .sapInoWallLightBoxDialog .sapMDialogScrollCont {
+  text-align: center;
+}
+/* override: make label fit to the image dialog */
+.sapInoWallLightBoxTitle {
+  display: block;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  margin-left: 5px;
+}
+.sapInoWallROS {
+  height: 28px;
+}
+.sapInoWallROSSegmentedButton .sapMSegBBtn {
+  font-size: 0.75rem;
+  padding-left: 0px;
+  padding-right: 0px;
+  width: 60px;
+  height: 20px;
+  line-height: 22px;
+}
+.sapInoWallROSSegmentedButton .sapMSegBBtnSel {
+  background: #808080;
+  border-color: #808080;
+}
+/* override: round borders for first button */
+.sapInoWallROSSegmentedButton .sapMSegBBtn:first-child:first-child {
+  border-top-left-radius: 80px;
+  border-bottom-left-radius: 80px;
+}
+/* override: round borders for last button */
+.sapInoWallROSSegmentedButton .sapMSegBBtn:last-child {
+  border-top-right-radius: 80px;
+  border-bottom-right-radius: 80px;
+}
+html[data-sap-ui-browser*='ie'] .sapMILI-CTX .sapInoWallROS .sapInoWallROSSegmentedButton {
+  margin-right: 20px;
+}
+/* ============================================= */
+/* CSS for control sap.ino.wall/ScrollableToolbar.control */
+/* ============================================= */
+/* Head Container */
+/* special styles for a vertical toolbar */
+.sapInoWallScrollableToolbarVertical {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+.sapInoWallScrollableToolbarVertical .sapInoWallScrollableToolbarInner > * {
+  display: block;
+}
+/* desktop & default */
+.sapInoWallScrollableToolbarInner {
+  display: block;
+  margin: 0 2rem;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+.sapInoWallScrollableToolbarVertical .sapInoWallScrollableToolbarInner {
+  height: calc(100% - 50px);
+  margin: 0;
+  margin-top: 25px;
+  /* TODO: does not work on android and ie9 */
+}
+/* scrollbar from browser should not be visible */
+.sapInoWallScrollableToolbarScrollContainer::-webkit-scrollbar {
+  display: none;
+}
+/* scrollbar from iscroll should not be visible */
+.sapInoWallScrollableToolbarScrollContainer > div:nth-child(2) {
+  visibility: hidden;
+}
+/* arrow styles*/
+.sapInoWallScrollableToolbarArrowScroll {
+  font-size: 1rem;
+  position: absolute;
+  top: 1px;
+  color: #666666;
+  /* TODO: @sapUiElement */
+  cursor: pointer;
+}
+.sap-desktop .sapInoWallScrollableToolbarArrowScroll:hover,
+.sap-desktop .sapInoWallScrollableToolbarArrowScroll:active {
+  color: #007cc0;
+  /* TODO: @sapUiHighlight */
+}
+.sapInoWallScrollableToolbarArrowScrollLeft {
+  left: 0.25rem;
+  padding: 0 0.4rem;
+}
+.sapInoWallScrollableToolbarArrowScrollRight {
+  right: 0.25rem;
+  padding: 0 0.4rem;
+}
+.sapInoWallScrollableToolbarVertical .sapInoWallScrollableToolbarArrowScrollLeft {
+  bottom: initial;
+  left: initial;
+  width: 100%;
+  top: 4px;
+  padding: 0;
+}
+.sapInoWallScrollableToolbarVertical .sapInoWallScrollableToolbarArrowScrollRight {
+  top: auto;
+  right: auto;
+  width: 100%;
+  bottom: 4px;
+  padding: 0;
+}
+.sapInoWallScrollableToolbarNotScrollable > .sapInoWallScrollableToolbarArrowScroll,
+.sapInoWallScrollableToolbarScrollable.sapInoWallScrollableToolbarNoScrollBack > .sapInoWallScrollableToolbarArrowScrollLeft,
+.sapInoWallScrollableToolbarScrollable.sapInoWallScrollableToolbarNoScrollForward > .sapInoWallScrollableToolbarArrowScrollRight {
+  visibility: hidden;
+}
+.sapInoWallScrollableToolbarArrowScroll:focus,
+.sapInoWallScrollableToolbar:focus,
+.sapInoWallScrollableToolbarInner:focus {
+  outline: none;
+}
+/* ============================================= */
+/* CSS for control TextEditor.control */
+/* ============================================= */
+/* ============================================= */
+/* CSS for control TextEditor.control */
+/* ============================================= */
+/* Fixes prevention of text selection in UI5 for editable content of nicEdit-main (using !important) */
+/* Deactivates the following CSS of UI5: html.sap-phone *, html.sap-tablet * { -webkit-user-select: none; } */
+.nicEdit-main,
+.nicEdit-main * {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+}
+.sapUiInoWallTextEditorContent p {
+  -webkit-margin-before: 0px;
+  -webkit-margin-after: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+/* overrides for button px calculations instead of rem */
+.sapMBtn.sapInoWallTextEditorControlButton .sapMBtnInner,
+.sapInoWallTextEditorControlButton .sapMBtnInner {
+  height: 40px;
+  min-width: 48px;
+  padding: 0;
+}
+/* overrides with px values */
+.sapMBtn.sapInoWallTextEditorControlButton,
+.sapMSegB.sapInoWallTextEditorControlButton,
+.sapInoWallTextEditorControlButton {
+  min-width: 48px;
+  width: 48px;
+  height: 48px;
+  padding: 4px 0;
+}
+/* overrides with px values */
+.sapMBtn.sapInoWallTextEditorControlSelect.sapMSlt,
+.sapInoWallTextEditorControlSelect.sapMSlt {
+  margin: 4px 0 4px 0;
+}
+/* overrides with px values */
+.sapInoWallTextEditorControlButton .sapMBtnIcon {
+  line-height: 38px;
+  width: 38px;
+  max-height: 38px;
+}
+.sapInoWallTextEditorControlButton.sapMSegB {
+  width: auto;
+  height: 40px;
+}
+.sapInoWallTextEditorControlButton.sapMSegB .sapMSegBBtn {
+  font-size: 14px;
+  height: 38px;
+  line-height: 38px;
+  min-width: 46px;
+  padding: 0;
+}
+.sapInoWallTextEditorControlButton.sapMSegBIcons .sapMSegBBtn img {
+  padding: 0 8px;
+}
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+  color: #000000;
+}
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallTextEditorColorSelectorButton.sapInoWallWTextEditorColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+  color: #ffffff;
+}
+/* override: remove gradient for color picker */
+.sapInoWallTextEditorColorSelectorButton .sapMBtnInner,
+.sapInoWallTextEditorColorSelectorButton.sapMBtn:hover > .sapMBtnHoverable,
+.sapInoWallTextEditorColorSelectorButton.sapMBtn:focus > .sapMBtnInner.sapMFocusable {
+  background: none;
+  background-color: inherit;
+}
+.sapInoWallTextEditor .sapInoWallTextEditorContent.sapMInputBaseInner {
+  padding: 10px;
+  height: auto;
+}
+/* overrides the defaults of nicedit */
+.sapInoWallTextEditor .sapInoWallTextEditorContent .nicEdit-main {
+  margin: 0px !important;
+  width: auto !important;
+  min-height: inherit !important;
+  height: 100%;
+}
+.sapUiSizeCompact .sapInoWallTextEditorColorSelectorButton .sapMBtnIcon {
+  margin: 0;
+}
+.sapInoWallInvisible {
+  display: none;
+}
+/* WALL invisibility class */
+.invisible {
+  display: none !important;
+}
+/* user sharing list */
+.sapMListModeDelete .sapInoWallROS {
+  height: 28px;
+}
+.sapMListModeNone .sapInoWallROS {
+  height: 12px;
+}
+.sapMInputBaseInner::-webkit-input-placeholder {
+  color: darkgray;
+}
+.sapMInputBaseInner:-moz-placeholder {
+  color: darkgray;
+}
+.sapMInputBaseInner::-moz-placeholder {
+  color: darkgray;
+}
+.sapMInputBaseInner:-ms-input-placeholder {
+  color: darkgray;
+}
+/* ============================================= */
+/* CSS for control wall.control */
+/* ============================================= */
+/* interface only */
+.sapInoWallWOuter {
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  /*position: fixed !important;*/
+}
+.sapInoWallWOuter :focus {
+  outline: 0;
+}
+.sapInoWallWInner {
+  color: #232323;
+  position: absolute;
+  width: 10000px;
+  height: 10000px;
+  margin: -5000px 0px 0px -5000px;
+  left: 50%;
+  top: 50%;
+  zoom: 100%;
+  -moz-transform: scale(1);
+  /* disable text selection */
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.sapInoWallSelector {
+  position: absolute;
+  z-index: 30000;
+  pointer-events: none;
+}
+/* debug stuff */
+.sapInoWallWBB {
+  display: none;
+  color: yellow;
+  font-weight: bold;
+  border: 1px solid yellow;
+  padding: 5px;
+  position: relative;
+}
+.sapInoWallWCB {
+  display: none;
+}
+.sapInoWallWCB > div {
+  color: green;
+  font-weight: bold;
+  border: 1px solid green;
+  padding: 5px;
+  position: absolute;
+}
+.sapInoWallWDI {
+  display: none;
+  color: green;
+  font-weight: bold;
+  border: 1px solid green;
+  padding: 5px;
+  position: relative;
+}
+.sapInoWallWPI {
+  display: none;
+  color: red;
+  font-weight: bold;
+  border: 1px solid red;
+  padding: 5px;
+  position: relative;
+}
+.sapInoWallWDragPreview {
+  display: none;
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+.sapInoWallWDragPreviewInner {
+  background-color: rgba(50, 50, 50, 0.4);
+  border-radius: 1000px;
+  box-shadow: 0px 0px 50px #000000;
+  width: 50px;
+  height: 50px;
+  margin: 20px;
+  position: relative;
+  left: -30px;
+  top: -30px;
+}
+.dragCursor {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+}
+.selectCursor {
+  cursor: crosshair;
+  cursor: -webkit-crosshair;
+  cursor: -moz-crosshair;
+}
+/**************************************
+ * Wall trash bin                     *
+ **************************************/
+.sapInoWallWTrash {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 10000;
+  opacity: 0;
+  border: 2px solid #eeeeee;
+  box-shadow: 0 0 2em #ffffff;
+  padding: 20px;
+  border-radius: 100px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.sapInoWallWTrash.above,
+.sapInoWallWTrash.above.active {
+  background-color: transparent;
+  border: 2px dashed rgba(66, 66, 66, 0.5);
+  box-shadow: none;
+}
+.sapInoWallWTrash.active {
+  border: 3px solid #EC2D11;
+  box-shadow: 0 0 2em #EC2D11;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 20px 30px;
+}
+.sapInoWallWTrashBin {
+  color: #191919;
+  width: 80px;
+  height: 80px;
+  font-size: 80px;
+  line-height: 80px;
+  text-shadow: 0 0 0.4em #ffffff;
+  position: relative;
+}
+.sapInoWallWTrashBin.above,
+.sapInoWallWTrashBin.above.active {
+  opacity: 0.5;
+  color: transparent;
+  text-shadow: none;
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: #666666;
+}
+.sapInoWallWTrash.active span {
+  color: #EC2D11;
+  font-size: 100px;
+  line-height: 100px;
+  position: relative;
+  left: -5px;
+}
+.sap-tablet .sapInoWallWTrash.active span {
+  line-height: 80px;
+  font-size: 80px;
+  width: 80px;
+  height: 80px;
+  left: 0px;
+  top: 0px;
+}
+/* minor adjustments for safari */
+html[data-sap-ui-browser*='sf'] .sapInoWallWTrash.active {
+  padding: 20px 23px;
+  right: 1.3rem;
+  bottom: 1.4rem;
+}
+.sapInoWallInvisible {
+  display: none !important;
+}
+/**************************************
+ * Wall selection                     *
+ **************************************/
+.sapInoWallWSelectionRectangle {
+  cursor: crosshair;
+  cursor: -webkit-crosshair;
+  cursor: -moz-crosshair;
+  border: 1px dashed #006ca7;
+  position: absolute;
+  display: none;
+  background-color: rgba(127, 210, 255, 0.3);
+}
+/**************************************
+ * Wall locked icon                    *
+ **************************************/
+.sapInoWallWLockIcon {
+  color: #f0ab00;
+  width: 50px;
+  height: 50px;
+  font-size: 60px;
+  line-height: 50px;
+  text-shadow: 0 0 0.2em #eeeeee;
+  padding: 30px;
+  border-radius: 100px;
+  background-color: rgba(0, 0, 0, 0.3);
+  top: 8px;
+  right: 8px;
+  position: relative;
+}
+.sapInoWallWLock {
+  position: absolute;
+  top: 0px;
+  left: 64px;
+  z-index: 10000;
+}
+.sapInoWallWLockWithSubHeader {
+  top: 2rem;
+}
+/**************************************
+ * Wall template icon                 *
+ **************************************/
+.sapInoWallWTemplateIndicator {
+  top: 0px;
+  right: 0;
+  position: absolute;
+  width: 0;
+  border-right: 0 solid transparent;
+  border-left: 200px solid transparent;
+  border-top: 200px solid rgba(240, 171, 0, 0.7);
+  z-index: 9999;
+}
+.sapInoWallWTemplateIndicatorWithSubHeader {
+  top: 0;
+}
+.sapInoWallWTemplateIndicatorInner {
+  position: absolute;
+  right: 0;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  top: -140px;
+  font-size: 32px;
+  font-weight: bold;
+  color: #ffffff;
+}
+.sapInoWallWITitle.sapInoWallWITitleText {
+  color: #000000;
+}
+/* fixes for select popup with zoom level */
+.sapInoWallZoomableSelectPopup .sapMSelectListItem {
+  padding: 0 16px 0 16px;
+  height: 40px;
+  line-height: 40px;
+}
+.front.sapInoWallWIArrow,
+.back.sapInoWallWIArrow {
+  min-width: 0px;
+  min-height: 0px;
+  max-width: 5000px;
+  max-height: 5000px;
+  border: 0;
+}
+.back.sapInoWallWIArrow {
+  position: absolute;
+}
+.sapInoWallWIB.sapInoWallWIArrow {
+  min-height: 0px;
+  min-width: 0px;
+  pointer-events: none;
+}
+.back.sapInoWallWIArrow {
+  overflow: visible;
+  pointer-events: all;
+}
+.sapInoWallWIArrowMarker {
+  overflow: visible;
+  pointer-events: none;
+  position: absolute;
+}
+.sapInoWallWIArrowStartHandle,
+.sapInoWallWIArrowEndHandle {
+  width: 35px;
+  height: 35px;
+  background-color: transparent;
+  position: absolute;
+  opacity: 0.5;
+  cursor: move;
+  cursor: grab;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+  pointer-events: all;
+}
+.sapInoWallWIArrowStartHandle.dragCursor,
+.sapInoWallWIArrowEndHandle.dragCursor {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+}
+.sapInoWallWIArrowMoveHandle {
+  background-color: transparent;
+  position: absolute;
+  text-align: center;
+  font-size: 25px;
+  line-height: 35px;
+  margin-top: -12px;
+  pointer-events: all;
+}
+/* image and button overrides for zooming */
+.sapInoWallWIArrowButton {
+  /* button overrides for zooming */
+  width: 46px;
+  min-width: inherit;
+  height: 46px;
+  padding: 0;
+  margin-top: 8px;
+}
+.sapInoWallWIArrowButton .sapMBtnIcon {
+  font-size: 1.375rem;
+  line-height: 40px;
+  width: 36px;
+  max-height: 36px;
+  padding-top: 4px;
+  margin-left: 4px;
+  margin-top: 0px;
+}
+.sapInoWallWIArrowButton .sapMBtnInner {
+  height: 46px;
+  min-width: 46px;
+}
+.sapUiSizeCompact .sapInoWallWIArrowButton.sapMBtn {
+  height: 46px;
+  min-width: 46px;
+  padding: 0;
+}
+.sapUiSizeCompact .sapInoWallWIArrowButton .sapMBtnInner {
+  padding: 0;
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonEnd {
+  margin-right: 8px;
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonFlip {
+  position: absolute;
+  top: 0px;
+  right: -50px;
+  min-width: 46px;
+  margin-top: 1px;
+}
+.sapInoWallWIArrowButton:not(.sapInoWallWIArrowButtonFlip) .sapMBtnInner,
+.sapUiSizeCompact .sapInoWallWIArrowButton:not(.sapInoWallWIArrowButtonFlip).sapMBtn {
+  margin-right: 4px;
+}
+.sapInoWallWITitleEditArrow {
+  min-width: 200px;
+}
+.sapInoWallWIStyleEdit,
+.sapInoWallWIThicknessEdit,
+.sapInoWallWIHeadStyleEdit,
+.sapInoWallWIColorEdit,
+.sapInoWallWIFlipEdit {
+  display: inline-block;
+  white-space: nowrap;
+  margin-right: 10px;
+}
+.sapInoWallWIFlipEdit {
+  min-width: 200px;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+}
+/* override: remove gradient for color picker */
+.sapInoWallWIArrowColorSelectorButton .sapMBtnInner,
+.sapInoWallWIArrowColorSelectorButton.sapMBtn:hover > .sapMBtnHoverable,
+.sapInoWallWIArrowColorSelectorButton.sapMBtn:focus > .sapMBtnInner.sapMFocusable {
+  background: none;
+  background-color: inherit;
+}
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowButton.sapInoWallWIArrowColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+  color: #000000;
+  line-height: 34px;
+}
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowButton.sapInoWallWIArrowColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIArrowColorSelectorButton.sapInoWallWIArrowColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+  color: #ffffff;
+  line-height: 34px;
+}
+/* ============================================= */
+/* CSS for control WallItemAttachment.control */
+/* ============================================= */
+.sapInoWallWIAttIconWrapper .noflip.sapInoWallWIAttError,
+.sapInoWallWIAttIconWrapper .sapInoWallWIAttError {
+  color: #cc1919;
+}
+.sapInoWallWIAttIconWrapper {
+  color: #CCCCCC;
+}
+.sapInoWallWIAttIconWrapper .noflip {
+  color: #007cc0;
+}
+.sapInoWallWIAttLayout {
+  border: 2px solid #89898;
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+  background-color: #cccccc;
+  padding: 5px;
+  float: left;
+  /* gradient */
+  background: #ffffff;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(47%, #f6f6f6), color-stop(100%, #ededed));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed', GradientType=0);
+  /* IE6-9 */
+}
+.front .sapInoWallWIAttLayout {
+  width: 135px;
+  height: 151px;
+  padding-right: 0px;
+}
+.sapInoWallWIAttRight {
+  right: 1px;
+  top: 10px;
+  float: right;
+  height: 151px;
+  position: relative;
+  width: 10px;
+  background-color: #ffffff;
+  /* gradient */
+  background: #ffffff;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(47%, #f6f6f6), color-stop(100%, #ededed));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIAttRight:after {
+  top: -10px;
+  left: 0;
+  position: absolute;
+  width: 0;
+  border-left: 0 solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #dddddd;
+  content: '';
+}
+/* document corners taken from http://jsfiddle.net/Flocke/9btv5/ */
+/* div { */
+/*     position: relative; */
+/*     overflow: hidden; */
+/* } */
+.sapInoWallWIAtt .sapInoWallWITitle {
+  font-family: Calibri;
+  font-size: 1rem;
+  font-weight: bold;
+  padding-top: 5px;
+  border-top: 2px solid #cccccc;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+}
+.sapInoWallWIAttTitleIP input {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.sapInoWallWIAttIconWrapper {
+  text-align: center;
+  height: 100px;
+  padding: 11px 0;
+}
+.sapInoWallWIAttIconWrapper.sapInoWallWIAttDownload > span {
+  cursor: pointer;
+}
+.sapInoWallWIAttDocEdit {
+  height: 102px;
+}
+.sapInoWallWIAttDocEdit > .sapInoWallDropUpload {
+  height: 97px;
+}
+/* ============================================= */
+/* CSS for control WallItemBase.control */
+/* ============================================= */
+.sapInoWallWIB {
+  position: absolute;
+  -webkit-perspective: 1000;
+  -moz-perspective: 1000;
+  perspective: 1000;
+}
+/* exclude ie9 as he does not properly support this */
+html:not([data-sap-ui-browser='ie9']) .sapInoWallWIB:not(.sapInoWallWIBChild).flipped > .flippable {
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+.sapInoWallWIB,
+.front,
+.back {
+  min-width: 150px;
+  min-height: 150px;
+  max-width: 5000px;
+  max-height: 5000px;
+}
+/* fix for ie10 to display flip container back side correctly */
+html[data-sap-ui-browser*='ie'] .sapUiWalWIB:not(.sapInoWallWIBChild) > .flipped .back {
+  backface-visibility: visible;
+}
+/* ie9: does not support backface visibility, we switch it manually in setFlipped */
+html[data-sap-ui-browser='ie9'] .back {
+  display: none;
+}
+.front,
+.back {
+  /*width: 100%;
+	height: 100%;*/
+}
+.sapInoWallWIB > .flippable {
+  -webkit-transition: 0.6s;
+  -webkit-transform-style: preserve-3d;
+  -moz-transition: 0.6s;
+  -moz-transform-style: preserve-3d;
+  transition: 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+/*.back {
+	-moz-user-select: text;
+	-khtml-user-select: text;
+	-webkit-user-select: initial;
+	-ms-user-select: text;
+	user-select: text;
+}*/
+.front,
+.back {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/* fix for ie10 to hide flip container front side correctly */
+/* fix for ie10 to hide flip container front side correctly */
+html[data-sap-ui-browser*='ie'] .front {
+  opacity: 1;
+}
+html[data-sap-ui-browser*='ie'] .flipped > .front {
+  opacity: 0;
+}
+html[data-sap-ui-browser*='ie'] .front {
+  transition: opacity 0.4s cubic-bezier(1, 0.01, 0, 1);
+}
+.front {
+  z-index: 2;
+}
+.back {
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  z-index: 1;
+}
+/* styles for children handling */
+.sapInoWallWIBChilds {
+  position: absolute;
+  left: 140px;
+  top: 30px;
+  width: 300px;
+}
+/* child zoom */
+html[data-sap-ui-browser*='cr'] .sapInoWallWIBChilds {
+  zoom: 0.7;
+}
+/* child scale */
+html[data-sap-ui-browser*='ie'] .sapInoWallWIBChilds {
+  -ms-transform: scale(0.7);
+}
+html[data-sap-ui-browser*='ff'] .sapInoWallWIBChilds {
+  -moz-transform: scale(0.7);
+}
+html[data-sap-ui-browser*='sf'] .sapInoWallWIBChilds {
+  -webkit-transform: scale(0.7);
+}
+/* the first child is indented 46px * 1 / 0.7 (the back button) */
+/* TODO: check this for all browsers, should not be needed anymore
+/*html[data-sap-ui-browser*='cr'] .sapInoWallWIBChilds > .sapInoWallWIB:first-child {
+	margin-left: -66px;
+}
+
+html[data-sap-ui-browser*='ie'] .sapInoWallWIBChilds > .sapInoWallWIB:first-child,
+html[data-sap-ui-browser*='ff'] .sapInoWallWIBChilds > .sapInoWallWIB:first-child,
+html[data-sap-ui-browser*='sf'] .sapInoWallWIBChilds > .sapInoWallWIB:first-child {
+	margin-left: -46px;
+}*/
+/* bugfix for internet explorer z-index weirdness */
+html[data-sap-ui-browser*='ie'] .sapInoWallWIB > .flippable {
+  z-index: 0;
+}
+.sapInoWallWIBChilds > .sapInoWallWIB {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+.sapInoWallWIB.flipped > .sapInoWallWIBChilds {
+  display: none;
+}
+.sapInoWallWIFlipBackButton .sapUiIcon {
+  /* icon overrides for zooming */
+  line-height: 38px;
+  width: inherit;
+  font-size: 1.375rem;
+}
+.sapInoWallWIBChilds .sapInoWallWIResizeHandle {
+  display: none;
+}
+.sapInoWallWIResizeHandle.sapInoWallWIResizeHandleHidden {
+  opacity: 0;
+}
+/** back button **/
+.sapInoWallWIFlipBackButton {
+  visibility: hidden;
+  position: relative;
+  float: left;
+  left: -37px;
+  top: 16px;
+  opacity: 0;
+  z-index: -100;
+  -webkit-transition: opacity 0.4s ease-in-out;
+  -moz-transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
+  clear: both;
+  /* button overrides for zooming */
+  width: 38px;
+  min-width: inherit;
+  height: 36px;
+}
+.sapUiSizeCompact .sapInoWallWIFlipBackButton.sapMBtn {
+  height: 40px;
+}
+.sapInoWallWIFlipBackButtonGroup {
+  position: relative;
+}
+/* override of rem values to px values for zoom */
+.sapMBtnDefault.sapInoWallWIFlipBackButton .sapMBtnInner,
+.sapInoWallWIFlipBackButton .sapMBtnInner {
+  height: 36px;
+  min-height: 36px;
+  width: 38px;
+  min-width: 38px;
+  padding: 0;
+}
+.sapUiSizeCompact .sapInoWallWIFlipBackButton .sapMBtnIcon {
+  margin: 0;
+}
+.sapInoWallWIB .sapMInputBase {
+  /* input px measure overrides for zooming */
+  height: 48px;
+  padding: 4px 0;
+}
+.sapInoWallWOuter .sapMInputBaseInner {
+  /* input overrides for zooming */
+  height: 40px;
+  padding: 0 12px 0 12px;
+}
+.flipped > div .sapInoWallWIFlipBackButton {
+  opacity: 1;
+  visibility: visible;
+}
+html[data-sap-ui-browser*='ie'] .flipped > div > .sapInoWallWIFlipBackButton {
+  overflow: visible;
+}
+.sapInoWallWIBDisabled {
+  border: 2px dotted #cccccc;
+  background-color: rgba(100, 100, 100, 0.5);
+}
+.sapInoWallWIBDisabled > * {
+  display: none;
+}
+.sapInoWallWIBSelected .front,
+.sapInoWallWIBSelected .back {
+  border: 2px dashed #006ca7;
+}
+/* TODO: doesnt look good
+.sapInoWallWIBUnsnap .front,
+.sapInoWallWIBUnsnap .back {
+	border: 2px dotted #FF2600;
+}*/
+/* sap.m.Select: override for pixel dimensions and transparency */
+.sapInoWallWIBSelect,
+.sapMSlt.sapInoWallWIBSelect {
+  background-color: rgba(255, 255, 255, 0.7);
+  height: 40px;
+  margin: 4px 0 4px 0;
+}
+.sapInoWallWIBSelect.sapMSlt > .sapMSltLabel {
+  line-height: 40px;
+}
+.sapInoWallWIBSelect.sapMSlt > .sapMSltArrow {
+  width: 30px;
+  line-height: 40px;
+}
+/* override with px values for zooming */
+.sapInoWallWIBSelect.sapMSltWithArrow > .sapMSltLabel,
+.sapMSltWithArrow > .sapMSltNative {
+  padding: 0 48px 0 10px;
+}
+.sapUiSizeCompact .sapInoInnoMgmtMShell .sapInoWallWIBSelect,
+.sapUiSizeCompact .sapInoInnoMgmtMShell .sapMSlt.sapMSltDefault.sapInoWallWIBSelect {
+  margin: 4px 0 4px 0;
+}
+/* override with px values for zooming */
+.sapInoWallWIB .sapMTextAreaInner {
+  padding: 12px;
+}
+/***** DEBUG CLASSES *****/
+.sapInoWallWIBNeighbourBox {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px dashed #ffcc00;
+}
+.sapInoWallWIBIntersectionBox {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px dashed red;
+  padding: 5px;
+}
+/* sync animations*/
+@keyframes sapInoWallWIBBounce {
+  0% {
+    -webkit-transform: scale(1.2) rotate(3deg);
+    -moz-transform: scale(1.2) rotate(3deg);
+    -o-transform: scale(1.2) rotate(3deg);
+    -ms-transform: scale(1.2) rotate(3deg);
+    transform: scale(1.2) rotate(3deg);
+  }
+  50% {
+    -webkit-transform: scale(0.9) rotate(1deg);
+    -moz-transform: scale(0.9) rotate(1deg);
+    -o-transform: scale(0.9) rotate(1deg);
+    -ms-transform: scale(0.9) rotate(1deg);
+    transform: scale(0.9) rotate(1deg);
+  }
+  75% {
+    -webkit-transform: scale(1.1) rotate(2deg);
+    -moz-transform: scale(1.1) rotate(2deg);
+    -o-transform: scale(1.1) rotate(2deg);
+    -ms-transform: scale(1.1) rotate(2deg);
+    transform: scale(1.1) rotate(2deg);
+  }
+  100% {
+    -webkit-transform: scale(1) rotate(0deg);
+    -moz-transform: scale(1) rotate(0deg);
+    -o-transform: scale(1) rotate(0deg);
+    -ms-transform: scale(1) rotate(0deg);
+    transform: scale(1) rotate(0deg);
+  }
+}
+@keyframes sapInoWallWIBRemove {
+  0% {
+    -webkit-transform: scale(1) rotate(0deg);
+    -moz-transform: scale(1) rotate(0deg);
+    -o-transform: scale(1) rotate(0deg);
+    -ms-transform: scale(1) rotate(0deg);
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(0.5) rotate(3deg);
+    -moz-transform: scale(0.5) rotate(3deg);
+    -o-transform: scale(0.5) rotate(3deg);
+    -ms-transform: scale(0.5) rotate(3deg);
+    transform: scale(0.5) rotate(3deg);
+    opacity: 0;
+    display: none;
+  }
+}
+@keyframes sapInoWallWIBAdd {
+  0% {
+    -webkit-transform: scale(0.5) rotate(3deg);
+    -moz-transform: scale(0.5) rotate(3deg);
+    -o-transform: scale(0.5) rotate(3deg);
+    -ms-transform: scale(0.5) rotate(3deg);
+    transform: scale(0.5) rotate(3deg);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: scale(1) rotate(0deg);
+    -moz-transform: scale(1) rotate(0deg);
+    -o-transform: scale(1) rotate(0deg);
+    -ms-transform: scale(1) rotate(0deg);
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+.sapInoWallWIBSyncBounceEffect {
+  -webkit-animation: sapInoWallWIBBounce 0.6s ease-in;
+  -moz-animation: sapInoWallWIBBounce 0.6s ease-in;
+  -o-animation: sapInoWallWIBBounce 0.6s ease-in;
+  -ms-animation: sapInoWallWIBBounce 0.6s ease-in;
+  animation: sapInoWallWIBBounce 0.6s ease-in;
+}
+.sapInoWallWIBSyncRemoveEffect {
+  -webkit-animation: sapInoWallWIBRemove 0.5s ease-in;
+  -moz-animation: sapInoWallWIBRemove 0.5s ease-in;
+  -o-animation: sapInoWallWIBRemove 0.5s ease-in;
+  -ms-animation: sapInoWallWIBRemove 0.5s ease-in;
+  animation: sapInoWallWIBRemove 0.5s ease-in;
+}
+.sapInoWallWIBSyncAddEffect {
+  -webkit-animation: sapInoWallWIBAdd 0.6s ease-in;
+  -moz-animation: sapInoWallWIBAdd 0.6s ease-in;
+  -o-animation: sapInoWallWIBAdd 0.6s ease-in;
+  -ms-animation: sapInoWallWIBAdd 0.6s ease-in;
+  animation: sapInoWallWIBAdd 0.6s ease-in;
+}
+.sapInoWallWIBTitle input {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.sapUiSizeCompact .sapInoWallWIBTitle .sapMInputBaseInner {
+  height: 40px;
+  padding: 0 12px 0 12px;
+}
+.sapInoWallWIResizeHandle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  opacity: 0.5;
+}
+.sapInoWallWIResizeHandle,
+.sapInoWallWIResizeHandle .sapUiIcon {
+  cursor: nwse-resize !important;
+}
+/* enable resizing on tablets => increase touchable area */
+.sap-tablet .sapInoWallWIResizeHandle .sapUiIcon {
+  margin-left: 20px;
+  margin-top: 20px;
+}
+.sapInoWallWIBreakWord {
+  word-break: break-all;
+  /* to break all words even browser does not know the width */
+  word-break: break-word;
+  /* non standard for old webkits */
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+/* rich text editor styles for wall items */
+.sapInoWallWIRichText ol,
+.sapInoWallWIRichText ul {
+  margin: 0;
+  margin-left: 8px;
+}
+/* ============================================= */
+/* CSS for control WallItemDocument.control */
+/* ============================================= */
+.sapInoWallWID {
+  border: 2px solid #89898;
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+  background-color: #cccccc;
+  padding: 5px;
+  float: left;
+  /* gradient */
+  background: #ffffff;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(47%, #f6f6f6), color-stop(100%, #ededed));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed', GradientType=0);
+  /* IE6-9 */
+}
+.front .sapInoWallWID {
+  width: 135px;
+  height: 151px;
+  padding-right: 0px;
+}
+.sapInoWallWIDRight {
+  right: 0;
+  top: 10px;
+  float: right;
+  height: 151px;
+  position: relative;
+  width: 10px;
+  background-color: #ffffff;
+  /* gradient */
+  background: #ffffff;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(47%, #f6f6f6), color-stop(100%, #ededed));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIDRight:after {
+  top: -10px;
+  left: 0;
+  position: absolute;
+  width: 0;
+  border-left: 0 solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #dddddd;
+  content: '';
+}
+/* document corners taken from http://jsfiddle.net/Flocke/9btv5/ */
+/* div { */
+/*     position: relative; */
+/*     overflow: hidden; */
+/* } */
+.sapInoWallWID .sapInoWallWITitle {
+  font-family: Calibri;
+  font-size: 1rem;
+  font-weight: bold;
+  padding-top: 5px;
+  border-top: 2px solid #cccccc;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+}
+.sapInoWallWIDTitleIP input,
+.sapInoWallWIDLinkEdit input {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+/* preview */
+.sapInoWallWID.sapInoWallWIPreview {
+  padding: 0;
+}
+.sapInoWallWIDIcon {
+  line-height: 103px;
+  margin: -5px -5px;
+}
+.sapInoWallWIDIconWrapper {
+  text-align: center;
+  height: 100px;
+  padding: 11px 0;
+}
+/* ================================================= */
+/* CSS for control sap.ino.wall/WallItemGroup.control */
+/* ================================================= */
+.sapInoWallWallItemGroup {
+  border: 2px solid #fafafa;
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+  background-color: rgba(0, 0, 0, 0.3);
+  clear: both;
+}
+.sapInoWallWallItemGroup.back {
+  padding: 5px;
+}
+.sapInoWallWIGTitle {
+  position: absolute;
+  text-align: center;
+  color: white;
+  width: 100%;
+  left: 0px;
+  top: -18px;
+  z-index: 10000;
+}
+.sapInoWallWIGTitle .sapInoWallWITitle {
+  background: #8d8e8d;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #8d8e8d 0%, #4e4e4e 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #8d8e8d), color-stop(100%, #4e4e4e));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #8d8e8d 0%, #4e4e4e 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #8d8e8d 0%, #4e4e4e 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #8d8e8d 0%, #4e4e4e 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #8d8e8d 0%, #4e4e4e 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#8d8e8d', endColorstr='#4e4e4e', GradientType=0);
+  /* IE6-9 */
+  border: 2px solid #ffffff;
+  display: inline-block;
+  max-width: 85%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 1.2rem;
+  white-space: nowrap;
+  padding: 5px;
+  font-weight: bold;
+}
+.sapInoWallWIGroupColorSelectorButton {
+  height: 50px;
+  width: 50px;
+  padding: 0px;
+}
+.sapInoWallWIGroupColorSelectorButton > .sapMBtnInner {
+  background: transparent;
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  min-height: 50px;
+}
+.sapInoWallWIGroupColorSelectorButton > .sapMBtnInner > span {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+}
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+  color: #000000;
+}
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWIGroupColorSelectorButton.sapInoWallWIGroupColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+  color: #ffffff;
+}
+.sapUiSizeCompact .sapInoWallWIGroupColorSelectorButton .sapMBtnInner {
+  padding: 0;
+}
+.sapUiSizeCompact .sapInoWallWIGroupColorSelectorButton.sapMBtn {
+  height: 50px;
+  width: 50px;
+  padding: 0px;
+}
+.sapUiSizeCompact .sapInoWallWIGroupColorSelectorButton .sapMBtnIcon {
+  margin: 0;
+}
+/* =================================================== */
+/* CSS for control WallItemSticker.control */
+/* =================================================== */
+.sapInoWallWIHeadline {
+  min-height: 50px;
+  max-height: 50px;
+  min-width: 150px;
+  max-width: 10000px;
+}
+.back.sapInoWallWIHeadline {
+  min-width: 150px;
+  min-height: 150px;
+  max-width: 1000px;
+  max-height: 1000px;
+}
+.front.sapInoWallWIHeadline {
+  min-height: 15px;
+  max-height: 75px;
+  min-width: 15px;
+  max-width: 100000;
+  font-weight: bold;
+}
+.sapInoWallWITitleText.sapInoWallWIHeadlineText {
+  white-space: nowrap;
+}
+.front.sapInoWallWIHeadline:not(.sapInoWallWIHCLEAR),
+.back.sapInoWallWIHeadline {
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+  background-color: rgba(235, 235, 235, 0.8);
+  padding: 5px;
+}
+.sapInoWallWIHCLEAR {
+  box-shadow: 0px 0px 0px transparent;
+  background-color: transparent;
+  text-shadow: 0 0 0.5em #ffffff;
+}
+.sapInoWallWIHBRAG {
+  border: 1px solid #DD8200;
+  background: #fceabb;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #fceabb 0%, #fccd4d 50%, #f8b500 51%, #fbdf93 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fceabb), color-stop(50%, #fccd4d), color-stop(51%, #f8b500), color-stop(100%, #fbdf93));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #fceabb 0%, #fccd4d 50%, #f8b500 51%, #fbdf93 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #fceabb 0%, #fccd4d 50%, #f8b500 51%, #fbdf93 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #fceabb 0%, #fccd4d 50%, #f8b500 51%, #fbdf93 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #fceabb 0%, #fccd4d 50%, #f8b500 51%, #fbdf93 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fceabb', endColorstr='#fbdf93', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIHELEGANT {
+  border: 1px solid #84731E;
+  color: #F4D538;
+  background: #7d7e7d;
+  /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #7d7e7d 0%, #0e0e0e 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #7d7e7d), color-stop(100%, #0e0e0e));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(-45deg, #7d7e7d 0%, #0e0e0e 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(-45deg, #7d7e7d 0%, #0e0e0e 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(-45deg, #7d7e7d 0%, #0e0e0e 100%);
+  /* IE10+ */
+  background: linear-gradient(135deg, #7d7e7d 0%, #0e0e0e 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7d7e7d', endColorstr='#0e0e0e', GradientType=1);
+  /* IE6-9 fallback on horizontal gradient */
+}
+.sapInoWallWIHCOOL {
+  border: 1px solid #0988BF;
+  background: #e4f5fc;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #e4f5fc 0%, #bfe8f9 50%, #9fd8ef 51%, #2ab0ed 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e4f5fc), color-stop(50%, #bfe8f9), color-stop(51%, #9fd8ef), color-stop(100%, #2ab0ed));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #e4f5fc 0%, #bfe8f9 50%, #9fd8ef 51%, #2ab0ed 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #e4f5fc 0%, #bfe8f9 50%, #9fd8ef 51%, #2ab0ed 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #e4f5fc 0%, #bfe8f9 50%, #9fd8ef 51%, #2ab0ed 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #e4f5fc 0%, #bfe8f9 50%, #9fd8ef 51%, #2ab0ed 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e4f5fc', endColorstr='#2ab0ed', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIHH1 {
+  font-size: 40pt;
+}
+.sapInoWallWIHH2 {
+  font-size: 30pt;
+}
+.sapInoWallWIHH3 {
+  font-size: 24pt;
+}
+.sapInoWallWIHH4 {
+  font-size: 20pt;
+}
+.sapInoWallWIHH5 {
+  font-size: 16pt;
+}
+.sapInoWallWIHH6 {
+  font-size: 12pt;
+}
+/* ============================================= */
+/* CSS for control WallItemImage.control */
+/* ============================================= */
+.sapInoWallWII {
+  border: 2px solid #9E9E9E;
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+  padding: 5px;
+  /* gradient */
+  background: #ffffff;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(47%, #f6f6f6), color-stop(100%, #ededed));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed', GradientType=0);
+  /* IE6-9 */
+}
+.front.sapInoWallWII .sapMImg {
+  min-width: 150px;
+  min-height: 130px;
+  cursor: -webkit-zoom-in;
+}
+.sapInoWallWIITitle {
+  font-family: Calibri;
+  font-size: 1rem;
+  font-weight: bold;
+}
+.sapInoWallWIITitleIcon {
+  display: none;
+}
+.sapInoWallWIITitle {
+  font-family: Calibri;
+  font-size: 1rem;
+  font-weight: bold;
+  padding-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sapInoWallWIShowAsIcon {
+  clear: both;
+  min-height: 25px;
+}
+.sapInoWallWIShowAsIcon > .sapMCb {
+  height: 18px;
+  line-height: 18px;
+  padding: 0 0 0 25px;
+}
+.sapInoWallWIShowAsIcon .sapMCbBg {
+  left: 0px;
+  top: -3px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+}
+.sapInoWallWIIDescriptionIndicator {
+  float: right;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -khtml-border-radius: 10px;
+  border-radius: 10px;
+  border: 2px solid blue;
+  line-height: 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0px 6px;
+  font-family: "Times New Roman";
+}
+.sapInoWallWIITitleIP input {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+/* preview */
+.sapInoWallWII.sapInoWallWIPreview {
+  padding: 0;
+}
+.sapInoWallIndicatorBusy {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -16px;
+  margin-top: -22px;
+}
+.sapInoWallImageBusy {
+  opacity: 0.5;
+}
+.sapInoWallWIIImageWrapper {
+  line-height: 0px;
+  overflow: hidden;
+}
+/* flex layout for backside */
+.back.sapInoWallWII {
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+}
+.back .sapInoWallWIIPreviewEdit {
+  flex-grow: 99999;
+  -ms-flex-grow: 99999;
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+  margin-bottom: 2px;
+}
+.back .sapInoWallWIIitleEdit {
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+  margin-bottom: 6px;
+  /* workaround to stop loosing focus to textarea */
+}
+/* override the zoom cursor when the item is dragged */
+.dragCursor .sapInoWallWII .sapMImg {
+  cursor: -webkit-grabbing !important;
+}
+.sapInoWallWIIImageWrapper > span {
+  color: #CCCCCC;
+  top: 50%;
+  position: relative;
+  line-height: inherit;
+}
+/* ============================================= */
+/* CSS for control wallItemLine.control */
+/* ============================================= */
+.sapInoWallWILineVERTICAL {
+  min-width: 20px;
+  max-width: 30px;
+  min-height: 10000px;
+  max-height: 10000px;
+  height: 10000px;
+}
+.sapInoWallWILineHORIZONTAL {
+  min-height: 20px;
+  max-height: 30px;
+  min-width: 10000px;
+  max-width: 10000px;
+  width: 10000px;
+}
+.sapInoWallWILineVERTICAL .sapInoWallWILineFirst,
+.sapInoWallWILineVERTICAL .sapInoWallWILineSecond {
+  height: 10000px;
+}
+.sapInoWallWILineHORIZONTAL .sapInoWallWILineFirst,
+.sapInoWallWILineHORIZONTAL .sapInoWallWILineSecond {
+  width: 10000px;
+}
+.sapInoWallWILineVERTICAL .sapInoWallWILineEditButtons {
+  width: 48px;
+}
+.sapInoWallWILineEditButtons {
+  display: inline-block;
+}
+.sapInoWallWILineHORIZONTAL .sapInoWallWILineEditButtons {
+  position: relative;
+  left: 5000px;
+}
+.sapInoWallWILineVERTICAL .sapInoWallWILineEditButtons {
+  position: absolute;
+  top: 5000px;
+}
+.sapInoWallWILineHORIZONTAL .sapInoWallWILineButton.sapInoWallWILineButtonEnd {
+  margin-right: 8px;
+}
+.sapInoWallWILineVERTICAL .sapInoWallWILineButton.sapInoWallWILineButtonEnd {
+  margin-bottom: 8px;
+}
+/* image and button overrides for zooming */
+.sapInoWallWILineButton {
+  /* button overrides for zooming */
+  width: 46px;
+  min-width: inherit;
+  height: 46px;
+  padding: 0;
+}
+.sapInoWallWILineButton .sapMBtnIcon {
+  font-size: 1.375rem;
+  line-height: 40px;
+  width: 36px;
+  max-height: 36px;
+  padding-top: 4px;
+}
+.sapInoWallWILineButton .sapMBtnInner {
+  height: 46px;
+  min-width: 46px;
+}
+.sapUiSizeCompact .sapInoWallWILineButton .sapMBtnInner {
+  padding: 0;
+}
+.sapUiSizeCompact .sapInoWallWILineButton {
+  height: 46px;
+}
+/* override: remove gradient for color picker */
+.sapInoWallWILineColorSelectorButton .sapMBtnInner,
+.sapInoWallWILineColorSelectorButton.sapMBtn:hover > .sapMBtnHoverable,
+.sapInoWallWILineColorSelectorButton.sapMBtn:focus > .sapMBtnInner.sapMFocusable {
+  background: none;
+  background-color: inherit;
+}
+.sapInoWallWILineColorSelectorButton.sapInoWallWILineButton.sapInoWallWILineColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallWILineColorSelectorButton.sapInoWallWILineColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWILineColorSelectorButton.sapInoWallWILineColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+  color: #000000;
+  line-height: 34px;
+}
+.sapInoWallWILineColorSelectorButton.sapInoWallWILineButton.sapInoWallWILineColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallWILineColorSelectorButton.sapInoWallWILineColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWILineColorSelectorButton.sapInoWallWILineColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+  color: #ffffff;
+  line-height: 34px;
+}
+/* ============================================= */
+/* CSS for control WallItemLink.control */
+/* ============================================= */
+.sapInoWallWIL {
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+  border: 2px solid #666666;
+  padding: 5px;
+  background: #219ad7;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #68c8f4 1%, #219ad7 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, #68c8f4), color-stop(100%, #219ad7));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #68c8f4 1%, #219ad7 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #68c8f4 1%, #219ad7 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #68c8f4 1%, #219ad7 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #68c8f4 1%, #219ad7 100%);
+  /* W3C */
+}
+.sapInoWallWIL.back {
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dff6ff', endColorstr='#0e5197', GradientType=0);
+  /* IE6-9, backside is ok, front side messes up meta data */
+}
+/* gradients in combination with background-clip: text are not supported by ie, android < 4.2 or blackberry*/
+html[data-sap-ui-browser*='cr'] .sapInoWallWILIcon,
+html[data-sap-ui-browser*='moz'] .sapInoWallWILIcon {
+  background: -moz-linear-gradient(top, #ffffff 1%, #cccccc 70%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, #ffffff), color-stop(70%, #cccccc));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 1%, #cccccc 70%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 1%, #cccccc 70%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 1%, #cccccc 70%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 1%, #cccccc 70%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#CCCCCC', GradientType=0);
+  /* IE6-9 */
+  -webkit-background-clip: text;
+  /* Chrome & Safari only */
+  -webkit-text-fill-color: transparent;
+  /* Chrome & Safari only */
+}
+.sapInoWallWILIcon {
+  line-height: 103px;
+  margin: -5px -5px;
+}
+.sapInoWallWIL.front {
+  text-align: center;
+  min-width: 96px;
+  min-height: 96px;
+  width: 96px;
+  height: 96px;
+  max-width: 96px;
+  max-height: 96px;
+  border-radius: 1000px;
+}
+.sapInoWallWILMeta {
+  width: 150px;
+  position: relative;
+  left: -27px;
+  top: -15px;
+}
+.sapInoWallWIL .sapInoWallWITitle {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  background-color: #009fe2;
+  color: white;
+  border: 2px solid #666666;
+  border-bottom: 0px;
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+  max-width: 150px;
+}
+.sapInoWallWILDescription {
+  font-family: Calibri;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: #68c8f4;
+  color: white;
+  border: 2px solid #666666;
+  border-top: 0px;
+  padding: 2px 5px;
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+  max-width: 150px;
+}
+.sapInoWallWILDescription a,
+.sapInoWallWILDescription a:visited {
+  color: white;
+}
+.sapInoWallWILLinkIP input {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.sapUiSizeCompact .sapMInputBase.sapInoWallWILLinkIP .sapMInputBaseInner {
+  height: 40px;
+  padding: 0 12px 0 12px;
+}
+/* preview */
+.sapInoWallWIL.sapInoWallWIPreview {
+  padding: 0;
+}
+/* selection overrides */
+.sapInoWallWIBSelected .front .sapInoWallWILMeta {
+  border: 2px dashed #006ca7;
+}
+/* ============================================= */
+/* CSS for control WallItemNote.control */
+/* ============================================= */
+.sapInoWallWIN {
+  border: 2px solid #666666;
+  border-left: 4px solid #1E5799;
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+  background-color: #cccccc;
+  /* gradient */
+  background: #fdffff;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #fdffff 12%, #e6f8fd 48%, #b1d8f5 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(12%, #fdffff), color-stop(48%, #e6f8fd), color-stop(100%, #b1d8f5));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #fdffff 12%, #e6f8fd 48%, #b1d8f5 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #fdffff 12%, #e6f8fd 48%, #b1d8f5 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #fdffff 12%, #e6f8fd 48%, #b1d8f5 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #fdffff 12%, #e6f8fd 48%, #b1d8f5 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fdffff', endColorstr='#b1d8f5', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWINNumber {
+  font-family: Calibri;
+  font-size: 1rem;
+  font-weight: bold;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #cccccc;
+}
+.sapInoWallWINoteTitle.sapInoWallWITitleText {
+  padding: 5px;
+}
+.sapInoWallWINNumberIP input {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.sapInoWallWITitle.sapInoWallWINNumber {
+  background-color: #CBDBEA;
+  background-image: url(/sap/ino/ngui/sap/ino/apps/ino/img/logo.png);
+  background-repeat: no-repeat;
+  background-position: 5px 5px;
+  background-size: 60px 30px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 10px 0 10px 65px;
+  line-height: 20px;
+  letter-spacing: 1px;
+}
+.back.sapInoWallWIN {
+  padding: 5px;
+}
+/* ============================================= */
+/* CSS for control WallItemLink.control */
+/* ============================================= */
+.sapInoWallWIP {
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+  padding: 5px;
+  background: #bfedfc;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #bfedfc 0%, #92bcca 90%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #bfedfc), color-stop(90%, #92bcca));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #bfedfc 0%, #92bcca 90%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #bfedfc 0%, #92bcca 90%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #bfedfc 0%, #92bcca 90%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #bfedfc 0%, #92bcca 90%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bfedfc', endColorstr='#92bcca', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIPFlip {
+  margin-left: 50px;
+}
+.sapInoWallWIPPerson.back {
+  min-width: 200px;
+}
+.sapInoWallWIP.front {
+  text-align: center;
+  min-width: 98px;
+  min-height: 98px;
+  width: 98px;
+  height: 98px;
+  max-width: 98px;
+  max-height: 98px;
+  border-radius: 1000px;
+  border: 2px solid #ffffff;
+}
+.sapInoWallWIPImage {
+  line-height: 103px;
+  margin: -5px -5px;
+  min-width: 108px;
+  min-height: 108px;
+  max-height: 160px;
+  width: 108px;
+  border-radius: 1000px;
+}
+.sapInoWallWIPMeta {
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+  width: 150px;
+  position: relative;
+  left: -27px;
+  top: -20px;
+  border: 2px solid #eafaff;
+  background: #c3e7f2;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #c3e7f2 0%, #8bc7da 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c3e7f2), color-stop(100%, #8bc7da));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #c3e7f2 0%, #8bc7da 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #c3e7f2 0%, #8bc7da 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #c3e7f2 0%, #8bc7da 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #c3e7f2 0%, #8bc7da 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c3e7f2', endColorstr='#8bc7da', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIP .sapInoWallWITitle {
+  font-weight: bold;
+  padding-top: 4px;
+  padding-bottom: 2px;
+}
+.sapInoWallWIPEmailL {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.sapInoWallWIPPhoneL,
+.sapInoWallWIPEmailL {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 150px;
+}
+.sapInoWallWIPPreviewEdit {
+  padding-bottom: 4px;
+}
+.sapInoWallWIPPreviewEdit .sapInoWallDropUpload {
+  height: 44px;
+}
+.sapInoWallWIPTitleIP input {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.sapInoWallWIPEmailIP input {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.sapInoWallWIPPhoneIP input {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.sapUiSizeCompact .sapInoWallWIPEmailIP .sapMInputBaseInner,
+.sapUiSizeCompact .sapInoWallWIPPhoneEdit .sapMInputBaseInner {
+  height: 40px;
+  padding: 0 12px 0 12px;
+}
+/* selection overrides */
+.sapInoWallWIBSelected .sapInoWallWIP.front {
+  border: none;
+}
+.sapInoWallWIBSelected .front .sapInoWallWIPImage {
+  border: 2px dashed #006ca7;
+  margin: -7px -7px;
+}
+.sapInoWallWIBSelected .front .sapInoWallWIPMeta {
+  border: 2px dashed #006ca7;
+}
+/* override: image needs 22px, but person has no title */
+.sapInoWallWIP .sapInoWallIndicatorBusy {
+  margin-top: -16px;
+}
+/* =================================================== */
+/* CSS for control WallItemSprite.control */
+/* =================================================== */
+.front.sapInoWallWISprite,
+.back.sapInoWallWISprite {
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+}
+.sapInoWallWIBSelected .front.sapInoWallWISprite {
+  border: 2px dashed #006ca7 !important;
+}
+.back.sapInoWallWISprite {
+  padding: 5px;
+}
+/* override for resize handle to have more distance from the shape */
+.front.sapInoWallWISprite .sapInoWallWIResizeHandle {
+  bottom: -2px;
+  right: -2px;
+  color: #232323;
+}
+.back.sapInoWallWISprite {
+  padding-bottom: 0px;
+}
+/* override, sprite is min 3 rem large */
+.sapInoWallWIB.sapInoWallWISprite,
+.front.sapInoWallWISprite {
+  min-width: 48px;
+  min-height: 48px;
+}
+.sapInoWallWISprite.front {
+  text-align: center;
+  border-width: 2px;
+  border-style: solid;
+}
+.sapInoWallWITitleText.sapInoWallWISpriteText {
+  font-size: 24px;
+  font-weight: bold;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  text-align: center;
+}
+.back.sapInoWallWISprite {
+  background-color: #ededed;
+  padding-bottom: 0px;
+}
+.sapInoWallWISpriteColorSelectorButton {
+  width: 100%;
+  height: 46px;
+  padding: 0;
+}
+.sapInoWallWISpriteColorSelectorButton .sapMBtnInner {
+  height: 40px;
+  min-width: 40px;
+  background: none;
+  background-color: inherit;
+}
+.sapInoWallWISpriteColorSelectorButton .sapMBtnIcon {
+  font-size: 1.375rem;
+  line-height: 40px;
+  width: 36px;
+  max-height: 36px;
+  padding-top: 4px;
+}
+.sapUiSizeCompact .sapInoWallWISpriteColorSelectorButton.sapMBtn {
+  height: 46px;
+  padding: 0;
+}
+.sapInoWallWISpriteROUND {
+  border-radius: 10000px;
+  -moz-border-radius: 10000px;
+}
+.sapInoWallWISpriteSQUARE {
+  border-radius: 0;
+  -moz-border-radius: 0;
+}
+.sapInoWallWISpriteMELT {
+  border-radius: 12px;
+  -moz-border-radius: 12px;
+}
+.sapInoWallWISpriteLEAF {
+  border-top-left-radius: 1000px 2000px;
+  border-bottom-right-radius: 1000px 2000px;
+  border-top-right-radius: 200px;
+  border-bottom-left-radius: 200px;
+  -moz-border-radius-topleft: 1000px 2000px;
+  -moz-border-radius-bottomright: 1000px 2000px;
+  -moz-border-radius-topright: 200px;
+  -moz-border-radius-bottomleft: 200px;
+}
+.sapInoWallWISpriteFLOWER {
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 1000px;
+  border-top-right-radius: 1000px;
+  border-bottom-left-radius: 1000px;
+  -moz-border-radius-topleft: 0;
+  -moz-border-radius-bottomright: 1000px;
+  -moz-border-radius-topright: 1000px;
+  -moz-border-radius-bottomleft: 0;
+}
+.sapInoWallWISpriteSHIELD {
+  border-bottom-left-radius: 1000px 800px;
+  border-bottom-right-radius: 1000px 800px;
+  -moz-border-radius-bottomleft: 1000px 800px;
+  -moz-border-radius-bottomright: 1000px 800px;
+}
+.sapInoWallWISpriteColorSelectorButton.sapInoWallWISpriteColorSelectorButtonNormal > .sapMBtnDefault > span,
+.sapInoWallWISpriteColorSelectorButton.sapInoWallWISpriteColorSelectorButtonNormal.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWISpriteColorSelectorButton.sapInoWallWISpriteColorSelectorButtonNormal.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+  color: #000000;
+  line-height: 27px;
+}
+.sapInoWallWISpriteColorSelectorButton.sapInoWallWISpriteColorSelectorButtonBright > .sapMBtnDefault > span,
+.sapInoWallWISpriteColorSelectorButton.sapInoWallWISpriteColorSelectorButtonBright.sapMBtn:hover > .sapMBtnHoverable > span,
+.sapInoWallWISpriteColorSelectorButton.sapInoWallWISpriteColorSelectorButtonBright.sapMBtn:focus > .sapMBtnInner.sapMFocusable > span {
+  color: #ffffff;
+  line-height: 27px;
+}
+/* =================================================== */
+/* CSS for control WallItemSticker.control */
+/* =================================================== */
+.sapInoWallWISticker {
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+  background-color: #cccccc;
+  padding: 5px;
+}
+.back.sapInoWallWISticker {
+  padding-bottom: 5px;
+  min-height: 175px;
+  /*min-width: 175px;*/
+}
+.sapInoWallWIStickerYellow {
+  color: #140F00;
+  background: #fcf294;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #fffb9b 0%, #fff969 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fffb9b), color-stop(100%, #fff969));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #fffb9b 0%, #fff969 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #fffb9b 0%, #fff969 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #fffb9b 0%, #fff969 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #fffb9b 0%, #fff969 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffb9b', endColorstr='#fff969', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIStickerPink {
+  color: #260822;
+  background: #ff69f5;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ff9cf8 0%, #ff69f5 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff9cf8), color-stop(100%, #ff69f5));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ff9cf8 0%, #ff69f5 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ff9cf8 0%, #ff69f5 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ff9cf8 0%, #ff69f5 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ff9cf8 0%, #ff69f5 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff9cf8', endColorstr='#ff69f5', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIStickerCyan {
+  color: #001521;
+  background: #9ce6ff;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #9ce6ff 0%, #69d9ff 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9ce6ff), color-stop(100%, #69d9ff));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #9ce6ff 0%, #69d9ff 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #9ce6ff 0%, #69d9ff 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #9ce6ff 0%, #69d9ff 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #9ce6ff 0%, #69d9ff 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9ce6ff', endColorstr='#69d9ff', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIStickerGreen {
+  color: #0D1606;
+  background: #b8ff9c;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #b8ff9c 0%, #93ff69 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #b8ff9c), color-stop(100%, #93ff69));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #b8ff9c 0%, #93ff69 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #b8ff9c 0%, #93ff69 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #b8ff9c 0%, #93ff69 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #b8ff9c 0%, #93ff69 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b8ff9c', endColorstr='#93ff69', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIStickerNeutral {
+  color: #1C1C1C;
+  background: #ffffff;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #efefef 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #efefef));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%, #efefef 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%, #efefef 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%, #efefef 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%, #efefef 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#efefef', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIStickerOrange {
+  color: #1C0E01;
+  background: #ffa459;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ffa459 0%, #ff8826 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa459), color-stop(100%, #ff8826));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffa459 0%, #ff8826 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffa459 0%, #ff8826 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffa459 0%, #ff8826 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffa459 0%, #ff8826 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa459', endColorstr='#ff8826', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIStickerRed {
+  color: #190000;
+  background: #ff4c4c;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ff4c4c 0%, #ff3333 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff4c4c), color-stop(100%, #ff3333));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ff4c4c 0%, #ff3333 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ff4c4c 0%, #ff3333 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ff4c4c 0%, #ff3333 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ff4c4c 0%, #ff3333 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff4c4c', endColorstr='#ff3333', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIStickerRose {
+  color: #161210;
+  background: #f9d6d6;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #f9d6d6 0%, #ffb5b5 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f9d6d6), color-stop(100%, #ffb5b5));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #f9d6d6 0%, #ffb5b5 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #f9d6d6 0%, #ffb5b5 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #f9d6d6 0%, #ffb5b5 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #f9d6d6 0%, #ffb5b5 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9d6d6', endColorstr='#ffb5b5', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIStickerLavender {
+  color: #15171E;
+  background: #adb8ea;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #adb8ea 0%, #9ba7db 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #adb8ea), color-stop(100%, #9ba7db));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #adb8ea 0%, #9ba7db 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #adb8ea 0%, #9ba7db 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #adb8ea 0%, #9ba7db 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #adb8ea 0%, #9ba7db 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#adb8ea', endColorstr='#9ba7db', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIStickerBlack {
+  color: #eeeeee;
+  background: #373737;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #373737 0%, #000000 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #373737), color-stop(100%, #000000));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #373737 0%, #000000 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #373737 0%, #000000 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #373737 0%, #000000 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #373737 0%, #000000 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#373737', endColorstr='#000000', GradientType=0);
+  /* IE6-9 */
+}
+.M .sapInoWallStickerColorPicker {
+  width: 30px;
+  height: 30px;
+}
+.L .sapInoWallStickerColorPicker,
+.XL .sapInoWallStickerColorPicker {
+  width: 50px;
+  height: 50px;
+}
+.sapInoWallStickerColorPicker {
+  border: 1px solid #aaaaaa;
+  border-width: 1px;
+  width: 21px;
+  height: 21px;
+  display: inline-block;
+  margin-left: 2px;
+  margin-right: 3px;
+}
+.sapInoWallStickerColorPicker.active {
+  border: 1px solid #007cc0;
+  box-shadow: 3px 3px 30px rgba(0, 124, 192, 0.8);
+}
+.sapInoWallWITitleText.sapInoWallWIStickerText {
+  /* 	font-family: "Comic Sans MS", Palatino, cursive, sans-serif; */
+  font-family: "Comic Sans MS", Palatino, "Palatino LT STD", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-size: 24px;
+  font-weight: bold;
+  padding-bottom: 10px;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+}
+/* TODO: remove this after transition to TextEditor */
+.sapInoWallWITextEditorNoBold {
+  font-weight: normal !important;
+}
+.sap-tablet .sapInoWallWITitleText.sapInoWallWIStickerText {
+  font-size: 36px;
+}
+.sapInoWallWIStickerTextTA {
+  width: 100%;
+}
+.sapInoWallWIStickerTextTA.sapMTextArea > textarea {
+  background-color: rgba(255, 255, 255, 0.7);
+  width: 100%;
+  min-height: 70px;
+  margin-bottom: 3px;
+  padding: 8px;
+  font-size: 110%;
+}
+/* overrides for checkbox */
+/*
+.sapInoWallWIStickerCBMulti.sapMCb {
+	height: 30px;
+	line-height: 25px;
+	padding: 0 0 0 30px;
+}
+
+.sapInoWallWIStickerCBMulti .sapMCbBg {
+	left: 3px;
+	top: 3px;
+	height: 18px;
+	width: 18px;
+	line-height: 18px;
+}
+
+.sapInoWallWIStickerCBMulti .sapMLabel {
+	color: inherit;
+}
+
+.sapInoWallWIStickerMulti {
+	clear: both;
+	min-height: 30px;
+}
+*/
+/* focus outline for color picker */
+.sap-desktop .sapInoWallStickerColorPicker:focus {
+  outline: 2px solid #007cc0;
+  outline-offset: -1px;
+}
+/* IE ignores outline-offset. Use an overlay: */
+.sap-desktop[data-sap-ui-browser^="ie"] .sapInoWallStickerColorPicker:focus {
+  outline: none;
+  position: relative;
+}
+.sap-desktop[data-sap-ui-browser^="ie"] .sapInoWallStickerColorPicker:focus:before {
+  content: " ";
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 2px solid #007cc0;
+}
+/* flex layout for backside */
+.back.sapInoWallWISticker {
+  padding-bottom: 0px;
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+}
+.back .sapInoWallWIStickerText {
+  flex-grow: 99999;
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  height: calc(100% - 120px);
+}
+.back .sapInoWallWIStickerText .sapInoWallWIStickerTextTA {
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+  height: 100%;
+}
+.back .sapInoWallWIStickerText .sapInoWallWIStickerTextTA > textarea {
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+  height: 100%;
+}
+/* styles for rich text editor */
+.back .sapInoWallWIStickerText .sapInoWallWIStickerTextTA > .sapInoWallTextEditorContent {
+  display: flex;
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+}
+.back .sapInoWallWIStickerText .sapInoWallWIStickerTextTA > .sapInoWallTextEditorContent > div {
+  width: 100% !important;
+  border-width: 0px !important;
+}
+.back .sapInoWallWIStickerText .sapInoWallWIStickerTextTA > .sapInoWallTextEditorContent > div .nicEdit-main:focus {
+  outline: transparent;
+}
+html[data-sap-ui-browser*='ie10'] .S .sapInoWallWISticker .sapInoWallTextEditor .sapInoWallTextEditorContent {
+  height: calc(100% - 50px);
+}
+html[data-sap-ui-browser*='ie10'] .sapInoWallWISticker .sapInoWallTextEditor .sapInoWallTextEditorContent {
+  height: calc(100% - 100px);
+}
+/* .back .sapMTextArea.sapInoWallWIStickerTextTA .sapMTextAreaInner, */
+.back .sapInoWallWIStickerText .sapInoWallWIStickerTextTA > .sapInoWallTextEditorContent > div .nicEdit-main {
+  font-family: "Comic Sans MS", Palatino, "Palatino LT STD", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-size: 24px;
+}
+.sapInoWallWIStickerPickerContainer {
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+  margin-top: 5px;
+}
+.sapInoWallWIStickerMulti {
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+}
+/********************************* COLORS FOR COLOR PICKER STICKY NOTE WALL REMOTE *******************************/
+.sapMBtn.sapInoWallStickerYellow > .sapMBtnInner {
+  background: none;
+  color: #140F00;
+  background: #fcf294;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #fffb9b 0%, #fff969 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fffb9b), color-stop(100%, #fff969));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #fffb9b 0%, #fff969 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #fffb9b 0%, #fff969 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #fffb9b 0%, #fff969 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #fffb9b 0%, #fff969 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffb9b', endColorstr='#fff969', GradientType=0);
+  /* IE6-9 */
+}
+.sapMBtn.sapInoWallStickerPink > .sapMBtnInner {
+  background: none;
+  color: #260822;
+  background: #ff69f5;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ff9cf8 0%, #ff69f5 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff9cf8), color-stop(100%, #ff69f5));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ff9cf8 0%, #ff69f5 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ff9cf8 0%, #ff69f5 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ff9cf8 0%, #ff69f5 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ff9cf8 0%, #ff69f5 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff9cf8', endColorstr='#ff69f5', GradientType=0);
+  /* IE6-9 */
+}
+.sapMBtn.sapInoWallStickerCyan > .sapMBtnInner {
+  background: none;
+  color: #001521;
+  background: #9ce6ff;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #9ce6ff 0%, #69d9ff 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9ce6ff), color-stop(100%, #69d9ff));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #9ce6ff 0%, #69d9ff 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #9ce6ff 0%, #69d9ff 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #9ce6ff 0%, #69d9ff 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #9ce6ff 0%, #69d9ff 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9ce6ff', endColorstr='#69d9ff', GradientType=0);
+  /* IE6-9 */
+}
+.sapMBtn.sapInoWallStickerGreen > .sapMBtnInner {
+  background: none;
+  color: #0D1606;
+  background: #b8ff9c;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #b8ff9c 0%, #93ff69 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #b8ff9c), color-stop(100%, #93ff69));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #b8ff9c 0%, #93ff69 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #b8ff9c 0%, #93ff69 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #b8ff9c 0%, #93ff69 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #b8ff9c 0%, #93ff69 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b8ff9c', endColorstr='#93ff69', GradientType=0);
+  /* IE6-9 */
+}
+.sapMBtn.sapInoWallStickerNeutral > .sapMBtnInner {
+  background: none;
+  color: #1C1C1C;
+  background: #ffffff;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #efefef 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #efefef));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%, #efefef 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%, #efefef 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%, #efefef 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%, #efefef 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#efefef', GradientType=0);
+  /* IE6-9 */
+}
+.sapMBtn.sapInoWallStickerOrange > .sapMBtnInner {
+  background: none;
+  color: #1C0E01;
+  background: #ffa459;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ffa459 0%, #ff8826 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa459), color-stop(100%, #ff8826));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffa459 0%, #ff8826 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffa459 0%, #ff8826 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffa459 0%, #ff8826 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffa459 0%, #ff8826 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa459', endColorstr='#ff8826', GradientType=0);
+  /* IE6-9 */
+}
+.sapMBtn.sapInoWallStickerRed > .sapMBtnInner {
+  background: none;
+  color: #190000;
+  background: #ff4c4c;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ff4c4c 0%, #ff3333 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff4c4c), color-stop(100%, #ff3333));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ff4c4c 0%, #ff3333 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ff4c4c 0%, #ff3333 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ff4c4c 0%, #ff3333 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ff4c4c 0%, #ff3333 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff4c4c', endColorstr='#ff3333', GradientType=0);
+  /* IE6-9 */
+}
+.sapMBtn.sapInoWallStickerRose > .sapMBtnInner {
+  background: none;
+  color: #161210;
+  background: #f9d6d6;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #f9d6d6 0%, #ffb5b5 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f9d6d6), color-stop(100%, #ffb5b5));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #f9d6d6 0%, #ffb5b5 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #f9d6d6 0%, #ffb5b5 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #f9d6d6 0%, #ffb5b5 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #f9d6d6 0%, #ffb5b5 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9d6d6', endColorstr='#ffb5b5', GradientType=0);
+  /* IE6-9 */
+}
+.sapMBtn.sapInoWallStickerLavender > .sapMBtnInner {
+  background: none;
+  color: #15171E;
+  background: #adb8ea;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #adb8ea 0%, #9ba7db 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #adb8ea), color-stop(100%, #9ba7db));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #adb8ea 0%, #9ba7db 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #adb8ea 0%, #9ba7db 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #adb8ea 0%, #9ba7db 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #adb8ea 0%, #9ba7db 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#adb8ea', endColorstr='#9ba7db', GradientType=0);
+  /* IE6-9 */
+}
+.sapMBtn.sapInoWallStickerBlack > .sapMBtnInner {
+  background: none;
+  color: #eeeeee;
+  background: #373737;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #373737 0%, #000000 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #373737), color-stop(100%, #000000));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #373737 0%, #000000 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #373737 0%, #000000 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #373737 0%, #000000 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #373737 0%, #000000 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#373737', endColorstr='#000000', GradientType=0);
+  /* IE6-9 */
+}
+/* ============================================= */
+/* CSS for control WallItemText.control */
+/* ============================================= */
+.sapInoWallWIT {
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+  padding: 5px;
+  float: left;
+  /* gradient */
+  background: #FFFFFF;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #e7e7e7 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e7e7e7));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%, #e7e7e7 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%, #e7e7e7 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%, #e7e7e7 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%, #e7e7e7 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#E7E7E7', GradientType=0);
+  /* IE6-9 */
+}
+.sapInoWallWIT .sapInoWallWITitle {
+  font-family: Calibri;
+  font-size: 1rem;
+  font-weight: bold;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #cccccc;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.sapInoWallWITDescriptionTA {
+  width: 100%;
+  height: 100%;
+}
+/* fix for firefox, does not use full height */
+html[data-sap-ui-browser*='ff'] .sapInoWallWITDescriptionTA,
+html[data-sap-ui-browser*='ie'] .sapInoWallWITDescriptionTA {
+  min-height: 100px;
+}
+.sapInoWallWITDescription.sapInoWallWITDescriptionText {
+  padding: 8px 0;
+}
+.sapInoWallWITDescriptionTA textarea {
+  background-color: rgba(255, 255, 255, 0.7);
+  min-height: 92px;
+}
+.sapInoWallWITTitleIP input {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+/* preview */
+.sapInoWallWIT.sapInoWallWIPreview {
+  padding: 0;
+}
+/* flex layout for back side */
+.back.sapInoWallWIT {
+  padding-bottom: 0px;
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+}
+.sapInoWallWIT .sapInoWallWITitleEdit {
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+  min-height: 48px;
+}
+.back .sapInoWallWITDescription {
+  flex-grow: 99999;
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  /* workaround to stop loosing focus to textarea */
+  height: calc(35%);
+}
+.back .sapInoWallWITDescription .sapInoWallWITDescriptionTA {
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+  height: 100%;
+}
+.back .sapInoWallWITDescription .sapInoWallWITDescriptionTA > textarea {
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+  height: 100%;
+}
+/* styles for rich text editor */
+.back .sapInoWallWITDescription .sapInoWallWITDescriptionTA > .sapInoWallTextEditorContent {
+  display: flex;
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+  margin-top: 4px;
+}
+.back .sapInoWallWITDescription .sapInoWallWITDescriptionTA > .sapInoWallTextEditorContent > div {
+  width: 100% !important;
+  border-width: 0px !important;
+}
+.back .sapInoWallWITDescription .sapInoWallWITDescriptionTA > .sapInoWallTextEditorContent > div .nicEdit-main:focus {
+  outline: transparent;
+}
+html[data-sap-ui-browser*='ie10'] .S .sapInoWallWIT .sapInoWallTextEditor .sapInoWallTextEditorContent {
+  height: calc(100% - 60px);
+}
+html[data-sap-ui-browser*='ie10'] .sapInoWallWIT .sapInoWallTextEditor .sapInoWallTextEditorContent {
+  height: calc(100% - 100px);
+}
+/* flex layout for front side */
+.front.sapInoWallWIT {
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+}
+.sapInoWallWITitle {
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+  min-height: 20px;
+}
+.front .sapInoWallWITDescription {
+  flex-grow: 99999;
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+}
+.front .sapInoWallWITDescription .sapMScrollCont {
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+  height: 100%;
+}
+.front .sapInoWallWITDescription .sapMScrollCont > .sapMScrollContScroll {
+  display: flex;
+  display: -ms-flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+}
+.front .sapInoWallWITDescription .sapMScrollCont > .sapMScrollContScroll > .sapMText {
+  flex-grow: 1;
+  -ms-flex-grow: 1;
+  max-height: 100%;
+}
+/* ============================================= */
+/* CSS for control WallItemImage.control */
+/* ============================================= */
+.sapInoWallWIV {
+  box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+}
+.sapInoWallWIVOuterOuter {
+  border-left: 5px solid #131313;
+  border-right: 5px solid #131313;
+}
+.sapInoWallWIVOuter {
+  border-left: 12px dotted #131313;
+  border-right: 12px dotted #131313;
+  height: 100%;
+  display: block;
+}
+.sapInoWallWIVInner {
+  padding: 5px;
+  min-height: 141px;
+  background: #131313;
+  /* Old browsers */
+  background: -moz-linear-gradient(left, #131313 0%, #2b2b2b 32%, #1c1c1c 84%, #131313 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #131313), color-stop(32%, #2b2b2b), color-stop(84%, #1c1c1c), color-stop(100%, #131313));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left, #131313 0%, #2b2b2b 32%, #1c1c1c 84%, #131313 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left, #131313 0%, #2b2b2b 32%, #1c1c1c 84%, #131313 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(left, #131313 0%, #2b2b2b 32%, #1c1c1c 84%, #131313 100%);
+  /* IE10+ */
+  background: linear-gradient(to right, #131313 0%, #2b2b2b 32%, #1c1c1c 84%, #131313 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#131313', endColorstr='#131313', GradientType=1);
+  /* IE6-9 */
+}
+.sapInoWallWIV .sapInoWallWITitle {
+  color: white;
+  font-family: Calibri;
+  font-size: 1rem;
+  font-weight: bold;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+}
+.sapInoWallWIVDescriptionIndicator {
+  float: right;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -khtml-border-radius: 10px;
+  border-radius: 10px;
+  border: 2px solid blue;
+  line-height: 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0px 6px;
+  font-family: "Times New Roman";
+}
+.sapInoWallWIVVideo input {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+/* preview */
+.sapInoWallWIV.sapInoWallWIPreview {
+  padding: 0;
+}
+.sapInoWallIndicatorBusy {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -16px;
+  margin-top: -22px;
+}
+.sapInoWallImageBusy {
+  opacity: 0.5;
+}
+.sapInoWallWIVDialog.sapMDialog .sapMDialogScrollCont {
+  padding: 0;
+}
+.sapInoWallWIVDialog.sapMDialog .sapMBtn {
+  background-color: transparent;
+}
+.sapInoWallWIVDialog.sapMDialog .sapMIBar-CTX .sapMBtn:focus {
+  background-color: transparent;
+}
+.sapInoWallWIVEdithint {
+  color: white;
+}
+/* center the video when it is smaller than the dialog width */
+.sapInoWallWIVDialog .sapMDialogScrollCont {
+  text-align: center;
+  background-color: black;
+}
+.sapInoWallWIVDialogIcon {
+  padding-left: 0.5rem;
+}
+.sapUiSizeCompact .sapInoWallWIVVideoEdit .sapMInputBaseInner {
+  height: 40px;
+  padding: 0 12px 0 12px;
+}
+/* ============================================= */
+/* CSS for control wallPreview.control */
+/* ============================================= */
+.sapInoWallPreview {
+  width: 216px;
+  height: 240px;
+  display: inline-block;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  position: relative;
+}
+.sapMLIB.sapMLIBActive .sapInoWallPreview .sapMText,
+.sapMLIB.sapMLIBActive .sapInoWallPreview .sapMLabel {
+  color: #000000;
+}
+.sapInoWallPreviewSpace {
+  margin-bottom: 2rem;
+}
+.sapInoWallPreview.new {
+  border-style: dashed;
+}
+.sapInoWallPreview.more {
+  border-style: dashed;
+}
+.sapInoWallPreview.error {
+  border-color: #B52020;
+  border-style: dashed;
+}
+.sapInoWallPreviewCanvasWrapper {
+  height: 160px;
+  position: relative;
+  /* for owner overlay*/
+}
+.sapInoWallPreviewCanvas {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-top-right-radius: 1px;
+  border-top-left-radius: 1px;
+}
+.sapInoWallPreviewCanvas > .sapInoWallPreviewCreateNew {
+  display: inline-block;
+  height: 200px;
+  border-right: 2px solid #999999;
+}
+.sapInoWallPreviewCanvas > .sapInoWallPreviewCreateTemplate {
+  display: inline-block;
+  height: 200px;
+}
+.sapInoWallPreviewCanvas.new {
+  color: #aaaaaa;
+  background: white;
+}
+.sapInoWallPreviewCanvas.more {
+  text-align: center;
+  line-height: 200px;
+  font-size: 4rem;
+  font-weight: bold;
+  color: #aaaaaa;
+  background: white;
+}
+.sapInoWallPreviewCanvas.error {
+  background: white;
+}
+/* override to make horizontalLayout as large as the preview and to add further styles*/
+.sapInoWallPreviewFooter {
+  display: block;
+  border-top: 1px solid #cccccc;
+  padding-left: 6px;
+  background-color: #ffffff;
+  height: 78px;
+  text-align: left;
+  border-bottom-right-radius: 1px;
+  border-bottom-left-radius: 1px;
+}
+/* override to make right horizontalLayout cell aligned right */
+.sapInoWallPreviewFooter > .sapUiHLayoutChildWrapper:nth-child(2) {
+  color: #00679e;
+  text-align: right;
+  line-height: 1.25rem;
+  font-size: 14px;
+}
+.sapInoWallPreviewFooter > .sapUiHLayoutChildWrapper:nth-child(2) {
+  float: right;
+}
+.sapInoWallPreviewFooter > .sapUiHLayoutChildWrapper:nth-child(3) {
+  float: right;
+}
+.sapInoWallPreviewFooter .sapInoWallFooterText,
+.sapInoWallPreviewFooter .sapInoWallFooterLink {
+  text-align: left;
+  line-height: initial;
+  /* to override form line-height */
+  padding-top: 6px;
+  font-size: 12px;
+}
+.sapInoWallPreviewFooter .sapInoWallFooterTitleLink,
+.sapInoWallPreviewFooter .sapInoWallFooterTitle {
+  text-align: left;
+  line-height: initial;
+  /* to override form line-height */
+  padding-top: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sapInoWallPreviewFooter .sapInoWallFooterSecondLink {
+  text-align: left;
+}
+.sapInoWallPreviewFooter .sapInoWallPreviewFooterNumber {
+  padding: 0px 4px 0 2px;
+}
+.sapInoWallPreviewFooter .sapInoWallPreviewFooterHits {
+  padding: 0px 4px 0 2px;
+}
+.sapInoWallPreviewFooter .sapInoWallPreviewFooterDate {
+  padding-left: 2px;
+}
+.sapUiHLayout.sapInoWallPreviewFooter {
+  display: block;
+}
+.sapmUiWallPreviewDisabled {
+  border: 2px dotted #cccccc;
+  background-color: rgba(90, 90, 90, 0.5);
+}
+.sapmUiWallPreviewDisabled > * {
+  opacity: 0.3;
+}
+.sapInoWallPreviewTitle {
+  position: absolute;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.6);
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  padding: 0.2rem 0;
+}
+.sapInoWallTemplateIndicatorPreview {
+  position: absolute;
+  right: 0;
+  border-right: 0 solid transparent;
+  border-left: 30px solid transparent;
+  border-top: 30px solid rgba(240, 171, 0, 0.7);
+}
+.sapInoWallPreviewRemove {
+  position: absolute;
+  right: -14px;
+  top: -12px;
+  background-color: rgba(50, 50, 50, 0.6);
+  display: block;
+  height: 26px;
+  width: 25px;
+  border-radius: 50%;
+  font-size: 15.5pt;
+  color: white;
+  padding-top: 0px;
+  padding-left: 0px;
+  text-align: center;
+}
+.sapInoWallPreviewRemove:focus,
+.sapInoWallPreviewRemove:hover,
+.sapInoWallPreviewRemove:active {
+  background-color: #007cc0;
+}
+.sapInoWallPreviewFooterViewsIcon {
+  font-size: 16px;
+  vertical-align: middle;
+  text-align: right;
+  height: 11px;
+  margin-right: 4px;
+  color: #000000;
+}
+.sapInoWallPreviewFooterViews {
+  font-size: 12px;
+  vertical-align: middle;
+  text-align: right;
+  padding-top: 6px;
+  margin-right: 6px;
+}
+/* ===================================== */
+/* Quick Theming                         */
+/* ===================================== */
+/*
+ UX COLOR SET
+*/
+/* ACCENT COLORS */
+/* Shadows */
+/* SPECIAL COLORS */
+/* Grayscale Backgrounds */
+/* Grayscale Borders */
+/* Grayscale Text */
+/* Semantic Background Colors */
+/* Semantic Border Colors */
+/* Semantic Foreground Elements */
+/* Semantic Text */
+/* Semantic Foreground Colors */
+/* ===================================== */
+/* Expert Theming                        */
+/* ===================================== */
+/* ====================================== */
+/* Global CSS for 'sap_bluecrystal' theme */
+/* ====================================== */
+/* ===================================== */
+/* Semantic Theming Mapping              */
+/* ===================================== */
+/* ========================================================== */
+/* Quick Theming (these Parameters can be linked in controls) */
+/* ========================================================== */
+/* ============================================================== */
+/* Expert Theming (these Parameters should be linked in controls) */
+/* ============================================================== */
+/* ========================= */
+/* FOCUS COLORS              */
+/* ========================= */
+/* ===================================== */
+/* FOREGROUND ELEMENT COLORS             */
+/* ===================================== */
+/* General Foreground Elements           */
+/* ============================================ */
+/* UX Reference Set - do not use in Controls!!  */
+/* ============================================ */
+/* ===================================== */
+/* Accent Colors                         */
+/* ===================================== */
+/* ===================================== */
+/* EFFECT COLORS                         */
+/* ===================================== */
+/* ===================================== */
+/* Special Colors                        */
+/* ===================================== */
+/* ===================================== */
+/* Background Colors                     */
+/* ===================================== */
+/* Grayscale Backgrounds                 */
+/* ===================================== */
+/* Border Colors                         */
+/* ===================================== */
+/* Grayscale Borders                     */
+/* ===================================== */
+/* Font Colors                           */
+/* ===================================== */
+/* Grayscale Text                        */
+/* ===================================== */
+/* Semantic Colors                       */
+/* ===================================== */
+/* Semantic Background Colors            */
+/* Semantic Border Colors                */
+/* Semantic Foreground Elements          */
+/* Semantic Text                         */
+/* ======================================================= */
+/* Semantic Foreground Colors - do not use in Controls!!   */
+/* ======================================================= */
+/* ================================================== */
+/* Absolute fixed Colors - do not use in Controls!!   */
+/* ================================================== */
+/* ==================================================== */
+/* indirect Quick Parameters - do not use in Controls!! */
+/* ==================================================== */
+/* ================================================= */
+/* additional Parameters - do not use in Controls!!  */
+/* ================================================= */
+/* Tinted Backgrounds                    */
+/* Button Background Colors              */
+/* Transparent Backgrounds               */
+/* Hyperlinks                            */
+/* Line Colors                           */
+/* Table Colors                          */
+/* ===================================== */
+/* HOVER COLORS             */
+/* ===================================== */
+/* ===================================== */
+/* Font                                  */
+/* ===================================== */
+/*Please also note the mixins in shared.css which deal with the following background parameters*/
+/* ===================================== */
+/* Desktop                               */
+/* ===================================== */
+/* Color used to show keyboard focus on an element (usually as outline) */
+/* =============================================== */
+/* SOME important control-specific parameters...   */
+/* Derived from Expert Theming                     */
+/* (these Parameters should be linked in controls) */
+/* =============================================== */
+/* Derived Chart Colors */
+/* Shell */
+/* Approved by UX to use a hard coded color value for this */
+/* Exact */
+/* Notification Bar */
+/* ToolPopup */
+/* Telling the ToolPopup if it's inverted per default */
+/* Callout */
+/* ==========================================*/
+/* Legacy Section - do not use in Controls!! */
+/* ==========================================*/
+/* ActionSheet                 */
+/* Bar                         */
+/* Busy Indicator              */
+/* BusyDialog              */
+/* --------------------------- */
+/* Button                START */
+/* --------------------------- */
+/* fade(@sapUiDarkText, 50%); */
+/* --------------------------- */
+/* Button                  END */
+/* --------------------------- */
+/* --------------------------- */
+/* ToggleButton          START */
+/* --------------------------- */
+/* --------------------------- */
+/* ToggleButton            END */
+/* --------------------------- */
+/* CheckBox                     */
+/* DateTimeInput Custom Picker JavaScript	  */
+/* mixed, scroller, clickpick */
+/* mixed, scroller, clickpick */
+/* modal, bubble, bottom, top */
+/* modal, bubble, bottom, top */
+/* DateTimeInput Custom Picker Design	  	*/
+/* IconTabBar			*/
+/* Input/SearchField           */
+/* Label           */
+/* List                        */
+/* List as Table               */
+/* ListItemBase                */
+/* ActionListItem               */
+/* MessageToast                 */
+/* Page                        */
+/* Panel                  */
+/* Popover                */
+/* Popups - shared parameters */
+/* PullToRefresh */
+/* RadioButton                 */
+/* Scrollbar */
+/* SegmentedButton                */
+/* Select                       */
+/* SelectList                    */
+/* ComboBox */
+/* Shell                        */
+/* Slider                       */
+/* SplitContainer */
+/* StandardListItem                */
+/* Switch                       */
+/* RatingIndicator                 */
+/* Toolbar 				*/
+/* FeedInput                    */
+/* OverlapCalendar Event Type */
+/* Calendar Legend */
+/* Tab Container */
+.sapInoWallColorPickerPopoverPanel .sapUiSliStd .sapUiSliGrip:focus {
+  border-color: #007cc0;
+}
+.sapInoWallDropUpload .sapInoWallDropUploadArea:focus {
+  border: 2px solid #007cc0;
+}
+/* ============================================= */
+/* CSS for control sap.ino.wall.TextEditor  */
+/* ============================================= */
+.sapInoWallTextEditorControlButton > .sapMBtnDefault {
+  background-color: #f7f7f7;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonBold > .sapMBtnDefault,
+.sapInoWallTextEditorControlButtonBold.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/TextEditor/editorbold.png);
+}
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonItalic > .sapMBtnDefault,
+.sapInoWallTextEditorControlButtonItalic.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/TextEditor/editoritalic.png);
+}
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonUnderline > .sapMBtnDefault,
+.sapInoWallTextEditorControlButtonUnderline.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/TextEditor/editorunderline.png);
+}
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonOl > .sapMBtnDefault,
+.sapInoWallTextEditorControlButtonOl.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/TextEditor/editorol.png);
+}
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonUl > .sapMBtnDefault,
+.sapInoWallTextEditorControlButtonUl.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/TextEditor/editorul.png);
+}
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn {
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn {
+  border-color: #bfbfbf;
+}
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn.sapMSegBBtnFocusable:hover {
+  background-color: #eaeaea;
+}
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn:nth-child(1),
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn:nth-child(1):hover {
+  background-image: url(img/TextEditor/editorleft.png);
+}
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn:nth-child(2),
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn:nth-child(2):hover {
+  background-image: url(img/TextEditor/editorcenter.png);
+}
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn:nth-child(3),
+.sapInoWallTextEditorControlButton.sapInoWallTextEditorControlButtonAlignment > .sapMSegBBtn:nth-child(3):hover {
+  background-image: url(img/TextEditor/editorright.png);
+}
+.sapInoWallTextEditorControlButton.sapMBtn:hover > .sapMBtnHoverable {
+  background-color: #006ca7;
+}
+.sapInoWallTextEditorControlButton > .sapMToggleBtnPressed.sapMBtnDefault {
+  background-color: #007cc0;
+  border-color: #006ca7;
+}
+.sapInoWallTextEditorControlButton.sapMBtn:hover > .sapMBtnHoverable.sapMToggleBtnPressed {
+  background-color: #006ca7;
+}
+.sapInoWallTextEditorColorSelectorButton > .sapMBtnInner {
+  text-shadow: none;
+}
+/* ============================================= */
+/* CSS for control sap.ino.wall/wall.control      */
+/* ============================================= */
+.sapInoWallSelector:focus {
+  top: 48px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  border: 3px solid #007cc0;
+}
+/* ============================================= */
+/* CSS for control sap.ino.wall.WallItemArrow  */
+/* ============================================= */
+.sapInoWallWIArrowButton > .sapMBtnDefault {
+  background-color: #f7f7f7;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonThin > .sapMBtnDefault,
+.sapInoWallWIArrowButtonThin.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemArrow/line3.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonThin > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemArrow/line3_white.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonMedium > .sapMBtnDefault,
+.sapInoWallWIArrowButtonMedium.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemArrow/line4.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonMedium > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemArrow/line4_white.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonThick > .sapMBtnDefault,
+.sapInoWallWIArrowButtonThick.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemArrow/line5.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonThick > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemArrow/line5_white.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonSOLID > .sapMBtnDefault,
+.sapInoWallWIArrowButtonSOLID.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemArrow/lineSolid.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonSOLID > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemArrow/lineSolid_white.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonDASHED > .sapMBtnDefault,
+.sapInoWallWIArrowButtonDASHED.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemArrow/lineDashed.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonDASHED > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemArrow/lineDashed_white.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonDOTTED > .sapMBtnDefault,
+.sapInoWallWIArrowButtonDOTTED.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemArrow/lineDotted.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonDOTTED > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemArrow/lineDotted_white.png);
+}
+.sapInoWallWIArrowButton.sapMBtn:hover > .sapMBtnHoverable {
+  background-color: #eaeaea;
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonNONE > .sapMBtnDefault,
+.sapInoWallWIArrowButtonNONE.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemArrow/lineNone.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonNONE > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemArrow/lineNone_white.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonSTART > .sapMBtnDefault,
+.sapInoWallWIArrowButtonSTART.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemArrow/lineStart.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonSTART > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemArrow/lineStart_white.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonEND > .sapMBtnDefault,
+.sapInoWallWIArrowButtonEND.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemArrow/lineEnd.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonEND > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemArrow/lineEnd_white.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonBOTH > .sapMBtnDefault,
+.sapInoWallWIArrowButtonBOTH.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemArrow/lineBoth.png);
+}
+.sapInoWallWIArrowButton.sapInoWallWIArrowButtonBOTH > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemArrow/lineBoth_white.png);
+}
+.sapInoWallWIArrowButton > .sapMToggleBtnPressed.sapMBtnDefault {
+  background-color: #007cc0;
+  border-color: #006ca7;
+}
+.sapInoWallWIArrowButton.sapMBtn:hover > .sapMBtnHoverable.sapMToggleBtnPressed {
+  background-color: #006ca7;
+}
+.sapInoWallWIArrowVertical .sapInoWallWIArrowEditButtons {
+  width: 46px;
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWIArrow.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWIArrow.back {
+  background: transparent;
+  outline: #007cc0 solid 2px;
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWIArrow.back .sapInoWallWIArrowEditButtons {
+  outline: #007cc0 solid 2px;
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable.sapInoWallWIAtt > .front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable.sapInoWallWIAtt > .back {
+  outline: #007cc0 solid 2px;
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWallItemGroup.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWallItemGroup.back {
+  outline: #007cc0 solid 2px;
+}
+.sapInoWallWIGroupColorSelectorButton > .sapMBtnInner {
+  text-shadow: none;
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable.sapInoWallWIHL > .front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable.sapInoWallWIHL > .back {
+  outline: #007cc0 solid 2px;
+}
+.sapInoWallWIIImageError .sapInoWallWIIImageWrapper {
+  background-image: url("img/WallItemImage/error.png");
+  height: calc(100% - 20px);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.sapInoWallWIIImageWrapper {
+  height: calc(100% - 20px);
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWII.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWII.back {
+  outline: #007cc0 solid 2px;
+}
+/* ============================================= */
+/* CSS for control sap.ino.wall.WallItemLine  */
+/* ============================================= */
+.sapInoWallWILineButton > .sapMBtnDefault {
+  background-color: #f7f7f7;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonThin > .sapMBtnDefault,
+.sapInoWallWILineButtonThin.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemLine/line1px.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonThin > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemLine/line1px_white.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonMedium > .sapMBtnDefault,
+.sapInoWallWILineButtonMedium.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemLine/line3px.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonMedium > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemLine/line3px_white.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonThick > .sapMBtnDefault,
+.sapInoWallWILineButtonThick.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemLine/line5px.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonThick > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemLine/line5px_white.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonHORIZONTAL > .sapMBtnDefault,
+.sapInoWallWILineButtonHORIZONTAL.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemLine/lineHorizontal.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonHORIZONTAL > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemLine/lineHorizontal_white.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonVERTICAL > .sapMBtnDefault,
+.sapInoWallWILineButtonVERTICAL.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemLine/lineVertical.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonVERTICAL > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemLine/lineVertical_white.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonSOLID > .sapMBtnDefault,
+.sapInoWallWILineButtonSOLID.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemLine/lineSolid.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonSOLID > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemLine/lineSolid_white.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonDASHED > .sapMBtnDefault,
+.sapInoWallWILineButtonDASHED.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemLine/lineDashed.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonDASHED > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemLine/lineDashed_white.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonDOTTED > .sapMBtnDefault,
+.sapInoWallWILineButtonDOTTED.sapMBtn:hover > .sapMBtnHoverable {
+  background-image: url(img/WallItemLine/lineDotted.png);
+}
+.sapInoWallWILineButton.sapInoWallWILineButtonDOTTED > .sapMBtnDefault.sapMToggleBtnPressed {
+  background-image: url(img/WallItemLine/lineDotted_white.png);
+}
+.sapInoWallWILineButton.sapMBtn:hover > .sapMBtnHoverable {
+  background-color: #eaeaea;
+}
+.sapInoWallWILineButton > .sapMToggleBtnPressed.sapMBtnDefault {
+  background-color: #007cc0;
+  border-color: #006ca7;
+}
+.sapInoWallWILineButton.sapMBtn:hover > .sapMBtnHoverable.sapMToggleBtnPressed {
+  background-color: #006ca7;
+}
+.sapInoWallWILineVertical .sapInoWallWILineEditButtons {
+  width: 46px;
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWILine.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWILine.back {
+  background: #007cc0;
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus .sapInoWallWILine.back .sapInoWallWILineEditButtons {
+  outline: #007cc0 solid 2px;
+}
+.sapInoWallWILineColorSelectorButton > .sapMBtnInner {
+  text-shadow: none;
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWIL.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWIL.back {
+  outline: #007cc0 solid 2px;
+}
+.sapInoWallWIPImageWrapperDefaultImage {
+  background-image: url(img/WallItemPerson/user_150x150.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWIP.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWIP.back {
+  outline: #007cc0 solid 2px;
+}
+.sapInoWallWIBVisibleFocus .sapInoWallWIP.front.sapInoWallWIPPerson {
+  border: #007cc0 solid 2px;
+}
+.sapInoWallWIBVisibleFocus .sapInoWallWIP.front.sapInoWallWIPPerson .sapInoWallWIPMeta {
+  border: #007cc0 solid 2px;
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWISprite.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWISprite.back {
+  outline: #007cc0 solid 2px;
+}
+.sapInoWallWISpriteColorSelectorButton > .sapMBtnInner {
+  text-shadow: none;
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWISticker.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWISticker.back {
+  outline: #007cc0 solid 2px;
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWIT.front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable > .sapInoWallWIT.back {
+  outline: #007cc0 solid 2px;
+}
+.sapInoWallWIVInner {
+  min-width: 109px;
+}
+.sapInoWallWIVVideoError {
+  background-image: url(img/WallItemVideo/error.png);
+  height: 114px;
+  width: 109px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.sapInoWallWIVVideoDefault {
+  background-image: url(img/WallItemVideo/video.png);
+  height: 114px;
+  width: 109px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.back.sapInoWallWIV {
+  border-left: 5px solid #131313;
+  border-right: 5px solid #131313;
+}
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable.sapInoWallWIVideo > .front,
+.sapInoWallWIBVisibleFocus.sapInoWallWIB:focus > .flippable.sapInoWallWIVideo > .back {
+  outline: #007cc0 solid 2px;
+}

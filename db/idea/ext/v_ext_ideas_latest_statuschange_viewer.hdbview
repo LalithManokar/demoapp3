@@ -1,0 +1,47 @@
+schema="SAP_INO";
+query="
+	select 
+		idea_latest.*, 
+		idea.name,
+		idea.short_description,
+		identity.name as actor_name,
+		identity_attachment.attachment_id as actor_attachment_id,
+		identity_attachment.media_type as actor_image_media_type,
+		identity_attachment.changed_at as actor_image_changed_at, 
+		idea_attachment.attachment_id as idea_attachment_id,
+		idea_attachment.media_type as idea_image_media_type,
+		idea_attachment.changed_at as idea_image_changed_at
+	from \"sap.ino.db.idea::t_idea\" as idea
+	
+	inner join \"sap.ino.db.idea::v_idea_latest_for_statuschange_viewer\" as idea_latest
+	on idea.id = idea_latest.object_id
+	
+	left outer join \"sap.ino.db.iam::t_identity\" as identity
+	on identity.id = idea_latest.actor_id
+	
+	left outer join (select * from \"sap.ino.db.attachment::t_attachment_assignment\" as attachment_assign_1
+		inner join \"sap.ino.db.attachment::t_attachment\" as attachment_1
+		on attachment_1.id = attachment_assign_1.attachment_id) as identity_attachment
+	on(
+		identity_attachment.owner_id=idea_latest.actor_id and
+		identity_attachment.owner_type_code='IDENTITY' and
+		identity_attachment.role_type_code='IDENTITY_IMAGE'
+	)
+	
+	left outer join (select * from \"sap.ino.db.attachment::t_attachment_assignment\" as attachment_assign_2
+		inner join \"sap.ino.db.attachment::t_attachment\" as attachment_2
+		on attachment_2.id = attachment_assign_2.attachment_id) as idea_attachment
+	on(
+		idea_attachment.owner_id=idea.id and
+		idea_attachment.owner_type_code='IDEA' and
+		idea_attachment.role_type_code='IDEA_TITLE_IMAGE'
+	)
+	
+	with read only
+";
+
+depends_on_table=["sap.ino.db.idea::t_idea",
+				"sap.ino.db.iam::t_identity",
+				"sap.ino.db.attachment::t_attachment_assignment",
+				"sap.ino.db.attachment::t_attachment"];
+depends_on_view = ["sap.ino.db.idea::v_idea_latest_for_statuschange_viewer"];

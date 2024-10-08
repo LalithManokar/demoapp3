@@ -1,0 +1,13 @@
+schema = "SAP_INO_EXT";
+query = "
+    select field.*,
+    \'\' as RICH_TEXT_VALUE,
+    form.DEFAULT_TEXT as FORM_DEFAULT_TEXT
+    from \"sap.ino.db.ideaform::t_field\" as field
+    left outer join \"sap.ino.db.ideaform::t_form\" as form
+    on form.code = field.FORM_CODE
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.ideaform::t_field",
+                    "sap.ino.db.ideaform::t_form"];

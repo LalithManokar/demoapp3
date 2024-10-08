@@ -1,0 +1,64 @@
+<core:FragmentDefinition
+	xmlns:l="sap.ui.layout"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:viz="sap.viz.ui5.controls"
+	xmlns:viz.data="sap.viz.ui5.data"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds">
+	<Panel id="votes" width="auto" class="sapInoHomeTitledPanel sapInoTopCampaignItem sapInoHomepageBorder">
+		<headerToolbar>
+			<Toolbar height="3rem" class="sapInoHomeTitledPanelHeader" active="true" id="toolbar--VotesFrame"
+				    tooltip="{i18n>HOMEPAGE_PANEL_ANALYTICS_NAVIGATE}"
+				    press="onNavigateToReport">
+				<Title id="panelTitle" text="{i18n>COMMON_KYF_EXP_VOTES}"/>
+				<ToolbarSpacer />
+				<Button
+				    icon="sap-icon://navigation-right-arrow"
+				    id="button--VotesFrame"
+				    tooltip="{i18n>HOMEPAGE_PANEL_ANALYTICS_NAVIGATE}"
+				    press="onNavigateToReport"/>
+			</Toolbar>
+		</headerToolbar>
+		<content>
+			<VBox alignItems="Center" justifyContent="Center" class="sapInoHomepageChart">
+				<viz:VizFrame
+                            width="100%"
+                            height="100%"
+                            id="VotesFrame"
+                            vizType='column'>
+					<viz:dataset>
+						<viz.data:FlattenedDataset 
+                            data="{
+                                path: '/results',
+                                sorter : [{
+                                    path: 'CHANGED_AT_YEAR_MONTH',
+                                    descending: false
+                                }]
+                            }">
+							<viz.data:dimensions>
+								<viz.data:DimensionDefinition name="ANALYITCS_HOME_PAGE_YEAR_MONTH"
+                                    value="{CHANGED_AT_YEAR_MONTH}" />
+							</viz.data:dimensions>
+							<viz.data:measures>
+								<viz.data:MeasureDefinition name="ANALYITCS_HOME_PAGE_NUMBER_OF_VOTES"
+                                    value="{VOTE_COUNT}" />
+							</viz.data:measures>
+							<viz.data:measures>
+								<viz.data:MeasureDefinition name="ANALYITCS_HOME_PAGE_NUMBER_OF_EXPERT_VOTES"
+                                    value="{EXP_VOTE_COUNT}" />
+							</viz.data:measures>
+						</viz.data:FlattenedDataset>
+					</viz:dataset>
+					<viz:feeds>
+						<viz.feeds:FeedItem uid="valueAxis" type="Measure"
+                            values="ANALYITCS_HOME_PAGE_NUMBER_OF_VOTES" />
+						<viz.feeds:FeedItem uid="valueAxis" type="Measure"
+                            values="ANALYITCS_HOME_PAGE_NUMBER_OF_EXPERT_VOTES" />
+						<viz.feeds:FeedItem id="feedCategoryAxis" uid="categoryAxis" type="Dimension"
+                            values="ANALYITCS_HOME_PAGE_YEAR_MONTH" />
+					</viz:feeds>
+				</viz:VizFrame>
+			</VBox>
+		</content>
+	</Panel>
+</core:FragmentDefinition> 

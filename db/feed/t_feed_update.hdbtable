@@ -1,0 +1,29 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE;
+table.description = "Feed update for campaign, idea and tag";
+table.columns = [
+    {name = "ID";                     sqlType = INTEGER;                 nullable = false; comment = "Human readable Identifier";},
+    {name = "OBJECT_ID";              sqlType = INTEGER;                 nullable = false; comment = "Foreign key e.g. to t_idea.ID and t_campaign.ID";},
+    {name = "OBJECT_TYPE_CODE";       sqlType = VARCHAR;  length = 100;  nullable = false; comment = "Object type. Foreign key t_application_object.CODE";},
+    {name = "OBJECT_TEXT";            sqlType = NVARCHAR; length = 100;  nullable = true; comment = "Textual description of the object";},
+    {name = "EVENT_AT";               sqlType = TIMESTAMP;               nullable = false; comment = "Timestamp when event occurred";},
+    {name = "FEED_CODE";              sqlType = VARCHAR;  length = 512;   nullable = false; comment = "Code of a Feed e.g. a business event: IDEA_CREATED, COACH_ASSIGNED...";},
+    {name = "ACTOR_ID";               sqlType = INTEGER;                 nullable = false; comment = "Id of actor who triggered the biz event";},
+    {name = "ACTOR_NAME";             sqlType = NVARCHAR; length = 100;  nullable = true;  comment = "Name of actor";},
+    {name = "INVOLVED_ID";            sqlType = INTEGER;                 nullable = true; comment = "Id of identity which was involved by the biz event";},
+    {name = "INVOLVED_OBJ_TYPE_CODE"; sqlType = VARCHAR;  length = 100;  nullable = true; comment = "Object type. Foreign key t_application_object.CODE";},
+    {name = "INVOLVED_OBJ_TEXT";      sqlType = NVARCHAR; length = 5000; nullable = true;  comment = "Textual description of the involved object";},
+    {name = "CAMPAIGN_ID";            sqlType = INTEGER;                 nullable = true;  comment = "ID of campaign";},
+    {name = "CAMPAIGN_DATE";          sqlType = TIMESTAMP;               nullable = true; comment = "Date of campaign submission start date, end date etc";},
+    {name = "FIELD1_NAME";            sqlType = NVARCHAR; length = 500;  nullable = true;  comment = "Field name of the changed field";},
+    {name = "FIELD1_TEXT";            sqlType = VARCHAR;  length = 500;  nullable = true;  comment = "Field description of changed field";},
+    {name = "FIELD1_VALUE";           sqlType = NVARCHAR; length = 5000; nullable = true;  comment = "Field value of changed field";},
+    {name = "FIELD1_VALUE_OPTION";    sqlType = VARCHAR;  length = 600;  nullable = true;  comment = "Field type of changed field";},
+    {name = "FIELD2_NAME";            sqlType = NVARCHAR; length = 500;  nullable = true;  comment = "Field name of the changed field";},
+    {name = "FIELD2_TEXT";            sqlType = VARCHAR;  length = 500;  nullable = true;  comment = "Field description of changed field";},
+    {name = "FIELD2_VALUE";           sqlType = NVARCHAR; length = 5000; nullable = true;  comment = "Field value of changed field";},
+    {name = "FIELD2_VALUE_OPTION";    sqlType = VARCHAR;  length = 600;  nullable = true;  comment = "Field type of changed field";},
+    {name = "FILTER_TYPE_CODE";       sqlType = VARCHAR;  length = 20;   nullable = true;  comment = "Filter for backoffice";},
+    {name = "CONTENT";                sqlType = NVARCHAR; length = 5000; nullable = true;  comment = "Content of the involved object";},
+    {name = "IS_NEW";                 sqlType = TINYINT;                 nullable = false; comment = "The feed is new or not";}
+];

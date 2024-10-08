@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_EXT_TAGS_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="Tags and their Usage"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="V_TAGS_USAGE" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.tag/calculationviews/V_TAGS_USAGE</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="V_TAGS_USAGE">
+    <attributes>
+      <attribute id="ID" order="1" attributeHierarchyActive="false" descriptionColumnName="NAME" displayAttribute="false">
+        <descriptions defaultDescription="Tag"/>
+        <keyMapping columnObjectName="V_TAGS_USAGE" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Tag Name"/>
+        <keyMapping columnObjectName="V_TAGS_USAGE" columnName="NAME"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Created At"/>
+        <keyMapping columnObjectName="V_TAGS_USAGE" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CREATED_BY_ID" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Created By ID"/>
+        <keyMapping columnObjectName="V_TAGS_USAGE" columnName="CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Changed At"/>
+        <keyMapping columnObjectName="V_TAGS_USAGE" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Changed By ID"/>
+        <keyMapping columnObjectName="V_TAGS_USAGE" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CREATED_BY" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Created By"/>
+        <keyMapping columnObjectName="V_TAGS_USAGE" columnName="CREATED_BY"/>
+      </attribute>
+      <attribute id="CHANGED_BY" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Changed By"/>
+        <keyMapping columnObjectName="V_TAGS_USAGE" columnName="CHANGED_BY"/>
+      </attribute>
+      <attribute id="OBJECT_TYPE_CODE" order="9" attributeHierarchyActive="false" descriptionColumnName="OBJECT_TYPE_DESCRIPTION" displayAttribute="false">
+        <descriptions defaultDescription="Object Type"/>
+        <keyMapping columnObjectName="V_TAGS_USAGE" columnName="OBJECT_TYPE_CODE"/>
+      </attribute>
+      <attribute id="OBJECT_TYPE_NAME" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Object Type Name"/>
+        <keyMapping columnObjectName="V_TAGS_USAGE" columnName="OBJECT_TYPE_NAME"/>
+      </attribute>
+      <attribute id="OBJECT_TYPE_DESCRIPTION" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Object Type Description"/>
+        <keyMapping columnObjectName="V_TAGS_USAGE" columnName="OBJECT_TYPE_DESCRIPTION"/>
+      </attribute>
+      <attribute id="OBJECT_ID" order="12" attributeHierarchyActive="false" descriptionColumnName="OBJECT_NAME" displayAttribute="false">
+        <descriptions defaultDescription="Object"/>
+        <keyMapping columnObjectName="V_TAGS_USAGE" columnName="OBJECT_ID"/>
+      </attribute>
+      <attribute id="OBJECT_NAME" order="13" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Object Name"/>
+        <keyMapping columnObjectName="V_TAGS_USAGE" columnName="OBJECT_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="USAGE_COUNT" order="14" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Usages"/>
+        <measureMapping columnObjectName="V_TAGS_USAGE" columnName="USAGE_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

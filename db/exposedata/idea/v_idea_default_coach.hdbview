@@ -1,0 +1,25 @@
+schema = "SAP_INO";
+query = "SELECT Idea.ID AS IDEA_ID, 
+        Idea.Campaign_ID, 
+        Stage.DEFAULT_COACH, 
+        Stage.DEFAULT_TEXT AS DESCRIPTION, 
+        Resp.CODE,
+        Resp.DEFAULT_TEXT, 
+        Resp.PLAIN_CODE, 
+        Coach.NAME, 
+        Coach.EMAIL, 
+        Coach.USER_NAME
+    FROM SAP_INO.\"sap.ino.db.subresponsibility::t_responsibility_value_stage\" Stage
+        INNER JOIN SAP_INO.\"sap.ino.db.subresponsibility::t_responsibility_stage\" AS Resp 
+        ON Resp.CODE = Stage.RESP_CODE
+        INNER JOIN SAP_INO.\"sap.ino.db.idea::t_idea\" Idea
+        ON Stage.CODE = Idea.RESP_VALUE_CODE
+        INNER JOIN SAP_INO.\"sap.ino.db.iam::t_identity\" Coach 
+        ON Stage.DEFAULT_COACH = Coach.ID
+    WHERE Stage.DEFAULT_COACH IS NOT NULL
+         with read only";
+depends_on_table = ["sap.ino.db.subresponsibility::t_responsibility_stage",
+"sap.ino.db.subresponsibility::t_responsibility_value_stage",
+"sap.ino.db.idea::t_idea",
+"sap.ino.db.iam::t_identity"
+];

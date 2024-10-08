@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE;
+table.temporary = true;
+table.description = "Input table for UPDATE procedure of notification settings";
+table.columns = [
+    {name = "ID";        sqlType = INTEGER;              nullable = false; comment = "Human readable identifier";}
+];

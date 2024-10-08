@@ -1,0 +1,15 @@
+procedure "SAP_INO"."sap.ino.db.newnotification::p_notification_email_scheduled_status_update" (
+    in  it_notification_status_ids "SAP_INO"."sap.ino.db.newnotification::tt_notification_id_status"
+)
+    language sqlscript 
+    sql security definer
+    default schema SAP_INO
+    as
+begin
+    UPDATE A
+    SET A.MAIL_STATUS_CODE = B.MAIL_STATUS_CODE, 
+    	A.MAIL_STATUS_REASON = B.MAIL_STATUS_REASON
+    FROM "sap.ino.db.notification::t_notification_status" AS A
+    	INNER JOIN :it_notification_status_ids AS B
+    	ON A.ID = B.ID;
+end;

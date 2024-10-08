@@ -1,0 +1,10 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Idea Form";
+table.columns = [
+	{name = "CODE";              sqlType = VARCHAR;  length = 500; nullable = false; comment = "Form Code to relate the Campaign. Foreign key to t_campaign.FORM_CODE";},
+	{name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = false; comment = "Default Text, Name";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 500; nullable = true;  comment = "Default Long Text, Description";},
+    {name = "IS_ADMIN_FORM";     sqlType = TINYINT;  nullable = true;  comment = "Marked this form whether it is admin form";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

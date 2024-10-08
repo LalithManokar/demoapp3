@@ -1,0 +1,9 @@
+schema = "SAP_INO";
+query = "select substr(session_context('LOCALE'),0,2) as lang,
+                1 as priority from dummy
+             union distinct
+         select iso_code as lang, 2 as priority
+             from \"sap.ino.db.basis::v_sys_default_language\" 
+         with read only";
+
+depends_on_view = ["sap.ino.db.basis::v_sys_default_language"];

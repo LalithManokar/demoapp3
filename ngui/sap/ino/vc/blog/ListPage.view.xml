@@ -1,0 +1,18 @@
+<mvc:View
+    controllerName="sap.ino.vc.blog.ListPage"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Page 
+        id="bloglistpage"
+        enableScrolling="false"
+		app:aofObject="sap.ino.xs.object.blog.Blog">
+        <customHeader>
+            <core:Fragment fragmentName="sap.ino.vc.blog.fragments.ObjectListToolbar" type="XML"/>
+        </customHeader>
+        <content>
+            <core:Fragment fragmentName="sap.ino.vc.commons.fragments.ObjectList" type="XML" />
+        </content>
+    </Page>
+</mvc:View>

@@ -1,0 +1,26 @@
+schema = "SAP_INO";
+query  = "
+         SELECT idea_decision.id, 
+	            status_code, 
+	            idea_decision.idea_id, 
+	            phase_code,
+	            reason_code, 
+	            coalesce(resolved_text.content, value_option.default_text) AS reason_code_text, 
+	            reason
+         FROM \"sap.ino.db.idea.ext::v_ext_idea_decision\" AS idea_decision
+	       INNER JOIN (
+		      SELECT idea_id, 
+			         max(id) AS id
+		      FROM \"sap.ino.db.idea.ext::v_ext_idea_decision\"
+		      GROUP BY idea_id
+	      ) AS max_id
+	      ON max_id.id = idea_decision.id AND idea_decision.idea_id = max_id.idea_id
+	   LEFT OUTER JOIN \"sap.ino.db.basis::t_value_option\" AS value_option
+	      ON value_option.code = idea_decision.reason_code
+	   LEFT OUTER JOIN \"sap.ino.db.basis::v_resolved_text\" AS resolved_text
+	   ON resolved_text.text_id = idea_decision.reason_code
+	   with read only";
+
+depends_on_view  = ["sap.ino.db.idea.ext::v_ext_idea_decision",
+                    "sap.ino.db.basis::v_resolved_text"];
+depends_on_table = ["sap.ino.db.basis::t_value_option"];                   

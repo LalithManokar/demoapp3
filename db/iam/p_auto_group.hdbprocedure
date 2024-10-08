@@ -1,0 +1,13 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_auto_group" (
+    in   iv_appl_user_id                           INTEGER,
+    in   it_user                                   "SAP_INO"."sap.ino.db.iam::t_identity",
+    out  ov_failed_to_recompute_transitive_closure TINYINT
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    call "SAP_INO"."sap.ino.db.iam::p_auto_group_calculate" (:it_user, :lt_target_group_assignments);
+    call "SAP_INO"."sap.ino.db.iam::p_assign_group" (:iv_appl_user_id, 'AUTOMATIC', :it_user, :lt_target_group_assignments, :ov_failed_to_recompute_transitive_closure);
+end;

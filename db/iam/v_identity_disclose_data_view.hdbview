@@ -1,0 +1,88 @@
+schema = "SAP_INO";
+query ="select  ident_role.object_type_code,
+        ident_role.object_id,
+        ident_role.role_code,
+        ident_role.identity_id,
+        (case ident_role.object_type_code
+            when 'CAMPAIGN' then camp.name
+            when 'IDEA' THEN idea.name
+            when 'BLOG' THEN blog.title
+            when 'WALL' THEN wall.name
+            else null
+         end) as name,
+        (case ident_role.object_type_code 
+        when 'CAMPAIGN_COMMENT' then camp_comment.object_id
+        when 'EVALUATION' then eval.idea_id
+        ELSE NULL
+        END ) as corr_object_id,
+        (case ident_role.object_type_code 
+        when 'CAMPAIGN_COMMENT' then camp_comment.campaign_name
+       when 'EVALUATION' then eval.idea_name        
+        ELSE NULL
+        END ) as corr_object_name,
+        count(distinct ident_role.object_type_code) as object_count
+        from \"sap.ino.db.iam::v_object_identity_role_transitive\" as ident_role 
+        left outer join \"sap.ino.db.campaign::v_campaign_small\" as camp
+            on camp.id = ident_role.object_id  and ident_role.object_type_code ='CAMPAIGN'
+        left outer join \"sap.ino.db.idea::v_idea_full\" as idea
+           on idea.id = ident_role.object_id and ident_role.object_type_code ='IDEA'
+        left outer join \"sap.ino.db.blog::t_blog\" as blog
+           on blog.id = ident_role.object_id and ident_role.object_type_code = 'BLOG'
+        left outer join \"sap.ino.db.wall::t_wall\" as wall
+           on wall.id = ident_role.object_id and ident_role.object_type_code = 'WALL'   
+        left outer join \"sap.ino.db.campaign::v_campaign_comment\" as camp_comment
+          on camp_comment.id = ident_role.object_id and ident_role.object_type_code ='CAMPAIGN_COMMENT'
+        left outer join \"sap.ino.db.evaluation::v_evaluation\" as eval
+          on eval.id = ident_role.object_id and ident_role.object_type_code = 'EVALUATION'
+        where ident_role.ROLE_CODE in ('CAMPAIGN_MANAGER','IDEA_SUBMITTER','COMMENT_OWNER','EVALUATION_OWNER','BLOG_AUTHOR','WALL_OWNER') 
+        and NOT (ident_role.object_type_code ='BLOG' and role_code = 'COMMENT_OWNER')and not
+                 (ident_role.object_type_code ='COMMENT' AND role_code ='COMMENT_OWNER' )and not
+                 (ident_role.object_type_code ='EVAL_REQUEST' AND role_code ='COMMENT_OWNER')
+        group by ident_role.object_type_code,ident_role.object_id,ident_role.role_code,ident_role.identity_id,
+                 camp.name,idea.name,blog.title,wall.name,camp_comment.object_id,camp_comment.campaign_name,eval.idea_id,
+                 eval.idea_name
+        union 
+        select 'TAG' AS object_type_code,
+        tag.id as object_id,
+        'TAG_OWNER' AS role_code,
+        TAG.CREATED_BY_ID as identity_id,
+        tag.name,
+        null as corr_object_id,
+        '' as corr_object_name,
+        count(ID) as object_count from \"sap.ino.db.tag::v_tag\" as tag
+        GROUP BY id,CREATED_BY_ID ,name  
+        union
+        select 'REWARD' AS object_type_code,
+        reward.id as object_id,
+        'REWARD_OWNER' AS role_code,
+        reward.CREATED_BY_ID as identity_id,
+        '' as name ,
+        reward.idea_id as corr_object_id,
+        reward.idea_name AS corr_object_name,
+        count(ID) as object_count from \"sap.ino.db.reward::v_reward_list\" as reward
+        GROUP BY id,created_by_id,idea_id,idea_name
+        union
+        select 'IDEA_COMMENT' AS object_type_code,
+        idea_comment.id as object_id,
+        'IDEA_COMMENT_OWNER' AS role_code,
+        idea_comment.created_by_id as identity_id,
+        '' as name ,
+       idea_comment.object_id as corr_object_id,
+       idea_medium.name as corr_object_name,
+        count(idea_comment.ID) as object_count from \"sap.ino.db.idea::v_idea_comment\" as idea_comment
+        left outer join \"sap.ino.db.idea::v_idea_medium\" as idea_medium
+        on idea_comment.object_id = idea_medium.id
+        GROUP BY idea_comment.id,idea_comment.created_by_id,object_id,idea_medium.name
+        order by object_type_code asc";
+depends_on_view=["sap.ino.db.iam::v_object_identity_role_transitive",
+                "sap.ino.db.campaign::v_campaign_small",
+                "sap.ino.db.idea::v_idea_medium",
+                "sap.ino.db.campaign::v_campaign_comment",
+                "sap.ino.db.evaluation::v_evaluation",
+                "sap.ino.db.tag::v_tag",
+                "sap.ino.db.reward::v_reward_list",
+                "sap.ino.db.idea::v_idea_comment",
+                "sap.ino.db.idea::v_idea_full"];
+depends_on_table=["sap.ino.db.wall::t_wall","sap.ino.db.blog::t_blog"];
+        
+        

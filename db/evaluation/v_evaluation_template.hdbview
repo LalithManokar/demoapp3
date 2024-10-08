@@ -1,0 +1,26 @@
+schema = "SAP_INO";
+query = "
+    select 
+        model.code as model_code,
+        model.enable_formula as model_enable_formula,
+        model.calc_formula as model_calc_formula,
+        idea.id as idea_id,
+        idea.name as idea_name,
+        idea.phase_code as idea_phase_code,
+        'sap.ino.config.EVAL_DRAFT' as status_code,
+        campaign_phase.auto_eval_pub_code as auto_eval_pub_code,
+        (select count(criterion.model_code) from \"sap.ino.db.evaluation::t_criterion\" as criterion
+    	    where model.code = criterion.model_code  and criterion.aggregation_type = 'MATRIX') as is_matrix_aggregation
+        from \"sap.ino.db.idea::t_idea\" as idea
+            inner join \"sap.ino.db.campaign::t_campaign_phase\" as campaign_phase
+                on  campaign_phase.campaign_id = idea.campaign_id and
+                    campaign_phase.phase_code = idea.phase_code
+            inner join \"sap.ino.db.evaluation::t_model\" as model
+                on  model.code = campaign_phase.evaluation_model_code
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.idea::t_idea",
+                    "sap.ino.db.campaign::t_campaign_phase",
+                    "sap.ino.db.evaluation::t_criterion",
+                    "sap.ino.db.evaluation::t_model"];

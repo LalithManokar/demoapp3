@@ -1,0 +1,24 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+                         xmlns:l="sap.ui.layout"
+                         xmlns:m="sap.m"
+                         xmlns:mvc="sap.ui.core.mvc"
+                        >
+    <m:Dialog
+        title="{i18n>GENERAL_APPLICATION_TIT_CONCURRENCY_CONFLICT}"
+        resizable = "true">
+        <m:content>
+            <l:VerticalLayout>
+                <l:content>
+                    <m:Text text = "{i18n>GENERAL_APPLICATION_EXP_CONCURRENCY_CONFLICT}"></m:Text>
+                    <m:Text></m:Text>
+                    <m:Link text = "{i18n>GENERAL_APPPLICATION_BUT_CONCURRENCY_CONFLICT_VIEW_OTHER_STATE}" press= "showLatestVestion"></m:Link>
+                </l:content>
+            </l:VerticalLayout>
+        </m:content>
+        <m:buttons>
+            <m:Button text = "{i18n>GENERAL_APPPLICATION_BUT_CONCURRENCY_CONFLICT_FORCE}" press="onIngoreConflict"></m:Button>
+            <m:Button text = "{i18n>GENERAL_APPPLICATION_BUT_CONCURRENCY_CONFLICT_MERGE}" press="onMergeConflict"></m:Button>
+            <m:Button text=  "{i18n>BO_COMMON_BUT_CANCEL}" press="onCancelConflict" ></m:Button>
+        </m:buttons>
+    </m:Dialog>
+</core:FragmentDefinition>

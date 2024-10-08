@@ -1,0 +1,4 @@
+schema = "SAP_INO";
+query = "select * from \"sap.ino.db.basis::v_local_system_setting_full\" where has_local_system_setting = 1 with read only";
+
+depends_on_view = ["sap.ino.db.basis::v_local_system_setting_full"];

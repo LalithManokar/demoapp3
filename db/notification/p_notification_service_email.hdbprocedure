@@ -1,0 +1,116 @@
+procedure "SAP_INO"."sap.ino.db.notification::p_notification_service_email" (
+    out ot_notifications "SAP_INO"."sap.ino.db.notification::tt_notification_email"
+)
+language sqlscript
+sql security definer
+default schema SAP_INO as
+begin
+    --select all notifications that have not been processed before and
+    --will not be sent as an email
+    lt_deactivated_notifications =
+        select
+            status.id as id
+        from
+            "sap.ino.db.notification::t_notification_status" as status
+        inner join
+            "sap.ino.db.notification::t_notification" as notification
+            on
+               notification.id = status.notification_id
+        inner join
+            "sap.ino.db.notification::v_mail_notification_settings" as identity_notification
+            on
+                status.user_id = identity_notification.user_id
+            and
+                ( identity_notification.value = 'inactive' and notification.object_type_code <> 'MAIL' )
+            and
+                status.mail_status_code = 'UNSENT'
+        union all
+        select
+            status.id as id
+        from     
+            "sap.ino.db.notification::t_notification_status" as status
+        inner join
+            "sap.ino.db.notification::t_notification" as notification
+            on
+               notification.id = status.notification_id
+        where
+            notification.campaign_id not in
+                ( select id from "sap.ino.db.campaign::t_campaign" )
+            and (
+                notification.object_type_code = 'IDEA' and 
+                notification.object_id not in ( select id from "sap.ino.db.idea::t_idea" )
+           --     and notification.notification_code <> 'IDEA_DELETED'
+            );
+
+    --update notifications that will not be sent as mail due to user specific settings
+    update
+        "sap.ino.db.notification::t_notification_status" as status
+    set
+        status.mail_status_code = 'DEACTIVATED'
+    from
+        "sap.ino.db.notification::t_notification_status" as status
+    inner join 
+        :lt_deactivated_notifications as notification_status
+         on 
+             status.id = notification_status.id;
+    
+    --skip user where mail_address is missing
+    update
+        "sap.ino.db.notification::t_notification_status" as status
+    set
+        status.mail_status_code = 'SKIPPED'
+    from
+        "sap.ino.db.notification::t_notification_status" as status
+    inner join
+        "sap.ino.db.iam::t_identity" as identity
+        on status.user_id = identity.id
+        and identity.email is null
+        and status.mail_status_code = 'UNSENT';
+
+    ot_notifications = select status.id as id,
+                status.notification_id,
+                status.user_id,
+                status.role_code,
+                status.status_code,
+                notification.campaign_id,
+                notification.event_at,
+                notification.notification_code,
+                notification.object_type_code,
+                notification.object_id,
+                notification.object_text,
+                notification.sub_text,
+                notification.response,
+                notification.actor_id,
+                notification.owner_id,
+                notification.involved_id,
+                identity.name,
+                identity.email,
+                identity.is_external,
+                locale.locale
+            from
+                "sap.ino.db.notification::t_notification_status" as status
+            inner join
+                "sap.ino.db.notification::t_notification" as notification
+                on 
+                    notification.id = status.notification_id
+            inner join
+                "sap.ino.db.iam::t_identity" as identity
+                on 
+                    status.user_id = identity.id
+                and 
+                    status.mail_status_code = 'UNSENT'
+            inner join
+                "sap.ino.db.notification::v_mail_notification_settings" as identity_notification
+                on
+                    status.user_id = identity_notification.user_id
+                and
+                    ( identity_notification.value = 'active' or notification.object_type_code = 'MAIL' )
+            left outer join
+                "sap.ino.db.basis::v_user_locale" as locale
+                on 
+                    locale.user_id = identity.id
+            order by
+                status.user_id,
+                notification.campaign_id,
+                notification.event_at desc;
+end;

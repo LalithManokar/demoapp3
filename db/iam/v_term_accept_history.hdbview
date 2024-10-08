@@ -1,0 +1,70 @@
+schema = "SAP_INO";
+query = "SELECT     avaliable_term.*, 
+	                term_history.term_accepted_at,
+	                case when term_history.term_accepted_at is not null and (term_history.TERM_ACTION_CODE is null or term_history.TERM_ACTION_CODE = 0)
+	                  then 'BO_ANA_FLD_YES'
+	                  else 'BO_ANA_FLD_NO'
+	                end as term_accepted,
+	                cast(1 as integer) as count,
+	                case when avaliable_term.active_term = 1
+	                  then 'sap.ino.config.ACTIVE'
+	                  else 'sap.ino.config.INACTIVE'
+	                end as status_code,
+	                case when term_history.term_accepted_at is not null and (term_history.TERM_ACTION_CODE is null or term_history.TERM_ACTION_CODE = 0)
+	                  then cast( 1 as integer ) 
+	                  else cast(0 as integer )
+	                end as count_accept,
+	                case when term_history.term_accepted_at is null or term_history.TERM_ACTION_CODE = 1
+	                  then cast( 1 as integer ) 
+	                  else cast( 0 as integer )
+	                end as count_not_accept
+               FROM (
+		                SELECT user.id AS user_id, 
+			                   available_term.term_code, 
+			                   available_term.term_changed_at,
+			                   available_term.active_term
+		                FROM \"sap.ino.db.iam::v_identity\" AS user,
+			              ( select available_term.term_code, available_term.term_changed_at, 
+			                case when active_term.term_code is not null
+			                  then cast(1 as tinyint)
+			                  else cast(0 as tinyint)
+			                end as active_term
+			                from
+						    (
+						      SELECT DISTINCT accept_history.term_code, 
+					                          accept_history.term_changed_at
+				              FROM \"sap.ino.db.iam::t_term_accept_history\" AS accept_history
+				        UNION
+				        
+						SELECT term.term_code, 
+					           text_module.changed_at AS term_changed_at
+				        FROM (
+							  SELECT value AS term_code
+						      FROM \"sap.ino.db.basis::v_system_setting\"
+						      WHERE code = 'sap.ino.config.TERMS_AND_CONDITIONS_TEXT'
+					   ) AS term
+					   INNER JOIN \"sap.ino.db.basis::t_text_module_stage\" AS text_module
+					    ON text_module.code = term.term_code ) as available_term
+					    					    left outer join (SELECT term.term_code, 
+					           text_module.changed_at AS term_changed_at
+				        FROM (
+							  SELECT value AS term_code
+						      FROM \"sap.ino.db.basis::v_system_setting\"
+						      WHERE code = 'sap.ino.config.TERMS_AND_CONDITIONS_TEXT'
+					   ) AS term
+					   INNER JOIN \"sap.ino.db.basis::t_text_module_stage\" AS text_module
+					    ON text_module.code = term.term_code) as active_term on active_term.term_code = available_term.term_code and (active_term.term_changed_at = available_term.term_changed_at or  active_term.term_changed_at is null)
+					
+			   ) AS available_term
+	         ) AS avaliable_term
+	        LEFT OUTER JOIN \"sap.ino.db.iam::t_term_accept_history\" AS term_history
+	        ON term_history.user_id = avaliable_term.user_id AND
+	           avaliable_term.term_code = term_history.term_code AND
+	           (avaliable_term.term_changed_at = term_history.term_changed_at or avaliable_term.term_changed_at is null)
+	        with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_term_accept_history",
+                    "sap.ino.db.basis::t_text_module_stage"];
+                    
+depends_on_view  = ["sap.ino.db.iam::v_identity",
+                    "sap.ino.db.basis::v_system_setting"];                  

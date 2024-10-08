@@ -1,0 +1,6 @@
+schema     = "SAP_INO";
+start_with = 1;
+minvalue   = 1;
+cycles     = false;
+reset_by   = "select nextid from \"sap.ino.db.iam::v_object_identity_limitation_action_seq_reset\"";
+depends_on_view = "sap.ino.db.iam::v_object_identity_limitation_action_seq_reset";

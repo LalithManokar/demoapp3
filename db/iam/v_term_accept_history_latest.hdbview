@@ -1,0 +1,27 @@
+schema = "SAP_INO";
+query = "
+    SELECT 
+        ID,
+    	TERM_CODE,
+    	TERM_ID,
+    	TERM_CHANGED_AT,
+    	USER_ID,
+    	TERM_ACCEPTED_AT,
+    	TERM_ACTION_CODE
+    FROM 
+        (SELECT 
+            ROW_NUMBER() OVER (PARTITION BY his.USER_ID,his.TERM_ID ORDER BY his.ID DESC) ROW_ORDER,
+            ID,
+        	TERM_CODE,
+        	TERM_ID,
+        	TERM_CHANGED_AT,
+        	USER_ID,
+        	TERM_ACCEPTED_AT,
+        	TERM_ACTION_CODE
+        FROM
+            \"sap.ino.db.iam::t_term_accept_history\" AS his)
+    WHERE ROW_ORDER = 1
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.idea::t_decision", "sap.ino.db.idea::t_idea", "sap.ino.db.iam::t_identity"];

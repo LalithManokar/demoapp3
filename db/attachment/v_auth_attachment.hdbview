@@ -1,0 +1,50 @@
+schema = "SAP_INO";
+query = " 
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_folder\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_idea\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_idea_internal\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_campaign\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_identity\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_wall\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_wall_item\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_local_system_setting\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_other\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_blog\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_campaign_milestone\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_comment\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_internal_notes\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_evaluation\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_gamification\"
+	union all
+	select attachment_id from \"sap.ino.db.attachment::v_auth_attachment_common\"
+    with read only";
+
+depends_on_view = ["sap.ino.db.attachment::v_auth_attachment_folder",
+					"sap.ino.db.attachment::v_auth_attachment_idea",
+					"sap.ino.db.attachment::v_auth_attachment_idea_internal",
+					"sap.ino.db.attachment::v_auth_attachment_campaign",
+					"sap.ino.db.attachment::v_auth_attachment_identity",
+					"sap.ino.db.attachment::v_auth_attachment_wall",
+					"sap.ino.db.attachment::v_auth_attachment_wall_item",
+					"sap.ino.db.attachment::v_auth_attachment_campaign_milestone",
+					"sap.ino.db.attachment::v_auth_attachment_local_system_setting",
+					"sap.ino.db.attachment::v_auth_attachment_blog",
+					"sap.ino.db.attachment::v_auth_attachment_other",
+					"sap.ino.db.attachment::v_auth_attachment_comment",
+					"sap.ino.db.attachment::v_auth_attachment_internal_notes",
+					"sap.ino.db.attachment::v_auth_attachment_evaluation",
+					"sap.ino.db.attachment::v_auth_attachment_gamification"];

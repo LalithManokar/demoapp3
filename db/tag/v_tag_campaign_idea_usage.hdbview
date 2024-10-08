@@ -1,0 +1,50 @@
+schema = "SAP_INO";
+query = "
+    select distinct
+        tag.*,
+        case IFNULL(follow_tag.object_id, -999)
+        	when -999 then 0
+        	else 1
+        end as IS_FOLLOWED,
+        follow_tag.id as FOLLOW_ID,
+        IFNULL(idea_tag.idea_count, 0) as IDEA_USAGE_COUNT,
+        IFNULL(campaign_tag.campaign_count, 0) as CAMPAIGN_USAGE_COUNT
+    from \"sap.ino.db.tag::t_tag\" as tag
+        left join \"sap.ino.db.tag::t_assignment_tag\" as assignment_tag
+            on tag.id = assignment_tag.tag_id
+        left join \"sap.ino.db.follow::v_follow\" as follow_tag
+        	on tag.id = follow_tag.object_id
+        left join (
+            select object_idea_tag.tag_id, COUNT(object_idea_tag.object_id) as idea_count
+            from \"sap.ino.db.tag::t_object_tag\" as object_idea_tag
+            inner join \"sap.ino.db.idea::t_idea\" as idea
+            on object_idea_tag.object_id = idea.id
+            and object_idea_tag.object_type_code = 'IDEA'
+            and idea.status_code <> 'sap.ino.config.DRAFT'
+            inner join \"sap.ino.db.idea::v_auth_ideas\" as auth_ideas
+            on object_idea_tag.object_id = auth_ideas.idea_id
+            group by object_idea_tag.tag_id, object_idea_tag.object_type_code
+        ) as idea_tag
+            on tag.id = idea_tag.tag_id
+        left join (
+            select object_campaign_tag.tag_id, COUNT(object_campaign_tag.object_id) as campaign_count
+            from \"sap.ino.db.tag::t_object_tag\" as object_campaign_tag
+            inner join \"sap.ino.db.campaign::t_campaign\" as campaign
+            on object_campaign_tag.object_id = campaign.id
+            and campaign.status_code <> 'sap.ino.config.CAMP_DRAFT'
+            and object_campaign_tag.object_type_code = 'CAMPAIGN'
+            inner join \"sap.ino.db.campaign::v_auth_campaigns\" as auth_campaigns
+            on object_campaign_tag.object_id = auth_campaigns.campaign_id
+            group by object_campaign_tag.tag_id, object_campaign_tag.object_type_code
+        ) as campaign_tag
+            on tag.id = campaign_tag.tag_id
+    with read only";
+    
+
+depends_on_table = ["sap.ino.db.tag::t_tag", "sap.ino.db.tag::t_assignment_tag", 
+"sap.ino.db.tag::t_object_tag",
+"sap.ino.db.idea::t_idea",
+"sap.ino.db.campaign::t_campaign"];
+depends_on_view = ["sap.ino.db.follow::v_follow", "sap.ino.db.idea::v_auth_ideas_read", 
+"sap.ino.db.campaign::v_auth_campaigns",
+"sap.ino.db.idea::v_auth_ideas"];

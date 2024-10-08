@@ -1,0 +1,64 @@
+<mvc:View
+    controllerName="sap.ino.vc.analytics.Display"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	displayBlock="true">
+	<Page enableScrolling="true" class="sapInoSmartChartBTn">
+		<!-- use this to make the table occupy the available screen height -->
+		<customHeader>
+			<Toolbar>
+				<Button icon="sap-icon://down" text="{i18n>BO_ANA_BUT_PARAMETER}"
+					press="onFilter" class="sapSelectionParametersBtn" />
+				<ToolbarSpacer />
+				<Title id="chartPage" level="H2" text="{object>/CONFIG/Title}"/>
+				<ToolbarSpacer />
+    			<SegmentedButton id="typeSegmentedButton" class="sapInoSegmentedButton sapUiTinyMarginTop">
+    				<Button icon="sap-icon://bar-chart" press="onNavigateToChart" />
+    				<Button id="navigateToTable" icon="sap-icon://list" press="onNavigateToTable" />
+    			</SegmentedButton>
+			</Toolbar>
+		</customHeader>
+		<Toolbar>
+			<ToolbarSpacer />
+			    <SegmentedButton select="onSelect" id="segmentedButton"/>
+			<ToolbarSpacer />
+		</Toolbar>
+		<VBox id="oVBox" fitContainer="true"></VBox>
+		<footer>
+			<OverflowToolbar id="otbFooter" visible="{objectContext>/otbFooterVisible}">
+				<Button id="showFilter" text="{i18n>BO_ANA_BUT_SHOW_FILTER}" press="onShowFilter" icon="sap-icon://filter"
+					class="sapUiSmallMarginBottom">
+					<layoutData>
+						<OverflowToolbarLayoutData
+							moveToOverflow="false" />
+					</layoutData>
+				</Button>
+				<core:Fragment fragmentName="sap.ino.vc.commons.fragments.MessageLog"
+					type="XML" class="sapUiSmallMarginBottom"/>
+				<ToolbarSpacer />
+				<Button text="{i18n>BO_ANA_BUT_EXPORT}" press="onExport" class="sapUiSmallMarginBottom"
+					id="exportButton" visible="{=${device>/system/desktop}}">
+					<layoutData>
+						<OverflowToolbarLayoutData
+							moveToOverflow="false" />
+					</layoutData>
+				</Button>
+				<Button text="{i18n>BO_ANA_BUT_SAVE}" press="onSave" class="sapUiSmallMarginBottom"
+					id="saveButton" enabled="{objectContext>/saveButtonEnabled}">
+					<layoutData>
+						<OverflowToolbarLayoutData
+							moveToOverflow="false" />
+					</layoutData>
+				</Button>
+				<Button text="{i18n>BO_ANA_BUT_SAVE_AS}" press="onSaveAs" class="sapUiSmallMarginBottom">
+					<layoutData>
+						<OverflowToolbarLayoutData
+							moveToOverflow="false" />
+					</layoutData>
+				</Button>
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>
+

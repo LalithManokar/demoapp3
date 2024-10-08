@@ -1,0 +1,37 @@
+schema = "SAP_INO";
+query = 
+"
+select object_id as evaluation_id, role_eval.identity_id
+from \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as role_eval
+inner join \"sap.ino.db.iam::t_role_privilege\" as role_privilege
+    on  role_privilege.role_code = role_eval.role_code
+inner join \"sap.ino.db.evaluation::t_evaluation\" as evaluation
+    on  role_eval.object_id = evaluation.id
+where  role_eval.object_type_code = 'EVALUATION' and 
+       role_privilege.privilege = 'EVALUATION_UPDATE' and
+       evaluation.status_code = 'sap.ino.config.EVAL_DRAFT'
+        
+union all 
+
+select eval.id as evaluation_id, role_camp.identity_id
+from \"sap.ino.db.evaluation::t_evaluation\" as eval
+inner join \"sap.ino.db.idea::t_idea\" as idea
+    on  idea.id = eval.idea_id 
+left outer join \"sap.ino.db.subresponsibility::t_responsibility_value_stage\" as resp_value
+    on resp_value.code = idea.resp_value_code
+inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as role_camp
+    on  (role_camp.object_id = idea.campaign_id and
+        role_camp.object_type_code = 'CAMPAIGN')
+        or (role_camp.object_id = resp_value.id and role_camp.object_type_code = 'RESPONSIBILITY')
+inner join \"sap.ino.db.iam::t_role_privilege\" as role_privilege
+    on  role_privilege.role_code = role_camp.role_code 
+where role_privilege.privilege = 'CAMP_EVAL_DELETE'
+with read only
+";
+
+depends_on_table = ["sap.ino.db.idea::t_idea",
+                    "sap.ino.db.evaluation::t_evaluation",
+                    "sap.ino.db.iam::t_role_privilege",
+                    "sap.ino.db.subresponsibility::t_responsibility_value_stage"];
+
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];

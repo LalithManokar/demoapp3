@@ -1,0 +1,23 @@
+# TRANSLATE
+# XTXT, 300
+sap.ino.config.COMPANY=Company
+# XTXT, 300
+sap.ino.config.COST_CENTER=Cost Center
+# XTXT, 300
+sap.ino.config.OFFICE=Office
+# XTXT, 300
+sap.ino.config.PHONE=Phone
+# XTXT, 300
+sap.ino.config.MOBILE=Mobile
+# XTXT, 300
+sap.ino.config.EMAIL=Email
+# XTXT, 300
+sap.ino.config.STREET=Street
+# XTXT, 300
+sap.ino.config.ZIP_CODE=Zip Code
+# XTXT, 300
+sap.ino.config.CITY=City
+# XTXT, 300
+sap.ino.config.COUNTRY=Country/Region
+# XTXT, 300
+sap.ino.config.ORGANIZATION=Organization

@@ -1,0 +1,133 @@
+<core:FragmentDefinition 
+    xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+	xmlns:ino="sap.ino.controls"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:tb="sap.ui.table">
+    <Dialog
+        id="massIdeaMergeDialog"
+        title="{i18n>BO_IDEA_TIT_MASS_MERGE}"
+        resizable="false"
+        contentWidth="750px"
+        contentHeight="50%"
+        class="sapInoScrollContainer">
+        <content>
+            <NavContainer
+                id="massIdeaMergeNavCon">
+                <pages>
+                    <Page id="massMerge01" showHeader="false">
+                        <VBox>
+                            <Text id="step1Text" text="{i18n>IDEA_MASS_MERGE_FLD_STEP1}" class = "sapInoFontWeightBold sapUiSmallMarginTop sapUiSmallMarginBegin" />
+                            <Select
+                                ariaLabelledBy="step1Text"
+    					        forceSelection="true"
+    					        selectedKey="{merge>/leadingIdeaId}"
+    					        items="{merge>/leadingIdeaList}"
+    					        change="handleChangeLeadingMergeIdea"
+    					        class = "sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
+    					        width="40%">
+    					        <core:Item key="{merge>ID}" text="{merge>NAME}" />
+    				        </Select>
+                        <!-- leading idea selection -->
+                        </VBox>
+                        <VBox>
+                            <Text text="{i18n>IDEA_MASS_MERGE_FLD_IDEAS_TO_BE_MERGE}" class = "sapUiSmallMarginTop sapUiSmallMarginBegin" />
+                            <List
+                                id="ideaToMerge"
+                                growing="false"
+                                noDataText="{i18n>IDEA_MASS_MERGE_NO_UNMERGED_IDEAS}"
+                                class="sapInoListWidthM sapInoSuppressPinBtn" />
+                        </VBox>
+                    </Page>
+                    <Page id="massMerge02" showHeader="false" visible="{merge>/mergeRuleEnable}">
+                        <VBox>
+                            <Text text="{i18n>IDEA_MASS_MERGE_FLD_STEP2}" class = "sapInoFontWeightBold sapUiSmallMarginBegin sapUiSmallMarginTop sapUiSmallMarginBottom" />
+                            <tb:Table
+                                selectionMode="None"
+                                rows="{rule>/}"
+                                visibleRowCount="4"
+                                class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapInoIdeaMergeRuleTbl">
+                                <tb:columns>
+                                    <tb:Column>
+                                        <Label text="{i18n>IDEA_MASS_MERGE_RULE_TABLE_COL_MERGE_TYPE}" textAlign="Center" width="100%" />
+                                        <tb:template>
+                                            <Text text="{rule>MERGE_TYPE}" textAlign="Center" width="100%"  />
+                                        </tb:template>
+                                    </tb:Column>
+                                    <tb:Column hAlign="Center">
+                                        <Label text="{i18n>IDEA_MASS_MERGE_RULE_TABLE_COL_ACTION_ADD}" textAlign="Center" width="100%" />
+                                        <tb:template>
+                                            <RadioButton selected="{rule>ADD}" groupName="{rule>OBJECT_TYPE_CODE}" enabled="{rule>PROMPT}" />
+                                        </tb:template>
+                                    </tb:Column>
+                                    <tb:Column hAlign="Center">
+                                        <Label text="{i18n>IDEA_MASS_MERGE_RULE_TABLE_COL_ACTION_IGNORE}" textAlign="Center" width="100%" />
+                                        <tb:template>
+                                            <RadioButton selected="{rule>IGNORE}" groupName="{rule>OBJECT_TYPE_CODE}" enabled="{rule>PROMPT}" />
+                                        </tb:template>
+                                    </tb:Column>
+                                </tb:columns>
+                            </tb:Table>
+                            <Text text="{i18n>IDEA_MASS_MERGE_RULE_COMMENTS_ADD}" class="sapInoFontWeightBold sapUiSmallMarginBegin sapUiSmallMarginTop" />
+                            <Text text="{i18n>IDEA_MASS_MERGE_RULE_COMMENTS_ADD_NOTES}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd" />
+                            <Text text="{i18n>IDEA_MASS_MERGE_RULE_COMMENTS_IGNORE}" class="sapInoFontWeightBold sapUiSmallMarginBegin sapUiMediumMarginTop" />
+                            <Text text="{i18n>IDEA_MASS_MERGE_RULE_COMMENTS_IGNORE_NOTES}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd" />
+                        </VBox>
+                    </Page>
+                    <Page id="massMerge03" showHeader="false">
+                        <VBox>
+                            <Text text="{i18n>IDEA_MASS_MERGE_FLD_STEP3}" class = "sapInoFontWeightBold sapUiSmallMarginBegin sapUiSmallMarginTop sapUiSmallMarginBottom" />
+                            <Table items="{merge>/mergeResultList}">
+                                <columns>
+                                    <Column>
+                                        <Text text="{i18n>IDEA_MASS_MERGE_CONFIRM_TABLE_COL_IDEA_TYPE}" />
+                                    </Column>
+                                    <Column>
+                                        <Text text="{i18n>IDEA_MASS_MERGE_CONFIRM_TABLE_COL_IDEA_NAME}" />
+                                    </Column>
+                                    <Column>
+                                        <Text text="{i18n>IDEA_MASS_MERGE_CONFIRM_TABLE_COL_MERGE_RESULT}" />
+                                    </Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{merge>ideaType}" />
+                                            <Link text="{merge>ideaName}" href="{ path: 'merge>ideaID', formatter: '.formatter.ideaNavigationLink' }" target="_blank" />
+                                            <ObjectStatus text="{merge>result}" state="{= ${merge>isLeading} ? 'Success' : 'None'}" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                            <ObjectStatus
+                                visible="{parts: ['merge>/pageview', 'merge>/selectedIdeas', 'merge>/leadingIdeaId', 'merge>/leadingIdeaList'], formatter: '.formatVoteMergeAbleMsgDisplay'}"
+                                text="{i18n>IDEA_MESS_MERGE_RULE_VOTE_CONFIRM_TEXT}" 
+                                state="Warning" 
+                                class="sapInoFontWeightBold sapUiSmallMarginBegin sapUiSmallMarginTop sapUiSmallMarginBottom" />
+                            <Text text="{i18n>IDEA_MASS_MERGE_RULE_CONFIRM_TEXT}"  class = "sapInoFontWeightBold sapUiSmallMarginBegin sapUiSmallMarginTop sapUiSmallMarginBottom" />
+                        </VBox>
+                    </Page>
+                </pages>
+            </NavContainer>
+        </content>
+        <buttons>
+            <Button text="{i18n>IDEA_MERGE_BTN_PREVIOUS_STEP}" visible="{= ${merge>/pageview} !== 'massMerge01'}" press="handleMassIdeaMergePrevStep" />
+            <Button
+                text="{i18n>IDEA_MERGE_BTN_NEXT_STEP}"
+                visible="{= ${merge>/pageview} === 'massMerge01'}" 
+                enabled="{= parseInt(${merge>/leadingIdeaId}) > -1 &amp;&amp; ${merge>/selectedIdeas}.length > 0}"
+                press="handleMassIdeaMergeNextStep" />
+            <Button
+                text="{i18n>IDEA_MERGE_BTN_NEXT_STEP}" 
+                enabled="{merge>/mergeable}"
+                visible="{= ${merge>/pageview} === 'massMerge02'}"
+                press="handleMassIdeaMergeToConfirmStep"/>
+            <Button
+                text="{i18n>IDEA_LIST_BTN_MERGE}" 
+                visible="{= ${merge>/pageview} === 'massMerge03'}" 
+                press="handleMassMergeExecute" />
+            <Button text="{i18n>BO_COMMON_BUT_CANCEL}" press="handleMassIdeaMergeCancel" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

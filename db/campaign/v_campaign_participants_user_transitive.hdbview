@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "
+    select object_identity.* 
+	from \"sap.ino.db.iam::v_object_identity_role_transitive\" as object_identity 
+	inner join 	\"sap.ino.db.iam::t_identity\" as identity
+		on  identity.id  = object_identity.identity_id and
+			identity.type_code = 'USER' 
+	where object_identity.object_type_code = 'CAMPAIGN' and  
+		  object_identity.role_code        = 'CAMPAIGN_USER' 
+    with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity"];
+depends_on_view = ["sap.ino.db.iam::v_object_identity_role_transitive"];

@@ -1,0 +1,13 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Attachment Folder Share";
+table.columns = [
+    {name = "ID";            sqlType = INTEGER;   nullable = false; comment = "Human readable identifier";},
+    {name = "CREATED_AT";    sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID"; sqlType = INTEGER;   nullable = false; comment = "Identity by which the folder share has been created. Foreign key to t_identity.ID";},
+    {name = "CHANGED_AT";    sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID"; sqlType = INTEGER;   nullable = false; comment = "Identity by which the folder share has been changed. Foreign key t_identity.ID";},
+    {name = "IDENTITY_ID";   sqlType = INTEGER;   nullable = false; comment = "Identity with whom the folder is shared. Foreign key to t_identity.ID";},
+    {name = "FOLDER_ID";     sqlType = INTEGER;   nullable = false; comment = "Foreign key to t_attachment_folder.ID";}
+];
+table.primaryKey.pkcolumns = ["ID"];

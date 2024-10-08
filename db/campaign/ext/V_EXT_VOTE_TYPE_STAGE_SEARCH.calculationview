@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_VOTE_TYPE_STAGE_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="Vote Type Search"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="searchToken"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="undefined" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="PACKAGE_ID" length="256"/>
+        <viewAttribute datatype="VARCHAR" id="CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="TYPE_CODE" length="40"/>
+        <viewAttribute datatype="NVARCHAR" id="DEFAULT_TEXT" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="DEFAULT_LONG_TEXT" length="300"/>
+        <viewAttribute datatype="INTEGER" id="MAX_STAR_NO"/>
+        <viewAttribute datatype="VARCHAR" id="PLAIN_CODE" length="100"/>
+        <viewAttribute datatype="TINYINT" id="PUBLIC_VOTE"/>
+        <viewAttribute datatype="TINYINT" id="PUBLISH_VOTE"/>
+        <viewAttribute datatype="VARCHAR" id="VOTE_COMMENT_TYPE" length="10"/>
+        <viewAttribute datatype="VARCHAR" id="VOTE_REASON_CODE" length="200"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CREATED_BY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CREATED_BY" length="100"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CHANGED_BY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CHANGED_BY" length="100"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+    lt_search_result = 
+	        select distinct 
+	            package_id, 
+	            code, 
+	            cast (1 as double) as search_score 
+	        from &quot;sap.ino.db.campaign::v_vote_type_stage&quot;
+	        where length(:searchToken) = 0 
+	    union all
+	        select distinct 
+	            package_id, 
+	            code, 
+	            score() as search_score
+	        from &quot;sap.ino.db.campaign::v_vote_type_stage&quot;
+	        where length(:searchToken) &gt; 0 and 
+	              (contains(code,              :searchToken,                                  fuzzy(0.8), weight(1.0)) or
+	               contains(default_text,      :searchToken,                                  fuzzy(0.8), weight(1.0)) or
+	               contains(default_long_text, :searchToken,                                  fuzzy(0.8), weight(0.5)) or
+	               contains(code,              CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+	               contains(default_text,      CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+	               contains(default_long_text, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(0.5)));
+	               
+    var_out = select
+                 search.search_score,
+                 vote.id,
+                 vote.package_id,
+                 vote.code,
+                 vote.type_code,
+                 vote.default_text,
+                 vote.default_long_text,
+                 vote.max_star_no,
+                 vote.plain_code,
+                 vote.public_vote,
+                 vote.publish_vote,
+                 vote.vote_comment_type,
+                 vote.vote_reason_code,
+                 vote.created_at,
+                 vote.created_by_id,
+                 vote.created_by,
+                 vote.changed_at,
+                 vote.changed_by_id,
+                 vote.changed_by
+              from &quot;sap.ino.db.campaign::v_vote_type_stage&quot; as vote 
+                      inner join :lt_search_result as search
+                          on vote.package_id = search.package_id and 
+                             vote.code = search.code;
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="PACKAGE_ID" order="3">
+        <descriptions defaultDescription="PACKAGE_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="PACKAGE_ID"/>
+      </attribute>
+      <attribute id="CODE" order="4">
+        <descriptions defaultDescription="CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="CODE"/>
+      </attribute>
+      <attribute id="TYPE_CODE" order="5">
+        <descriptions defaultDescription="TYPE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="TYPE_CODE"/>
+      </attribute>
+      <attribute id="DEFAULT_TEXT" order="6">
+        <descriptions defaultDescription="DEFAULT_TEXT"/>
+        <keyMapping columnObjectName="Script_View" columnName="DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="DEFAULT_LONG_TEXT" order="7">
+        <descriptions defaultDescription="DEFAULT_LONG_TEXT"/>
+        <keyMapping columnObjectName="Script_View" columnName="DEFAULT_LONG_TEXT"/>
+      </attribute>
+      <attribute id="MAX_STAR_NO" order="8">
+        <descriptions defaultDescription="MAX_STAR_NO"/>
+        <keyMapping columnObjectName="Script_View" columnName="MAX_STAR_NO"/>
+      </attribute>
+      <attribute id="PLAIN_CODE" order="9">
+        <descriptions defaultDescription="PLAIN_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="PLAIN_CODE"/>
+      </attribute>
+      <attribute id="PUBLIC_VOTE" order="10">
+        <descriptions defaultDescription="PUBLIC_VOTE"/>
+        <keyMapping columnObjectName="Script_View" columnName="PUBLIC_VOTE"/>
+      </attribute>
+      <attribute id="PUBLISH_VOTE" order="11">
+        <descriptions defaultDescription="PUBLISH_VOTE"/>
+        <keyMapping columnObjectName="Script_View" columnName="PUBLISH_VOTE"/>
+      </attribute>
+      <attribute id="VOTE_COMMENT_TYPE" order="12">
+        <descriptions defaultDescription="VOTE_COMMENT_TYPE"/>
+        <keyMapping columnObjectName="Script_View" columnName="VOTE_COMMENT_TYPE"/>
+      </attribute>
+      <attribute id="VOTE_REASON_CODE" order="13">
+        <descriptions defaultDescription="VOTE_REASON_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="VOTE_REASON_CODE"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="14">
+        <descriptions defaultDescription="CREATE_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CREATED_BY_ID" order="15">
+        <descriptions defaultDescription="CREATE_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="CREATED_BY" order="16">
+        <descriptions defaultDescription="CREATE_BY"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="17">
+        <descriptions defaultDescription="CHANGE_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="18">
+        <descriptions defaultDescription="CHANGE_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_BY" order="19">
+        <descriptions defaultDescription="CHANGE_BY"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

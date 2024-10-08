@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_EXT_IDEAS_PPM_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" runWithInvokerPrivileges="false" scriptParametersCaseSensitive="true">
+  <origin/>
+  <descriptions defaultDescription=""/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="nameSearchToken" parameter="true">
+      <descriptions defaultDescription="Search token for idea name"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="ideaId" parameter="true">
+      <descriptions defaultDescription="ID of Idea"/>
+      <variableProperties datatype="INTEGER" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="campaignId" parameter="true">
+      <descriptions defaultDescription="ID of Campaign"/>
+      <variableProperties datatype="INTEGER" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="completed" parameter="true">
+      <descriptions defaultDescription="0: not completed; 1: completed"/>
+      <variableProperties datatype="INTEGER" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="SUBMITTER_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="SUBMITTER_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="COACH_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="COACH_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CAMPAIGN_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="PHASE_CODE" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="PHASE_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS_CODE" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="STATUS_NAME" length="100"/>
+        <viewAttribute datatype="TINYINT" id="COMPLETED"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#nameSearchToken</localVariable>
+      <localVariable>#ideaId</localVariable>
+      <localVariable>#campaignId</localVariable>
+      <localVariable>#completed</localVariable>
+      <definition>begin                            	   
+ 	var_out = select idea.id as id,
+                     idea.name as name,
+                     idea.submitter_id as submitter_id,
+                     idea.submitter_name as submitter_name,
+                     idea.coach_id as coach_id,
+                     idea.coach_name as coach_name,
+                     idea.campaign_id as campaign_id,
+                     idea.campaign_name as campaign_name,
+                     idea.phase as phase_code,
+                     phase_text.content as phase_name,
+                     idea.status as status_code,
+                     status_text.content as status_name,
+                     case
+                     	when idea.status = 'sap.ino.config.COMPLETED' then 1
+                     	else 0
+                     end as completed
+                 from &quot;sap.ino.db.idea::v_idea_medium&quot; as idea
+                 join &quot;sap.ino.db.campaign::v_phase_text&quot; as phase_text
+                 	on phase_text.text_id = idea.phase
+                 join &quot;sap.ino.db.status::v_status_text&quot; as status_text
+                 	on status_text.text_id = idea.status
+				 where 
+				 idea.id in (select idea_id from &quot;sap.ino.db.idea::v_auth_ideas_read&quot;)
+				 and ((:ideaId = -1 and :campaignId = -1) or
+                       (:ideaId = -1 and :campaignId = idea.campaign_id) or
+                       (:campaignId = -1 and :ideaId = idea.id) or
+                       (:campaignId = idea.campaign_id and :ideaId = idea.id))
+                 and (:completed=-1 or 
+                 		(:completed = 0 and not idea.status = 'sap.ino.config.COMPLETED') or
+                 		(:completed = 1 and idea.status = 'sap.ino.config.COMPLETED'))
+                 and ((length(:nameSearchToken) = 0) or
+	                    (length(:nameSearchToken) > 0 and contains(idea.name, :nameSearchToken, fuzzy(0.8), weight(1.0))));
+
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="ID" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="SUBMITTER_ID" order="3">
+        <descriptions defaultDescription="SUBMITTER_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="SUBMITTER_ID"/>
+      </attribute>
+      <attribute id="SUBMITTER_NAME" order="4">
+        <descriptions defaultDescription="SUBMITTER_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="SUBMITTER_NAME"/>
+      </attribute>
+      <attribute id="COACH_ID" order="5">
+        <descriptions defaultDescription="COACH_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="COACH_ID"/>
+      </attribute>
+      <attribute id="COACH_NAME" order="6">
+        <descriptions defaultDescription="COACH_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="COACH_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="7">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="8">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="PHASE_CODE" order="9">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="PHASE_CODE"/>
+      </attribute>
+      <attribute id="PHASE_NAME" order="10">
+        <descriptions defaultDescription="PHASE_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="PHASE_NAME"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="11">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="STATUS_NAME" order="12">
+        <descriptions defaultDescription="STATUS_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_NAME"/>
+      </attribute>
+      <attribute id="COMPLETED" order="13">
+        <descriptions defaultDescription="COMPLETED"/>
+        <keyMapping columnObjectName="Script_View" columnName="COMPLETED"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

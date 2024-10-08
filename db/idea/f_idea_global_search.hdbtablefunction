@@ -1,0 +1,98 @@
+function "SAP_INO"."sap.ino.db.idea::f_idea_global_search" ( iv_search_term nvarchar(100) ) 
+    returns table ( id integer,score double)
+    language sqlscript
+    sql security invoker as
+begin
+    return 
+        select id, sum(score) / count(score) as score from (
+        select id, 1 as score 
+        from
+            "sap.ino.db.idea::t_idea"
+        where
+            length(:iv_search_term) = 0
+        union all
+        select id, 1 as score 
+        from    
+            "sap.ino.db.idea::t_idea"
+        where
+            length(:iv_search_term) > 0  and length(ltrim(:iv_search_term,'0123456789')) <=0 and      
+            cast(id as nvarchar) = :iv_search_term
+        union all
+            select idea.id as id, score() as score
+            from
+                "sap.ino.db.idea::t_idea" as idea
+            where
+                length(:iv_search_term) > 0 and
+                contains(name,        :iv_search_term, fuzzy(0.85,'similarCalculationMode=search'), weight(1.0))
+            /* As DESCRIPTION is a BLOB the contains operator only is allowed when a fulltext index exists.
+               Fulltext indices are created after import and thus the following line is "activated" by the 
+               after import method "sap.ino.setup.release_1.2.0.09_activate_p_idea_search" after the fulltext index has been created */
+
+            --ACTIVATE_AFTER_IMPORT-- or contains(description, :iv_search_term, fuzzy(0.85), weight(0.5))
+            union all
+            select idea.id as id, score() as score
+            from
+                "sap.ino.db.idea::t_idea"      as idea,
+                "sap.ino.db.tag::t_object_tag" as idea_tag,
+                "sap.ino.db.tag::t_tag"        as tag
+            where
+                idea.id         = idea_tag.object_id
+            and 'IDEA'          = idea_tag.object_type_code
+            and tag.id          = idea_tag.tag_id
+            and  length(:iv_search_term) > 0 and contains(tag.name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=search'), weight(1.0))
+            /*SubResponsibility List Value Name, Description and Tags Search*/
+            union all
+            select idea.id as id, score() as score
+                from "sap.ino.db.idea::t_idea" as idea
+                    inner join "sap.ino.db.subresponsibility::t_responsibility_value_stage" as resp_value
+                    on resp_value.code = idea.resp_value_code
+                    left outer join "sap.ino.db.subresponsibility::v_responsibility_value_tag" as resp_tag
+                    on resp_tag.resp_value_id = resp_value.id
+            where  length(:iv_search_term) > 0 and 
+                (contains(resp_value.default_text, :iv_search_term, fuzzy(0.8,'similarCalculationMode=search'), weight(1.0)) or
+                contains(resp_value.default_long_text, :iv_search_term, fuzzy(0.8,'similarCalculationMode=search'), weight(0.5)) or
+                contains(resp_tag.name, :iv_search_term, fuzzy(0.8,'similarCalculationMode=search'), weight(0.5))
+            )
+            union all
+            /*IdeaForm Name search*/
+            select idea.id as id, score() as score
+                from "sap.ino.db.idea::t_idea" as idea
+                inner join "sap.ino.db.campaign::t_campaign" as campaign
+                on idea.CAMPAIGN_ID = campaign.id
+                left outer join "sap.ino.db.ideaform::t_form_stage" as ideaform
+                               on ideaform.CODE = campaign.FORM_CODE
+                 where  (length(:iv_search_term) > 0 and (contains(ideaform.DEFAULT_TEXT, :iv_search_term, fuzzy(0.8,'similarCalculationMode=search'), weight(1.0)) or
+                                    contains(ideaform.DEFAULT_LONG_TEXT, :iv_search_term, fuzzy(0.8,'similarCalculationMode=search'), weight(0.5))))                                   
+            union all
+            /*Submitter*/
+                        select  idea_id as id, score() as score
+                        from "sap.ino.db.idea::v_idea_submitter"
+                        where ( length(:iv_search_term) > 0     and  ( contains((name), :iv_search_term, fuzzy(0.8,'similarCalculationMode=search')) OR
+                                  contains((first_name), :iv_search_term, fuzzy(0.8,'similarCalculationMode=search')) OR
+                                  contains((last_name), :iv_search_term, fuzzy(0.8,'similarCalculationMode=search')) OR
+                                  contains((user_name),:iv_search_term,fuzzy(0.8,'similarCalculationMode=search'))  or
+                                  contains((email), :iv_search_term, fuzzy(0.8,'similarCalculationMode=search'))))
+                        union all select idea_id as id, 1 as score from "sap.ino.db.idea::v_idea_submitter" 
+                              where length(:iv_search_term) > 0 and length(ltrim(:iv_search_term,'0123456789')) <=0 and cast(identity_id as nvarchar) = :iv_search_term
+              /*Coach*/            
+                        union all
+                        select  idea_id as id, score() as score
+                        from "sap.ino.db.idea::v_idea_coach"
+                        where ( length(:iv_search_term) > 0     and  ( contains((name), :iv_search_term, fuzzy(0.8,'similarCalculationMode=search')) OR
+                                  contains((first_name), :iv_search_term, fuzzy(0.8,'similarCalculationMode=search')) OR
+                                  contains((last_name), :iv_search_term, fuzzy(0.8,'similarCalculationMode=search')) OR
+                                  contains((user_name),:iv_search_term,fuzzy(0.8,'similarCalculationMode=search'))  or
+                                  contains((email), :iv_search_term, fuzzy(0.8,'similarCalculationMode=search')))
+                        )
+                        union all select idea_id as id, 1 as score from "sap.ino.db.idea::v_idea_coach" 
+                              where length(:iv_search_term) > 0 and length(ltrim(:iv_search_term,'0123456789')) <=0 and cast(identity_id as nvarchar) = :iv_search_term        
+          /*Idea Comments*/
+           union all
+           select object_id as id, score() as score
+           from "sap.ino.db.idea::v_idea_comment" 
+           where length(:iv_search_term) > 0 and (contains((comment),:iv_search_term, fuzzy(0.8,'similarCalculationMode=search')))
+                              
+        
+        
+    )group by id order by score desc;
+end;

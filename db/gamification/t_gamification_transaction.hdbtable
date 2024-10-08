@@ -1,0 +1,15 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "transaction of gamification table";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+	{name = "IDENTITY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been consumed. Foreign key to t_identity.ID";},
+	{name = "DIMENSION_ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier for dimension";},
+	{name = "CONSUMED_VALUE"; sqlType = INTEGER ;nullable = false; comment = "Consumed value for redeem";},
+	{name = "CONSUMED_REFERENCE_NO"; sqlType = NVARCHAR ;length = 256;nullable = true; comment = "indicated external transaction";},
+	{name = "COMMENT"; sqlType = NVARCHAR ;length = 512;nullable = false; comment = "describe indicated transaction";},
+	{name = "TRANSACTION_NO";   sqlType = VARCHAR;   length = 40;             nullable = false;   comment = "uuid for transaction of consumption";}
+];
+table.primaryKey.pkcolumns = ["ID"];

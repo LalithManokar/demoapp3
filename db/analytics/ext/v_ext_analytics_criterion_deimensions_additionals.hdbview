@@ -1,0 +1,31 @@
+schema = "SAP_INO_EXT";
+query = "
+    SELECT al.CODE, 
+    	al.MODEL_CODE, 
+    	al.DATATYPE_CODE, 
+    	al.PARENT_CRITERION_CODE, 
+    	al.SEQUENCE_NO, 
+    	al.IS_OVERALL_RESULT, 
+    	al.UOM_CODE, 
+    	al.VALUE_OPTION_LIST_CODE, 
+    	al.AGGREGATION_TYPE, 
+    	al.NUM_VALUE_MIN, 
+    	al.NUM_VALUE_MAX, 
+    	al.X_AXIS_CRITERION_CODE, 
+    	al.X_AXIS_SEGMENT_NO, 
+    	al.Y_AXIS_CRITERION_CODE, 
+    	al.Y_AXIS_SEGMENT_NO, 
+    	al.VIS_PARAM_1_CRITERION_CODE, 
+    	al.VIS_PARAM_2_CRITERION_CODE, 
+    	al.DEFAULT_TEXT, 
+    	al.DEFAULT_LONG_TEXT, 
+    	al.WEIGHT, 
+    	AXIS.AXIS_CRITERION, 
+    	VIS.VIS_PARAM_CRITERION
+    FROM \"sap.ino.db.analytics.ext::v_ext_analytics_criterion_dimensions\" AS al
+    	LEFT OUTER JOIN \"sap.ino.db.analytics.ext::V_EXT_ANALYTICS_AXIS_CRITERION\" AS AXIS
+    	ON AL.CODE = AXIS.CODE
+    	LEFT OUTER JOIN \"sap.ino.db.analytics.ext::V_EXT_ANALYTICS_VIS_PARAM_CRITERION\" AS VIS
+    	ON AL.CODE = VIS.CODE;
+";
+

@@ -1,0 +1,55 @@
+schema = "SAP_INO";
+query = "
+    select 
+        wall.id,
+		wall.history_db_event as action_code, 
+	    wall.history_at as action_at,
+        wall.name,
+        wall.wall_type_code,
+        case when assignment.id is null then 0 else 1 end as is_locked,
+        wall.background_image_url, 
+        wall.background_image_zoom,
+        wall.background_image_position_x,
+        wall.background_image_position_y,
+        wall.background_image_width,
+        wall.background_image_height,
+        wall.background_image_repeat,
+        wall.background_color,
+        attachment_assignment.attachment_id as background_image_attachment_id,
+        wall.wall_session_uuid,
+        
+        wall.created_at,
+        wall.created_by_id,
+        identity1.name as created_by_name,
+        identity1.last_name as created_by_last_name,
+        identity1.first_name as created_by_first_name,
+        identity1.email as created_by_email,
+
+        wall.changed_at,
+        wall.changed_by_id,
+        identity2.name as changed_by_name,
+        identity2.last_name as changed_by_last_name,
+        identity2.first_name as changed_by_first_name,
+        identity2.email as changed_by_email
+    
+	from (select id, max(history_at) as history_at from \"sap.ino.db.wall::t_wall_h\" as wall group by id) as delta
+	inner join \"sap.ino.db.wall::t_wall_h\" as wall
+		on delta.id = wall.id and
+		   delta.history_at = wall.history_at
+    left outer join \"sap.ino.db.iam::t_identity\" as identity1
+        on identity1.id = wall.created_by_id 
+    left outer join \"sap.ino.db.iam::t_identity\" as identity2
+        on identity2.id = wall.changed_by_id
+        
+	left outer join \"sap.ino.db.wall::t_wall_assignment\" as assignment
+		on assignment.wall_id = wall.id
+	left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as attachment_assignment
+		on attachment_assignment.owner_id = wall.id and attachment_assignment.role_type_code = 'WALL_BG_IMAGE'
+        
+	order by wall.history_at desc
+    with read only ";
+        
+depends_on_table = ["sap.ino.db.wall::t_wall_h",
+					"sap.ino.db.wall::t_wall_assignment",
+                    "sap.ino.db.iam::t_identity",
+                    "sap.ino.db.attachment::t_attachment_assignment"];

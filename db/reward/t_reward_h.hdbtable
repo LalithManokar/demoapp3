@@ -1,0 +1,26 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Reward history";
+table.columns	= [
+    {name = "HISTORY_DB_EVENT";      sqlType = VARCHAR;   nullable = false;  length = 8;    comment = "Database event: CREATED, UPDATED, DELETED";},
+    {name = "HISTORY_BIZ_EVENT";     sqlType = VARCHAR;   nullable = false;  length = 600;  comment = "Business event: REWARD_CREATED, REWARD_SUBMITTED ...";},
+    {name = "HISTORY_AT";            sqlType = TIMESTAMP; nullable = false;                 comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID";      sqlType = INTEGER;   nullable = false;                 comment = "Actor who did the changes";},
+    {name = "ID";	                 sqlType = INTEGER;	  nullable = false;               	comment = "Human readable identifier";},
+	{name = "AUTHOR_ID";	         sqlType = INTEGER;	  nullable = false;               	comment = "author where the reward belongs to. Foreign key to t_identity.ID";},
+	{name = "REWARD_AMOUNT";	     sqlType = DOUBLE;    nullable = true; 					comment = "reward amount";},
+	{name = "REWARD_UNIT";	         sqlType = VARCHAR;   nullable = true;	 length = 500; 	comment = "reward unit";},
+	{name = "REWARD_SHARE";	         sqlType = DOUBLE;    nullable = true;					comment = "reward share";},
+	{name = "DOWNLOAD_COUNT";	     sqlType = INTEGER;   nullable = true; 					comment = "the count of reward being download";},
+	{name = "REWARD_LIST_ID";        sqlType = INTEGER;   nullable = false;                 comment = "Reward list id";},
+	{name = "CREATED_AT";            sqlType = TIMESTAMP; nullable = true;                 comment = "Created At";},
+    {name = "CREATED_BY_ID";         sqlType = INTEGER;   nullable = true;                 comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+    {name = "CHANGED_AT";            sqlType = TIMESTAMP; nullable = true;                 comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID";         sqlType = INTEGER;   nullable = true;                 comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";}
+	
+]; 
+table.indexes = [
+  {name = "LOGKEY_REWARD_H"; unique = false; indexColumns = ["ID", "HISTORY_AT"];}
+];
+
+

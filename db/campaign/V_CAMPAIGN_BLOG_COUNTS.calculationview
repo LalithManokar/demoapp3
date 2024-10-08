@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_CAMPAIGN_BLOG_COUNTS" applyPrivilegeType="NONE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+<origin/>
+  <descriptions defaultDescription="V_CAMPAIGN_BLOG_COUNTS"/>
+<defaultSchema schemaName="SAP_INO"/>
+  <metadata changedAt="2017-12-14 11:23:53.617"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.blog::v_blog_campaign_small" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.blog::v_blog_campaign_small"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="sap.ino.db.blog::v_blog_campaign_small">
+    <descriptions/>
+    <attributes>
+      <attribute id="CAMPAIGN_ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CAMPAIGN_ID"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.blog::v_blog_campaign_small" columnName="OBJECT_ID"/>
+      </attribute>
+      <attribute id="BLOG_ID" hidden="true" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="BLOG_ID"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.blog::v_blog_campaign_small" columnName="ID"/>
+      </attribute>
+    
+      <attribute id="STATUS_CODE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="STATUS_CODE"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.blog::v_blog_campaign_small" columnName="STATUS_CODE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures>
+      <measure id="BLOG_COUNTS" hidden="false" order="3" aggregationType="sum" measureType="simple" aggregatable="true" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="BLOG_COUNTS"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="CAMPAIGN_ID"/>
+          <attribute attributeName="BLOG_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/></shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

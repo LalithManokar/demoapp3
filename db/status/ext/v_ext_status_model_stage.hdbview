@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT";
+query = "
+    select * from \"sap.ino.db.status::v_status_model_stage\"
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.status::v_status_model_stage"];

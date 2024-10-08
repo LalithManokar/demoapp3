@@ -1,0 +1,84 @@
+PROCEDURE "SAP_INO"."sap.ino.db.feed::p_feed_create" ( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   default schema sap_ino
+   AS
+BEGIN
+    lt_current = select max(event_at) as latest from (
+        select max(event_at) as event_at
+            from "sap.ino.db.feed::t_feed_update"
+            where feed_code not like '%DATE_REACHED%'
+        union all
+        select add_days(CURRENT_UTCTIMESTAMP, -30) as event_at 
+            from dummy 
+        union all
+        select LATEST_EVENT_AT as event_at 
+            from "sap.ino.db.feed::t_feed_latest_time" WHERE code='sap.ino.config.FEED_EMIAL' );
+            
+    
+    lt_feeds = select * from
+    (
+        select
+            feed.OBJECT_ID,
+             feed.OBJECT_TYPE_CODE,
+             feed.OBJECT_TEXT,
+             feed.EVENT_AT,
+             feed.FEED_CODE,
+             feed.ACTOR_ID,
+             feed.ACTOR_NAME,
+             feed.INVOLVED_ID,
+             feed.INVOLVED_OBJ_TYPE_CODE,
+             feed.INVOLVED_OBJ_TEXT,
+             feed.CAMPAIGN_ID,
+             feed.CAMPAIGN_DATE,
+             feed.FIELD1_NAME,
+             feed.FIELD1_TEXT,
+             feed.FIELD1_VALUE,
+             feed.FIELD1_VALUE_OPTION,
+             feed.FIELD2_NAME,
+             feed.FIELD2_TEXT,
+             feed.FIELD2_VALUE,
+             feed.FIELD2_VALUE_OPTION,
+             feed.FILTER_TYPE_CODE,
+             feed.CONTENT,
+             u_feed.id as existsFeed
+             from  "sap.ino.db.feed::f_biz_feeds"() as feed
+            left outer join "sap.ino.db.feed::t_feed_update" as u_feed
+            on feed.object_id = u_feed.object_id and feed.feed_code = u_feed.feed_code 
+            and feed.event_at = u_feed.event_at and feed.object_type_code = u_feed.object_type_code 
+            and u_feed.feed_code like 'DATE_REACHED_%'
+    ) as feeds, :lt_current as time
+    where feeds.event_at > time.latest and feeds.existsFeed is null;
+
+    insert into "sap.ino.db.feed::t_feed_update" (
+        ID, OBJECT_ID, OBJECT_TYPE_CODE, OBJECT_TEXT, EVENT_AT, FEED_CODE, ACTOR_ID, ACTOR_NAME, INVOLVED_ID, INVOLVED_OBJ_TYPE_CODE, INVOLVED_OBJ_TEXT,
+        CAMPAIGN_ID, CAMPAIGN_DATE, FIELD1_NAME, FIELD1_TEXT, FIELD1_VALUE, FIELD1_VALUE_OPTION, FIELD2_NAME, FIELD2_TEXT, FIELD2_VALUE, FIELD2_VALUE_OPTION,
+        FILTER_TYPE_CODE, CONTENT, IS_NEW
+    )
+    select "sap.ino.db.feed::s_feed_update".nextval as ID, 
+        input.OBJECT_ID,
+        input.OBJECT_TYPE_CODE,
+        input.OBJECT_TEXT,
+        input.EVENT_AT,
+        input.FEED_CODE,
+        input.ACTOR_ID,
+        input.ACTOR_NAME,
+        input.INVOLVED_ID,
+        input.INVOLVED_OBJ_TYPE_CODE,
+        input.INVOLVED_OBJ_TEXT,
+        input.CAMPAIGN_ID,
+        input.CAMPAIGN_DATE, 
+        input.FIELD1_NAME,
+        input.FIELD1_TEXT,
+        input.FIELD1_VALUE,
+        input.FIELD1_VALUE_OPTION,
+        input.FIELD2_NAME,
+        input.FIELD2_TEXT,
+        input.FIELD2_VALUE,
+        input.FIELD2_VALUE_OPTION,
+        input.FILTER_TYPE_CODE,
+        input.CONTENT,
+        1 as IS_NEW
+    from :lt_feeds as input
+    order by event_at;
+END

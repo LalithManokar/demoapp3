@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_IDEAS_MEDIUM_OPT_SEARCH_COUNT_V1" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="V_EXT_IDEAS_MEDIUM_OPT_SEARCH"/>
+  <metadata changedAt="2021-03-10 14:26:16.94"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Free text search token"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="searchType" parameter="true">
+      <descriptions defaultDescription="Search Type"/>
+      <variableProperties datatype="INTEGER" defaultValue="0" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken" parameter="true">
+      <descriptions defaultDescription="Concatenated, comma separated list of tags"/>
+      <variableProperties datatype="NVARCHAR" length="2048" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="filterName" parameter="true">
+      <descriptions defaultDescription="Named filter condition"/>
+      <variableProperties datatype="VARCHAR" defaultExpressionLanguage="COLUMN_ENGINE" length="30" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+        <defaultExpression>''</defaultExpression>
+      </variableProperties>
+    </variable>
+    <variable id="filterBackoffice" parameter="true">
+      <descriptions defaultDescription="filterBackoffice"/>
+      <variableProperties datatype="TINYINT" defaultValue="0" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="c1" parameter="true">
+      <descriptions defaultDescription="the first idea form code"/>
+      <variableProperties datatype="VARCHAR" defaultValue="&apos;&apos;" length="512" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="o1" parameter="true">
+      <descriptions defaultDescription="the first operator of idea form"/>
+      <variableProperties datatype="INTEGER" defaultValue="-1" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="v1" parameter="true">
+      <descriptions defaultDescription="the first value of idea form"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="128" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="c2" parameter="true">
+      <descriptions defaultDescription="the second idea form code"/>
+      <variableProperties datatype="VARCHAR" defaultValue="&apos;&apos;" length="512" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="o2" parameter="true">
+      <descriptions defaultDescription="the second operator of idea form"/>
+      <variableProperties datatype="INTEGER" defaultValue="-1" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="v2" parameter="true">
+      <descriptions defaultDescription="the second value of idea form"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="128" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="c3" parameter="true">
+      <descriptions defaultDescription="the third idea form code"/>
+      <variableProperties datatype="VARCHAR" defaultValue="&apos;&apos;" length="512" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="o3" parameter="true">
+      <descriptions defaultDescription="the third operator of idea form"/>
+      <variableProperties datatype="INTEGER" defaultValue="-1" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="v3" parameter="true">
+      <descriptions defaultDescription="the third value of idea form"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="128" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken1" parameter="true">
+      <descriptions defaultDescription="tagsToken1"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken2" parameter="true">
+      <descriptions defaultDescription="tagsToken2"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken3" parameter="true">
+      <descriptions defaultDescription="tagsToken3"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="Currency"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken4" parameter="true">
+      <descriptions defaultDescription="tagsToken4"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="cvt" parameter="true">
+      <descriptions defaultDescription="group token"/>
+      <variableProperties datatype="VARCHAR" defaultValue="&apos;&apos;" length="128" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="cvr" parameter="true">
+      <descriptions defaultDescription="role type"/>
+      <variableProperties datatype="INTEGER" defaultValue="&apos;&apos;" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="cvy" parameter="true">
+      <descriptions defaultDescription="group type"/>
+      <variableProperties datatype="INTEGER" defaultValue="&apos;&apos;" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="DATE" id="SUBMITTED_AT_DT"/>
+        <viewAttribute datatype="VARCHAR" id="BASE_PACKAGE" length="20"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS_TYPE" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="100"/>
+        <viewAttribute datatype="DATE" id="CHANGED_AT_DT"/>
+        <viewAttribute datatype="VARCHAR" id="PHASE" length="100"/>
+        <viewAttribute datatype="INTEGER" id="VOTE_COUNT"/>
+        <viewAttribute datatype="DOUBLE" id="SCORE"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_FORM_CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_ADMIN_FORM_CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="RESP_VALUE_CODE" length="500"/>
+        <viewAttribute datatype="NVARCHAR" id="RESP_VALUE_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="SHOW_CREATED_VIEWER"/>
+        <viewAttribute datatype="INTEGER" id="SHOW_UPDATED_VIEWER"/>
+        <viewAttribute datatype="INTEGER" id="SHOW_COMMENT_VIEWER"/>
+        <viewAttribute datatype="INTEGER" id="SHOW_STATUSCHANGE_VIEWER"/>
+        <viewAttribute datatype="INTEGER" id="EVALUATION_COUNT"/>
+        <viewAttribute datatype="TIMESTAMP" id="LAST_PUBL_EVAL_AT"/>
+        <viewAttribute datatype="DOUBLE" id="EXP_SCORE"/>
+        <viewAttribute datatype="DATE" id="FOLLOW_UP_DATE"/>
+        <viewAttribute datatype="DATE" id="FOLLOW_UP_AT_DT"/>
+        <viewAttribute datatype="INTEGER" id="FOLLOW_UP_ID"/>
+        <viewAttribute datatype="INTEGER" id="SUBMITTER_ID"/>
+        <viewAttribute datatype="INTEGER" id="COACH_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <localVariable>#searchType</localVariable>
+      <localVariable>#tagsToken</localVariable>
+      <localVariable>#filterName</localVariable>
+      <localVariable>#filterBackoffice</localVariable>
+      <localVariable>#c1</localVariable>
+      <localVariable>#o1</localVariable>
+      <localVariable>#v1</localVariable>
+      <localVariable>#c2</localVariable>
+      <localVariable>#o2</localVariable>
+      <localVariable>#v2</localVariable>
+      <localVariable>#c3</localVariable>
+      <localVariable>#o3</localVariable>
+      <localVariable>#v3</localVariable>
+      <localVariable>#tagsToken1</localVariable>
+      <localVariable>#tagsToken2</localVariable>
+      <localVariable>#tagsToken3</localVariable>
+      <localVariable>#tagsToken4</localVariable>
+      <localVariable>#cvt</localVariable>
+      <localVariable>#cvr</localVariable>
+      <localVariable>#cvy</localVariable>
+      <definition>begin
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken, ',', :lt_tag_id_strings);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken1, ',', :lt_tag_id_strings1);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken2, ',', :lt_tag_id_strings2);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken3, ',', :lt_tag_id_strings3);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken4, ',', :lt_tag_id_strings4);
+    
+    if length(:tagsToken) = 0 then
+        lt_tags_ideas = select id 
+                        from &quot;sap.ino.db.idea::t_idea&quot;
+                        where length(:tagsToken) = 0;
+    else
+        lt_tags_ideas = select tag.object_id as id
+                        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+                        where length(:tagsToken) &gt; 0 and 
+                               tag.tag_id in (select STRING from :lt_tag_id_strings) and
+                               tag.object_type_code = 'IDEA' 
+                        group by tag.object_id;
+    end if;
+     if length(:tagsToken1) = 0 then
+        lt_tags_ideas1 = select id 
+                        from &quot;sap.ino.db.idea::t_idea&quot;
+                        where length(:tagsToken1) = 0;
+    else
+        lt_tags_ideas1 = select tag.object_id as id
+                        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+                        where length(:tagsToken1) &gt; 0 and 
+                               tag.tag_id in (select STRING from :lt_tag_id_strings1) and
+                               tag.object_type_code = 'IDEA' 
+                        group by tag.object_id;
+    end if;
+     if length(:tagsToken2) = 0 then
+        lt_tags_ideas2 = select id 
+                        from &quot;sap.ino.db.idea::t_idea&quot;
+                        where length(:tagsToken2) = 0;
+    else
+        lt_tags_ideas2 = select tag.object_id as id
+                        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+                        where length(:tagsToken2) &gt; 0 and 
+                               tag.tag_id in (select STRING from :lt_tag_id_strings2) and
+                               tag.object_type_code = 'IDEA' 
+                        group by tag.object_id;
+    end if;
+    if length(:tagsToken3) = 0 then
+        lt_tags_ideas3 = select id 
+                        from &quot;sap.ino.db.idea::t_idea&quot;
+                        where length(:tagsToken3) = 0;
+    else
+        lt_tags_ideas3 = select tag.object_id as id
+                        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+                        where length(:tagsToken3) &gt; 0 and 
+                               tag.tag_id in (select STRING from :lt_tag_id_strings3) and
+                               tag.object_type_code = 'IDEA' 
+                        group by tag.object_id;
+    end if;
+    if length(:tagsToken4) = 0 then
+        lt_tags_ideas4 = select id 
+                        from &quot;sap.ino.db.idea::t_idea&quot;
+                        where length(:tagsToken4) = 0;
+    else
+        lt_tags_ideas4 = select tag.object_id as id
+                        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+                        where length(:tagsToken4) &gt; 0 and 
+                               tag.tag_id in (select STRING from :lt_tag_id_strings4) and
+                               tag.object_type_code = 'IDEA' 
+                        group by tag.object_id;
+    end if;
+    
+    lt_final_tags_idea = select distinct group_0.id from:lt_tags_ideas  as group_0
+                        inner join :lt_tags_ideas1    as group_1
+                        on group_0.id = group_1.id
+                        inner join :lt_tags_ideas2    as group_2
+                        on group_0.id = group_2.id
+                        inner join :lt_tags_ideas3    as group_3
+                        on group_0.id = group_3.id
+                        inner join :lt_tags_ideas4    as group_4
+                        on group_0.id = group_4.id;
+    
+    -- ---Search Type searchType: 0-Common Search, 1- Group Search,
+    if :searchType = 1 then 
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.idea::p_idea_filter_by_groups&quot;(:filterBackoffice,:searchToken,:cvy,999, :lt_group_search_ideas);
+    searchToken = '';  
+    end if;      
+    
+
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.idea::p_idea_search&quot;(:searchToken, :lt_search_ideas);
+    -- call &quot;SAP_INO&quot;.&quot;sap.ino.db.idea::p_idea_filter_opt&quot;(:filterName, :lt_filter_ideas);
+
+       if :filterName &lt;&gt; 'unassignedCoach' and
+    :filterName &lt;&gt; 'evaluatedIdeas' and
+    :filterName &lt;&gt; 'coachedIdeasByMe' and
+    :filterName &lt;&gt; 'followedupIdeas' and
+    :filterName &lt;&gt; 'qualifiedIdeaForReward' and
+    :filterName &lt;&gt; 'managedCompletedIdeas' then
+    lt_filter_ideas = select idea_id as id from &quot;sap.ino.db.idea::v_auth_ideas_read_V1&quot;;
+ elseif :filterName = 'evaluatedIdeas' then
+ 
+    -- lt_filter_ideas = select id from &quot;sap.ino.db.idea::v_evaluated_ideas&quot;;
+    
+    lt_filter_ideas = select distinct idea_id as id from &quot;sap.ino.db.evaluation::t_evaluation&quot;
+                                  where status_code = 'sap.ino.config.EVAL_PUB_SUBMITTER' 
+                                  or status_code = 'sap.ino.config.EVAL_PUB_COMMUNITY';
+ elseif :filterName = 'coachedIdeasByMe' then
+    --   lt_idea_coach = select distinct object_id as id from &quot;sap.ino.db.idea.cv::CV_IDENTITY_ROLE_IDEA_COACH&quot;;
+    lt_filter_ideas = select id from &quot;sap.ino.db.idea::v_my_coached_ideas&quot;;
+ elseif :filterName = 'followedupIdeas' then
+ 
+    lt_filter_ideas = select object_id as id from &quot;sap.ino.db.idea.cv::CV_FOLLOW_UP&quot;;
+ elseif :filterName = 'unassignedCoach' then
+    lt_filter_ideas = select idea_id as id from &quot;sap.ino.db.idea::v_auth_ideas_read_V1&quot;
+                    where idea_id not in (select object_id from &quot;sap.ino.db.iam::t_object_identity_role&quot; 
+                                        where object_type_code = 'IDEA' and role_code = 'IDEA_COACH');
+ elseif :filterName = 'qualifiedIdeaForReward' then
+   lt_filter_ideas = select id from &quot;sap.ino.db.idea.ext::v_ext_qualified_idea_for_reward&quot;;                                        
+ elseif :filterName = 'managedCompletedIdeas' then
+    lt_filter_ideas = select managed_ideas.id from &quot;sap.ino.db.idea::v_my_managed_ideas&quot; as managed_ideas
+                    inner join &quot;sap.ino.db.idea::v_completed_ideas&quot; as completed_ideas
+                    on managed_ideas.id = completed_ideas.id;
+ end if;
+
+    if(:cvy &lt;&gt; 0 and :cvr &lt;&gt; 0) then 
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.idea::p_idea_filter_by_groups&quot;(:filterBackoffice,:cvt,:cvy,:cvr, :lt_group_filter_ideas);    
+        lt_search_ideas = select distinct search_ideas.id,search_ideas.score from :lt_search_ideas as search_ideas
+                                         inner join :lt_group_filter_ideas as group_filter_ideas 
+                                         on search_ideas.id = group_filter_ideas.id;
+    end if;
+    
+     
+    if :searchType = 1 then 
+        lt_search_ideas = select distinct search_ideas.id,search_ideas.score from :lt_search_ideas as search_ideas
+                                         inner join :lt_group_search_ideas as group_search_ideas 
+                                         on group_search_ideas.id = search_ideas.id;
+    end if;
+    
+    
+    IF(LENGTH(:c1) &gt; 0 AND LENGTH(:v1) &gt; 0) THEN
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.idea.ext::p_idea_filter_form&quot;(:c1,:o1,:v1,:c2,:o2,:v2,:c3,:o3,:v3, :lt_filter_ideaform);
+        lt_search_ideas = SELECT DISTINCT form.id,idea.score FROM :lt_filter_ideaform AS form
+                            INNER JOIN :lt_search_ideas AS idea
+                            ON form.id = idea.id;
+    END IF;
+    
+    lt_filter_campaigns = select distinct id 
+                          from &quot;sap.ino.db.idea.cv::CV_MY_BACKOFFICE_CAMPAIGN&quot;
+                          where :filterBackoffice = 1;
+  
+    lt_filter_responsibility = SELECT distinct id
+   FROM &quot;sap.ino.db.idea.cv::CV_MY_BACKOFFICE_RESPONSIBILITY_IDEA&quot;
+                               where :filterBackoffice = 1; 
+
+     var_out = select search.score as search_score, 
+                      idea.id,
+                      idea.created_at,
+                      idea.changed_at,
+                      idea.submitted_at_dt,
+                      SUBSTRING (idea.status,1,14) as base_package,
+                      idea.status,
+                      idea.status_type,
+                      idea.name,
+                      idea.changed_at_dt,
+                      idea.phase,
+                      idea.vote_count,
+                      idea.score,
+                      idea.campaign_id,
+                      idea.campaign_form_code,
+                      idea.campaign_admin_form_code,
+                      idea.resp_value_code,
+                      idea.resp_value_name,
+                      idea.SHOW_CREATED_VIEWER,
+                      idea.SHOW_UPDATED_VIEWER,
+                      idea.SHOW_COMMENT_VIEWER,
+                      idea.SHOW_STATUSCHANGE_VIEWER,
+                      idea.evaluation_count,
+                      idea.last_publ_eval_at,
+                      case when idea.exp_score is null then 0 else idea.exp_score end as exp_score,
+                      --idea.follow,
+                      idea.follow_up_date,
+                      idea.follow_up_at_dt,
+                      idea.follow_up_id,
+                      idea.submitter_id,
+                      idea.coach_id
+                 from &quot;sap.ino.db.idea.optimize::v_idea_small_opt&quot; as idea 
+                    inner join :lt_search_ideas as search
+                        on idea.id = search.id
+                    inner join :lt_final_tags_idea as tags
+                        on idea.id = tags.id
+                    inner join :lt_filter_ideas as filter_ideas
+                        on idea.id = filter_ideas.id
+                    left outer join :lt_filter_campaigns as filter_campaigns
+                        on idea.campaign_id = filter_campaigns.id
+                    left outer join :lt_filter_responsibility as filter_responsibility
+                        on idea.id = filter_responsibility.id
+                    left outer join &quot;sap.ino.db.idea::v_decision_latest_v1&quot; as decision
+                        on idea.id = decision.idea_id
+                    left outer join &quot;sap.ino.db.basis::t_extension&quot; as idea_extension
+                        on idea_extension._object_id = idea.id and 
+                           idea_extension._object_type_code = 'IDEA'
+                    left outer join &quot;sap.ino.db.idea.ext::v_ext_idea_read&quot; as idea_read
+                        on idea.id = idea_read.IDEA_ID
+                 where  idea.id in (select idea_id from &quot;sap.ino.db.idea::v_auth_ideas_read_V1&quot;) and (
+                 		idea.campaign_id = filter_campaigns.id or 
+                       	idea.campaign_id is null or 
+                       	idea.campaign_id &lt;= 0 or
+                        idea.id = filter_responsibility.id
+                 );
+
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="3">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="4">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="SUBMITTED_AT_DT" order="5">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SUBMITTED_AT_DT"/>
+      </attribute>
+      <attribute id="BASE_PACKAGE" order="6">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="BASE_PACKAGE"/>
+      </attribute>
+      <attribute id="STATUS" order="7">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS"/>
+      </attribute>
+      <attribute id="STATUS_TYPE" order="8">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_TYPE"/>
+      </attribute>
+      <attribute id="NAME" order="9">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="CHANGED_AT_DT" order="10">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT_DT"/>
+      </attribute>
+      <attribute id="PHASE" order="11">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="PHASE"/>
+      </attribute>
+      <attribute id="VOTE_COUNT" order="12">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="VOTE_COUNT"/>
+      </attribute>
+      <attribute id="SCORE" order="13">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SCORE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="14">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_FORM_CODE" order="15">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_FORM_CODE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ADMIN_FORM_CODE" order="16">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ADMIN_FORM_CODE"/>
+      </attribute>
+      <attribute id="RESP_VALUE_CODE" order="17">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="RESP_VALUE_CODE"/>
+      </attribute>
+      <attribute id="RESP_VALUE_NAME" order="18">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="RESP_VALUE_NAME"/>
+      </attribute>
+      <attribute id="SHOW_CREATED_VIEWER" order="19">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SHOW_CREATED_VIEWER"/>
+      </attribute>
+      <attribute id="SHOW_UPDATED_VIEWER" order="20">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SHOW_UPDATED_VIEWER"/>
+      </attribute>
+      <attribute id="SHOW_COMMENT_VIEWER" order="21">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SHOW_COMMENT_VIEWER"/>
+      </attribute>
+      <attribute id="SHOW_STATUSCHANGE_VIEWER" order="22">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SHOW_STATUSCHANGE_VIEWER"/>
+      </attribute>
+      <attribute id="EVALUATION_COUNT" order="23">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="EVALUATION_COUNT"/>
+      </attribute>
+      <attribute id="LAST_PUBL_EVAL_AT" order="24">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="LAST_PUBL_EVAL_AT"/>
+      </attribute>
+      <attribute id="EXP_SCORE" order="25">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="EXP_SCORE"/>
+      </attribute>
+      <attribute id="FOLLOW_UP_DATE" order="26">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="FOLLOW_UP_DATE"/>
+      </attribute>
+      <attribute id="FOLLOW_UP_AT_DT" order="27">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="FOLLOW_UP_AT_DT"/>
+      </attribute>
+      <attribute id="FOLLOW_UP_ID" order="28">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="FOLLOW_UP_ID"/>
+      </attribute>
+      <attribute id="SUBMITTER_ID" order="29">
+        <descriptions defaultDescription="SUBMITTER_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="SUBMITTER_ID"/>
+      </attribute>
+      <attribute id="COACH_ID" order="30">
+        <descriptions defaultDescription="COACH_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="COACH_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

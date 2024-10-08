@@ -1,0 +1,29 @@
+<core:FragmentDefinition
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.ui.layout.form"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+                        >
+	<ActionSheet
+		showCancelButton="true"
+		placement="VerticalPreferredTop">
+		<buttons>
+			<Button text="{i18n>IDEA_OBJECT_BTN_EDIT}"
+			        enabled="{= ${object>/property/actions/update/enabled}}"
+                    press="onEdit"/>
+			<Button text="{i18n>IDEA_OBJECT_BTN_EDIT_DECISION}"
+			        enabled="{parts:
+			                 [{path: 'object>/property/actions/changeDecision/enabled'},
+			                  {path: 'object>Decisions', length: 1, sorter: [{path: 'ID', descending: true}]},
+			                  {path: 'object>PHASE'},
+                              {path: 'object>STATUS'}], formatter:'.formatter.enableEditDecision' }"
+                    press="onOpenChangeDecision">
+				<customData>
+					<core:CustomData
+                    key="DECSION_ID"
+                    value="{path: 'object>Decisions', length: 1, sorter: [{path: 'ID', descending: true}], formatter:'.formatter.editDecisionCustomData' }"/>
+				</customData>
+			</Button>
+		</buttons>
+	</ActionSheet>
+</core:FragmentDefinition>

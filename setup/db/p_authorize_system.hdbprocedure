@@ -1,0 +1,8 @@
+procedure "SAP_INO"."sap.ino.setup.db::p_authorize_system" ()
+language sqlscript
+sql security definer
+default schema "SAP_INO"
+as
+begin
+    call "_SYS_REPO"."GRANT_ACTIVATED_ROLE"('sap.ino.authorizations::technical_user', 'SYSTEM');
+end;

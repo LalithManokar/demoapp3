@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_FORM_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="Idea Form(Staging Object) and their usage in campaigns"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="V_FORM_USAGE" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.ideaform/calculationviews/V_FORM_USAGE</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="V_FORM_USAGE">
+    <descriptions/>
+    <attributes>
+      <attribute id="FORM_CODE" order="1" attributeHierarchyActive="false" displayAttribute="false" transparentFilter="true">
+        <descriptions defaultDescription="Form Code"/>
+        <keyMapping columnObjectName="V_FORM_USAGE" columnName="FORM_CODE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping columnObjectName="V_FORM_USAGE" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping columnObjectName="V_FORM_USAGE" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea ID"/>
+        <keyMapping columnObjectName="V_FORM_USAGE" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_NAME" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Name"/>
+        <keyMapping columnObjectName="V_FORM_USAGE" columnName="IDEA_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="FORM_COUNT" order="6" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Form"/>
+        <measureMapping columnObjectName="V_FORM_USAGE" columnName="FORM_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

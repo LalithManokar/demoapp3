@@ -1,0 +1,284 @@
+
+/* ============================================= */
+/* CSS for control wall.control */
+/* ============================================= */
+
+/* interface only */
+.sapInoWallWOuter {
+	left: 0;
+	top: 0;
+	height: 100%;
+    width: 100%;
+	/*position: fixed !important;*/
+}
+
+.sapInoWallWOuter :focus {
+	outline: 0;
+}
+
+.sapInoWallWInner {
+	color: #232323;
+	position: absolute;
+	
+	width: 10000px;
+	height: 10000px;
+	margin: -5000px 0px 0px -5000px;
+
+	left: 50%;
+	top: 50%;
+
+	zoom: 100%;
+	-moz-transform: scale(1);
+
+	/* disable text selection */
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.sapInoWallSelector {
+ 	position: absolute;
+    z-index: 30000;
+    pointer-events: none;
+}
+
+/* debug stuff */
+
+.sapInoWallWBB {
+	display: none;
+	color: yellow;
+	font-weight: bold;
+	border: 1px solid yellow;
+	padding: 5px;
+	position: relative;
+}
+
+.sapInoWallWCB {
+	display: none;
+}
+
+.sapInoWallWCB > div {
+	color: green;
+	font-weight: bold;
+	border: 1px solid green;
+	padding: 5px;
+	position: absolute;
+}
+
+.sapInoWallWDI {
+	display: none;
+	color: green;
+	font-weight: bold;
+	border: 1px solid green;
+	padding: 5px;
+	position: relative;
+}
+
+.sapInoWallWPI {
+	display: none;
+	color: red;
+	font-weight: bold;
+	border: 1px solid red;
+	padding: 5px;
+	position: relative;
+}
+
+.sapInoWallWDragPreview {
+	display: none;
+	width: 60px;
+	height: 60px;
+	position: relative;
+}
+
+.sapInoWallWDragPreviewInner {
+	background-color: rgba(50, 50, 50, 0.4);
+	border-radius: 1000px;
+	box-shadow: 0px 0px 50px rgba(0, 0, 0, 1.0);
+	width: 50px;
+	height: 50px;
+	margin: 20px;
+	position: relative;
+	left: -30px;
+	top: -30px;
+}
+
+.dragCursor {
+	cursor: grabbing;
+	cursor: -webkit-grabbing;
+	cursor: -moz-grabbing;
+}
+
+.selectCursor {
+	cursor: crosshair;
+	cursor: -webkit-crosshair;
+	cursor: -moz-crosshair;
+}
+
+/**************************************
+ * Wall trash bin                     *
+ **************************************/
+
+.sapInoWallWTrash {
+	position: absolute;
+	bottom: 1.5rem;
+	right: 1.5rem;
+	z-index: 10000;
+	opacity: 0;
+	border: 2px solid #eeeeee;
+	box-shadow: 0 0 2em #ffffff;
+	padding: 20px;
+	border-radius: 100px;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.sapInoWallWTrash.above,
+.sapInoWallWTrash.above.active {
+	background-color: transparent;
+	border: 2px dashed rgba(66,66,66, 0.5);
+	box-shadow: none;
+}
+
+.sapInoWallWTrash.active {
+	border: 3px solid #EC2D11;
+	box-shadow: 0 0 2em #EC2D11;
+	bottom: 1rem;
+	right: 1rem;
+	padding: 20px 30px;
+}
+
+.sapInoWallWTrashBin {
+	color: rgb(25, 25, 25);
+	width: 80px;
+	height: 80px;
+	font-size: 80px;
+	line-height: 80px;
+	text-shadow: 0 0 0.4em #ffffff;
+	position: relative;
+}
+
+.sapInoWallWTrashBin.above,
+.sapInoWallWTrashBin.above.active {
+	opacity: 0.5;
+	color: transparent;
+	text-shadow: none;
+	-webkit-text-stroke-width: 1.5px;
+	-webkit-text-stroke-color: #666666;
+}
+
+.sapInoWallWTrash.active span {
+	color: #EC2D11;
+	font-size: 100px;
+	line-height: 100px;
+	position: relative;
+	left: -5px;
+}
+
+.sap-tablet .sapInoWallWTrash.active span {
+	line-height: 80px;
+	font-size: 80px;
+	width: 80px;
+	height: 80px;
+	left: 0px;
+	top: 0px;
+}
+
+/* minor adjustments for safari */
+html[data-sap-ui-browser*='sf'] .sapInoWallWTrash.active {
+	padding: 20px 23px;
+	right: 1.3rem;
+	bottom: 1.4rem;
+}
+
+.sapInoWallInvisible {
+	display: none !important;
+}
+
+/**************************************
+ * Wall selection                     *
+ **************************************/
+
+.sapInoWallWSelectionRectangle {
+	cursor: crosshair;
+	cursor: -webkit-crosshair;
+	cursor: -moz-crosshair;
+	border: 1px dashed #006ca7;
+	position: absolute;
+	display: none;
+	background-color: rgba(127, 210, 255, 0.3);
+}
+
+/**************************************
+ * Wall locked icon                    *
+ **************************************/
+
+.sapInoWallWLockIcon {
+	color: #f0ab00;
+	width: 50px;
+	height: 50px;
+	font-size: 60px;
+  	line-height: 50px;
+	text-shadow: 0 0 0.2em #eeeeee;
+	padding: 30px;
+	border-radius: 100px;
+	background-color: rgba(0, 0, 0, 0.3);
+	top: 8px;
+	right: 8px;
+  	position: relative;
+}
+
+
+.sapInoWallWLock {
+	position: absolute;
+	top: 0px;
+	left: 64px;
+	z-index: 10000;
+}
+
+.sapInoWallWLockWithSubHeader {
+	top: 2rem;
+}
+
+/**************************************
+ * Wall template icon                 *
+ **************************************/
+
+.sapInoWallWTemplateIndicator {
+	top: 0px;
+	right: 0;
+	position: absolute;
+	width: 0;
+	border-right: 0 solid transparent;
+	border-left: 200px solid transparent;
+	border-top: 200px solid rgba(240,171,0,0.7);
+	z-index: 9999;
+}
+
+.sapInoWallWTemplateIndicatorWithSubHeader {
+	top: 0;
+}
+
+.sapInoWallWTemplateIndicatorInner {
+	position: absolute;
+	right: 0;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+	top: -140px;
+	font-size: 32px;
+	font-weight: bold;
+	color: #ffffff;
+}
+
+.sapInoWallWITitle.sapInoWallWITitleText {
+	color: @sapUiText
+}
+
+/* fixes for select popup with zoom level */
+.sapInoWallZoomableSelectPopup .sapMSelectListItem {
+	padding: 0 16px 0 16px;
+	height: 40px;
+	line-height: 40px;
+} 

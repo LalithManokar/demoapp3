@@ -1,0 +1,24 @@
+schema = "SAP_INO";
+query = "
+	select 
+			distinct attachment.*
+	    from 
+	    	\"sap.ino.db.attachment::t_attachment\" as attachment
+	    inner join
+	     	\"sap.ino.db.attachment::t_attachment_assignment\" as assignment
+	     		on attachment.id = assignment.attachment_id 
+		where 
+			(assignment.ROLE_TYPE_CODE = 'IDEA_TITLE_IMAGE' and assignment.OWNER_TYPE_CODE = 'IDEA') or
+			(assignment.ROLE_TYPE_CODE = 'CAMPAIGN_DETAIL_IMG' and assignment.OWNER_TYPE_CODE = 'CAMPAIGN') or
+			(assignment.ROLE_TYPE_CODE = 'IDENTITY_IMAGE' and assignment.OWNER_TYPE_CODE = 'IDENTITY') or
+			(assignment.ROLE_TYPE_CODE = 'BACKGROUND_IMG' and assignment.OWNER_TYPE_CODE = 'CAMPAIGN') or
+			(assignment.ROLE_TYPE_CODE = 'SMALL_BACKGROUND_IMG' and assignment.OWNER_TYPE_CODE = 'CAMPAIGN') or
+			(assignment.ROLE_TYPE_CODE = 'LOGO_IMG' and assignment.OWNER_TYPE_CODE = 'LOCAL_SYSTEM_SETTING') or
+			(assignment.ROLE_TYPE_CODE = 'BACKGROUND_IMG' and assignment.OWNER_TYPE_CODE = 'LOCAL_SYSTEM_SETTING') or
+			(assignment.ROLE_TYPE_CODE = 'SMALL_BACKGROUND_IMG' and assignment.OWNER_TYPE_CODE = 'LOCAL_SYSTEM_SETTING') or
+			(assignment.ROLE_TYPE_CODE = 'CAMPAIGN_LIST_IMG' and assignment.OWNER_TYPE_CODE = 'CAMPAIGN') or
+			(assignment.OWNER_TYPE_CODE = 'DIMENSION_BADGE')
+    with read only";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment",
+					"sap.ino.db.attachment::t_attachment_assignment"];

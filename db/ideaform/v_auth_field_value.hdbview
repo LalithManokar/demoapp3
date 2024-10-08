@@ -1,0 +1,56 @@
+schema = "SAP_INO_EXT";
+query = "
+select distinct ID,
+       1 as can_read_field 
+       from (
+  ---Coach
+   select field_value.ID from \"sap.ino.db.ideaform::v_field_value\" as field_value 
+   inner join \"sap.ino.db.idea::v_idea_coach\" as idea_coach
+   on idea_coach.idea_id = field_value.idea_id
+   inner join \"sap.ino.db.iam::v_auth_application_user\" as application_user
+   on application_user.ID = idea_coach.identity_id
+   where is_admin_form IS NULL OR IS_ADMIN_FORM <> 1 
+   union all
+   ---Campaign Manager
+   select field_value.ID from \"sap.ino.db.ideaform::v_field_value\" as field_value 
+   inner join \"sap.ino.db.campaign::v_campaign_manager_transitive\" as campaign_manager
+   on campaign_manager.campaign_id = field_value.campaign_id
+   inner join \"sap.ino.db.iam::v_auth_application_user\" as application_user
+   on application_user.ID = campaign_manager.identity_id
+   where is_admin_form IS NULL OR IS_ADMIN_FORM <> 1 
+    union all
+      ---Campaign Coach
+   select field_value.ID from \"sap.ino.db.ideaform::v_field_value\" as field_value 
+   inner join \"sap.ino.db.campaign::v_campaign_coach_transitive\" as campaign_coach
+   on campaign_coach.campaign_id = field_value.campaign_id
+   inner join \"sap.ino.db.iam::v_auth_application_user\" as application_user
+   on application_user.ID = campaign_coach.id
+   where is_admin_form IS NULL OR IS_ADMIN_FORM <> 1 
+   ---RESP coach
+   union all
+   select distinct field_value.ID from \"sap.ino.db.ideaform::v_field_value\" as field_value 
+   inner join \"sap.ino.db.idea::v_idea_resp_coach\" as coach
+   on coach.id = field_value.idea_id
+    inner join \"sap.ino.db.iam::v_auth_application_user\" as application_user
+   on application_user.ID = coach.identity_id
+   where is_admin_form IS NULL OR IS_ADMIN_FORM <> 1 
+---Author
+   union all
+   select field_value.ID from \"sap.ino.db.ideaform::v_field_value\" as field_value 
+   inner join \"sap.ino.db.idea::v_idea_author\" as idea_author
+   on idea_author.idea_id = field_value.idea_id
+   inner join \"sap.ino.db.iam::v_auth_application_user\" as application_user
+   on application_user.ID = idea_author.identity_id
+   where is_admin_form IS NULL OR IS_ADMIN_FORM <> 1 
+   union all
+  ---Other People
+   select field_value.ID from \"sap.ino.db.ideaform::v_field_value\" as field_value 
+   where (IS_HIDDEN IS NULL OR IS_HIDDEN  <> 1 ) AND ( is_admin_form IS NULL OR IS_ADMIN_FORM <> 1 ) )
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.ideaform::v_field_value",
+                   "sap.ino.db.idea::v_idea_coach","sap.ino.db.iam::v_auth_application_user",
+                   "sap.ino.db.campaign::v_campaign_manager_transitive","sap.ino.db.idea::v_idea_author",
+                   "sap.ino.db.campaign::v_campaign_coach_transitive",
+                   "sap.ino.db.idea::v_idea_resp_coach"];

@@ -1,0 +1,54 @@
+/* a readonly span is alway highest rank */
+.sapUiInoTagReadOnly > span {
+    font-size: @sapUiFontHeader2Size;
+    line-height: @sapUiFontHeader2Size + 1px;
+    color: @sapUiText;
+}
+
+.sapUiInoTag > a:hover,
+.sapUiInoTag > a:focus {
+	background-color: @sapUiHighlightColor;
+    color: @sapUiText;
+    outline: 1px solid white;
+}
+
+.sapUiInoTag[data-sap-ui-ino-controls-tag-rank="0"] > a {
+    font-size: @sapUiFontHeader2Size;
+    line-height: @sapUiFontHeader2Size + 5px;
+}
+
+.sapUiInoTag[data-sap-ui-ino-controls-tag-rank="1"] > a {
+    font-size: (@sapUiFontHeader2Size + @sapUiFontHeader3Size) / 2;
+    line-height: @sapUiFontHeader2Size + 5px;
+}
+
+.sapUiInoTag[data-sap-ui-ino-controls-tag-rank="2"] > a {
+    font-size: @sapUiFontHeader3Size;
+    line-height: @sapUiFontHeader3Size + 4px;
+}
+
+.sapUiInoTag[data-sap-ui-ino-controls-tag-rank="3"] > a {
+    font-size: (@sapUiFontHeader3Size + @sapUiFontLargeSize) / 2;
+    line-height: @sapUiFontHeader3Size + 4px;
+}
+
+.sapUiInoTag[data-sap-ui-ino-controls-tag-rank="4"] > a {
+    font-size: @sapUiFontLargeSize;
+    line-height: @sapUiFontLargeSize + 3px;
+}
+
+.sapUiInoTag[data-sap-ui-ino-controls-tag-rank="5"] > a {
+    font-size: (@sapUiFontLargeSize + @sapUiFontSize) / 2;
+    line-height: @sapUiFontLargeSize + 3px;
+}
+
+.sapUiInoTag[data-sap-ui-ino-controls-tag-rank="6"] > a {
+    font-size: @sapUiFontSize;
+    line-height: @sapUiFontSize + 3px;
+}
+
+.sapUiInoTag[data-sap-ui-ino-controls-tag-rank="7"] > a {
+    font-size: (@sapUiFontSize + @sapUiFontSmallSize) / 2;
+    line-height: @sapUiFontSize + 3px;
+}
+

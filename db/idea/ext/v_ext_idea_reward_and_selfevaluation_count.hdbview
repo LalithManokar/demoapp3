@@ -1,0 +1,21 @@
+schema = "SAP_INO_EXT";
+query = "
+SELECT DISTINCT I.ID,(
+		SELECT COUNT(1)
+		FROM \"sap.ino.db.evaluation::t_evaluation\"
+		WHERE IDEA_ID = I.ID
+			AND CREATED_BY_ID = I.CREATED_BY_ID
+	) AS SelfEvaluationCount, 
+	(
+		SELECT COUNT(1)
+		FROM \"sap.ino.db.reward::t_reward_list\" AS L
+			INNER JOIN \"sap.ino.db.reward::t_reward\" AS RE
+			ON L.ID = RE.REWARD_LIST_ID
+		WHERE L.IDEA_ID = I.ID
+			AND RE.AUTHOR_ID = I.CREATED_BY_ID
+			AND RE.DOWNLOAD_COUNT = 0
+	) AS RewardCount
+FROM \"sap.ino.db.idea::t_idea\" AS I
+with read only";
+ 
+depends_on_table = ["sap.ino.db.idea::t_idea","sap.ino.db.reward::t_reward_list","sap.ino.db.reward::t_reward","sap.ino.db.evaluation::t_evaluation"];

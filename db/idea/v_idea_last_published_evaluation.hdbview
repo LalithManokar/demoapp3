@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "select distinct idea.id as id, 
+				max(evaluation.id) as evaluation_id
+	from \"sap.ino.db.idea::t_idea\" as idea
+	inner join \"sap.ino.db.evaluation::v_evaluation\" as evaluation
+	on idea.id = evaluation.idea_id
+    where
+	   evaluation.status_code = \'sap.ino.config.EVAL_PUB_SUBMITTER\' or 
+	   evaluation.status_code = \'sap.ino.config.EVAL_PUB_COMMUNITY\'
+	group by idea.id";
+
+depends_on_table = ["sap.ino.db.idea::t_idea"];
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation"];

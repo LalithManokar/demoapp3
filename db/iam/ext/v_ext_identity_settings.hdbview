@@ -1,0 +1,22 @@
+schema = "SAP_INO_EXT";
+query = "select 
+             settings.identity_id,
+             settings.locale,
+             settings.image_assign_id as title_image_assign_id,
+             settings.image_id as title_image_id,
+             settings.image_media_type as title_image_media_type,             
+             settings.image_changed_at as title_image_changed_at,             
+             settings.theme,
+             settings.mail,
+             settings.tracking,
+             (select accepted from \"sap.ino.db.iam::v_logon_user_accept_term\") as CONSENT_TERMS_CONDITIONS
+         from 
+             \"sap.ino.db.iam::v_identity_settings\" as settings
+         inner join
+             \"sap.ino.db.iam::v_auth_application_user\" as user
+         on
+             settings.identity_id = user.id
+         with read only";
+
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user",
+                   "sap.ino.db.iam::v_identity_settings"];

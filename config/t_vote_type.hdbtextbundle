@@ -1,0 +1,17 @@
+# TRANSLATE
+# XTXT, 100
+sap.ino.config.LIKE=Like
+# XTXT, 100
+sap.ino.config.LIKE_DISLIKE=Like and Dislike
+# XTXT, 100
+sap.ino.config.STAR_4=Star Voting (4)
+# XTXT, 100
+sap.ino.config.STAR_5=Star Voting (5)
+# XTXT, 300
+sap.ino.config.LIKE_LONG=Like
+# XTXT, 300
+sap.ino.config.LIKE_DISLIKE_LONG=Like and Dislike
+# XTXT, 300
+sap.ino.config.STAR_4_LONG=Star Voting (4)
+# XTXT, 300
+sap.ino.config.STAR_5_LONG=Star Voting (5)

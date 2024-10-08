@@ -1,0 +1,15 @@
+<core:FragmentDefinition
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core">
+    <MessagePopover id="messagePopover" items="{message>/}">
+        <MessagePopoverItem
+                type="{message>type}"
+                title="{message>message}"
+                description="{message>description}" />
+    </MessagePopover>
+    <Button text="{=${message>/}.length} {i18n>TIT_MESSAGE_PLURAL}"
+            icon="{path : 'message>/', formatter:'.formatter.mostSevereMessageTypeIcon'}"
+            press="onShowMessages"
+            visible="{=${message>/}.length > 0}"
+            id="messageLogButton"/>
+</core:FragmentDefinition>

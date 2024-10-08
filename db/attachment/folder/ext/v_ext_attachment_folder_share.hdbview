@@ -1,0 +1,15 @@
+schema = "SAP_INO_EXT";
+query = "
+    select share.id as id,
+           share.folder_id as folder_id,
+           share.identity_id as identity_id,
+           identity.name as identity_name 
+    from \"sap.ino.db.attachment.folder::t_attachment_folder_share\" as share 
+    inner join \"sap.ino.db.iam::t_identity\" as identity 
+        on share.identity_id = identity.id
+    where share.folder_id in (select folder_id from \"sap.ino.db.attachment.folder::v_auth_attachment_folder_share\")
+    with read only";
+
+depends_on_table = ["sap.ino.db.attachment.folder::t_attachment_folder_share", 
+					"sap.ino.db.iam::t_identity"];
+depends_on_view = ["sap.ino.db.attachment.folder::v_auth_attachment_folder_share"];

@@ -1,0 +1,18 @@
+function "SAP_INO"."sap.ino.db.basis::f_last_delimited_substring" ( iv_string varchar(1024), iv_delimiter char) 
+    returns result varchar(1024)
+    language sqlscript
+    sql security definer as
+begin
+    declare lv_delimiter_index int := 0;
+
+    declare lv_index int := 0;
+    declare lv_length int := length(:iv_string);
+
+    for lv_index in 0 .. (lv_length -1) do
+        if(substring(:iv_string, lv_index, 1) = :iv_delimiter) then 
+            lv_delimiter_index := lv_index;
+        end if;
+    end for;
+
+    result := substring(iv_string, lv_delimiter_index + 1, lv_length - lv_delimiter_index);
+end;

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_RESPONSIBILITY_VALUE_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_RESPONSIBILITY_VALUE_SEARCH"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="searchToken"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="respCode" parameter="true">
+      <descriptions defaultDescription="respList"/>
+      <variableProperties datatype="VARCHAR" length="500" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="VARCHAR" id="CODE" length="500"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="DESCRIPTION" length="300"/>
+      
+        <viewAttribute id="DEFAULT_COACH" datatype="INTEGER"/>
+      
+        <viewAttribute id="PARENT_VALUE_ID" datatype="INTEGER"/>
+      
+        <viewAttribute id="SEQUENCE_NO" datatype="INTEGER"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <localVariable>#respCode</localVariable>
+      <definition> 
+ /********* Begin Procedure Script ************/ 
+BEGIN
+    IF(length(:respCode) &gt; 0) THEN
+        search_result = SELECT 
+                             search_score,
+                             id
+                         FROM &quot;sap.ino.db.subresponsibility::f_responsibility_search&quot;(:searchToken, :respCode); 
+     	 var_out = 
+     	    SELECT 
+     	       sr.search_score,
+     	       sr.id,
+     	       resp.code,
+     	       resp.default_text as name,
+     	       resp.default_long_text as description,
+     	       resp.default_coach,
+     	       resp.PARENT_VALUE_ID,
+     	       resp.SEQUENCE_NO
+     	    FROM &quot;sap.ino.db.subresponsibility::t_responsibility_value_stage&quot; as resp
+     	    inner join :search_result as sr
+     	       on sr.id = resp.id
+     	    where resp.is_deactive is null or resp.is_deactive = 0;
+ 	END IF;
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions defaultDescription="SEARCH_SCORE"/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="CODE" order="3">
+        <descriptions defaultDescription="Identifier of SAP Sub responsibility value"/>
+        <keyMapping columnObjectName="Script_View" columnName="CODE"/>
+      </attribute>
+      <attribute id="NAME" order="4">
+        <descriptions defaultDescription="Default Text for Sub responsibility value"/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="DESCRIPTION" order="5">
+        <descriptions defaultDescription="Default Long Text for Sub responsibility value"/>
+        <keyMapping columnObjectName="Script_View" columnName="DESCRIPTION"/>
+      </attribute>
+    
+      <attribute id="DEFAULT_COACH" order="6">
+    
+        <keyMapping columnObjectName="Script_View" columnName="DEFAULT_COACH"/>
+    
+      </attribute>
+    
+      <attribute id="PARENT_VALUE_ID" order="7">
+    
+        <keyMapping columnObjectName="Script_View" columnName="PARENT_VALUE_ID"/>
+    
+      </attribute>
+    
+      <attribute id="SEQUENCE_NO" order="8">
+        <descriptions defaultDescription="SEQUENCE_NO"/>
+    
+        <keyMapping columnObjectName="Script_View" columnName="SEQUENCE_NO"/>
+    
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

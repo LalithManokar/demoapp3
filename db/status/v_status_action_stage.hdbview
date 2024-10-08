@@ -1,0 +1,16 @@
+schema = "SAP_INO";
+query = "
+    select  
+        statusaction.*,
+        created_by_identity.name as created_by, 
+        changed_by_identity.name as changed_by 
+    from \"sap.ino.db.status::t_status_action_stage\" as statusaction
+        left outer join \"sap.ino.db.iam::t_identity\" as created_by_identity
+            on statusaction.created_by_id = created_by_identity.id
+        left outer join \"sap.ino.db.iam::t_identity\" as changed_by_identity
+            on statusaction.changed_by_id = changed_by_identity.id
+    where not contains(statusaction.code, 'sap.ino.config.REWARD%') and  not contains(statusaction.code, 'sap.ino.config.EVAL%')
+    with read only";
+
+depends_on_table = ["sap.ino.db.status::t_status_action_stage",
+                    "sap.ino.db.iam::t_identity"];

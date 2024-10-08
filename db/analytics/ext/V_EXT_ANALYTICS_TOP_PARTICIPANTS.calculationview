@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_TOP_PARTICIPANTS" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED">
+  <descriptions defaultDescription="Top Participants "/>
+  <metadata changedAt="2019-08-12 15:18:33.939"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="34"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.analytics_V_ANALYTICS_IDEA_ACTOR" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_ACTOR</resourceUri>
+    </DataSource>
+    <DataSource id="Successful_Idea$$sap.ino.db.analytics_V_ANALYTICS_IDEA_ACTOR$$V_ANALYTICS_IDEA_ACTOR$$" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_ACTOR</resourceUri>
+    </DataSource>
+    <DataSource id="Idea$$sap.ino.db.analytics_V_ANALYTICS_IDEA_ACTOR$$V_ANALYTICS_IDEA_ACTOR$$" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_ACTOR</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Comment_Evaluation" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="COMMENT_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="EVALUATION_ID"/>
+        <viewAttribute id="ACTION_DATE_YEAR_MONTH"/>
+        <viewAttribute id="ACTION_DATE_YEAR"/>
+        <viewAttribute id="ACTION_DATE_MONTH"/>
+        <viewAttribute id="ACTION_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="ROLE_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.analytics_V_ANALYTICS_IDEA_ACTOR">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_ID" source="COMMENT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_ID" source="EVALUATION_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR_MONTH" source="ACTION_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR" source="ACTION_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH" source="ACTION_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_NUMBER" source="ACTION_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+      </input>
+      <filter>&quot;ROLE_CODE&quot; = 'COMMENT_OWNER' or &quot;ROLE_CODE&quot; = 'EVALUATION_OWNER'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Successful_Idea" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="SUCCESSFUL_IDEA_ID"/>
+        <viewAttribute id="NEXT_PHASE_CODE"/>
+        <viewAttribute id="ROLE_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Successful_Idea$$sap.ino.db.analytics_V_ANALYTICS_IDEA_ACTOR$$V_ANALYTICS_IDEA_ACTOR$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUCCESSFUL_IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NEXT_PHASE_CODE" source="NEXT_PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+      </input>
+      <filter>&quot;STATUS_CODE&quot; = 'sap.ino.config.COMPLETED' and isNull(&quot;NEXT_PHASE_CODE&quot;) and (&quot;ROLE_CODE&quot; = 'IDEA_SUBMITTER' or &quot;ROLE_CODE&quot; = 'IDEA_CONTRIBUTOR')</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Idea" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="CREATED_IDEA_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="ACTION_DATE_YEAR_MONTH"/>
+        <viewAttribute id="ACTION_DATE_YEAR"/>
+        <viewAttribute id="ACTION_DATE_MONTH"/>
+        <viewAttribute id="ACTION_DATE_MONTH_NUMBER"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Idea$$sap.ino.db.analytics_V_ANALYTICS_IDEA_ACTOR$$V_ANALYTICS_IDEA_ACTOR$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CREATED_IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR_MONTH" source="ACTION_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR" source="ACTION_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH" source="ACTION_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_NUMBER" source="ACTION_DATE_MONTH_NUMBER"/>
+      </input>
+      <filter>&quot;ROLE_CODE&quot; = 'IDEA_CONTRIBUTOR' or &quot;ROLE_CODE&quot; = 'IDEA_SUBMITTER'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:UnionView" id="Union_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="CREATED_IDEA_ID"/>
+        <viewAttribute id="SUCCESSFUL_IDEA_ID"/>
+        <viewAttribute id="COMMENT_ID"/>
+        <viewAttribute id="EVALUATION_ID"/>
+        <viewAttribute id="ACTION_DATE_YEAR_MONTH"/>
+        <viewAttribute id="ACTION_DATE_YEAR"/>
+        <viewAttribute id="ACTION_DATE_MONTH"/>
+        <viewAttribute id="ACTION_DATE_MONTH_NUMBER"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input emptyUnionBehavior="NO_ROW" node="#Comment_Evaluation">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CREATED_IDEA_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="SUCCESSFUL_IDEA_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_ID" source="COMMENT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_ID" source="EVALUATION_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR_MONTH" source="ACTION_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR" source="ACTION_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH" source="ACTION_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_NUMBER" source="ACTION_DATE_MONTH_NUMBER"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Successful_Idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CREATED_IDEA_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUCCESSFUL_IDEA_ID" source="SUCCESSFUL_IDEA_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMMENT_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVALUATION_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ACTION_DATE_YEAR_MONTH" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ACTION_DATE_YEAR" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ACTION_DATE_MONTH" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ACTION_DATE_MONTH_NUMBER" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CREATED_IDEA_ID" source="CREATED_IDEA_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="SUCCESSFUL_IDEA_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMMENT_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVALUATION_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR_MONTH" source="ACTION_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR" source="ACTION_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH" source="ACTION_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_NUMBER" source="ACTION_DATE_MONTH_NUMBER"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Union_1">
+    <descriptions/>
+    <attributes>
+      <attribute id="ACTION_DATE_YEAR_MONTH" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Year/Month"/>
+        <keyMapping columnObjectName="Union_1" columnName="ACTION_DATE_YEAR_MONTH"/>
+      </attribute>
+      <attribute id="ACTION_DATE_YEAR" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Year"/>
+        <keyMapping columnObjectName="Union_1" columnName="ACTION_DATE_YEAR"/>
+      </attribute>
+      <attribute id="ACTION_DATE_MONTH" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Month"/>
+        <keyMapping columnObjectName="Union_1" columnName="ACTION_DATE_MONTH"/>
+      </attribute>
+      <attribute id="ACTION_DATE_MONTH_NUMBER" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Month (Number)"/>
+        <keyMapping columnObjectName="Union_1" columnName="ACTION_DATE_MONTH_NUMBER"/>
+      </attribute>
+      <attribute id="SUCCESSFUL_IDEA_ID" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Successful Idea ID"/>
+        <keyMapping columnObjectName="Union_1" columnName="SUCCESSFUL_IDEA_ID"/>
+      </attribute>
+      <attribute id="EVALUATION_ID" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluation ID"/>
+        <keyMapping columnObjectName="Union_1" columnName="EVALUATION_ID"/>
+      </attribute>
+      <attribute id="CREATED_IDEA_ID" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Created Idea ID"/>
+        <keyMapping columnObjectName="Union_1" columnName="CREATED_IDEA_ID"/>
+      </attribute>
+      <attribute id="IDENTITY_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Union_1" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Union_1" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="IDEA_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Union_1" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="COMMENT_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Union_1" columnName="COMMENT_ID"/>
+      </attribute>
+      <attribute id="PHASE_CODE$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Union_1" columnName="PHASE_CODE"/>
+      </attribute>
+      <attribute id="STATUS_CODE$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Union_1" columnName="STATUS_CODE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures>
+      <measure id="IDENTITY_COUNT" hidden="false" order="1" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Participant Count"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="IDENTITY_ID" dimensionUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="SUCCESSFUL_IDEA_COUNT" hidden="false" order="2" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Successful Idea Count"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="SUCCESSFUL_IDEA_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="IDEA_COUNT" hidden="false" order="3" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Idea Count"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="CREATED_IDEA_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="COMMENT_COUNT" hidden="false" order="4" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Comment Count"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="COMMENT_ID" dimensionUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_COMMENT_DIMENSION"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="ACTIVE_DISCONTINUED_IDEA_COUNT" hidden="false" order="5" aggregationType="sum" measureType="simple" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Active and discontinued idea count"/>
+        <formula>&quot;IDEA_COUNT&quot; -&quot;SUCCESSFUL_IDEA_COUNT&quot;</formula>
+      </measure>
+      <measure id="EVALUATION_COUNT" hidden="false" order="13" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Number of Evaluations"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="EVALUATION_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+    <sharedDimensions>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION">
+        <attributes>
+          <attributeRef>#IDENTITY_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDENTITY_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION">
+        <attributes>
+          <attributeRef>#CAMPAIGN_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>CAMPAIGN_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION">
+        <attributes>
+          <attributeRef>#IDEA_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDEA_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_COMMENT_DIMENSION">
+        <attributes>
+          <attributeRef>#COMMENT_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>COMMENT_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="leftOuter"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_PHASE_DIMENSION">
+        <attributes>
+          <attributeRef>#PHASE_CODE$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>PHASE_CODE</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_STATUS_DIMENSION">
+        <attributes>
+          <attributeRef>#STATUS_CODE$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>STATUS_CODE</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+    </sharedDimensions>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="176" y="280"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Comment_Evaluation" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="80" y="660"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Successful_Idea" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="260" y="660"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Idea" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="430" y="660"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Union_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="176" y="510"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape modelObjectName="Union_1" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+        <upperLeftCorner x="498" y="144"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="837" y="370"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="837" y="16"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="16" y="32"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_COMMENT_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="16" y="402"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_PHASE_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="837" y="241"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_STATUS_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="16" y="273"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

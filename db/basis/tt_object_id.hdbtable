@@ -1,0 +1,8 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = ROWSTORE;
+table.temporary   = true;
+table.temporary   = true;
+table.description = "Generic object id table";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; comment = "Object identifier";}
+];

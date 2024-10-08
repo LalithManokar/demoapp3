@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Mail Template";
+table.columns = [
+    {name = "CODE";              sqlType = VARCHAR;  length = 500; nullable = false; comment = "Mail Template Identifier";},
+    {name = "DEFAULT";           sqlType = TINYINT;                nullable = true;  comment = "Template is Default if no template is set";},
+    {name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default Text for Mail Template";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true;  comment = "Default Long Text for Mail Template";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

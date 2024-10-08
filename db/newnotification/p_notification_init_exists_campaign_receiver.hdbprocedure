@@ -1,0 +1,58 @@
+PROCEDURE "SAP_INO"."sap.ino.db.newnotification::p_notification_init_exists_campaign_receiver" ( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   DEFAULT SCHEMA SAP_INO
+   AS
+BEGIN
+   /*************************************
+       Write your procedure logic 
+   *************************************/
+   INSERT INTO "SAP_INO"."sap.ino.db.newnotification::t_notification_campaign_setting_receiver"("ID","ACTION_ID","ROLE_CODE","IS_RECEIVE_EMAIL") 
+    SELECT "sap.ino.db.newnotification::s_notification_campaign_setting_receiver".nextval, 
+    	ACTION_ID, 
+    	ROLE_CODE, 
+    	0
+    FROM(
+    		SELECT DISTINCT receiver.ACTION_ID, 
+    			ROLES.ROLE_CODE
+    		FROM (
+    				SELECT 'VOTER' AS ROLE_CODE
+    				FROM DUMMY
+    
+    				UNION
+    
+    				SELECT 'COMMENTER' AS ROLE_CODE
+    				FROM DUMMY
+    
+    				UNION
+    
+    				SELECT 'FOLLOWER' AS ROLE_CODE
+    				FROM DUMMY
+    			) AS ROLES,
+    					"sap.ino.db.newnotification::t_notification_campaign_setting_receiver" AS receiver
+    			INNER JOIN "sap.ino.db.newnotification::t_notification_campaign_setting" AS setting
+    			ON receiver.ACTION_ID = setting.ID
+    		WHERE receiver.ROLE_CODE = 'PARTICIPANT'
+    	    AND (setting.ACTION_CODE NOT LIKE '%CAMPAIGN%' OR setting.ACTION_CODE = 'REASSIGN_CAMPAIGN')
+    	    AND setting.ACTION_CODE != 'SUBMIT_IDEA'
+    	    UNION
+    	    SELECT DISTINCT receiver.ACTION_ID, 
+    			ROLES.ROLE_CODE
+    		FROM (
+    				SELECT 'COMMENTER' AS ROLE_CODE
+    				FROM DUMMY
+    
+    				UNION
+    
+    				SELECT 'FOLLOWER' AS ROLE_CODE
+    				FROM DUMMY
+    			) AS ROLES,
+    					"sap.ino.db.newnotification::t_notification_campaign_setting_receiver" AS receiver
+    			INNER JOIN "sap.ino.db.newnotification::t_notification_campaign_setting" AS setting
+    			ON receiver.ACTION_ID = setting.ID
+    		WHERE receiver.ROLE_CODE = 'PARTICIPANT'
+    	    AND setting.ACTION_CODE LIKE '%CAMPAIGN%'  AND setting.ACTION_CODE != 'REASSIGN_CAMPAIGN'
+    	    AND setting.ACTION_CODE != 'PUBLISH_CAMPAIGN'
+    	);
+
+END

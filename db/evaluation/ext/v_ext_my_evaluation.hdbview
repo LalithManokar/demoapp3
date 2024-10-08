@@ -1,0 +1,10 @@
+schema = "SAP_INO_EXT";
+query = "
+select evaluation.*
+from \"sap.ino.db.evaluation::v_my_evaluation\" as evaluation
+where evaluation.id in (select evaluation_id from \"sap.ino.db.evaluation::v_auth_evaluation_read\" )
+with read only 
+";
+
+depends_on_view = [ "sap.ino.db.evaluation::v_my_evaluation", 
+                    "sap.ino.db.evaluation::v_auth_evaluation_read"];

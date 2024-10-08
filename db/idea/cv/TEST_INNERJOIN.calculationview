@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="TEST_INNERJOIN" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <origin/>
+  <descriptions defaultDescription="TEST_INNERJOIN"/>
+  <metadata changedAt="2021-05-11 20:58:27.168"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.idea::t_idea" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_idea"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.subresponsibility::t_responsibility_value_stage" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.subresponsibility::t_responsibility_value_stage"/>
+    </DataSource>
+    <DataSource id="CV_OBJECT_IDENTITY_ROLE_TRANSITIVE" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.ext/calculationviews/CV_OBJECT_IDENTITY_ROLE_TRANSITIVE</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="RESP_VALUE_CODE"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.idea::t_idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_VALUE_CODE" source="RESP_VALUE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+      </input>
+      <input node="#sap.ino.db.subresponsibility::t_responsibility_value_stage">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_VALUE_CODE" source="CODE"/>
+      </input>
+      <joinAttribute name="RESP_VALUE_CODE"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_2" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute hidden="true" id="JOIN$CAMPAIGN_ID$OBJECT_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_ID$OBJECT_ID" source="CAMPAIGN_ID"/>
+      </input>
+      <input node="#CV_OBJECT_IDENTITY_ROLE_TRANSITIVE">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CAMPAIGN_ID$OBJECT_ID" source="OBJECT_ID"/>
+      </input>
+      <joinAttribute name="JOIN$CAMPAIGN_ID$OBJECT_ID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_2">
+    <descriptions/>
+    <attributes>
+      <attribute id="OBJECT_TYPE_CODE" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Object type of link. Foreign key t_application_object.CODE"/>
+        <keyMapping columnObjectName="Join_2" columnName="OBJECT_TYPE_CODE"/>
+      </attribute>
+      <attribute id="ROLE_CODE" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Role to which identity IDENTITY_ID is assigned."/>
+        <keyMapping columnObjectName="Join_2" columnName="ROLE_CODE"/>
+      </attribute>
+      <attribute id="OBJECT_ID" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Object on which an identity has role ROLE_ID. Foreign key to t_idea.ID and t_campaign.ID"/>
+        <keyMapping columnObjectName="Join_2" columnName="OBJECT_ID"/>
+      </attribute>
+      <attribute id="IDENTITY_ID" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Identity which is member of group specified in GROUP_ID. Foreign key to t_identity.ID"/>
+        <keyMapping columnObjectName="Join_2" columnName="IDENTITY_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="100" y="600"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="100" y="460"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

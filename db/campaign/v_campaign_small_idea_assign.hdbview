@@ -1,0 +1,58 @@
+schema = "SAP_INO";
+query = "
+-- this is necessary as empty row in the UI
+select  null as id, 
+        null as color_code, 
+        null as valid_from, 
+        null as valid_to,
+        1    as is_valid,
+        1    as is_open_for_submission,
+        1    as is_started_for_submission,
+        ''   as name,
+        ''   as short_name,
+        4 as phase_count,
+        null as idea_description_template,
+        null as vote_type_code,
+        null as vote_type_type_code,
+        null as first_phase_code,
+        null as campaign_background_image_id,
+        null as campaign_small_background_image_id,
+        null as form_code,
+        null as resp_code,
+        null as resp_name,
+        null as resp_description,
+        null as follow,
+        null as reward_active
+from dummy
+union all
+select campaign.id, 
+        campaign.color_code, 
+        campaign.valid_from, 
+        campaign.valid_to,
+       campaign.is_valid,
+        campaign.is_open_for_submission,
+        campaign.is_started_for_submission,
+        campaign.name,
+        campaign.short_name,
+        campaign.phase_count,
+        campaign.idea_description_template,
+        campaign.vote_type_code,
+        campaign.vote_type_type_code,
+        campaign.first_phase_code,
+        campaign.campaign_background_image_id,
+        campaign.campaign_small_background_image_id,
+        campaign.form_code,
+        campaign.resp_code,
+        campaign.resp_name,
+        campaign.resp_description,
+        campaign.follow,
+        campaign.reward_active
+from \"sap.ino.db.campaign::v_campaign_small\" as campaign
+    inner join \"sap.ino.db.campaign::v_auth_submittable_campaign\" as auth
+        on campaign.id = auth.campaign_id
+           and
+           campaign.is_open_for_submission = 1
+with read only";
+
+depends_on_view = [ "sap.ino.db.campaign::v_campaign_small", 
+                    "sap.ino.db.campaign::v_auth_submittable_campaign"];

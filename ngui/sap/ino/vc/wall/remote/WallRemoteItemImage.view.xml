@@ -1,0 +1,40 @@
+<mvc:View
+        controllerName="sap.ino.vc.wall.remote.WallRemoteItemImage"
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:f="sap.ui.layout.form"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns:ino="sap.ino.controls"
+        xmlns:u="sap.ui.unified">
+    <Page>
+        <customHeader>
+            <core:Fragment fragmentName="sap.ino.vc.wall.fragments.WallRemoteItemHeader" type="XML" />
+        </customHeader>
+        <f:SimpleForm 
+            class="sapUiWallRemoteItem"
+            editable="true"
+            layout="{view>/Layouts/SimpleFormLayout/layout}"
+            labelSpanL="{view>/Layouts/SimpleFormLayout/labelSpanL}"
+            labelSpanM="{view>/Layouts/SimpleFormLayout/labelSpanM}"
+            emptySpanL="{view>/Layouts/SimpleFormLayout/emptySpanL}"
+            emptySpanM="{view>/Layouts/SimpleFormLayout/emptySpanM}">
+            <f:content>
+                <Label text="{i18n>WALL_ITEM_TITLE}"/>
+                <Input enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }"  id="title" value="{object>CONTENT/CAPTION}" change="onChange" maxLength="500"/>
+                <CheckBox enabled="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }"  id="imageShowAsIcon" text="{i18n>WALL_ITEM_IMAGE_SHOW_AS_ICON}" select="onChange" selected="{object>CONTENT/SHOW_AS_ICON}" />
+                <u:FileUploader 
+                    id="imageUploader"
+                    uploadUrl="{view>/ATTACHMENT_UPLOAD_URL}" multiple="false"
+                    buttonOnly="true" buttonText="{i18n>WALL_ITEM_IMAGE_SELECT}" icon="sap-icon://upload"
+                    change="onFileUploaderChange" uploadComplete="onImageUploaderComplete" uploadOnChange="true"
+                    visible="{ path:'object>WALL_ID', formatter:'.formatter.wallUpdateEnabledFormatter' }" 
+                    useMultipart="false" sendXHR="true"
+                    mimeType="image/*"/>
+                <Image id="imagePreview"/>
+            </f:content>
+        </f:SimpleForm>
+        <footer>  
+            <core:Fragment fragmentName="sap.ino.vc.wall.fragments.WallRemoteItemFooter" type="XML" />
+        </footer>
+    </Page>
+</mvc:View>

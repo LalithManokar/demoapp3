@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO";
+table.description = "IDEA Tag - Name ";
+table.columns = [
+    {name = "IDEA_ID";          sqlType = INTEGER;                 nullable = false;                     comment = "technical user identifier - must never be exposed to end users";},
+    {name = "TAG_NAME";         sqlType = NVARCHAR; length = 4000; nullable = true;                      comment = "Display name";}
+];
+table.primaryKey.pkcolumns = ["IDEA_ID"];

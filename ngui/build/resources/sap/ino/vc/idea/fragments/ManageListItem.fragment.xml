@@ -1,0 +1,360 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+	xmlns:ino="sap.ino.controls"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<CustomListItem 
+        type="Active"
+        press="onItemPress"
+        class="sapInoIdeaListItem sapInoIdeaManageListItem"
+        app:aofSmartControl="true"
+        app:aofModel="data"
+	    app:aofObject="sap.ino.xs.object.idea.Idea">
+		<Label width="0" labelFor="ideaLink" text="{:= ${i18n>IDEA_LIST_FLD_IDEA_LINK}}" app:exportIgnore="true"/>
+		<l:VerticalLayout
+            width="100%">
+			<FlexBox
+                width="100%"
+                alignItems="Stretch"
+                class="sapInoIdeaManageListItemInfoLine">
+				<items>
+					<Label tooltip="{i18n>ACC_EXP_DUMMY_TOOLTIP}"/>
+					<!-- Workaround for accessibility, never read. In IE, JAWS always reads first tooltip for each element in the listitem. -->
+					<ino:ColorRibbon color="{:= ${data>CAMPAIGN_COLOR}}" class="sapInoIdeaListColor sapInoIdeaManageListItemInfoLine"/>
+					<FlexBox
+                        class="sapInoIdeaManageListLine"
+                        alignItems="Stretch">
+						<items>
+							<HBox class="sapInoIdeaManageListSeparatorMargin sapInoIdeaManageListInfoContainer">
+								<ino:Image
+                                    height="72px"
+                                    width="129px"
+                                    foregroundColor="{:= ${path: 'data>CAMPAIGN_COLOR', formatter: '.formatter.color'}}"
+                                    objectId="{:= ${data>ID}}"
+                                    objectName="{:= ${data>NAME}}"
+                                    src="{parts : ['data>TITLE_IMAGE_ID', 'data>TITLE_IMAGE_CHANGED_AT'], formatter: '.formatter.titleImageURL'}"
+                                    disableImage="{view>/List/DISABLE_IDEA_IMAGE}"
+                                    imageAlt="{:= ${path: 'data>SHORT_DESCRIPTION', formatter: '.formatter.ideaShortDescription'}}"
+                                    class="sapUiTinyMarginBeginEnd sapUiTinyMarginTopBottom sapInoIdeaListImageBorder sapInoIdeaManageListImage">
+									<ino:followButton>
+										<ino:Follow onlyIcon="true" value="{data>FOLLOW}" objectId="{data>ID}" type="IDEA" enabled="true" follow="onFollow" styleType="ideaListFollow flatList sapInoIdeaListAction"/>
+									</ino:followButton>
+								</ino:Image>
+								<VBox class="sapUiTinyMarginBeginEnd sapInoIdeaManageListText" justifyContent="Center">
+									<Link id="ideaLink" class="sapUiTinyMarginBottom sapInoFlatListTitle" text="{:= ${data>NAME}}" app:exportLabel="{:= ${i18n>IDEA_LIST_FLD_NAME}}" emphasized="true" href="{:= ${path: 'data>ID', formatter: '.formatter.ideaNavigationLink'}}" tooltip="{:= ${path: 'data>SHORT_DESCRIPTION', formatter: '.formatter.ideaShortDescription'}}">
+										<customData>
+											<core:CustomData 
+                                            key="style-idealist-title" 
+                                            value="{parts:[{path:'component>/FULLSCREEN'}],formatter:'.formatter.setIdeaHeaderTitleLength'}" 
+                                             writeToDom="true"/>
+										</customData>
+									</Link>
+									<HBox >
+										<Label  text="{:= ${i18n>IDEA_LIST_FLD_CAMPAIGN}}" class="sapInoIdeaManageListSmallFont sapInoIdeaManageListMarginEnd4" labelFor="IdeaListManagedItemCmpaignTitleLink"/>
+										<Link text="{:= ${data>CAMPAIGN_SHORT_NAME}}" href="{:= ${path: 'data>CAMPAIGN_ID', formatter: '.formatter.campaignNavigationLink'}}" class="sapInoIdeaManageListSmallFont sapInoFlatListCampaignName" id="IdeaListManagedItemCmpaignTitleLink"/>
+									</HBox>
+									<HBox visible ="{:= ${data>SUBMITTER_ID} > 0}">
+										<Label  text="{i18n>IDEA_OBJECT_TIT_IDEA_Author}:&#xA0;" class="sapInoIdeaManageListSmallFont sapInoFlatListNoImageAuthorLabel sapInoIdeaManageListMarginEnd4" labelFor="IdeaListManagedItemIdeaAuthorLink"/>
+										<Link text="{:= ${data>SUBMITTER_NAME}}" press="onOpenSubmitter" class="sapInoIdeaManageListSmallFont  sapInoFlatListSubmitterName sapInoFlatListNoImageAuthorText" id="IdeaListManagedItemIdeaAuthorLink"/>
+									</HBox>
+									<HBox visible ="{:= ${data>SUBMITTER_ID} === 0}">
+										<Label  text="{i18n>IDEA_OBJECT_TIT_IDEA_Author}:&#xA0;" class="sapInoIdeaManageListSmallFont sapInoFlatListNoImageAuthorLabel sapInoIdeaManageListMarginEnd4" labelFor="IdeaListManagedItemAnonymousIdeaText"/>
+										<Text text="{i18n>IDEA_OBJECT_TIT_IDEA_Anonymity}" class="sapInoIdeaManageListSmallFont sapInoFlatListSubmitterName sapInoFlatListNoImageAuthorText" id="IdeaListManagedItemAnonymousIdeaText"/>
+									</HBox>
+									<HBox visible="{:= ${data>COACH_ID} > 0}">
+										<Label text="{:= ${i18n>IDEA_LIST_FLD_COACHED_BY}}" class="sapInoIdeaManageListMarginEnd4 sapInoIdeaManageListSmallFont" labelFor="IdeaListManagedItemIdeaCoachLink"/>
+										<Link text="{:= ${data>COACH_NAME}}" press="onOpenCoach" class="sapInoIdeaManageListSmallFont sapInoFlatListCoacheName" app:exportLabel="{:= ${i18n>IDEA_LIST_FLD_COACH}}" id="IdeaListManagedItemIdeaCoachLink"/>
+									</HBox>
+									<HBox justifyContent="Start" alignItems="Center" class="sapInoIdeaManageListProcessContainerSmall sapInoIdeaManageListSmallFont">
+										<ino:ProcessIndicator
+                                            currentStep="{:= ${data>STEP}}"
+                                            isDraft="{:= ${path: 'data>STATUS', formatter: '.formatter.isDraft'}}"
+                                            phase="{:= ${path: 'data>PHASE', formatter: '.formatter.ideaPhase'}}"
+                                            processSteps="{:= ${data>STEPS}}"
+                                            processStopped="{:= ${parts: [{path: 'data>STATUS'}, {path: 'data>STATUS_TYPE'}], formatter: '.formatter.isIdeaProcessStoped'}}"
+                                            status="{:= ${path: 'data>STATUS', formatter: '.formatter.ideaStatus'}}"
+                                            statusColor="{:= ${data>STATUS_COLOR}}"
+                                            width="175px"
+                                            class="sapUiTinyMarginTopBottom"></ino:ProcessIndicator>
+									</HBox>
+									<core:ExtensionPoint name="extension_line_grid1"/>
+								</VBox>
+							</HBox>
+							<VBox 
+                                alignItems="End" 
+                                justifyContent="Center" 
+                                class="sapUiSmallMarginEnd sapInoIdeaManageListFollowUpContainer"
+                                visible="{:= !!${data>FOLLOW_UP_DATE}}">
+								<VBox alignItems="Center" justifyContent="Center" class="sapInoIdeaManageListFollowUpContent">
+									<core:Icon visible="{:= !${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.isFutureDate'}}" src="sap-icon://present" color="Negative" class="sapUiTinyMarginBottom" tooltip="{:= ${path: 'i18n>IDEA_LIST_EXP_FOLLOW_DUE'}}" app:exportIgnore="true"/>
+									<Label visible="{:= !${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.isFutureDate'}}" class="sapInoIdeaManageListSmallFont sapThemeNegativeText" text="{:= ${path: 'i18n>LIST_FLD_FOLLOW_UP_DATE'}}" />
+									<Text visible="{:= !${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.isFutureDate'}}" class="sapThemeNegativeText sapInoIdeaManageListSmallFont" text="{:= ${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.toDate'}}" app:exportRaw="true"/>
+									<Text class="sapInoIdeaManageListMarginTop2 sapInoIdeaManageListSmallFont sapThemeNegativeText" visible="{:= !${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.isFutureDate'}}" text="{:= ${path: 'i18n>IDEA_LIST_FLD_FOLLOW_DUE'}}" app:exportIgnore="true"/>
+									<core:Icon visible="{:= ${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.isFutureDate'}}" src="sap-icon://future" class="sapUiTinyMarginBottom" tooltip="{:= ${path: 'i18n>IDEA_LIST_EXP_FOLLOW_UNDUE'}}" app:exportIgnore="true"/>
+									<Label visible="{:= ${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.isFutureDate'}}" class="sapInoIdeaManageListSmallFont" text="{:= ${path: 'i18n>LIST_FLD_FOLLOW_UP_DATE'}}" />
+									<Text visible="{:= ${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.isFutureDate'}}" class="sapInoIdeaManageListSmallFont" text="{:= ${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.toDate'}}" app:exportRaw="true"/>
+									<core:ExtensionPoint name="extension_line_grid2"/>
+								</VBox>
+							</VBox>
+							<HBox justifyContent="Start" alignItems="Center" class="sapUiSmallMarginBeginEnd sapInoIdeaManageListProcessContainer sapInoIdeaManageListSmallFont">
+								<VBox>
+									<ino:ProcessIndicator
+	                                    currentStep="{:= ${data>STEP}}"
+	                                    isDraft="{:= ${path: 'data>STATUS', formatter: '.formatter.isDraft'}}"
+	                                    phase="{:= ${path: 'data>PHASE', formatter: '.formatter.ideaPhase'}}"
+	                                    processSteps="{:= ${data>STEPS}}"
+	                                    processStopped="{:= ${parts: [{path: 'data>STATUS'}, {path: 'data>STATUS_TYPE'}], formatter: '.formatter.isIdeaProcessStoped'}}"
+	                                    status="{:= ${path: 'data>STATUS', formatter: '.formatter.ideaStatus'}}"
+	                                    statusColor="{:= ${data>STATUS_COLOR}}"
+	                                    width="175px"
+	                                    class="sapUiTinyMarginTopBottom"></ino:ProcessIndicator>
+									<Text visible="false" text="{path: 'data>REASON_CODE', formatter: '.formatter.valueOption'}" app:exportLabel="{:= ${i18n>IDEA_LIST_FLD_STATUS_CHANGE_REASON}}" />
+									<core:ExtensionPoint name="extension_line_grid3"/>
+								</VBox>
+							</HBox>
+							<VBox alignItems="Start" justifyContent="Center" class="sapInoIdeaManageListSmallFont sapUiSmallMarginEnd sapInoIdeaManageListEvalContainer" app:exportLabel="{:= ${i18n>IDEA_LIST_FLD_EVAL_RESULT}}">
+								<Label
+            		                visible="{:= !!${data>LAST_PUBL_EVAL_ID} &amp;&amp; ${parts: [{path: 'data>LAST_PUBL_EVAL_OV_RES_DATATYPE_CODE'},
+                    						 	          {path: 'data>LAST_PUBL_EVAL_OV_RES_NUM_VALUE'},
+                    						 	          {path: 'data>LAST_PUBL_EVAL_OV_RES_BOOL_VALUE'},
+                    						 	          {path: 'data>LAST_PUBL_EVAL_OV_RES_TEXT_VALUE'},
+                    						 	          {path: 'data>LAST_PUBL_EVAL_OV_RES_VALUE_OPTION_LIST_CODE'},
+                    						 	          {path: 'data>LAST_PUBL_EVAL_OV_RES_UOM_CODE'}],
+                    						 	  formatter: '.formatter.isFormattedValueVisible'} }"
+            		                text="{:= ${i18n>IDEA_LIST_FLD_EVAL_RESULT}}" class="sapUiTinyMarginBottom" />
+								<Link 
+                		            wrapping="true"
+                		            visible="{:= !!${data>LAST_PUBL_EVAL_ID}}"
+            		                text="{:= ${parts: [{path: 'data>LAST_PUBL_EVAL_OV_RES_DATATYPE_CODE'},
+                    						 	          {path: 'data>LAST_PUBL_EVAL_OV_RES_NUM_VALUE'},
+                    						 	          {path: 'data>LAST_PUBL_EVAL_OV_RES_BOOL_VALUE'},
+                    						 	          {path: 'data>LAST_PUBL_EVAL_OV_RES_TEXT_VALUE'},
+                    						 	          {path: 'data>LAST_PUBL_EVAL_OV_RES_VALUE_OPTION_LIST_CODE'},
+                    						 	          {path: 'data>LAST_PUBL_EVAL_OV_RES_UOM_CODE'}],
+                    						 	  formatter: '.formatter.getFormattedValue'}}"
+                    				href="{:= ${path: 'data>LAST_PUBL_EVAL_ID', formatter: '.formatter.evaluationNavigationLink'}}"/>
+								<Text
+                		            wrapping="true"
+            		                visible="{:= !${data>LAST_PUBL_EVAL_ID} &amp;&amp; !${data>EVALUATION_COUNT}}"
+            		                text="{:= ${i18n>IDEA_LIST_FLD_NO_PUB_EVAL}}"/>
+								<Text
+                		            wrapping="true"
+                		            class="sapThemeNegativeText"
+            		                visible="{:= !${data>LAST_PUBL_EVAL_ID} &amp;&amp; !!${data>EVALUATION_COUNT}}"
+            		                text="{:= ${i18n>IDEA_LIST_FLD_UNPUB_EVAL_AVAIL}}"/>
+								<core:ExtensionPoint name="extension_line_grid4"/>
+							</VBox>
+							<VBox>
+								<VBox justifyContent="SpaceBetween" alignItems="Center" class="sapInoIdeaManageListActions ideaStatusIcons">
+								    <core:Icon src="sap-icon://InoIcons/new_status" tooltip="{i18n>IDEA_LIST_ITEM_IDEA_STATUS}" size="1.2rem" visible="{:= !!${data>SHOW_STATUSCHANGE_VIEWER}}" press="onItemPress" class="sapUiTinyMarginEnd sapUiTinyMarginTopBottom ideaStatusChangeIcon" />
+								    <core:Icon src="sap-icon://InoIcons/new_comment" tooltip="{i18n>IDEA_LIST_ITEM_IDEA_COMMENT}" size="1.2rem" visible="{:= !!${data>SHOW_COMMENT_VIEWER}}" press="onIdeaCommentPress" class="sapUiTinyMarginEnd sapUiTinyMarginTopBottom ideaStatusCommentIcon" />
+									<core:Icon src="sap-icon://InoIcons/idea_update" tooltip="{i18n>IDEA_LIST_ITEM_IDEA_UPDATE}" size="1.2rem" visible="{:= !!${data>SHOW_UPDATED_VIEWER}}" press="onItemPress" class="sapUiTinyMarginEnd sapUiTinyMarginTopBottom ideaStatusUpdateIcon" />
+									<!--<core:Icon src="sap-icon://InoIcons/idea_create" tooltip="{i18n>IDEA_LIST_ITEM_IDEA_CREATE}" size="1.2rem" visible="{:= !!${data>SHOW_CREATED_VIEWER}}" press="onItemPress" class="sapUiTinyMarginEnd sapUiTinyMarginTopBottom ideaStatusCreateIcon" />-->
+									<Button 
+                                        visible="{= !!${data>SHOW_UPDATED_VIEWER} || !!${data>SHOW_COMMENT_VIEWER} || !!${data>SHOW_STATUSCHANGE_VIEWER}}"
+                                        icon="sap-icon://InoIcons/idea_read"
+                                        press="onIdeaReadPress"
+                                        type="Transparent"
+                                        tooltip="{i18n>IDEA_LIST_ITEM_IDEA_READ}"
+                                        class="sapUiTinyMarginTopBottom sapUiTinyMarginEnd ideaReadIcon">
+                                    </Button>
+								</VBox>
+								<VBox justifyContent="SpaceBetween" alignItems="Center" class="sapInoIdeaManageListActions flatActionButtons">
+									<ToggleButton 
+											type="Transparent" 
+											icon="sap-icon://pushpin-off" 
+											visible="{clipboard>/enabled}"
+											tooltip="{ parts: [{path: 'data>ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIdeaPinTooltip'}"
+											pressed="{ parts: [{path: 'data>ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIsIdeaInClipboard'}" 
+											press="onIdeaPinPressed"
+											class="sapInoPinBtn"/>
+									<ino:Vote
+										visible="{= !${device>/system/phone} }"
+										enabled="{parts: [{path: 'data>STATUS'}, {path: 'data>VOTING_ACTIVE'},{path: 'data>PARTICIPANT_CAN_VOTE'},{path: 'data>OPEN_STATUS_SETTING'},{path: 'data>VOTING_HAS_PRIVILEGE'}], formatter: '.formatter.votingActive'}"
+										objectId="{data>ID}"
+										class="sapInoIdeaListAction"
+										voteId="{data>VOTE_ID}"
+										tooltip="{parts: [{path: 'data>STATUS'},
+														{path: 'data>VOTING_HAS_PRIVILEGE'},
+														{path: 'data>VOTING_ACTIVE'},
+														{path: 'data>PHASE'},
+														{path: 'data>VOTE_TYPE_TYPE_CODE'},
+														{path: 'data>VOTE_COUNT'},
+														{path: 'data>SCORE'},
+														{path: 'data>USER_SCORE'},
+														{path: 'data>/DISPLAY_ONLY'},
+								                        {path: 'data>PARTICIPANT_CAN_VOTE'},
+            					                        {path: 'data>OPEN_STATUS_SETTING'}], formatter: '.formatter.voteTooltip'}"
+										type="{data>VOTE_TYPE_TYPE_CODE}"
+										userVote="onUserVote"
+										value="{data>USER_SCORE}"
+										maxStar="{data>MAX_STAR_NO}"/>
+									<Button icon="sap-icon://comment" tooltip="{parts:[{path: 'data>COMMENT_HAS_PRIVILEGE'},{path:'data>PARTICIPANT_CAN_COMMENT'},{path:'data>OPEN_STATUS_SETTING'}], formatter: '.formatter.commentTooltip'}" 
+        						          enabled="{parts: [ {path: 'data>COMMENT_HAS_PRIVILEGE'},{path: 'data>PARTICIPANT_CAN_COMMENT'},{path: 'data>OPEN_STATUS_SETTING'}], formatter: '.formatter.commentEnabled'}" press="onIdeaCommentPress" class="sapInoIdeaCommentButton sapInoIdeaListAction" />
+									<ino:IdeaVolunteer styleClass="sapInoIdeaVolunteer sapInoIdeaListAction" key="{data>VOLUNTEER_ID}" ideaId="{data>ID}" enabled="true" visible="true" onlyIcon="true" value="{= !!${data>VOLUNTEER_ID}}" volunteer="toggleVolunteer" />
+									<CheckBox tooltip="{path: 'view>/List/SELECT_ALL', formatter: '.formatIdeaCheckBoxTooltip'}" select="onManagedListSelectionChange" selected="{= ${view>/List/SELECT_ALL}}" />
+									<core:ExtensionPoint name="extension_line_grid5"/>
+								</VBox>
+							</VBox>
+						</items>
+					</FlexBox>
+				</items>
+			</FlexBox>
+			<FlexBox
+                width="100%"
+                alignItems="Stretch"
+                class="sapInoIdeaManageListItemActionLine sapInoIdeaManageListSmallFont">
+				<items>
+					<ino:ColorRibbon color="{:= ${data>CAMPAIGN_COLOR}}" class="sapInoIdeaListColor sapInoIdeaManageListItemActionLine"/>
+					<FlexBox
+                        class="sapInoIdeaManageListLine"
+                        alignItems="Stretch"
+                        fitContainer="true">
+						<items>
+							<OverflowToolbar 
+                                class="sapInoIdeaManageListActionBar"
+                                design="Solid">
+								<HBox alignItems="Center" justifyContent="Center" class="sapInoIdeaManageListActionBarKPI">
+									<ino:VoteDisplay
+                                        class="sapInoIdeaManageListMarginEnd4"
+                				        likeVotes="{:= ${path: 'data>SCORE', formatter: '.formatter.toInt'}}"
+                				        negativeVotes="{:= ${path: 'data>NEG_VOTES', formatter: '.formatter.toInt'}}"
+                				        positiveVotes="{:= ${path: 'data>POS_VOTES', formatter: '.formatter.toInt'}}"
+                				        starVoteCount="{:= ${path: 'data>VOTE_COUNT', formatter: '.formatter.toInt'}}"
+                				        starVotes="{:= ${path: 'data>SCORE', formatter: '.formatter.toFloat'}}"
+                				        score="{:= ${path: 'data>SCORE', formatter: '.formatter.toFloat'}}"
+                				        tooltip="{:= ${i18n>COMMON_KYF_EXP_VOTES}}"
+                				        type="{:= ${data>VOTE_TYPE_TYPE_CODE}}"
+                				        app:exportLabel="{:= ${i18n>COMMON_KYF_EXP_VOTES_SCORE}}"/>
+									<ino:VoteDisplay
+                                        class="sapInoIdeaManageListMarginEnd4"
+                				        likeVotes="{:= ${path: 'data>EXP_SCORE', formatter: '.formatter.toInt'}}"
+                				        negativeVotes="{:= ${path: 'data>EXP_NEG_VOTES', formatter: '.formatter.toInt'}}"
+                				        positiveVotes="{:= ${path: 'data>EXP_POS_VOTES', formatter: '.formatter.toInt'}}"
+                				        starVoteCount="{:= ${path: 'data>EXP_VOTE_COUNT', formatter: '.formatter.toInt'}}"
+                				        starVotes="{:= ${path: 'data>EXP_SCORE', formatter: '.formatter.toFloat'}}"
+                				        score="{:= ${path: 'data>EXP_SCORE', formatter: '.formatter.toFloat'}}"
+                				        tooltip="{:= ${i18n>COMMON_KYF_EXP_VOTES_EXPERTS}}"
+                				        type="{:= ${data>VOTE_TYPE_TYPE_CODE}}"
+                				        isExpert="true"
+                				        app:exportLabel="{:= ${i18n>COMMON_KYF_EXP_VOTES_SCORE_EXPERTS}}"/>
+									<ino:LabelledIcon
+                				        class="sapInoIdeaManageListMarginEnd4"
+                				        iconUrl="sap-icon://comment"
+                				        label="{:= ${path: 'data>COMMENT_COUNT', formatter: '.formatter.count'}}"
+                				        exportLabel="{:= ${path: 'data>COMMENT_COUNT', formatter: '.formatter.convertToInt'}}"
+                				        tooltip="{:= ${i18n>COMMON_KYF_EXP_COMMENTS}}"/>
+									<ino:LabelledIcon
+                				        iconUrl="sap-icon://survey"
+                				        label="{:= ${path: 'data>EVALUATION_COUNT', formatter: '.formatter.count'}}"
+                				        exportLabel="{:= ${path: 'data>EVALUATION_COUNT', formatter: '.formatter.convertToInt'}}"
+                				        tooltip="{:= ${i18n>COMMON_KYF_EXP_EVALUATIONS}}"/>
+								</HBox>
+								<HBox alignItems="Center" justifyContent="Center" class="sapInoIdeaManageListActionBarContent sapInoIdeaManageListActionBarDates">
+									<ino:LabelledIcon
+                				        iconUrl="sap-icon://create-entry-time"
+                				        label="{:= ${path: 'data>SUBMITTED_AT', formatter: '.formatter.toDate'}}"
+                				        class="sapUiSmallMarginEnd"
+                				        tooltip="{:= ${i18n>COMMON_EXP_SUBMIT_DATE}}" app:exportRaw="true"/>
+									<ino:LabelledIcon
+                				        iconUrl="sap-icon://customer-history"
+                				        label="{:= ${path: 'data>CHANGED_AT', formatter: '.formatter.toDate'}}"
+                				        tooltip="{:= ${i18n>COMMON_EXP_CHANGE_DATE}}" app:exportRaw="true"/>
+									<ino:LabelledIcon
+                				        iconUrl="{:= ${path: 'data>ANONYMOUS_FOR', formatter: '.formatter.anonymousIconFormatter'}}"
+                				        visible="{path: 'data>ANONYMOUS_FOR', formatter: '.formatter.anonymousIconVisibleFormatter'}"
+                				        label="{:= ${path: 'data>ANONYMOUS_FOR', formatter: '.formatter.anonymousIconLabelFormatter'}}"
+                				        tooltip="{:= ${path: 'data>ANONYMOUS_FOR', formatter: '.formatter.anonymousIconTooltipFormatter'}}" app:exportRaw="true"/>
+								</HBox>
+								<HBox alignItems="Center" visible="{:= !!${data>FOLLOW_UP_DATE}}" justifyContent="Center" class="sapInoIdeaManageListActionBarContent sapInoIdeaManageListActionBarFollowUp">
+									<ino:LabelledIcon
+                				        visible="{:= ${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.isFutureDate'}}"
+                				        iconUrl="sap-icon://future"
+                				        tooltip="{:= ${path: 'i18n>IDEA_LIST_EXP_FOLLOW_UNDUE'}}"
+                				        label="{:= ${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.toDate'}}" app:exportIgnore="true"/>
+									<core:Icon visible="{:= !${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.isFutureDate'}}" src="sap-icon://present" color="Negative" class="sapInoIdeaManageListMarginEnd4" tooltip="{:= ${path: 'i18n>IDEA_LIST_EXP_FOLLOW_DUE'}}" app:exportIgnore="true"/>
+									<Label class="sapThemeNegativeText sapInoIdeaManageListMarginEnd4" visible="{:= !${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.isFutureDate'}}" text="{:= ${path: 'i18n>IDEA_LIST_FLD_FOLLOW_DUE'}}" app:exportIgnore="true"/>
+									<Text visible="{:= !${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.isFutureDate'}}" class="sapUiTinyMarginEnd sapThemeNegativeText" text="{:= ${path: 'data>FOLLOW_UP_DATE', formatter: '.formatter.toDate'}}" app:exportRaw="true"/>
+								</HBox>
+								<core:ExtensionPoint name="extension_line_bottom"/>
+								<ToolbarSpacer/>
+								<Button  visible="{:= ${view>/List/VARIANT} !== 'rewardqualified'}" text="{:= ${i18n>IDEA_OBJECT_BTN_ASSIGN_GENERAL}}" type="Transparent" press="onAssignGeneral"/>
+								<Button enabled="{:= !${ path: 'data>STATUS', formatter: '.formatter.isMerged'}}" visible="{:= ${view>/List/VARIANT} !== 'rewardqualified'}" text="{:= ${i18n>IDEA_LIST_BTN_STATUS}}" type="Transparent" press="onChangeStatusInList"/>
+								<Button enabled="{:= !${ path: 'data>STATUS', formatter: '.formatter.isFinal'}}" visible="{:= ${view>/List/VARIANT} !== 'rewardqualified'}" text="{:= ${i18n>IDEA_LIST_BTN_FOLLOW_UP}}" type="Transparent" press="onFollowUpMixinFollowUp">
+									<layoutData>
+										<OverflowToolbarLayoutData priority="AlwaysOverflow" />
+									</layoutData>
+								</Button>
+								<!-- <Button
+                                    visible="{:= ${view>/List/VARIANT} !== 'rewardqualified'}"
+                                    enabled="{ path: 'data>STATUS', formatter: '.formatIdeaMergeActionEnabled'}"
+                                    text="{:= ${i18n>IDEA_LIST_BTN_MERGE}}" type="Transparent" press="onIdeaMerge"><layoutData><OverflowToolbarLayoutData priority="AlwaysOverflow" /></layoutData></Button> -->
+								<Button visible="{:= ${view>/List/VARIANT} !== 'rewardqualified'}" 
+								        enabled="{:= !${ path: 'data>STATUS', formatter: '.formatter.isMerged'}}"
+								        text="{:= ${i18n>IDEA_LIST_BTN_DELETE}}" type="Transparent" press="onDeleteIdea">
+									<layoutData>
+										<OverflowToolbarLayoutData priority="AlwaysOverflow" />
+									</layoutData>
+								</Button>
+								<!--Button visible="{:= ${view>/List/VARIANT} === 'rewardqualified' }" text="{:= ${i18n>IDEA_LIST_BTN_CREATE_REWARD}}" enabled="{= ${path: 'data>ID', formatter: '.formatter.createRewardEnabled'}}" type="Transparent" press="onCreateReward"><customData><core:CustomData key="IdeaId" value="{data>ID}" /><core:CustomData key="IdeaPhaseCode" value="{data>PHASE}" /><core:CustomData key="IdeaName" value="{data>NAME}" /><core:CustomData key="UnitCode" value="{data>CAMPAIGN_REWARD_UNIT_CODE}" /><core:CustomData key="UnitText" value="{data>CAMPAIGN_REWARD_UNIT_TEXT}" /></customData></Button-->
+								<Button visible="{:= ${view>/List/VARIANT} === 'rewardqualified' }" text="{:= ${i18n>IDEA_LIST_BTN_CREATE_REWARD}}" type="Transparent" press="onCreateReward">
+									<customData>
+										<core:CustomData key="IdeaId" value="{data>ID}" />
+										<core:CustomData key="IdeaPhaseCode" value="{data>PHASE}" />
+										<core:CustomData key="IdeaName" value="{data>NAME}" />
+										<core:CustomData key="UnitCode" value="{data>CAMPAIGN_REWARD_UNIT_CODE}" />
+										<core:CustomData key="UnitText" value="{data>CAMPAIGN_REWARD_UNIT_TEXT}" />
+									</customData>
+								</Button>
+								<Button visible="{:= ${view>/List/VARIANT} === 'rewardqualified' }" 
+								        text="{:= ${i18n>IDEA_LIST_BTN_REWARD_DISMISS}}" 
+								        tooltip="{i18n>IDEA_LIST_EXP_REWARD_DISMISS}"
+								        type="Transparent" press="onDismissReward">
+									<customData>
+										<core:CustomData key="IdeaId" value="{data>ID}" />
+										<core:CustomData key="IdeaPhaseCode" value="{data>PHASE}" />
+										<core:CustomData key="IdeaName" value="{data>NAME}" />
+										<core:CustomData key="UnitCode" value="{data>CAMPAIGN_REWARD_UNIT_CODE}" />
+										<core:CustomData key="UnitText" value="{data>CAMPAIGN_REWARD_UNIT_TEXT}" />
+									</customData>
+								</Button>
+								<layoutData>
+									<FlexItemData growFactor="1"/>
+								</layoutData>
+							</OverflowToolbar>
+						</items>
+					</FlexBox>
+				</items>
+			</FlexBox>
+		</l:VerticalLayout>
+		<core:InvisibleText
+                class="sapInoItemAriaLabel"
+                text="{:= ${parts: [{path: 'data>NAME'}, 
+                                    {path: 'data>CAMPAIGN_SHORT_NAME'},
+                                    {path: 'data>SUBMITTER_NAME'},
+                                    {path: 'data>COACH_NAME'},
+                                    {path: 'data>PHASE'},
+                                    {path: 'data>STEP'},
+                                    {path: 'data>STEPS'},
+                                    {path: 'data>STATUS'},
+                                    {path: 'data>VOTE_TYPE_TYPE_CODE'},
+                                    {path: 'data>EXP_SCORE'},
+                                    {path: 'data>COMMENT_COUNT'},
+                                    {path: 'data>EVALUATION_COUNT'},
+                                    {path: 'data>SUBMITTED_AT'},
+                                    {path: 'data>CHANGED_AT'},
+                                    {path: 'data>FOLLOW_UP_DATE'},
+                                    {path: 'data>SCORE'},
+                                    {path: 'data>MAX_STAR_NO'},
+                                    {path: 'data>POS_VOTES'},
+                                    {path: 'data>NEG_VOTES'}
+                                    ], formatter: '.formatter.ideaAccessibilityLabelBackOfficeHome'}}"></core:InvisibleText>
+		<customData>
+			<core:CustomData 
+                key="style-idealatestupdate-class"  
+                value="{parts:[{path:'data>SHOW_CREATED_VIEWER'},{path:'data>SHOW_UPDATED_VIEWER'},{path:'data>SHOW_COMMENT_VIEWER'},{path:'data>SHOW_STATUSCHANGE_VIEWER'}],formatter:'.formatter.setIdeaListLatestUpdateBackGroundColor'}" 
+                writeToDom="true"/>
+		</customData>                                    
+	</CustomListItem >
+</core:FragmentDefinition>  

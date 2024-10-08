@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="CV_AUTH_APPLICATION_USER_ROLE_TRANSITIVE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <origin/>
+  <descriptions defaultDescription="CV_AUTH_APPLICATION_USER_ROLE_TRANSITIVE"/>
+  <metadata changedAt="2021-05-14 15:49:54.345"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="CV_OBJECT_IDENTITY_ROLE_TRANSITIVE" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.ext/calculationviews/CV_OBJECT_IDENTITY_ROLE_TRANSITIVE</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.iam::v_auth_application_user" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_auth_application_user"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_1" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="ROLE_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#CV_OBJECT_IDENTITY_ROLE_TRANSITIVE">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+      </input>
+      <input node="#sap.ino.db.iam::v_auth_application_user">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="ID"/>
+      </input>
+      <joinAttribute name="IDENTITY_ID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_1">
+    <descriptions/>
+    <attributes>
+      <attribute id="IDENTITY_ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Identity which is member of group specified in GROUP_ID. Foreign key to t_identity.ID"/>
+        <keyMapping columnObjectName="Join_1" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Technical record ID"/>
+        <keyMapping columnObjectName="Join_1" columnName="ID"/>
+      </attribute>
+      <attribute id="OBJECT_TYPE_CODE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Object type of link. Foreign key t_application_object.CODE"/>
+        <keyMapping columnObjectName="Join_1" columnName="OBJECT_TYPE_CODE"/>
+      </attribute>
+      <attribute id="ROLE_CODE" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Role to which identity IDENTITY_ID is assigned."/>
+        <keyMapping columnObjectName="Join_1" columnName="ROLE_CODE"/>
+      </attribute>
+      <attribute id="OBJECT_ID" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Object on which an identity has role ROLE_ID. Foreign key to t_idea.ID and t_campaign.ID"/>
+        <keyMapping columnObjectName="Join_1" columnName="OBJECT_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="80" y="260"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

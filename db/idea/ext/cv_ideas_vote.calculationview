@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="cv_ideas_vote" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="2.3" defaultClient="crossClient" visibility="reportingEnabled" calculationScenarioType="SCRIPT_BASED" scriptParametersCaseSensitive="true" enforceSqlExecution="false">
+<descriptions defaultDescription="cv_ideas_vote"/>
+<defaultSchema schemaName="SAP_INO"/>
+<localVariables>
+  <variable id="campaignId" parameter="true">
+    <variableProperties datatype="INTEGER">
+      <valueDomain type="empty"/>
+      <selection multiLine="false"/>
+    </variableProperties>
+  </variable>
+</localVariables>
+<variableMappings/>
+<dataSources/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+    <viewAttributes>
+      <viewAttribute id="IDEA_ID" datatype="INTEGER"/>
+    
+      <viewAttribute id="IDEA_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="CAMPAIGN_ID" datatype="INTEGER"/>
+      <viewAttribute id="CAMPAIGN_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="VOTE_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="VOTE_TYPE" datatype="VARCHAR" length="40"/>
+      <viewAttribute id="MAX_STAR_NO" datatype="INTEGER"/>
+      <viewAttribute id="SCORE" datatype="DOUBLE"/>
+      <viewAttribute id="VOTE_COUNT" datatype="DOUBLE"/>
+      <viewAttribute id="POS_VOTES" datatype="DOUBLE"/>
+      <viewAttribute id="NEG_VOTES" datatype="DOUBLE"/>
+      <viewAttribute id="EXP_SCORE" datatype="DOUBLE"/>
+      <viewAttribute id="EXP_VOTE_COUNT" datatype="INTEGER"/>
+      <viewAttribute id="EXP_POS_SCORE" datatype="DOUBLE"/>
+      <viewAttribute id="EXP_NEG_SCORE" datatype="DOUBLE"/>
+      <viewAttribute id="USER_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="USER_VOTE_SCORE" datatype="INTEGER"/>
+      <viewAttribute id="VOTE_REASON" datatype="VARCHAR" length="500"/>
+      <viewAttribute id="VOTE_COMMENT" datatype="VARCHAR" length="500"/>
+      <viewAttribute id="GROUP_VOTE_NAME" datatype="NVARCHAR" length="100"/></viewAttributes>
+    <calculatedViewAttributes/>
+    <localVariable>#campaignId</localVariable>
+    <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+   var_out = select
+        idea.id as idea_id, 
+        idea.name as idea_name,
+        idea.campaign_id as campaign_id,
+        camp.name AS campaign_name,
+        vote_type.default_text as vote_name,
+        vote_type.type_code as vote_type,
+        vote_type.max_star_no,
+        cast (vote_score.score as double) as score,
+        vote_score.vote_count,
+        vote_score.pos_score as pos_votes,
+        vote_score.neg_score as neg_votes,
+        vote_score.exp_score,
+        vote_score.exp_vote_count,
+        vote_score.exp_pos_score,
+        vote_score.exp_neg_score,
+        idea_vote.NAME as user_name,
+        idea_vote.score as user_vote_score,
+        vote.vote_reason_text as vote_reason,
+        idea_vote.vote_comment,
+        case idea_vote.voted_by_group
+                when 'ORG' then idea_vote.ORGANIZATION
+                when 'COM' then idea_vote.company
+                when 'COST' then idea_vote.cost_center
+                when 'OFF' then idea_vote.office
+                else ''
+                end as group_vote_name
+    from &quot;sap.ino.db.idea::t_idea&quot; as idea 
+    left outer join &quot;sap.ino.db.campaign::v_campaign_t_locale&quot; as camp 
+        on camp.campaign_id = idea.campaign_id
+    left outer join &quot;sap.ino.db.campaign::t_campaign&quot; as campaign 
+        on campaign.id = idea.campaign_id
+    left outer join &quot;sap.ino.db.idea::v_vote_idea_score&quot; as vote_score
+        on vote_score.idea_id = idea.id
+    left outer join &quot;sap.ino.db.campaign::t_vote_type&quot; as vote_type 
+        on vote_type.code = campaign.vote_type_code
+    left outer join &quot;sap.ino.db.exposedata.idea::v_idea_vote&quot; as idea_vote
+        on idea_vote.idea_id = idea.id
+    left outer join &quot;sap.ino.db.idea::v_vote&quot; as vote
+        on vote.idea_id = idea.id
+    where idea.campaign_id = :campaignId;
+
+END /********* End Procedure Script ************/</definition>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Script_View">
+  <attributes>
+    <attribute id="IDEA_ID" key="true" order="1" semanticType="empty">
+      <descriptions defaultDescription="COL"/>
+      <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+    </attribute>
+    <attribute id="IDEA_NAME" order="2">
+      <keyMapping columnObjectName="Script_View" columnName="IDEA_NAME"/>
+    </attribute>
+    <attribute id="CAMPAIGN_ID" order="3">
+      <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+    </attribute>
+    <attribute id="CAMPAIGN_NAME" order="4">
+      <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+    </attribute>
+    <attribute id="VOTE_NAME" order="5">
+      <keyMapping columnObjectName="Script_View" columnName="VOTE_NAME"/>
+    </attribute>
+    <attribute id="VOTE_TYPE" order="6">
+      <keyMapping columnObjectName="Script_View" columnName="VOTE_TYPE"/>
+    </attribute>
+    <attribute id="MAX_STAR_NO" order="7">
+      <keyMapping columnObjectName="Script_View" columnName="MAX_STAR_NO"/>
+    </attribute>
+    <attribute id="VOTE_COUNT" order="9">
+      <keyMapping columnObjectName="Script_View" columnName="VOTE_COUNT"/>
+    </attribute>
+    <attribute id="POS_VOTES" order="10">
+      <keyMapping columnObjectName="Script_View" columnName="POS_VOTES"/>
+    </attribute>
+    <attribute id="NEG_VOTES" order="11">
+      <keyMapping columnObjectName="Script_View" columnName="NEG_VOTES"/>
+    </attribute>
+    <attribute id="EXP_VOTE_COUNT" order="13">
+      <keyMapping columnObjectName="Script_View" columnName="EXP_VOTE_COUNT"/>
+    </attribute>
+    <attribute id="EXP_POS_SCORE" order="14">
+      <keyMapping columnObjectName="Script_View" columnName="EXP_POS_SCORE"/>
+    </attribute>
+    <attribute id="EXP_NEG_SCORE" order="15">
+      <keyMapping columnObjectName="Script_View" columnName="EXP_NEG_SCORE"/>
+    </attribute>
+    <attribute id="USER_NAME" order="16">
+      <keyMapping columnObjectName="Script_View" columnName="USER_NAME"/>
+    </attribute>
+    <attribute id="VOTE_REASON" order="18">
+      <keyMapping columnObjectName="Script_View" columnName="VOTE_REASON"/>
+    </attribute>
+    <attribute id="VOTE_COMMENT" order="19">
+      <keyMapping columnObjectName="Script_View" columnName="VOTE_COMMENT"/>
+    </attribute>
+    <attribute id="GROUP_VOTE_NAME" order="20">
+      <keyMapping columnObjectName="Script_View" columnName="GROUP_VOTE_NAME"/>
+    </attribute></attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="SCORE" order="8" aggregationType="sum" measureType="simple">
+      <measureMapping columnObjectName="Script_View" columnName="SCORE"/>
+    </measure>
+    <measure id="EXP_SCORE" order="12" aggregationType="sum" measureType="simple">
+      <measureMapping columnObjectName="Script_View" columnName="EXP_SCORE"/>
+    </measure>
+    <measure id="USER_VOTE_SCORE" order="17" aggregationType="sum" measureType="simple">
+      <measureMapping columnObjectName="Script_View" columnName="USER_VOTE_SCORE"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

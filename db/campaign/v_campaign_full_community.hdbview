@@ -1,0 +1,240 @@
+schema = "SAP_INO";
+query = "
+    select 
+        campaign.ID,
+        campaign.STATUS_CODE,
+        campaign.VALID_FROM,
+        campaign.VALID_TO,
+        campaign.SUBMIT_FROM,
+        campaign.SUBMIT_TO,
+        campaign.REGISTER_FROM,
+        campaign.REGISTER_TO,
+        campaign.IS_BLACK_BOX,
+        campaign.VOTE_TYPE_CODE,
+        campaign.COLOR_CODE,
+        campaign.PHASE_COUNT,
+        campaign.PAGE_COUNT,
+        campaign.MAIL_TEMPLATE_CODE,
+        campaign.MAIL_SUCCESS_CODE,
+        campaign.MAIL_REJECTION_CODE,
+        campaign.MAIL_PHASE_CHANGE_CODE,
+        campaign.VISITOR_COUNT,
+        campaign.FORM_CODE,
+        campaign.RESP_CODE,
+        campaign.REWARD,
+        campaign.REWARD_UNIT_CODE,
+        campaign.IS_REGISTER_AUTO_APPROVE,
+        campaign.IS_MILESTONE_ACTIVE,
+        campaign.IS_AUTO_ASSIGN_RL_COACH,
+        campaign.IS_OPEN_ANONYMOUS_FUNCTION,
+        campaign.IS_OPEN_REGISTER_SETTING ,
+        campaign.MAIL_NOTIFICATION_SUMMARY_CODE,
+        campaign.ADMIN_FORM_CODE,
+        campaign.IS_INTEGRATION_ACTIVE,
+        campaign.IS_GAMIFICATION_ACTIVE,
+        campaign.VANITY_CODE,
+        ifnull(camp_view_count.view_count, 0) as view_count,
+        ifnull(camp_active_participant_count.active_participant_count, 0) as active_participant_count,
+        case when p_locale_count is null then 0 else p_locale_count end as page_count_locale,
+        case 
+            when campaign.status_code = 'sap.ino.config.CAMP_PUBLISHED' 
+                and campaign.submit_from <= current_utctimestamp 
+                and current_utctimestamp <= campaign.submit_to
+            then 1
+            else 0 
+        end as is_open_for_submission,
+        case
+            when campaign.ID in (
+                select campaign_id from \"sap.ino.db.campaign::v_auth_registration_campaign_privilege\"
+            )
+            then 1
+            else 0
+        end as is_open_for_registration,
+        campaign_register.id as register_id,
+         case 
+            when     campaign.ID in ( select limitation.object_id as id from \"sap.ino.db.iam::v_auth_object_identity_limitation_action\" as limitation
+            where campaign.id = limitation.object_id and 
+            limitation.object_type_code = 'CAMPAIGN' and 
+            limitation.action_code = 'CAMPAIGN_REGISTER' and 
+            limitation.disabled = 0) 
+            then 0
+            else 1
+        end as is_regist_disabled,
+        
+        case
+            when campaign_register.status is null then 0
+            when campaign_register.status = 'sap.ino.config.REGISTER_NEW' then 1
+            when campaign_register.status = 'sap.ino.config.REGISTER_APPROVED' then 2
+            when campaign_register.status = 'sap.ino.config.REGISTER_REJECTED' then 3
+            else -1
+        end as register_status,
+        case 
+            when campaign.status_code = 'sap.ino.config.CAMP_PUBLISHED' 
+                and campaign.submit_from <= current_utctimestamp 
+            then 1
+            else 0 
+        end as is_started_for_submission,
+        case 
+            when campaign.status_code = 'sap.ino.config.CAMP_PUBLISHED' 
+                and campaign.valid_from <= current_utctimestamp 
+                and current_utctimestamp <= campaign.valid_to
+            then 1
+            else 0 
+        end as is_valid,
+        campaign.status_code as campaign_status,
+        case 
+            when blog_auth.object_id is not null
+            then 1
+            else 0 
+        end as is_open_for_blog_create,
+        descr.lang,
+        descr.short_name,
+        descr.name,
+        descr.description,
+        descr.idea_description_template,
+        attachment.id                              as campaign_image_assign_id,
+        attachment.attachment_id                   as campaign_image_id,
+        background_image_attachment.id             as campaign_background_image_assign_id,
+        background_image_attachment.attachment_id  as campaign_background_image_id,
+        small_background_image_attachment.id             as campaign_small_background_image_assign_id,
+        small_background_image_attachment.attachment_id  as campaign_small_background_image_id,
+        campaign_list_image_attachment.id                as campaign_list_image_assign_id,
+        campaign_list_image_attachment.attachment_id     as campaign_list_image_id,
+        all_ideas_count.count                      as all_ideas_count,
+        draft_ideas_count.count                    as draft_ideas_count,
+        discontinued_ideas_count.count             as discontinued_ideas_count,
+        completed_ideas_count.count                as completed_ideas_count,
+        unassigned_ideas_count.count               as unassigned_ideas_count,
+        participants_count.count                   as participants_count,
+        comment_count.count						   as comment_count,
+        campaign_follow.id                         as follow,  
+        case
+            when ifnull(submittable.campaign_id, 0)  = 0 then 0
+            else 1
+        end as submittable,
+        vote_type_code.type_code as vote_type_type_code,
+        responsibility.id as resp_id,
+        responsibility.default_text as resp_name,
+        responsibility.default_long_text as resp_description,
+        
+        case 
+        when (select count(*) from \"sap.ino.db.idea::v_ideas_need_contribution_share\" 
+	                   where campaign_id = campaign.id) > 0 then cast (1 as TINYINT)
+        else cast (0 as TINYINT)
+        end as ideas_need_contribution_share,
+        case  when (select count(*) from \"sap.ino.db.campaign::v_campaign_manager_identity\" 
+                  where campaign_id = campaign.id and display_homepage = 1) > 0 then cast (1 as TINYINT)
+        else cast (0 as TINYINT) 
+        end as manager_has_display_homepage_setting
+        
+    from \"sap.ino.db.campaign::t_campaign\" as campaign
+        left outer join \"sap.ino.db.campaign::v_campaign_view_count\" as camp_view_count
+            on campaign.id = camp_view_count.campaign_id
+        left outer join \"sap.ino.db.campaign::v_campaign_active_participant_count\" as camp_active_participant_count
+            on campaign.id = camp_active_participant_count.campaign_id
+        left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as descr
+            on campaign.id = descr.campaign_id
+        left outer join 
+            (
+                select campaign_id, count(*) as p_locale_count
+                from \"sap.ino.db.campaign::v_campaign_page_t_locale\"
+                group by campaign_id
+            ) p_locale
+            on campaign.id = p_locale.campaign_id
+        left outer join \"sap.ino.db.iam::t_identity\" as identity1
+            on identity1.id = campaign.created_by_id 
+        left outer join \"sap.ino.db.iam::t_identity\" as identity2
+                 on identity2.id = campaign.changed_by_id
+        left outer join \"sap.ino.db.follow::v_follow\" as campaign_follow
+            on  campaign.id = campaign_follow.object_id
+            and campaign_follow.object_type_code = 'CAMPAIGN'
+        left outer join \"sap.ino.db.campaign::v_auth_register\" as campaign_register
+            on campaign.id = campaign_register.campaign_id
+        left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as attachment 
+        on attachment.owner_id = campaign.id and
+           attachment.owner_type_code = 'CAMPAIGN' and
+           attachment.role_type_code = 'CAMPAIGN_DETAIL_IMG'
+        left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as background_image_attachment 
+        on background_image_attachment.owner_id = campaign.id and
+           background_image_attachment.owner_type_code = 'CAMPAIGN' and
+           background_image_attachment.role_type_code = 'BACKGROUND_IMG'
+        left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as small_background_image_attachment 
+        on small_background_image_attachment.owner_id = campaign.id and
+           small_background_image_attachment.owner_type_code = 'CAMPAIGN' and
+           small_background_image_attachment.role_type_code = 'SMALL_BACKGROUND_IMG'
+        left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as campaign_list_image_attachment 
+        on campaign_list_image_attachment.owner_id = campaign.id and
+           campaign_list_image_attachment.owner_type_code = 'CAMPAIGN' and
+           campaign_list_image_attachment.role_type_code = 'CAMPAIGN_LIST_IMG'
+        left outer join \"sap.ino.db.campaign::v_auth_submittable_campaign\" as submittable
+            on submittable.campaign_id = campaign.id
+        left outer join \"sap.ino.db.campaign::t_vote_type\" as vote_type_code
+            on campaign.vote_type_code = vote_type_code.code
+        left outer join (
+            select count(id) as count, campaign_id from \"sap.ino.db.idea::t_idea\" where status_code <> 'sap.ino.config.DRAFT' group by campaign_id
+        ) as all_ideas_count
+            on all_ideas_count.campaign_id = campaign.id
+        left outer join (
+            select count(id) as count, campaign_id from \"sap.ino.db.idea::t_idea\" where status_code = 'sap.ino.config.DRAFT' group by campaign_id
+        ) as draft_ideas_count
+            on draft_ideas_count.campaign_id = campaign.id
+        left outer join (
+            select count(id) as count, campaign_id from \"sap.ino.db.idea::t_idea\" as idea
+                inner join \"sap.ino.db.status::t_status\" as status
+                on idea.status_code = status.code
+                and (status.code = 'sap.ino.config.DISCONTINUED' or status.status_type = 'DISCONTINUED')
+                group by campaign_id
+        ) as discontinued_ideas_count
+            on discontinued_ideas_count.campaign_id = campaign.id
+        left outer join (
+            select count(id) as count, campaign_id from \"sap.ino.db.idea::t_idea\" as idea
+                inner join \"sap.ino.db.status::t_status\" as status
+                on idea.status_code = status.code
+                and (status.code = 'sap.ino.config.COMPLETED' or status.status_type = 'COMPLETED')
+                group by campaign_id
+        ) as completed_ideas_count
+            on completed_ideas_count.campaign_id = campaign.id
+        left outer join (
+            select count(id) as count, campaign_id from \"sap.ino.db.idea::v_uncoached_ideas\" where status_code <> 'sap.ino.config.DRAFT' group by campaign_id
+        ) as unassigned_ideas_count
+            on unassigned_ideas_count.campaign_id = campaign.id
+        left outer join (
+            select count(distinct identity_id) as count, object_id as campaign_id from \"sap.ino.db.campaign::v_campaign_participants_user_transitive\" group by object_id
+        ) as participants_count
+            on participants_count.campaign_id = campaign.id
+        left outer join (
+            select count(distinct id) as count, object_id as campaign_id from \"sap.ino.db.comment::t_comment\" where object_type_code = 'CAMPAIGN' group by object_id
+        ) as comment_count
+            on comment_count.campaign_id = campaign.id
+        left outer join (
+            select * from \"sap.ino.db.subresponsibility::v_responsibility\"
+        ) as responsibility
+            on responsibility.code = campaign.resp_code
+        left outer join \"sap.ino.db.blog::v_auth_blogs_create\" as blog_auth
+            on blog_auth.object_id = campaign.id
+    with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.iam::t_identity",
+                    "sap.ino.db.attachment::t_attachment_assignment",
+                    "sap.ino.db.campaign::t_vote_type",
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.comment::t_comment",
+                    "sap.ino.db.status::t_status"];
+
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale",
+                   "sap.ino.db.campaign::v_campaign_page_t_locale",
+                   "sap.ino.db.campaign::v_auth_submittable_campaign",
+                   "sap.ino.db.campaign::v_campaign_participants_user_transitive",
+                   "sap.ino.db.idea::v_uncoached_ideas", 
+                   "sap.ino.db.iam::v_object_identity_role_transitive",
+                   "sap.ino.db.subresponsibility::v_responsibility",
+                   "sap.ino.db.blog::v_auth_blogs_create",
+                   "sap.ino.db.follow::v_follow",
+                   "sap.ino.db.campaign::v_auth_registration_campaign_privilege",
+                   "sap.ino.db.iam::v_auth_object_identity_limitation_action",
+                   "sap.ino.db.campaign::v_auth_register",
+                   "sap.ino.db.idea::v_ideas_need_contribution_share",
+                   "sap.ino.db.campaign::v_campaign_view_count",
+                   "sap.ino.db.campaign::v_campaign_active_participant_count",
+                   "sap.ino.db.campaign::v_campaign_manager_identity"];

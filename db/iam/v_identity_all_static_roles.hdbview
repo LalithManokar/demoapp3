@@ -1,0 +1,16 @@
+schema = "SAP_INO";
+query = "
+    select
+        static_roles.logical_role_name,
+        static_roles.qualified_role_name,
+        identity.id as identity_id,
+        identity.user_name as user_name
+    from \"sap.ino.db.iam::t_identity\" as identity 
+        inner join \"sap.ino.db.iam::v_sys_granted_roles\" as identity_roles 
+            on identity_roles.grantee = identity.user_name
+        inner join \"sap.ino.db.iam::v_all_static_roles\" as static_roles 
+            on identity_roles.role_name = static_roles.qualified_role_name
+    with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity"];
+depends_on_view = ["sap.ino.db.iam::v_all_static_roles", "sap.ino.db.iam::v_sys_granted_roles"];

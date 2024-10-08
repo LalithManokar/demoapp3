@@ -1,0 +1,19 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Phase Settings for Campaign";
+table.columns = [
+    {name = "ID";                     sqlType = INTEGER;               nullable = false; comment = "Technical record ID";},
+    {name = "CAMPAIGN_ID";            sqlType = INTEGER;               nullable = false; comment = "Campaign ID";},
+    {name = "PHASE_CODE";             sqlType = VARCHAR; length = 500; nullable = false; comment = "Phase Code";},
+    {name = "SEQUENCE_NO";            sqlType = INTEGER;               nullable = false; comment = "Sequence number of this phase in the campaign";},
+    {name = "NEXT_PHASE_CODE";        sqlType = VARCHAR; length = 500; nullable = true;  comment = "Next phase in campaign";},
+    {name = "STATUS_MODEL_CODE";      sqlType = VARCHAR; length = 500; nullable = false; comment = "Status Model Code";},
+    {name = "EVALUATION_MODEL_CODE";  sqlType = VARCHAR; length = 500; nullable = true;  comment = "Evaluation Model Code";},
+    {name = "VOTING_ACTIVE";          sqlType = TINYINT;               nullable = false; comment = "Community Voting Active Indicator";},
+    {name = "SHOW_IDEA_IN_COMMUNITY"; sqlType = TINYINT;               nullable = false; comment = "Idea is shown in community in this phase";},
+    {name = "IDEA_CONTENT_EDITABLE";  sqlType = TINYINT;               nullable = false; comment = "Idea description/title is editable in this phase";},
+    {name = "SELF_EVALUATION_ACTIVE"; sqlType = TINYINT;               nullable = true; comment = "Can idea be evaluated by submitter/contributor in this phase";},
+    {name = "AUTO_EVAL_PUB_CODE"; 	  sqlType = VARCHAR; length = 500; nullable = true; comment = "Automatic Evaluation Publication";},
+    {name = "REWARD";                 sqlType = TINYINT;               nullable = true;  comment = "indicator of enable reward for campaign";}
+];
+table.primaryKey.pkcolumns = ["ID"];

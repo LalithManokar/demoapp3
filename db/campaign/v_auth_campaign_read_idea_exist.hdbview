@@ -1,0 +1,17 @@
+schema = "SAP_INO";
+query = "
+    select distinct auth_campaign.campaign_id
+    from
+        \"sap.ino.db.idea::v_auth_ideas\" as auth_ideas
+    inner join
+        \"sap.ino.db.idea::t_idea\" as idea
+    on
+        auth_ideas.IDEA_ID = idea.ID
+    inner join
+        \"sap.ino.db.campaign::v_auth_campaigns_read\" as auth_campaign
+    on
+        idea.CAMPAIGN_ID = auth_campaign.campaign_id
+";
+
+depends_on_table = ["sap.ino.db.idea::t_idea"];
+depends_on_view = ["sap.ino.db.idea::v_auth_ideas", "sap.ino.db.campaign::v_auth_campaigns_read"];

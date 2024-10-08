@@ -1,0 +1,1220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="v_idea_global_search" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="V_EXT_IDEAS_MEDIUM_SEARCH"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Free text search token"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="filterBackoffice" parameter="true">
+      <descriptions defaultDescription="filterBackoffice"/>
+      <variableProperties datatype="TINYINT" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false"/>
+        <defaultRange/>
+      </variableProperties>
+    </variable>
+  
+    <variable id="campaign_id" parameter="true">
+      <descriptions defaultDescription="campaign_id"/>
+      <variableProperties datatype="VARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false"/>
+        <defaultRange/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="SHORT_DESCRIPTION" length="500"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="TIMESTAMP" id="SUBMITTED_AT"/>
+        <viewAttribute datatype="INTEGER" id="SUBMITTER_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="SUBMITTER_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="COACH_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="COACH_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="CAMPAIGN_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_SHORT_NAME" length="40"/>
+        <viewAttribute datatype="VARCHAR" id="PHASE" length="100"/>
+        <viewAttribute datatype="INTEGER" id="STEP"/>
+        <viewAttribute datatype="INTEGER" id="STEPS"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="STATUS_REASON" length="4000"/>
+        <viewAttribute datatype="VARCHAR" id="BASE_PACKAGE" length="20"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS_TYPE" length="100"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_COLOR" length="6"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_REWARD_UNIT_CODE" length="500"/>
+        <viewAttribute datatype="NVARCHAR" id="CAMPAIGN_REWARD_UNIT_TEXT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_FORM_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="TITLE_IMAGE_ASSIGN_ID"/>
+        <viewAttribute datatype="INTEGER" id="TITLE_IMAGE_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="TITLE_IMAGE_MEDIA_TYPE" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="VOTE_TYPE_TYPE_CODE" length="40"/>
+        <viewAttribute datatype="VARCHAR" id="VOTED_BY_GROUP" length="40"/>
+        <viewAttribute datatype="INTEGER" id="MAX_STAR_NO"/>
+        <viewAttribute datatype="DOUBLE" id="SCORE"/>
+        <viewAttribute datatype="INTEGER" id="VOTE_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="POS_VOTES"/>
+        <viewAttribute datatype="INTEGER" id="NEG_VOTES"/>
+        <viewAttribute datatype="DOUBLE" id="EXP_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="EXP_VOTE_COUNT"/>
+        <viewAttribute datatype="BIGINT" id="EXP_POS_SCORE"/>
+        <viewAttribute datatype="BIGINT" id="EXP_NEG_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="USER_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="VOTE_ID"/>
+        <viewAttribute datatype="INTEGER" id="VOTING_ACTIVE"/>
+        <viewAttribute datatype="INTEGER" id="FOLLOW"/>
+        <viewAttribute datatype="DATE" id="FOLLOW_UP_DATE"/>
+        <viewAttribute datatype="INTEGER" id="FOLLOW_UP_ID"/>
+        <viewAttribute datatype="INTEGER" id="COMMENT_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="VIEW_COUNT"/>
+        <viewAttribute datatype="VARCHAR" id="PREFILTER_STATUS" length="100"/>
+        <viewAttribute datatype="INTEGER" id="LAST_PUBL_EVAL_ID"/>
+        <viewAttribute datatype="TIMESTAMP" id="LAST_PUBL_EVAL_AT"/>
+        <viewAttribute datatype="SMALLINT" id="LAST_PUBL_EVAL_IN_PHASE"/>
+        <viewAttribute datatype="VARCHAR" id="LAST_PUBL_EVAL_OV_RES_DATATYPE_CODE" length="8"/>
+        <viewAttribute datatype="DOUBLE" id="LAST_PUBL_EVAL_OV_RES_NUM_VALUE"/>
+        <viewAttribute datatype="SMALLINT" id="LAST_PUBL_EVAL_OV_RES_BOOL_VALUE"/>
+        <viewAttribute datatype="VARCHAR" id="LAST_PUBL_EVAL_OV_RES_TEXT_VALUE" length="1024"/>
+        <viewAttribute datatype="VARCHAR" id="LAST_PUBL_EVAL_OV_RES_VALUE_OPTION_LIST_CODE" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="LAST_PUBL_EVAL_OV_RES_UOM_CODE" length="100"/>
+        <viewAttribute datatype="INTEGER" id="EVALUATION_IN_PHASE_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="EVALUATION_COUNT"/>
+        <viewAttribute datatype="NVARCHAR" id="RESP_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="RESP_VALUE_CODE" length="500"/>
+        <viewAttribute datatype="NVARCHAR" id="RESP_VALUE_NAME" length="100"/>
+        <viewAttribute datatype="TINYINT" id="IS_OPEN_FOR_CONTRIBUTORS"/>
+        <viewAttribute datatype="INTEGER" id="VOLUNTEER_ID"/>
+        <viewAttribute datatype="INTEGER" id="REWARD_ACTIVE"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_PHASE_NEED_REWARD"/>
+        <viewAttribute datatype="TINYINT" id="REWARD_DISMISSED"/>
+        <viewAttribute datatype="INTEGER" id="DECISION_ID"/>
+        <viewAttribute datatype="VARCHAR" id="REASON_CODE" length="500"/>
+        <viewAttribute datatype="NVARCHAR" id="DECIDER_NAME" length="100"/>
+        <viewAttribute id="PARTICIPANT_CAN_VOTE" datatype="INTEGER"/>
+        <viewAttribute id="OPEN_STATUS_SETTING" datatype="INTEGER"/>
+        <viewAttribute id="COMMENT_HAS_PRIVILEGE" datatype="INTEGER"/>
+        <viewAttribute id="PARTICIPANT_CAN_COMMENT" datatype="INTEGER"/>
+        <viewAttribute datatype="INTEGER" id="_INT_01"/>
+        <viewAttribute datatype="INTEGER" id="_INT_02"/>
+        <viewAttribute datatype="INTEGER" id="_INT_03"/>
+        <viewAttribute datatype="INTEGER" id="_INT_04"/>
+        <viewAttribute datatype="INTEGER" id="_INT_05"/>
+        <viewAttribute datatype="INTEGER" id="_INT_06"/>
+        <viewAttribute datatype="INTEGER" id="_INT_07"/>
+        <viewAttribute datatype="INTEGER" id="_INT_08"/>
+        <viewAttribute datatype="INTEGER" id="_INT_09"/>
+        <viewAttribute datatype="INTEGER" id="_INT_10"/>
+        <viewAttribute datatype="INTEGER" id="_INT_11"/>
+        <viewAttribute datatype="INTEGER" id="_INT_12"/>
+        <viewAttribute datatype="INTEGER" id="_INT_13"/>
+        <viewAttribute datatype="INTEGER" id="_INT_14"/>
+        <viewAttribute datatype="INTEGER" id="_INT_15"/>
+        <viewAttribute datatype="INTEGER" id="_INT_16"/>
+        <viewAttribute datatype="INTEGER" id="_INT_17"/>
+        <viewAttribute datatype="INTEGER" id="_INT_18"/>
+        <viewAttribute datatype="INTEGER" id="_INT_19"/>
+        <viewAttribute datatype="INTEGER" id="_INT_20"/>
+        <viewAttribute datatype="DOUBLE" id="_DOUBLE_01"/>
+        <viewAttribute datatype="DOUBLE" id="_DOUBLE_02"/>
+        <viewAttribute datatype="DOUBLE" id="_DOUBLE_03"/>
+        <viewAttribute datatype="DOUBLE" id="_DOUBLE_04"/>
+        <viewAttribute datatype="DOUBLE" id="_DOUBLE_05"/>
+        <viewAttribute datatype="DOUBLE" id="_DOUBLE_06"/>
+        <viewAttribute datatype="DOUBLE" id="_DOUBLE_07"/>
+        <viewAttribute datatype="DOUBLE" id="_DOUBLE_08"/>
+        <viewAttribute datatype="DOUBLE" id="_DOUBLE_09"/>
+        <viewAttribute datatype="DOUBLE" id="_DOUBLE_10"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_01" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_02" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_03" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_04" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_05" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_06" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_07" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_08" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_09" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_10" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_11" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_12" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_13" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_14" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_15" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_16" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_17" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_18" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_19" length="5000"/>
+        <viewAttribute datatype="NVARCHAR" id="_TEXT_20" length="5000"/>
+        <viewAttribute datatype="TINYINT" id="_BOOL_01"/>
+        <viewAttribute datatype="TINYINT" id="_BOOL_02"/>
+        <viewAttribute datatype="TINYINT" id="_BOOL_03"/>
+        <viewAttribute datatype="TINYINT" id="_BOOL_04"/>
+        <viewAttribute datatype="TINYINT" id="_BOOL_05"/>
+        <viewAttribute datatype="TINYINT" id="_BOOL_06"/>
+        <viewAttribute datatype="TINYINT" id="_BOOL_07"/>
+        <viewAttribute datatype="TINYINT" id="_BOOL_08"/>
+        <viewAttribute datatype="TINYINT" id="_BOOL_09"/>
+        <viewAttribute datatype="TINYINT" id="_BOOL_10"/>
+        <viewAttribute datatype="TIMESTAMP" id="_TS_01"/>
+        <viewAttribute datatype="TIMESTAMP" id="_TS_02"/>
+        <viewAttribute datatype="TIMESTAMP" id="_TS_03"/>
+        <viewAttribute datatype="TIMESTAMP" id="_TS_04"/>
+        <viewAttribute datatype="TIMESTAMP" id="_TS_05"/>
+        <viewAttribute datatype="TIMESTAMP" id="_TS_06"/>
+        <viewAttribute datatype="TIMESTAMP" id="_TS_07"/>
+        <viewAttribute datatype="TIMESTAMP" id="_TS_08"/>
+        <viewAttribute datatype="TIMESTAMP" id="_TS_09"/>
+        <viewAttribute datatype="TIMESTAMP" id="_TS_10"/>
+        <viewAttribute datatype="DATE" id="_DATE_01"/>
+        <viewAttribute datatype="DATE" id="_DATE_02"/>
+        <viewAttribute datatype="DATE" id="_DATE_03"/>
+        <viewAttribute datatype="DATE" id="_DATE_04"/>
+        <viewAttribute datatype="DATE" id="_DATE_05"/>
+        <viewAttribute datatype="DATE" id="_DATE_06"/>
+        <viewAttribute datatype="DATE" id="_DATE_07"/>
+        <viewAttribute datatype="DATE" id="_DATE_08"/>
+        <viewAttribute datatype="DATE" id="_DATE_09"/>
+        <viewAttribute datatype="DATE" id="_DATE_10"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <localVariable>#filterBackoffice</localVariable>
+      <localVariable>#campaign_id</localVariable>
+      <definition>begin
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.idea::p_idea_search&quot;(:searchToken, :lt_search_ideas);
+      lt_filter_campaigns =  select id 
+                              from &quot;sap.ino.db.campaign::t_campaign&quot; 
+                              where :filterBackoffice = 0 union all 
+                           select distinct id 
+                              from &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; 
+                              where :filterBackoffice = 1;
+    
+    lt_filter_responsibility =  select id 
+                              from &quot;sap.ino.db.idea::t_idea&quot; 
+                              where :filterBackoffice = 0 union all 
+                           select distinct id 
+                              from &quot;sap.ino.db.idea::v_my_backoffice_responsibility_idea&quot; 
+                              where :filterBackoffice = 1;
+    if length(:campaign_id) = 0 then
+     var_out = select search.score as search_score, 
+                     idea.id,
+                     idea.name,
+                     idea.short_description,
+                     idea.created_at,
+                     idea.changed_at,
+                     idea.submitted_at,
+                     idea.submitter_id,
+                     idea.submitter_name,
+                     idea.coach_id,
+                     idea.coach_name,
+                     idea.campaign_name,
+                     idea.campaign_short_name,
+                     idea.phase,
+                     idea.step,
+                     idea.steps,
+                     idea.status,
+                     idea.status_reason,
+                     SUBSTRING (idea.status,1,14) as base_package,
+                     case when all_status.status_type is null then ''
+                     else all_status.status_type
+                     end as status_type,
+                     idea.campaign_id,
+                     idea.campaign_color,
+                     idea.campaign_reward_unit_code,
+                     idea.campaign_reward_unit_text,
+                     idea.campaign_form_code,
+                     idea.title_image_assign_id,
+                     idea.title_image_id,
+                     idea.title_image_media_type,
+                     idea.vote_type_type_code,
+                     idea.voted_by_group,
+                     idea.max_star_no,
+                     case when idea.score is null then 0 else idea.score end as score,
+                     idea.vote_count,
+                     idea.pos_votes,
+                     idea.neg_votes,
+                     case when idea.exp_score is null then 0 else idea.exp_score end as exp_score,
+                     idea.exp_vote_count,
+                     idea.exp_pos_score,
+                     idea.exp_neg_score,
+                     case when idea.user_score is null then 0 else idea.user_score end as user_score,
+                     idea.vote_id,
+                     idea.voting_active,
+                     idea.follow,
+                     idea.follow_up_date,
+                     idea.follow_up_id,
+                     idea.comment_count,
+                     idea.view_count,
+                     idea.status as prefilter_status,
+                     idea.last_publ_eval_id,
+                     idea.last_publ_eval_at,
+                     idea.last_publ_eval_in_phase,
+                     idea.last_publ_eval_ov_res_datatype_code,
+                     idea.last_publ_eval_ov_res_num_value,
+                     idea.last_publ_eval_ov_res_bool_value,
+                     idea.last_publ_eval_ov_res_text_value,
+                     idea.last_publ_eval_ov_res_value_option_list_code,
+                     idea.last_publ_eval_ov_res_uom_code,
+                     idea.evaluation_in_phase_count,
+                     idea.evaluation_count,
+                     idea.resp_name,
+                     idea.resp_value_code,
+                     idea.resp_value_name,
+                     idea.is_open_for_contributors,
+                     idea.volunteer_id,
+                     idea.reward_active,
+                     idea.idea_phase_need_reward,
+                     idea.reward_dismissed,
+                     decision.id as decision_id,
+                     decision.reason_code,
+                     decision.decider_name,
+                     idea.participant_can_vote,
+                     idea.open_status_setting,
+                     idea.comment_has_privilege,
+                     idea.participant_can_comment,
+                     -- Extensibility fields
+                     -- They are listed separately as the explicitely have to be added to the 
+                     -- calculation view columns as well. Using .* would make this view
+                     -- inconsistent when the extensibility table is extended
+                     idea_extension._int_01,
+                     idea_extension._int_02,
+                     idea_extension._int_03,
+                     idea_extension._int_04,
+                     idea_extension._int_05,
+                     idea_extension._int_06,
+                     idea_extension._int_07,
+                     idea_extension._int_08,
+                     idea_extension._int_09,
+                     idea_extension._int_10,
+                     idea_extension._int_11,
+                     idea_extension._int_12,
+                     idea_extension._int_13,
+                     idea_extension._int_14,
+                     idea_extension._int_15,
+                     idea_extension._int_16,
+                     idea_extension._int_17,
+                     idea_extension._int_18,
+                     idea_extension._int_19,
+                     idea_extension._int_20,
+                     idea_extension._double_01,
+                     idea_extension._double_02,
+                     idea_extension._double_03,
+                     idea_extension._double_04,
+                     idea_extension._double_05,
+                     idea_extension._double_06,
+                     idea_extension._double_07,
+                     idea_extension._double_08,
+                     idea_extension._double_09,
+                     idea_extension._double_10,
+                     idea_extension._text_01,
+                     idea_extension._text_02,
+                     idea_extension._text_03,
+                     idea_extension._text_04,
+                     idea_extension._text_05,
+                     idea_extension._text_06,
+                     idea_extension._text_07,
+                     idea_extension._text_08,
+                     idea_extension._text_09,
+                     idea_extension._text_10,
+                     idea_extension._text_11,
+                     idea_extension._text_12,
+                     idea_extension._text_13,
+                     idea_extension._text_14,
+                     idea_extension._text_15,
+                     idea_extension._text_16,
+                     idea_extension._text_17,
+                     idea_extension._text_18,
+                     idea_extension._text_19,
+                     idea_extension._text_20,
+                     idea_extension._bool_01,
+                     idea_extension._bool_02,
+                     idea_extension._bool_03,
+                     idea_extension._bool_04,
+                     idea_extension._bool_05,
+                     idea_extension._bool_06,
+                     idea_extension._bool_07,
+                     idea_extension._bool_08,
+                     idea_extension._bool_09,
+                     idea_extension._bool_10,
+                     idea_extension._ts_01,
+                     idea_extension._ts_02,
+                     idea_extension._ts_03,
+                     idea_extension._ts_04,
+                     idea_extension._ts_05,
+                     idea_extension._ts_06,
+                     idea_extension._ts_07,
+                     idea_extension._ts_08,
+                     idea_extension._ts_09,
+                     idea_extension._ts_10,
+                     idea_extension._date_01,
+                     idea_extension._date_02,
+                     idea_extension._date_03,
+                     idea_extension._date_04,
+                     idea_extension._date_05,
+                     idea_extension._date_06,
+                     idea_extension._date_07,
+                     idea_extension._date_08,
+                     idea_extension._date_09,
+                     idea_extension._date_10
+                 from &quot;sap.ino.db.idea::v_idea_medium_opt&quot; as idea 
+                    inner join :lt_search_ideas as search
+                        on idea.id = search.id
+                    left outer join :lt_filter_campaigns as filter_campaigns
+                        on idea.campaign_id = filter_campaigns.id
+                    left outer join :lt_filter_responsibility as filter_responsibility
+                        on idea.id = filter_responsibility.id
+                    left outer join &quot;sap.ino.db.status::t_status&quot; as all_status
+                        on idea.status = all_status.code
+                    left outer join &quot;sap.ino.db.idea::v_decision_latest&quot; as decision
+                        on idea.id = decision.idea_id
+                    left outer join &quot;sap.ino.db.basis::t_extension&quot; as idea_extension
+                        on idea_extension._object_id = idea.id and 
+                           idea_extension._object_type_code = 'IDEA'
+                      where  idea.id in (select idea_id from &quot;sap.ino.db.idea::v_auth_ideas_read&quot;) and (
+                 		idea.campaign_id = filter_campaigns.id or 
+                       	idea.campaign_id is null or 
+                       	idea.campaign_id &lt; 0 or
+                        idea.id = filter_responsibility.id
+                 ) and  idea.status &lt;&gt; 'sap.ino.config.DRAFT'  order by search.score desc;
+    else 
+     var_out = select search.score as search_score, 
+                     idea.id,
+                     idea.name,
+                     idea.short_description,
+                     idea.created_at,
+                     idea.changed_at,
+                     idea.submitted_at,
+                     idea.submitter_id,
+                     idea.submitter_name,
+                     idea.coach_id,
+                     idea.coach_name,
+                     idea.campaign_name,
+                     idea.campaign_short_name,
+                     idea.phase,
+                     idea.step,
+                     idea.steps,
+                     idea.status,
+                     idea.status_reason,
+                     SUBSTRING (idea.status,1,14) as base_package,
+                     case when all_status.status_type is null then ''
+                     else all_status.status_type
+                     end as status_type,
+                     idea.campaign_id,
+                     idea.campaign_color,
+                     idea.campaign_reward_unit_code,
+                     idea.campaign_reward_unit_text,
+                     idea.campaign_form_code,
+                     idea.title_image_assign_id,
+                     idea.title_image_id,
+                     idea.title_image_media_type,
+                     idea.vote_type_type_code,
+                     idea.voted_by_group,
+                     idea.max_star_no,
+                     case when idea.score is null then 0 else idea.score end as score,
+                     idea.vote_count,
+                     idea.pos_votes,
+                     idea.neg_votes,
+                     case when idea.exp_score is null then 0 else idea.exp_score end as exp_score,
+                     idea.exp_vote_count,
+                     idea.exp_pos_score,
+                     idea.exp_neg_score,
+                     case when idea.user_score is null then 0 else idea.user_score end as user_score,
+                     idea.vote_id,
+                     idea.voting_active,
+                     idea.follow,
+                     idea.follow_up_date,
+                     idea.follow_up_id,
+                     idea.comment_count,
+                     idea.view_count,
+                     idea.status as prefilter_status,
+                     idea.last_publ_eval_id,
+                     idea.last_publ_eval_at,
+                     idea.last_publ_eval_in_phase,
+                     idea.last_publ_eval_ov_res_datatype_code,
+                     idea.last_publ_eval_ov_res_num_value,
+                     idea.last_publ_eval_ov_res_bool_value,
+                     idea.last_publ_eval_ov_res_text_value,
+                     idea.last_publ_eval_ov_res_value_option_list_code,
+                     idea.last_publ_eval_ov_res_uom_code,
+                     idea.evaluation_in_phase_count,
+                     idea.evaluation_count,
+                     idea.resp_name,
+                     idea.resp_value_code,
+                     idea.resp_value_name,
+                     idea.is_open_for_contributors,
+                     idea.volunteer_id,
+                     idea.reward_active,
+                     idea.idea_phase_need_reward,
+                     idea.reward_dismissed,
+                     decision.id as decision_id,
+                     decision.reason_code,
+                     decision.decider_name,
+                     idea.participant_can_vote,
+                     idea.open_status_setting,
+                     idea.comment_has_privilege,
+                     idea.participant_can_comment,                     
+                     -- Extensibility fields
+                     -- They are listed separately as the explicitely have to be added to the 
+                     -- calculation view columns as well. Using .* would make this view
+                     -- inconsistent when the extensibility table is extended
+                     idea_extension._int_01,
+                     idea_extension._int_02,
+                     idea_extension._int_03,
+                     idea_extension._int_04,
+                     idea_extension._int_05,
+                     idea_extension._int_06,
+                     idea_extension._int_07,
+                     idea_extension._int_08,
+                     idea_extension._int_09,
+                     idea_extension._int_10,
+                     idea_extension._int_11,
+                     idea_extension._int_12,
+                     idea_extension._int_13,
+                     idea_extension._int_14,
+                     idea_extension._int_15,
+                     idea_extension._int_16,
+                     idea_extension._int_17,
+                     idea_extension._int_18,
+                     idea_extension._int_19,
+                     idea_extension._int_20,
+                     idea_extension._double_01,
+                     idea_extension._double_02,
+                     idea_extension._double_03,
+                     idea_extension._double_04,
+                     idea_extension._double_05,
+                     idea_extension._double_06,
+                     idea_extension._double_07,
+                     idea_extension._double_08,
+                     idea_extension._double_09,
+                     idea_extension._double_10,
+                     idea_extension._text_01,
+                     idea_extension._text_02,
+                     idea_extension._text_03,
+                     idea_extension._text_04,
+                     idea_extension._text_05,
+                     idea_extension._text_06,
+                     idea_extension._text_07,
+                     idea_extension._text_08,
+                     idea_extension._text_09,
+                     idea_extension._text_10,
+                     idea_extension._text_11,
+                     idea_extension._text_12,
+                     idea_extension._text_13,
+                     idea_extension._text_14,
+                     idea_extension._text_15,
+                     idea_extension._text_16,
+                     idea_extension._text_17,
+                     idea_extension._text_18,
+                     idea_extension._text_19,
+                     idea_extension._text_20,
+                     idea_extension._bool_01,
+                     idea_extension._bool_02,
+                     idea_extension._bool_03,
+                     idea_extension._bool_04,
+                     idea_extension._bool_05,
+                     idea_extension._bool_06,
+                     idea_extension._bool_07,
+                     idea_extension._bool_08,
+                     idea_extension._bool_09,
+                     idea_extension._bool_10,
+                     idea_extension._ts_01,
+                     idea_extension._ts_02,
+                     idea_extension._ts_03,
+                     idea_extension._ts_04,
+                     idea_extension._ts_05,
+                     idea_extension._ts_06,
+                     idea_extension._ts_07,
+                     idea_extension._ts_08,
+                     idea_extension._ts_09,
+                     idea_extension._ts_10,
+                     idea_extension._date_01,
+                     idea_extension._date_02,
+                     idea_extension._date_03,
+                     idea_extension._date_04,
+                     idea_extension._date_05,
+                     idea_extension._date_06,
+                     idea_extension._date_07,
+                     idea_extension._date_08,
+                     idea_extension._date_09,
+                     idea_extension._date_10
+                 from &quot;sap.ino.db.idea::v_idea_medium_opt&quot; as idea 
+                     inner join :lt_search_ideas as search
+                        on idea.id = search.id
+                     left outer join :lt_filter_campaigns as filter_campaigns
+                        on idea.campaign_id = filter_campaigns.id
+                    left outer join :lt_filter_responsibility as filter_responsibility
+                        on idea.id = filter_responsibility.id
+                    left outer join &quot;sap.ino.db.status::t_status&quot; as all_status
+                        on idea.status = all_status.code
+                    left outer join &quot;sap.ino.db.idea::v_decision_latest&quot; as decision
+                        on idea.id = decision.idea_id
+                    left outer join &quot;sap.ino.db.basis::t_extension&quot; as idea_extension
+                        on idea_extension._object_id = idea.id and 
+                           idea_extension._object_type_code = 'IDEA'
+                      where  idea.id in (select idea_id from &quot;sap.ino.db.idea::v_auth_ideas_read&quot;) and (
+                 		idea.campaign_id = filter_campaigns.id or 
+                       	idea.campaign_id is null or 
+                       	idea.campaign_id &lt; 0 or
+                        idea.id = filter_responsibility.id
+                 ) and  idea.status &lt;&gt; 'sap.ino.config.DRAFT' and idea.campaign_id = :campaign_id
+                  order by search.score desc; 
+end if;
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="3">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="SHORT_DESCRIPTION" order="4">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SHORT_DESCRIPTION"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="5">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="6">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="SUBMITTED_AT" order="7">
+        <descriptions defaultDescription="SUBMITTER_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="SUBMITTED_AT"/>
+      </attribute>
+      <attribute id="SUBMITTER_ID" order="8">
+        <descriptions defaultDescription="SUBMITTER_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="SUBMITTER_ID"/>
+      </attribute>
+      <attribute id="SUBMITTER_NAME" order="9">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SUBMITTER_NAME"/>
+      </attribute>
+      <attribute id="COACH_ID" order="10">
+        <descriptions defaultDescription="COACH_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="COACH_ID"/>
+      </attribute>
+      <attribute id="COACH_NAME" order="11">
+        <descriptions defaultDescription="COACH_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="COACH_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="12">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_SHORT_NAME" order="13">
+        <descriptions defaultDescription="CAMPAIGN_SHORT_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_SHORT_NAME"/>
+      </attribute>
+      <attribute id="PHASE" order="14">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="PHASE"/>
+      </attribute>
+      <attribute id="STEP" order="15">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="STEP"/>
+      </attribute>
+      <attribute id="STEPS" order="16">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="STEPS"/>
+      </attribute>
+      <attribute id="STATUS" order="17">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS"/>
+      </attribute>
+      <attribute id="STATUS_REASON" order="18">
+        <descriptions defaultDescription="STATUS_REASON"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_REASON"/>
+      </attribute>
+      <attribute id="BASE_PACKAGE" order="19">
+        <descriptions defaultDescription="BASE_PACKAGE"/>
+        <keyMapping columnObjectName="Script_View" columnName="BASE_PACKAGE"/>
+      </attribute>
+      <attribute id="STATUS_TYPE" order="20">
+        <descriptions defaultDescription="STATUS_TYPE"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_TYPE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="21">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_COLOR" order="22">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_COLOR"/>
+      </attribute>
+      <attribute id="CAMPAIGN_REWARD_UNIT_CODE" order="23">
+        <descriptions defaultDescription="Drop down list of Reward unit code"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_REWARD_UNIT_CODE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_REWARD_UNIT_TEXT" order="24">
+        <descriptions defaultDescription="Default Text for Unit of Measure"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_REWARD_UNIT_TEXT"/>
+      </attribute>
+      <attribute id="CAMPAIGN_FORM_CODE" order="25">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_FORM_CODE"/>
+      </attribute>
+      <attribute id="TITLE_IMAGE_ASSIGN_ID" order="26">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="TITLE_IMAGE_ASSIGN_ID"/>
+      </attribute>
+      <attribute id="TITLE_IMAGE_ID" order="27">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="TITLE_IMAGE_ID"/>
+      </attribute>
+      <attribute id="TITLE_IMAGE_MEDIA_TYPE" order="28">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="TITLE_IMAGE_MEDIA_TYPE"/>
+      </attribute>
+      <attribute id="VOTE_TYPE_TYPE_CODE" order="29">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="VOTE_TYPE_TYPE_CODE"/>
+      </attribute>
+      <attribute id="VOTED_BY_GROUP" order="30">
+        <descriptions defaultDescription="VOTED_BY_GROUP"/>
+        <keyMapping columnObjectName="Script_View" columnName="VOTED_BY_GROUP"/>
+      </attribute>
+      <attribute id="MAX_STAR_NO" order="31">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="MAX_STAR_NO"/>
+      </attribute>
+      <attribute id="SCORE" order="32">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SCORE"/>
+      </attribute>
+      <attribute id="VOTE_COUNT" order="33">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="VOTE_COUNT"/>
+      </attribute>
+      <attribute id="POS_VOTES" order="34">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="POS_VOTES"/>
+      </attribute>
+      <attribute id="NEG_VOTES" order="35">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="NEG_VOTES"/>
+      </attribute>
+      <attribute id="EXP_SCORE" order="36">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="EXP_SCORE"/>
+      </attribute>
+      <attribute id="EXP_VOTE_COUNT" order="37">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="EXP_VOTE_COUNT"/>
+      </attribute>
+      <attribute id="EXP_POS_SCORE" order="38">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="EXP_POS_SCORE"/>
+      </attribute>
+      <attribute id="EXP_NEG_SCORE" order="39">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="EXP_NEG_SCORE"/>
+      </attribute>
+      <attribute id="USER_SCORE" order="40">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="USER_SCORE"/>
+      </attribute>
+      <attribute id="VOTE_ID" order="41">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="VOTE_ID"/>
+      </attribute>
+      <attribute id="VOTING_ACTIVE" order="42">
+        <descriptions defaultDescription="VOTING_ACTIVE"/>
+        <keyMapping columnObjectName="Script_View" columnName="VOTING_ACTIVE"/>
+      </attribute>
+      <attribute id="FOLLOW" order="43">
+        <descriptions defaultDescription="FOLLOW"/>
+        <keyMapping columnObjectName="Script_View" columnName="FOLLOW"/>
+      </attribute>
+      <attribute id="FOLLOW_UP_DATE" order="44">
+        <descriptions defaultDescription="FOLLOW_UP_DATE"/>
+        <keyMapping columnObjectName="Script_View" columnName="FOLLOW_UP_DATE"/>
+      </attribute>
+      <attribute id="FOLLOW_UP_ID" order="45">
+        <descriptions defaultDescription="FOLLOW_UP_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="FOLLOW_UP_ID"/>
+      </attribute>
+      <attribute id="COMMENT_COUNT" order="46">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="COMMENT_COUNT"/>
+      </attribute>
+      <attribute id="VIEW_COUNT" order="47">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="VIEW_COUNT"/>
+      </attribute>
+      <attribute id="PREFILTER_STATUS" order="48">
+        <descriptions defaultDescription="PREFILTER_STATUS"/>
+        <keyMapping columnObjectName="Script_View" columnName="PREFILTER_STATUS"/>
+      </attribute>
+      <attribute id="LAST_PUBL_EVAL_ID" order="49">
+        <descriptions defaultDescription="LAST_PUBL_EVAL_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="LAST_PUBL_EVAL_ID"/>
+      </attribute>
+      <attribute id="LAST_PUBL_EVAL_AT" order="50">
+        <descriptions defaultDescription="LAST_PUBL_EVAL_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="LAST_PUBL_EVAL_AT"/>
+      </attribute>
+      <attribute id="LAST_PUBL_EVAL_IN_PHASE" order="51">
+        <descriptions defaultDescription="LAST_PUBL_EVAL_IN_PHASE"/>
+        <keyMapping columnObjectName="Script_View" columnName="LAST_PUBL_EVAL_IN_PHASE"/>
+      </attribute>
+      <attribute id="LAST_PUBL_EVAL_OV_RES_DATATYPE_CODE" order="52">
+        <descriptions defaultDescription="LAST_PUBL_EVAL_OV_RES_DATATYPE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="LAST_PUBL_EVAL_OV_RES_DATATYPE_CODE"/>
+      </attribute>
+      <attribute id="LAST_PUBL_EVAL_OV_RES_NUM_VALUE" order="53">
+        <descriptions defaultDescription="LAST_PUBL_EVAL_OV_RES_NUM_VALUE"/>
+        <keyMapping columnObjectName="Script_View" columnName="LAST_PUBL_EVAL_OV_RES_NUM_VALUE"/>
+      </attribute>
+      <attribute id="LAST_PUBL_EVAL_OV_RES_BOOL_VALUE" order="54">
+        <descriptions defaultDescription="LAST_PUBL_EVAL_OV_RES_BOOL_VALUE"/>
+        <keyMapping columnObjectName="Script_View" columnName="LAST_PUBL_EVAL_OV_RES_BOOL_VALUE"/>
+      </attribute>
+      <attribute id="LAST_PUBL_EVAL_OV_RES_TEXT_VALUE" order="55">
+        <descriptions defaultDescription="LAST_PUBL_EVAL_OV_RES_TEXT_VALUE"/>
+        <keyMapping columnObjectName="Script_View" columnName="LAST_PUBL_EVAL_OV_RES_TEXT_VALUE"/>
+      </attribute>
+      <attribute id="LAST_PUBL_EVAL_OV_RES_VALUE_OPTION_LIST_CODE" order="56">
+        <descriptions defaultDescription="LAST_PUBL_EVAL_OV_RES_VALUE_OPTION_LIST_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="LAST_PUBL_EVAL_OV_RES_VALUE_OPTION_LIST_CODE"/>
+      </attribute>
+      <attribute id="LAST_PUBL_EVAL_OV_RES_UOM_CODE" order="57">
+        <descriptions defaultDescription="LAST_PUBL_EVAL_OV_RES_UOM_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="LAST_PUBL_EVAL_OV_RES_UOM_CODE"/>
+      </attribute>
+      <attribute id="EVALUATION_IN_PHASE_COUNT" order="58">
+        <descriptions defaultDescription="EVALUATION_IN_PHASE_COUNT"/>
+        <keyMapping columnObjectName="Script_View" columnName="EVALUATION_IN_PHASE_COUNT"/>
+      </attribute>
+      <attribute id="EVALUATION_COUNT" order="59">
+        <descriptions defaultDescription="EVALUATION_COUNT"/>
+        <keyMapping columnObjectName="Script_View" columnName="EVALUATION_COUNT"/>
+      </attribute>
+      <attribute id="RESP_NAME" order="60">
+        <descriptions defaultDescription="RESP_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="RESP_NAME"/>
+      </attribute>
+      <attribute id="RESP_VALUE_CODE" order="61">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="RESP_VALUE_CODE"/>
+      </attribute>
+      <attribute id="RESP_VALUE_NAME" order="62">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="RESP_VALUE_NAME"/>
+      </attribute>
+      <attribute id="IS_OPEN_FOR_CONTRIBUTORS" order="63">
+        <descriptions defaultDescription="IS_OPEN_FOR_CONTRIBUTORS"/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_OPEN_FOR_CONTRIBUTORS"/>
+      </attribute>
+      <attribute id="VOLUNTEER_ID" order="64">
+        <descriptions defaultDescription="VOLUNTEER_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="VOLUNTEER_ID"/>
+      </attribute>
+      <attribute id="REWARD_ACTIVE" order="65">
+        <descriptions defaultDescription="REWARD_ACTIVE"/>
+        <keyMapping columnObjectName="Script_View" columnName="REWARD_ACTIVE"/>
+      </attribute>
+      <attribute id="IDEA_PHASE_NEED_REWARD" order="66">
+        <descriptions defaultDescription="IDEA_PHASE_NEED_REWARD"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_PHASE_NEED_REWARD"/>
+      </attribute>
+      <attribute id="REWARD_DISMISSED" order="67">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="REWARD_DISMISSED"/>
+      </attribute>
+      <attribute id="DECISION_ID" order="68">
+        <descriptions defaultDescription="DECISION_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="DECISION_ID"/>
+      </attribute>
+      <attribute id="REASON_CODE" order="69">
+        <descriptions defaultDescription="REASON_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="REASON_CODE"/>
+      </attribute>
+      <attribute id="DECIDER_NAME" order="70">
+        <descriptions defaultDescription="DECIDER_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="DECIDER_NAME"/>
+      </attribute>
+      <attribute id="PARTICIPANT_CAN_VOTE" order="71">
+        <descriptions defaultDescription="PARTICIPANT_CAN_VOTE"/>
+        <keyMapping columnObjectName="Script_View" columnName="PARTICIPANT_CAN_VOTE"/>
+      </attribute>
+      <attribute id="OPEN_STATUS_SETTING" order="72">
+        <descriptions defaultDescription="OPEN_STATUS_SETTING"/>
+        <keyMapping columnObjectName="Script_View" columnName="OPEN_STATUS_SETTING"/>
+      </attribute>
+      <attribute id="COMMENT_HAS_PRIVILEGE" order="73">
+        <descriptions defaultDescription="COMMENT_HAS_PRIVILEGE"/>
+        <keyMapping columnObjectName="Script_View" columnName="COMMENT_HAS_PRIVILEGE"/>
+      </attribute>
+      <attribute id="PARTICIPANT_CAN_COMMENT" order="74">
+        <descriptions defaultDescription="PARTICIPANT_CAN_COMMENT"/>
+        <keyMapping columnObjectName="Script_View" columnName="PARTICIPANT_CAN_COMMENT"/>
+      </attribute>
+      <attribute id="_INT_01" order="75">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_01"/>
+      </attribute>
+      <attribute id="_INT_02" order="76">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_02"/>
+      </attribute>
+      <attribute id="_INT_03" order="77">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_03"/>
+      </attribute>
+      <attribute id="_INT_04" order="78">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_04"/>
+      </attribute>
+      <attribute id="_INT_05" order="79">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_05"/>
+      </attribute>
+      <attribute id="_INT_06" order="80">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_06"/>
+      </attribute>
+      <attribute id="_INT_07" order="81">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_07"/>
+      </attribute>
+      <attribute id="_INT_08" order="82">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_08"/>
+      </attribute>
+      <attribute id="_INT_09" order="83">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_09"/>
+      </attribute>
+      <attribute id="_INT_10" order="84">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_10"/>
+      </attribute>
+      <attribute id="_INT_11" order="85">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_11"/>
+      </attribute>
+      <attribute id="_INT_12" order="86">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_12"/>
+      </attribute>
+      <attribute id="_INT_13" order="87">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_13"/>
+      </attribute>
+      <attribute id="_INT_14" order="88">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_14"/>
+      </attribute>
+      <attribute id="_INT_15" order="89">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_15"/>
+      </attribute>
+      <attribute id="_INT_16" order="90">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_16"/>
+      </attribute>
+      <attribute id="_INT_17" order="91">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_17"/>
+      </attribute>
+      <attribute id="_INT_18" order="92">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_18"/>
+      </attribute>
+      <attribute id="_INT_19" order="93">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_19"/>
+      </attribute>
+      <attribute id="_INT_20" order="94">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_INT_20"/>
+      </attribute>
+      <attribute id="_DOUBLE_01" order="95">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DOUBLE_01"/>
+      </attribute>
+      <attribute id="_DOUBLE_02" order="96">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DOUBLE_02"/>
+      </attribute>
+      <attribute id="_DOUBLE_03" order="97">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DOUBLE_03"/>
+      </attribute>
+      <attribute id="_DOUBLE_04" order="98">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DOUBLE_04"/>
+      </attribute>
+      <attribute id="_DOUBLE_05" order="99">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DOUBLE_05"/>
+      </attribute>
+      <attribute id="_DOUBLE_06" order="100">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DOUBLE_06"/>
+      </attribute>
+      <attribute id="_DOUBLE_07" order="101">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DOUBLE_07"/>
+      </attribute>
+      <attribute id="_DOUBLE_08" order="102">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DOUBLE_08"/>
+      </attribute>
+      <attribute id="_DOUBLE_09" order="103">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DOUBLE_09"/>
+      </attribute>
+      <attribute id="_DOUBLE_10" order="104">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DOUBLE_10"/>
+      </attribute>
+      <attribute id="_TEXT_01" order="105">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_01"/>
+      </attribute>
+      <attribute id="_TEXT_02" order="106">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_02"/>
+      </attribute>
+      <attribute id="_TEXT_03" order="107">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_03"/>
+      </attribute>
+      <attribute id="_TEXT_04" order="108">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_04"/>
+      </attribute>
+      <attribute id="_TEXT_05" order="109">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_05"/>
+      </attribute>
+      <attribute id="_TEXT_06" order="110">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_06"/>
+      </attribute>
+      <attribute id="_TEXT_07" order="111">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_07"/>
+      </attribute>
+      <attribute id="_TEXT_08" order="112">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_08"/>
+      </attribute>
+      <attribute id="_TEXT_09" order="113">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_09"/>
+      </attribute>
+      <attribute id="_TEXT_10" order="114">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_10"/>
+      </attribute>
+      <attribute id="_TEXT_11" order="115">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_11"/>
+      </attribute>
+      <attribute id="_TEXT_12" order="116">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_12"/>
+      </attribute>
+      <attribute id="_TEXT_13" order="117">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_13"/>
+      </attribute>
+      <attribute id="_TEXT_14" order="118">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_14"/>
+      </attribute>
+      <attribute id="_TEXT_15" order="119">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_15"/>
+      </attribute>
+      <attribute id="_TEXT_16" order="120">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_16"/>
+      </attribute>
+      <attribute id="_TEXT_17" order="121">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_17"/>
+      </attribute>
+      <attribute id="_TEXT_18" order="122">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_18"/>
+      </attribute>
+      <attribute id="_TEXT_19" order="123">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_19"/>
+      </attribute>
+      <attribute id="_TEXT_20" order="124">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TEXT_20"/>
+      </attribute>
+      <attribute id="_BOOL_01" order="125">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_BOOL_01"/>
+      </attribute>
+      <attribute id="_BOOL_02" order="126">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_BOOL_02"/>
+      </attribute>
+      <attribute id="_BOOL_03" order="127">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_BOOL_03"/>
+      </attribute>
+      <attribute id="_BOOL_04" order="128">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_BOOL_04"/>
+      </attribute>
+      <attribute id="_BOOL_05" order="129">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_BOOL_05"/>
+      </attribute>
+      <attribute id="_BOOL_06" order="130">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_BOOL_06"/>
+      </attribute>
+      <attribute id="_BOOL_07" order="131">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_BOOL_07"/>
+      </attribute>
+      <attribute id="_BOOL_08" order="132">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_BOOL_08"/>
+      </attribute>
+      <attribute id="_BOOL_09" order="133">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_BOOL_09"/>
+      </attribute>
+      <attribute id="_BOOL_10" order="134">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_BOOL_10"/>
+      </attribute>
+      <attribute id="_TS_01" order="135">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TS_01"/>
+      </attribute>
+      <attribute id="_TS_02" order="136">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TS_02"/>
+      </attribute>
+      <attribute id="_TS_03" order="137">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TS_03"/>
+      </attribute>
+      <attribute id="_TS_04" order="138">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TS_04"/>
+      </attribute>
+      <attribute id="_TS_05" order="139">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TS_05"/>
+      </attribute>
+      <attribute id="_TS_06" order="140">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TS_06"/>
+      </attribute>
+      <attribute id="_TS_07" order="141">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TS_07"/>
+      </attribute>
+      <attribute id="_TS_08" order="142">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TS_08"/>
+      </attribute>
+      <attribute id="_TS_09" order="143">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TS_09"/>
+      </attribute>
+      <attribute id="_TS_10" order="144">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_TS_10"/>
+      </attribute>
+      <attribute id="_DATE_01" order="145">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DATE_01"/>
+      </attribute>
+      <attribute id="_DATE_02" order="146">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DATE_02"/>
+      </attribute>
+      <attribute id="_DATE_03" order="147">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DATE_03"/>
+      </attribute>
+      <attribute id="_DATE_04" order="148">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DATE_04"/>
+      </attribute>
+      <attribute id="_DATE_05" order="149">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DATE_05"/>
+      </attribute>
+      <attribute id="_DATE_06" order="150">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DATE_06"/>
+      </attribute>
+      <attribute id="_DATE_07" order="151">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DATE_07"/>
+      </attribute>
+      <attribute id="_DATE_08" order="152">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DATE_08"/>
+      </attribute>
+      <attribute id="_DATE_09" order="153">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DATE_09"/>
+      </attribute>
+      <attribute id="_DATE_10" order="154">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="_DATE_10"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

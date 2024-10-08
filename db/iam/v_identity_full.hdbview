@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = "
+    select
+        identity.*,
+        (
+            select TO_INT(count(id)) 
+            from \"sap.ino.db.iam::v_group_member\" 
+            where group_id = identity.id and identity.type_code = 'GROUP'
+        ) as members
+    from \"sap.ino.db.iam::v_identity\" as identity
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.iam::v_identity", "sap.ino.db.iam::v_group_member"];

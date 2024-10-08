@@ -1,0 +1,32 @@
+procedure "SAP_INO"."sap.ino.db.idea::p_tag_filter" (
+     in  it_idea_id SAP_INO."sap.ino.db.idea::tt_idea_id",
+     in  it_tag_id  SAP_INO."sap.ino.db.idea::tt_tag_id_input",
+     out ot_idea_id SAP_INO."sap.ino.db.basis::tt_object_id"
+ )
+ language sqlscript
+ sql security invoker
+ default schema SAP_INO
+ reads sql data as
+begin
+    declare lv_tag_count int;
+    select count(*) into lv_tag_count from :it_tag_id;
+
+    ot_idea_id =
+        select id from :it_idea_id
+            where
+                -- no input tags --> select all ideas, even those without any tags
+                lv_tag_count = 0
+        union all
+        select it_idea.id
+            from (select distinct id from :it_idea_id) as it_idea,
+                :it_tag_id                            as it_tag,
+                "sap.ino.db.tag::t_object_tag"        as idea_tag
+            where
+                -- determine all idea_ids for which ALL of the input tags are assigned
+                lv_tag_count              > 0          and
+                idea_tag.object_id        = it_idea.id and
+                idea_tag.tag_id           = it_tag.id  and
+                idea_tag.object_type_code = 'IDEA'
+            group by it_idea.id
+                having count(tag_id) = lv_tag_count;
+end;

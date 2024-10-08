@@ -1,0 +1,24 @@
+schema = "SAP_INO_EXT";
+query = "
+    select 
+    folder.ID,
+    folder.NAME,
+    folder.DESCRIPTION,
+    folder.ORDER_NO,
+    suser.ID AS IDENTITY_ID,
+    identity.ID as OWNER_ID,
+    identity.NAME as OWNER_NAME
+    from 
+    	\"sap.ino.db.iam::v_auth_application_user\" as suser,
+        \"sap.ino.db.attachment.folder::t_attachment_folder\" as folder
+    inner join \"sap.ino.db.iam::t_identity\" as identity
+    	on folder.created_by_id = identity.id
+    where 
+        folder.id in (select folder_id from \"sap.ino.db.attachment.folder::v_auth_attachment_folder\") 
+    with read only";
+
+depends_on_table = ["sap.ino.db.attachment.folder::t_attachment_folder", 
+                    "sap.ino.db.iam::t_identity"];
+
+depends_on_view = ["sap.ino.db.attachment.folder::v_auth_attachment_folder", 
+				   "sap.ino.db.iam::v_auth_application_user"];

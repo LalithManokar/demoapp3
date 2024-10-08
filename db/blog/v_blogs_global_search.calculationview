@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="v_blogs_global_search" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription=""/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Free text search token"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="undefined" length="100" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="filterName" parameter="true">
+      <descriptions defaultDescription="Named filter condition"/>
+      <variableProperties datatype="VARCHAR" defaultValue="undefined" length="20" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  
+    <variable id="campaign_id" parameter="true">
+      <descriptions defaultDescription="campaign_id"/>
+      <variableProperties datatype="VARCHAR" length="100" mandatory="true">
+        <valueDomain type="empty"/>
+        <selection multiLine="false"/>
+        <defaultRange/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="TITLE" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="SHORT_DESCRIPTION" length="500"/>
+        <viewAttribute datatype="TIMESTAMP" id="PUBLISHED_AT"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CREATED_BY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CREATED_BY_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="COMMENT_COUNT"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CHANGED_BY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CHANGED_BY_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CAMPAIGN_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="CAMPAIGN_SHORT_NAME" length="40"/>
+        <viewAttribute datatype="NVARCHAR" id="CAMPAIGN_DESCRIPTION" length="5000"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_COLOR" length="6"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS_CODE" length="500"/>
+        <viewAttribute datatype="TINYINT" id="IS_CHANGEABLE"/>
+        <viewAttribute datatype="TINYINT" id="IS_DELETABLE"/>
+        <viewAttribute datatype="INTEGER" id="ATTACHMENT_COUNT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <localVariable>#filterName</localVariable>
+      <localVariable>#campaign_id</localVariable>
+      <definition>begin
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.blog::p_blog_search&quot;(:searchToken, :lt_search_blogs);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.blog::p_blog_filter&quot;(:filterName,  :lt_filter_blogs);
+
+     lt_count_attachments =  select blog.id as blog_id, count(attachment.id) as attachment_count from &quot;sap.ino.db.blog::v_blog_campaign_small&quot; as blog
+                                left outer join &quot;sap.ino.db.attachment::t_attachment_assignment&quot; as attachment
+                                on attachment.owner_type_code = 'BLOG' 
+                                and attachment.owner_id = blog.id
+                                group by blog.id;
+                              
+     var_out = select
+     				 blog.id,
+                     blog.title,
+                     blog.short_description,
+                     blog.published_at,
+                     blog.created_at,
+                     blog.created_by_id,
+                     blog.created_by_name,
+                     blog.comment_count,
+                     blog.changed_at,
+                     blog.changed_by_id,
+                     blog.changed_by_name,
+                     blog.campaign_id,
+                     blog.campaign_name,
+                     blog.campaign_short_name,
+                     blog.campaign_description,
+                     blog.campaign_color,
+                     blog.status_code,
+                     case 
+                       when update_allowed.blog_id is null then
+                         cast(0 as tinyint)
+                       else
+                         cast(1 as tinyint)
+                     end as is_changeable,
+                     case 
+                     	when delete_allowed.blog_id is null then
+                     	  cast(0 as tinyint)
+                     	else
+                     	  cast(1 as tinyint)
+                     end as is_deletable,
+                     count_attachments.attachment_count   
+                 from &quot;sap.ino.db.blog::v_blog_campaign_small&quot; as blog 
+                    inner join :lt_search_blogs as search
+                        on blog.id = search.id
+                    inner join :lt_filter_blogs as filter_blogs
+                        on blog.id = filter_blogs.id
+                    left outer join :lt_count_attachments as count_attachments
+                    	on count_attachments.blog_id = blog.id
+                    left outer join &quot;sap.ino.db.blog::v_auth_blogs_update&quot; as update_allowed
+                        on blog.id = update_allowed.blog_id
+                    left outer join &quot;sap.ino.db.blog::v_auth_blogs_delete&quot; as delete_allowed
+                        on blog.id = delete_allowed.blog_id
+                 where  blog.id in (select blog_id from &quot;sap.ino.db.blog::v_auth_blogs_read&quot;) and 
+                       	blog.campaign_id = :campaign_id
+                 ;
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="ID" order="1">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="TITLE" order="2">
+        <descriptions defaultDescription="TITLE"/>
+        <keyMapping columnObjectName="Script_View" columnName="TITLE"/>
+      </attribute>
+      <attribute id="SHORT_DESCRIPTION" order="3">
+        <descriptions defaultDescription="SHORT_DESCRIPTION"/>
+        <keyMapping columnObjectName="Script_View" columnName="SHORT_DESCRIPTION"/>
+      </attribute>
+      <attribute id="PUBLISHED_AT" order="4">
+        <descriptions defaultDescription="PUBLISHED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="PUBLISHED_AT"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="5">
+        <descriptions defaultDescription="CREATED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CREATED_BY_ID" order="6">
+        <descriptions defaultDescription="CREATED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="CREATED_BY_NAME" order="7">
+        <descriptions defaultDescription="CREATED_BY_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_NAME"/>
+      </attribute>
+      <attribute id="COMMENT_COUNT" order="8">
+        <descriptions defaultDescription="COMMENT_COUNT"/>
+        <keyMapping columnObjectName="Script_View" columnName="COMMENT_COUNT"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="9">
+        <descriptions defaultDescription="CHANGED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="10">
+        <descriptions defaultDescription="CHANGED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_BY_NAME" order="11">
+        <descriptions defaultDescription="CHANGED_BY_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="12">
+        <descriptions defaultDescription="CAMPAIGN_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="13">
+        <descriptions defaultDescription="CAMPAIGN_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_SHORT_NAME" order="14">
+        <descriptions defaultDescription="CAMPAIGN_SHORT_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_SHORT_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_DESCRIPTION" order="15">
+        <descriptions defaultDescription="CAMPAIGN_DESCRIPTION"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_DESCRIPTION"/>
+      </attribute>
+      <attribute id="CAMPAIGN_COLOR" order="16">
+        <descriptions defaultDescription="CAMPAIGN_COLOR"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_COLOR"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="17">
+        <descriptions defaultDescription="Status Code"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="IS_CHANGEABLE" order="18">
+        <descriptions defaultDescription="UPDATE_ALLOWED"/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_CHANGEABLE"/>
+      </attribute>
+      <attribute id="IS_DELETABLE" order="19">
+        <descriptions defaultDescription="DELETE_ALLOWED"/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_DELETABLE"/>
+      </attribute>
+      <attribute id="ATTACHMENT_COUNT" order="20">
+        <descriptions defaultDescription="ATTACHMENT_COUNT"/>
+        <keyMapping columnObjectName="Script_View" columnName="ATTACHMENT_COUNT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

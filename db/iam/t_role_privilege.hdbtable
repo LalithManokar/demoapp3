@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "A certain role has in a certain phase the permission for certain actions";
+table.columns = [
+    {name = "ID";        sqlType = INTEGER;              nullable = false; comment = "ID to uniquely reference a join";},
+    {name = "PRIVILEGE"; sqlType = VARCHAR; length = 60; nullable = false; comment = "Code that references the allowed action";},
+    {name = "ROLE_CODE"; sqlType = VARCHAR; length = 20; nullable = false; comment = "Code that references the role";}
+];
+table.primaryKey.pkcolumns = ["ID"]; 

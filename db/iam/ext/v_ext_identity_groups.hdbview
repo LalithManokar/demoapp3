@@ -1,0 +1,10 @@
+schema = "SAP_INO_EXT";
+query = "
+    select rel.id, rel.member_id as member_id, 
+    rel.group_id as group_id, id.name as group_name, 
+    id.description as description
+    from \"sap.ino.db.iam::t_identity_group_member\" as rel, \"sap.ino.db.iam::t_identity\" as id
+    where rel.group_id = id.id
+    with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity_group_member", "sap.ino.db.iam::t_identity"];

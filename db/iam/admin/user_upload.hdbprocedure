@@ -1,0 +1,63 @@
+procedure "SAP_INO"."sap.ino.db.iam.admin::user_upload" (
+    in  it_user         "SAP_INO"."sap.ino.db.iam.admin::tt_user_import_input",
+    out ot_user_message "SAP_INO"."sap.ino.db.iam.admin::tt_user_import_output"
+)
+language sqlscript
+sql security definer
+default schema SAP_INO
+as
+begin
+    declare lv_principal_id                           integer;
+    declare lv_failed_to_recompute_transitive_closure tinyint;
+    
+    -- determine ID for session user
+    --     get null to indicate that session user is not registered with SAP Innovation Management
+    select id into lv_principal_id
+        from
+            "SAP_INO"."sap.ino.db.iam::v_auth_application_user"
+        right outer join dummy on 0 = 0;
+
+    if (:lv_principal_id is null ) then
+        -- session user is not registered
+        ot_user_message =
+            select
+                 0  as "LINE_NO",
+                '?' as "NAME",
+                '?' as "FIRST_NAME",
+                '?' as "LAST_NAME",
+                '?' as "EMAIL",
+                '?' as "USER_NAME",
+                 0  as "IS_EXTERNAL",
+                '?' as "PHONE",
+                '?' as "MOBILE",
+                '?' as "COST_CENTER",
+                '?' as "ORGANIZATION",
+                '?' as "OFFICE",
+                '?' as "DESCRIPTION",
+                '?' as "COMPANY",
+                '?' as "STREET",
+                '?' as "CITY",
+                '?' as "COUNTRY",
+                '?' as "ZIP_CODE",
+                '9999-12-31' as  "VALIDATION_TO",
+                'E' as "TYPE",
+                'MSG_PRINCIPAL_IDENTITY_UNKNOWN' as "MESSAGE",
+                '?' as "REF_FIELD",
+                session_user as "PARAM_0",
+                '' as "PARAM_1",
+                '' as "PARAM_2",
+                '' as "PARAM_3"
+            from dummy; 
+    else
+        -- session user found in t_identity
+        call "SAP_INO"."sap.ino.db.iam::p_user_upload" (
+            :lv_principal_id,
+            :it_user,
+            :lv_failed_to_recompute_transitive_closure,
+            :ot_user_message
+       );
+       if (:lv_failed_to_recompute_transitive_closure <> 0) then
+           call "SAP_INO"."sap.ino.db.iam::p_update_identity_group_member_transitive" ();
+       end if;
+    end if;
+end;

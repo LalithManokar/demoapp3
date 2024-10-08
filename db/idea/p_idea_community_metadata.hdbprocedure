@@ -1,0 +1,26 @@
+PROCEDURE "SAP_INO"."sap.ino.db.idea::p_idea_community_metadata"(
+		OUT ot_column_metadata SAP_INO."sap.ino.db.basis::tt_column_metadata"
+	)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER
+	DEFAULT SCHEMA SAP_INO
+	READS SQL DATA
+AS
+BEGIN
+	ot_column_metadata = SELECT export_fields.id, 
+				                export_fields.column_name, 
+				                column_text.column_title, 
+				                column_type.data_type_name
+			             FROM "sap.ino.db.basis::t_idea_export_fields" AS export_fields
+				         LEFT OUTER JOIN (
+								SELECT substring(text_id, 8) AS column_name, 
+						               content AS column_title
+					            FROM "sap.ino.db.basis::v_resolved_text" AS field_label
+					            WHERE object_name = 't_idea_export_fields' ) AS column_text
+				             ON export_fields.column_name = column_text.column_name
+				         LEFT OUTER JOIN TABLE_COLUMNS AS column_type
+				             ON export_fields.column_name = column_type.column_name	AND
+				                column_type.schema_name   = '_SYS_BIC'    AND
+				                column_type.table_name    = 'sap.ino.db.idea.ext/V_EXT_IDEAS_COMMUNITY_SEARCH/proc/tabletype/VAR_OUT'
+				        order by export_fields.id asc;
+END;

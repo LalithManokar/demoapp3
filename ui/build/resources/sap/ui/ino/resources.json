@@ -1,0 +1,6450 @@
+{
+  "_version": "1.1.0",
+  "resources": [
+    {
+      "name": "Component-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "Component-preload-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "Component-preload.js",
+      "merged": true
+    },
+    {
+      "name": "Component.js"
+    },
+    {
+      "name": "application/ApplicationBase-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "application/ApplicationBase.js"
+    },
+    {
+      "name": "application/Configuration-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "application/Configuration.js"
+    },
+    {
+      "name": "application/ControlFactory-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "application/ControlFactory.js"
+    },
+    {
+      "name": "application/Message-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "application/Message.js"
+    },
+    {
+      "name": "application/NavigationHandler-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "application/NavigationHandler.js"
+    },
+    {
+      "name": "application/WebAnalytics-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "application/WebAnalytics.js"
+    },
+    {
+      "name": "application/backoffice/Application-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "application/backoffice/Application.js"
+    },
+    {
+      "name": "application/backoffice/ControlFactory-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "application/backoffice/ControlFactory.js"
+    },
+    {
+      "name": "application/mashup/Application-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "application/mashup/Application.js"
+    },
+    {
+      "name": "component.json"
+    },
+    {
+      "name": "controls/.library"
+    },
+    {
+      "name": "controls/.mobile.library"
+    },
+    {
+      "name": "controls/.theming"
+    },
+    {
+      "name": "controls/AccessibilitySupport-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/AccessibilitySupport.js"
+    },
+    {
+      "name": "controls/AriaLivePriority-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/AriaLivePriority.js"
+    },
+    {
+      "name": "controls/Attachment-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/Attachment.js"
+    },
+    {
+      "name": "controls/AttachmentControl-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/AttachmentControl.js"
+    },
+    {
+      "name": "controls/AutoComplete-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/AutoComplete.js"
+    },
+    {
+      "name": "controls/BackofficeShell-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/BackofficeShell.js"
+    },
+    {
+      "name": "controls/BackofficeShellHeader-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/BackofficeShellHeader.js"
+    },
+    {
+      "name": "controls/BusyIndicator-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/BusyIndicator.js"
+    },
+    {
+      "name": "controls/CachedElementCloner-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/CachedElementCloner.js"
+    },
+    {
+      "name": "controls/CampaignTile-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/CampaignTile.js"
+    },
+    {
+      "name": "controls/ColorSupport-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/ColorSupport.js"
+    },
+    {
+      "name": "controls/Comment-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/Comment.js"
+    },
+    {
+      "name": "controls/ContentPane-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/ContentPane.js"
+    },
+    {
+      "name": "controls/Dialog-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/Dialog.js"
+    },
+    {
+      "name": "controls/Evaluation-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/Evaluation.js"
+    },
+    {
+      "name": "controls/EvaluationCollapsibleSectionCriteria-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/EvaluationCollapsibleSectionCriteria.js"
+    },
+    {
+      "name": "controls/EvaluationCriterionValue-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/EvaluationCriterionValue.js"
+    },
+    {
+      "name": "controls/EvaluationCriterionValueLine-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/EvaluationCriterionValueLine.js"
+    },
+    {
+      "name": "controls/EvaluationData-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/EvaluationData.js"
+    },
+    {
+      "name": "controls/EvaluationDataCriterionValue-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/EvaluationDataCriterionValue.js"
+    },
+    {
+      "name": "controls/EvaluationMatrix-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/EvaluationMatrix.js"
+    },
+    {
+      "name": "controls/EvaluationMatrixItem-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/EvaluationMatrixItem.js"
+    },
+    {
+      "name": "controls/ExpertGraph-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/ExpertGraph.js"
+    },
+    {
+      "name": "controls/FileUploader-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/FileUploader.js"
+    },
+    {
+      "name": "controls/FileUploaderStyle-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/FileUploaderStyle.js"
+    },
+    {
+      "name": "controls/IFrame-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/IFrame.js"
+    },
+    {
+      "name": "controls/IdeaCard-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/IdeaCard.js"
+    },
+    {
+      "name": "controls/IdentityCard-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/IdentityCard.js"
+    },
+    {
+      "name": "controls/LightBox-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/LightBox.js"
+    },
+    {
+      "name": "controls/LikeButton-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/LikeButton.js"
+    },
+    {
+      "name": "controls/LikeDislike-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/LikeDislike.js"
+    },
+    {
+      "name": "controls/MessageBox-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/MessageBox.js"
+    },
+    {
+      "name": "controls/MessageLog-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/MessageLog.js"
+    },
+    {
+      "name": "controls/Milestone-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/Milestone.js"
+    },
+    {
+      "name": "controls/OverlayContainer-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/OverlayContainer.js"
+    },
+    {
+      "name": "controls/OverlayContainerRenderer-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/OverlayContainerRenderer.js"
+    },
+    {
+      "name": "controls/ProcessIndicator-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/ProcessIndicator.js"
+    },
+    {
+      "name": "controls/Repeater-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/Repeater.js"
+    },
+    {
+      "name": "controls/RichTextEditor-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/RichTextEditor.js"
+    },
+    {
+      "name": "controls/Slider-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/Slider.js"
+    },
+    {
+      "name": "controls/StatusModelViz-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/StatusModelViz.js"
+    },
+    {
+      "name": "controls/StatusModelVizData-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/StatusModelVizData.js"
+    },
+    {
+      "name": "controls/Tag-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/Tag.js"
+    },
+    {
+      "name": "controls/TextView-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/TextView.js"
+    },
+    {
+      "name": "controls/ThemeFactory-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/ThemeFactory.js"
+    },
+    {
+      "name": "controls/Tile-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/Tile.js"
+    },
+    {
+      "name": "controls/TileContainer-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/TileContainer.js"
+    },
+    {
+      "name": "controls/TileRenderer-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/TileRenderer.js"
+    },
+    {
+      "name": "controls/ToolPopup-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/ToolPopup.js"
+    },
+    {
+      "name": "controls/Widget-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/Widget.js"
+    },
+    {
+      "name": "controls/WidgetBannerData-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/WidgetBannerData.js"
+    },
+    {
+      "name": "controls/WidgetRowItem-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/WidgetRowItem.js"
+    },
+    {
+      "name": "controls/library-all-dbg.js",
+      "isDebug": true,
+      "merged": true
+    },
+    {
+      "name": "controls/library-all.js",
+      "merged": true
+    },
+    {
+      "name": "controls/library-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "controls/library-preload.js",
+      "merged": true
+    },
+    {
+      "name": "controls/library-preload.json",
+      "merged": true
+    },
+    {
+      "name": "controls/library.dependencies.json"
+    },
+    {
+      "name": "controls/library.dependencies.xml"
+    },
+    {
+      "name": "controls/library.js"
+    },
+    {
+      "name": "controls/library.properties"
+    },
+    {
+      "name": "controls/manifest.json"
+    },
+    {
+      "name": "controls/resources.json"
+    },
+    {
+      "name": "controls/themes/base/.theming",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/AccessibilitySupport.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/Attachment.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/AttachmentControl.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/BackofficeShell.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/BusyIndicator.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/CampaignGeneric.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/CampaignTile.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/Comment.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/Evaluation.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/EvaluationCollapsibleSectionCriteria.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/EvaluationCriterionValue.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/EvaluationCriterionValueLine.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/EvaluationMatrix.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/ExpertGraph.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/FileUploader.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/IdeaCard.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/IdeaForm.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/IdeaMergeRule.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/IdentityCard.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/Integration.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/LightBox.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/LikeButton.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/LikeDislike.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/MessageLog.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/Milestone.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/OverlayContainer.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/ProcessIndicator.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/Repeater.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/RichTextEditor.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/Settings.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/StatusModelViz.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/Tag.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/TermCondition.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/ThemeFactory.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/Tile.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/ToolPopup.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/Widget.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/WidgetRowItem.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img-RTL/BusyIndicator/activity_indicator.gif",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img-RTL/LikeButton/heart.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img-RTL/LikeButton/heart_grey.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img-RTL/LikeButton/heart_grey_hover.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img-RTL/LikeButton/heart_grey_lock.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img-RTL/LikeButton/heart_red.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img-RTL/LikeButton/heart_red_hover.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img-RTL/LikeButton/heart_red_lock.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img/BusyIndicator/activity_indicator.gif",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img/LikeButton/heart.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img/LikeButton/heart_grey.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img/LikeButton/heart_grey_hover.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img/LikeButton/heart_grey_lock.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img/LikeButton/heart_red.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img/LikeButton/heart_red_hover.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/img/LikeButton/heart_red_lock.png",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/library-RTL-dbg.css",
+      "isDebug": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/library-RTL.css",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/library-dbg.css",
+      "isDebug": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/library-parameters.json",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/library.css",
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/library.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/base/library.source.less",
+      "designtime": true,
+      "theme": "base"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/.theming",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/Attachment.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/AttachmentControl.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/BusyIndicator.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/Comment.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/Evaluation.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/EvaluationCollapsibleSectionCriteria.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/EvaluationCriterionValue.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/EvaluationCriterionValueLine.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/EvaluationMatrix.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/ExpertGraph.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/FileUploader.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/IdeaCard.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/IdentityCard.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/LikeButton.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/LikeDislike.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/MessageLog.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/OverlayContainer.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/ProcessIndicator.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/Repeater.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/RichTextEditor.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/Tag.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/ThemeFactory.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/Tile.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/ToolPopup.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/Attachment/attachment_audio.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/Attachment/attachment_doc.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/Attachment/attachment_picture.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/Attachment/attachment_video.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/Attachment/remove.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/Attachment/remove_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/Attachment/remove_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/EvaluationCollapsibleSectionCriteria/info.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/EvaluationCriterionValueLine/Comment.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/EvaluationCriterionValueLine/Comment_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/EvaluationCriterionValueLine/Comment_active_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/EvaluationCriterionValueLine/Comment_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/EvaluationCriterionValueLine/arrow_down.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/EvaluationCriterionValueLine/arrow_down_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/EvaluationCriterionValueLine/arrow_right.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/EvaluationCriterionValueLine/arrow_right_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/EvaluationCriterionValueLine/info.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/activityIndicator.gif",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/add_attachment.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/move_e.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/move_e_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/move_e_active_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/move_n.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/move_n_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/move_n_active_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/move_s.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/move_s_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/move_s_active_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/move_w.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/move_w_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/move_w_active_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/remove.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/remove_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/remove_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/sprites.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/title_image_attachment.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/title_video_attachment.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/user_image_attachment.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/zoom_in.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/zoom_in_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/zoom_in_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/zoom_out.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/zoom_out_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/FileUploader/zoom_out_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/IdeaCard/Comment_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/IdeaCard/Comment_active_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/IdeaCard/Comment_hover_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/IdeaCard/error.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/IdeaCard/flip.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/IdeaCard/flip_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/IdeaCard/lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/IdeaCard/lock_grey.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/IdeaCard/pause.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/IdeaCard/pause_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/IdeaCard/play.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/IdeaCard/play_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/IdentityCard/user_image.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeButton/heart.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeButton/heart_grey.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeButton/heart_grey_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeButton/heart_grey_lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeButton/heart_red.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeButton/heart_red_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeButton/heart_red_lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeDislike/thumb_down_off.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeDislike/thumb_down_off_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeDislike/thumb_down_off_lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeDislike/thumb_down_on.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeDislike/thumb_down_on_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeDislike/thumb_down_on_lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeDislike/thumb_up_off.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeDislike/thumb_up_off_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeDislike/thumb_up_off_lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeDislike/thumb_up_on.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeDislike/thumb_up_on_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/LikeDislike/thumb_up_on_lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/MessageLog/icon_error.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/MessageLog/icon_information.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/MessageLog/icon_success.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/MessageLog/icon_warning.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/Create_Idea_white.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/Create_Idea_white@2.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/campaign_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/chart.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/chart_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/chart_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/comment.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/copy.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/decision_16x16.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/duplicate.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/evaluation_method_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/filter.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/filter_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/graphview_expertfinder.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/graphview_expertfinder_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/graphview_expertfinder_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/group_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/icon_warning.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/idea_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/info.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/list.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/list_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/list_active_large.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/list_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/list_hover_large.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/list_large.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/list_lightgrey_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/list_preview.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/list_preview_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/list_preview_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/mail_template_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/merge.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/milestone_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/openDown_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/openDown_active_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/phase_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/remove.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/remove_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/remove_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/remove_small.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/scrollDown_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/scrollDown_hover_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/scrollLeft_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/scrollLeft_active_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/scrollLeft_hover_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/scrollRight_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/scrollRight_active_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/scrollRight_hover_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/settings_grey_24x24.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/settings_white_24x24.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/similar.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/status_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/status_action_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/status_model_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/tag_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/text_module_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/tile_view.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/tile_view_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/tile_view_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/tile_view_lightgrey.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/unit_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/user_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/value_list_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/ThemeFactory/vote_method_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/Tile/close_22x22px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img-RTL/Tile/close_hover_22x22px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/Attachment/attachment_audio.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/Attachment/attachment_doc.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/Attachment/attachment_picture.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/Attachment/attachment_video.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/Attachment/remove.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/Attachment/remove_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/Attachment/remove_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/EvaluationCollapsibleSectionCriteria/info.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/EvaluationCriterionValueLine/Comment.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/EvaluationCriterionValueLine/Comment_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/EvaluationCriterionValueLine/Comment_active_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/EvaluationCriterionValueLine/Comment_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/EvaluationCriterionValueLine/arrow_down.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/EvaluationCriterionValueLine/arrow_down_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/EvaluationCriterionValueLine/arrow_right.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/EvaluationCriterionValueLine/arrow_right_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/EvaluationCriterionValueLine/info.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/activityIndicator.gif",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/add_attachment.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/move_e.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/move_e_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/move_e_active_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/move_n.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/move_n_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/move_n_active_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/move_s.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/move_s_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/move_s_active_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/move_w.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/move_w_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/move_w_active_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/remove.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/remove_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/remove_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/sprites.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/title_image_attachment.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/title_video_attachment.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/user_image_attachment.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/zoom_in.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/zoom_in_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/zoom_in_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/zoom_out.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/zoom_out_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/FileUploader/zoom_out_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/IdeaCard/Comment_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/IdeaCard/Comment_active_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/IdeaCard/Comment_hover_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/IdeaCard/error.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/IdeaCard/flip.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/IdeaCard/flip_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/IdeaCard/lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/IdeaCard/lock_grey.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/IdeaCard/pause.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/IdeaCard/pause_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/IdeaCard/play.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/IdeaCard/play_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/IdentityCard/user_image.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeButton/heart.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeButton/heart_grey.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeButton/heart_grey_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeButton/heart_grey_lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeButton/heart_red.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeButton/heart_red_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeButton/heart_red_lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeDislike/thumb_down_off.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeDislike/thumb_down_off_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeDislike/thumb_down_off_lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeDislike/thumb_down_on.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeDislike/thumb_down_on_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeDislike/thumb_down_on_lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeDislike/thumb_up_off.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeDislike/thumb_up_off_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeDislike/thumb_up_off_lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeDislike/thumb_up_on.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeDislike/thumb_up_on_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/LikeDislike/thumb_up_on_lock.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/MessageLog/icon_error.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/MessageLog/icon_information.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/MessageLog/icon_success.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/MessageLog/icon_warning.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/Create_Idea_white.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/Create_Idea_white@2.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/campaign_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/chart.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/chart_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/chart_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/comment.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/copy.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/decision_16x16.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/duplicate.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/evaluation_method_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/filter.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/filter_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/graphview_expertfinder.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/graphview_expertfinder_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/graphview_expertfinder_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/group_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/icon_warning.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/idea_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/info.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/list.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/list_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/list_active_large.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/list_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/list_hover_large.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/list_large.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/list_lightgrey_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/list_preview.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/list_preview_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/list_preview_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/mail_template_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/merge.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/milestone_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/openDown_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/openDown_active_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/phase_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/remove.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/remove_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/remove_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/remove_small.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/scrollDown_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/scrollDown_hover_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/scrollLeft_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/scrollLeft_active_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/scrollLeft_hover_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/scrollRight_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/scrollRight_active_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/scrollRight_hover_26x26px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/settings_grey_24x24.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/settings_white_24x24.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/similar.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/status_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/status_action_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/status_model_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/tag_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/text_module_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/tile_view.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/tile_view_active.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/tile_view_hover.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/tile_view_lightgrey.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/unit_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/user_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/value_list_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/ThemeFactory/vote_method_48x48.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/Tile/close_22x22px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/img/Tile/close_hover_22x22px.png",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/library-RTL-dbg.css",
+      "isDebug": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/library-RTL.css",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/library-dbg.css",
+      "isDebug": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/library-parameters.json",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/library.css",
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/library.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_bluecrystal/library.source.less",
+      "designtime": true,
+      "theme": "sap_bluecrystal"
+    },
+    {
+      "name": "controls/themes/sap_hcb/.theming",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/AccessibilitySupport.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/Attachment.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/AttachmentControl.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/BackofficeShell.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/BackofficeShellHeader.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/BusyIndicator.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/CampaignTile.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/Comment.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/Evaluation.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/EvaluationCollapsibleSectionCriteria.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/EvaluationCriterionValue.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/EvaluationCriterionValueLine.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/EvaluationMatrix.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/ExpertGraph.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/FileUploader.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/IdeaCard.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/IdentityCard.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/LikeButton.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/LikeDislike.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/MessageLog.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/OverlayContainer.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/ProcessIndicator.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/Repeater.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/RichTextEditor.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/StatusModelViz.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/Tag.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/ThemeFactory.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/Tile.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/ToolPopup.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/Widget.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/WidgetRowItem.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/Attachment/attachment_audio.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/Attachment/attachment_doc.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/Attachment/attachment_picture.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/Attachment/attachment_video.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/Attachment/remove.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/EvaluationCollapsibleSectionCriteria/info.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/EvaluationCriterionValueLine/Comment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/EvaluationCriterionValueLine/Comment_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/EvaluationCriterionValueLine/Comment_active_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/EvaluationCriterionValueLine/Comment_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/EvaluationCriterionValueLine/arrow_down.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/EvaluationCriterionValueLine/arrow_right.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/EvaluationCriterionValueLine/info.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/activityIndicator.gif",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/add_attachment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/move_e.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/move_e_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/move_e_active_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/move_n.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/move_n_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/move_n_active_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/move_s.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/move_s_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/move_s_active_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/move_w.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/move_w_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/move_w_active_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/remove.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/remove_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/remove_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/sprites.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/title_image_attachment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/title_video_attachment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/user_image_attachment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/zoom_in.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/zoom_in_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/zoom_in_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/zoom_out.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/zoom_out_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/FileUploader/zoom_out_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/IdeaCard/Comment_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/IdeaCard/error.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/IdeaCard/flip.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/IdeaCard/lock.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/IdeaCard/lock_grey.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/IdeaCard/pause.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/IdeaCard/pause_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/IdeaCard/play.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/IdeaCard/play_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/IdentityCard/ActivityIndicator.gif",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/IdentityCard/user_image.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/LikeButton/heart.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/LikeDislike/thumb_down_off.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/LikeDislike/thumb_down_off_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/LikeDislike/thumb_down_off_lock.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/LikeDislike/thumb_down_on.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/LikeDislike/thumb_down_on_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/LikeDislike/thumb_down_on_lock.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/LikeDislike/thumb_up_off.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/LikeDislike/thumb_up_off_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/LikeDislike/thumb_up_off_lock.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/LikeDislike/thumb_up_on.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/LikeDislike/thumb_up_on_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/LikeDislike/thumb_up_on_lock.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/MessageLog/icon_error.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/MessageLog/icon_information.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/MessageLog/icon_success.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/MessageLog/icon_warning.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/OverlayContainer/add_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/Repeater/ActivityIndicator.gif",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/Create_Idea_white.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/campaign_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/chart.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/chart_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/chart_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/colorpicker.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/comment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/copy.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/create_wall.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/decision_16x16.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/duplicate.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/evaluation_method_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/filter.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/filter_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/graphview_expertfinder.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/graphview_expertfinder_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/graphview_expertfinder_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/group_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/icon_warning.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/idea_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/info.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/list.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/list_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/list_active_large.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/list_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/list_hover_large.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/list_large.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/list_preview.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/list_preview_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/list_preview_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/mail_template_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/mail_to.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/merge.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/milestone_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/openDown_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/openDown_active_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/phase_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/remove.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/remove_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/remove_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/remove_small.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/scrollDown_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/scrollDown_hover_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/scrollLeft_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/scrollLeft_active_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/scrollLeft_hover_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/scrollRight_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/scrollRight_active_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/scrollRight_hover_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/settings_grey_24x24.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/settings_white_24x24.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/similar.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/tag_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/text_module_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/tile_view.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/tile_view_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/tile_view_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/unit_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/user_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/user_image.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/value_list_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/wall_arrow.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/wall_attachment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/wall_group.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/wall_headline.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/wall_image.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/wall_line.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/wall_link.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/wall_person.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/wall_sprite.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/wall_sticker.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/wall_text.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/ThemeFactory/wall_video.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/Tile/close_22x22px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img-RTL/Tile/close_hover_22x22px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/Attachment/attachment_audio.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/Attachment/attachment_doc.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/Attachment/attachment_picture.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/Attachment/attachment_video.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/Attachment/remove.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/EvaluationCollapsibleSectionCriteria/info.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/EvaluationCriterionValueLine/Comment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/EvaluationCriterionValueLine/Comment_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/EvaluationCriterionValueLine/Comment_active_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/EvaluationCriterionValueLine/Comment_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/EvaluationCriterionValueLine/arrow_down.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/EvaluationCriterionValueLine/arrow_right.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/EvaluationCriterionValueLine/info.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/activityIndicator.gif",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/add_attachment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/move_e.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/move_e_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/move_e_active_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/move_n.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/move_n_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/move_n_active_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/move_s.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/move_s_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/move_s_active_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/move_w.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/move_w_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/move_w_active_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/remove.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/remove_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/remove_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/sprites.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/title_image_attachment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/title_video_attachment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/user_image_attachment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/zoom_in.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/zoom_in_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/zoom_in_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/zoom_out.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/zoom_out_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/FileUploader/zoom_out_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/IdeaCard/Comment_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/IdeaCard/error.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/IdeaCard/flip.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/IdeaCard/lock.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/IdeaCard/lock_grey.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/IdeaCard/pause.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/IdeaCard/pause_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/IdeaCard/play.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/IdeaCard/play_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/IdentityCard/ActivityIndicator.gif",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/IdentityCard/user_image.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/LikeButton/heart.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/LikeDislike/thumb_down_off.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/LikeDislike/thumb_down_off_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/LikeDislike/thumb_down_off_lock.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/LikeDislike/thumb_down_on.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/LikeDislike/thumb_down_on_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/LikeDislike/thumb_down_on_lock.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/LikeDislike/thumb_up_off.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/LikeDislike/thumb_up_off_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/LikeDislike/thumb_up_off_lock.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/LikeDislike/thumb_up_on.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/LikeDislike/thumb_up_on_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/LikeDislike/thumb_up_on_lock.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/MessageLog/icon_error.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/MessageLog/icon_information.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/MessageLog/icon_success.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/MessageLog/icon_warning.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/OverlayContainer/add_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/Repeater/ActivityIndicator.gif",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/Create_Idea_white.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/campaign_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/chart.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/chart_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/chart_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/colorpicker.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/comment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/copy.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/create_wall.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/decision_16x16.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/duplicate.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/evaluation_method_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/filter.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/filter_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/graphview_expertfinder.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/graphview_expertfinder_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/graphview_expertfinder_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/group_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/icon_warning.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/idea_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/info.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/list.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/list_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/list_active_large.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/list_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/list_hover_large.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/list_large.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/list_preview.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/list_preview_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/list_preview_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/mail_template_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/mail_to.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/merge.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/milestone_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/openDown_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/openDown_active_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/phase_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/remove.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/remove_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/remove_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/remove_small.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/scrollDown_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/scrollDown_hover_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/scrollLeft_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/scrollLeft_active_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/scrollLeft_hover_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/scrollRight_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/scrollRight_active_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/scrollRight_hover_26x26px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/settings_grey_24x24.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/settings_white_24x24.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/similar.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/tag_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/text_module_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/tile_view.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/tile_view_active.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/tile_view_hover.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/unit_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/user_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/user_image.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/value_list_48x48.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/wall_arrow.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/wall_attachment.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/wall_group.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/wall_headline.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/wall_image.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/wall_line.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/wall_link.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/wall_person.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/wall_sprite.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/wall_sticker.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/wall_text.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/ThemeFactory/wall_video.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/Tile/close_22x22px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/img/Tile/close_hover_22x22px.png",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/library-RTL-dbg.css",
+      "isDebug": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/library-RTL.css",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/library-dbg.css",
+      "isDebug": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/library-parameters.json",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/library.css",
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/library.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "controls/themes/sap_hcb/library.source.less",
+      "designtime": true,
+      "theme": "sap_hcb"
+    },
+    {
+      "name": "extensions/jQuery/support-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "extensions/jQuery/support.js"
+    },
+    {
+      "name": "extensions/sap/ui/model/odata/ODataTreeBinding-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "extensions/sap/ui/model/odata/ODataTreeBinding.js"
+    },
+    {
+      "name": "extensions/sap/ui/ux3/Shell-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "extensions/sap/ui/ux3/Shell.js"
+    },
+    {
+      "name": "models/core/ApplicationObject-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/core/ApplicationObject.js"
+    },
+    {
+      "name": "models/core/ApplicationObjectChange-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/core/ApplicationObjectChange.js"
+    },
+    {
+      "name": "models/core/ClipboardModel-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/core/ClipboardModel.js"
+    },
+    {
+      "name": "models/core/CodeModel-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/core/CodeModel.js"
+    },
+    {
+      "name": "models/core/Extensibility-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/core/Extensibility.js"
+    },
+    {
+      "name": "models/core/InvalidationManager-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/core/InvalidationManager.js"
+    },
+    {
+      "name": "models/core/MessageSupport-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/core/MessageSupport.js"
+    },
+    {
+      "name": "models/core/MetaModel-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/core/MetaModel.js"
+    },
+    {
+      "name": "models/core/PropertyModel-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/core/PropertyModel.js"
+    },
+    {
+      "name": "models/core/PropertyModelCache-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/core/PropertyModelCache.js"
+    },
+    {
+      "name": "models/core/ReadSource-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/core/ReadSource.js"
+    },
+    {
+      "name": "models/formatter/DateFormatter-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/formatter/DateFormatter.js"
+    },
+    {
+      "name": "models/formatter/GenericFormatter-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/formatter/GenericFormatter.js"
+    },
+    {
+      "name": "models/formatter/RoundedDecimalFormatter-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/formatter/RoundedDecimalFormatter.js"
+    },
+    {
+      "name": "models/object/Attachment-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/Attachment.js"
+    },
+    {
+      "name": "models/object/Campaign-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/Campaign.js"
+    },
+    {
+      "name": "models/object/CampaignComment-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/CampaignComment.js"
+    },
+    {
+      "name": "models/object/CampaignPhaseStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/CampaignPhaseStage.js"
+    },
+    {
+      "name": "models/object/ConfigurationActivation-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/ConfigurationActivation.js"
+    },
+    {
+      "name": "models/object/Dimension-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/Dimension.js"
+    },
+    {
+      "name": "models/object/Evaluation-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/Evaluation.js"
+    },
+    {
+      "name": "models/object/EvaluationModelStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/EvaluationModelStage.js"
+    },
+    {
+      "name": "models/object/GamificationSetting-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/GamificationSetting.js"
+    },
+    {
+      "name": "models/object/Group-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/Group.js"
+    },
+    {
+      "name": "models/object/GroupAssignment-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/GroupAssignment.js"
+    },
+    {
+      "name": "models/object/GroupDetail-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/GroupDetail.js"
+    },
+    {
+      "name": "models/object/Homepagewidget-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/Homepagewidget.js"
+    },
+    {
+      "name": "models/object/IdeaFormStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/IdeaFormStage.js"
+    },
+    {
+      "name": "models/object/IdentityAttribute-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/IdentityAttribute.js"
+    },
+    {
+      "name": "models/object/IdentityAttributeSetting-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/IdentityAttributeSetting.js"
+    },
+    {
+      "name": "models/object/IdentityLog-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/IdentityLog.js"
+    },
+    {
+      "name": "models/object/IdentityLogSetting-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/IdentityLogSetting.js"
+    },
+    {
+      "name": "models/object/LocalSystemSetting-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/LocalSystemSetting.js"
+    },
+    {
+      "name": "models/object/MailTemplate-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/MailTemplate.js"
+    },
+    {
+      "name": "models/object/MailTemplateStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/MailTemplateStage.js"
+    },
+    {
+      "name": "models/object/MergeConfig-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/MergeConfig.js"
+    },
+    {
+      "name": "models/object/MilestoneTaskStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/MilestoneTaskStage.js"
+    },
+    {
+      "name": "models/object/MonitorIntegration-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/MonitorIntegration.js"
+    },
+    {
+      "name": "models/object/MonitorNotification-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/MonitorNotification.js"
+    },
+    {
+      "name": "models/object/Notification-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/Notification.js"
+    },
+    {
+      "name": "models/object/NotificationSystemSetting-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/NotificationSystemSetting.js"
+    },
+    {
+      "name": "models/object/ResponsibilityStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/ResponsibilityStage.js"
+    },
+    {
+      "name": "models/object/StatusActionStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/StatusActionStage.js"
+    },
+    {
+      "name": "models/object/StatusModelStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/StatusModelStage.js"
+    },
+    {
+      "name": "models/object/StatusNameStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/StatusNameStage.js"
+    },
+    {
+      "name": "models/object/SystemIntegration-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/SystemIntegration.js"
+    },
+    {
+      "name": "models/object/Tag-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/Tag.js"
+    },
+    {
+      "name": "models/object/TagGroupStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/TagGroupStage.js"
+    },
+    {
+      "name": "models/object/TextModule-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/TextModule.js"
+    },
+    {
+      "name": "models/object/TextModuleStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/TextModuleStage.js"
+    },
+    {
+      "name": "models/object/UnitStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/UnitStage.js"
+    },
+    {
+      "name": "models/object/UrlWhitelistStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/UrlWhitelistStage.js"
+    },
+    {
+      "name": "models/object/User-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/User.js"
+    },
+    {
+      "name": "models/object/UserSettings-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/UserSettings.js"
+    },
+    {
+      "name": "models/object/ValueOptionListStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/ValueOptionListStage.js"
+    },
+    {
+      "name": "models/object/Vote-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/Vote.js"
+    },
+    {
+      "name": "models/object/VoteTypeStage-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/object/VoteTypeStage.js"
+    },
+    {
+      "name": "models/types/CaseInsensitiveFilterType-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/types/CaseInsensitiveFilterType.js"
+    },
+    {
+      "name": "models/types/FalsyBlankType-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/types/FalsyBlankType.js"
+    },
+    {
+      "name": "models/types/IntBooleanType-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/types/IntBooleanType.js"
+    },
+    {
+      "name": "models/types/IntegerNullableType-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/types/IntegerNullableType.js"
+    },
+    {
+      "name": "models/types/NonEmptyFalsyBlankType-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/types/NonEmptyFalsyBlankType.js"
+    },
+    {
+      "name": "models/types/NonLocalizedDateType-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/types/NonLocalizedDateType.js"
+    },
+    {
+      "name": "models/types/RelativeDateTimeType-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/types/RelativeDateTimeType.js"
+    },
+    {
+      "name": "models/types/RelativeDateType-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/types/RelativeDateType.js"
+    },
+    {
+      "name": "models/types/ShortendNumberType-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/types/ShortendNumberType.js"
+    },
+    {
+      "name": "models/types/StringBooleanType-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/types/StringBooleanType.js"
+    },
+    {
+      "name": "models/types/TooltipDateType-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/types/TooltipDateType.js"
+    },
+    {
+      "name": "models/util/Ajax-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/util/Ajax.js"
+    },
+    {
+      "name": "models/util/Date-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/util/Date.js"
+    },
+    {
+      "name": "models/util/Table-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "models/util/Table.js"
+    },
+    {
+      "name": "thirdparty/jimp-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "thirdparty/jimp.js"
+    },
+    {
+      "name": "views/backoffice/ExpertFinder-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/ExpertFinder-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/ExpertFinder.controller.js"
+    },
+    {
+      "name": "views/backoffice/ExpertFinder.view.js"
+    },
+    {
+      "name": "views/backoffice/SearchResults-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/SearchResults-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/SearchResults.controller.js"
+    },
+    {
+      "name": "views/backoffice/SearchResults.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignActivitiesDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignActivitiesDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignActivitiesDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignActivitiesDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignActivitiesFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignActivitiesFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignActivitiesFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignActivitiesFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignAdvanceChange-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignAdvanceChange-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignAdvanceChange.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignAdvanceChange.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignComment-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignComment-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignComment.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignComment.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignDefaultDateMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignDefaultDateMixin.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignGeneralDataFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignGeneralDataFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignGeneralDataFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignGeneralDataFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignInstance-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignInstance-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignInstance.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignInstance.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationActionsMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationActionsMixin.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationApiFieldLayoutMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationApiFieldLayoutMixin.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationCommonActionsMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationCommonActionsMixin.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationFieldPreviewLayoutMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationFieldPreviewLayoutMixin.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationFormatterMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationFormatterMixin.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationMappingCommonLayoutMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationMappingCommonLayoutMixin.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationMappingLayoutMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationMappingLayoutMixin.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationRequestMappingLayoutMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationRequestMappingLayoutMixin.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationResponseMappingLayoutMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationResponseMappingLayoutMixin.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationValidationMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignIntegrationValidationMixin.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignLandingPageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignLandingPageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignLandingPageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignLandingPageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignList.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignList.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignMailNotificationFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignMailNotificationFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignMailNotificationFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignMailNotificationFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignMailTemplateFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignMailTemplateFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignMailTemplateFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignMailTemplateFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignMilestoneDateConverterMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignMilestoneDateConverterMixin.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignMilestoneValidationMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignMilestoneValidationMixin.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignProcessFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignProcessFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignProcessFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignProcessFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignRolesFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignRolesFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignRolesFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignRolesFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignSettingPageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignSettingPageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignSettingPageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignSettingPageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignTilesContainer-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignTilesContainer-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignTilesContainer.controller.js"
+    },
+    {
+      "name": "views/backoffice/campaign/CampaignTilesContainer.view.js"
+    },
+    {
+      "name": "views/backoffice/clipboard/Clipboard-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/clipboard/Clipboard-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/clipboard/Clipboard.controller.js"
+    },
+    {
+      "name": "views/backoffice/clipboard/Clipboard.view.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseList.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseList.view.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseModify.view.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignPhaseUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskList.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskList.view.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskModify.view.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/CampaignTaskUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelCriterionDetail-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelCriterionDetail-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelCriterionDetail.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelCriterionDetail.view.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelList.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelList.view.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModify.view.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModifyDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModifyDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModifyDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModifyDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModifyPreviewFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModifyPreviewFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModifyPreviewFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModifyPreviewFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModifyUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModifyUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModifyUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/EvaluationModelModifyUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormList.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormList.view.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormListDetail-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormListDetail-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormListDetail.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormListDetail.view.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModify.view.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModifyDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModifyDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModifyDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModifyDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModifyPreviewFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModifyPreviewFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModifyPreviewFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModifyPreviewFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModifyUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModifyUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModifyUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaFormModifyUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaMergeRule-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaMergeRule-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/IdeaMergeRule.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/IdeaMergeRule.view.js"
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateList.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateList.view.js"
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateModify.view.js"
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/MailTemplateUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/NotificationAction-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/NotificationAction-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/NotificationAction.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/NotificationAction.view.js"
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionList.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionList.view.js"
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionListDetail-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionListDetail-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionListDetail.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionListDetail.view.js"
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionSimpleFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionSimpleFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionSimpleFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionSimpleFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionStatusModelFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionStatusModelFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionStatusModelFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionStatusModelFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionWithTemplateFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionWithTemplateFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionWithTemplateFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/NotificationActionWithTemplateFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListModify.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListModifyDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListModifyDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListModifyDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListModifyDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListModifyUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListModifyUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListModifyUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListModifyUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListValueCriteria-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListValueCriteria-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListValueCriteria.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListValueCriteria.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListValueUsage-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListValueUsage-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListValueUsage.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityListValueUsage.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityLists-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityLists-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityLists.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ResponsibilityLists.view.js"
+    },
+    {
+      "name": "views/backoffice/config/TextModuleDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/TextModuleDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/TextModuleDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/TextModuleDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/TextModuleList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/TextModuleList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/TextModuleList.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/TextModuleList.view.js"
+    },
+    {
+      "name": "views/backoffice/config/TextModuleListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/TextModuleListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/TextModuleListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/TextModuleListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/config/TextModuleModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/TextModuleModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/TextModuleModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/TextModuleModify.view.js"
+    },
+    {
+      "name": "views/backoffice/config/TextModuleUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/TextModuleUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/TextModuleUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/TextModuleUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/UnitDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UnitDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UnitDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/UnitDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/UnitList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UnitList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UnitList.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/UnitList.view.js"
+    },
+    {
+      "name": "views/backoffice/config/UnitListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UnitListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UnitListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/UnitListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/config/UnitModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UnitModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UnitModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/UnitModify.view.js"
+    },
+    {
+      "name": "views/backoffice/config/UnitUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UnitUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UnitUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/UnitUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelist-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelist-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelist.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelist.view.js"
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelistDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelistDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelistDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelistDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelistDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelistDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelistDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelistDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelistModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelistModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelistModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/UrlWhitelistModify.view.js"
+    },
+    {
+      "name": "views/backoffice/config/Util-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/Util.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionList.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionList.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListModify.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsage-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsage-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsage.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsage.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageCustomFormFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageCustomFormFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageCustomFormFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageCustomFormFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageStatusModelFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageStatusModelFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageStatusModelFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageStatusModelFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageVoteTypeFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageVoteTypeFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageVoteTypeFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/ValueOptionListUsageVoteTypeFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeList.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeList.view.js"
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeModify.view.js"
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeModifyDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeModifyDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeModifyDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeModifyDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeModifyUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeModifyUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeModifyUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/config/VoteTypeModifyUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/extension/CampaignDetailEditFacetExtension.fragment.xml"
+    },
+    {
+      "name": "views/backoffice/extension/CampaignDetailFacetExtension.fragment.xml"
+    },
+    {
+      "name": "views/backoffice/extension/CampaignListDetailsExtension.fragment.xml"
+    },
+    {
+      "name": "views/backoffice/extension/CampaignListExtension.fragment.xml"
+    },
+    {
+      "name": "views/backoffice/gamification/Dimension-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/Dimension-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/Dimension.controller.js"
+    },
+    {
+      "name": "views/backoffice/gamification/Dimension.view.js"
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionActivityMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionActivityMixin.js"
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionBadgeMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionBadgeMixin.js"
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionGeneralMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionGeneralMixin.js"
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionList.controller.js"
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionList.view.js"
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionListDetail-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionListDetail-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionListDetail.controller.js"
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionListDetail.view.js"
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionValidMixin-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/DimensionValidMixin.js"
+    },
+    {
+      "name": "views/backoffice/gamification/Setting-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/Setting-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/gamification/Setting.controller.js"
+    },
+    {
+      "name": "views/backoffice/gamification/Setting.view.js"
+    },
+    {
+      "name": "views/backoffice/homepagewidget/CommunityHomePageWidget-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/homepagewidget/CommunityHomePageWidget-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/homepagewidget/CommunityHomePageWidget.controller.js"
+    },
+    {
+      "name": "views/backoffice/homepagewidget/CommunityHomePageWidget.view.js"
+    },
+    {
+      "name": "views/backoffice/homepagewidget/InnoOfficeHomePageWidget-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/homepagewidget/InnoOfficeHomePageWidget-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/homepagewidget/InnoOfficeHomePageWidget.controller.js"
+    },
+    {
+      "name": "views/backoffice/homepagewidget/InnoOfficeHomePageWidget.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementGroupDataFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementGroupDataFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementGroupDataFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementGroupDataFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementInstance-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementInstance-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementInstance.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementInstance.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementList.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementList.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/GroupManagementListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserConsumptionReport-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserConsumptionReport-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserConsumptionReport.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserConsumptionReport.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserDiscloseDataViewLog-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserDiscloseDataViewLog-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserDiscloseDataViewLog.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserDiscloseDataViewLog.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserLogSetting-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserLogSetting-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserLogSetting.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserLogSetting.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementInstance-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementInstance-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementInstance.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementInstance.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementList.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementList.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementUserDataFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementUserDataFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementUserDataFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementUserDataFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementUserDiscloseData-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementUserDiscloseData-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementUserDiscloseData.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementUserDiscloseData.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementUserLog-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementUserLog-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementUserLog.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserManagementUserLog.view.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserProfile-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserProfile-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/iam/UserProfile.controller.js"
+    },
+    {
+      "name": "views/backoffice/iam/UserProfile.view.js"
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMapping-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMapping-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMapping.controller.js"
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMapping.view.js"
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingList.controller.js"
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingList.view.js"
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingListDetail-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingListDetail-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingListDetail.controller.js"
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingListDetail.view.js"
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/integration/IntegrationMappingUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/monitoring/IntegrationMonitorList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/monitoring/IntegrationMonitorList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/monitoring/IntegrationMonitorList.controller.js"
+    },
+    {
+      "name": "views/backoffice/monitoring/IntegrationMonitorList.view.js"
+    },
+    {
+      "name": "views/backoffice/monitoring/NotificationsEmailMonitorList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/monitoring/NotificationsEmailMonitorList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/monitoring/NotificationsEmailMonitorList.controller.js"
+    },
+    {
+      "name": "views/backoffice/monitoring/NotificationsEmailMonitorList.view.js"
+    },
+    {
+      "name": "views/backoffice/settings/SystemSettings-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/settings/SystemSettings-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/settings/SystemSettings.controller.js"
+    },
+    {
+      "name": "views/backoffice/settings/SystemSettings.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionList.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionList.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionModify.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionModifyDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionModifyDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionModifyDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionModifyDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionModifyUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionModifyUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionModifyUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusActionModifyUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelList.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelList.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModify.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModifyDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModifyDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModifyDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModifyDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModifyPreviewFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModifyPreviewFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModifyPreviewFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModifyPreviewFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModifyUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModifyUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModifyUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusModelModifyUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameList.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameList.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameModify.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameModifyDefinitionFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameModifyDefinitionFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameModifyDefinitionFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameModifyDefinitionFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameModifyUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameModifyUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameModifyUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/statusconfig/StatusNameModifyUsageFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/tag/MergeConfirmationDialog-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/MergeConfirmationDialog-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/MergeConfirmationDialog.controller.js"
+    },
+    {
+      "name": "views/backoffice/tag/MergeConfirmationDialog.view.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagGeneralDataFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagGeneralDataFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagGeneralDataFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagGeneralDataFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementGroupDataFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementGroupDataFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementGroupDataFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementGroupDataFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementInstance-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementInstance-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementInstance.controller.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementInstance.view.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementList.controller.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementList.view.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupManagementListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupTreeCriteria-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupTreeCriteria-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupTreeCriteria.controller.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagGroupTreeCriteria.view.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagList-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagList-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagList.controller.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagList.view.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagListDetails-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagListDetails-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagListDetails.controller.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagListDetails.view.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagModify-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagModify-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagModify.controller.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagModify.view.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagSimilarityFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagSimilarityFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagSimilarityFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagSimilarityFacet.view.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagUsageFacet-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagUsageFacet-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/backoffice/tag/TagUsageFacet.controller.js"
+    },
+    {
+      "name": "views/backoffice/tag/TagUsageFacet.view.js"
+    },
+    {
+      "name": "views/common/BootstrapError-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/BootstrapError-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/BootstrapError.controller.js"
+    },
+    {
+      "name": "views/common/BootstrapError.view.js"
+    },
+    {
+      "name": "views/common/CommentController-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/CommentController.js"
+    },
+    {
+      "name": "views/common/CommentView-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/CommentView.js"
+    },
+    {
+      "name": "views/common/ControlFactory-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/ControlFactory.js"
+    },
+    {
+      "name": "views/common/ExtensionPointHelper-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/ExtensionPointHelper.js"
+    },
+    {
+      "name": "views/common/FacetAOController-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/FacetAOController.js"
+    },
+    {
+      "name": "views/common/FacetAOView-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/FacetAOView.js"
+    },
+    {
+      "name": "views/common/GenericControl-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/GenericControl.js"
+    },
+    {
+      "name": "views/common/MasterDetailController-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/MasterDetailController.js"
+    },
+    {
+      "name": "views/common/MasterDetailView-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/MasterDetailView.js"
+    },
+    {
+      "name": "views/common/MessageSupportView-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/MessageSupportView.js"
+    },
+    {
+      "name": "views/common/ObjectInstanceSelection-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/ObjectInstanceSelection.js"
+    },
+    {
+      "name": "views/common/OverlayController-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/OverlayController.js"
+    },
+    {
+      "name": "views/common/OverlayView-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/OverlayView.js"
+    },
+    {
+      "name": "views/common/PeopleFacetController-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/PeopleFacetController.js"
+    },
+    {
+      "name": "views/common/PeopleFacetView-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/PeopleFacetView.js"
+    },
+    {
+      "name": "views/common/TableExport-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/TableExport.js"
+    },
+    {
+      "name": "views/common/TagFilter-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/TagFilter-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/TagFilter.controller.js"
+    },
+    {
+      "name": "views/common/TagFilter.view.js"
+    },
+    {
+      "name": "views/common/ThingInspectorAOController-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/ThingInspectorAOController.js"
+    },
+    {
+      "name": "views/common/ThingInspectorAOView-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/ThingInspectorAOView.js"
+    },
+    {
+      "name": "views/common/UsageFacetController-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/UsageFacetController.js"
+    },
+    {
+      "name": "views/common/UsageFacetView-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/UsageFacetView.js"
+    },
+    {
+      "name": "views/common/UserSettings-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/UserSettings-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/common/UserSettings.controller.js"
+    },
+    {
+      "name": "views/common/UserSettings.view.js"
+    },
+    {
+      "name": "views/extensibility/ControlFactory-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/extensibility/ControlFactory.js"
+    },
+    {
+      "name": "views/extensibility/StableIdentifier-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/extensibility/StableIdentifier.js"
+    },
+    {
+      "name": "views/mashup/RecentCommentsWidget-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/mashup/RecentCommentsWidget-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/mashup/RecentCommentsWidget.controller.js"
+    },
+    {
+      "name": "views/mashup/RecentCommentsWidget.view.js"
+    },
+    {
+      "name": "views/mashup/RecentIdeasCardWidget-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/mashup/RecentIdeasCardWidget-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/mashup/RecentIdeasCardWidget.controller.js"
+    },
+    {
+      "name": "views/mashup/RecentIdeasCardWidget.view.js"
+    },
+    {
+      "name": "views/mashup/RecentIdeasWidget-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/mashup/RecentIdeasWidget-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/mashup/RecentIdeasWidget.controller.js"
+    },
+    {
+      "name": "views/mashup/RecentIdeasWidget.view.js"
+    },
+    {
+      "name": "views/mashup/TopCommentatorsWidget-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/mashup/TopCommentatorsWidget-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/mashup/TopCommentatorsWidget.controller.js"
+    },
+    {
+      "name": "views/mashup/TopCommentatorsWidget.view.js"
+    },
+    {
+      "name": "views/mashup/TopContributorsWidget-dbg.controller.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/mashup/TopContributorsWidget-dbg.view.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/mashup/TopContributorsWidget.controller.js"
+    },
+    {
+      "name": "views/mashup/TopContributorsWidget.view.js"
+    },
+    {
+      "name": "views/mashup/WidgetController-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/mashup/WidgetController.js"
+    },
+    {
+      "name": "views/mashup/WidgetView-dbg.js",
+      "isDebug": true
+    },
+    {
+      "name": "views/mashup/WidgetView.js"
+    }
+  ]
+}

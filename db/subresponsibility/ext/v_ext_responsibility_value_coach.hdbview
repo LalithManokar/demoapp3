@@ -1,0 +1,6 @@
+schema = "SAP_INO_EXT";
+query = "select resp_coach.* 
+            from \"sap.ino.db.subresponsibility::v_responsibility_value_coach\" as resp_coach
+            with read only";
+
+depends_on_view = ["sap.ino.db.subresponsibility::v_responsibility_value_coach"];

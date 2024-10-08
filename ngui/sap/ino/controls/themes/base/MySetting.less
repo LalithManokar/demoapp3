@@ -1,0 +1,117 @@
+.sapInoRowTabBar{
+    display: flex;
+    height: 100%;
+    background: @sapInoWhiteBG;
+    .sapMITH{
+        width: 320px;
+        border-right: 1px solid #CCC;
+        .sapMITBHead {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            .sapMITBVertical {
+                height: 3rem;
+                line-height: 3rem;
+            }
+            .sapMITBItem {
+                display: flex;
+                text-align: left;
+                .sapMITBVertical>.sapMITBTab{
+                    height:1rem;
+                    width: 1rem;
+                }
+                .sapMITBFilterIcon{
+                    height: 3rem;
+                    width: 3rem;
+                    font-size: 1.2rem;
+                    line-height: 3rem;
+                }
+            }
+
+            .sapMITBFilter {
+                margin: 0;
+            }
+            .sapMITBText {
+                width: 100%;
+                line-height: 3rem;
+                font-size: 1rem;
+                padding: 0;
+            }
+            .sapMITBFilterIcon {
+                color: #333;
+                border: none;
+                background: none;
+            }
+            .sapMITBSelected{
+                background: #e6f2f9;
+                .sapMITBFilterIcon {
+                    color: #333;
+                    border: none;
+                    background: none;
+                }
+            }
+        }
+        
+    
+        .sapMITBScrollContainer {
+            margin: 0;
+            height: 100%;
+        }
+        .sapMITBItemNoCount.sapMITBFilter:last-child{
+            padding-right: 0;
+        }
+    }
+    .sapMITBContainerContent{
+        width: 100%;
+        .sapInoPersonalizeSetting{
+            position: relative;
+        }
+        .sapInoPersonalizeToolbar{
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid #ccc;
+            margin-top: 1rem;
+            border-bottom: none;
+            background: #3f5161;
+            height: 3rem;
+            .sapMBtn{
+                margin-right: 1rem;                
+                .sapMBtnInner {
+                
+                }
+            }
+        }
+    }
+    .sapMITBContent {
+        padding: 0 0 3rem !important;
+        paddign-bottom: 3rem !important;
+        .sapMQuickViewPage,
+        .sapInoPersonalizeSetting,
+        .sapInoScheduledNotificationSetting,
+        .sapInoChangeLog,
+        .userGroupTable{
+            padding: 1rem 2rem;
+            overflow-y:auto;
+            height: 100%;
+        }
+        .sapInoPersonalizeSetting,
+        .sapInoScheduledNotificationSetting,
+        .userGroupTable{
+            //height:~"calc(100% - 3rem)";
+        }
+    }
+}
+.sapInoRowTabBar.sapInoMySetting .sapMITH .sapMITBScrollContainer{
+              margin: 0;
+            height: 100%; 
+}
+
+html[data-sap-ui-browser*="ie"] .sapInoScheduledNotificationSetting{
+    display:block;
+}
+
+html[data-sap-ui-browser*="ie"] .sapInoFilterPanel .sapMPanelContent .sapInoWrappingList.sapInoWrappingListWrap ul{
+    justify-content:flex-start;
+}

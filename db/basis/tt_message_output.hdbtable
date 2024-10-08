@@ -1,0 +1,14 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = ROWSTORE;
+table.temporary   = true;
+table.description = "Output table to hold messages of a procedure";
+table.columns = [
+    {name = "TYPE";      sqlType = VARCHAR;  length = 1;    comment = "Type: E (Error), W (Warning), I(Information) ";},
+    {name = "MESSAGE";   sqlType = VARCHAR;  length = 100;},
+    {name = "REF_ID";    sqlType = INTEGER;},
+    {name = "REF_FIELD"; sqlType = VARCHAR;  length = 100;},
+    {name = "PARAM_0";   sqlType = NVARCHAR; length = 100;},
+    {name = "PARAM_1";   sqlType = NVARCHAR; length = 100;},
+    {name = "PARAM_2";   sqlType = NVARCHAR; length = 100;},
+    {name = "PARAM_3";   sqlType = NVARCHAR; length = 100;}
+];

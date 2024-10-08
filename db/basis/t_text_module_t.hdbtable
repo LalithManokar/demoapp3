@@ -1,0 +1,12 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Language dependend Text Module";
+table.columns = [
+    {name = "CODE";              sqlType = VARCHAR;  length = 500; nullable = false; comment = "Text Module Identifier";},
+	{name = "TEXT_MODULE_CODE";  sqlType = VARCHAR;  length = 500; nullable = false; comment = "Text Module the language specific content belongs to. Foreign key to t_mail_template.code";},
+	{name = "LANG";              sqlType = VARCHAR;  length = 5;   nullable = false; comment = "Language. Foreign key to t_lang.CODE";},
+	{name = "TEXT_MODULE";       sqlType = NCLOB;                  nullable = true;  comment = "Text Module";},
+	{name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default Text-Description for Text Module";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true;  comment = "Default Long Text-Description for Text Module";}
+];
+table.primaryKey.pkcolumns = ["CODE"]; 

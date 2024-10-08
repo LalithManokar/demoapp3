@@ -1,0 +1,115 @@
+PROCEDURE "SAP_INO"."sap.ino.db.idea::p_idea_filter_count" ( 
+    in  iv_searchType INTEGER,
+    in  iv_searchToken varchar(100),
+    in  iv_campaign_id varchar(100),
+    in  iv_phase varchar(2048),
+    in  iv_latestUpdate varchar(2048),    
+    in  iv_status varchar(2048),
+    in  iv_resp_code varchar(2048),
+    in  iv_dueFrom varchar(20),
+    in  iv_vote_count varchar(10),
+    in  iv_vote_operator varchar(10),
+    in  iv_authorsToken nvarchar(2048),
+    in  iv_coachsToken nvarchar(2048),
+    in  iv_status_type varchar(100),
+    in  iv_tagsToken varchar(2048),
+    in  iv_oIdeaFilterChange varchar(25),
+    in  iv_dueTo varchar(20),
+    in  iv_firstFormCode varchar(512),
+    in  iv_firstFormOp INTEGER,
+    in  iv_firstFormValue varchar(128),
+    in  iv_secondFormCode varchar(512),
+    in  iv_secondFormOp INTEGER,
+    in  iv_secondFormValue varchar(128),
+    in  iv_thirdFormCode varchar(512),
+    in  iv_thirdFormOp INTEGER,
+    in  iv_thirdFormValue varchar(128),
+    in  iv_ideaFormCode varchar(512),
+    in  iv_tagsToken1 nvarchar(256),
+    in  iv_tagsToken2 nvarchar(256),
+    in  iv_tagsToken3 nvarchar(256),
+    in  iv_tagsToken4 nvarchar(256),
+    IN  iv_group_token NVARCHAR(128),
+    IN  iv_group_name_type INT,
+    IN  iv_group_role_type INT,
+    in  iv_bShowBackoffice integer,
+    out ot_idea_filter_count  SAP_INO."sap.ino.db.basis::tt_idea_filter_count" 
+)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   READS SQL DATA AS
+BEGIN
+   /*************************************
+       Write your procedure logic 
+   *************************************/
+   ot_idea_filter_count = SELECT *
+FROM "_SYS_BIC"."sap.ino.db.idea.ext/v_ext_idea_search_count"(PLACEHOLDER."$$searchType$$" => 
+	 :iv_searchType,
+	 PLACEHOLDER."$$searchToken$$" => 
+	 :iv_searchToken,
+	 PLACEHOLDER."$$campaign_id$$" => 
+	 :iv_campaign_id,
+	 PLACEHOLDER."$$oIdeaFilterChange$$" => 
+	 :iv_oIdeaFilterChange,
+	 PLACEHOLDER."$$phase$$" => 
+	 :iv_phase,
+	 PLACEHOLDER."$$status$$" => 
+	 :iv_status,
+	 PLACEHOLDER."$$dueFrom$$" => 
+	 :iv_dueFrom,
+	 PLACEHOLDER."$$resp_code$$" => 
+	 :iv_resp_code,
+	 PLACEHOLDER."$$vote_count$$" => 
+	 :iv_vote_count,
+	 PLACEHOLDER."$$vote_operator$$" => 
+	 :iv_vote_operator,
+	 PLACEHOLDER."$$authorsToken$$" => 
+	 :iv_authorsToken,
+	 PLACEHOLDER."$$coachsToken$$" => 
+	 :iv_coachsToken,
+	 PLACEHOLDER."$$status_type$$" => 
+	 :iv_status_type,
+	 PLACEHOLDER."$$tagsToken$$" => 
+	 :iv_tagsToken,
+	 PLACEHOLDER."$$tagsToken1$$" => 
+	 :iv_tagsToken1,
+	 PLACEHOLDER."$$tagsToken2$$" => 
+	 :iv_tagsToken2,
+	 PLACEHOLDER."$$tagsToken3$$" => 
+	 :iv_tagsToken3,
+	 PLACEHOLDER."$$tagsToken4$$" => 
+	 :iv_tagsToken4,
+	 PLACEHOLDER."$$dueTo$$" => 
+	 :iv_dueTo,
+	 PLACEHOLDER."$$firstFormCode$$" => 
+	 :iv_firstFormCode,
+	 PLACEHOLDER."$$firstFormOp$$" => 
+	 :iv_firstFormOp,
+	 PLACEHOLDER."$$firstFormValue$$" => 
+	 :iv_firstFormValue,
+	 PLACEHOLDER."$$secondFormCode$$" => 
+	 :iv_secondFormCode,
+	 PLACEHOLDER."$$secondFormOp$$" => 
+	 :iv_secondFormOp,
+	 PLACEHOLDER."$$secondFormValue$$" => 
+	 :iv_secondFormValue,
+	 PLACEHOLDER."$$thirdFormCode$$" => 
+	 :iv_thirdFormCode,
+	 PLACEHOLDER."$$thirdFormOp$$" => 
+	 :iv_thirdFormOp,
+	 PLACEHOLDER."$$thirdFormValue$$" => 
+	 :iv_thirdFormValue,
+	 PLACEHOLDER."$$ideaFormCode$$" => 
+	 :iv_ideaFormCode,
+     PLACEHOLDER."$$latestUpdate$$" => 
+     :iv_latestUpdate,
+     PLACEHOLDER."$$groupToken$$" => 
+     :iv_group_token,
+     PLACEHOLDER."$$groupNameType$$" => 
+     :iv_group_name_type,
+     PLACEHOLDER."$$groupRoleType$$" => 
+     :iv_group_role_type,
+     PLACEHOLDER."$$bShowBackoffice$$" => 
+     :iv_bShowBackoffice);
+END

@@ -1,0 +1,16 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Phases";
+table.columns = [
+    {name = "PACKAGE_ID";        sqlType = NVARCHAR; length = 256; nullable = false; comment = "Package where content is delivered from";},
+    {name = "CODE";              sqlType = VARCHAR;  length = 500; nullable = false; comment = "Phase Code";},
+    {name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default Text for Phase Code";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true;  comment = "Default Long Text for Phase Code";},
+    {name = "ID";                sqlType = INTEGER;                nullable = true;  comment = "ID used for UI maintenance - empty for imported configuration content";},
+    {name = "PLAIN_CODE";        sqlType = VARCHAR;  length = 100; nullable = true;  comment = "Code key without package and naming prefix for UI maintenance";},
+    {name = "CREATED_AT";        sqlType = TIMESTAMP;              nullable = true;  comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID";     sqlType = INTEGER;                nullable = true;  comment = "Identity by which content has been created.";},
+    {name = "CHANGED_AT";        sqlType = TIMESTAMP;              nullable = true;  comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID";     sqlType = INTEGER;                nullable = true;  comment = "Identity by which content has been changed.";}
+];
+table.primaryKey.pkcolumns = ["PACKAGE_ID", "CODE"];

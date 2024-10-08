@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_COACH_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="Campaign Coach Search"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Free text search token"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute id="RESP_VALUE_CODE" datatype="VARCHAR" length="256"/>
+      
+        <viewAttribute id="IMAGE_ID" datatype="INTEGER"/></viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>begin
+ 	if length(:searchToken) = 0 then
+        var_out = 
+            select 
+				id,
+				name,
+				campaign_id,
+				null as resp_value_code,
+				image_id
+			from 
+				&quot;sap.ino.db.campaign::v_campaign_coach_transitive&quot;
+			union all
+			select 
+				id,
+				name,
+				null as campaign_id,
+				resp_value_code,
+				image_id
+			from 
+				&quot;sap.ino.db.subresponsibility::v_responsibility_value_coach_transitive&quot;;
+	else 
+	    lt_1 = select 
+				id,
+				name,
+				campaign_id,
+				null as resp_value_code,
+				image_id
+			from 
+				&quot;sap.ino.db.campaign::v_campaign_coach_transitive&quot;
+			where	
+				lcase(user_name) like CONCAT(lcase(:searchToken), '%') or 
+				lcase(first_name) like CONCAT(lcase(:searchToken), '%') or    
+				lcase(last_name) like CONCAT(lcase(:searchToken), '%') or
+				lcase(name) like CONCAT(lcase(:searchToken), '%')
+			union all
+			select 
+				id,
+				name,
+				null as campaign_id,
+				resp_value_code,
+				image_id
+			from 
+				&quot;sap.ino.db.subresponsibility::v_responsibility_value_coach_transitive&quot;
+			where	
+				lcase(user_name) like CONCAT(lcase(:searchToken), '%') or 
+				lcase(first_name) like CONCAT(lcase(:searchToken), '%') or    
+				lcase(last_name) like CONCAT(lcase(:searchToken), '%') or
+				lcase(name) like CONCAT(lcase(:searchToken), '%');
+				
+        lt_2 = 
+			select 
+				id,
+				name,
+				campaign_id,
+				null as resp_value_code,
+				image_id
+			from 
+				&quot;sap.ino.db.campaign::v_campaign_coach_transitive&quot;
+			where	
+				contains((user_name, first_name, last_name, name), :searchToken, fuzzy(0.8))
+			union all
+			select 
+				id,
+				name,
+				null as campaign_id,
+				resp_value_code,
+				image_id
+			from 
+				&quot;sap.ino.db.subresponsibility::v_responsibility_value_coach_transitive&quot;
+			where	
+				contains((user_name, first_name, last_name, name), :searchToken, fuzzy(0.8));
+		
+		-- separate tables needed due to strange activation problem with contains operator
+        -- telling us about unsupported predicate usage in context of the contains function
+        -- this was caused by the union operator
+		var_out = select * from :lt_1 union distinct select * from :lt_2;
+    end if;
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="ID" order="1">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="2">
+        <descriptions defaultDescription="Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="3">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="RESP_VALUE_CODE" order="4">
+        <keyMapping columnObjectName="Script_View" columnName="RESP_VALUE_CODE"/>
+      </attribute>
+    
+      <attribute id="IMAGE_ID" order="5">
+    
+        <keyMapping columnObjectName="Script_View" columnName="IMAGE_ID"/>
+    
+      </attribute></attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

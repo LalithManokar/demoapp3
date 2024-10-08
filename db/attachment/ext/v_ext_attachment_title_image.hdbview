@@ -1,0 +1,8 @@
+schema = "SAP_INO_EXT";
+query = " 
+	select attachment.*
+	from \"sap.ino.db.attachment::v_attachment_title_image\" as attachment
+	where attachment.id in (select attachment_id from \"sap.ino.db.attachment::v_auth_attachment\")
+    with read only"; 
+
+depends_on_view = ["sap.ino.db.attachment::v_attachment_title_image"];

@@ -1,0 +1,12 @@
+schema = "SAP_INO_EXT";
+query = "
+    select top 1 \'X\' as has_debug_privilege
+    from
+        \"SYS\".\"EFFECTIVE_PRIVILEGES\" as priv
+    where
+        priv.user_name   = session_context('APPLICATIONUSER') and
+        priv.object_type = 'APPLICATIONPRIVILEGE' and
+        priv.privilege   = 'sap.ino::debug'       and
+        priv.is_valid    = 'TRUE'
+    with read only
+";

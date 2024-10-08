@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE; 
+table.temporary = true;
+table.description = "Input table for CREATE and UPDATE procedures of identity group associations";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "identifier";},
+    {name = "MEMBER_ID"; sqlType = INTEGER; nullable = true; comment = "identifier";},
+    {name = "GROUP_ID"; sqlType = INTEGER; nullable = true; comment = "identifier";}
+];

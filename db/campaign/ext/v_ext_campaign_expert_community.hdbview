@@ -1,0 +1,17 @@
+schema = "SAP_INO_EXT";
+query = "
+    select 
+    expert.campaign_id,
+    id,
+    identity_id, 
+    name,
+    (SELECT \"sap.ino.db.iam::f_mask_user_name\"(expert.user_name) FROM DUMMY) AS user_name,
+    is_external,
+    type_code,
+    description,
+    image_id 
+    from 
+        \"sap.ino.db.campaign::v_campaign_expert\" as expert
+    inner join \"sap.ino.db.campaign::v_auth_campaigns\" as auth
+    on expert.campaign_id = auth.campaign_id";
+depends_on_view = ["sap.ino.db.campaign::v_campaign_expert", "sap.ino.db.campaign::v_auth_campaigns"];

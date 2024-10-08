@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+                         xmlns:f="sap.ui.layout.form"
+                         xmlns="sap.m"
+                         xmlns:mvc="sap.ui.core.mvc"
+                        >
+    <ActionSheet
+		title="{i18n>OBJECT_LIST_EXP_EXPORT_BUTTON}"
+		showCancelButton="true"
+		placement="Top">
+		<buttons>
+		    <Button text="{i18n>OBJECT_LIST_BTN_EXPORT_XLS_BUTTON}"
+                    press="onListExportXLS" />
+            <Button text="{i18n>OBJECT_LIST_BTN_EXPORT_CSV_BUTTON}"
+                    press="onListExportCSV" />
+            <Button text="{i18n>OBJECT_LIST_BTN_EXPORT_PPT_BUTTON}"
+                    press="onListExportPPT"
+                    visible="{= !${view>/List/HIDE_PPT_EXPORT} }" />
+		</buttons>
+	</ActionSheet>
+</core:FragmentDefinition>

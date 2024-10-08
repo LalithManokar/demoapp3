@@ -1,0 +1,6 @@
+schema = "SAP_INO";
+query = "select auth.blog_id as blog_id
+			from \"sap.ino.db.blog::v_auth_blogs_read\" as auth
+		with read only";
+
+depends_on_view = ["sap.ino.db.blog::v_auth_blogs_read"]; 

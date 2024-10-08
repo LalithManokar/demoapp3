@@ -1,0 +1,519 @@
+schema = "SAP_INO";
+query = "
+    --idea changes
+    select 
+        change.id as object_id,
+        change.change_object as object_type_code,
+        change.name as object_text,
+        change.history_actor_id as actor_id,
+        actor.name as actor_name,
+        actor.identity_image_id as actor_image_id,
+        null as involved_id,
+        null as involved_obj_type_code,
+        null as involved_obj_text,
+        change.changed_at as event_at,
+        change.change_event as feed_code, 
+        change.campaign_id as campaign_id,
+        change.field_name as field1_name,
+        change.field_text as field1_text,
+        change.field_value as field1_value,
+        change.field_value_option as field1_value_option,
+        'FRONTOFFICE' as filter_type_code,
+        null as content
+        from 
+            \"sap.ino.db.idea::v_idea_changes\" as change
+        inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on change.history_actor_id = actor.id
+    union all
+    --feeds for idea tag changes
+    select 
+        object.id as object_id,
+        assign.object_type_code as object_type_code,
+        object.name as object_text,
+        assign.history_actor_id as actor_id,
+        actor.name as actor_name,
+        actor.identity_image_id as actor_image_id,
+        assign.tag_id as involved_id,
+        'TAG' as involved_obj_type_code,
+        tag.name as involved_obj_text,
+        history_at as event_at,
+        'TAG_' || history_db_event as feed_code, 
+        object.campaign_id as campaign_id,
+        null as field1_name,
+        null as field1_text,
+        null as field1_value,
+        null as field1_value_option,
+        'FRONTOFFICE' as filter_type_code,
+        null as content
+        from 
+            \"sap.ino.db.tag::t_object_tag_h\" as assign
+        inner join 
+            \"sap.ino.db.tag::t_tag\" as tag
+            on assign.tag_id = tag.id
+        inner join 
+             \"sap.ino.db.idea::t_idea\" as object
+            on assign.object_id = object.id and
+            assign.object_type_code = 'IDEA'
+        inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on assign.history_actor_id = actor.id
+    union all    
+        --feeds for new comments     
+        select
+            object.id as object_id, 
+            comment.object_type_code,
+            object.name as object_text,
+            comment.history_actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            null as involved_id,
+            'COMMENT' as involved_obj_type_code,
+            null as involved_obj_text,
+            comment.history_at as event_at, 
+            comment.history_biz_event as feed_code, 
+            object.campaign_id as campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            'FRONTOFFICE' as filter_type_code,
+            comment.comment as content
+        from
+            \"sap.ino.db.comment::v_community_comment_h\" as comment
+        inner join
+            \"sap.ino.db.idea::t_idea\" as object
+            on comment.object_id = object.id and
+                comment.object_type_code = 'IDEA'
+        inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on comment.history_actor_id = actor.id        
+        where
+            comment.history_biz_event = 'COMMENT_CREATED'  
+    union all
+        --feeds for coach assignment/unassignment
+        select
+            object_id, 
+            object_type_code,
+            idea.name as object_text,
+            history_actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            idea_role_h.identity_id as involved_id,
+            'COACH' as involved_obj_type_code,
+            identity.name as involved_obj_text,
+            history_at as event_at, 
+            case history_db_event when 'CREATED' then 'COACH_ASSIGNED' else 'COACH_UNASSIGNED' end as feed_code,
+            idea.campaign_id as campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            'FRONTOFFICE' as filter_type_code,
+            null as content
+        from 
+            \"sap.ino.db.iam::t_object_identity_role_h\" as idea_role_h 
+            inner join
+                \"sap.ino.db.idea::t_idea\" as idea
+                on idea_role_h.object_type_code = 'IDEA' and 
+                    idea_role_h.object_id = idea.id
+            left outer join
+                \"sap.ino.db.iam::v_identity\" as identity
+                on idea_role_h.identity_id = identity.id        
+            inner join
+                \"sap.ino.db.iam::v_identity\" as actor
+                on idea_role_h.history_actor_id = actor.id        
+        where 
+            ( history_biz_event = 'COACH_ASSIGNED' or history_biz_event = 'COACH_UNASSIGNED' ) and  
+            idea_role_h.role_code = 'IDEA_COACH' and idea_role_h.object_type_code = 'IDEA' 
+    union all
+        -- feeds for idea contributor add/remove
+        select
+            object_id, 
+            object_type_code,
+            idea.name as object_text,
+            history_actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            idea_role_h.identity_id as involved_id,
+            'CONTRIBUTOR' as involved_obj_type_code,
+            identity.name as involved_obj_text,
+            history_at as event_at, 
+            case history_db_event when 'CREATED' then 'CONTRIB_ADDED' else 'CONTRIB_REMOVED' end as feed_code,
+            idea.campaign_id as campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            'FRONTOFFICE' as filter_type_code,
+            null as content
+        from 
+            \"sap.ino.db.iam::t_object_identity_role_h\" as idea_role_h 
+            inner join
+                \"sap.ino.db.idea::t_idea\" as idea
+                on idea_role_h.object_type_code = 'IDEA' and 
+                    idea_role_h.object_id = idea.id
+            left outer join
+                \"sap.ino.db.iam::v_identity\" as identity
+                on idea_role_h.identity_id = identity.id         
+            inner join
+                \"sap.ino.db.iam::v_identity\" as actor
+                on idea_role_h.history_actor_id = actor.id        
+        where 
+            history_db_event <> 'UPDATED' and 
+            idea_role_h.role_code = 'IDEA_CONTRIBUTOR' and
+            idea_role_h.object_type_code = 'IDEA'  
+    union all
+        --feeds for idea expert assign/unassign
+        select
+            object_id, 
+            object_type_code,
+            idea.name as object_text,
+            history_actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            idea_role_h.identity_id as involved_id,
+            'EXPERT' as involved_obj_type_code,
+            identity.name as involved_obj_text,
+            history_at as event_at, 
+            case history_db_event when 'CREATED' then 'EXPERT_ASSIGNED' else 'EXPERT_UNASSIGNED' end as feed_code,
+            idea.campaign_id as campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            'FRONTOFFICE' as filter_type_code,
+            null as content
+        from 
+            \"sap.ino.db.iam::t_object_identity_role_h\" as idea_role_h 
+            inner join
+                \"sap.ino.db.idea::t_idea\" as idea
+                on idea_role_h.object_type_code = 'IDEA' and 
+                    idea_role_h.object_id = idea.id
+            left outer join
+                \"sap.ino.db.iam::v_identity\" as identity
+                on idea_role_h.identity_id = identity.id        
+            inner join
+                \"sap.ino.db.iam::v_identity\" as actor
+                on idea_role_h.history_actor_id = actor.id        
+        where 
+            history_db_event <> 'UPDATED' and 
+            idea_role_h.role_code = 'IDEA_EXPERT' and
+            idea_role_h.object_type_code = 'IDEA'
+    union all    
+        --feeds for idea status change & delete
+        select 
+            idea.id as object_id,
+            'IDEA' as object_type_code,
+            idea.name as object_text,
+            history_actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            null as involved_id,
+            null as involved_obj_type_code,
+            null as involved_obj_text,
+            history_at as event_at,  
+            history_biz_event as feed_code,
+            campaign_id as campaign_id,
+            null as field1_name,
+            'IDEA_STATUS' as field1_text,
+            status_code as field1_value,
+            'sap.ino.xs.object.status.Status.Root' as field1_value_option,
+            'FRONTOFFICE' as filter_type_code,
+            null as content
+        from
+            \"sap.ino.db.idea::t_idea_h\" as idea
+        inner join
+                \"sap.ino.db.iam::v_identity\" as actor
+                on idea.history_actor_id = actor.id     
+        where
+            history_biz_event like 'STATUS_ACTION%' or history_biz_event = 'IDEA_DELETED'
+    union all    
+        --feeds for idea evaluation
+        select 
+            idea_id as object_id, 
+            'IDEA' as object_type_code,
+            idea.name as object_text,
+            history_actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            evaluation.id as involved_id,
+            'EVALUATION' as involved_obj_type_code,
+            null as involved_obj_text,
+            history_at as event_at, 
+            history_biz_event as feed_code,
+            idea.campaign_id as campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            'FRONTOFFICE' as filter_type_code,
+            null as content
+        from
+            \"sap.ino.db.evaluation::t_evaluation_h\" as evaluation
+        inner join
+            \"sap.ino.db.idea::t_idea\" as idea
+                on idea.id = evaluation.idea_id
+        inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+                on evaluation.history_actor_id = actor.id         
+        where
+            history_biz_event = 'STATUS_ACTION_sap.ino.config.EVAL_PUB_COMMUNITY'
+    union all    
+        --feeds for idea reassign campaign
+        select
+            idea.id as object_id, 
+            'IDEA' as object_type_code, 
+            idea.name as object_text,
+            idea.history_actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            idea.campaign_id as involved_id,
+            'CAMPAIGN' as involved_obj_type_code,
+            campaign.name as involved_obj_text,
+            idea.history_at as event_at, 
+            idea.history_biz_event as feed_code,
+            idea.campaign_id as campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            'FRONTOFFICE' as filter_type_code,
+            null as content
+        from
+            \"sap.ino.db.idea::v_idea_h\" as idea_h
+        inner join
+            \"sap.ino.db.idea::t_idea_h\" as idea
+        on idea_h.id = idea.id
+        inner join 
+            \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+            on campaign.campaign_id = idea_h.campaign_id
+        inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on idea_h.history_actor_id = actor.id                  
+        where
+            idea.status_code <> 'sap.ino.config.DRAFT' and 
+            idea.history_at=idea_h.history_at and 
+            idea_h.campaign_id is not null and 
+            idea_h.history_biz_event = 'IDEA_CAMPAIGN_REASSIGN'
+    union all    
+        --feeds for idea relation changes, e.g. copy, merge, duplicate
+        select 
+			relation_h.object_id as object_id, 
+			'IDEA' as object_type_code, 
+			idea.name as object_text,
+            relation_h.history_actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            relation_h.other_object_id as involved_id,
+            'IDEA' as involved_obj_type_code,
+            other_idea.name as involved_obj_text,
+            relation_h.history_at as event_at, 
+            case relation_h.source when 1 then 'IDEA_RELATION_' || relation_h.semantic || '_SOURCE' else 'IDEA_RELATION_' || relation_h.semantic || '_TARGET' end as feed_code,
+            idea.campaign_id as campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            'FRONTOFFICE' as filter_type_code,
+            null as content
+		from
+		    \"sap.ino.db.link::v_relation_h\" as relation_h
+			inner join
+				(select
+				     idea_h.campaign_id,
+                     idea_h.id,
+                     idea_h.name,
+                     idea_h.created_by_id,
+                     idea_h.history_at 
+                 from				    
+                 (select
+                     id,
+                     max(history_at) as history_at
+                 from 
+                     \"sap.ino.db.idea::t_idea_h\" group by id) as idea_h_latest
+                     inner join \"sap.ino.db.idea::t_idea_h\" as idea_h
+                     on idea_h.id = idea_h_latest.id and
+                         idea_h.history_at = idea_h_latest.history_at
+			    ) as idea
+		    on idea.id = relation_h.object_id
+    		    inner join
+    				(select
+    				     idea_h.campaign_id,
+                         idea_h.id,
+                         idea_h.name,
+                         idea_h.created_by_id,
+                         idea_h.history_at 
+                     from				    
+                     (select
+                         id,
+                         max(history_at) as history_at
+                     from 
+                         \"sap.ino.db.idea::t_idea_h\" group by id) as idea_h_latest
+                         inner join \"sap.ino.db.idea::t_idea_h\" as idea_h
+                         on idea_h.id = idea_h_latest.id and
+                             idea_h.history_at = idea_h_latest.history_at
+    			    ) as other_idea
+    	    on other_idea.id = relation_h.other_object_id
+    	    inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on relation_h.history_actor_id = actor.id
+			where
+		    ( relation_h.history_biz_event = 'RELATION_UPDATED' or relation_h.history_biz_event = 'IDEA_CREATED' ) and 
+			relation_h.history_db_event <> 'UPDATED' and 
+			relation_h.object_type_code = 'IDEA' and 
+			relation_h.other_object_type_code = 'IDEA' and 
+			(relation_h.semantic <> 'sap.ino.config.DUPLICATE' or relation_h.source <> 0)
+	union all    
+        --feeds for add/remove idea link
+        select
+            object.id as object_id, 
+            link.object_type_code,
+            object.name as object_text,
+            link.history_actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            null as involved_id,
+            'LINK' as involved_obj_type_code,
+            link.label as involved_obj_text,
+            link.history_at as event_at, 
+            'LINK_' || link.history_db_event as feed_code,
+            object.campaign_id as campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            'FRONTOFFICE' as filter_type_code,
+            link.url as content
+        from
+            \"sap.ino.db.link::t_link_h\" as link
+        inner join
+            \"sap.ino.db.idea::t_idea\" as object
+            on link.object_id = object.id and
+                link.object_type_code = 'IDEA' and 
+                link.history_biz_event = 'IDEA_UPDATED'
+        inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on link.history_actor_id = actor.id        
+        where
+            link.type_code = 'URL' and link.history_db_event <> 'UPDATED'
+    union all
+        --feeds for add/remove idea attachment
+        select distinct
+            object.id as object_id, 
+            attachment.owner_type_code as object_type_code,
+            object.name as object_text,
+            attachment.history_actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            case attachment.history_db_event when 'CREATED' then attachment.id else null end as involved_id,
+            'ATTACHMENT' as involved_obj_type_code,
+            null as involved_obj_text,
+            attachment.history_at as event_at, 
+            'ATTACHMENT_' || attachment.history_db_event as feed_code,
+            object.campaign_id as campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            attachment.filter_type_code as filter_type_code,
+            case attachment.history_db_event when 'CREATED' then TO_NVARCHAR(attachment.id) else null end as content
+        from
+            \"sap.ino.db.attachment::t_attachment_assignment_h\" as attachment
+        inner join
+            \"sap.ino.db.idea::t_idea\" as object
+            on attachment.owner_id = object.id and
+                attachment.owner_type_code = 'IDEA' and 
+                attachment.role_type_code = 'ATTACHMENT' and
+                attachment.history_biz_event = 'IDEA_UPDATED'  
+        inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on attachment.history_actor_id = actor.id   
+    union all
+        --feeds for idea title image
+        select
+            object.id as object_id, 
+            attachment.owner_type_code as object_type_code,
+            object.name as object_text,
+            attachment.history_actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            attachment.id as involved_id,
+            'TITLE_IMAGE' as involved_obj_type_code,
+            null as involved_obj_text,
+            attachment.history_at as event_at, 
+            attachment.history_biz_event || '_' || attachment.role_type_code as feed_code,
+            object.campaign_id as campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            attachment.filter_type_code as filter_type_code,
+            TO_NVARCHAR(attachment.id) as content
+        from
+            \"sap.ino.db.attachment::t_attachment_assignment_h\" as attachment
+        inner join
+            \"sap.ino.db.idea::t_idea\" as object
+            on attachment.owner_id = object.id and
+                attachment.owner_type_code = 'IDEA' and 
+                attachment.role_type_code = 'IDEA_TITLE_IMAGE' and
+                attachment.history_db_event = 'CREATED' and 
+                attachment.history_biz_event = 'IDEA_UPDATED' 
+        inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on attachment.history_actor_id = actor.id 
+    union all        
+    --feeds for add/remove idea wall
+        select
+            object.id as object_id, 
+            wall.owner_type_code as object_type_code,
+            object.name as object_text,
+            wall.history_actor_id as actor_id,
+            actor.name as actor_name,
+            actor.identity_image_id as actor_image_id,
+            wall.wall_id as involved_id,
+            'WALL' as involved_obj_type_code,
+            wall_name.name as involved_obj_text,
+            wall.history_at as event_at, 
+            'WALL_' || wall.history_db_event as feed_code,
+            object.campaign_id as campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            wall.filter_type_code as filter_type_code,
+            null as content
+        from
+            \"sap.ino.db.wall::t_wall_assignment_h\" as wall
+        inner join
+            \"sap.ino.db.wall::t_wall\" as wall_name
+            on wall.wall_id = wall_name.id
+        inner join
+            \"sap.ino.db.idea::t_idea\" as object
+            on wall.owner_id = object.id and
+                wall.owner_type_code = 'IDEA'
+        inner join
+            \"sap.ino.db.iam::v_identity\" as actor
+            on wall.history_actor_id = actor.id         
+        where
+            wall.role_type_code = 'WALL'      
+       
+with read only";
+
+depends_on_table = ["sap.ino.db.tag::t_object_tag_h",
+                    "sap.ino.db.tag::t_tag",
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.idea::t_idea_h",
+                    "sap.ino.db.link::t_link_h",
+                    "sap.ino.db.wall::t_wall",
+                    "sap.ino.db.wall::t_wall_assignment_h",
+                    "sap.ino.db.attachment::t_attachment_assignment_h",
+                    "sap.ino.db.iam::t_object_identity_role_h",
+                    "sap.ino.db.evaluation::t_evaluation_h"];
+
+depends_on_view =  ["sap.ino.db.iam::v_identity",
+                    "sap.ino.db.idea::v_idea_changes",
+                    "sap.ino.db.campaign::v_campaign_t_locale",
+                    "sap.ino.db.link::v_relation_h",
+                    "sap.ino.db.idea::v_idea_h",
+                    "sap.ino.db.comment::v_community_comment_h"]; 

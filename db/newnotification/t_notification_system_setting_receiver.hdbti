@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.newnotification::t_notification_system_setting_receiver";
+    file       = "sap.ino.db.newnotification:t_notification_system_setting_receiver.csv";
+    header     = true;
+    delimField = ";";
+}];

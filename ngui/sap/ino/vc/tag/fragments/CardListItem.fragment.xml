@@ -1,0 +1,14 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:ino="sap.ino.controls">
+    <CustomListItem>
+        <ino:TagCard tagId="{data>ID}" tagGroupId="{data>GROUP_ID}" tagName="{data>NAME}" campaignCount="{data>CAMPAIGN_USAGE_COUNT}" ideaCount="{data>IDEA_USAGE_COUNT}" openIdea="navigateToIdea" openCampaign="navigateToCampaign">
+            <ino:followPlaceholder>
+                <ino:Follow onlyIcon="false" value="{data>FOLLOW}" type="TAG" objectId="{data>ID}" enabled="true" follow="onFollow" styleType="tagListFollow"/> 
+            </ino:followPlaceholder>
+        </ino:TagCard>
+    </CustomListItem>
+</core:FragmentDefinition>

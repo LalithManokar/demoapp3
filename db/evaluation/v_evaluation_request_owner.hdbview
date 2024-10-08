@@ -1,0 +1,21 @@
+schema = "SAP_INO";
+query = "select distinct
+             object_identity_role.id,
+             object_identity_role.object_id as eval_req_id,
+             object_identity_role.identity_id, 
+             identity.name,
+             'EVAL_REQUEST_OWNER' as role_code,
+             identity_settings.image_id,
+             identity.type_code
+         from \"sap.ino.db.iam::t_object_identity_role\" as object_identity_role
+         inner join \"sap.ino.db.iam::t_identity\" as identity 
+             on identity.id = object_identity_role.identity_id 
+                 and object_identity_role.role_code = 'EVAL_REQUEST_OWNER'
+                 and object_identity_role.object_type_code = 'EVAL_REQUEST'
+         left outer join \"sap.ino.db.iam::v_identity_settings\" as identity_settings
+             on identity_settings.identity_id = object_identity_role.identity_id
+         with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity",
+                    "sap.ino.db.iam::t_object_identity_role"];
+depends_on_view = ["sap.ino.db.iam::v_identity_settings"];

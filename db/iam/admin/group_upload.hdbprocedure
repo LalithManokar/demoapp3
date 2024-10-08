@@ -1,0 +1,45 @@
+procedure "SAP_INO"."sap.ino.db.iam.admin::group_upload" (
+    in  it_group         "SAP_INO"."sap.ino.db.iam.admin::tt_group_import_input",
+    out ot_group_message "SAP_INO"."sap.ino.db.iam.admin::tt_group_import_output"
+)
+language sqlscript
+sql security definer
+default schema SAP_INO
+as
+begin
+    declare lv_principal_id integer;
+
+    -- determine ID for session user
+    --     get null to indicate that session user is not registered with SAP Innovation Management
+    select id into lv_principal_id
+        from
+            "SAP_INO"."sap.ino.db.iam::v_auth_application_user"
+        right outer join dummy on 0 = 0;
+
+    if (:lv_principal_id is null ) then
+        -- session user is not registered
+        ot_user_message =
+            select
+                 0  as "LINE_NO",
+                '?' as "GROUP_NAME",
+                '?' as "MEMBER_TYPE_CODE",
+                '?' as "MEMBER_NAME",
+                'E' as "TYPE",
+                'MSG_PRINCIPAL_IDENTITY_UNKNOWN' as "MESSAGE",
+                '?' as "REF_FIELD",
+                session_user as "PARAM_0",
+                '' as "PARAM_1",
+                '' as "PARAM_2",
+                '' as "PARAM_3"
+            from dummy;
+    else
+        -- session user found in t_identity
+        call "SAP_INO"."sap.ino.db.iam::p_group_upload" (
+            :lv_principal_id,   -- in  iv_appl_user_id  INTEGER,
+            1,                  -- in  iv_replace_groups TINYINT,
+            'UPLOAD',           -- in  iv_source_type_code VARCHAR,
+            :it_group,          -- in  it_group         "SAP_INO"."sap.ino.db.iam::tt_group_import_input",
+            :ot_group_message   -- out ot_group_message "SAP_INO"."sap.ino.db.iam::tt_group_import_output"
+       );
+    end if;
+end;

@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = "
+    select  
+            stage.CODE,
+            authorization_stage.*,
+            authorization.action_code,
+            authorization.role_code,
+            authorization.CAN_DO_ACTION
+    from\"sap.ino.db.status::t_status_authorization_stage\" as authorization_stage
+    left outer join \"sap.ino.db.status::t_status_authorization\" as authorization
+    on authorization_stage.ID = authorization.ID_OF_STATUS_AUTHORIZATION_STAGE
+    left outer join \"sap.ino.db.status::t_status_stage\" as stage
+    on stage.ID = authorization_stage.ID_OF_STATUS_STAGE
+    where authorization_stage.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and authorization_stage.Value = 1
+    with read only ";
+
+depends_on_table = ["sap.ino.db.status::t_status_authorization",
+                    "sap.ino.db.status::t_status_authorization_stage",
+                    "sap.ino.db.status::t_status_stage"];   

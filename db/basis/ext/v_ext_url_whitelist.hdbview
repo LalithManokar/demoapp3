@@ -1,0 +1,12 @@
+schema = "SAP_INO_EXT";
+query = "select distinct PROTOCOL, HOST, PORT, PATH
+            from \"sap.ino.db.basis::t_url_whitelist_ui\" as whitelist_ui
+         union all 
+         select PROTOCOL, HOST, PORT, PATH
+            from \"sap.ino.db.basis::t_url_whitelist\" as whitelist_legacy,
+                  (select count(*) as whitelist_count from \"sap.ino.db.basis::t_url_whitelist_ui\") as ui
+            where ui.whitelist_count = 0  
+            -- No instance check necessary 
+            with read only";
+depends_on_table = ["sap.ino.db.basis::t_url_whitelist_ui",
+                    "sap.ino.db.basis::t_url_whitelist"];

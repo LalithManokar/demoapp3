@@ -1,0 +1,16 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:t="sap.ui.table"
+    xmlns:core="sap.ui.core">
+    <Dialog
+        title="{i18n>USER_GROUP_USER_GROUP}"
+        stretch="{= ${device>/system/phone} }"
+        escapeHandler="cantClose">
+        <content>
+            <core:Fragment id="userGroupDialog" fragmentName="sap.ino.vc.shell.fragments.UserGroup" type="XML" />
+        </content>
+        <beginButton>
+            <Button text="{i18n>USER_GROUP_BTN_OK}" press="onSubmitSelectedGroups"></Button>
+        </beginButton>
+    </Dialog>
+</core:FragmentDefinition>

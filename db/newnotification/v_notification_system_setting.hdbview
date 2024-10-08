@@ -1,0 +1,25 @@
+schema = "SAP_INO";
+query = "SELECT 
+        case when local_setting.ACTION_CODE is null then setting.ID + 10000 else local_setting.ID end as ID,
+        case when local_setting.ACTION_CODE is null then setting.CHANGED_AT else local_setting.CHANGED_AT end as CHANGED_AT,        
+        case when local_setting.ACTION_CODE is null then setting.CHANGED_BY_ID else local_setting.CHANGED_BY_ID end as CHANGED_BY_ID,            
+        case when local_setting.ACTION_CODE is null then identity_change_by.NAME else identity_change_by_local.NAME end as CHANGED_BY,          
+        setting.ACTION_CODE,
+        case when local_setting.ACTION_CODE is null then setting.ALLOW_INBOX_NOTIFICATION else local_setting.ALLOW_INBOX_NOTIFICATION end as ALLOW_INBOX_NOTIFICATION, 
+        case when local_setting.ACTION_CODE is null then setting.ALLOW_EMAIL_NOTIFICATION else local_setting.ALLOW_EMAIL_NOTIFICATION end as ALLOW_EMAIL_NOTIFICATION,         
+        (SELECT VALUE FROM \"sap.ino.db.basis::v_local_system_setting\" WHERE CODE = 'sap.ino.config.NOTIFICATION_IMME_MAIL_TEMPLATE_CODE' ) as EMAIL_TEMPLATE_CODE,  
+        case when local_setting.ACTION_CODE is null then setting.TEXT_MODULE_CODE else local_setting.TEXT_MODULE_CODE end as TEXT_MODULE_CODE,
+        case when local_setting.ACTION_CODE is null then 1 else 0 end as STANDARD,  
+        setting.ACTION_TYPE_CODE as ACTION_TYPE_CODE 
+    FROM \"sap.ino.db.newnotification::t_notification_system_setting\" as setting
+    left outer join \"sap.ino.db.iam::t_identity\" as identity_change_by    
+    on identity_change_by.id = setting.CHANGED_BY_ID    
+    left outer join
+    \"sap.ino.db.newnotification::t_notification_system_setting_local\" as local_setting
+    on setting.ACTION_CODE = local_setting.ACTION_CODE    
+    left outer join \"sap.ino.db.iam::t_identity\" as identity_change_by_local    
+    on identity_change_by_local.id = local_setting.CHANGED_BY_ID    
+    with read only
+";  
+
+depends_on_table = ["sap.ino.db.basis::t_local_system_setting","sap.ino.db.newnotification::t_notification_system_setting","sap.ino.db.newnotification::t_notification_system_setting_local","sap.ino.db.iam::t_identity"];   

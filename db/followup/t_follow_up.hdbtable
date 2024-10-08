@@ -1,0 +1,15 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Links";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human-readable identifier";},
+	{name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";},
+	{name = "OBJECT_TYPE_CODE"; sqlType = VARCHAR; length = 100; nullable = false; comment = "Object type of link. Foreign key t_application_object.CODE";},
+	{name = "OBJECT_ID"; sqlType = INTEGER; nullable = false; comment = "Object of link. Foreign key t_idea.ID, t_campaign.ID or t_identity.ID";},
+	{name = "DATE"; sqlType = DATE; nullable = false; comment = "Follow-up date";},
+	{name = "IS_NOTIFICATION_GENERATED"; sqlType = TINYINT; nullable = true; comment = "Follow-up notification";}
+];
+table.primaryKey.pkcolumns = ["ID"]; 

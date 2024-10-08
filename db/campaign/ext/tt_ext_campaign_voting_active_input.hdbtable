@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO_EXT";
+table.tableType = COLUMNSTORE;
+table.temporary = true;
+table.description = "Temporary table for Voting Active";
+table.columns = [
+    {name = "VOTING_ACTIVE"; sqlType = TINYINT; nullable = false;}
+];

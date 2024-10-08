@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "select role.object_id as id, campaign_id
+	from \"sap.ino.db.iam::t_object_identity_role\" as role
+	inner join \"sap.ino.db.iam::v_auth_application_user\" as cur_user 
+	on role.identity_id = cur_user.id
+	inner join \"sap.ino.db.idea::t_idea\" as idea
+	on role.object_id = idea.id
+	where role.object_type_code = 'IDEA' 
+	and (role.role_code = 'IDEA_SUBMITTER' or role.role_code = 'IDEA_CONTRIBUTOR')";
+
+depends_on_table = ["sap.ino.db.iam::t_object_identity_role",
+                    "sap.ino.db.idea::t_idea"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user"];

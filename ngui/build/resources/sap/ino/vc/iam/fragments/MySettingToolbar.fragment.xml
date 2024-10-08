@@ -1,0 +1,11 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:ino="sap.ino.controls"
+	xmlns:core="sap.ui.core">
+	<ino:ColorBar backgroundColor="{= !!${data>COLOR_CODE} ? (${path : 'data>COLOR_CODE', formatter : '.formatter.color'}) : undefined }" class="sapMBar"  design="Auto">
+        <ToolbarSpacer/>
+            <Label text="{i18n>MY_SETTINGS_TIT}" />
+        <ToolbarSpacer/>
+        <core:Fragment fragmentName="sap.ino.vc.commons.fragments.FullScreenButton" type="XML" />
+    </ino:ColorBar>
+</core:FragmentDefinition>

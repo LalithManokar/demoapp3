@@ -1,0 +1,83 @@
+# TRANSLATE
+# XTXT, 100
+sap.ino.config.RR_BREAD_BUTTER=Bread & Butter
+# XTXT, 100
+sap.ino.config.RR_PEARL=Pearl
+# XTXT, 100
+sap.ino.config.RR_OYSTER=Oyster
+# XTXT, 100
+sap.ino.config.RR_ELEPHANT=White Elephant
+# XTXT, 300
+sap.ino.config.RR_BREAD_BUTTER_LONG=Bread & Butter
+# XTXT, 300
+sap.ino.config.RR_PEARL_LONG=Pearl
+# XTXT, 300
+sap.ino.config.RR_OYSTER_LONG=Oyster
+# XTXT, 300
+sap.ino.config.RR_ELEPHANT_LONG=White Elephant
+
+# XTXT, 100
+sap.ino.config.QUARTER_ONE=Q1
+# XTXT, 100
+sap.ino.config.QUARTER_TWO=Q2
+# XTXT, 100
+sap.ino.config.QUARTER_THREE=Q3
+# XTXT, 100
+sap.ino.config.QUARTER_FOUR=Q4
+# XTXT, 300
+sap.ino.config.QUARTER_ONE_LONG=Quarter 1
+# XTXT, 300
+sap.ino.config.QUARTER_TWO_LONG=Quarter 2
+# XTXT, 300
+sap.ino.config.QUARTER_THREE_LONG=Quarter 3
+# XTXT, 300
+sap.ino.config.QUARTER_FOUR_LONG=Quarter 4
+
+# XTXT, 100
+sap.ino.config.JANURARY=Jan.
+# XTXT, 100
+sap.ino.config.FEBRUARY=Feb.
+# XTXT, 100
+sap.ino.config.MARCH=Mar.
+# XTXT, 100
+sap.ino.config.APRIL=Apr.
+# XTXT, 100
+sap.ino.config.MAY=May
+# XTXT, 100
+sap.ino.config.JUNE=Jun
+# XTXT, 100
+sap.ino.config.JULY=Jul.
+# XTXT, 100
+sap.ino.config.AUGUST=Aug
+# XTXT, 100
+sap.ino.config.SEPTEMBER=Sep
+# XTXT, 100
+sap.ino.config.OCTOBER=Oct.
+# XTXT, 100
+sap.ino.config.NOVEMBER=Nov.
+# XTXT, 100
+sap.ino.config.DECEMBER=Dec
+# XTXT, 300
+sap.ino.config.JANURARY_LONG=Janurary
+# XTXT, 300
+sap.ino.config.FEBRUARY_LONG=February
+# XTXT, 300
+sap.ino.config.MARCH_LONG=March
+# XTXT, 300
+sap.ino.config.APRIL_LONG=April
+# XTXT, 300
+sap.ino.config.MAY_LONG=May
+# XTXT, 300
+sap.ino.config.JUNE_LONG=June
+# XTXT, 300
+sap.ino.config.JULY_LONG=July
+# XTXT, 300
+sap.ino.config.AUGUST_LONG=August
+# XTXT, 300
+sap.ino.config.SEPTEMBER_LONG=September
+# XTXT, 300
+sap.ino.config.OCTOBER_LONG=October
+# XTXT, 300
+sap.ino.config.NOVEMBER_LONG=November
+# XTXT, 300
+sap.ino.config.DECEMBER_LONG=December

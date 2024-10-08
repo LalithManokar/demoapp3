@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Notification Role-Receiver Mapping";
+table.columns = [
+    {name = "ROLE_CODE"; sqlType = VARCHAR; length = 50; nullable = false; comment = "Code that references the role";},
+    {name = "ACTUAL_ROLE_CODE"; sqlType = VARCHAR; length = 50; nullable = false; comment = "Actual Role Code in system";}
+];
+table.primaryKey.pkcolumns = ["ROLE_CODE","ACTUAL_ROLE_CODE"];
+    

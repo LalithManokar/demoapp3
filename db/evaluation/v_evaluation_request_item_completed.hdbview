@@ -1,0 +1,21 @@
+schema = "SAP_INO";
+query  = "
+           select 
+                  eval_req_item_h.eval_req_id, 
+                  eval_req_item_h.id, 
+                  case 
+                     when to_date(eval_req_item_h.history_at) <= eval_req.COMPLETE_DATE then
+                        'BO_ANA_FLD_COMPLETED_ON_TIME'
+                     when to_date(eval_req_item_h.history_at) > eval_req.COMPLETE_DATE then
+                        'BO_ANA_FLD_NOT_COMPLETED_ON_TIME'
+                  end as completed_on_time
+            from 
+              \"sap.ino.db.evaluation::t_evaluation_request_item_h\" as eval_req_item_h
+              left outer join \"sap.ino.db.evaluation::t_evaluation_request\" as eval_req
+                        on eval_req.id = eval_req_item_h.eval_req_id
+            where eval_req_item_h.history_biz_event = 'STATUS_ACTION_sap.ino.config.EVAL_REQ_COMPLETE'
+          with read only
+";
+
+depends_on_table = ["sap.ino.db.evaluation::t_evaluation_request_item_h",
+                    "sap.ino.db.evaluation::t_evaluation_request"];

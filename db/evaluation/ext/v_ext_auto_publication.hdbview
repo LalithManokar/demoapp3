@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT";
+query = "
+    select * from \"sap.ino.db.evaluation::t_auto_publication\"
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.evaluation::t_auto_publication"];

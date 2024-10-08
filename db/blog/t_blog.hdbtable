@@ -1,0 +1,22 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Blog";
+table.columns     = [
+    {name = "ID";                    sqlType = INTEGER;   nullable = false;                                            comment = "Human readable identifier";},
+    {name = "TITLE";                 sqlType = NVARCHAR;  nullable = false;  length = 100;                             comment = "Title of blog";},
+    {name = "DESCRIPTION";           sqlType = NCLOB;     nullable = false;                                            comment = "Description";},
+    {name = "SHORT_DESCRIPTION";     sqlType = NVARCHAR;  nullable = true;   length = 500;                             comment = "Unformatted summary description";},
+    {name = "DESCRIPTION_MIME_TYPE"; sqlType = VARCHAR;   nullable = true;   length = 100; defaultValue = "text/html"; comment = "Mime type of description (to be used in text analysis indices";},
+    {name = "OBJECT_ID";             sqlType = INTEGER;   nullable = false;                                            comment = "Human-readable identifier of assigned parent object (idea or campaign)";},
+    {name = "OBJECT_TYPE_CODE";      sqlType = VARCHAR;   nullable = false;  length = 100;                             comment = "Object type of link. Foreign key t_application_object.CODE";},
+    {name = "IS_MAJOR_CHANGE";       sqlType = TINYINT;   nullable = false;                defaultValue = "0";         comment = "Major change or Minor change";},
+    {name = "STATUS_CODE";           sqlType = VARCHAR;   nullable = false;  length = 500;                             comment = "Status Code";},
+    {name = "PUBLISHED_AT";          sqlType = TIMESTAMP; nullable = true;                                            comment = "Published At";},
+    {name = "CREATED_AT";            sqlType = TIMESTAMP; nullable = false;                                            comment = "Created At";},
+    {name = "CREATED_BY_ID";         sqlType = INTEGER;   nullable = false;                                            comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+    {name = "CHANGED_AT";            sqlType = TIMESTAMP; nullable = false;                                            comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID";         sqlType = INTEGER;   nullable = false;                                            comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";},
+	{name = "COMMENT_COUNT";         sqlType = INTEGER;   nullable = true;                                             comment = "Comment count";},
+    {name = "VIEW_COUNT";            sqlType = INTEGER;   nullable = true;                                             comment = "View count";}
+];
+table.primaryKey.pkcolumns = ["ID"];

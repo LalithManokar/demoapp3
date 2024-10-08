@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_STATUS_STAGE_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_STATUS_STAGE_SEARCH"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="free text searchToken"/>
+      <variableProperties datatype="VARCHAR" defaultValue="undefined" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="PACKAGE_ID" length="256"/>
+        <viewAttribute datatype="VARCHAR" id="CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS_TYPE" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="DEFAULT_TEXT" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="DEFAULT_LONG_TEXT" length="300"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CREATED_BY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CREATED_BY" length="100"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CHANGED_BY_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="CHANGED_BY" length="100"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN
+   lt_search_result = 
+	        select distinct 
+	            package_id, 
+	            code, 
+	            cast (1 as double) as search_score 
+	        from &quot;sap.ino.db.status::v_status_stage&quot;
+	        where length(:searchToken) = 0 
+	    union all
+	        select distinct 
+	            package_id, 
+	            code, 
+	            score() as search_score 
+	        from &quot;sap.ino.db.status::v_status_stage&quot;
+	        where length(:searchToken) &gt; 0 and 
+	              (contains(code,              :searchToken,                                  fuzzy(0.8), weight(1.0)) or
+	               contains(default_text,      :searchToken,                                  fuzzy(0.8), weight(1.0)) or
+	               contains(default_long_text, :searchToken,                                  fuzzy(0.8), weight(0.5)) or
+	               contains(code,              CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+	               contains(default_text,      CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(1.0)) or
+	               contains(default_long_text, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8), weight(0.5)));
+  
+   var_out = select
+                 search.search_score,
+                 status.id,
+                 status.package_id,
+                 status.code,
+                 status.status_type,
+                 status.default_text,
+                 status.default_long_text,
+                 status.created_at,
+                 status.created_by_id,
+                 status.created_by,
+                 status.changed_at,
+                 status.changed_by_id,
+                 status.changed_by
+              from &quot;sap.ino.db.status::v_status_stage&quot; as status 
+                      inner join :lt_search_result as search
+                          on status.package_id = search.package_id and 
+                             status.code = search.code;
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="PACKAGE_ID" order="3">
+        <descriptions defaultDescription="PACKAGE_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="PACKAGE_ID"/>
+      </attribute>
+      <attribute id="CODE" order="4">
+        <descriptions defaultDescription="CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="CODE"/>
+      </attribute>
+      <attribute id="STATUS_TYPE" order="5">
+        <descriptions defaultDescription="STATUS_TYPE"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_TYPE"/>
+      </attribute>
+      <attribute id="DEFAULT_TEXT" order="6">
+        <descriptions defaultDescription="DEFAULT_TEXT"/>
+        <keyMapping columnObjectName="Script_View" columnName="DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="DEFAULT_LONG_TEXT" order="7">
+        <descriptions defaultDescription="DEFAULT_LONG_TEXT"/>
+        <keyMapping columnObjectName="Script_View" columnName="DEFAULT_LONG_TEXT"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="8">
+        <descriptions defaultDescription="CREATED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CREATED_BY_ID" order="9">
+        <descriptions defaultDescription="CREATED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="CREATED_BY" order="10">
+        <descriptions defaultDescription="CREATED_BY"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="11">
+        <descriptions defaultDescription="CHANGED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="12">
+        <descriptions defaultDescription="CHANGED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_BY" order="13">
+        <descriptions defaultDescription="CHANGED_BY"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

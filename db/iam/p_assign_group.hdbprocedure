@@ -1,0 +1,440 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_assign_group" (
+    in   iv_appl_user_id                           INTEGER,
+    in   iv_source_type                            VARCHAR(64) DEFAULT 'AUTOMATIC',
+    in   it_user                                   "SAP_INO"."sap.ino.db.iam::t_identity",
+    in   it_target_group_assignments			   "SAP_INO"."sap.ino.db.iam::tt_identity_group_name",
+    out  ov_failed_to_recompute_transitive_closure TINYINT
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    -- Attention:
+    --     This procedure must only contain users in it_user.
+    --     Calling it with groups in this table will lead to undefined results.
+
+    -- Step 1) Compute which groups must be newly created
+    -- Step 2) For existing groups enforce the given source type
+    -- Step 3) Create the groups + history entries
+    -- Step 4) Insert the transitive closures of the groups that were created
+    -- Step 5) Compute which group memberships must be deleted
+    -- Step 6) Delete memberships + write history entries
+    -- Step 7) Compute which group memberships must be newly created
+    -- Step 8) Write new group memberships + history entries
+    -- Step 9) Recompute the transitive closures of the users
+    
+    -- Notice that we will NOT delete any groups at any time.
+    -- This is because the groups refer to email domains.
+    -- If we would delete or erase email domain groups then we might have to create
+    -- similar groups (same name but different ID) later. This is something
+    -- we definitely want to avoid. Unfortunately this also implies that
+    -- we have no easy way to get rid of zombie groups. If zombies should
+    -- become an issue then a batch job once per week might look if there
+    -- are old unused email domain groups and clean them up.
+    
+    -- Also notice that it is not necessary to compute transitive closures of new
+    -- group MEMBERSHIPS. This is because new groups will never be member of an
+    -- existing group. So only the users would need to be treated but this is done
+    -- generically at the end anyway.
+    
+    -- ATTENTION: If an existing group changes to new source type
+    --            and if this group has members which are groups then 
+    --            the transitive closure cleanup algorithm fails.
+    --            Since this is an exccedingly rare case we did not want to
+    --            pay for the performance penalty of the cleanup in this
+    --            procedure. Instead we just detect this situation and
+    --            notify the caller instead.
+    --            Then the caller has to take care of appropriate actions,
+    --            e.g. call p_update_identity_group_member_transitive
+
+    -- Step 1) Compute which groups must be newly created
+    declare lv_group_id int = 0;
+    lt_target_group_names = select distinct group_name from :it_target_group_assignments;
+    
+    lt_new_groups =
+        select target.group_name
+        from :lt_target_group_names as target
+        left outer join "SAP_INO"."sap.ino.db.iam::t_identity" as ident
+        on  ident.name      = target.group_name
+        and ident.type_code = 'GROUP'
+        and ident.erased    = 0
+        where
+            ident.id is null;
+
+    -- Step 2) For existing groups enforce the new source type
+    lt_old_groups_with_source_type_correction =
+        select
+            ident.id             as id,
+            ident.created_at     as created_at,
+            ident.created_by_id  as created_by_id,
+            current_utctimestamp as changed_at,
+            :iv_appl_user_id     as changed_by_id,
+            ident.type_code      as type_code,
+            ident.name           as name,
+            ''                   as first_name,
+            ''                   as last_name,
+            ''                   as email,
+            ''                   as user_name,
+            0                    as is_external,
+            0                    as erased,
+            ''                   as phone,
+            ''                   as mobile,
+            ''                   as cost_center,
+            ''                   as organization,
+            ''                   as office,
+            ''                   as description,
+            0                    as staged,
+            :iv_source_type      as source_type_code
+        from
+            :lt_target_group_names                 as target,
+            "SAP_INO"."sap.ino.db.iam::t_identity" as ident
+        where
+            ident.name = target.group_name
+        and type_code = 'GROUP'
+        and ident.erased = 0
+        and source_type_code != :iv_source_type;
+        
+    upsert "SAP_INO"."sap.ino.db.iam::t_identity"
+        (id, created_at, created_by_id, changed_at, changed_by_id, type_code, 
+         name, first_name, last_name, email, user_name, is_external, erased, 
+         phone, mobile, cost_center, organization, office, description, 
+         staged, source_type_code)
+    select
+        id, created_at, created_by_id, changed_at, changed_by_id, type_code, 
+        name, first_name, last_name, email, user_name, is_external, erased, 
+        phone, mobile, cost_center, organization, office, description, 
+        staged, source_type_code 
+    from :lt_old_groups_with_source_type_correction;
+        
+    insert into "SAP_INO"."sap.ino.db.iam::t_identity_h"
+        (history_db_event, history_biz_event, history_at, history_actor_id,
+         id, created_at, created_by_id, changed_at, changed_by_id, type_code,
+         name, first_name, last_name, email, user_name, is_external, erased,
+         phone, mobile, cost_center, organization, office, description,
+         staged, source_type_code)
+        select
+            'UPDATE'                            as history_db_event,
+            upper(:iv_source_type) || '_GROUP'  as history_biz_event,
+            changed_at                          as history_at,
+            changed_by_id                       as history_actor_id,
+            id                                  as id,
+            created_at                          as created_at,
+            created_by_id                       as created_by_id,
+            changed_at                          as changed_at,
+            changed_by_id                       as changed_by_id,
+            type_code                           as type_code,
+            name                                as name,
+            first_name                          as first_name,
+            last_name                           as last_name,
+            email                               as email,
+            user_name                           as user_name,
+            is_external                         as is_external,
+            erased                              as erased,
+            phone                               as phone,
+            mobile                              as mobile,
+            cost_center                         as cost_center,
+            organization                        as organization,
+            office                              as office,
+            description                         as description,
+            staged                              as staged,
+            source_type_code                    as source_type_code
+        from :lt_old_groups_with_source_type_correction;
+
+    -- Step 3) Create the groups + history entries
+    lt_group_to_insert =
+        select
+            "SAP_INO"."sap.ino.db.iam::s_identity".nextval as id,
+            current_utctimestamp as created_at,
+            :iv_appl_user_id     as created_by_id,
+            current_utctimestamp as changed_at,
+            :iv_appl_user_id     as changed_by_id,
+            'GROUP'              as type_code,
+            grp.group_name       as name,
+            ''                   as first_name,
+            ''                   as last_name,
+            ''                   as email,
+            ''                   as user_name,
+            0                    as is_external,
+            0                    as erased,
+            ''                   as phone,
+            ''                   as mobile,
+            ''                   as cost_center,
+            ''                   as organization,
+            ''                   as office,
+            ''                   as description,
+            0                    as staged,
+            :iv_source_type      as source_type_code
+        from :lt_new_groups as grp;
+
+    insert into "SAP_INO"."sap.ino.db.iam::t_identity"
+        (id, created_at, created_by_id, changed_at, changed_by_id, type_code,
+        name, first_name, last_name, email, user_name, is_external, erased, phone, mobile,
+        cost_center, organization, office, description, staged, source_type_code)
+        select * from :lt_group_to_insert;
+
+    insert into "SAP_INO"."sap.ino.db.iam::t_identity_h"
+        (history_db_event, history_biz_event, history_at, history_actor_id,
+         id, created_at, created_by_id, changed_at, changed_by_id, type_code,
+         name, first_name, last_name, email, user_name, is_external, erased,
+         phone, mobile, cost_center, organization, office, description,
+         staged, source_type_code)
+        select
+            'INSERT'                            as history_db_event,
+            upper(:iv_source_type) || '_GROUP'  as history_biz_event,
+            changed_at                          as history_at,
+            changed_by_id                       as history_actor_id,
+            id                                  as id,
+            created_at                          as created_at,
+            created_by_id                       as created_by_id,
+            changed_at                          as changed_at,
+            changed_by_id                       as changed_by_id,
+            type_code                           as type_code,
+            name                                as name,
+            first_name                          as first_name,
+            last_name                           as last_name,
+            email                               as email,
+            user_name                           as user_name,
+            is_external                         as is_external,
+            erased                              as erased,
+            phone                               as phone,
+            mobile                              as mobile,
+            cost_center                         as cost_center,
+            organization                        as organization,
+            office                              as office,
+            description                         as description,
+            staged                              as staged,
+            source_type_code                    as source_type_code
+        from :lt_group_to_insert;
+
+    -- Step 4) Insert the transitive closures of the groups that were created
+    insert into "SAP_INO"."sap.ino.db.iam::t_identity_group_member_transitive" (member_id, group_id)
+        select id as member_id, id as group_id from :lt_group_to_insert;
+
+
+    -- Step 5) Compute which group memberships must be deleted
+      -- There are 3 kinds of memberships that might require fixes.
+        --   a) Users which change their group due to a change of the user attributes
+        --   b) Users that must be removed if a group changes its source_code_type to the given source type
+        --   c) Groups that must be removed if its parent group changes source code type.
+        
+    lt_existing_group =
+        select id, name from "SAP_INO"."sap.ino.db.iam::t_identity"
+        where
+            type_code        = 'GROUP'
+        and source_type_code = :iv_source_type;
+        
+    -- Step 6a) For all imported users determine their group memberships and check
+    --          which ones are not in the list of new user group assignments
+    lt_target_group_assignments_with_id =
+        select
+            existing_group.id     as group_id,
+            target.group_name as group_name,
+            target.member_id  as member_id
+        from
+            :it_target_group_assignments as target,
+            :lt_existing_group           as existing_group
+        where
+            target.group_name = existing_group.name;
+    
+    lt_current_memberships_of_imported_users =
+        select igm.id, igm.member_id, igm.group_id
+        from
+            :it_user                                            as usr,
+            "SAP_INO"."sap.ino.db.iam::t_identity_group_member" as igm,
+            :lt_existing_group                                  as existing_group
+        where
+            usr.id       = igm.member_id
+        and igm.group_id = existing_group.id;
+    
+    lt_outdated_memberships_of_imported_users =
+        select current.id, current.member_id, current.group_id
+        from :lt_current_memberships_of_imported_users as current
+        left outer
+        join :lt_target_group_assignments_with_id as target
+        on
+            current.member_id = target.member_id
+        and current.group_id  = target.group_id
+        where
+            target.member_id is null;
+      
+    -- Step 5b) For all source_code_type corrected groups determine which (user) memberships
+    --          should not be present any more
+    lt_current_memberships_of_source_type_corrected_groups =
+        select igm.id, igm.member_id, igm.group_id
+            from
+                "SAP_INO"."sap.ino.db.iam::t_identity_group_member" as igm,
+                :lt_old_groups_with_source_type_correction          as stc
+            where
+                igm.group_id = stc.id;
+    
+    lt_outdated_memberships_of_source_type_corrected_groups =
+        select current.id, current.member_id, current.group_id
+        from :lt_current_memberships_of_source_type_corrected_groups as current
+        left outer
+        join :lt_target_group_assignments_with_id                    as target
+        on
+            current.member_id = target.member_id
+        and current.group_id  = target.group_id
+        where
+            target.member_id is null;
+        
+    lt_outdated_memberships =
+        select id, member_id, group_id from :lt_outdated_memberships_of_imported_users
+        union all
+        select id, member_id, group_id from :lt_outdated_memberships_of_source_type_corrected_groups;
+
+    -- Step 5c) For all group to group memberships determine which point into a
+    --          source_code_type_corrected_group
+     select count (*) into ov_failed_to_recompute_transitive_closure from (
+            select top 1 parent.member_id as group_id
+            from
+                "SAP_INO"."sap.ino.db.iam::t_identity_group_member" as parent,
+                "SAP_INO"."sap.ino.db.iam::t_identity"              as ident,
+                :lt_old_groups_with_source_type_correction          as type_code_corrected_group
+            where
+                ident.id        = parent.member_id
+            and ident.type_code = 'GROUP'
+            and parent.group_id = type_code_corrected_group."ID"
+        );
+
+    -- Step 6) Modify memberships + write history entries
+    delete from "SAP_INO"."sap.ino.db.iam::t_identity_group_member"
+        where id in (select id from :lt_outdated_memberships);
+
+    insert into "SAP_INO"."sap.ino.db.iam::t_identity_group_member_h"
+        (HISTORY_DB_EVENT, HISTORY_BIZ_EVENT, HISTORY_AT, HISTORY_ACTOR_ID, ID, MEMBER_ID, GROUP_ID)
+        select
+            'DELETE'                            as history_db_event,
+            upper(:iv_source_type) || '_GROUP'  as history_biz_event,
+            current_utctimestamp                as history_at,
+            :iv_appl_user_id                    as history_actor_id,
+            id                                  as id,
+            member_id                           as member_id,
+            group_id                            as group_id
+        from :lt_outdated_memberships;
+
+    -- Step 7) Compute which group memberships must be newly created
+      -- Again we only need to deal with users as the group to group memberships
+      -- are completely unaffected by the user's data.
+    lt_required_memberships =
+        select distinct
+            ug.group_id,
+            ug.member_id
+        from
+            :lt_target_group_assignments_with_id as ug
+        left outer join
+            "SAP_INO"."sap.ino.db.iam::t_identity_group_member" as igm
+        on
+            ug.group_id   = igm.group_id
+        and ug.member_id  = igm.member_id
+        where
+            igm.member_id is null;
+    
+    -- Step 8) Write new group memberships + history entries
+    lt_new_memberships =
+        select
+            "SAP_INO"."sap.ino.db.iam::s_identity_group_member".nextval as id,
+            member_id,
+            group_id
+        from
+            :lt_required_memberships;
+
+    insert into "SAP_INO"."sap.ino.db.iam::t_identity_group_member" (id, member_id, group_id)
+        select * from :lt_new_memberships;
+
+    insert into "SAP_INO"."sap.ino.db.iam::t_identity_group_member_h"
+        (HISTORY_DB_EVENT, HISTORY_BIZ_EVENT, HISTORY_AT, HISTORY_ACTOR_ID, ID, MEMBER_ID, GROUP_ID)
+        select
+            'INSERT'                            as history_db_event,
+            upper(:iv_source_type) || '_GROUP'  as history_biz_event,
+            current_utctimestamp                as history_at,
+            :iv_appl_user_id                    as history_actor_id,
+            id                                  as id,
+            member_id                           as member_id,
+            group_id                            as group_id
+        from :lt_new_memberships;
+
+    -- Step 9) Recompute the transitive closures of the users
+    lt_tainted_user_ids = select distinct id from (
+        select id from :it_user
+        union all
+        select member_id from :lt_outdated_memberships_of_source_type_corrected_groups
+    );
+    call "SAP_INO"."sap.ino.db.iam::p_update_delta_identity_group_user_transitive"(:lt_tainted_user_ids);
+    
+    select count(*) into lv_group_id from "SAP_INO"."sap.ino.db.iam::t_group_attribute" as t_group_attribute left outer join "SAP_INO"."sap.ino.db.iam::t_identity" as t_identity
+    on t_group_attribute.group_id = t_identity.id where t_identity.name = 'None';
+    
+    if :lv_group_id = 0
+        then
+        lt_group_for_none = select
+                                "SAP_INO"."sap.ino.db.iam::s_identity".nextval as id,
+                                current_utctimestamp as created_at,
+                                :iv_appl_user_id     as created_by_id,
+                                current_utctimestamp as changed_at,
+                                :iv_appl_user_id     as changed_by_id,
+                                'GROUP'              as type_code,
+                                'None'               as name,
+                                ''                   as first_name,
+                                ''                   as last_name,
+                                ''                   as email,
+                                ''                   as user_name,
+                                0                    as is_external,
+                                0                    as erased,
+                                ''                   as phone,
+                                ''                   as mobile,
+                                ''                   as cost_center,
+                                ''                   as organization,
+                                ''                   as office,
+                                ''                   as description,
+                                0                    as staged,
+                                'STATIC_GROUP'       as source_type_code
+                            from dummy;
+        
+        
+        insert into "SAP_INO"."sap.ino.db.iam::t_identity" (id, created_at, created_by_id, changed_at, changed_by_id, type_code, 
+                                                             name, first_name, last_name, email, user_name, is_external, erased, 
+                                                             phone, mobile, cost_center, organization, office, description, 
+                                                             staged, source_type_code) select * from :lt_group_for_none;
+        
+        insert into "SAP_INO"."sap.ino.db.iam::t_identity_h"
+                            (history_db_event, history_biz_event, history_at, history_actor_id,
+                             id, created_at, created_by_id, changed_at, changed_by_id, type_code,
+                             name, first_name, last_name, email, user_name, is_external, erased,
+                            phone, mobile, cost_center, organization, office, description,
+                            staged, source_type_code)
+                            select
+                                'INSERT'                            as history_db_event,
+                                upper(:iv_source_type) || '_GROUP'  as history_biz_event,
+                                changed_at                          as history_at,
+                                changed_by_id                       as history_actor_id,
+                                id                                  as id,
+                                created_at                          as created_at,
+                                created_by_id                       as created_by_id,
+                                changed_at                          as changed_at,
+                                changed_by_id                       as changed_by_id,
+                                type_code                           as type_code,
+                                name                                as name,
+                                first_name                          as first_name,
+                                last_name                           as last_name,
+                                email                               as email,
+                                user_name                           as user_name,
+                                is_external                         as is_external,
+                                erased                              as erased,
+                                phone                               as phone,
+                                mobile                              as mobile,
+                                cost_center                         as cost_center,
+                                organization                        as organization,
+                                office                              as office,
+                                description                         as description,
+                                staged                              as staged,
+                                source_type_code                    as source_type_code
+                            from :lt_group_for_none;
+        
+            insert into "SAP_INO"."sap.ino.db.iam::t_group_attribute"
+            (id, group_id,is_public) select "SAP_INO"."sap.ino.db.iam::s_group_attribute".nextval as id,
+            id as group_id, '1' as is_public from "SAP_INO"."sap.ino.db.iam::t_identity"  where name = 'None';
+    end if;
+    
+end;

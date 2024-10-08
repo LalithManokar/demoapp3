@@ -1,0 +1,32 @@
+procedure "SAP_INO"."sap.ino.db.evaluation::p_eval_req_filter"(
+    in iv_filter_name varchar(1024),
+    out ot_eval_req_item_id "SAP_INO"."sap.ino.db.basis::tt_object_id"
+)
+language sqlscript
+sql security invoker
+default schema SAP_INO
+reads sql data as
+begin
+   ot_eval_req_item_id = select id
+                           from "sap.ino.db.evaluation::v_evaluation_request_item" as eval_req_item
+                           where :iv_filter_name <> 'forMe'        and
+                                 :iv_filter_name <> 'forMeOverdue' and
+                                 :iv_filter_name <> 'byMe'         and
+                                 :iv_filter_name <> 'byMeOverdue'
+                         union all
+                         select id
+                           from "sap.ino.db.evaluation::v_evaluation_request_item_for_me" as eval_req_item
+                           where :iv_filter_name = 'forMe'
+                         union all
+                         select id
+                           from "sap.ino.db.evaluation::v_evaluation_request_item_for_me_overdue" as eval_req_item
+                           where :iv_filter_name = 'forMeOverdue'
+                         union all
+                         select id
+                           from "sap.ino.db.evaluation::v_evaluation_request_item_by_me" as eval_req_item
+                           where :iv_filter_name = 'byMe'
+                         union all
+                         select id
+                           from "sap.ino.db.evaluation::v_evaluation_request_item_by_me_overdue" as eval_req_item
+                           where :iv_filter_name = 'byMeOverdue';
+end;

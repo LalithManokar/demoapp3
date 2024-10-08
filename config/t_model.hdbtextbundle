@@ -1,0 +1,10 @@
+# TRANSLATE
+# XTXT, 100
+sap.ino.config.PRESCREENING_PRODUCT=Prescreening
+# XTXT, 100
+sap.ino.config.RISK_REWARD_PRODUCT=Risk/Reward Assessment
+
+# XTXT, 500
+sap.ino.config.PRESCREENING_PRODUCT_LONG=The prescreening consists of a set of questions that shall be used to sort out ideas that are not suitable.
+# XTXT, 700
+sap.ino.config.RISK_REWARD_PRODUCT_LONG=Ideas are arranged in a matrix according to their reward and risk score. The reward and risk scores are calculated from a set of performance indicators. The reward score reflects the business benefits whereas the risk score shows the probability of success for an idea. Beside these scores, there are figures for expected revenues and efforts. They are reflected by the size of diameters of an idea within the graph.

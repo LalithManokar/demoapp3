@@ -1,0 +1,8 @@
+schema = "SAP_INO_EXT";
+query = "select campaign_phases.*
+         from \"sap.ino.db.campaign::v_campaign_phases_idea_count\" as campaign_phases
+         inner join \"sap.ino.db.campaign::v_auth_campaigns\" as auth_campaigns
+         on auth_campaigns.campaign_id = campaign_phases.campaign_id
+         with read only";
+         
+depends_on_view = ["sap.ino.db.campaign::v_campaign_phases_idea_count", "sap.ino.db.campaign::v_auth_campaigns"];

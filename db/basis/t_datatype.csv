@@ -1,0 +1,6 @@
+NUMERIC;Numeric;Numeric
+INTEGER;Integer;Integer
+BOOLEAN;Boolean;Boolean
+TEXT;Text;Text
+RICHTEXT;RichText;RichText
+DATE;Date;Date 

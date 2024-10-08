@@ -1,0 +1,20 @@
+schema = "SAP_INO";
+query = "
+  SELECT cast(count(*) AS tinyint) AS accepted
+  FROM \"sap.ino.db.iam::v_term_accept_history_latest\" AS accepted_term
+  INNER JOIN \"sap.ino.db.basis::v_text_module_stage\" AS term ON term.code = accepted_term.term_code and (term.changed_at = accepted_term.term_changed_at or term.changed_at is null )
+  INNER JOIN \"sap.ino.db.iam::t_identity\" AS IDENTITY ON IDENTITY.id = accepted_term.user_id
+  WHERE IDENTITY.user_name = session_context('APPLICATIONUSER')
+    AND (((accepted_term.TERM_ACTION_CODE is null or  accepted_term.TERM_ACTION_CODE = 0 )  AND accepted_term.TERM_ACCEPTED_AT >= term.changed_at)  or term.changed_at is null)
+    AND exists
+           (SELECT value AS term_code
+               FROM \"sap.ino.db.basis::v_system_setting\"
+               WHERE code = 'sap.ino.config.TERMS_AND_CONDITIONS_TEXT' and value = accepted_term.term_code)
+        with read only
+";
+
+depends_on_table = ["sap.ino.db.iam::t_identity"];
+                    
+depends_on_view = ["sap.ino.db.iam::v_term_accept_history_latest",
+                    "sap.ino.db.basis::v_text_module_stage",
+                   "sap.ino.db.basis::v_system_setting"];

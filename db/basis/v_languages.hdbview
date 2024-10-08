@@ -1,0 +1,9 @@
+schema = "SAP_INO";
+query = "
+    select *
+    from \"sap.ino.db.basis::t_language\" 
+    where is_hidden is null or 
+          is_hidden = 0
+with read only";
+
+depends_on_table = ["sap.ino.db.basis::t_language"];

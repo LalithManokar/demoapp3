@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_IDEA_TAG_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <origin/>
+  <descriptions defaultDescription="Tag  Search"/>
+  <metadata changedAt="2022-04-14 11:05:49.901"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Free text search token"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="USAGE_COUNT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>begin
+    search_result =
+        select
+            id,
+            1 as search_score
+        from
+            &quot;sap.ino.db.tag::t_tag&quot; 
+        where
+            length(:searchToken) = 0
+        union all
+        select
+            id,
+            1 as search_score
+        from
+            &quot;sap.ino.db.tag::t_tag&quot; 
+        where
+            cast(id as nvarchar) = :searchToken
+        union all
+        select
+            id,
+            score() as seach_score
+        from
+            &quot;sap.ino.db.tag::t_tag&quot; 
+        where length(:searchToken) > 0 and (
+            contains(name, :searchToken, fuzzy(0.8)) or 
+            contains(name, CONCAT(CONCAT('%', lcase(:searchToken)), '%'), fuzzy(0.8)) );
+
+    var_out = 
+        select 
+            sr.search_score,
+            sr.id,
+            tag.name,
+            tag.usage_count
+        from 
+            &quot;sap.ino.db.tag::v_tag&quot; as tag
+        inner join
+            :search_result as sr
+        on
+            tag.id = sr.id
+        where tag.id in (select TAG_ID from &quot;SAP_INO_EXT&quot;.&quot;sap.ino.db.idea.ext::v_ext_idea_tag&quot; as vtag);
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="SEARCH_SCORE" order="1">
+        <descriptions defaultDescription="Search Score"/>
+        <keyMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </attribute>
+      <attribute id="ID" order="2" descriptionColumnName="NAME">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="3">
+        <descriptions defaultDescription="Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="USAGE_COUNT" order="4">
+        <descriptions defaultDescription="Useage Count"/>
+        <keyMapping columnObjectName="Script_View" columnName="USAGE_COUNT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

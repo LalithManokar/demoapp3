@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "select
+            tag_full.id as id, tag_full.name as name, 
+            tag_full.group_id as group_id, tag_full.is_followed as is_followed, 
+            tag_full.follow_id as follow, tag_full.group_name as group_name,
+            tag_full.idea_usage_count as idea_usage_count,
+            tag_full.campaign_usage_count,
+            tag_follow.CREATED_AT as FOLLOW_DATE
+        from  \"sap.ino.db.tag::v_tag_group_usage\" as tag_full
+        inner join  \"sap.ino.db.tag::v_tag_follow\" as tag_follow
+        on tag_full.id = tag_follow.OBJECT_ID
+        with read only";
+depends_on_view  = ["sap.ino.db.tag::v_tag_follow", "sap.ino.db.tag::v_tag_group_usage"]; 

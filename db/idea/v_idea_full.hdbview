@@ -1,0 +1,335 @@
+schema = "SAP_INO";
+query = "
+    select
+        idea.id, 
+        idea.name,
+        idea.description,
+        idea.short_description,
+        idea.reward_dismissed,
+        
+       
+        anonymous_setting.ANONYMOUS_FOR,
+
+        idea.created_at,
+        idea_author.identity_id as created_by_id, 
+        idea_author.name as created_by_name, 
+        
+        idea.changed_at,
+        idea.changed_by_id,
+        identity2.name as changed_by_name,
+
+        idea.submitted_at,
+        idea_author.identity_id as submitter_id, 
+        idea_author.name as submitter_name, 
+
+        ifnull(created_viewer.show_icon,0) as show_created_viewer,
+        ifnull(updated_viewer.show_icon,0) as show_updated_viewer,
+        ifnull(comment_viewer.show_icon,0) as show_comment_viewer,
+        ifnull(status_viewer.show_icon,0) as show_statuschange_viewer,
+            
+        ident_coach.id AS coach_id,
+        ident_coach.name AS coach_name,
+
+        camp.name AS campaign_name,
+        camp.short_name AS campaign_short_name,
+        camp.description AS campaign_description,
+        campaign.color_code AS campaign_color,
+        campaign.resp_code AS resp_code,
+        campaign.IS_AUTO_ASSIGN_RL_COACH AS auto_assign_coach,  
+        campaign.IS_INTEGRATION_ACTIVE AS IS_INTEGRATION_ACTIVE,  
+        reward_unit.campaign_reward_unit_code as campaign_reward_unit_code,
+        campaign.submit_to as campaign_submit_to,
+        campaign.form_code as campaign_form_code,
+        campaign.admin_form_code as campaign_admin_form_code,
+        unit.default_text as campaign_reward_unit_text,
+
+        background_image_attachment.id as campaign_background_image_assign_id,
+        background_image_attachment.attachment_id as campaign_background_image_id,
+        small_background_image_attachment.id as campaign_small_background_image_assign_id,
+        small_background_image_attachment.attachment_id as campaign_small_background_image_id,
+
+        idea.phase_code AS phase,
+        phase.sequence_no AS step,
+        campaign.phase_count AS steps,
+        idea.status_code AS status,
+        idea.status_code AS status_code,
+        status_obj.status_type,
+        status_obj.color_code as status_color,
+        idea.campaign_id as campaign_id,
+
+        attachment_assign.id as title_image_assign_id,
+        attachment_assign.attachment_id as title_image_id,
+        attachment.media_type as title_image_media_type,
+        attachment.changed_at as title_image_changed_at,
+
+        vote_type.code as vote_type_code, 
+        vote_type.voted_by_group,
+        vote_type.type_code as vote_type_type_code,
+        vote_type.max_star_no,
+        vote_type.public_vote,
+        vote_type.publish_vote,  
+        vote_type.auto_vote,
+        vote_type.auto_follow,
+        vote_type.vote_comment_type,
+        vote_type.vote_reason_code, 
+
+
+        cast (vote.score as double) as score,
+        vote.vote_count,
+        vote.pos_score as pos_votes,
+        vote.neg_score as neg_votes,
+
+        vote.exp_score,
+        vote.exp_vote_count,
+        vote.exp_pos_score,
+        vote.exp_neg_score,
+
+        vote.user_score,
+        vote.user_vote_id as vote_id,
+        ifnull(auth_idea_comment.can_comment,0) as participant_can_comment,
+        ifnull(auth_idea_vote.can_vote,0) as participant_can_vote,
+        ifnull(status_setting.value,0) as open_status_setting,
+        ifnull(comment_status_authorization.id,0) as comment_has_privilege,
+        ifnull(vote_status_authorization.id,0) as voting_has_privilege,
+        phase.voting_active as voting_active, 
+
+        follow_up.date as follow_up_date,
+        follow_up.id as follow_up_id,
+        idea_follow.id as follow,
+        
+        idea_read.id as read_id,
+        idea_read.is_read as is_read,
+        idea_decision.link_label as reference_label,
+        idea_decision.link_url as reference_url,
+
+        last_publ_evaluation.evaluation_id as last_publ_eval_id,
+        evaluation.changed_at as last_publ_eval_at,
+        case when idea.phase_code = evaluation.idea_phase_code then 1 else 0 end as last_publ_eval_in_phase,
+        evaluation.ov_res_datatype_code as last_publ_eval_ov_res_datatype_code,
+        evaluation.ov_res_num_value as last_publ_eval_ov_res_num_value,
+        evaluation.ov_res_bool_value as last_publ_eval_ov_res_bool_value,
+        evaluation.ov_res_text_value as last_publ_eval_ov_res_text_value,
+        evaluation.ov_res_value_option_list_code as last_publ_eval_ov_res_value_option_list_code,
+        evaluation.ov_res_uom_code as last_publ_eval_ov_res_uom_code,
+
+        idea.evaluation_in_phase_count,
+        idea.evaluation_count,
+        idea.comment_count,
+        ifnull(idea_view_count.view_count,0) as view_count,
+        idea.resp_value_code,
+        idea.is_open_for_contributors,
+        idea_volunteers.ID as volunteer_id,
+        ifnull(attachment_count.num,0) as attachment_count,
+        ifnull(wall.num,0) as wall_count,
+
+        evaluation_template.model_code as curr_phase_evaluation_model,
+        
+        responsibility.default_text as resp_name,
+        responsibility.default_long_text as resp_description,
+        responsibility_value.default_coach,
+        responsibility_value.default_text as resp_value_name,
+        responsibility_value.default_long_text as resp_value_description,
+        
+        ifnull(reward_list.idea_id,0) as contribution_read_only,
+        
+        case 
+        when (select value from \"sap.ino.db.basis::t_local_system_setting\" 
+	                   where code = 'sap.ino.config.REWARD_ACTIVE') = 1
+	           and campaign.reward = 1 then cast (1 as TINYINT)
+        else cast (0 as TINYINT)
+        end as reward_active,
+        
+        ifnull(idea_rewards.idea_id,0) as idea_has_rewards,
+         
+        ifnull(reward_list_phase.idea_id,0) as idea_phase_need_reward,
+        
+        ifnull(incompleted_evaluation_request_item.idea_id,0) as idea_has_incompleted_eval_req,
+        
+        ifnull(idea_object_integration.idea_id,0) as integration_object_exist,  
+        
+        idea_reason.reason_code_text as reason_code,
+        idea_reason.reason as reason_comment,
+        cast(coalesce(idea_reason.reason_code_text, idea_reason.reason) as nvarchar(4000)) as status_reason,
+        ifnull(internal_attachment.num,0) as internal_attachment_count,
+        ifnull(internal_note.num,0) as internal_note_count
+    from \"sap.ino.db.idea::t_idea\" as idea 
+    left outer join \"sap.ino.db.idea.optimize::v_idea_anonymous_submitter\" as idea_author
+    on idea_author.idea_id = idea.id
+    left outer join \"sap.ino.db.idea::v_idea_view_count\" as idea_view_count
+        on idea.id = idea_view_count.idea_id
+    left outer join \"sap.ino.db.iam::t_object_identity_role\" as identity_role_coach 
+        on idea.id = identity_role_coach.object_id and 
+           identity_role_coach.object_type_code = 'IDEA' and
+           identity_role_coach.role_code = 'IDEA_COACH'
+    left outer join \"sap.ino.db.iam::t_identity\" as ident_coach 
+        on ident_coach.id = identity_role_coach.identity_id 
+    left outer join \"sap.ino.db.campaign::t_campaign_phase\" as phase
+        on idea.campaign_id = phase.campaign_id and 
+           idea.phase_code = phase.phase_code 
+    left outer join \"sap.ino.db.idea::v_vote_idea_score\" as vote
+        on vote.idea_id = idea.id 
+    left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as camp 
+        on camp.campaign_id = idea.campaign_id
+    left outer join \"sap.ino.db.campaign::t_campaign\" as campaign 
+        on campaign.id = idea.campaign_id
+    left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as background_image_attachment 
+        on background_image_attachment.owner_id = campaign.id and
+           background_image_attachment.owner_type_code = 'CAMPAIGN' and
+           background_image_attachment.role_type_code = 'BACKGROUND_IMG'
+    left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as small_background_image_attachment 
+        on small_background_image_attachment.owner_id = campaign.id and
+           small_background_image_attachment.owner_type_code = 'CAMPAIGN' and
+           small_background_image_attachment.role_type_code = 'SMALL_BACKGROUND_IMG'
+    left outer join \"sap.ino.db.campaign::t_vote_type\" as vote_type 
+        on vote_type.code = campaign.vote_type_code
+    left outer join \"sap.ino.db.followup::v_follow_up\" as follow_up 
+        on follow_up.object_type_code = 'IDEA' and
+           follow_up.object_id = idea.id
+    left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as attachment_assign
+        on attachment_assign.owner_id = idea.id and
+           attachment_assign.owner_type_code = 'IDEA' and
+           attachment_assign.role_type_code = 'IDEA_TITLE_IMAGE'
+    left outer join \"sap.ino.db.attachment::t_attachment\" as attachment
+        on attachment.id = attachment_assign.attachment_id
+    left outer join \"sap.ino.db.evaluation::v_evaluation_template\" as evaluation_template
+        on evaluation_template.idea_id = idea.id
+    left outer join \"sap.ino.db.idea::v_idea_last_published_evaluation\" as last_publ_evaluation
+        on idea.id = last_publ_evaluation.id
+    left outer join \"sap.ino.db.evaluation::v_evaluation\" as evaluation
+        on last_publ_evaluation.evaluation_id = evaluation.id
+    left outer join \"sap.ino.db.iam::t_identity\" as identity1
+        on identity1.id = idea.created_by_id 
+    left outer join \"sap.ino.db.iam::t_identity\" as identity2
+        on identity2.id = idea.changed_by_id
+    left outer join \"sap.ino.db.subresponsibility::v_responsibility\" as responsibility
+        on campaign.resp_code = responsibility.code
+    left outer join \"sap.ino.db.subresponsibility::v_responsibility_value\" as responsibility_value
+        on idea.resp_value_code = responsibility_value.code
+    left outer join \"sap.ino.db.follow::v_follow\" as idea_follow
+        on idea.id = idea_follow.object_id
+        and idea_follow.object_type_code = 'IDEA'
+    left outer join \"sap.ino.db.idea::v_volunteers\" as idea_volunteers
+    	on idea.id = idea_volunteers.IDEA_ID
+    left outer join \"sap.ino.db.campaign::v_campaign_reward_unit\" as reward_unit
+        on reward_unit.campaign_id = idea.campaign_id
+    left outer join \"sap.ino.db.basis::t_unit\" as unit
+        on reward_unit.campaign_reward_unit_code = unit.code
+    left outer join \"sap.ino.db.idea::v_idea_reason\" as idea_reason
+        on idea_reason.idea_id = idea.id and idea_reason.phase_code = idea.phase_code and idea_reason.status_code = idea.status_code
+    left outer join \"sap.ino.db.idea::v_decision\" as idea_decision
+        on idea_decision.idea_id = idea.id and idea_decision.phase_code = idea.phase_code and idea_decision.status_code = idea.status_code
+    left outer join \"sap.ino.db.status::t_status\" as status_obj
+        on idea.status_code = status_obj.CODE
+    left outer join \"sap.ino.db.idea::v_idea_read\" as idea_read
+        on idea.id = idea_read.IDEA_ID
+    left outer join \"sap.ino.db.idea::t_ideas_setting\" as anonymous_setting
+    on anonymous_setting.idea_id = idea.id
+    left outer join (select distinct object_id ,show_icon from \"sap.ino.db.idea::v_idea_latest_for_created_viewer\") as created_viewer
+    on created_viewer.object_id = idea.id
+    left outer join (select distinct object_id ,show_icon from\"sap.ino.db.idea::v_idea_latest_for_updated_viewer\") as updated_viewer
+    on updated_viewer.object_id = idea.id
+    left outer join (select distinct object_id ,show_icon from\"sap.ino.db.idea::v_idea_latest_for_comment_viewer\") as comment_viewer
+    on comment_viewer.object_id = idea.id
+    left outer join (select distinct object_id ,show_icon from\"sap.ino.db.idea::v_idea_latest_for_statuschange_viewer\") as status_viewer
+    on status_viewer.object_id = idea.id
+    left outer join (select idea_id from\"sap.ino.db.reward::t_reward_list\" group by idea_id) as reward_list
+    on reward_list.idea_id = idea.id
+    left outer join (select idea_id from \"sap.ino.db.reward.ext::v_ext_reward\" group by idea_id)as idea_rewards
+    on idea_rewards.idea_id = idea.id
+    left outer join (select idea_id,idea_phase_code from \"sap.ino.db.reward::t_reward_list\" group by idea_id,idea_phase_code) as reward_list_phase
+    on reward_list_phase.idea_id = idea.id and reward_list_phase.idea_phase_code = idea.phase_code
+    left outer join (select idea_id,idea_phase_code from \"sap.ino.db.evaluation::v_incompleted_evaluation_request_item\" group by idea_id,idea_phase_code)as incompleted_evaluation_request_item
+    on incompleted_evaluation_request_item.idea_id = idea.id and incompleted_evaluation_request_item.idea_phase_code = idea.phase_code
+    left outer join (select idea_id from \"sap.ino.db.integration::t_idea_object_integration\" group by idea_id) as idea_object_integration
+    on idea_object_integration.idea_id = idea.id
+    left outer join (select owner_id,count(owner_id) as num from \"sap.ino.db.attachment::t_attachment_assignment\"
+                        left outer join\"sap.ino.db.idea::t_idea\" as idea
+                        on idea.id = owner_id
+             where owner_id = idea.id and OWNER_TYPE_CODE = 'IDEA' and role_type_code = 'ATTACHMENT'
+                and FILTER_TYPE_CODE = 'BACKOFFICE'
+        group by owner_id
+    ) as internal_attachment
+    on internal_attachment.owner_id = idea.id
+    left outer join (select OBJECT_ID,count(OBJECT_ID) as num from \"sap.ino.db.idea::v_idea_internal_note\" 
+                            left outer join\"sap.ino.db.idea::t_idea\" as idea
+                             on idea.id = OBJECT_ID
+                     where OBJECT_ID = idea.id and PARENT_ID is null
+        group by object_id
+    ) as internal_note
+    on internal_note.object_id = idea.id 
+    left outer join (select owner_id,count(owner_id) as num from \"sap.ino.db.attachment::t_attachment_assignment\"
+                        left outer join\"sap.ino.db.idea::t_idea\" as idea
+                        on idea.id = owner_id
+             where owner_id = idea.id and OWNER_TYPE_CODE = 'IDEA' and role_type_code = 'ATTACHMENT'
+                and FILTER_TYPE_CODE = 'FRONTOFFICE'
+        group by owner_id
+    ) as attachment_count
+    on attachment_count.owner_id = idea.id
+    left outer join (select owner_id,count(owner_id) as num from \"sap.ino.db.wall::t_wall_assignment\" 
+                            left outer join\"sap.ino.db.idea::t_idea\" as idea
+                             on idea.id = owner_id
+                     where owner_id = idea.id  and OWNER_TYPE_CODE = 'IDEA' and FILTER_TYPE_CODE = 'FRONTOFFICE'
+        group by owner_id
+    ) as wall
+    on wall.owner_id = idea.id 
+    left outer join \"sap.ino.db.idea::v_auth_idea_comment\" as auth_idea_comment
+    on auth_idea_comment.id = idea.campaign_id
+    left outer join \"sap.ino.db.idea::v_auth_idea_vote\" as auth_idea_vote
+    on auth_idea_vote.id = idea.campaign_id
+    left outer join \"sap.ino.db.status::v_status_authorization_setting\" as status_setting
+    on status_setting.code = idea.status_code
+    left outer join (select distinct idea_id as id from\"sap.ino.db.status::v_auth_campaign_authorization_underStatus\" as campaign_underStatus
+                where campaign_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and campaign_underStatus.VALUE = 1
+                and campaign_underStatus.action_code = 'IDEA_COMMENT' and campaign_underStatus.can_do_action = 1
+                UNION  
+              select distinct idea_id as id from\"sap.ino.db.status::v_auth_idea_authorization_underStatus\" as idea_underStatus
+                where idea_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and idea_underStatus.VALUE = 1
+                and idea_underStatus.action_code = 'IDEA_COMMENT' and idea_underStatus.can_do_action = 1) as comment_status_authorization
+    on comment_status_authorization.id = idea.id
+    left outer join (select distinct idea_id as id from\"sap.ino.db.status::v_auth_campaign_authorization_underStatus\" as campaign_underStatus
+                where campaign_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and campaign_underStatus.VALUE = 1
+                and campaign_underStatus.action_code = 'IDEA_VOTE' and campaign_underStatus.can_do_action = 1
+                UNION  
+              select distinct idea_id as id from\"sap.ino.db.status::v_auth_idea_authorization_underStatus\" as idea_underStatus
+                where idea_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and idea_underStatus.VALUE = 1
+                and idea_underStatus.action_code = 'IDEA_VOTE' and idea_underStatus.can_do_action = 1) as vote_status_authorization
+    on vote_status_authorization.id = idea.id
+    with read only ";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_phase",
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.campaign::t_vote_type",
+                    "sap.ino.db.iam::t_identity",
+                    "sap.ino.db.iam::t_object_identity_role",
+                    "sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.attachment::t_attachment_assignment",
+                    "sap.ino.db.wall::t_wall_assignment",
+                    "sap.ino.db.attachment::t_attachment",
+                    "sap.ino.db.reward::t_reward_list",
+                    "sap.ino.db.basis::t_local_system_setting",
+                    "sap.ino.db.basis::t_unit",
+                    "sap.ino.db.status::t_status",
+                    "sap.ino.db.idea::t_ideas_setting",
+                    "sap.ino.db.integration::t_idea_object_integration"];
+                    
+depends_on_view = ["sap.ino.db.idea::v_vote_idea_score",
+                   "sap.ino.db.campaign::v_campaign_t_locale",
+                   "sap.ino.db.followup::v_follow_up",
+                   "sap.ino.db.evaluation::v_evaluation_template",
+                   "sap.ino.db.evaluation::v_evaluation",
+                   "sap.ino.db.idea::v_idea_last_published_evaluation",
+                   "sap.ino.db.subresponsibility::v_responsibility",
+                   "sap.ino.db.subresponsibility::v_responsibility_value",
+                   "sap.ino.db.follow::v_follow",
+                   "sap.ino.db.campaign::v_campaign_reward_unit",
+                   "sap.ino.db.reward.ext::v_ext_reward",
+                   "sap.ino.db.idea::v_volunteers",
+                   "sap.ino.db.idea::v_idea_reason",
+                   "sap.ino.db.idea::v_decision",
+                   "sap.ino.db.evaluation::v_incompleted_evaluation_request_item",
+                   "sap.ino.db.idea::v_idea_read",
+                   "sap.ino.db.idea::v_idea_settings_test",
+                   "sap.ino.db.idea::v_auth_idea_comment",
+                   "sap.ino.db.idea::v_auth_idea_vote",
+                   "sap.ino.db.idea::v_idea_internal_note",
+                   "sap.ino.db.idea.optimize::v_idea_anonymous_submitter"];

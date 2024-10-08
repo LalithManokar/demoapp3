@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<library xmlns="http://www.sap.com/sap.ui.library.xsd" >
+
+	<name>sap.ino.wall</name>
+	<vendor>sap.com</vendor>
+	<copyright>Innovation Management</copyright>
+	<!-- do not change the version, as it needs to match the version string of the maven build, the version we use for the product is specified in the ant build.xml --> 
+	<version>1.0.0</version>
+
+	<documentation>Innovation Management Wall Library</documentation>
+	
+	<dependencies>
+		<dependency>
+			<libraryName>sap.ui.core</libraryName>
+		</dependency>
+		<dependency>
+			<libraryName>sap.m</libraryName>
+		</dependency>
+	</dependencies>
+	
+</library>

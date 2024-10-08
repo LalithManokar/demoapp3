@@ -1,0 +1,12 @@
+schema = "SAP_INO";
+query = "
+select campaign.*
+from \"sap.ino.db.campaign::v_campaign_small\" as campaign
+    inner join \"sap.ino.db.campaign::v_auth_campaigns_reassign_idea\" as auth
+        on campaign.id = auth.campaign_id
+           and
+           campaign.is_open_for_submission = 1
+with read only";
+
+depends_on_view = [ "sap.ino.db.campaign::v_campaign_small", 
+                    "sap.ino.db.campaign::v_auth_campaigns_reassign_idea"];

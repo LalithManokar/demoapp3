@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "User specific parameter settings - similar to M_INIFILE_CONTENTS";
+table.columns = [
+    {name = "USER_ID";  sqlType = BIGINT;                  nullable = false; comment = "user id";},
+    {name = "SECTION";  sqlType = VARCHAR;  length =  128; nullable = false; comment = "section";},
+    {name = "KEY";      sqlType = VARCHAR;  length =  128; nullable = false; comment = "key";},
+    {name = "VALUE";    sqlType = VARCHAR;  length = 5000; nullable = true;  comment = "value";}
+];
+table.primaryKey.pkcolumns = ["USER_ID", "SECTION", "KEY"];

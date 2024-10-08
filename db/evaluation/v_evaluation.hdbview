@@ -1,0 +1,92 @@
+schema = "SAP_INO";
+query = "
+select
+    evaluation.id, 
+    evaluation.model_code,
+    evaluation.idea_id,
+    evaluation.created_at, 
+    evaluation.changed_at,
+    evaluation.status_code,
+    evaluation.idea_phase_code,
+    evaluation.comment,
+    case 
+    when model.enable_formula = 1 then 'NUMERIC'
+    else evaluation_overall_result.DATATYPE_CODE 
+    end as OV_RES_DATATYPE_CODE,
+	case
+	    when model.enable_formula = 1 then evaluation.CAL_NUM_VALUE 
+	    else evaluation_overall_result.NUM_VALUE
+	    end as OV_RES_NUM_VALUE,
+	evaluation_overall_result.BOOL_VALUE as OV_RES_BOOL_VALUE,
+	evaluation_overall_result.TEXT_VALUE as OV_RES_TEXT_VALUE,
+	evaluation_overall_result.VALUE_OPTION_LIST_CODE as OV_RES_VALUE_OPTION_LIST_CODE,
+    evaluation_overall_result.UOM_CODE as OV_RES_UOM_CODE,
+     case 
+        when settings.IS_ANONYMOUS = 'true' and idea.CREATED_BY_ID = ident_evaluator.id then  cast(0 as INTEGER) 
+        else ident_evaluator.id
+        end as evaluator_id, 
+    case 
+        when settings.IS_ANONYMOUS = 'true' and idea.CREATED_BY_ID = ident_evaluator.id then  cast('Anonymity' as VARCHAR) 
+        else    ident_evaluator.name
+        end as evaluator_name, 
+     case    
+        when settings.IS_ANONYMOUS = 'true' and idea.CREATED_BY_ID = ident_evaluator.id then  cast(0 as INTEGER) 
+        else    identity_settings.image_id
+        end as evaluator_image_id, 
+    evaluation_group_orders.group_order as group_order,
+    (select count(*) from \"sap.ino.db.evaluation::t_criterion\" as criterion
+    	where evaluation.model_code = criterion.model_code  and criterion.aggregation_type = 'MATRIX') as is_matrix_aggregation,
+    idea.name as idea_name,
+    campaign.id as campaign_id,
+    campaign.color_code as campaign_color,
+    campaign_t.name AS campaign_name,
+    campaign_t.short_name AS campaign_short_name,
+    model.enable_formula as model_enable_formula,
+    model.calc_formula as model_calc_formula,
+    eval_req_item.id as eval_req_item_id
+    from \"sap.ino.db.evaluation::t_evaluation\" as evaluation
+    inner join \"sap.ino.db.evaluation::t_model\" as model
+		on evaluation.model_code = model.code
+	left outer join \"sap.ino.db.iam::t_object_identity_role\" as identity_role_evaluator
+    	on  identity_role_evaluator.object_id = evaluation.id and 
+        	identity_role_evaluator.object_type_code = 'EVALUATION' and 
+            identity_role_evaluator.role_code = 'EVALUATION_OWNER'
+	left outer join \"sap.ino.db.iam::t_identity\" as ident_evaluator 
+    	on ident_evaluator.id = identity_role_evaluator.identity_id 
+	left outer join \"sap.ino.db.evaluation::v_criterion_value_overall\" as evaluation_overall_result
+		on evaluation.id = evaluation_overall_result.evaluation_id
+	left outer join \"sap.ino.db.iam::v_identity_settings\" as identity_settings
+        on identity_settings.identity_id = identity_role_evaluator.identity_id
+    left outer join \"sap.ino.db.idea::t_idea\" as idea
+        on evaluation.idea_id = idea.id
+    left outer join \"sap.ino.db.campaign::t_campaign\" as campaign
+        on idea.campaign_id = campaign.id
+    left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign_t 
+        on campaign_t.campaign_id = campaign.id
+    left outer join \"sap.ino.db.evaluation::v_evaluation_request_item_all\" as eval_req_item
+        on eval_req_item.idea_id = evaluation.idea_id 
+            and eval_req_item.idea_phase_code = evaluation.idea_phase_code
+            and ident_evaluator.id = eval_req_item.expert_id
+            and  eval_req_item.status_code = 'sap.ino.config.EVAL_REQ_ACCEPTED'
+    left outer join (
+        select idea_id, idea_phase_code, ROW_NUMBER() over (partition by idea_id order by last_date desc) as group_order from (
+          select max(changed_at) last_date, idea_phase_code, idea_id from \"sap.ino.db.evaluation::t_evaluation\" group by idea_phase_code, idea_id
+        )
+    ) as evaluation_group_orders
+        on evaluation.idea_id = evaluation_group_orders.idea_id and evaluation.idea_phase_code = evaluation_group_orders.idea_phase_code
+    left outer join \"sap.ino.db.idea::v_idea_settings_test\" as settings 
+    on settings.idea_id = evaluation.idea_id
+    with read only";
+depends_on_table = ["sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.evaluation::t_model",
+					"sap.ino.db.evaluation::t_criterion",  
+                    "sap.ino.db.evaluation::t_evaluation",
+                    "sap.ino.db.iam::t_object_identity_role", 
+                    "sap.ino.db.iam::t_identity",
+                    "sap.ino.db.idea::t_idea"];
+                    
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale",
+                   "sap.ino.db.evaluation::v_criterion_value_overall",
+                   "sap.ino.db.iam::v_identity_settings",
+                   "sap.ino.db.evaluation::v_evaluation_request_item_all",
+                   "sap.ino.db.idea::v_idea_settings_test"];

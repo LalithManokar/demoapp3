@@ -1,0 +1,63 @@
+schema = "SAP_INO_EXT";
+query = "
+SELECT DISTINCT
+    idea_comment.ID, 
+	idea_comment.CREATED_AT, 
+	idea_comment.CREATED_BY_ID, 
+	idea_comment.CHANGED_AT, 
+	idea_comment.CHANGED_BY_ID, 
+	idea_comment.OBJECT_ID, 
+	idea_comment.COMMENT, 
+	idea_comment.PARENT_ID, 
+	idea_comment.CHANGED_BY_NAME, 
+	idea_comment.CHANGED_BY_IMAGE_ID, 
+	idea_comment.HAS_ATTACHMENTS, 
+	idea_comment.HAS_REPLIES, 
+	idea_comment.CAN_UPDATE, 
+	idea_comment.CAN_DELETE,
+	idea_comment.source_id,
+	0 AS STATUS
+FROM \"sap.ino.db.idea::v_idea_comment\" AS idea_comment
+INNER JOIN \"sap.ino.db.idea::v_auth_ideas_read\" AS auth_idea
+    ON idea_comment.OBJECT_ID = auth_idea.IDEA_ID
+WHERE idea_comment.parent_id IS NULL
+
+UNION ALL
+
+SELECT DISTINCT
+    comment_h.ID, 
+	comment_h.CREATED_AT, 
+	comment_h.CREATED_BY_ID, 
+	comment_h.CHANGED_AT, 
+	comment_h.CHANGED_BY_ID, 
+	comment_h.OBJECT_ID, 
+	'' AS COMMENT, 
+	comment_h.PARENT_ID, 
+    changed_user.name AS CHANGED_BY_NAME,
+    changed_user.identity_image_id AS CHANGED_BY_IMAGE_ID,
+	0 AS HAS_ATTACHMENTS, 
+	1 AS HAS_REPLIES, 
+	0 AS CAN_UPDATE, 
+	0 AS CAN_DELETE,
+	idea_comment.source_id,
+	1 AS STATUS
+FROM \"sap.ino.db.idea::v_idea_comment\" AS idea_comment
+INNER JOIN \"sap.ino.db.comment::t_comment_h\" AS comment_h
+    ON idea_comment.parent_id = comment_h.id
+INNER JOIN \"sap.ino.db.idea::v_auth_ideas_read\" AS auth_idea
+    ON idea_comment.OBJECT_ID = auth_idea.IDEA_ID
+LEFT OUTER JOIN \"sap.ino.db.iam::v_identity\" AS changed_user
+    ON changed_user.id = idea_comment.changed_by_id
+LEFT OUTER JOIN \"sap.ino.db.iam::v_identity\" AS created_user
+    ON created_user.id = idea_comment.created_by_id  
+WHERE 
+    idea_comment.parent_id IS NOT NULL
+    AND comment_h.parent_id IS NULL
+    AND comment_h.history_db_event = 'DELETED'
+    AND comment_h.object_type_code = 'IDEA'
+    AND comment_h.type_code = 'COMMUNITY_COMMENT'
+with read only";
+
+depends_on_table = ["sap.ino.db.comment::t_comment_h"];
+depends_on_view = ["sap.ino.db.idea::v_idea_comment", "sap.ino.db.idea::v_auth_ideas_read","sap.ino.db.iam::v_identity"];
+

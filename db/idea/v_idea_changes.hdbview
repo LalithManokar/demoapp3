@@ -1,0 +1,101 @@
+schema = "SAP_INO";
+query = "
+select * from (
+      	select  
+			'ACTION_IDEA_TITLE_CHANGED' as change_event,
+			'IDEA' as change_object,
+			history_delta.history_biz_event as history_biz_event,
+    		history.history_at as changed_at,
+	    	history.id as id,
+	    	history.name as name,
+            history.history_actor_id as history_actor_id,
+    		history.campaign_id as campaign_id,
+    		null as field_name,
+    		'IDEA_TITLE' as field_text,
+    		history_delta.name as field_value,
+    		null as field_value_option
+	   	from \"sap.ino.db.idea::t_idea_h\" as history
+	   		inner join \"sap.ino.db.idea::v_idea_h\" as history_delta
+                on history.id = history_delta.id
+                and 
+                history.history_at = history_delta.history_at
+                and 
+                history_delta.name is not null
+                and 
+                history_delta.history_biz_event = 'IDEA_UPDATED'
+                
+    union all
+
+      	select 
+			'ACTION_IDEA_DESCRIPTION_CHANGED' as change_event,
+			'IDEA' as change_object,
+			history_delta.history_biz_event as history_biz_event,
+    		history.history_at as changed_at,
+	    	history.id as id,
+	    	history.name as name,
+            history.history_actor_id as history_actor_id,
+    		history.campaign_id as campaign_id,
+    		null as field_name,
+    		'IDEA_DESCRIPTION' as field_text,
+    		null as field_value,
+    		null as field_value_option
+	   	from \"sap.ino.db.idea::t_idea_h\" as history
+	   		inner join \"sap.ino.db.idea::v_idea_h\" as history_delta
+                on history.id = history_delta.id
+                and 
+                history.history_at = history_delta.history_at
+                and 
+                history_delta.description is not null
+                and 
+                history_delta.history_biz_event = 'IDEA_UPDATED'
+                
+    union all
+
+      	select 
+			'ACTION_' || history_delta.field_code || '_CHANGED' as change_event,
+			'IDEA' as change_object,
+			history_delta.history_biz_event as history_biz_event,
+    		history.history_at as changed_at,
+	    	history.id as id,
+	    	history.name as name,
+            history.history_actor_id as history_actor_id,
+    		history.campaign_id as campaign_id,
+    		field.default_text as field_name,
+    		'IDEA_FORM' as field_text,
+    		case field.datatype_code 
+    		    when 'INTEGER' then TO_NVARCHAR(history_delta.NUM_VALUE)
+    		    when 'NUMERIC' then TO_NVARCHAR(history_delta.NUM_VALUE)
+    		    when 'BOOLEAN' then TO_NVARCHAR(history_delta.BOOL_VALUE)
+    		    when 'TEXT' then history_delta.TEXT_VALUE
+    		    when 'RICHTEXT' then null
+    		    when 'DATE' then TO_NVARCHAR(history_delta.DATE_VALUE)
+    		end as field_value,
+    		case field.datatype_code || IFNULL(field.VALUE_OPTION_LIST_CODE,'')
+    		    when 'INTEGER' then ''
+    		    when 'NUMERIC' then ''
+    		    when 'BOOLEAN' then 'BOOLEAN'
+    		    when 'TEXT' then ''
+    		    when 'RICHTEXT' then ''
+    		    when 'DATE' then 'DATE'
+    		    else
+    		    'sap.ino.xs.object.basis.ValueOptionList.Root_' || field.VALUE_OPTION_LIST_CODE
+    		end as field_value_option
+	   	from \"sap.ino.db.idea::t_idea_h\" as history
+	   		inner join \"sap.ino.db.ideaform::t_field_value_h\" as history_delta
+                on history.id = history_delta.idea_id
+                and 
+                history.history_at = history_delta.history_at
+                and 
+                history_delta.history_biz_event = 'IDEA_UPDATED'
+                and 
+                history_delta.history_db_event <> 'DELETED'
+            inner join \"sap.ino.db.ideaform::t_field\" as field
+                on history_delta.field_code = field.code
+
+) with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea_h",
+                    "sap.ino.db.ideaform::t_field_value_h",
+                    "sap.ino.db.ideaform::t_field"];
+
+depends_on_view =  ["sap.ino.db.idea::v_idea_h"];

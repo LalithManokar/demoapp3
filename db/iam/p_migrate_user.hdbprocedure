@@ -1,0 +1,55 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_migrate_user" (
+    in source_user NVARCHAR(256),
+    in target_user NVARCHAR(256)
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    /* ideas */
+    update "sap.ino.db.idea::t_idea"
+        set created_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :target_user ),
+            changed_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :target_user )
+    where created_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :source_user );
+ 
+    update "sap.ino.db.idea::t_idea_h"
+        set created_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :target_user ),
+            changed_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :target_user )
+    where created_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :source_user );
+ 
+    /* comments */
+    update "sap.ino.db.comment::t_comment"
+        set created_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :target_user ),
+            changed_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :target_user )
+    where created_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :source_user );
+ 
+    update "sap.ino.db.comment::t_comment_h"
+        set created_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :target_user ),
+            changed_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :target_user )
+    where created_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :source_user );
+ 
+    /* votes */
+    update "sap.ino.db.idea::t_vote"
+        set user_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :target_user )
+    where user_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :source_user );
+     
+    /* identity role */
+    update "sap.ino.db.iam::t_object_identity_role" 
+        set identity_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :target_user )
+    where identity_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :source_user );
+     
+    /* content following */
+    update "sap.ino.db.follow::t_follow"
+        set created_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :target_user )
+    where created_by_id = ( select id from "sap.ino.db.iam::t_identity" where user_name = :source_user );
+    /* check for duplicates */
+    select * from "sap.ino.db.follow::t_follow" as v
+    inner join (
+    select object_type_code, object_id, created_by_id, count(*)
+        from "sap.ino.db.follow::t_follow"
+        group by object_type_code, object_id, created_by_id
+        having count(*) > 1 ) as w
+    on v.object_type_code = w.object_type_code and v.object_id = w.object_id and v.created_by_id = w.created_by_id;
+    
+end;

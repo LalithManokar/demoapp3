@@ -1,0 +1,15 @@
+schema = "SAP_INO";
+query = "select item_forward.*,
+                from_identity.name as from_identity_name,
+                from_identity.image_id as from_identity_image_id,
+                to_identity.name as to_identity_name,
+                to_identity.image_id as to_identity_image_id
+         from \"sap.ino.db.evaluation::t_evaluation_request_item_forward\" as item_forward
+         left outer join \"sap.ino.db.iam::v_identity\"  as from_identity
+           on item_forward.from_identity = from_identity.id
+         left outer join \"sap.ino.db.iam::v_identity\"  as to_identity
+           on item_forward.to_identity   = to_identity.id
+         with read only";
+
+depends_on_table = ["sap.ino.db.evaluation::t_evaluation_request_item_forward"];
+depends_on_view = ["sap.ino.db.iam::v_identity"];

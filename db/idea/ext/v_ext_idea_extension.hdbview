@@ -1,0 +1,9 @@
+schema = "SAP_INO_EXT";
+query = "select idea_extension.* 
+            from \"sap.ino.db.basis::t_extension\" as idea_extension
+            where idea_extension._object_type_code = 'IDEA' and 
+            	  idea_extension._object_id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")
+            with read only";
+
+depends_on_table = ["sap.ino.db.basis::t_extension"];
+depends_on_view = ["sap.ino.db.idea::v_auth_ideas_read"];

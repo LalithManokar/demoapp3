@@ -1,0 +1,18 @@
+procedure "SAP_INO"."sap.ino.db.feed::p_feed_status_create_test" ()
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    lt_follow = select created_by_id,object_id,object_type_code,CREATED_AT,inst_email_at,email_at from "sap.ino.db.follow::t_follow";
+        
+    lt_new_feed = select * from "sap.ino.db.feed::t_feed_update" 
+    where is_new = 1; 
+        
+    if not IS_EMPTY(:lt_follow) then   
+       if not IS_EMPTY(:lt_new_feed) then
+        select 'lt_new_feed' as da from dummy;
+      end if;
+      select 'lt_follow' as da from dummy;
+    end if;
+end;

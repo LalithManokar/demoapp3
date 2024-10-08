@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="cv_ideas_reward" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="2.3" defaultClient="crossClient" visibility="reportingEnabled" calculationScenarioType="SCRIPT_BASED" scriptParametersCaseSensitive="true" enforceSqlExecution="false">
+<descriptions defaultDescription="cv_ideas_reward"/>
+<defaultSchema schemaName="SAP_INO"/>
+<localVariables>
+  <variable id="campaignId" parameter="true">
+    <variableProperties datatype="INTEGER">
+      <valueDomain type="empty"/>
+      <selection multiLine="false"/>
+    </variableProperties>
+  </variable>
+</localVariables>
+<variableMappings/>
+<dataSources/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+    <viewAttributes>
+      <viewAttribute id="IDEA_ID" datatype="INTEGER"/>
+    
+      <viewAttribute id="IDEA_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="CAMPAIGN_ID" datatype="INTEGER"/>
+      <viewAttribute id="CAMPAIGN_NAME" datatype="NVARCHAR" length="40"/>
+      <viewAttribute id="EMPLOYEE_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="EMPLOYEE_EMAIL" datatype="NVARCHAR" length="256"/>
+      <viewAttribute id="USER_NAME" datatype="NVARCHAR" length="256"/>
+      <viewAttribute id="PHASE_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="REWARD_STATUS" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="REWARD_AMOUNT" datatype="DOUBLE"/>
+      <viewAttribute id="REWARD_UNIT" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="REWARD_SHARE" datatype="DOUBLE"/>
+      <viewAttribute id="CONTRIBUTION_SHARE" datatype="DOUBLE"/></viewAttributes>
+    <calculatedViewAttributes/>
+    <localVariable>#campaignId</localVariable>
+    <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+   var_out = select
+        idea.id as idea_id, 
+        idea.name as idea_name,
+        idea.campaign_id as campaign_id,
+        camp.name AS campaign_name,
+        reward.employee_name,
+        reward.employee_email,
+        reward.user_name,
+        reward.idea_phase_text as phase_name,
+        reward.reward_status_text as reward_status,
+        reward.reward_amount,
+        reward.reward_unit,
+        reward.reward_share,
+        reward.contribution_share
+    from &quot;sap.ino.db.idea::t_idea&quot; as idea 
+    left outer join &quot;sap.ino.db.campaign::v_campaign_t_locale&quot; as camp 
+        on camp.campaign_id = idea.campaign_id
+    left outer join &quot;sap.ino.db.campaign::t_campaign&quot; as campaign 
+        on campaign.id = idea.campaign_id
+    left outer join &quot;sap.ino.db.reward::v_reward&quot; as reward
+        on idea.id = reward.idea_id
+    where idea.campaign_id = :campaignId; 
+
+END /********* End Procedure Script ************/</definition>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Script_View">
+  <attributes>
+    <attribute id="IDEA_ID" order="1" semanticType="empty">
+      <descriptions defaultDescription="COL"/>
+      <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+    </attribute>
+    <attribute id="IDEA_NAME" order="2">
+      <descriptions defaultDescription="COL"/>
+      <keyMapping columnObjectName="Script_View" columnName="IDEA_NAME"/>
+    </attribute>
+    <attribute id="CAMPAIGN_ID" order="3">
+      <descriptions defaultDescription="COL"/>
+      <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+    </attribute>
+    <attribute id="CAMPAIGN_NAME" order="4">
+      <descriptions defaultDescription="COL"/>
+      <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+    </attribute>
+    <attribute id="EMPLOYEE_NAME" order="5">
+      <keyMapping columnObjectName="Script_View" columnName="EMPLOYEE_NAME"/>
+    </attribute>
+    <attribute id="EMPLOYEE_EMAIL" order="6">
+      <keyMapping columnObjectName="Script_View" columnName="EMPLOYEE_EMAIL"/>
+    </attribute>
+    <attribute id="USER_NAME" order="7">
+      <keyMapping columnObjectName="Script_View" columnName="USER_NAME"/>
+    </attribute>
+    <attribute id="PHASE_NAME" order="8">
+      <keyMapping columnObjectName="Script_View" columnName="PHASE_NAME"/>
+    </attribute>
+    <attribute id="REWARD_STATUS" order="9">
+      <keyMapping columnObjectName="Script_View" columnName="REWARD_STATUS"/>
+    </attribute>
+    <attribute id="REWARD_AMOUNT" order="10">
+      <keyMapping columnObjectName="Script_View" columnName="REWARD_AMOUNT"/>
+    </attribute>
+    <attribute id="REWARD_UNIT" order="11">
+      <keyMapping columnObjectName="Script_View" columnName="REWARD_UNIT"/>
+    </attribute></attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="REWARD_SHARE" order="12" aggregationType="sum" measureType="simple">
+      <measureMapping columnObjectName="Script_View" columnName="REWARD_SHARE"/>
+    </measure>
+    <measure id="CONTRIBUTION_SHARE" order="13" aggregationType="sum" measureType="simple">
+      <measureMapping columnObjectName="Script_View" columnName="CONTRIBUTION_SHARE"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

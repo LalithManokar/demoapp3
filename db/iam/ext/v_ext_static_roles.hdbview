@@ -1,0 +1,9 @@
+schema = "SAP_INO_EXT";
+query = "
+    select 
+        logical_role_name as role_code,
+        qualified_role_name as technical_role_code
+    from \"sap.ino.db.iam::v_static_roles\"
+    with read only";
+
+depends_on_view = ["sap.ino.db.iam::v_static_roles"];

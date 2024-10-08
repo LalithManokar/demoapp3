@@ -1,0 +1,40 @@
+PROCEDURE "SAP_INO"."sap.ino.db.campaign::p_campaign_list_filter_count" ( 
+    in searchToken VARCHAR(100),
+    in resp_code  VARCHAR(100),
+    in has_camp_blog NVARCHAR(1),
+    in tagsToken  NVARCHAR(256),
+    in tagsToken1 NVARCHAR(256),
+    in tagsToken2 NVARCHAR(256),
+    in tagsToken3 NVARCHAR(256),
+    in tagsToken4 NVARCHAR(256),
+    out ot_campaign_filter_count  SAP_INO."sap.ino.db.basis::tt_idea_filter_count" 
+)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   READS SQL DATA AS
+BEGIN
+   /*************************************
+       Write your procedure logic 
+   *************************************/
+   
+   
+   ot_campaign_filter_count = SELECT *
+FROM "_SYS_BIC"."sap.ino.db.campaign.ext/v_ext_campaign_search_count"(
+     PLACEHOLDER."$$searchToken$$" => 
+	 :searchToken,
+	 PLACEHOLDER."$$resp_code$$" => 
+	 :resp_code,
+	 PLACEHOLDER."$$has_camp_blog$$" => 
+	 :has_camp_blog,
+	 PLACEHOLDER."$$tagsToken$$" => 
+	 :tagsToken,
+	 PLACEHOLDER."$$tagsToken1$$" => 
+	 :tagsToken1,
+	 PLACEHOLDER."$$tagsToken2$$" => 
+	 :tagsToken2,
+	 PLACEHOLDER."$$tagsToken3$$" => 
+	 :tagsToken3,
+	 PLACEHOLDER."$$tagsToken4$$" => 
+	 :tagsToken4);
+END

@@ -1,0 +1,31 @@
+<core:View xmlns:core="sap.ui.core"
+	xmlns="sap.m" xmlns:l="sap.ui.layout"
+	controllerName="sap.ino.vc.attachment.Attachment"
+	displayBlock="true">
+	<l:VerticalLayout width="100%">
+		<UploadCollection
+        	id="Attachments"
+        	uploadUrl="{local>/ATTACHMENT_UPLOAD_URL}"
+        	multiple="true"
+        	items="{ path : 'object>Attachments', sorter: [{ path: 'CREATED_AT', descending: true }], filters: { path: 'ROLE_TYPE_CODE', operator: 'EQ', value1: 'ATTACHMENT' }}"
+        	showSeparators="None"
+      		fileRenamed="onFileRenamed"
+      		maximumFilenameLength="200"
+        	change="attachmentMixinOnChange"
+        	beforeUploadStarts="attachmentMixinonBeforeUploadStarts"
+        	fileDeleted="attachmentMixinonFileDeleted"
+        	uploadComplete="attachmentMixinonUploadComplete"
+        	uploadEnabled="{ parts : [{ path : 'object>ID', type : null }, { path : 'object>/property/nodes/Root/customProperties/contentEditable', type : null },{path : 'object>/EDITABLE', type : null }], formatter:'.formatter.uploadEnabled' }">
+        	<UploadCollectionItem
+          		contributor="{object>CREATED_BY_NAME}"
+          		documentId="{object>ATTACHMENT_ID}"
+          		fileName="{object>FILE_NAME}"
+          		mimeType="{object>MEDIA_TYPE}"
+          		thumbnailUrl="{ parts:[{path:'object>MEDIA_TYPE'}, {path:'object>ATTACHMENT_ID'}], formatter:'.formatter.previewUrl' }"
+          		uploadedDate="{ path:'object>CREATED_AT', type:'sap.ui.model.type.Date', formatOptions: { style: 'long'}}"
+          		url="{ parts:[{path:'object>ATTACHMENT_ID'}, {path:'object>FILE_NAME'}], formatter:'.formatter.downloadUrl' }"
+          		visibleEdit="{ parts : [{ path : 'object>ATTACHMENT_ID', type : null }, { path : 'object>/property/nodes/Root/customProperties/contentEditable', type : null },{path : 'object>/EDITABLE', type : null }], formatter:'.formatter.attachmentEditable' }"
+          		visibleDelete="{ parts : [{ path : 'object>ATTACHMENT_ID', type : null }, { path : 'object>/property/nodes/Root/customProperties/contentEditable', type : null },{path : 'object>/EDITABLE', type : null }], formatter:'.formatter.attachmentDeletable' }" />
+		</UploadCollection>
+	</l:VerticalLayout>
+</core:View>

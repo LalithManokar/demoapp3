@@ -1,0 +1,27 @@
+schema = "SAP_INO_EXT";
+query = "select 
+        wall.id,
+        wall.name,
+        wall.wall_type_code,
+        wall.is_locked,
+        wall.background_image_url,
+        wall.background_image_zoom,
+        wall.background_image_position_x,
+        wall.background_image_position_y,
+        wall.background_image_width,
+        wall.background_image_height,
+        wall.background_image_repeat,
+        wall.background_color,
+        wall.background_image_attachment_id,
+		wall.view_count,
+        
+        wall.created_at,
+        wall.created_by_name,
+        wall.changed_at
+from \"sap.ino.db.wall::v_wall_lean\" as wall
+			inner join \"sap.ino.db.wall::v_my_walls\" as my_wall
+				on wall.id = my_wall.id 
+          with read only";
+
+depends_on_view = ["sap.ino.db.wall::v_wall_lean", 
+                   "sap.ino.db.wall::v_my_walls"];

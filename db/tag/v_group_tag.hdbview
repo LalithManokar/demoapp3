@@ -1,0 +1,24 @@
+schema = "SAP_INO";
+query = "
+    select  
+        tag_group.*,
+        case when tag_group.count_of_tags is null
+        then (
+            select TO_INT(count(id)) 
+            from \"sap.ino.db.tag::t_assignment_tag\" 
+            where tag_group_id = tag_group.id
+        ) 
+        else 
+        tag_group.count_of_tags
+        end as tags_count,
+        created_by_identity.name as created_by, 
+        changed_by_identity.name as changed_by 
+    from \"sap.ino.db.tag::t_group_tag\" as tag_group
+        left outer join \"sap.ino.db.iam::t_identity\" as created_by_identity
+            on tag_group.created_by_id = created_by_identity.id
+        left outer join \"sap.ino.db.iam::t_identity\" as changed_by_identity
+            on tag_group.changed_by_id = changed_by_identity.id
+    with read only";
+depends_on_table = ["sap.ino.db.tag::t_group_tag",
+                    "sap.ino.db.iam::t_identity",
+                    "sap.ino.db.tag::t_assignment_tag"];

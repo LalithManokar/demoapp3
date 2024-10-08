@@ -1,0 +1,48 @@
+<mvc:View
+    controllerName="sap.ino.vc.notice.NoticeList"
+	xmlns="sap.m"
+	xmlns:ino="sap.ino.controls"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:wall="sap.ino.wall">
+	<Page 
+        id="noticelistpage"
+        enableScrolling="false">
+		<customHeader>
+			<ino:ColorBar 
+                backgroundColor="#f4f4f4"
+                class="sapMBar" 
+                design="Auto">
+				<!--core:Fragment fragmentName="sap.ino.vc.commons.fragments.NavBackButton" type="XML" /-->
+				<ToolbarSpacer class="sapInoNoticSpaceLeftMargin"/>
+				<Label text="{i18n>NOTICE_UPDATE_LIST_TITLE}" class="sapInoNoticeUpdateTitle"/>
+				<ToolbarSpacer/>
+				<ino:NoticeSegmentedButton id="sapInoNoticeUpdateButtons" class="sapInoNoticeSegBtn" selectedKey="newIdeas" select="onNoticeListTypeSelect">
+					<ino:items>
+						<ino:NoticeSegmentedButtonItem icon="sap-icon://InoIcons/latest-update-selected" text="{i18n>NOTICE_NEW_IDEAS_LIST}" key="newIdeas" tooltip="{i18n>NOTICE_NEW_IDEAS_LIST}" displayNotice = "true" textVisible = "true"/>
+						<ino:NoticeSegmentedButtonItem icon="sap-icon://InoIcons/status-update" text="{i18n>NOTICE_NEW_STATUS_LIST}" key="newStatus" tooltip="{i18n>NOTICE_NEW_STATUS_LIST}" displayNotice = "true" />
+						<ino:NoticeSegmentedButtonItem icon="sap-icon://InoIcons/comment-update" text="{i18n>NOTICE_NEW_COMMENTS_LIST}" key="newComments" tooltip="{i18n>NOTICE_NEW_COMMENTS_LIST}"  displayNotice = "true" />
+					</ino:items>
+				</ino:NoticeSegmentedButton>
+				<!--core:Fragment fragmentName="sap.ino.vc.commons.fragments.FullScreenButton" type="XML" / -->
+			</ino:ColorBar>
+		</customHeader>
+		<content>
+			<ScrollContainer
+                id="scrollContainer"
+                horizontal="false"
+                vertical="true"
+                height="100%"
+                class="sapInoObjectList">
+				<VBox>
+					<List
+                        id="noticeIdeaList"
+                        inset="true"
+                        growing="false"
+                    />
+				</VBox>
+			</ScrollContainer>
+		</content>
+	</Page>
+</mvc:View>

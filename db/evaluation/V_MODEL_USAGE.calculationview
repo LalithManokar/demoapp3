@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_MODEL_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="SCRIPT_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="Evaluation Models (Staging Object) and their usage in campaigns"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="VARCHAR" id="MODEL_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_STATUS_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_ID"/>
+        <viewAttribute datatype="VARCHAR" id="IDEA_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="EVALUATION_COUNT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition> 
+ /********* Begin Procedure Script ************/ 
+ BEGIN 
+     var_out = 
+        select 
+          model_usage.model_code,
+          model_usage.campaign_id,
+          model_usage.campaign_name,
+          model_usage.campaign_status_code,
+          model_usage.idea_id,
+          model_usage.idea_name,
+          model_usage.evaluation_count
+        from &quot;sap.ino.db.evaluation::v_model_usage&quot; 
+        as model_usage; 
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="MODEL_CODE" order="1">
+        <descriptions defaultDescription="Evaluation Method"/>
+        <keyMapping columnObjectName="Script_View" columnName="MODEL_CODE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="2" descriptionColumnName="CAMPAIGN_NAME">
+        <descriptions defaultDescription="Campaign"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="3">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_STATUS_CODE" order="4">
+        <descriptions defaultDescription="Campaign Status"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_STATUS_CODE"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="5" descriptionColumnName="IDEA_NAME">
+        <descriptions defaultDescription="Idea"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_NAME" order="6">
+        <descriptions defaultDescription="Idea Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="EVALUATION_COUNT" order="7" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Evaluations"/>
+        <measureMapping columnObjectName="Script_View" columnName="EVALUATION_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

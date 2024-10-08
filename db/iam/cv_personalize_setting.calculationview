@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="cv_personalize_setting" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="This view will contact the data of table: t_personalize_setting "/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.iam::t_personalize_setting" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_personalize_setting"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="sap.ino.db.iam::t_personalize_setting">
+    <descriptions/>
+    <attributes>
+      <attribute id="ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Technical record ID"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_personalize_setting" columnName="ID"/>
+      </attribute>
+      <attribute id="IDENTITY_ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Identity which has personalize setting. Foreign key to t_identity.ID"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_personalize_setting" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="SETTING_VALUE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Personalize Setting Value"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_personalize_setting" columnName="SETTING_VALUE"/>
+      </attribute>
+      <attribute id="OBJECT_TYPE_CODE" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Object type of Personalize"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_personalize_setting" columnName="OBJECT_TYPE_CODE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

@@ -1,0 +1,20 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_restricted_revoke_activated_role" (
+    in ROLE_NAME varchar(256),
+    in USER_NAME varchar(256)
+)
+language sqlscript
+sql security definer
+default schema "SAP_INO"
+as
+begin
+    -- This procedure was established to limit the administrative
+    -- capabilities of the technical XS user. Especially it exists
+    -- to reduce potential SQL injection attack surface.
+
+    declare L_ROLE_NAME varchar(256);
+    -- If this procedures is used with role names not known in SAP Innovation Management
+    -- the select will find nothing. As a consequence the procedure call
+    -- will fail.
+    select ROLE_NAME into L_ROLE_NAME from dummy where ROLE_NAME in (select QUALIFIED_ROLE_NAME FROM "SAP_INO"."sap.ino.db.iam::v_all_static_roles");
+    call "_SYS_REPO"."REVOKE_ACTIVATED_ROLE"(L_ROLE_NAME, USER_NAME);
+end;

@@ -1,0 +1,5 @@
+schema = "SAP_INO";
+query = "select * from \"sap.ino.db.idea::t_idea_read\"";
+
+
+depends_on_table = ["sap.ino.db.idea::t_idea_read"];          

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_IDEA_REWARD" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="SCRIPT_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_ANALYTICS_IDEA_REWARD"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="REWARD_ID"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_ID"/>
+        <viewAttribute datatype="VARCHAR" id="IDEA_PHASE_CODE" length="500"/>
+        <viewAttribute datatype="DOUBLE" id="REWARD_AMOUNT"/>
+        <viewAttribute datatype="VARCHAR" id="STATUS_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="AUTHOR_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition> 
+ /********* Begin Procedure Script ************/ 
+ BEGIN 
+ 	 var_out = select
+ 	                id as reward_id,
+ 	                campaign_id,
+ 	                idea_id,
+ 	                idea_phase_code,
+ 	                reward_amount,
+ 	                status_code, 	                
+ 	                employee_id as author_id 
+ 	              from &quot;sap.ino.db.reward.ext::v_ext_reward&quot;
+ 	                where status_code in ('sap.ino.config.REWARD_SUBMITTED',
+ 	                                      'sap.ino.config.REWARD_PUB_AUTHOR',
+ 	                                      'sap.ino.config.REWARD_PUB_COMMUNITY')  and
+ 	                      download_count > 0; 
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="REWARD_ID" order="1">
+        <descriptions defaultDescription="Human readable identifier"/>
+        <keyMapping columnObjectName="Script_View" columnName="REWARD_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="2">
+        <descriptions defaultDescription="Human readable identifier "/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="3">
+        <descriptions defaultDescription="idea where the reward belongs to. Foreign key to t_idea.ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_PHASE_CODE" order="4">
+        <descriptions defaultDescription="phase where the reward belongs to. Foreign key to t_campaign_phase.ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_PHASE_CODE"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="6">
+        <descriptions defaultDescription="Status Code. Foreign key to t_status.CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="AUTHOR_ID" order="7">
+        <descriptions defaultDescription="author where the reward belongs to. Foreign key to t_identity.ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="AUTHOR_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="REWARD_AMOUNT" order="5" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="reward amount"/>
+        <measureMapping columnObjectName="Script_View" columnName="REWARD_AMOUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

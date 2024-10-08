@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Phases";
+table.columns = [
+    {name = "CODE";              sqlType = VARCHAR;  length = 500; nullable = false; comment = "Phase Code";},
+    {name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default Text for Phase Code";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true;  comment = "Default Long Text for Phase Code";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

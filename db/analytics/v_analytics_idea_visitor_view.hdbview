@@ -1,0 +1,16 @@
+schema = "SAP_INO";
+query = "
+    select count(*) as visitor_count, object_id, year, month, week, day, hour from 
+        (select 
+            object_id,
+            EXTRACT (year FROM acted_at)  as  year,
+            EXTRACT (month FROM acted_at)  as  month,
+    		WEEK (acted_at) as week,
+            EXTRACT (day FROM acted_at)  as  day,
+    		EXTRACT (hour FROM acted_at)  as  hour
+    	from \"sap.ino.db.tracker::t_action_log\"
+        where action_type='VIEW' and object_type='IDEA')
+    group by object_id, year, month, week, day, hour
+    with read only";
+
+depends_on_table = ["sap.ino.db.tracker::t_action_log"];

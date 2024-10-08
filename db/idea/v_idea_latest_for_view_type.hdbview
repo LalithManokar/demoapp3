@@ -1,0 +1,11 @@
+schema = "SAP_INO";
+query = "
+SELECT OBJECT_ID as ID,'SHOW_COMMENT_VIEWER' AS VIEW_TYPE FROM \"sap.ino.db.idea::v_idea_latest_for_comment_viewer\"
+UNION 
+SELECT OBJECT_ID as ID,'SHOW_CREATED_VIEWER' AS VIEW_TYPE FROM \"sap.ino.db.idea::v_idea_latest_for_created_viewer\"
+UNION 
+SELECT OBJECT_ID as ID,'SHOW_UPDATED_VIEWER' AS VIEW_TYPE FROM \"sap.ino.db.idea::v_idea_latest_for_updated_viewer\"
+UNION 
+SELECT OBJECT_ID as ID,'SHOW_STATUSCHANGE_VIEWER' AS VIEW_TYPE FROM \"sap.ino.db.idea::v_idea_latest_for_statuschange_viewer\"
+"; 
+depends_on_view = ["sap.ino.db.idea::v_idea_latest_for_comment_viewer","sap.ino.db.idea::v_idea_latest_for_created_viewer","sap.ino.db.idea::v_idea_latest_for_updated_viewer","sap.ino.db.idea::v_idea_latest_for_statuschange_viewer"];

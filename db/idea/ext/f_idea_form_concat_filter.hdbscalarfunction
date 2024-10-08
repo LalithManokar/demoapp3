@@ -1,0 +1,47 @@
+FUNCTION "SAP_INO"."sap.ino.db.idea.ext::f_idea_form_concat_filter"(code VARCHAR(512), operator INTEGER, value NVARCHAR(128))
+RETURNS result_filter NVARCHAR(1024)
+LANGUAGE SQLSCRIPT  
+SQL SECURITY INVOKER AS
+BEGIN
+    DECLARE datatypecode VARCHAR(500);
+    DECLARE vplc VARCHAR(500);
+    
+    IF(LENGTH(:code)=0 OR :operator = -1 OR LENGTH(:value)=0) THEN
+        result_filter := ' (1!=1) ';
+    ELSE
+        SELECT TOP 1 DATATYPE_CODE INTO datatypecode FROM "sap.ino.db.ideaform::t_field_stage" WHERE CODE = :code;
+        SELECT TOP 1 VALUE_OPTION_LIST_CODE INTO vplc FROM "sap.ino.db.ideaform::t_field_stage" WHERE CODE = :code;
+        
+        IF(:datatypecode = 'BOOLEAN' AND :operator = 0) THEN
+    		result_filter := ' (FIELD_CODE=''' || :code || ''' AND BOOL_VALUE=' || CAST(:value  as TINYINT) || ') ';
+    	ELSEIF(:datatypecode = 'TEXT' AND :operator = 3) THEN
+    	    result_filter := ' (FIELD_CODE=''' || :code || ''' AND CONTAINS(TEXT_VALUE,''' || :value || ''',fuzzy(0.85,''similarCalculationMode=search''), weight(0.5))) ';
+    	ELSEIF(length(:vplc)> -1 AND :datatypecode = 'TEXT' AND :operator = 0) THEN
+    	    result_filter := ' (FIELD_CODE=''' || :code || ''' AND TEXT_VALUE='''  || :value  || ''') ';
+    	ELSEIF(:datatypecode='RICHTEXT' AND :operator = 3) THEN
+    	/* As RICH_TEXT_VALUE is a BLOB the contains operator only is allowed when a fulltext index exists.
+               Fulltext indices are created after import and thus the following line is "activated" by the 
+               after import method "sap.ino.setup.release_2_2_1_3.02_activate_f_idea_form_concat_filter" after the fulltext index has been created */
+    	          result_filter := ' (FIELD_CODE=''' || :code || ''' AND CONTAINS(RICH_TEXT_VALUE,''' || :value || ''', fuzzy(0.85,''similarCalculationMode=search''), weight(0.5))) ';
+    	ELSEIF(:datatypecode = 'DATE') THEN
+    	    IF(:operator = 0) THEN
+    	        result_filter := ' (FIELD_CODE=''' || :code || ''' AND DATE_VALUE=''' || :value || ''') ';
+	        ELSEIF(:operator = 1) THEN
+    	        result_filter := ' (FIELD_CODE=''' || :code || ''' AND DATE_VALUE>=''' || :value || ''') ';
+            ELSEIF(:operator = 2) THEN
+    	        result_filter := ' (FIELD_CODE=''' || :code || ''' AND DATE_VALUE<=''' || :value || ''') ';
+    	    END IF;
+	    ELSEIF(:datatypecode = 'INTEGER' OR :datatypecode = 'NUMERIC') THEN
+	        IF(:operator = 0) THEN
+    	        result_filter := ' (FIELD_CODE=''' || :code || ''' AND NUM_VALUE=' || CAST(:value  as INTEGER) || ') ';
+	        ELSEIF(:operator = 1) THEN
+    	        result_filter := ' (FIELD_CODE=''' || :code || ''' AND NUM_VALUE>=' || CAST(:value  as INTEGER) || ') ';
+            ELSEIF(:operator = 2) THEN
+    	        result_filter := ' (FIELD_CODE=''' || :code || ''' AND NUM_VALUE<=' || CAST(:value  as INTEGER) || ') ';
+    	    END IF;
+    	END IF;
+	END IF;
+	IF(LENGTH(IFNULL(:result_filter,''))<=0) THEN
+	    result_filter := ' (1!=1) ';
+	END IF;
+END;

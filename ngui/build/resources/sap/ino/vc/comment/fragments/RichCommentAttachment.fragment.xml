@@ -1,0 +1,44 @@
+<core:FragmentDefinition
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:u="sap.ui.unified"
+	controllerName="sap.ino.vc.comment.RichCommentAttachment"
+	displayBlock="true">
+	<Toolbar class="sapInoCommentToolBar">
+		<ToolbarSpacer />
+		<u:FileUploader id="commentAttachmentUploader" name="commentAttachmentUploader" enabled="{parts: [ {path: 'data>COMMENT_HAS_PRIVILEGE'},{path: 'data>PARTICIPANT_CAN_COMMENT'},{path: 'data>OPEN_STATUS_SETTING'}], formatter: '.formatter.commentEnabled'}" buttonOnly="true"
+                buttonText="{i18n>COMMENT_OBJECT_BTN_ATTACH}"   uploadUrl="{local>/ATTACHMENT_UPLOAD_URL}" 
+                uploadOnChange="true" sameFilenameAllowed="true" sendXHR="true" uploadProgress="richAttachmentMixinonUploadProgress"
+                uploadComplete="richAttachmentMixinonUploadComplete" change="richAttachmentMixinOnChange" uploadStart="richAttachmentMixinonBeforeUploadStarts"/>
+		<Button text="{i18n>BTN_SAVE}" type="Accept"  
+		        enabled="{parts: [ {path: 'data>COMMENT_HAS_PRIVILEGE'},{path: 'data>PARTICIPANT_CAN_COMMENT'},{path: 'data>OPEN_STATUS_SETTING'}], formatter: '.formatter.commentEnabled'}" 
+		        press="richCommentMixinSubmit" 
+		        tooltip="{parts: [ {path: 'data>COMMENT_HAS_PRIVILEGE'},{path: 'data>PARTICIPANT_CAN_COMMENT'},{path: 'data>OPEN_STATUS_SETTING'}], formatter:'.formatter.commentSaveTooltip'}" />
+	</Toolbar>
+	<UploadCollection
+        	id="commentAttachmentList"
+        	class="sapInoIdeaCommentUploadList"
+        	multiple="true"
+        	items="{ path : 'comment>/Attachments', sorter: [{ path: 'CREATED_AT', descending: true }], filters: { path: 'ROLE_TYPE_CODE', operator: 'EQ', value1: 'ATTACHMENT' }}"
+        	showSeparators="true"
+        	noDataText="{i18n>EMPTY_FLD_TEXT}"
+        	fileDeleted="richAttachmentMixinonFileDeleted"
+        	uploadEnabled="true">
+		<toolbar>
+			<OverflowToolbar class="sapInoIdeaCommentUploadToolbar">    
+			</OverflowToolbar>
+		</toolbar>
+		<items>
+			<UploadCollectionItem
+              		documentId="{comment>ID}"
+              		fileName="{comment>FILE_NAME}"
+              		mimeType="{comment>MEDIA_TYPE}"
+              		thumbnailUrl="{ parts:[{path:'comment>MEDIA_TYPE'}, {path:'comment>ATTACHMENT_ID'}], formatter:'.formatter.previewUrl' }"
+              		uploadedDate="{ path:'comment>CREATED_AT', type:'sap.ui.model.type.Date', formatOptions: { style: 'long'}}"
+              		url="{ path:'comment>ATTACHMENT_ID', formatter:'.formatter.downloadUrl' }"
+              		visibleEdit="false"
+              		visibleDelete="true" />
+		</items>
+	</UploadCollection>
+</core:FragmentDefinition>

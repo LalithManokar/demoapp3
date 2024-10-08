@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE;
+table.temporary = true;
+table.description = "in put table of PROCUDURE p_feed_email_time_update";
+table.columns = [
+    {name = "ID";                     sqlType = INTEGER;                 nullable = false; comment = "Human readable Identifier";}
+  
+    ];

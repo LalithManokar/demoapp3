@@ -1,0 +1,17 @@
+schema = "SAP_INO";
+query = "
+   select limitation.identity_id,
+          limitation.group_id,
+          limitation.OBJECT_ID,
+          limitation.OBJECT_TYPE_CODE,
+          limitation.ACTION_CODE,
+          limitation.DISABLED
+   from\"sap.ino.db.iam::v_object_identity_limitation_action\" as limitation
+   inner join \"sap.ino.db.iam::v_auth_application_user\" as app_user
+   on app_user.id = limitation.identity_id
+        with read only
+";
+
+depends_on_view = ["sap.ino.db.iam::v_object_identity_limitation_action",
+                   "sap.ino.db.iam::v_auth_application_user"
+];

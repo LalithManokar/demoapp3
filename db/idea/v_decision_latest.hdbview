@@ -1,0 +1,44 @@
+schema = "SAP_INO";
+query = "
+    SELECT 
+        ID,
+        CREATED_AT,
+        CREATED_BY_ID,
+        IDEA_ID,
+        DECIDER_ID,
+        DECISION_DATE,
+        REASON,
+        STATUS_ACTION_CODE,
+        PHASE_CODE,
+        STATUS_CODE,
+        SEND_RESPONSE,
+        RESPONSE,
+        TEXT_MODULE_CODE,
+        REASON_CODE,
+        DECISION_REASON_LIST_CODE,
+        DECISION_REASON_LIST_VISIBLE,
+        LINK_LABEL,
+        LINK_URL,
+        DECIDER_NAME,
+        DECIDER_FIRST_NAME,
+        DECIDER_LAST_NAME,
+        DECIDER_USER_NAME
+    FROM 
+        (SELECT 
+            ROW_NUMBER() OVER (PARTITION BY decision.IDEA_ID ORDER BY decision.CREATED_AT DESC) ROW_ORDER,
+            decision.*,
+            iden.NAME AS DECIDER_NAME,
+            iden.FIRST_NAME AS DECIDER_FIRST_NAME,
+            iden.LAST_NAME AS DECIDER_LAST_NAME,
+            iden.USER_NAME AS DECIDER_USER_NAME
+        FROM
+            \"sap.ino.db.idea::t_decision\" AS decision
+        INNER JOIN \"sap.ino.db.idea::t_idea\" AS idea
+            ON decision.IDEA_ID = idea.ID and decision.STATUS_CODE = idea.STATUS_CODE AND decision.PHASE_CODE = idea.PHASE_CODE
+        LEFT OUTER JOIN \"sap.ino.db.iam::t_identity\" AS iden
+            ON decision.DECIDER_ID = iden.ID)
+    WHERE ROW_ORDER = 1
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.idea::t_decision", "sap.ino.db.idea::t_idea", "sap.ino.db.iam::t_identity"];

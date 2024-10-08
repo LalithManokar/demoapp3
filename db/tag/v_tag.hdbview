@@ -1,0 +1,42 @@
+schema = "SAP_INO";
+query = "
+    select
+        tag.id,
+        tag.name,
+        tag.vanity_code,
+        tag.created_at,
+        tag.created_by_id,
+        tag.changed_at,
+        tag.changed_by_id,
+        tag_follow.id as follow, 
+        created_by_identity.name as created_by,
+        changed_by_identity.name as changed_by,
+        count(object_tag.id) as usage_count
+    from \"sap.ino.db.tag::t_tag\" as tag
+        left outer join \"sap.ino.db.iam::t_identity\" as created_by_identity
+            on tag.created_by_id = created_by_identity.id
+        left outer join \"sap.ino.db.iam::t_identity\" as changed_by_identity
+            on tag.changed_by_id = changed_by_identity.id
+        left outer join \"sap.ino.db.tag::t_object_tag\" as object_tag
+            on tag.id = object_tag.tag_id
+        left outer join \"sap.ino.db.follow::v_follow\"as tag_follow
+            on tag.id = tag_follow.object_id    
+            and tag_follow.object_type_code = 'TAG'
+    group by
+        tag.id,
+        tag.name,
+        tag.vanity_code,
+        tag.created_at,
+        tag.created_by_id,
+        tag.changed_at,
+        tag.changed_by_id,
+        tag_follow.id, 
+        created_by_identity.name,
+        changed_by_identity.name
+    with read only";
+
+depends_on_table = ["sap.ino.db.tag::t_tag",
+                    "sap.ino.db.iam::t_identity",
+                    "sap.ino.db.tag::t_object_tag"];
+                    
+depends_on_view = ["sap.ino.db.follow::v_follow"];

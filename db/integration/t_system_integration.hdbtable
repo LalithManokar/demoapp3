@@ -1,0 +1,33 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "System level for API of Integration";
+table.columns = [
+    {name = "ID";               sqlType = INTEGER;                nullable = false;                     comment = "technical user identifier - must never be exposed to end users";},
+    {name = "CREATED_AT";       sqlType = TIMESTAMP;              nullable = false;                     comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID";    sqlType = INTEGER;                nullable = false;                     comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+    {name = "CHANGED_AT";       sqlType = TIMESTAMP;              nullable = false;                     comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID";    sqlType = INTEGER;                nullable = false;                     comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";},
+    {name = "APINAME";             sqlType = NVARCHAR; length = 64; nullable = false;                   comment = "Display name";},
+    {name = "TECHNICAL_NAME";       sqlType = NVARCHAR; length = 128; nullable = false;                 comment = "Using For identify API ";},
+    {name = "SYSTEM_NAME";        sqlType = NVARCHAR; length = 64; nullable = false;                    comment = "Stantard name for destination";},
+    {name = "SYSTEM_PACKAGE_NAME";    sqlType = NVARCHAR; length = 256; nullable = false;                comment = "Package name for destination";},
+    {name = "CREATE_METHOD";        sqlType = NVARCHAR; length = 16;              nullable = false;       comment = "Http method for create API";},
+    {name = "CREATE_PATH";          sqlType = NVARCHAR; length = 512;               nullable = true;                      comment = "User defined create API path ";},
+    {name = "FETCH_METHOD";        sqlType = NVARCHAR; length = 16;              nullable = true;       comment = "Http method for fetch API";},
+    {name = "FETCH_PATH";          sqlType = NVARCHAR; length = 512;               nullable = true;                      comment = "User defined fetch API path ";},
+    {name = "CREATE_REQ_JSON"; sqlType = NCLOB;              nullable = false;        comment = "JSON metadata for the request of create API tree";},
+    {name = "CREATE_RES_JSON"; sqlType = NCLOB;                nullable = true;        comment = "JSON metadata for the resposne of create API tree";},
+    {name = "FETCH_REQ_JSON"; sqlType = NCLOB;              nullable = true;        comment = "JSON metadata for the request of fetch API tree";},
+    {name = "FETCH_RES_JSON"; sqlType = NCLOB;                nullable = true;        comment = "JSON metadata for the resposne of fetch API tree";},
+    {name = "STATUS";            sqlType = NVARCHAR; length = 16; nullable = false;                      comment = "API status";},
+    {name = "CREATE_TOKEN_URL";        sqlType = NVARCHAR; length = 512;             nullable = true;       comment = "Http token for create API";},
+    {name = "CREATE_TOKEN_KEY";        sqlType = NVARCHAR; length = 64;              nullable = true;       comment = "Key for create token";},
+    {name = "CREATE_TOKEN_VALUE";      sqlType = NVARCHAR; length = 64;              nullable = true;       comment = "Value for create token";},
+    {name = "FETCH_TOKEN_URL";         sqlType = NVARCHAR; length = 512;             nullable = true;       comment = "Http token for fetch API";},
+    {name = "FETCH_TOKEN_KEY";         sqlType = NVARCHAR; length = 64;              nullable = true;       comment = "Key for fetch token";},
+    {name = "FETCH_TOKEN_VALUE";       sqlType = NVARCHAR; length = 64;              nullable = true;       comment = "Value for fetch token";},
+    {name = "CREATE_LOCATION_ID";       sqlType = NVARCHAR; length = 128; nullable = true;                 comment = "Using For identify location ";},
+    {name = "FETCH_LOCATION_ID";       sqlType = NVARCHAR; length = 128; nullable = true;                 comment = "Using For identify location ";}
+];
+table.primaryKey.pkcolumns = ["ID"];
+    

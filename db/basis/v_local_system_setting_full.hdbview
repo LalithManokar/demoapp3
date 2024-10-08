@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = "
+select
+    local_setting.id,
+    setting.code,
+    setting.value as default_value,
+    case when local_setting.id is null then setting.value else local_setting.value end as value,
+    setting.datatype_code,
+    setting.code_table,
+    setting.group_id,
+    setting.group_order,
+    setting.has_local_system_setting
+from \"sap.ino.db.basis::t_system_setting\" as setting
+    left outer join
+    \"sap.ino.db.basis::t_local_system_setting\" as local_setting
+    on setting.code = local_setting.code with read only";
+
+depends_on_table = ["sap.ino.db.basis::t_system_setting",
+                    "sap.ino.db.basis::t_local_system_setting"];

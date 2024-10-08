@@ -1,0 +1,111 @@
+<mvc:View
+    controllerName="sap.ino.vc.internal.InternalSection"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns:ino="sap.ino.controls">
+	<l:BlockLayout id="BlockLayout">
+		<l:BlockLayoutRow>
+			<l:BlockLayoutCell width="3">
+			   	<core:Fragment fragmentName="sap.ino.vc.internal.fragments.AdminFormFields" type="XML"/>
+				<VBox width="100%" class="sapInoInternalNotesVBox">
+					<Toolbar width="100%">
+						<Title class="sapInoInternal" text="{i18n>INTERNALNOTE_TOOLBAR_TIT}"/>
+					</Toolbar>
+					<!--<FeedInput
+                            id="internalNoteInputField"
+                            post="commentMixinSubmit"
+                            placeholder="{i18n>INTERNALNOTE_INPUT_PLACEHOLDER}"
+                            value="{path:'comment>/COMMENT', type:null}"
+                            icon="{ path:'view>/USER_IMAGE_ID', formatter:'.formatter.userIcon' }"
+                            class="sapUiSmallMarginTopBottom sapInoIdeaCommentItemInput"
+                            maxLength="{comment>/meta/nodes/Root/attributes/COMMENT/maxLength}"/><List
+                            showSeparators="Inner"
+                            items="{path : 'data>InternalNotes', sorter:[{path: 'CREATED_AT', descending: true}]}"
+                            id="internalNoteList"
+                            noDataText="{i18n>INTERNALNOTE_NO_DATA}"><FeedListItem
+                                sender="{data>CHANGED_BY_NAME}"
+                                icon="{ path:'data>CHANGED_BY_IMAGE_ID', formatter:'.formatter.userIcon' }"
+                                senderPress="commentMixinOnUserPressed"
+                                iconPress="commentMixinOnUserPressed"
+                                iconDensityAware="false"
+                                timestamp="{path: 'data>CHANGED_AT', type: 'sap.ui.model.type.Date', formatOptions: { relative: true}}"
+                                text="{data>COMMENT}"
+                                detailPress="commentMixinOnDetailPress"
+                                type="{:=${data>CAN_UPDATE} === 1 || ${data>CAN_DELETE} === 1 ? 'Detail' : 'Inactive'}"
+                                class="sapInoIdeaCommentItem"
+                                /></List>-->
+					<VBox>
+						<!--<VBox id="rteInternalContainer" visible="{=${device>/system/desktop}}" height="100%"  width="100%" />
+						<ino:MobileTextEditor visible="{=!${device>/system/desktop}}" showToolbar="false" value="{comment>/COMMENT}"
+                            maxHeight="20rem" minHeight="10rem" openInDialog="true" />-->
+                        <core:Fragment fragmentName="sap.ino.vc.internal.fragments.RichCommentCtrl" type="XML" />  
+						<core:Fragment fragmentName="sap.ino.vc.comment.fragments.RichCommentAttachment" type="XML" />
+					</VBox>
+					<List
+                        showSeparators="All"
+                        items="{path : 'data>InternalNotes', sorter:[{path: 'CREATED_AT', descending: true}], templateShareable:'false'}"
+                        id="internalNoteList"
+                        noDataText="{i18n>INTERNALNOTE_NO_DATA}"
+                        inset="true"
+                        backgroudDesign = "Translucent"
+                        growing="true"
+                        growingThreshold="3"
+                        growingScrollToLoad="true"
+                        enableBusyIndicator="true"
+                        class="sapInoIdeaCommentList">
+						<items>
+							<CustomListItem class="sapInoIdeaCommentItem">
+								<content>
+									<core:Fragment fragmentName="sap.ino.vc.comment.fragments.RichCommentItem" type="XML" />
+								</content>
+							</CustomListItem>
+						</items>
+					</List>
+				</VBox>
+			</l:BlockLayoutCell>
+			<l:BlockLayoutCell width="1">
+				<ino:WrappingList id="interalwalllistinidea"
+                        growing="true"
+                        growingThreshold="{path : 'device>/system', formatter: '.formatter.listThreshold'}"
+                        growingScrollToLoad="true"
+                        itemPress="onItemPress"
+                        showNoData="true"
+                        wrapping="true">
+					<ino:headerToolbar>
+						<Toolbar width="100%">
+							<content>
+								<Title  text="{i18n>INTERNALWALL_TIT}" />
+								<ToolbarSpacer />
+								<Button id="walllistinideaadd" icon="sap-icon://add"  press="onWallAdd" visible="true" />
+							</content>
+						</Toolbar>
+					</ino:headerToolbar>
+				</ino:WrappingList>
+				<UploadCollection
+                	id="InternalAttachments"
+                	uploadUrl="{local>/ATTACHMENT_UPLOAD_URL}"
+                	multiple="true"
+                	items="{ path : 'object>InternalAttachments', sorter: [{ path: 'CREATED_AT', descending: true }], filters: { path: 'ROLE_TYPE_CODE', operator: 'EQ', value1: 'ATTACHMENT' }}"
+                	showSeparators="None"
+                	change="attachmentMixinOnChange"
+                	beforeUploadStarts="attachmentMixinonBeforeUploadStarts"
+                	fileDeleted="attachmentMixinonFileDeleted"
+                	uploadComplete="attachmentMixinonUploadComplete"
+                	uploadEnabled="true">
+					<UploadCollectionItem
+                  		contributor="{object>CREATED_BY_NAME}"
+                  		documentId="{object>ID}"
+                  		fileName="{object>FILE_NAME}"
+                  		mimeType="{object>MEDIA_TYPE}"
+                  		thumbnailUrl="{ parts:[{path:'object>MEDIA_TYPE'}, {path:'object>ATTACHMENT_ID'}], formatter:'.formatter.previewUrl' }"
+                  		uploadedDate="{ path:'object>CREATED_AT', type:'sap.ui.model.type.Date', formatOptions: { style: 'long'}}"
+                  		url="{ path:'object>ATTACHMENT_ID', formatter:'.formatter.downloadUrl' }"
+                  		visibleEdit="false"
+                  		visibleDelete="{ parts : [{ path : 'object>ID', type : null }], formatter:'.formatter.attachmentDeletable' }" />
+				</UploadCollection>
+			</l:BlockLayoutCell>
+		</l:BlockLayoutRow>
+	</l:BlockLayout>
+</mvc:View>

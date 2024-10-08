@@ -1,0 +1,56 @@
+procedure "SAP_INO"."sap.ino.db.basis::p_tag_cloud" (
+    in  it_object_tag SAP_INO."sap.ino.db.basis::tt_object_tag",
+    out ot_ranked_tag SAP_INO."sap.ino.db.basis::tt_ranked_tag"
+)
+language sqlscript 
+sql security invoker
+default schema SAP_INO 
+reads sql data as
+begin
+    declare lv_object_count int;
+
+    -- count objects per tag
+    lt_tag_frequency = select tag_id, count(*) as frequency
+                       from :it_object_tag as tag
+                       group by tag_id;
+
+    -- sort tags by object count and throw away anything that can not possibly make it into the tag cloud
+    lt_tag_sorted_by_frequency = select tag_id, frequency, '' as dummy 
+                                 from :lt_tag_frequency as tag 
+                                 order by frequency desc limit 20;
+
+    -- compute ranking of the remaining tags
+    lt_tag_ranked_by_frequency = select tag_id, row_number() over (partition by dummy order by frequency desc) as r
+                                 from :lt_tag_sorted_by_frequency as tag;
+
+    -- determine total number of objects
+    select count(*) into lv_object_count from :it_object_tag as tag;
+    
+    -- sort tags by entropy proxy and throw away anything that can not possibly make in into the tag cloud
+    lt_tag_sorted_by_entropy = select tag_id, abs(:lv_object_count-2*frequency) as entropy_proxy, '' as dummy
+                               from :lt_tag_frequency as tag
+                               order by entropy_proxy asc limit 20;
+
+    -- compute ranking of the remaining tags
+    lt_tag_ranked_by_entropy = select tag_id, row_number() over (partition by dummy order by entropy_proxy asc) as r
+                               from :lt_tag_sorted_by_entropy as tag;
+                               
+    -- combine both sets into a combined list
+    lt_combined_tag_ranks = select tag_id, r from :lt_tag_ranked_by_entropy union all 
+                            select tag_id, r from :lt_tag_ranked_by_frequency;
+                               
+    -- for each tag only keep the better rank 
+    lt_merged_tag_ranks = select tag_id, min(r) as r, '' as dummy
+                          from :lt_combined_tag_ranks as tag
+                          group by tag_id;
+
+    lt_ranked_tag = select tag_id, row_number() over (partition by dummy order by r asc) as "RANK"
+                    from :lt_merged_tag_ranks as tag;
+
+    ot_ranked_tag = select tag.id, name, "RANK"
+                    from :lt_ranked_tag as "RANK", "sap.ino.db.tag::t_tag" as tag
+                    where tag.id = "RANK".tag_id 
+                    order by 
+                    "RANK" asc 
+                    limit 20;
+end;

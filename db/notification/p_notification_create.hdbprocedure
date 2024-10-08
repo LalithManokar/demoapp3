@@ -1,0 +1,575 @@
+procedure "SAP_INO"."sap.ino.db.notification::p_notification_create" () 
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    lt_current = select * from "sap.ino.db.notification::v_notification_latest_time";
+
+    lt_object = select id, campaign_id, name, 'IDEA' as type_code, created_by_id
+            from "sap.ino.db.idea::t_idea"
+        union all select id, id as campaign_id, name, 'CAMPAIGN' as type_code, created_by_id 
+            from (select campaign.id, campaign.created_by_id, camp_locale.name 
+                      from "sap.ino.db.campaign::t_campaign" as campaign
+                      inner join "sap.ino.db.campaign::v_campaign_t_locale" as camp_locale
+                          on campaign.id = camp_locale.campaign_id);
+    -- convert the null value into empty string for further processing
+    lt_decision = select
+            idea.id as object_id, 'IDEA' as object_type_code,
+            idea.history_at as event_at, idea.history_biz_event as notification_code, 
+            idea.history_actor_id as actor_id, idea.created_by_id as owner_id, 
+            left(idea.name, 100) as object_text, null as sub_text, 0 as involved_id,
+            campaign_id, 
+            response.DECIDER_ID,
+            IFNULL(response.text_module_code, '') as text_module_code, 
+            IFNULL(response.reason_code, '') as reason_code,
+            IFNULL(response.reason, '') as reason_text,
+            IFNULL(response.link_label, '') as link_label,
+            IFNULL(response.link_url, '') as link_url,
+            response.response as response
+        from
+            :lt_current as time,
+            "sap.ino.db.idea::t_idea_h" as idea
+            left outer join 
+                "sap.ino.db.idea::t_decision" as response
+            on idea.id = response.idea_id and
+                idea.history_at = response.created_at and
+                response.send_response = 1
+        where 
+            history_biz_event like 'STATUS_ACTION%' and
+            history_at > time.latest;
+            
+    lt_eval_req =
+--for newly created evaluation request item    
+        select
+           eval_req_item.id                as object_id,   'EVAL_REQUEST_ITEM'                                            as object_type_code,
+           eval_req_item.history_at        as event_at,    'EVAL_REQ_ITEM_CREATED'                                        as notification_code,
+           eval_req_item.history_actor_id  as actor_id,    ifnull(eval_req_item.created_by_id, eval_req.created_by_id)    as owner_id,
+           left(idea.name, 100)            as object_text, null                                                           as sub_text,
+           0                               as involved_id,
+           idea.campaign_id
+        from 
+            :lt_current as time,
+            "sap.ino.db.evaluation::t_evaluation_request_item_h" as eval_req_item
+            left outer join
+               "sap.ino.db.evaluation::t_evaluation_request"     as eval_req
+               on eval_req.id = eval_req_item.eval_req_id
+            left outer join 
+               "sap.ino.db.idea::t_idea"                         as idea
+               on idea.id = eval_req.idea_id
+        where 
+             history_at > time.latest and eval_req_item.history_biz_event = 'EVAL_REQ_CREATED' and not exists(
+                 select * from "sap.ino.db.evaluation::t_evaluation_request_item_h" as delete_item where (delete_item.history_biz_event = 'EVAL_REQ_DELETED' or delete_item.history_biz_event = 'EVAL_REQ_ITEM_DELETED') and
+                                                                                                         delete_item.id = eval_req_item.id and
+                                                                                                         delete_item.eval_req_id = eval_req_item.eval_req_id
+             )
+--for re-assigned situation
+        union
+        select
+           eval_req_item.id                as object_id,   'EVAL_REQUEST_ITEM'                                            as object_type_code,
+           eval_req_item.history_at        as event_at,    'EVAL_REQ_ITEM_CREATED'                                        as notification_code,
+           eval_req_item.history_actor_id  as actor_id,    ifnull(eval_req_item.created_by_id, eval_req.created_by_id)    as owner_id,
+           left(idea.name, 100)            as object_text, null                                                           as sub_text,
+           0                               as involved_id,
+           idea.campaign_id
+        from 
+            :lt_current as time,
+            "sap.ino.db.evaluation::t_evaluation_request_item_h" as eval_req_item
+            left outer join
+               "sap.ino.db.evaluation::t_evaluation_request"     as eval_req
+               on eval_req.id = eval_req_item.eval_req_id
+            left outer join 
+               "sap.ino.db.idea::t_idea"                         as idea
+               on idea.id = eval_req.idea_id
+        where 
+             history_at > time.latest and eval_req_item.history_biz_event = 'EVAL_REQ_UPDATED' and eval_req_item.history_db_event = 'CREATED' and not exists(
+                 select * from "sap.ino.db.evaluation::t_evaluation_request_item_h" as delete_item where (delete_item.history_biz_event = 'EVAL_REQ_DELETED' or delete_item.history_biz_event = 'EVAL_REQ_ITEM_DELETED') and
+                                                                                                         delete_item.id = eval_req_item.id and
+                                                                                                         delete_item.eval_req_id = eval_req_item.eval_req_id
+             )
+        union
+        select
+           eval_req_item.id                as object_id,   'EVAL_REQUEST_ITEM'                                            as object_type_code,
+           eval_req_item.history_at        as event_at,    'EVAL_REQ_ITEM_DELETED'                                        as notification_code,
+           eval_req_item.history_actor_id  as actor_id,    ifnull(eval_req_item.created_by_id, eval_req.created_by_id)    as owner_id,
+           left(idea.name, 100)            as object_text, null                                                           as sub_text,
+           0                               as involved_id,
+           idea.campaign_id
+        from 
+            :lt_current as time,
+            "sap.ino.db.evaluation::t_evaluation_request_item_h" as eval_req_item
+            left outer join
+               "sap.ino.db.evaluation::t_evaluation_request"     as eval_req
+               on eval_req.id = eval_req_item.eval_req_id
+            left outer join 
+               "sap.ino.db.idea::t_idea"                         as idea
+               on idea.id = eval_req.idea_id
+        where 
+             history_at > time.latest and eval_req_item.history_biz_event = 'EVAL_REQ_UPDATED' and eval_req_item.history_db_event = 'DELETED' and not exists(
+                 select * from "sap.ino.db.evaluation::t_evaluation_request_item_h" as delete_item where (delete_item.history_biz_event = 'EVAL_REQ_DELETED' or delete_item.history_biz_event = 'EVAL_REQ_ITEM_DELETED') and
+                                                                                                         delete_item.id = eval_req_item.id and
+                                                                                                         delete_item.eval_req_id = eval_req_item.eval_req_id
+             )
+        union
+        select
+           eval_req_item.eval_req_id       as object_id,   'EVAL_REQUEST'                                                 as object_type_code,
+           eval_req_item.history_at        as event_at,    eval_req_item.history_biz_event                                as notification_code,
+           eval_req_item.history_actor_id  as actor_id,    ifnull(eval_req_item.created_by_id, eval_req.created_by_id)    as owner_id,
+           left(idea.name, 100)            as object_text, null                                                           as sub_text,
+           0                               as involved_id,
+           idea.campaign_id
+        from 
+            :lt_current as time,
+            "sap.ino.db.evaluation::t_evaluation_request_item_h" as eval_req_item
+            left outer join
+               "sap.ino.db.evaluation::t_evaluation_request"     as eval_req
+               on eval_req.id = eval_req_item.eval_req_id
+            left outer join 
+               "sap.ino.db.idea::t_idea"                         as idea
+               on idea.id = eval_req.idea_id
+        where 
+             history_at > time.latest and eval_req_item.history_biz_event like 'STATUS_ACTION_sap.ino.config.EVAL_REQ%' and not exists(
+                 select * from "sap.ino.db.evaluation::t_evaluation_request_item_h" as delete_item where (delete_item.history_biz_event = 'EVAL_REQ_DELETED' or delete_item.history_biz_event = 'EVAL_REQ_ITEM_DELETED') and
+                                                                                                         delete_item.id = eval_req_item.id and
+                                                                                                         delete_item.eval_req_id = eval_req_item.eval_req_id
+             )
+        union
+        --Retrieve those items which will be expired in 1 day
+        select
+           eval_req_item.id                as object_id,   'EVAL_REQUEST_ITEM'                                            as object_type_code,
+           to_timestamp(current_date)      as event_at,    'EVAL_REQ_EXPIRE_IN_ONE_DAY'                                   as notification_code,
+           eval_req.created_by_id          as actor_id,    eval_req.created_by_id                                         as owner_id,
+           left(idea.name, 100)            as object_text, null                                                              as sub_text,
+           0                               as involved_id,
+           idea.campaign_id
+        from 
+            :lt_current as time,
+            "sap.ino.db.evaluation::t_evaluation_request_item" as eval_req_item
+            left outer join
+               "sap.ino.db.evaluation::t_evaluation_request"     as eval_req
+               on eval_req.id = eval_req_item.eval_req_id
+            left outer join 
+               "sap.ino.db.idea::t_idea"                         as idea
+               on idea.id = eval_req.idea_id
+        where 
+             eval_req_item.status_code <> 'sap.ino.config.EVAL_REQ_ITEM_EXPIRED' and ( add_days(CURRENT_TIMESTAMP, 1) = eval_req.accept_date or
+                                                                                       add_days(CURRENT_TIMESTAMP, 1) = eval_req.complete_date ) and  
+             NOT exists( select * from "sap.ino.db.notification::t_notification" where object_id = eval_req_item.id and object_type_code = 'EVAL_REQUEST_ITEM' and
+                                                                                       notification_code = 'EVAL_REQ_EXPIRE_IN_ONE_DAY')
+        --for clarification case
+        union
+        select
+           eval_req_item.id                           as object_id,             'EVAL_REQUEST_ITEM'                          as object_type_code,
+           eval_req_item_clarification.created_at     as event_at,              
+           case when eval_req_owner.id is not null then
+                      'EVAL_REQ_ITEM_CLARIFICATION_RECEIVED'           
+                when eval_req_item_expert.id is not null then
+                      'EVAL_REQ_ITEM_CLARIFICATION_SENT'      
+           end as notification_code,
+           eval_req_item_clarification.created_by_id  as actor_id,              eval_req_item_clarification.created_by_id    as owner_id,
+           left(idea.name, 100)                       as object_text,           null                                         as sub_text,
+           0                                          as involved_id,
+           idea.campaign_id
+        from 
+            :lt_current as time,
+            "sap.ino.db.evaluation::t_evaluation_request_item_clarification" as eval_req_item_clarification
+            left outer join
+               "sap.ino.db.evaluation::t_evaluation_request_item" as eval_req_item
+               on eval_req_item.id = eval_req_item_clarification.eval_req_item_id
+            left outer join
+               "sap.ino.db.evaluation::t_evaluation_request"     as eval_req
+               on eval_req.id = eval_req_item.eval_req_id
+            left outer join 
+               "sap.ino.db.evaluation::v_evaluation_request_owner"  as eval_req_owner
+               on eval_req_item_clarification.eval_req_id = eval_req_owner.eval_req_id and
+                  eval_req_item_clarification.created_by_id = eval_req_owner.identity_id
+            left outer join 
+               "sap.ino.db.evaluation::v_evaluation_request_expert"  as eval_req_item_expert
+               on eval_req_item_clarification.eval_req_item_id = eval_req_item_expert.eval_req_item_id  and
+                  eval_req_item_clarification.created_by_id = eval_req_item_expert.identity_id
+            left outer join 
+               "sap.ino.db.idea::t_idea"                         as idea
+               on idea.id = eval_req.idea_id
+        where 
+             eval_req_item_clarification.created_at > time.latest
+        union
+        select
+           eval_req_item.id                as object_id,   'EVAL_REQUEST_ITEM'                                            as object_type_code,
+           eval_req_item.history_at        as event_at,    eval_req_item.history_biz_event                                as notification_code,
+           eval_req_item.history_actor_id  as actor_id,    ifnull(eval_req_item.created_by_id, eval_req.created_by_id)    as owner_id,
+           left(idea.name, 100)            as object_text, null                                                           as sub_text,
+           0                               as involved_id,
+           idea.campaign_id
+        from 
+            :lt_current as time,
+            "sap.ino.db.evaluation::t_evaluation_request_item_h" as eval_req_item
+            left outer join
+               "sap.ino.db.evaluation::t_evaluation_request"     as eval_req
+               on eval_req.id = eval_req_item.eval_req_id
+            left outer join 
+               "sap.ino.db.idea::t_idea"                         as idea
+               on idea.id = eval_req.idea_id
+        where 
+             history_at > time.latest and eval_req_item.history_biz_event = 'EVAL_REQ_ITEM_EXPIRED' and not exists(
+                 select * from "sap.ino.db.evaluation::t_evaluation_request_item_h" as delete_item where (delete_item.history_biz_event = 'EVAL_REQ_DELETED' or delete_item.history_biz_event = 'EVAL_REQ_ITEM_DELETED') and
+                                                                                                         delete_item.id = eval_req_item.id and
+                                                                                                         delete_item.eval_req_id = eval_req_item.eval_req_id
+             )
+        union
+        select
+           eval_req_item.id                as object_id,   'EVAL_REQUEST_ITEM'                                            as object_type_code,
+           item_forward.forwarded_at       as event_at,    'EVAL_REQ_ITEM_FORWARDED'                                      as notification_code,
+           item_forward.from_identity      as actor_id,    item_forward.from_identity                                     as owner_id,
+           left(idea.name, 100)            as object_text, null                                                           as sub_text,
+           0                               as involved_id,
+           idea.campaign_id
+        from 
+            :lt_current as time,
+            "sap.ino.db.evaluation::t_evaluation_request_item_forward" as item_forward
+            left outer join "sap.ino.db.evaluation::t_evaluation_request" as eval_req
+               on eval_req.id = item_forward.eval_req_id
+            left outer join "sap.ino.db.evaluation::t_evaluation_request_item" as eval_req_item
+               on eval_req_item.id = item_forward.eval_req_item_id
+            left outer join "sap.ino.db.idea::t_idea" as idea
+               on idea.id = eval_req.idea_id
+        where forwarded_at > time.latest;
+        
+    -- get all history events that happened since last notification run 
+    lt_history = 
+    --Notification for feeds
+    select
+            feed.object_id as object_id, feed.object_type_code as object_type_code, event_at, 'FOLLOW_' || feed.feed_code as notification_code,
+            feed.actor_id as actor_id, feed.followed_by_id as owner_id,
+            feed.object_text as object_text, feed.involved_obj_text as sub_text, IFNULL(feed.involved_id, feed.object_id) as involved_id, 
+            feed.campaign_id as campaign_id, null as response
+        from
+            "sap.ino.db.notification::v_notification_campaign_feeds" as feed
+        where
+            (feed_code = 'DATE_REACHED_SUBMIT_TO' or feed_code = 'DATE_REACHED_SUBMIT_FROM'
+            or feed_code = 'DATE_REACHED_REGISTER_TO' or feed_code = 'DATE_REACHED_REGISTER_FROM'
+            or feed_code = 'BLOG_MAJORPUBLISH' or feed_code = 'STATUS_ACTION_SUBMIT' or feed_code = 'DATE_REACHED_VALID_TO') and object_type_code = 'CAMPAIGN'
+            
+    union all
+    --notification for registration request creation
+    select register.campaign_id as object_id, 'REGISTRATION_REQUEST' as object_type_code,
+        register.history_at as event_at, register.history_biz_event as notification_code,
+        register.applicant_id as actor_id, object_role.identity_id as owner_id,
+        register.history_biz_event as object_text, null as sub_text, 0 as involved_id,
+        register.campaign_id, null as response
+        from :lt_current as time,
+            "sap.ino.db.campaign::t_registration_h" as register
+            inner join "sap.ino.db.iam::v_object_identity_role_transitive" as object_role 
+            on register.campaign_id = object_role.object_id
+            inner join "sap.ino.db.campaign::t_campaign" as campaign on 
+                campaign_id = campaign.id 
+            where  (is_register_auto_approve <> 1 or is_register_auto_approve is null) and
+                object_role.object_type_code = 'CAMPAIGN' and
+                object_role.role_code = 'CAMPAIGN_MANAGER' and
+                register.history_biz_event = 'CAMP_REGISTER_CREATED' and
+                history_at > time.latest
+                and register.applicant_id is not null
+    union all
+    --notification for registration request update
+        select register.campaign_id as object_id, 'REGISTRATION_REQUEST' as object_type_code,
+        register.history_at as event_at, register.history_biz_event as notification_code,
+        register.approver_id as actor_id, register.applicant_id as owner_id,
+        left(object.name, 100) as object_text, register.status as sub_text, 0 as involved_id,
+        register.campaign_id, null as response
+        from :lt_current as time,
+            "sap.ino.db.campaign::t_registration_h" as register
+        inner join
+         :lt_object as object
+            on register.campaign_id = object.id and
+            object.type_code = 'CAMPAIGN'
+        where 
+            register.history_biz_event = 'CAMP_REGISTER_UPDATED' and
+            history_at > time.latest
+            and register.approver_id is not null
+    union all
+        select
+            id as object_id, 'IDEA' as object_type_code,
+            history_at as event_at, history_biz_event as notification_code,
+            history_actor_id as actor_id, created_by_id as owner_id,
+            left(name, 100) as object_text, null as sub_text, 0 as involved_id,
+            campaign_id, null as response
+        from
+            :lt_current as time,
+            "sap.ino.db.idea::t_idea_h" AS I_H
+        where 
+            ( ((history_biz_event = 'IDEA_CREATED' or history_biz_event = 'IDEA_UPDATED')  AND EXISTS (SELECT 1 FROM "sap.ino.db.idea::t_idea" AS I WHERE I.ID = I_H.ID AND I.status_code <> 'sap.ino.config.DRAFT')) 
+            or history_biz_event = 'IDEA_DELETED' ) and
+            history_at > time.latest
+    union all
+        select
+            object_id, object_type_code,event_at, notification_code, actor_id, owner_id, 
+            object_text, sub_text, involved_id,  campaign_id, 
+            text_module_code || '_INO_TEXT_CODE_' || 
+            reason_code || '_INO_REASON_CODE_' ||
+            reason_text || '_INO_REASON_TEXT_' ||
+            link_label || '_INO_LINK_LABEL_' ||
+            link_url || '_INO_LINK_URL_' ||
+            IFNULL(DECIDER_ID,0) || '_DECIDER_ID_' ||
+            response as response
+        from
+            :lt_decision
+    union all
+        select
+            object.id as object_id, comment.object_type_code,
+            comment.history_at as event_at, comment.history_biz_event as notification_code, 
+            comment.history_actor_id as actor_id, object.created_by_id as owner_id,
+            left(object.name, 100) as object_text, comment.comment as sub_text, IFNULL(comment.created_by_id,0) as involved_id,
+            object.campaign_id, null as response
+        from
+            :lt_current as time,
+            "sap.ino.db.comment::v_community_comment_h" as comment
+        inner join
+            :lt_object as object
+            on comment.object_id = object.id and
+                comment.object_type_code = object.type_code
+        where
+            comment.history_biz_event = 'COMMENT_DELETED' and comment.history_at > time.latest
+    union all
+        select
+            object_id, object_type_code, history_at as event_at,
+            case history_db_event when 'CREATED' then 'CONTRIB_ADDED' else 'CONTRIB_REMOVED' end as notification_code,
+            history_actor_id as actor_id, idea.created_by_id as owner_id,
+            left(idea.name, 100) as object_text, null as sub_text, idea_role_h.identity_id as involved_id,
+            idea.campaign_id, null as response
+        from
+            :lt_current as time,
+            "sap.ino.db.iam::t_object_identity_role_h" as idea_role_h
+        inner join
+            "sap.ino.db.idea::t_idea" as idea
+            on idea_role_h.object_type_code = 'IDEA' and 
+                idea_role_h.object_id = idea.id
+        where
+            history_db_event <> 'UPDATED' and 
+            idea_role_h.role_code = 'IDEA_CONTRIBUTOR' and
+            idea_role_h.object_type_code = 'IDEA' and 
+            history_at > time.latest
+    union all
+        select
+            object_id, object_type_code, history_at as event_at,
+            case history_db_event when 'CREATED' then 'EXPERT_ASSIGNED' else 'EXPERT_UNASSIGNED' end as notification_code,
+            history_actor_id as actor_id, idea.created_by_id as owner_id,
+            left(idea.name, 100) as object_text, null as sub_text, idea_role_h.identity_id as involved_id,
+            idea.campaign_id, null as response
+        from
+            :lt_current as time,
+            "sap.ino.db.iam::t_object_identity_role_h" as idea_role_h
+        inner join
+            "sap.ino.db.idea::t_idea" as idea
+            on idea_role_h.object_type_code = 'IDEA' and 
+                idea_role_h.object_id = idea.id
+        where
+            history_db_event <> 'UPDATED' and 
+            idea_role_h.role_code = 'IDEA_EXPERT' and
+            idea_role_h.object_type_code = 'IDEA' and 
+            history_at > time.latest
+    union all
+        select
+            object_id, object_type_code, history_at as event_at,
+            case history_db_event when 'CREATED' then 'COACH_ASSIGNED' else 'COACH_UNASSIGNED' end as notification_code,
+            history_actor_id as actor_id, idea.created_by_id as owner_id,
+            left(idea.name, 100) as object_text, null as sub_text, idea_role_h.identity_id as involved_id,
+            idea.campaign_id, null as response
+        from 
+            :lt_current as time,
+            "sap.ino.db.iam::t_object_identity_role_h" as idea_role_h 
+            inner join
+                "sap.ino.db.idea::t_idea" as idea
+                on idea_role_h.object_type_code = 'IDEA' and 
+                    idea_role_h.object_id = idea.id
+        where 
+            ( history_biz_event = 'COACH_ASSIGNED' or history_biz_event = 'COACH_UNASSIGNED' ) and  
+            idea_role_h.role_code = 'IDEA_COACH' and idea_role_h.object_type_code = 'IDEA' and
+            history_at > time.latest
+    union all
+        select
+            object_id, object_type_code, history_at as event_at,
+            case history_db_event when 'CREATED' then 'COACH_ASSIGNED' else 'COACH_UNASSIGNED' end as notification_code,
+            history_actor_id as actor_id, idea.created_by_id as owner_id,
+            left(idea.name, 100) as object_text, null as sub_text, idea_role_h.identity_id as involved_id,
+            idea.campaign_id, null as response
+        from
+            :lt_current as time,
+            "sap.ino.db.iam::t_object_identity_role_h" as idea_role_h
+            inner join
+                "sap.ino.db.idea::t_idea" as idea
+                on idea_role_h.object_type_code = 'IDEA' and 
+                    idea_role_h.object_id = idea.id
+        where
+            history_db_event <> 'UPDATED' and 
+            idea_role_h.role_code = 'IDEA_COACH' and
+            idea_role_h.object_type_code = 'IDEA' and 
+            history_at > time.latest
+    union all
+        select
+            comment.object_id, comment.object_type_code, identity_role.history_at as event_at, identity_role.history_biz_event as notification_code, 
+            identity_role.history_actor_id as actor_id, object.created_by_id as owner_id,
+            left(object.name, 100) as object_text, comment.comment as sub_text, IFNULL(comment.parent_id,0) as involved_id,
+            object.campaign_id, null as response
+        from
+            :lt_current as time,
+            "sap.ino.db.iam::t_object_identity_role_h" as identity_role
+            inner join
+                "sap.ino.db.comment::v_community_comment" as comment
+                on identity_role.object_id = comment.id
+            inner join
+                :lt_object as object
+                on comment.object_id = object.id and
+                    comment.object_type_code = object.type_code
+            where
+                (identity_role.object_type_code = 'COMMENT' or
+                identity_role.object_type_code = 'CAMPAIGN_COMMENT') and
+                identity_role.history_at > time.latest
+    union all 
+        select 
+            idea_id, 'IDEA' as object_type_code, history_at as event_at, history_biz_event as notification_code, 
+            history_actor_id as actor_id, evaluation.created_by_id as owner_id,
+            left(idea.name, 100) as object_text, null as sub_text, 0 as involved_id,
+            idea.campaign_id, null as response
+        from
+            :lt_current as time,
+            "sap.ino.db.evaluation::t_evaluation_h" as evaluation
+            inner join
+                "sap.ino.db.idea::t_idea" as idea
+                    on idea.id = evaluation.idea_id 
+        where
+            history_biz_event like 'STATUS_ACTION%' and 
+            history_at > time.latest 
+    union all 
+        select
+            id as object_id, type_code as object_type_code, history_at as event_at, history_biz_event as notification_code, 
+            history_actor_id as actor_id, created_by_id as owner_id,
+            left(name, 100) as object_text, null as sub_text, id as involved_id,
+            null as campaign_id, null as response
+        from
+            :lt_current as time,
+            "sap.ino.db.iam::t_identity_h"
+        where
+            history_at > time.latest
+    union all
+        select
+            idea_h.id as object_id, 'IDEA' as object_type_code, idea_h.history_at as event_at, 'IDEA_CAMPAIGN_REASSIGN' as notification_code,
+            idea_h.history_actor_id, idea.created_by_id as OWNER_ID,
+            LEFT(idea.name, 100) as OBJECT_TEXT, null as SUB_TEXT, 0 as INVOLVED_ID,
+            idea.campaign_id, null as response
+        from
+            :lt_current as time,
+            "sap.ino.db.idea::v_idea_h" as idea_h
+            inner join
+                "sap.ino.db.idea::t_idea_h" as idea
+            on idea_h.id = idea.id
+        where
+            idea.status_code <> 'sap.ino.config.DRAFT' and 
+            idea.history_at=idea_h.history_at and 
+            idea_h.campaign_id is not null and 
+            idea_h.history_at > time.latest
+    union all
+        select 
+			relation_h.object_id as object_id, 'IDEA' as object_type_code, relation_h.history_at as event_at,
+			case relation_h.source when 1 then 'IDEA_RELATION_' || relation_h.semantic || '_SOURCE' else 'IDEA_RELATION_' || relation_h.semantic || '_TARGET' end as notification_code,
+			relation_h.history_actor_id, case when idea.created_by_id is not null then idea.created_by_id else 0 end as OWNER_ID, 
+			LEFT(idea.name, 100) as OBJECT_TEXT, null as SUB_TEXT, case when  relation_h.SEMANTIC = 'sap.ino.config.MERGED' and relation_h.source = 1 THEN  relation_h.OTHER_OBJECT_ID ELSE 0 END as INVOLVED_ID,
+			idea.campaign_id, null as response
+		from
+		    :lt_current as time,
+			"sap.ino.db.link::v_relation_h" as relation_h
+			inner join
+				(select
+				     idea_h.campaign_id,
+                     idea_h.id,
+                     idea_h.name,
+                     idea_h.created_by_id,
+                     idea_h.history_at 
+                 from				    
+                 (select
+                     id,
+                     max(history_at) as history_at
+                 from 
+                     "sap.ino.db.idea::t_idea_h" group by id) as idea_h_latest
+                     inner join "sap.ino.db.idea::t_idea_h" as idea_h
+                     on idea_h.id = idea_h_latest.id and
+                         idea_h.history_at = idea_h_latest.history_at
+			    ) as idea
+		    on idea.id = relation_h.object_id
+			where
+		    ( relation_h.history_biz_event = 'RELATION_UPDATED' or relation_h.history_biz_event = 'IDEA_CREATED' ) and 
+			relation_h.history_db_event <> 'UPDATED' and 
+			relation_h.object_type_code = 'IDEA' and 
+			relation_h.other_object_type_code = 'IDEA' and
+			relation_h.history_at > time.latest
+    union all
+        select
+            follow_up.object_id as object_id, 'IDEA' as object_type_code, CURRENT_UTCTIMESTAMP as event_at, 'IDEA_FOLLOW_UP_OVERDUE' as notification_code,
+            follow_up.changed_by_id as actor_id, object_role.identity_id as owner_id,
+            left(idea.name, 100) as object_text, null as sub_text, 0 as involved_id,
+            idea.campaign_id, null as response
+        from
+            "sap.ino.db.followup::t_follow_up" as follow_up
+            inner join
+                "sap.ino.db.idea::t_idea" as idea
+            on follow_up.object_id = idea.id and
+                current_date >= follow_up.date and
+                (follow_up.is_notification_generated is null or follow_up.is_notification_generated = 0)
+            inner join
+                "SAP_INO"."sap.ino.db.iam::v_object_identity_role_transitive" as object_role 
+            on idea.id = object_role.object_id and
+                object_role.object_type_code = 'IDEA' and
+                role_code = 'IDEA_SUBMITTER'
+    union all
+        --volunteer notification
+        select 
+            idea.id as object_id, 'IDEA' as object_type_code, 
+			volunteer_h.history_at as event_at, volunteer_h.history_biz_event as notification_code, 
+            volunteer_h.history_actor_id as actor_id, volunteer_h.created_by_id as owner_id,
+            left(idea.name, 100) as object_text, null as sub_text, volunteer_h.created_by_id as involved_id,
+            idea.campaign_id, null as response
+		from
+            :lt_current as time,
+             "sap.ino.db.idea::t_volunteers_h" as volunteer_h
+            inner join
+                "sap.ino.db.idea::t_idea" as idea
+                on volunteer_h.idea_id = idea.id
+        where
+            history_at > time.latest
+            and history_biz_event = 'IDEA_VOLUNTEERS_CREATE'
+	union all
+	    -- Evaluation request
+	    select
+	        eval_req.object_id, eval_req.object_type_code, eval_req.event_at, eval_req.notification_code,
+	        eval_req.actor_id, eval_req.owner_id,eval_req.object_text, eval_req.sub_text, eval_req.involved_id,
+	        eval_req.campaign_id, null as response
+	    from 
+	        :lt_eval_req  as eval_req where eval_req.owner_id is not null and eval_req.notification_code is not null;
+ 
+    -- distinct notifications
+    lt_notification_input = 
+        select 
+            "sap.ino.db.notification::s_notification".nextval as notification_id, 
+            history.OBJECT_TYPE_CODE, history.OBJECT_ID, history.EVENT_AT, history.NOTIFICATION_CODE,
+            history.ACTOR_ID, history.OWNER_ID, history.OBJECT_TEXT, history.SUB_TEXT, history.INVOLVED_ID,
+            history.CAMPAIGN_ID, history.RESPONSE
+        from
+            :lt_history as history 
+        group by 
+            object_type_code, object_id, event_at, notification_code, actor_id, owner_id, object_text, sub_text, involved_id, campaign_id, response;
+
+
+    -- this biz event may already been written to the notification table during another history table update
+    lt_count = select count(*) as count 
+        from :lt_history as history, 
+             "sap.ino.db.notification::t_notification" as notification 
+        where notification.OBJECT_TYPE_CODE = history.OBJECT_TYPE_CODE and 
+              notification.OBJECT_ID = history.OBJECT_ID and 
+              notification.EVENT_AT = history.EVENT_AT and 
+              notification.NOTIFICATION_CODE = history.NOTIFICATION_CODE;
+
+    insert into "sap.ino.db.notification::t_notification" 
+    select input.notification_id as ID, input.OBJECT_TYPE_CODE, input.OBJECT_ID, input.EVENT_AT, input.NOTIFICATION_CODE, input.ACTOR_ID, 
+          input.OWNER_ID, LEFT(input.OBJECT_TEXT, 100) as OBJECT_TEXT, input.SUB_TEXT, input.INVOLVED_ID, 'NEW' as STATUS_CODE, input.CAMPAIGN_ID, input.RESPONSE,null as ACTION_CODE, null as HISTORY_OBJECT_INFO
+        from :lt_notification_input as input,
+             :lt_count as c
+        where c.count = 0;
+end;

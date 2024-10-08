@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "select distinct object_id as campaign_id, identity.*, identity_settings.image_id
+    from \"sap.ino.db.iam::v_object_identity_role_transitive\" as role_transitive 
+        inner join \"sap.ino.db.iam::t_identity\" as identity
+            on role_transitive.identity_id = identity.id
+        left outer join \"sap.ino.db.iam::v_identity_settings\" as identity_settings
+             on identity_settings.identity_id = role_transitive.identity_id
+    where role_code = 'CAMPAIGN_COACH' and object_type_code = 'CAMPAIGN' and 
+          identity.type_code = 'USER'  with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity"];
+depends_on_view = ["sap.ino.db.iam::v_object_identity_role_transitive",
+                   "sap.ino.db.iam::v_identity_settings"]; 

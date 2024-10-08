@@ -1,0 +1,35 @@
+schema = "SAP_INO";
+query = "
+select
+	 * 
+from (select
+	 evaluation.id,
+	 evaluation.model_code,
+	 evaluation.idea_id,
+	 evaluation.idea_phase_code,
+	 ident_evaluator.id as evaluator_id,
+	 row_number() over(partition by evaluation.idea_id,
+	 evaluation.idea_phase_code,
+	ident_evaluator.id 
+		order by evaluation.created_at desc) as row_index,
+	 evaluation.status_code,
+	 evaluation_overall_result.DATATYPE_CODE as OV_RES_DATATYPE_CODE,
+	 evaluation_overall_result.NUM_VALUE as OV_RES_NUM_VALUE,
+	 evaluation_overall_result.BOOL_VALUE as OV_RES_BOOL_VALUE,
+	 evaluation_overall_result.TEXT_VALUE as OV_RES_TEXT_VALUE,
+	 evaluation_overall_result.VALUE_OPTION_LIST_CODE as OV_RES_VALUE_OPTION_LIST_CODE,
+	 evaluation_overall_result.UOM_CODE as OV_RES_UOM_CODE 
+	from \"sap.ino.db.evaluation::t_evaluation\" as evaluation 
+	left outer join \"sap.ino.db.iam::t_object_identity_role\" as identity_role_evaluator on identity_role_evaluator.object_id = evaluation.id 
+	and identity_role_evaluator.object_type_code = 'EVALUATION' 
+	and identity_role_evaluator.role_code = 'EVALUATION_OWNER' 
+	left outer join \"sap.ino.db.iam::t_identity\" as ident_evaluator on ident_evaluator.id = identity_role_evaluator.identity_id 
+	left outer join \"sap.ino.db.evaluation::v_criterion_value_overall\" as evaluation_overall_result on evaluation.id = evaluation_overall_result.evaluation_id ) 
+where row_index = 1
+    with read only";
+
+depends_on_table = ["sap.ino.db.evaluation::t_evaluation",
+                    "sap.ino.db.iam::t_object_identity_role", 
+                    "sap.ino.db.iam::t_identity"];
+                    
+depends_on_view = ["sap.ino.db.evaluation::v_criterion_value_overall"];

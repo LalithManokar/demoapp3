@@ -1,0 +1,15 @@
+schema = "SAP_INO";
+query = "
+
+select campaign.id,member.member_id from \"sap.ino.db.campaign::t_campaign\" as campaign inner join
+			  \"sap.ino.db.iam::t_object_identity_role\" as object_role on
+			  campaign.id = object_role.object_id and object_role.role_code = 'CAMPAIGN_USER' inner join
+			  \"sap.ino.db.iam::t_identity_group_member_transitive\" as member on
+			  object_role.identity_id = member.group_id
+                inner join  \"sap.ino.db.iam::t_identity\" as iam 
+			  on member.member_id = iam.id and iam.type_code = 'USER' and iam.erased = 0 
+with read only";
+    
+depends_on_table = ["sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.iam::t_object_identity_role","sap.ino.db.iam::t_identity_group_member_transitive",
+                   "sap.ino.db.iam::t_identity" ]; 

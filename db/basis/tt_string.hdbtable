@@ -1,0 +1,7 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.temporary   = true;
+table.description = "nvarchar(4096)";
+table.columns = [
+    {name = "STRING"; sqlType = NVARCHAR; length = 4096; nullable = true; comment = "nvarchar(4096)";}
+];

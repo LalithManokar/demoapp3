@@ -1,0 +1,19 @@
+function sap_ino."sap.ino.db.idea::f_my_commented_ideas" ( ) 
+	returns table (idea_id integer)
+	language sqlscript
+	sql security invoker as
+begin
+	if sap_ino."sap.ino.db.iam::f_has_backoffice_privilege"() = 0 then
+		return
+			select distinct object_id as idea_id from sap_ino."sap.ino.db.comment::t_comment" 
+				where 	created_by_id in (select id from "sap.ino.db.iam::v_auth_application_user") and 
+						object_type_code='IDEA' and 
+						type_code='COMMUNITY_COMMENT';
+			
+	else
+		return
+			select distinct object_id as idea_id from sap_ino."sap.ino.db.comment::t_comment" 
+				where 	created_by_id in (select id from "sap.ino.db.iam::v_auth_application_user") and 
+						object_type_code='IDEA';
+	end if;
+end;

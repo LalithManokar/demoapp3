@@ -1,0 +1,21 @@
+schema = "SAP_INO";
+query = "select distinct idea.id as id
+	from \"sap.ino.db.idea::t_idea\" as idea
+	inner join \"sap.ino.db.campaign::t_campaign_phase\" as phase
+        on idea.campaign_id = phase.campaign_id and 
+           idea.phase_code = phase.phase_code
+    inner join \"sap.ino.db.idea::v_vote_idea_enable_status\" as vote_status
+        on vote_status.id = idea.id and vote_status.voting_active = 1
+    left outer join \"sap.ino.db.status::t_status\" as status
+        on idea.status_code = status.code
+	where
+	   phase.voting_active = 1 
+	   and idea.status_code <> 'sap.ino.config.DISCONTINUED' 
+	   and idea.status_code <> 'sap.ino.config.MERGED'
+	   and (status.status_type <> 'DISCONTINUED' or status.status_type is null )";
+
+depends_on_table = ["sap.ino.db.idea::t_idea",
+                    "sap.ino.db.campaign::t_campaign_phase",
+                    "sap.ino.db.status::t_status"];
+                    
+depends_on_view = ["sap.ino.db.idea::v_vote_idea_enable_status"];

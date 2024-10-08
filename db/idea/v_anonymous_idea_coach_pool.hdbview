@@ -1,0 +1,24 @@
+schema = "SAP_INO";
+query = "select setting.idea_id,
+                object_identity_role.object_id,
+                object_identity_role.identity_id,
+                object_identity_role.role_code,
+                idea.RESP_VALUE_CODE
+         from \"sap.ino.db.idea::t_ideas_setting\" as setting
+         inner join \"sap.ino.db.idea::t_idea\" as idea
+         on idea.id = setting.idea_id
+         left outer join \"sap.ino.db.subresponsibility::t_responsibility_value_stage\" as resp
+         on idea.RESP_VALUE_CODE = resp.CODE
+         inner join \"sap.ino.db.iam::v_object_identity_role_transitive\" as object_identity_role
+         on  (idea.CAMPAIGN_ID = object_identity_role.object_id OR idea.ID = object_identity_role.object_id or object_identity_role.object_id = resp.id)
+         where  (object_identity_role.role_code = 'RESP_COACH' or object_identity_role.role_code = 'CAMPAIGN_COACH' or object_identity_role.role_code = 'IDEA_COACH')
+         with read only";
+
+depends_on_table = [
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.subresponsibility::t_responsibility_value_stage",
+                    "sap.ino.db.idea::t_ideas_setting"];
+depends_on_view = ["sap.ino.db.iam::v_object_identity_role_transitive"];        
+                
+            
+          

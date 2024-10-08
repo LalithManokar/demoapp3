@@ -1,0 +1,6 @@
+schema = "SAP_INO_EXT";
+query = "
+    select * from \"sap.ino.db.evaluation::v_model_stage_criterion_stage_root_association\"
+";
+
+depends_on_view = ["sap.ino.db.evaluation::v_model_stage_criterion_stage_root_association"];

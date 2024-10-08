@@ -1,0 +1,11 @@
+schema = "SAP_INO_EXT";
+query = "SELECT IDE_LOG.*,
+IDE.NAME AS USER_NAME ,
+IDE_C.NAME AS CHANGED_BY_NAME 
+FROM \"sap.ino.db.iam::t_identity_log\" AS IDE_LOG
+INNER JOIN \"sap.ino.db.iam::t_identity\" AS IDE
+ON IDE_LOG.IDENTITY_ID=IDE.ID 
+INNER JOIN \"sap.ino.db.iam::t_identity\" AS IDE_C
+ON IDE_LOG.CHANGED_BY_ID=IDE_C.ID 
+with read only";
+depends_on_table = ["sap.ino.db.iam::t_identity_log","sap.ino.db.iam::t_identity"];

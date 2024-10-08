@@ -1,0 +1,11 @@
+schema = "SAP_INO_EXT";
+query = "select notification.*
+            from \"sap.ino.db.iam::v_auth_application_user\" as user,
+             ( select * from (SELECT *, 
+            row_number() over(partition by notification_id,user_id)  as rw
+            FROM \"sap.ino.db.notification::v_notification\" ) where rw = 1 )  as notification             
+            where notification.user_id = user.id
+            with read only"; 
+
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user", 
+                   "sap.ino.db.notification::v_notification"];

@@ -1,0 +1,18 @@
+schema = "SAP_INO";
+query = "
+    select campaign_id,
+        case when ideas.days = 1 then id end as ideas_1,
+        case when days > 1 and days <= 7 then id end as ideas_2_7,
+        case when days > 7 and days <= 30 then id end as ideas_8_30,
+        case when days > 30 then id end as ideas_31
+    from (
+    	select
+    		id,
+    		campaign_id,
+    		days_between(changed_at, current_date) as days
+    	from \"sap.ino.db.idea::t_idea\"
+    	where status_code not in ('sap.ino.config.DRAFT','sap.ino.config.COMPLETED','sap.ino.config.DISCONTINUED','sap.ino.config.MERGED')
+    ) as ideas
+    with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea"];

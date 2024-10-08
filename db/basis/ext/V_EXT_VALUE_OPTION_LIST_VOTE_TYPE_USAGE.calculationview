@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_VALUE_OPTION_LIST_VOTE_TYPE_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="Value option lists (Staging Object) and their usage in campaigns"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="sap.ino.db.basis::v_value_option_list_vote_type_usage" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_vote_type_usage"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="sap.ino.db.basis::v_value_option_list_vote_type_usage">
+    <attributes>
+      <attribute id="VALUE_LIST_CODE" order="1" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="Value List Code"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_vote_type_usage" columnName="VALUE_LIST_CODE"/>
+      </attribute>
+      <attribute id="VOTE_TYPE_CODE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="Vote Type Code"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_vote_type_usage" columnName="VOTE_TYPE_CODE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="Campaign Id"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_vote_type_usage" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="4" displayAttribute="false" attributeHierarchyActive="false">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_vote_type_usage" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="USAGE_COUNT" order="5" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number Of Vote Type"/>
+        <measureMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::v_value_option_list_vote_type_usage" columnName="USAGE_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

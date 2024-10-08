@@ -1,0 +1,49 @@
+schema = "SAP_INO";
+query = "
+select
+    campaign.id,
+    campaign.color_code,
+    campaign.valid_from,
+    campaign.valid_to,
+    campaign.is_valid,
+    campaign.is_open_for_submission,
+    campaign.is_started_for_submission, 
+    campaign.name,
+    campaign.short_name,
+    campaign.campaign_status,
+    campaign.phase_count,
+    campaign.idea_description_template,
+    campaign.vote_type_code,
+    campaign.vote_type_type_code,
+    campaign_phase.first_phase_code,
+    campaign.campaign_background_image_id,
+    campaign.campaign_small_background_image_id, 
+    campaign.form_code,
+    campaign.resp_code,
+    campaign.resp_name,
+    campaign.resp_description,
+    campaign.follow,
+    campaign.is_auto_assign_rl_coach,   
+    campaign.IS_OPEN_ANONYMOUS_FUNCTION,
+    case (select value from \"sap.ino.db.basis::t_local_system_setting\"
+                where code = \'sap.ino.config.REWARD_ACTIVE\')
+        when 0 then 0
+        else campaign.reward
+        end as reward_active,
+    campaign.ADMIN_FORM_CODE
+from \"sap.ino.db.campaign::v_campaign_full\" as campaign
+left outer join (select
+                     campaign_phase.campaign_id,
+                     campaign_phase.phase_code as first_phase_code
+                 from \"sap.ino.db.campaign::t_campaign_phase\" campaign_phase
+                 inner join (select min(sequence_no) as min_sequence_no, campaign_id from \"sap.ino.db.campaign::t_campaign_phase\" group by campaign_id) as first_campaign_phase
+                     on campaign_phase.campaign_id = first_campaign_phase.campaign_id
+                        and
+                        campaign_phase.sequence_no= first_campaign_phase.min_sequence_no
+                ) as campaign_phase
+on campaign.id = campaign_phase.campaign_id 
+";
+
+depends_on_view = ["sap.ino.db.campaign::v_campaign_full"];
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_phase","sap.ino.db.basis::t_local_system_setting"];

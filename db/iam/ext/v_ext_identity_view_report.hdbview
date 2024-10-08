@@ -1,0 +1,18 @@
+schema = "SAP_INO_EXT";
+query = "SELECT 
+   CON.GLAS_ID,
+   CON.YEAR,
+   CON.MONTH,
+   MAX(INNOVATION_OFFICE_USER) AS OFFICE_COUNT,
+   MAX(COMMUNITY_USER) AS COMMUNITY_COUNT
+FROM \"sap.ino.db.tracker::t_identity_consumption\" AS CON
+WHERE
+    (CON.YEAR = EXTRACT (year FROM ADD_YEARS(CURRENT_UTCDATE,-1)) 
+    AND CON.MONTH > EXTRACT (month FROM ADD_YEARS(CURRENT_UTCDATE,-1)))
+    OR CON.YEAR > EXTRACT (year FROM ADD_YEARS(CURRENT_UTCDATE,-1))
+GROUP BY 
+    CON.YEAR,CON.MONTH,CON.GLAS_ID
+with read only
+";
+
+depends_on_table = ["sap.ino.db.tracker::t_identity_consumption"];

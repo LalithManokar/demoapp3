@@ -1,0 +1,11 @@
+schema = "SAP_INO";
+query = "select item_clarify.*
+         from \"sap.ino.db.evaluation::v_evaluation_request_item_clarification\" as item_clarify
+         inner join \"sap.ino.db.evaluation::v_evaluation_request_item\" as eval_req_item
+            on (eval_req_item.expert_id = item_clarify.created_by_id
+                or eval_req_item.expert_id = item_clarify.to_identity) and
+                item_clarify.eval_req_item_id = eval_req_item.id
+         with read only";
+
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request_item_clarification",
+                   "sap.ino.db.evaluation::v_evaluation_request_item"];

@@ -1,0 +1,17 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Comment";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+	{name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which a comment has been created. Foreign key to t_identity.ID";},
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which a comment has been changed. Foreign key t_identity.ID";},
+	{name = "OBJECT_ID"; sqlType = INTEGER; nullable = false; comment = "Human-readable identifier of assigned parent object (idea or campaign)";},
+	{name = "COMMENT"; sqlType = NVARCHAR; length = 5000; nullable = false; comment = "Comment content";},
+	{name = "OBJECT_TYPE_CODE"; sqlType = VARCHAR; length = 100;   nullable = false; comment = "Object type of link. Foreign key t_application_object.CODE";},
+	{name = "TYPE_CODE"; sqlType = VARCHAR; length = 20; nullable = true; comment = "Comment Type Code";},
+	{name = "PARENT_ID"; sqlType = INTEGER; nullable = true; comment = "Human readable identifier. Foreign key t_comment.ID";},
+	{name = "SOURCE_ID"; sqlType = INTEGER; nullable = true; comment = "Indicate this comment from merge ";}
+];
+table.primaryKey.pkcolumns = ["ID"];

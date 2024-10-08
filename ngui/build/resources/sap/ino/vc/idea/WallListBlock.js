@@ -1,0 +1,1 @@
+sap.ui.define(['sap/uxap/BlockBase'],function(B){"use strict";return B.extend("sap.ino.vc.idea.WallListBlock",{metadata:{views:{Collapsed:{viewName:"sap.ino.vc.wall.ListInIdea",type:"XML"},Expanded:{viewName:"sap.ino.vc.wall.ListInIdea",type:"XML"}}}});});

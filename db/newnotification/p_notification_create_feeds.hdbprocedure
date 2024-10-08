@@ -1,0 +1,58 @@
+procedure "SAP_INO"."sap.ino.db.newnotification::p_notification_create_feeds" () 
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    -- get all history events that happened since last notification run 
+    lt_history =     
+    --Notification for feeds
+    select
+            feed.object_id as object_id, feed.object_type_code as object_type_code, event_at, 'FOLLOW_' || feed.feed_code as notification_code,
+            feed.actor_id as actor_id, feed.followed_by_id as owner_id,
+            feed.object_text as object_text, feed.involved_obj_text as sub_text, IFNULL(feed.involved_id, feed.object_id) as involved_id, 
+            feed.campaign_id as campaign_id, null as response,
+            'FEED' as ACTION_CODE,
+            null as HISTORY_OBJECT_INFO
+        from
+            "sap.ino.db.notification::v_notification_campaign_feeds" as feed
+        where
+            (feed_code = 'DATE_REACHED_SUBMIT_TO' or feed_code = 'DATE_REACHED_SUBMIT_FROM'
+            or feed_code = 'DATE_REACHED_REGISTER_TO' or feed_code = 'DATE_REACHED_REGISTER_FROM'
+            or feed_code = 'BLOG_MAJORPUBLISH' or feed_code = 'STATUS_ACTION_SUBMIT' or feed_code = 'DATE_REACHED_VALID_TO') and object_type_code = 'CAMPAIGN';
+ 
+    -- distinct notifications
+    lt_notification_input = 
+        select 
+            "sap.ino.db.notification::s_notification".nextval as notification_id, 
+            history.OBJECT_TYPE_CODE, history.OBJECT_ID, history.EVENT_AT, history.NOTIFICATION_CODE,
+            history.ACTOR_ID, history.OWNER_ID, history.OBJECT_TEXT, history.SUB_TEXT, history.INVOLVED_ID,
+            history.CAMPAIGN_ID, history.RESPONSE,history.ACTION_CODE as ACTION_CODE,
+            history.HISTORY_OBJECT_INFO
+        from
+            :lt_history as history 
+        where history.ACTION_CODE is not null 
+        group by 
+            object_type_code, object_id, event_at, notification_code, actor_id, owner_id, object_text, sub_text, involved_id, campaign_id, response,ACTION_CODE,HISTORY_OBJECT_INFO;
+
+    insert into "sap.ino.db.notification::t_notification" 
+    select input.notification_id as ID, input.OBJECT_TYPE_CODE, input.OBJECT_ID, input.EVENT_AT, input.NOTIFICATION_CODE, input.ACTOR_ID, 
+          input.OWNER_ID, LEFT(input.OBJECT_TEXT, 100) as OBJECT_TEXT, input.SUB_TEXT, input.INVOLVED_ID, 'NEW' as STATUS_CODE, input.CAMPAIGN_ID, input.RESPONSE,input.ACTION_CODE,input.HISTORY_OBJECT_INFO    
+        from  
+        -- :lt_count as c,
+        :lt_notification_input as input
+        inner join "sap.ino.db.newnotification::v_notification_system_setting" as system_setting
+        on system_setting.action_code = input.ACTION_CODE
+        where 
+            -- c.count = 0 and 
+            (system_setting.ALLOW_EMAIL_NOTIFICATION = 1 or system_setting.ALLOW_INBOX_NOTIFICATION = 1);
+        
+    insert into "sap.ino.db.notification::t_notification" 
+    select input.notification_id as ID, input.OBJECT_TYPE_CODE, input.OBJECT_ID, input.EVENT_AT, input.NOTIFICATION_CODE, input.ACTOR_ID, 
+          input.OWNER_ID, LEFT(input.OBJECT_TEXT, 100) as OBJECT_TEXT, input.SUB_TEXT, input.INVOLVED_ID, 'NEW' as STATUS_CODE, input.CAMPAIGN_ID, input.RESPONSE,input.ACTION_CODE,input.HISTORY_OBJECT_INFO    
+        from :lt_notification_input as input
+            -- ,:lt_count as c
+        where 
+            -- c.count = 0 and 
+            input.action_code not in(select distinct action_code from"sap.ino.db.newnotification::t_notification_system_setting");
+end;

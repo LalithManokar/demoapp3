@@ -1,0 +1,1102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="v_idea_feeds" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="v_idea_feeds"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="30"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.idea::v_idea_changes" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::v_idea_changes"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.tag::t_object_tag_h" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.tag::t_object_tag_h"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.tag::t_tag" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.tag::t_tag"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.comment::t_comment_h" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.comment::t_comment_h"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.iam::t_object_identity_role_h" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_object_identity_role_h"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.iam::v_identity" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_identity"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.idea::t_idea_h" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_idea_h"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.evaluation::t_evaluation_h" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::t_evaluation_h"/>
+    </DataSource>
+    <DataSource id="f_idea_reassigned_campaign" type="TABLE_FUNCTION">
+      <resourceUri>sap.ino.db.idea::f_idea_reassigned_campaign</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.campaign::v_campaign_t_locale" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::v_campaign_t_locale"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.link::t_link_h" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.link::t_link_h"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.attachment::t_attachment_assignment_h" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.attachment::t_attachment_assignment_h"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.wall::t_wall_assignment_h" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.wall::t_wall_assignment_h"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.wall::t_wall" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.wall::t_wall"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.link::v_relation_h" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.link::v_relation_h"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.idea::t_idea" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_idea"/>
+    </DataSource>
+    <DataSource id="FeedsWithIdeaName$$$$sap.ino.db.idea::t_idea$$" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_idea"/>
+    </DataSource>
+    <DataSource id="FeedsWithActorName$$$$sap.ino.db.iam::v_identity$$" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_identity"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Changes">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="FEED_CODE"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="FIELD_VALUE_OPTION"/>
+        <viewAttribute id="FIELD_VALUE"/>
+        <viewAttribute id="FIELD_TEXT"/>
+        <viewAttribute id="FIELD_NAME"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="EVENT_AT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="FILTER_TYPE_CODE" length="20" expressionLanguage="COLUMN_ENGINE">
+          <formula>'FRONTOFFICE'</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.idea::v_idea_changes">
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="CHANGE_EVENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="CHANGE_OBJECT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_VALUE_OPTION" source="FIELD_VALUE_OPTION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_VALUE" source="FIELD_VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_TEXT" source="FIELD_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_NAME" source="FIELD_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="HISTORY_ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="CHANGED_AT"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Tag" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="HISTORY_ACTOR_ID"/>
+        <viewAttribute id="HISTORY_AT"/>
+        <viewAttribute id="HISTORY_DB_EVENT"/>
+        <viewAttribute id="HISTORY_BIZ_EVENT"/>
+        <viewAttribute id="TAG_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.tag::t_object_tag_h">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_ACTOR_ID" source="HISTORY_ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_AT" source="HISTORY_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_DB_EVENT" source="HISTORY_DB_EVENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_BIZ_EVENT" source="HISTORY_BIZ_EVENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TAG_ID" source="TAG_ID"/>
+      </input>
+      <filter>&quot;OBJECT_TYPE_CODE&quot; = 'IDEA'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="TagWithName" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="HISTORY_DB_EVENT"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="INVOLVED_OBJ_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="FILTER_TYPE_CODE" length="20" expressionLanguage="COLUMN_ENGINE">
+          <formula>'FRONTOFFICE'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="INVOLVED_OBJ_TYPE_CODE" length="11" expressionLanguage="COLUMN_ENGINE">
+          <formula>'TAG'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FEED_CODE" length="600" expressionLanguage="COLUMN_ENGINE">
+          <formula>'TAG_' + &quot;HISTORY_DB_EVENT&quot;</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#Tag">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="HISTORY_ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="HISTORY_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_DB_EVENT" source="HISTORY_DB_EVENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="TAG_ID"/>
+      </input>
+      <input node="#sap.ino.db.tag::t_tag">
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="ID"/>
+      </input>
+      <joinAttribute name="INVOLVED_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Comments" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="CONTENT"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="TYPE_CODE"/>
+        <viewAttribute id="FEED_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="FILTER_TYPE_CODE" length="20" expressionLanguage="COLUMN_ENGINE">
+          <formula>case(&quot;TYPE_CODE&quot;, 'INTERNAL_NOTE', 'BACKOFFICE', 'FRONTOFFICE')</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="INVOLVED_OBJ_TYPE_CODE" length="11" expressionLanguage="COLUMN_ENGINE">
+          <formula>'COMMENT'</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.comment::t_comment_h">
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="HISTORY_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="HISTORY_ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CONTENT" source="COMMENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TYPE_CODE" source="TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="HISTORY_BIZ_EVENT"/>
+      </input>
+      <filter>&quot;OBJECT_TYPE_CODE&quot; = 'IDEA' and 
+&quot;FEED_CODE&quot; = 'COMMENT_CREATED'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Identity" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="HISTORY_BIZ_EVENT"/>
+        <viewAttribute id="HISTORY_DB_EVENT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="FILTER_TYPE_CODE" length="20" expressionLanguage="COLUMN_ENGINE">
+          <formula>'FRONTOFFICE'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="INVOLVED_OBJ_TYPE_CODE" length="11" expressionLanguage="COLUMN_ENGINE">
+          <formula>case(&quot;ROLE_CODE&quot;,'IDEA_COACH','COACH','IDEA_CONTRIBUTOR','CONTRIBUTOR','IDEA_EXPERT','EXPERT',' ')</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FEED_CODE" length="600" expressionLanguage="COLUMN_ENGINE">
+          <formula>case(&quot;ROLE_CODE&quot;,
+'IDEA_COACH',&quot;HISTORY_BIZ_EVENT&quot;,
+'IDEA_CONTRIBUTOR',case(&quot;HISTORY_DB_EVENT&quot;, 'CREATED','CONTRIB_ADDED','DELETED','CONTRIB_REMOVED'),
+'IDEA_EXPERT',case(&quot;HISTORY_DB_EVENT&quot;, 'CREATED','EXPERT_ASSIGNED','DELETED','EXPERT_UNASSIGNED'),
+' ')</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.iam::t_object_identity_role_h">
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="HISTORY_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="HISTORY_ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_BIZ_EVENT" source="HISTORY_BIZ_EVENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_DB_EVENT" source="HISTORY_DB_EVENT"/>
+      </input>
+      <filter>&quot;OBJECT_TYPE_CODE&quot; = 'IDEA' and 
+&quot;HISTORY_DB_EVENT&quot; != 'UPDATED' and
+(( &quot;ROLE_CODE&quot; = 'IDEA_COACH'  and 
+(&quot;HISTORY_BIZ_EVENT&quot; = 'COACH_ASSIGNED' or &quot;HISTORY_BIZ_EVENT&quot; = 'COACH_UNASSIGNED')) or 
+&quot;ROLE_CODE&quot; = 'IDEA_CONTRIBUTOR'  or 
+&quot;ROLE_CODE&quot; = 'IDEA_EXPERT' )</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="IdentityWithName" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="FILTER_TYPE_CODE"/>
+        <viewAttribute id="INVOLVED_OBJ_TYPE_CODE"/>
+        <viewAttribute id="FEED_CODE"/>
+        <viewAttribute id="INVOLVED_OBJ_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Identity">
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+      </input>
+      <input node="#sap.ino.db.iam::v_identity">
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="ID"/>
+      </input>
+      <joinAttribute name="INVOLVED_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Status" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="FEED_CODE"/>
+        <viewAttribute id="FIELD_VALUE"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="FIELD_TEXT" length="16" expressionLanguage="COLUMN_ENGINE">
+          <formula>'IDEA_STATUS'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FILTER_TYPE_CODE" length="20" expressionLanguage="COLUMN_ENGINE">
+          <formula>'FRONTOFFICE'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="OBJECT_TYPE_CODE" length="100" expressionLanguage="COLUMN_ENGINE">
+          <formula>'IDEA'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FIELD_VALUE_OPTION" length="100" expressionLanguage="COLUMN_ENGINE">
+          <formula>'sap.ino.xs.object.status.Status.Root'</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.idea::t_idea_h">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="HISTORY_ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="HISTORY_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="HISTORY_BIZ_EVENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_VALUE" source="STATUS_CODE"/>
+      </input>
+      <filter>instr(&quot;FEED_CODE&quot; ,'STATUS_ACTION')</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Evaluation" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="FEED_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="OBJECT_TYPE_CODE" length="100" expressionLanguage="COLUMN_ENGINE">
+          <formula>'IDEA'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="INVOLVED_OBJ_TYPE_CODE" length="11" expressionLanguage="COLUMN_ENGINE">
+          <formula>'EVALUATION'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FILTER_TYPE_CODE" length="20" expressionLanguage="COLUMN_ENGINE">
+          <formula>'FRONTOFFICE'</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.evaluation::t_evaluation_h">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="HISTORY_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="HISTORY_ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="HISTORY_BIZ_EVENT"/>
+      </input>
+      <filter>&quot;FEED_CODE&quot; =  'STATUS_ACTION_sap.ino.config.EVAL_PUB_COMMUNITY'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Reassign">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="FEED_CODE"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="EVENT_AT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="OBJECT_TYPE_CODE" length="100" expressionLanguage="COLUMN_ENGINE">
+          <formula>'IDEA'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FILTER_TYPE_CODE" length="20" expressionLanguage="COLUMN_ENGINE">
+          <formula>'FRONTOFFICE'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="INVOLVED_OBJ_TYPE_CODE" length="11" expressionLanguage="COLUMN_ENGINE">
+          <formula>'CAMPAIGN'</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#f_idea_reassigned_campaign">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="HISTORY_BIZ_EVENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="HISTORY_ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="HISTORY_AT"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="ReassignCampaignWithName" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="FILTER_TYPE_CODE"/>
+        <viewAttribute id="INVOLVED_OBJ_TYPE_CODE"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="FEED_CODE"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="INVOLVED_OBJ_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Reassign">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+      </input>
+      <input node="#sap.ino.db.campaign::v_campaign_t_locale">
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="CAMPAIGN_ID"/>
+      </input>
+      <joinAttribute name="INVOLVED_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Link" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="INVOLVED_OBJ_TEXT"/>
+        <viewAttribute id="CONTENT"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="HISTORY_BIZ_EVENT"/>
+        <viewAttribute id="TYPE_CODE"/>
+        <viewAttribute id="HISTORY_DB_EVENT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="INVOLVED_OBJ_TYPE_CODE" length="11" expressionLanguage="COLUMN_ENGINE">
+          <formula>'LINK'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FILTER_TYPE_CODE" length="20" expressionLanguage="COLUMN_ENGINE">
+          <formula>'FRONTOFFICE'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FEED_CODE" length="600" expressionLanguage="COLUMN_ENGINE">
+          <formula>'LINK_' + &quot;HISTORY_DB_EVENT&quot;</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.link::t_link_h">
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="HISTORY_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="HISTORY_ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="LABEL"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CONTENT" source="URL"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_BIZ_EVENT" source="HISTORY_BIZ_EVENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TYPE_CODE" source="TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_DB_EVENT" source="HISTORY_DB_EVENT"/>
+      </input>
+      <filter>&quot;OBJECT_TYPE_CODE&quot; = 'IDEA' and 
+&quot;HISTORY_BIZ_EVENT&quot; = 'IDEA_UPDATED' and
+&quot;HISTORY_DB_EVENT&quot; !='UPDATED'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Attachment" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="HISTORY_DB_EVENT"/>
+        <viewAttribute id="HISTORY_BIZ_EVENT"/>
+        <viewAttribute id="FILTER_TYPE_CODE"/>
+        <viewAttribute id="ROLE_TYPE_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="INVOLVED_OBJ_TYPE_CODE" length="11" expressionLanguage="COLUMN_ENGINE">
+          <formula>case(&quot;ROLE_TYPE_CODE&quot;, 'IDEA_TITLE_IMAGE', 'TITLE_IMAGE', 'ATTACHMENT')</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FEED_CODE" length="600" expressionLanguage="COLUMN_ENGINE">
+          <formula>case(&quot;ROLE_TYPE_CODE&quot;, 'IDEA_TITLE_IMAGE', &quot;HISTORY_BIZ_EVENT&quot;+'_'+&quot;ROLE_TYPE_CODE&quot;,'ATTACHMENT_'+&quot;HISTORY_DB_EVENT&quot;)</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.attachment::t_attachment_assignment_h">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OWNER_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OWNER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="HISTORY_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="HISTORY_ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_DB_EVENT" source="HISTORY_DB_EVENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_BIZ_EVENT" source="HISTORY_BIZ_EVENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_TYPE_CODE" source="ROLE_TYPE_CODE"/>
+      </input>
+      <filter>&quot;OBJECT_TYPE_CODE&quot; = 'IDEA' and
+&quot;HISTORY_BIZ_EVENT&quot; = 'IDEA_UPDATED' and
+(&quot;ROLE_TYPE_CODE&quot; = 'ATTACHMENT' or 
+(&quot;ROLE_TYPE_CODE&quot; = 'IDEA_TITLE_IMAGE' and
+&quot;HISTORY_DB_EVENT&quot; = 'CREATED'))</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Wall" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="FILTER_TYPE_CODE"/>
+        <viewAttribute id="ROLE_TYPE_CODE"/>
+        <viewAttribute id="HISTORY_DB_EVENT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="INVOLVED_OBJ_TYPE_CODE" length="11" expressionLanguage="COLUMN_ENGINE">
+          <formula>'WALL'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FEED_CODE" length="600" expressionLanguage="COLUMN_ENGINE">
+          <formula>'WALL_'+&quot;HISTORY_DB_EVENT&quot;</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.wall::t_wall_assignment_h">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OWNER_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OWNER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="HISTORY_ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="HISTORY_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="WALL_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_TYPE_CODE" source="ROLE_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_DB_EVENT" source="HISTORY_DB_EVENT"/>
+      </input>
+      <filter>&quot;ROLE_TYPE_CODE&quot; = 'WALL'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="WallWithName" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="FILTER_TYPE_CODE"/>
+        <viewAttribute id="INVOLVED_OBJ_TYPE_CODE"/>
+        <viewAttribute id="FEED_CODE"/>
+        <viewAttribute id="INVOLVED_OBJ_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Wall">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+      </input>
+      <input node="#sap.ino.db.wall::t_wall">
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="ID"/>
+      </input>
+      <joinAttribute name="INVOLVED_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Relation" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="HISTORY_BIZ_EVENT"/>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="INVOLVED_OBJ_TYPE_CODE"/>
+        <viewAttribute id="SEMANTIC"/>
+        <viewAttribute id="SOURCE"/>
+        <viewAttribute id="HISTORY_DB_EVENT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="FILTER_TYPE_CODE" length="20" expressionLanguage="COLUMN_ENGINE">
+          <formula>'FRONTOFFICE'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="FEED_CODE" length="600" expressionLanguage="COLUMN_ENGINE">
+          <formula>case(&quot;SOURCE&quot;, 1, 'IDEA_RELATION_' + &quot;SEMANTIC&quot; + '_SOURCE',  'IDEA_RELATION_' + &quot;SEMANTIC&quot; + '_TARGET')</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.link::v_relation_h">
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_BIZ_EVENT" source="HISTORY_BIZ_EVENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="HISTORY_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="HISTORY_ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="OTHER_OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="OTHER_OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SEMANTIC" source="SEMANTIC"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SOURCE" source="SOURCE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_DB_EVENT" source="HISTORY_DB_EVENT"/>
+      </input>
+      <filter>(&quot;HISTORY_BIZ_EVENT&quot; = 'RELATION_UPDATED' or 
+&quot;HISTORY_BIZ_EVENT&quot; = 'IDEA_CREATED') and 
+&quot;HISTORY_DB_EVENT&quot; != 'UPDATED' and
+&quot;OBJECT_TYPE_CODE&quot; = 'IDEA' and
+&quot;INVOLVED_OBJ_TYPE_CODE&quot; = 'IDEA' and
+(&quot;SOURCE&quot; != 0 or &quot;SEMANTIC&quot; != 'sap.ino.config.DUPLICATE')</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="RelationWithName" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="INVOLVED_OBJ_TYPE_CODE"/>
+        <viewAttribute id="FILTER_TYPE_CODE"/>
+        <viewAttribute id="FEED_CODE"/>
+        <viewAttribute id="INVOLVED_OBJ_TEXT"/>
+        <viewAttribute id="STATUS_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Relation">
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+      </input>
+      <input node="#sap.ino.db.idea::t_idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="ID"/>
+      </input>
+      <joinAttribute name="INVOLVED_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="RelatedIdeas" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="INVOLVED_OBJ_TYPE_CODE"/>
+        <viewAttribute id="FILTER_TYPE_CODE"/>
+        <viewAttribute id="FEED_CODE"/>
+        <viewAttribute id="INVOLVED_OBJ_TEXT"/>
+        <viewAttribute id="STATUS_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#RelationWithName">
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="INVOLVED_OBJ_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+      </input>
+      <filter>&quot;STATUS_CODE&quot;!='sap.ino.config.DRAFT'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:UnionView" id="All_Feeds">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="INVOLVED_OBJ_TYPE_CODE"/>
+        <viewAttribute id="INVOLVED_OBJ_TEXT"/>
+        <viewAttribute id="FEED_CODE"/>
+        <viewAttribute id="FIELD_VALUE_OPTION"/>
+        <viewAttribute id="FIELD_VALUE"/>
+        <viewAttribute id="FIELD_TEXT"/>
+        <viewAttribute id="FIELD_NAME"/>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="FILTER_TYPE_CODE"/>
+        <viewAttribute id="CONTENT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input emptyUnionBehavior="NO_ROW" node="#Changes">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="INVOLVED_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="INVOLVED_OBJ_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_VALUE_OPTION" source="FIELD_VALUE_OPTION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_VALUE" source="FIELD_VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_TEXT" source="FIELD_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_NAME" source="FIELD_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENT" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#TagWithName">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="INVOLVED_OBJ_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE_OPTION" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENT" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Comments">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="INVOLVED_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="INVOLVED_OBJ_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE_OPTION" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CONTENT" source="CONTENT"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#IdentityWithName">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="INVOLVED_OBJ_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE_OPTION" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENT" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Status">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="INVOLVED_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="INVOLVED_OBJ_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_VALUE" source="FIELD_VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_TEXT" source="FIELD_TEXT"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENT" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_VALUE_OPTION" source="FIELD_VALUE_OPTION"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Evaluation">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="INVOLVED_OBJ_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE_OPTION" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENT" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#ReassignCampaignWithName">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="INVOLVED_OBJ_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE_OPTION" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENT" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Link">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="INVOLVED_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="INVOLVED_OBJ_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE_OPTION" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CONTENT" source="CONTENT"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Attachment">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="INVOLVED_OBJ_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE_OPTION" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENT" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#WallWithName">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="INVOLVED_OBJ_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE_OPTION" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENT" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#RelatedIdeas">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="INVOLVED_OBJ_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE_OPTION" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_VALUE" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_TEXT" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FIELD_NAME" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CONTENT" null="true" value=""/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="FeedsWithIdeaName" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="FEED_CODE"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="FIELD_VALUE_OPTION"/>
+        <viewAttribute id="FIELD_VALUE"/>
+        <viewAttribute id="FIELD_TEXT"/>
+        <viewAttribute id="FIELD_NAME"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="OBJECT_TEXT"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="INVOLVED_OBJ_TYPE_CODE"/>
+        <viewAttribute id="INVOLVED_OBJ_TEXT"/>
+        <viewAttribute id="FILTER_TYPE_CODE"/>
+        <viewAttribute id="CONTENT"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#All_Feeds">
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_VALUE_OPTION" source="FIELD_VALUE_OPTION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_VALUE" source="FIELD_VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_TEXT" source="FIELD_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_NAME" source="FIELD_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="INVOLVED_OBJ_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CONTENT" source="CONTENT"/>
+      </input>
+      <input node="#FeedsWithIdeaName$$$$sap.ino.db.idea::t_idea$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TEXT" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="ID"/>
+      </input>
+      <joinAttribute name="OBJECT_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="FeedsWithActorName" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="FEED_CODE"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="FIELD_VALUE_OPTION"/>
+        <viewAttribute id="FIELD_VALUE"/>
+        <viewAttribute id="FIELD_TEXT"/>
+        <viewAttribute id="FIELD_NAME"/>
+        <viewAttribute id="ACTOR_ID"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="EVENT_AT"/>
+        <viewAttribute id="OBJECT_TEXT"/>
+        <viewAttribute id="ACTOR_NAME"/>
+        <viewAttribute id="ACTOR_IMAGE_ID"/>
+        <viewAttribute id="INVOLVED_ID"/>
+        <viewAttribute id="INVOLVED_OBJ_TYPE_CODE"/>
+        <viewAttribute id="INVOLVED_OBJ_TEXT"/>
+        <viewAttribute id="FILTER_TYPE_CODE"/>
+        <viewAttribute id="CONTENT"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#FeedsWithIdeaName">
+        <mapping xsi:type="Calculation:AttributeMapping" target="FEED_CODE" source="FEED_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_VALUE_OPTION" source="FIELD_VALUE_OPTION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_VALUE" source="FIELD_VALUE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_TEXT" source="FIELD_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FIELD_NAME" source="FIELD_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ACTOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVENT_AT" source="EVENT_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TEXT" source="OBJECT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_ID" source="INVOLVED_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TYPE_CODE" source="INVOLVED_OBJ_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="INVOLVED_OBJ_TEXT" source="INVOLVED_OBJ_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FILTER_TYPE_CODE" source="FILTER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CONTENT" source="CONTENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+      </input>
+      <input node="#FeedsWithActorName$$$$sap.ino.db.iam::v_identity$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_IMAGE_ID" source="IDENTITY_IMAGE_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_ID" source="ID"/>
+      </input>
+      <joinAttribute name="ACTOR_ID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="FeedsWithActorName">
+    <descriptions/>
+    <attributes>
+      <attribute id="FEED_CODE" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FEED_CODE"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="FEED_CODE"/>
+      </attribute>
+      <attribute id="OBJECT_TYPE_CODE" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="OBJECT_TYPE_CODE"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="OBJECT_TYPE_CODE"/>
+      </attribute>
+      <attribute id="FIELD_VALUE_OPTION" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FIELD_VALUE_OPTION"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="FIELD_VALUE_OPTION"/>
+      </attribute>
+      <attribute id="FIELD_VALUE" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FIELD_VALUE"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="FIELD_VALUE"/>
+      </attribute>
+      <attribute id="FIELD_TEXT" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FIELD_TEXT"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="FIELD_TEXT"/>
+      </attribute>
+      <attribute id="FIELD_NAME" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FIELD_NAME"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="FIELD_NAME"/>
+      </attribute>
+      <attribute id="ACTOR_ID" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ACTOR_ID"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="ACTOR_ID"/>
+      </attribute>
+      <attribute id="OBJECT_ID" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="OBJECT_ID"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="OBJECT_ID"/>
+      </attribute>
+      <attribute id="EVENT_AT" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="EVENT_AT"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="EVENT_AT"/>
+      </attribute>
+      <attribute id="OBJECT_TEXT" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Name of the idea"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="OBJECT_TEXT"/>
+      </attribute>
+      <attribute id="ACTOR_NAME" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ACTOR_NAME"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="ACTOR_NAME"/>
+      </attribute>
+      <attribute id="ACTOR_IMAGE_ID" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ACTOR_IMAGE_ID"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="ACTOR_IMAGE_ID"/>
+      </attribute>
+      <attribute id="INVOLVED_ID" order="13" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Human-readable identifier of tag"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="INVOLVED_ID"/>
+      </attribute>
+      <attribute id="INVOLVED_OBJ_TYPE_CODE" order="14" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="INVOLVED_OBJ_TYPE_CODE"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="INVOLVED_OBJ_TYPE_CODE"/>
+      </attribute>
+      <attribute id="INVOLVED_OBJ_TEXT" order="15" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Name of the tag"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="INVOLVED_OBJ_TEXT"/>
+      </attribute>
+      <attribute id="FILTER_TYPE_CODE" order="16" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="FILTER_TYPE_CODE"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="FILTER_TYPE_CODE"/>
+      </attribute>
+      <attribute id="CONTENT" order="17" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Comment content"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="CONTENT"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="18" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign to which this idea belongs. Foreign key to t_campaign.ID"/>
+        <keyMapping columnObjectName="FeedsWithActorName" columnName="CAMPAIGN_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="792" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Changes" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="635"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Tag" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="176" y="731"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="TagWithName" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="176" y="635"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Comments" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="330" y="635"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Identity" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="484" y="731"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="IdentityWithName" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="484" y="635"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Status" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="638" y="635"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Evaluation" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="946" y="635"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Reassign" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="792" y="731"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="ReassignCampaignWithName" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="792" y="635"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Link" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="1100" y="635"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Attachment" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="1408" y="635"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Wall" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="1562" y="731"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="WallWithName" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="1562" y="635"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Relation" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="1254" y="827"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="RelationWithName" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="1254" y="731"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="RelatedIdeas" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="1254" y="635"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="All_Feeds" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="792" y="357"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="FeedsWithIdeaName" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="792" y="261"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="FeedsWithActorName" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="792" y="165"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

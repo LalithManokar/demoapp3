@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Campagin Integration display layout with mapped fields";
+table.columns = [
+    {name = "ID";               sqlType = INTEGER;                nullable = false;                     comment = "technical user identifier - must never be exposed to end users";},
+    {name = "API_ID";       sqlType = INTEGER;                        nullable = false;                 comment = "Using For identify API ";},
+    {name = "MAPPING_FIELD_CODE";        sqlType = NVARCHAR; length = 128; nullable = false;                    comment = "The mapping filed code stored for integration";},
+    {name = "DISPLAY_NAME";        sqlType = NVARCHAR; length = 100; nullable = false;                    comment = "The mapping filed name displayed in UI ";},
+    {name = "DISPLAY_SEQUENCE";               sqlType = INTEGER;                nullable = false;                     comment = "Display sequence in integration list of idea detail";}
+];
+table.primaryKey.pkcolumns = ["ID"];

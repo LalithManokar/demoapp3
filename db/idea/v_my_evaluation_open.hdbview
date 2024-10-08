@@ -1,0 +1,44 @@
+schema = "SAP_INO";
+query = "SELECT DISTINCT evaluation_create.idea_id as id, 
+	    evaluation_create.campaign_id  
+FROM \"sap.ino.db.evaluation::v_auth_evaluation_create\" AS evaluation_create
+	INNER JOIN \"sap.ino.db.iam::v_auth_application_user\" AS cur_user
+		ON evaluation_create.identity_id = cur_user.id
+	INNER JOIN \"sap.ino.db.campaign::t_campaign_phase\" AS camp_phase
+		ON evaluation_create.campaign_id = camp_phase.campaign_id
+	INNER JOIN \"sap.ino.db.idea::t_idea\" AS idea
+		ON evaluation_create.idea_id = idea.id
+	LEFT OUTER JOIN \"sap.ino.db.status::t_status\" as status
+    	ON idea.status_code = status.code
+    LEFT OUTER JOIN \"sap.ino.db.status::v_status_authorization\" as status_auth
+    	ON idea.status_code = status_auth.code 
+WHERE camp_phase.evaluation_model_code IS NOT NULL
+	AND idea.phase_code = camp_phase.phase_code 
+	AND (
+            ((status_auth.value = 0 or status_auth.value is null)
+                AND (
+                        ((status.status_type = '' or status.status_type is null) and status.code not in ('sap.ino.config.DISCONTINUED', 'sap.ino.config.MERGED', 'sap.ino.config.COMPLETED'))
+                        OR 
+                        (SUBSTRING(idea.status_code,1,14) <> 'sap.ino.config' and status.status_type not in ('COMPLETED', 'DISCONTINUED'))
+                    )
+            )
+            OR
+            (status_auth.value = 1 
+                AND status_auth.action_code = 'IDEA_EVALUATION' 
+                AND status_auth.can_do_action = 1 
+                AND status_auth.role_code in 
+                    (select cur_user_role.role_code from \"sap.ino.db.idea::v_session_user_role_transitive\" as cur_user_role
+                    where (cur_user_role.object_id = evaluation_create.idea_id and cur_user_role.object_type_code='IDEA') 
+                    or (cur_user_role.object_id = evaluation_create.campaign_id and cur_user_role.object_type_code='CAMPAIGN'))
+            )
+        )
+    with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea",
+"sap.ino.db.campaign::t_campaign_phase",
+"sap.ino.db.status::t_status"];
+
+depends_on_view = ["sap.ino.db.evaluation::v_auth_evaluation_create",
+"sap.ino.db.iam::v_auth_application_user",
+"sap.ino.db.status::v_status_authorization",
+"sap.ino.db.idea::v_session_user_role_transitive"];

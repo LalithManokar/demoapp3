@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_IDEA_PROPOSED_EXPERTS_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="V_EXT_IDEA_PROPOSED_EXPERTS_SEARCH"/>
+  <metadata changedAt="2017-01-16 13:27:59.683"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Free text search token"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="false" defaultValue="undefined">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="ideasToken" parameter="true">
+      <descriptions defaultDescription="Concatenated, comma separated list of ideas"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="" length="2048" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="FIRST_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="LAST_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="USER_NAME" length="256"/>
+        <viewAttribute datatype="VARCHAR" id="TYPE_CODE" length="20"/>
+        <viewAttribute datatype="NVARCHAR" id="EMAIL" length="256"/>
+        <viewAttribute datatype="INTEGER" id="MEMBERS"/>
+        <viewAttribute datatype="NVARCHAR" id="PHONE" length="256"/>
+        <viewAttribute datatype="NVARCHAR" id="MOBILE" length="256"/>
+        <viewAttribute datatype="NVARCHAR" id="COST_CENTER" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="ORGANIZATION" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="OFFICE" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="DESCRIPTION" length="256"/>
+        <viewAttribute datatype="VARCHAR" id="SOURCE_TYPE_CODE" length="20"/>
+        <viewAttribute datatype="INTEGER" id="IMAGE_ID"/>
+        <viewAttribute datatype="INTEGER" id="IS_EXTERNAL"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CREATED_BY_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY_LAST_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY_FIRST_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY_EMAIL" length="256"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CHANGED_BY_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY_LAST_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY_FIRST_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY_EMAIL" length="256"/>
+        <viewAttribute datatype="TINYINT" id="IS_VALID_EMAIL"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <localVariable>#ideasToken</localVariable>
+      <definition>begin
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:ideasToken, ',', :lt_idea_id_strings);
+    
+    search_result =
+        select
+            search_score,
+            id
+        from
+            &quot;sap.ino.db.iam::f_identity_search&quot;(:searchToken);
+            
+    lt_idea_authors =  select distinct idea_author.identity_id as id
+                        from &quot;sap.ino.db.idea::v_idea_author&quot; idea_author 
+                         where length(:ideasToken) &gt; 0 and 
+                               idea_author.idea_id in (select STRING from :lt_idea_id_strings);       
+
+    var_out =
+        select
+            sr.search_score,
+            sr.id,
+            identity.name,
+            identity.first_name,
+            identity.last_name,
+            identity.user_name,
+            identity.type_code,
+            identity.email,
+            identity.members,
+            identity.phone,
+            identity.mobile,
+            identity.cost_center,
+            identity.organization,
+            identity.office,
+            identity.description,
+            identity.source_type_code,
+            identity.identity_image_id as image_id,
+            identity.is_external,
+			identity.created_at,
+        	identity.created_by_id,
+        	identity.created_by_name,
+        	identity.created_by_last_name,
+        	identity.created_by_first_name,
+        	identity.created_by_email,
+        	identity.changed_at,
+	        identity.changed_by_id,
+        	identity.changed_by_name,
+        	identity.changed_by_last_name,
+	        identity.changed_by_first_name,
+        	identity.changed_by_email,
+        	identity.is_valid_email
+        from 
+            &quot;sap.ino.db.iam::v_identity_full&quot; as identity
+        inner join
+            :search_result as sr
+        on 
+            identity.id = sr.id
+        where identity.id not in (
+            select id from :lt_idea_authors
+        );
+
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="ID" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="3">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="FIRST_NAME" order="4">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="FIRST_NAME"/>
+      </attribute>
+      <attribute id="LAST_NAME" order="5">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="LAST_NAME"/>
+      </attribute>
+      <attribute id="USER_NAME" order="6">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="USER_NAME"/>
+      </attribute>
+      <attribute id="TYPE_CODE" order="7">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="TYPE_CODE"/>
+      </attribute>
+      <attribute id="EMAIL" order="8">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="EMAIL"/>
+      </attribute>
+      <attribute id="MEMBERS" order="9">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="MEMBERS"/>
+      </attribute>
+      <attribute id="PHONE" order="10">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="PHONE"/>
+      </attribute>
+      <attribute id="MOBILE" order="11">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="MOBILE"/>
+      </attribute>
+      <attribute id="COST_CENTER" order="12">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="COST_CENTER"/>
+      </attribute>
+      <attribute id="ORGANIZATION" order="13">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ORGANIZATION"/>
+      </attribute>
+      <attribute id="OFFICE" order="14">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="OFFICE"/>
+      </attribute>
+      <attribute id="DESCRIPTION" order="15">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="DESCRIPTION"/>
+      </attribute>
+      <attribute id="SOURCE_TYPE_CODE" order="16">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="SOURCE_TYPE_CODE"/>
+      </attribute>
+      <attribute id="IMAGE_ID" order="17">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="IMAGE_ID"/>
+      </attribute>
+      <attribute id="IS_EXTERNAL" order="18">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_EXTERNAL"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="19">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CREATED_BY_ID" order="20">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="CREATED_BY_NAME" order="21">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_NAME"/>
+      </attribute>
+      <attribute id="CREATED_BY_LAST_NAME" order="22">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_LAST_NAME"/>
+      </attribute>
+      <attribute id="CREATED_BY_FIRST_NAME" order="23">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_FIRST_NAME"/>
+      </attribute>
+      <attribute id="CREATED_BY_EMAIL" order="24">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_EMAIL"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="25">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="26">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_BY_NAME" order="27">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_NAME"/>
+      </attribute>
+      <attribute id="CHANGED_BY_LAST_NAME" order="28">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_LAST_NAME"/>
+      </attribute>
+      <attribute id="CHANGED_BY_FIRST_NAME" order="29">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_FIRST_NAME"/>
+      </attribute>
+      <attribute id="CHANGED_BY_EMAIL" order="30">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_EMAIL"/>
+      </attribute>
+      <attribute id="IS_VALID_EMAIL" order="31">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_VALID_EMAIL"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="SEARCH_SCORE" order="1" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="COL"/>
+        <measureMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

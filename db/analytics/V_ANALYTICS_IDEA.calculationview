@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_IDEA" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="V_ANALYTICS_IDEA"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="V_ANALYTICS_IDEA_DATES" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_DATES</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.campaign::t_campaign_phase" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::t_campaign_phase"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:JoinView" id="Idea_Phase" cardinality="CN_1" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="PHASE_SEQUENCE_NO"/>
+        <viewAttribute id="NEXT_PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="SUBMISSION_DATE_YEAR_MONTH"/>
+        <viewAttribute id="SUBMISSION_DATE_YEAR"/>
+        <viewAttribute id="SUBMISSION_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="SUBMISSION_DATE_MONTH"/>
+        <viewAttribute id="CHANGE_DATE_YEAR_MONTH"/>
+        <viewAttribute id="CHANGE_DATE_YEAR"/>
+        <viewAttribute id="CHANGE_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="CHANGE_DATE_MONTH"/>
+        <viewAttribute id="FINAL_STATUS_DATE_YEAR_MONTH"/>
+        <viewAttribute id="FINAL_STATUS_DATE_YEAR"/>
+        <viewAttribute id="FINAL_STATUS_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="FINAL_STATUS_DATE_MONTH"/>
+        <viewAttribute id="FINAL_STATUS_INDICATOR"/>
+        <viewAttribute id="IDEA_SUBMITTED_AT"/>
+        <viewAttribute id="IDEA_CHANGED_AT"/>
+        <viewAttribute id="IDEA_COUNT"/>
+        <viewAttribute id="IDEA_RESPONSIBILITY_CODE"/>
+        <viewAttribute id="IDEA_RESPONSIBILITY_TEXT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="INTEGER" id="UNCHANGED_FOR_DAYS" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(isnull(&quot;FINAL_STATUS_INDICATOR&quot;) or &quot;FINAL_STATUS_INDICATOR&quot; = 0, daysbetween(&quot;IDEA_CHANGED_AT&quot;,now()), 0)</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#V_ANALYTICS_IDEA_DATES">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMISSION_DATE_YEAR_MONTH" source="IDEA_SUBMITTED_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMISSION_DATE_YEAR" source="IDEA_SUBMITTED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMISSION_DATE_MONTH_NUMBER" source="IDEA_SUBMITTED_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMISSION_DATE_MONTH" source="IDEA_SUBMITTED_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CHANGE_DATE_YEAR_MONTH" source="IDEA_CHANGED_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CHANGE_DATE_YEAR" source="IDEA_CHANGED_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CHANGE_DATE_MONTH_NUMBER" source="IDEA_CHANGED_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CHANGE_DATE_MONTH" source="IDEA_CHANGED_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_DATE_YEAR_MONTH" source="FINAL_STATUS_AT_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_DATE_YEAR" source="FINAL_STATUS_AT_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_DATE_MONTH_NUMBER" source="FINAL_STATUS_AT_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_DATE_MONTH" source="FINAL_STATUS_AT_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="FINAL_STATUS_INDICATOR" source="FINAL_STATUS_INDICATOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_SUBMITTED_AT" source="IDEA_SUBMITTED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT" source="IDEA_CHANGED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_COUNT" source="IDEA_COUNT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_RESPONSIBILITY_CODE" source="IDEA_RESPONSIBILITY_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_RESPONSIBILITY_TEXT" source="IDEA_RESPONSIBILITY_TEXT"/>
+      </input>
+      <input node="#sap.ino.db.campaign::t_campaign_phase">
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_SEQUENCE_NO" source="SEQUENCE_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NEXT_PHASE_CODE" source="NEXT_PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+      </input>
+      <joinAttribute name="CAMPAIGN_ID"/>
+      <joinAttribute name="PHASE_CODE"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Idea_Phase">
+    <descriptions/>
+    <attributes>
+      <attribute id="CAMPAIGN_ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CAMPAIGN_ID"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_ID"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="PHASE_CODE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="PHASE_CODE"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="PHASE_CODE"/>
+      </attribute>
+      <attribute id="SEQUENCE_NO" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Sequence number of this phase in the campaign"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="PHASE_SEQUENCE_NO"/>
+      </attribute>
+      <attribute id="NEXT_PHASE_CODE" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Next phase in campaign"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="NEXT_PHASE_CODE"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="STATUS_CODE"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="SUBMISSION_DATE_YEAR_MONTH" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="SUBMISSION_DATE_YEAR_MONTH"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="SUBMISSION_DATE_YEAR_MONTH"/>
+      </attribute>
+      <attribute id="SUBMISSION_DATE_YEAR" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="SUBMISSION_DATE_YEAR"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="SUBMISSION_DATE_YEAR"/>
+      </attribute>
+      <attribute id="SUBMISSION_DATE_MONTH_NUMBER" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="SUBMISSION_DATE_MONTH_NUMBER"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="SUBMISSION_DATE_MONTH_NUMBER"/>
+      </attribute>
+      <attribute id="SUBMISSION_DATE_MONTH" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CONTENT"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="SUBMISSION_DATE_MONTH"/>
+      </attribute>
+      <attribute id="CHANGE_DATE_YEAR_MONTH" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CHANGE_DATE_YEAR_MONTH"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="CHANGE_DATE_YEAR_MONTH"/>
+      </attribute>
+      <attribute id="CHANGE_DATE_YEAR" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CHANGE_DATE_YEAR"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="CHANGE_DATE_YEAR"/>
+      </attribute>
+      <attribute id="CHANGE_DATE_MONTH_NUMBER" order="13" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CHANGE_DATE_MONTH_NUMBER"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="CHANGE_DATE_MONTH_NUMBER"/>
+      </attribute>
+      <attribute id="CHANGE_DATE_MONTH" order="14" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CONTENT"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="CHANGE_DATE_MONTH"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_DATE_YEAR_MONTH" order="15" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_FINAL_STATUS_DATE_YEAR_MONTH"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="FINAL_STATUS_DATE_YEAR_MONTH"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_DATE_YEAR" order="16" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_FINAL_STATUS_DATE_YEAR_1"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="FINAL_STATUS_DATE_YEAR"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_DATE_MONTH_NUMBER" order="17" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_FINAL_STATUS_DATE_MONTH_NUMBER"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="FINAL_STATUS_DATE_MONTH_NUMBER"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_DATE_MONTH" order="18" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CONTENT"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="FINAL_STATUS_DATE_MONTH"/>
+      </attribute>
+      <attribute id="FINAL_STATUS_INDICATOR" order="19" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_FINAL_STATUS_INDICATOR"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="FINAL_STATUS_INDICATOR"/>
+      </attribute>
+      <attribute id="UNCHANGED_FOR_DAYS" order="20" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="UNCHANGED_FOR_DAYS"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="UNCHANGED_FOR_DAYS"/>
+      </attribute>
+      <attribute id="IDEA_RESPONSIBILITY_CODE" order="22" attributeHierarchyActive="false" descriptionColumnName="IDEA_RESPONSIBILITY_TEXT" displayAttribute="false">
+        <descriptions defaultDescription="Idea Responsibility List Value "/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="IDEA_RESPONSIBILITY_CODE"/>
+      </attribute>
+      <attribute id="IDEA_RESPONSIBILITY_TEXT" order="23" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Responsibility"/>
+        <keyMapping columnObjectName="Idea_Phase" columnName="IDEA_RESPONSIBILITY_TEXT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="IDEA_COUNT" order="21" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Ideas"/>
+        <measureMapping columnObjectName="Idea_Phase" columnName="IDEA_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="169" y="110"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Idea_Phase" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="169" y="200"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

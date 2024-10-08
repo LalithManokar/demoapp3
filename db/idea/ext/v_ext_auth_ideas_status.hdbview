@@ -1,0 +1,30 @@
+schema = "SAP_INO_EXT";
+query = "
+    select distinct code as status, text, status_type, base_package from (
+        select 
+            status.code, 
+            status.default_text as text, 
+            case when status.status_type is null then ''
+                else status.status_type
+            end as status_type, 
+            SUBSTRING (status.code,1,14) as base_package
+        from 
+            \"sap.ino.db.idea::v_auth_ideas_read\" as auth_ideas
+        inner join
+            \"sap.ino.db.idea::t_idea\" as idea
+        on
+            auth_ideas.idea_id = idea.id
+        inner join
+            \"sap.ino.db.status::t_status\" as status
+        on
+            idea.status_code = status.code
+        union all
+        select 'sap.ino.config.DRAFT' as code, 'Draft' as text, '' as status_type, 'sap.ino.config' as base_package from dummy
+        union all
+        select 'sap.ino.config.MERGED' as code, 'Merged' as text, '' as status_type, 'sap.ino.config' as base_package from dummy
+    )
+";
+
+depends_on_table = ["sap.ino.db.idea::t_idea", "sap.ino.db.status::t_status"];
+
+depends_on_view = ["sap.ino.db.idea::v_auth_ideas_read"];

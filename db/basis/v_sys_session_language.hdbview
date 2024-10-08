@@ -1,0 +1,6 @@
+schema = "SAP_INO";
+query = "
+    select 
+        substr(session_context('LOCALE'),0,2) as iso_code 
+    from dummy
+with read only";

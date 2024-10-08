@@ -1,0 +1,15 @@
+schema = "SAP_INO";
+query = "
+    select  
+        milestone_task.*,
+        created_by_identity.name as created_by, 
+        changed_by_identity.name as changed_by 
+    from \"sap.ino.db.basis::t_milestone_task_stage\" as milestone_task
+        left outer join \"sap.ino.db.iam::t_identity\" as created_by_identity
+            on milestone_task.created_by_id = created_by_identity.id
+        left outer join \"sap.ino.db.iam::t_identity\" as changed_by_identity
+            on milestone_task.changed_by_id = changed_by_identity.id
+    with read only";
+
+depends_on_table = ["sap.ino.db.basis::t_milestone_task_stage",
+                    "sap.ino.db.iam::t_identity"];

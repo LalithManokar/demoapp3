@@ -1,0 +1,92 @@
+<mvc:View
+    controllerName="sap.ino.vc.blog.Modify"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns:ino="sap.ino.controls"
+    afterRendering="onAfterRendering"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<Page id="blogModify"
+    	  app:aofSmartControl="true"
+		  app:aofModel="object"
+          app:aofObject="sap.ino.xs.object.blog.Blog">
+		<customHeader>
+			<ino:ColorBar id="pageheader" backgroundColor="{path: 'object>CAMPAIGN_COLOR', formatter: '.formatter.color'}">
+				<core:Fragment fragmentName="sap.ino.vc.commons.fragments.NavBackButton" type="XML" />
+				<ToolbarSpacer/>
+				<Link text="{object>CAMPAIGN_NAME}" press="onCampaignPressed" visible="{= ${object>CAMPAIGN_NAME} ? true : false }"/>
+				<ToolbarSpacer/>
+				<core:Fragment fragmentName="sap.ino.vc.commons.fragments.FullScreenButton" type="XML" />
+			</ino:ColorBar>
+		</customHeader>
+		<content>
+			<uxap:ObjectPageLayout 
+                id="objectpage" 
+                useIconTabBar="true"
+                enableLazyLoading="true"
+                visible="{view>/objectExists}">
+				<uxap:headerTitle>
+					<uxap:ObjectPageHeader 
+					    id="objectpageheader" 
+					    visible="{= !${device>/system/phone} }"
+                        objectTitle="{= ${object>TITLE} || ${object>ID} > 0 ? ${object>TITLE} : ${i18n>BLOG_OBJECT_TIT_NEW_BLOG} }"
+                        objectSubtitle="{parts: ['i18n>FLD_BY', 'object>SUBMITTER_NAME', 'object>CREATED_BY_NAME', 'object>PUBLISHED_AT', 'object>CREATED_AT','object>STATUS_CODE'], formatter:'.alternativeBlogBy'}"                    
+                        isObjectIconAlwaysVisible="false"
+                        isObjectTitleAlwaysVisible="true"
+                        isObjectSubtitleAlwaysVisible="true"
+                        isActionAreaAlwaysVisible="false"></uxap:ObjectPageHeader>
+				</uxap:headerTitle>
+				<uxap:sections>
+					<uxap:ObjectPageSection id="sectionDetails" title="{i18n>MENU_MIT_DETAILS}">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection id="mainsubsection" title="{i18n>MENU_MIT_DETAILS}">
+								<uxap:blocks>
+									<core:Fragment fragmentName="sap.ino.vc.blog.fragments.ModifyDetails" type="XML" />
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+				</uxap:sections>
+			</uxap:ObjectPageLayout>
+			<core:Fragment fragmentName="sap.ino.vc.commons.fragments.ObjectNotExists"  type="XML"/>
+		</content>
+		<footer>
+			<OverflowToolbar visible="{view>/objectExists}">
+				<content>
+					<core:Fragment fragmentName="sap.ino.vc.commons.fragments.MessageLog" type="XML" />
+					<ToolbarSpacer />
+					<MenuButton
+					    id="publishMenuButton"
+					    visible="{=${object>/property/actions/update/enabled}}"
+    					text="{i18n>BLOG_OBJECT_BTN_PUBLISH_MAJOR_CHANGED}" 
+    					buttonMode="Split" 
+    					width="225px"
+    					type="Accept" 
+    					class="sapMenumBlogPublish"
+    					defaultAction="onPublish" 
+    					useDefaultActionOnly="true">
+						<menu>							
+						    <Menu itemSelected="onPublishAction">
+								<items>
+									<MenuItem text="{i18n>BLOG_OBJECT_BTN_PUBLISH_MAJOR_CHANGED}"
+        					                key="majorPublishSubmit" />
+									<MenuItem text="{i18n>BLOG_OBJECT_BTN_PUBLISH_MINOR_CHANGED}" 
+    										key="publishSubmit" />
+								</items>
+							</Menu>
+						</menu>
+					</MenuButton>
+					<Button 
+					    id="blogSaveBtn"
+                        text="{i18n>BLOG_OBJECT_BTN_SAVE_AS_DRAFT}"
+                        type="Default"
+    					visible="{=${object>STATUS_CODE} === 'sap.ino.config.DRAFT' &amp;&amp; ${object>/property/actions/update/enabled}}"
+                        press="onSave" />
+					<core:Fragment fragmentName="sap.ino.vc.commons.fragments.DeleteButton" type="XML" />
+					<core:Fragment fragmentName="sap.ino.vc.commons.fragments.CancelButton" type="XML" />
+				</content>
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>

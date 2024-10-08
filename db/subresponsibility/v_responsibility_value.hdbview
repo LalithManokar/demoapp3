@@ -1,0 +1,17 @@
+schema = "SAP_INO";
+query = "SELECT sub_resp.CODE, 
+    sub_resp.ID,
+	sub_resp.RESP_CODE, 
+	sub_resp.DEFAULT_TEXT, 
+	sub_resp.DEFAULT_LONG_TEXT,
+	sub_resp.LINK_URL,
+	sub_resp.DEFAULT_COACH,
+	resp.DEFAULT_TEXT as RESP_DEFAULT_TEXT
+    FROM \"sap.ino.db.subresponsibility::t_responsibility_value_stage\" as sub_resp
+    inner join \"sap.ino.db.subresponsibility::t_responsibility_stage\" as resp
+      on sub_resp.RESP_CODE = resp.CODE
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.subresponsibility::t_responsibility_value_stage",
+                    "sap.ino.db.subresponsibility::t_responsibility_stage"];

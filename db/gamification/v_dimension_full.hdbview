@@ -1,0 +1,24 @@
+schema = "SAP_INO";
+query = "SELECT 
+	dimension.ID,
+	dimension.CREATED_AT,
+	dimension.CREATED_BY_ID,
+	iden_1.NAME as CREATED_BY,
+	dimension.CHANGED_AT,
+	dimension.CHANGED_BY_ID,
+	iden_2.NAME as CHANGED_BY,
+	dimension.NAME,
+	dimension.UNIT,
+	dimension.TECHNICAL_NAME,
+	dimension.SCOPE,
+	dimension.STATUS,
+	dimension.DESCRIPTION,
+	dimension.REDEEM
+FROM \"sap.ino.db.gamification::t_dimension\" as dimension
+left join \"sap.ino.db.iam::t_identity\" as iden_1
+on dimension.CREATED_BY_ID = iden_1.id
+left join \"sap.ino.db.iam::t_identity\" as iden_2
+on dimension.CHANGED_BY_ID = iden_2.id
+    with read only
+";
+depends_on_table = ["sap.ino.db.gamification::t_dimension"];   

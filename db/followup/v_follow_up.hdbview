@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = " 
+	select follow_up.*
+	    from  
+	    	\"sap.ino.db.followup::t_follow_up\" as follow_up
+    	inner join
+    		\"sap.ino.db.followup::v_auth_follow_up\" as auth
+    	on auth.follow_up_id = follow_up.id
+    with read only";
+				
+				
+depends_on_table = ["sap.ino.db.followup::t_follow_up"];
+depends_on_view = ["sap.ino.db.followup::v_auth_follow_up"];

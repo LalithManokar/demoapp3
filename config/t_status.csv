@@ -1,0 +1,31 @@
+CODE;DEFAULT_TEXT
+sap.ino.config.DRAFT;Draft
+sap.ino.config.NEW_IN_PHASE;New
+sap.ino.config.COMPLETED;Completed
+sap.ino.config.DISCONTINUED;Rejected
+sap.ino.config.MERGED;Merged
+sap.ino.config.IN_PROCESS;In Process
+sap.ino.config.READY_DECISION;Ready for decision
+sap.ino.config.WAITING;Waiting
+sap.ino.config.EVAL_FINISHED;Submitted
+sap.ino.config.EVAL_PUB_SUBMITTER;Published to Author
+sap.ino.config.EVAL_PUB_COMMUNITY;Published to Community
+sap.ino.config.EVAL_DRAFT;Draft
+sap.ino.config.CAMP_DRAFT;Draft
+sap.ino.config.CAMP_PUBLISHED;Published
+sap.ino.config.BLOG_PUBLISHED;Blog Published
+sap.ino.config.REWARD_SUBMITTED;Submitted
+sap.ino.config.REWARD_PUB_COMMUNITY;Published To Community
+sap.ino.config.REWARD_PUB_AUTHOR;Published To Author
+sap.ino.config.REGISTER_NEW;New
+sap.ino.config.REGISTER_APPROVED;Approved
+sap.ino.config.REGISTER_Rejected;Rejected
+sap.ino.config.EVAL_REQ_REQUESTED;Requested
+sap.ino.config.EVAL_REQ_ACCEPTED;Accepted
+sap.ino.config.EVAL_REQ_REJECTED;Rejected
+sap.ino.config.EVAL_REQ_IN_PROCESS;In Process
+sap.ino.config.EVAL_REQ_IN_CLARIFICATION;In Clarification
+sap.ino.config.EVAL_REQ_COMPLETED;Completed
+sap.ino.config.EVAL_REQ_EXPIRED;Expired
+sap.ino.config.ACTIVE;Active
+sap.ino.config.INACTIVE;Inactive

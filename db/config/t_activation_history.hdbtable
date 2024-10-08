@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Tracks the configuration runs";
+table.columns = [ 
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Primary key";},
+	{name = "ACTIVATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Activation timestamp";},
+	{name = "ACTIVATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which the activation was triggered. Foreign key to t_identity.ID";},
+	{name = "STATUS"; sqlType = VARCHAR; length = 100; nullable = false; comment = "SUCCESS, ERROR";}
+];
+table.primaryKey.pkcolumns = ["ID"];

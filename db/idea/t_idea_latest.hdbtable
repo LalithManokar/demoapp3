@@ -1,0 +1,16 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Latest Idea/Comment for Viewer";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+	{name = "OBJECT_ID"; sqlType = INTEGER; nullable = false; comment = "Object id ";},
+	{name = "OBJECT_TYPE_CODE"; sqlType = NVARCHAR; length = 100; comment = "Object type code to indicate this object";},
+	{name = "INVOLVED_ID"; sqlType = INTEGER; nullable = false; comment = "Involved object id ";},
+	{name = "INVOLVED_OBJECT_TYPE_CODE"; sqlType = NVARCHAR; length = 100; comment = "Involved Object type code to indicate this involved object";},
+	{name = "TYPE_CODE"; sqlType = NVARCHAR; length = 100; nullable = false; comment = "Type code";},
+	{name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";}
+];
+table.primaryKey.pkcolumns = ["ID"];

@@ -1,0 +1,20 @@
+schema = "SAP_INO";
+query = "
+-- Filter idea status codes so that only those are shown which are used in any campaign phase status model
+select distinct idea_status.code, status.status_type from 
+(
+    select current_status_code as code
+    from \"sap.ino.db.idea::v_status_model_transition_static\"
+    union all 
+    select next_status_code as code
+    from \"sap.ino.db.idea::v_status_model_transition_static\"
+    union all
+    select 'sap.ino.config.DRAFT' as code from dummy
+    union all
+    select 'sap.ino.config.MERGED' as code from dummy
+) as idea_status
+  inner join \"sap.ino.db.status.ext::v_ext_status\" as status
+  on idea_status.code = status.code
+";
+depends_on_view = ["sap.ino.db.idea::v_status_model_transition_static",
+                   "sap.ino.db.status.ext::v_ext_status"];

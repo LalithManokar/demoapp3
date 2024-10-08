@@ -1,0 +1,9 @@
+schema = "SAP_INO_EXT";
+query = "
+    select  authorization_stage.*
+    from\"sap.ino.db.status::t_status_authorization_stage\" as authorization_stage
+    with read only ";
+    
+depends_on_table = [
+                    "sap.ino.db.status::t_status_authorization_stage"
+                   ];   

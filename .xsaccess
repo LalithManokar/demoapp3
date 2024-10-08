@@ -1,0 +1,109 @@
+{
+    "exposed": false,
+    "prevent_xsrf": true,
+    "authentication": [{"method": "Form"}, {"method": "Basic"} ],
+    "mime_mapping" : [ {"extension": "mp4",  "mimetype": "video/mp4"},
+                       {"extension": "less", "mimetype": "text/css"},
+                       {"extension": "htm", "mimetype": "text/html"} ],
+	"rewrite_rules" : [{
+	    "source": "",
+	    "target": "/ngui/sap/ino/apps/public/index.xsjs?sap-ino-origin=ino"
+    },{
+	    "source": "/config/attachment/(.*)",
+	    "target": "/config/attachment/$1"
+    },{
+	    "source": "/config",
+        "target": "/ui/public/index.xsjs?sap-ino-origin=backoffice"
+    },{
+	    "source": "/config/",
+        "target": "/ui/public/index.xsjs?sap-ino-origin=backoffice"
+    },{
+        "source": "/config/index.html",
+        "target": "/ui/public/index.xsjs?sap-ino-origin=backoffice"
+    },{
+        "source": "/config/index_dev.html",
+        "target": "/ui/backoffice/index_dev.xsjs"
+    },{
+	    "source": "/config/(.*)",
+	    "target": "/ui/backoffice/$1"
+    },{
+        "source": "/ngui/sap/ino/controls/messagebundle_([a-z]{2,3})_[A-Z]{2}?_sappsd\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_controls&LOCALE=$1&PSEUDO=1"
+    },{
+        "source": "/ngui/sap/ino/controls/messagebundle_([a-z]{2,3})(_[A-Z]{2}?)\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_controls&LOCALE=$1$2"
+    },{
+        "source": "/ngui/sap/ino/controls/messagebundle_([a-z]{2,3})?\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_controls&LOCALE=$1"
+    },{
+        "source": "/ngui/sap/ino/controls/messagebundle.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_controls"
+    },{
+        "source": "/ngui/sap/ino/commons/messagebundle_([a-z]{2,3})_[A-Z]{2}?_sappsd\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_commons&LOCALE=$2&PSEUDO=1"
+    },{
+        "source": "/ngui/sap/ino/commons/messagebundle_([a-z]{2,3})_[A-Z]{2}?\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_commons&LOCALE=$2"
+    },{
+        "source": "/ngui/sap/ino/commons/messagebundle_([a-z]{2,3})?\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_commons&LOCALE=$2"
+    },{
+        "source": "/ngui/sap/ino/commons/messagebundle.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_commons"
+    },{
+        "source": "/ngui/sap/ino/wall/messagebundle_([a-z]{2,3})_[A-Z]{2}?_sappsd\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_wall&LOCALE=$2&PSEUDO=1"
+    },{
+        "source": "/ngui/sap/ino/wall/messagebundle_([a-z]{2,3})_[A-Z]{2}?\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_wall&LOCALE=$2"
+    },{
+        "source": "/ngui/sap/ino/wall/messagebundle_([a-z]{2,3})?\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_wall&LOCALE=$2"
+    },{
+        "source": "/ngui/sap/ino/wall/messagebundle.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_wall"
+    },{
+        "source": "/ngui/build/resources/sap/ino/controls/messagebundle_([a-z]{2,3})_[A-Z]{2}?\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_controls&LOCALE=$1"
+    },{
+        "source": "/ngui/build/resources/sap/ino/controls/messagebundle_([a-z]{2,3})?\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_controls&LOCALE=$1"
+    },{
+        "source": "/ngui/build/resources/sap/ino/controls/messagebundle.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_controls"
+    },{
+        "source": "/ngui/build/resources/sap/ino/commons/messagebundle_([a-z]{2,3})_[A-Z]{2}?_sappsd\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_commons&LOCALE=$2&PSEUDO=1"
+    },{
+        "source": "/ngui/build/resources/sap/ino/commons/messagebundle_([a-z]{2,3})_[A-Z]{2}?\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_commons&LOCALE=$2"
+    },{
+        "source": "/ngui/build/resources/sap/ino/commons/messagebundle_([a-z]{2,3})?\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_commons&LOCALE=$2"
+    },{
+        "source": "/ngui/build/resources/sap/ino/commons/messagebundle.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_commons"
+    },{
+        "source": "/ngui/build/resources/sap/ino/wall/messagebundle_([a-z]{2,3})_[A-Z]{2}?_sappsd\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_wall&LOCALE=$2&PSEUDO=1"
+    },{
+        "source": "/ngui/build/resources/sap/ino/wall/messagebundle_([a-z]{2,3})_[A-Z]{2}?\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_wall&LOCALE=$2"
+    },{
+        "source": "/ngui/build/resources/sap/ino/wall/messagebundle_([a-z]{2,3})?\\.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_wall&LOCALE=$2"
+    },{
+        "source": "/ngui/build/resources/sap/ino/wall/messagebundle.properties",
+        "target": "/xs/rest/static/textBundle/text.xsjs?OBJECT=sap_ino_wall"
+    },{
+        "source": "/ui/mobile/(index_dev.html|index.html|)",
+        "target": "/ngui/sap/ino/apps/ino/legacy-redirect/redirect.xsjs?sap-ino-origin=mobile"
+    },{
+        "source": "/ui/frontoffice/(index_dev.html|index.html|)",
+        "target": "/ngui/sap/ino/apps/ino/legacy-redirect/redirect.xsjs?sap-ino-origin=frontoffice"
+    },{
+        "source": "/ui/frontoffice",
+        "target": "/ngui/sap/ino/apps/ino/legacy-redirect/redirect.xsjs?sap-ino-origin=frontoffice"
+    }
+    ]
+}

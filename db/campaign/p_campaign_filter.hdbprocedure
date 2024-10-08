@@ -1,0 +1,84 @@
+procedure "SAP_INO"."sap.ino.db.campaign::p_campaign_filter" (
+     in  iv_filter_name nvarchar(1024),
+     out ot_campaign_id  SAP_INO."sap.ino.db.basis::tt_object_id"
+ )
+ language sqlscript
+ sql security invoker
+ default schema SAP_INO
+ reads sql data as
+begin
+    ot_campaign_id = select id 
+                         from "sap.ino.db.campaign::t_campaign"
+                         where :iv_filter_name <> 'activeCampaigns'
+                             and :iv_filter_name <> 'futureCampaigns'
+                             and :iv_filter_name <> 'pastCampaigns'
+                             and :iv_filter_name <> 'openCampaigns'
+                             and :iv_filter_name <> 'draftCampaigns'
+                             and :iv_filter_name <> 'managedCampaigns'
+                             and :iv_filter_name <> 'publishCampaigns'
+                             and :iv_filter_name <> 'submittableCampaigns'
+                             and :iv_filter_name <> 'registeredCampaigns'
+                     union all
+                     select id 
+                         from "sap.ino.db.campaign::t_campaign"
+                         where :iv_filter_name = 'activeCampaigns'
+                             and valid_from <= CURRENT_UTCTIMESTAMP
+                             and valid_to >= CURRENT_UTCTIMESTAMP
+                     union all
+                     select id
+                         from "sap.ino.db.campaign::t_campaign"
+                         where :iv_filter_name = 'openCampaigns'
+                             and (
+                             (submit_from <= CURRENT_UTCTIMESTAMP and submit_to >= CURRENT_UTCTIMESTAMP)
+                             or
+                             (register_from <= CURRENT_UTCTIMESTAMP and register_to >= CURRENT_UTCTIMESTAMP))
+                    union all
+                     select distinct campaign.id 
+                        from "sap.ino.db.campaign::v_managed_campaign" as my_campaign
+                        inner join "sap.ino.db.campaign::t_campaign" as campaign
+                        on campaign.id = my_campaign.id
+                        where :iv_filter_name = 'draftCampaigns'
+                             and status_code = 'sap.ino.config.CAMP_DRAFT'         
+                     union all
+                     select id 
+                         from "sap.ino.db.campaign::t_campaign"
+                         where :iv_filter_name = 'futureCampaigns'
+                             and valid_from >= CURRENT_UTCTIMESTAMP
+                     union all
+                     select id 
+                         from "sap.ino.db.campaign::t_campaign"
+                         where :iv_filter_name = 'pastCampaigns'
+                             and valid_to <= CURRENT_UTCTIMESTAMP group by id
+                    union all
+                    select id
+                        from "sap.ino.db.campaign::t_campaign" campaign
+                    inner join
+                        "sap.ino.db.campaign::v_my_registered_campaign" registered_campaign
+                    on
+                        campaign.id = registered_campaign.CAMPAIGN_ID
+                    where
+                        :iv_filter_name = 'registeredCampaigns'
+                    union all
+                    select distinct campaign.id 
+                        from "sap.ino.db.campaign::v_managed_campaign" as my_campaign
+                        inner join "sap.ino.db.campaign::t_campaign" as campaign
+                        on campaign.id = my_campaign.id
+                        where :iv_filter_name = 'managedCampaigns'
+                    union all
+                    select distinct campaign.id 
+                        from "sap.ino.db.campaign::v_managed_campaign" as my_campaign
+                        inner join "sap.ino.db.campaign::t_campaign" as campaign
+                        on campaign.id = my_campaign.id
+                        where :iv_filter_name = 'publishCampaigns'
+                        and campaign.STATUS_CODE != 'sap.ino.config.CAMP_DRAFT'
+                    union all
+                    select distinct campaign.id 
+                        from "sap.ino.db.campaign::v_managed_campaign" as my_campaign
+                        inner join "sap.ino.db.campaign::t_campaign" as campaign
+                        on campaign.id = my_campaign.id
+                        where :iv_filter_name = 'submittableCampaigns'
+                             and (
+                             (submit_from <= CURRENT_UTCTIMESTAMP and submit_to >= CURRENT_UTCTIMESTAMP)
+                             or
+                             (register_from <= CURRENT_UTCTIMESTAMP and register_to >= CURRENT_UTCTIMESTAMP));
+end;

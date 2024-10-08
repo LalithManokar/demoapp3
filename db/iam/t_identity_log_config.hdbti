@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.iam::t_identity_log_config";
+    file       = "sap.ino.db.iam:t_identity_log_config.csv";
+    header     = false;
+    delimField = ";";
+}];

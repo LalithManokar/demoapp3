@@ -1,0 +1,55 @@
+PROCEDURE "SAP_INO"."sap.ino.db.installation::p_create_user_and_assign_role"(
+		IN INNO_MANAGER_ACCOUNT VARCHAR(256), 
+		IN INNO_MANAGER_FIRST_NAME VARCHAR(256), 
+		IN INNO_MANAGER_LAST_NAME VARCHAR(256), 
+		IN INNO_MANAGER_EMAIL VARCHAR(256), 
+		IN TECH_USER_ACCOUNT VARCHAR(256), 
+		OUT ot_message SAP_INO."sap.ino.db.basis::tt_message", 
+		OUT ot_generated_id SAP_INO."sap.ino.db.basis::tt_generated_id"
+	)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY DEFINER
+	DEFAULT SCHEMA "SAP_INO"
+AS
+BEGIN
+	DECLARE lv_user_name INTEGER;
+    SELECT 
+        COUNT(1) INTO lv_user_name
+    FROM 
+        "SAP_INO"."sap.ino.db.iam::t_identity"
+    WHERE
+        USER_NAME = upper(INNO_MANAGER_ACCOUNT);
+        
+	CALL "_SYS_REPO"."GRANT_ACTIVATED_ROLE"(
+			'sap.ino.authorizations::innovation_system_manager', 
+			upper(INNO_MANAGER_ACCOUNT)
+		);
+	CALL "_SYS_REPO"."GRANT_ACTIVATED_ROLE"(
+			'sap.ino.authorizations::innovation_user_manager', 
+			upper(INNO_MANAGER_ACCOUNT)
+		);
+	CALL "_SYS_REPO"."GRANT_ACTIVATED_ROLE"(
+			'sap.ino.authorizations::innovation_manager', 
+			upper(INNO_MANAGER_ACCOUNT)
+		);
+		
+	CALL "_SYS_REPO"."GRANT_ACTIVATED_ROLE"(
+			'sap.ino.authorizations::technical_user', 
+			upper(INNO_MANAGER_ACCOUNT)
+		);
+	CALL "_SYS_REPO"."GRANT_ACTIVATED_ROLE"(
+			'sap.ino.authorizations::technical_user', 
+			upper(TECH_USER_ACCOUNT)
+		);
+        
+    IF :lv_user_name = 0 THEN
+    	CALL "SAP_INO"."sap.ino.db.iam.admin::grant_innovation_management_system_admin_privileges"(
+    			INNO_MANAGER_ACCOUNT, 
+    			INNO_MANAGER_FIRST_NAME, 
+    			INNO_MANAGER_LAST_NAME, 
+    			INNO_MANAGER_LAST_NAME, 
+    			ot_message, 
+    			ot_generated_id
+    		);
+	END IF;
+END;

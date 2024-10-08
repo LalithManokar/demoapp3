@@ -1,0 +1,10 @@
+CODE;OBJECT_TYPE_CODE;DEFAULT_TEXT
+sap.ino.config.MINIMAL;IDEA;Minimal
+sap.ino.config.MINIMAL_COMPLETE;IDEA;Minimal (with completion)
+sap.ino.config.SIMPLE;IDEA;Process
+sap.ino.config.SIMPLE_COMPLETE;IDEA;Process (with completion)
+sap.ino.config.PROJECT;IDEA;Decision
+sap.ino.config.PROJECT_COMPLETE;IDEA;Decision (with completion)
+sap.ino.config.EVALUATION;EVALUATION;Evaluation
+sap.ino.config.REWARD;REWARD;Reward
+sap.ino.config.EVALREQUEST;EVALUATIONREQUEST;Evaluationrequest

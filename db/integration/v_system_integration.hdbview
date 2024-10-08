@@ -1,0 +1,39 @@
+schema = "SAP_INO";
+query = "SELECT integration.ID,
+        integration.CREATED_AT,
+        integration.CREATED_BY_ID,
+        identity_create_by.NAME AS CREATE_BY,
+        integration.CHANGED_AT,
+        integration.CHANGED_BY_ID,
+        identity_change_by.NAME AS CHANGE_BY,
+        integration.APINAME,
+        integration.TECHNICAL_NAME,
+        integration.SYSTEM_NAME,
+        integration.SYSTEM_PACKAGE_NAME,
+        integration.CREATE_METHOD,
+        integration.CREATE_PATH,
+        integration.FETCH_METHOD,
+        integration.FETCH_PATH,
+        integration.FETCH_REQ_JSON,
+        integration.FETCH_RES_JSON,
+        integration.CREATE_REQ_JSON,
+        integration.CREATE_RES_JSON,
+        integration.STATUS,
+        integration.CREATE_TOKEN_URL,
+        integration.CREATE_TOKEN_KEY,
+        integration.CREATE_TOKEN_VALUE,
+        integration.FETCH_TOKEN_URL,
+        integration.FETCH_TOKEN_KEY,
+        integration.FETCH_TOKEN_VALUE,
+        integration.CREATE_LOCATION_ID,
+        integration.FETCH_LOCATION_ID
+    FROM \"sap.ino.db.integration::t_system_integration\" as integration
+    left outer join \"sap.ino.db.iam::t_identity\" as identity_create_by
+    on identity_create_by.id = integration.CREATED_BY_ID  
+    left outer join \"sap.ino.db.iam::t_identity\" as identity_change_by
+    on identity_change_by.id = integration.CHANGED_BY_ID
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.integration::t_system_integration",
+                    "sap.ino.db.iam::t_identity"];   

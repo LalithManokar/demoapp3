@@ -1,0 +1,33 @@
+schema = "SAP_INO";
+query  = "
+    select
+         responsibility.code,
+         campaign.id                                                                          as campaign_id,
+         case campaign_auth.campaign_id
+           when null then not_authorized.content
+           else campaign_text.name
+         end                                                                                  as campaign_name,
+         count(campaign.id) as resp_count
+    from                 \"sap.ino.db.subresponsibility::t_responsibility_stage\"             as responsibility        
+         left outer join \"sap.ino.db.campaign::t_campaign\"                                  as campaign
+                           on campaign.resp_code = responsibility.code
+         left outer join \"sap.ino.db.campaign::v_auth_campaigns\"                            as campaign_auth
+                           on campaign_auth.campaign_id = campaign.id
+         left outer join \"sap.ino.db.campaign::v_campaign_t_locale\"                         as campaign_text
+                           on campaign_text.campaign_id = campaign_auth.campaign_id,                   
+       (select content from \"sap.ino.db.basis::v_resolved_text\" where object_name = 'uitexts' and text_id = 'BO_COMMON_NOT_AUTHORIZED') as not_authorized
+    where campaign.resp_code is not null
+    group by
+      responsibility.code,
+      campaign.id,
+      campaign_text.name,
+      not_authorized.content,
+      campaign_auth.campaign_id
+   with read only ";
+   
+depends_on_table = ["sap.ino.db.campaign::t_campaign",
+				    "sap.ino.db.subresponsibility::t_responsibility_stage"];
+depends_on_view  = ["sap.ino.db.campaign::v_auth_campaigns",
+                    "sap.ino.db.campaign::v_campaign_t_locale",
+                    "sap.ino.db.basis::v_resolved_text"];
+  

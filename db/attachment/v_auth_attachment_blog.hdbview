@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query  = " 
+         select distinct attachment.id as attachment_id
+           from 
+                 \"sap.ino.db.attachment::t_attachment\"            as attachment
+           join
+                 \"sap.ino.db.attachment::t_attachment_assignment\" as assignment
+                 on (assignment.owner_type_code = 'BLOG' or assignment.owner_type_code = 'BLOGCONTENT') and
+                    assignment.attachment_id   = attachment.id
+            join \"sap.ino.db.blog::v_auth_blogs_read\"              as auth_blog
+                 on assignment.owner_id     = auth_blog.blog_id
+                 where assignment.filter_type_code is null or
+                       assignment.filter_type_code = 'FRONTOFFICE'
+         with read only";
+         
+depends_on_table = ["sap.ino.db.attachment::t_attachment",
+                    "sap.ino.db.attachment::t_attachment_assignment"];
+
+depends_on_view  = ["sap.ino.db.blog::v_auth_blogs_read"];                    

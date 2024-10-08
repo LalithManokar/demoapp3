@@ -1,0 +1,213 @@
+<mvc:View
+    controllerName="sap.ino.vc.idea.Experts"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:ino="sap.ino.controls"
+	xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<VBox width="100%">
+	    <OverflowToolbar width="100%"
+            class="sapInoIdeaExpertToolbar">
+			<Title text="{i18n>IDEA_OBJECT_TIT_IDEA_Author}"/>
+		</OverflowToolbar>
+		<l:Grid id="ideaDisplayAuthor" content="{path : 'object>SubmitterContributors', sorter:[{path: 'ROLE_CODE', descending: true}]}"
+                hSpacing="0.5" vSpacing="0.5" position="Left" defaultSpan="XL4 L5">
+            <HBox>
+				<ino:IdentityActionCard
+				    visible="{= ${object>IDENTITY_ID} > 0}"
+                    identityId="{object>IDENTITY_ID}" 
+                    userName="{object>NAME}"
+                    userOrganization="{object>ORGANIZATION}"
+                    userRole="{ path: 'object>ROLE_CODE', formatter: '.formatter.roleCode' }"
+                    userImageUrl="{ path: 'object>IMAGE_ID', formatter: '.formatter.userImage' }"
+                    actionable="false"
+                    pinnable="{clipboard>/enabled}"
+                    isPinned="{ parts: [{path: 'object>IDENTITY_ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIsUserInClipboard' }"
+                    pinPressed="onUserPinPressed"
+                    identityPress="onOpenIdentityQuickView"
+                    mailable="{path: 'object>IS_VALID_EMAIL', type:'sap.ino.commons.models.types.IntBooleanType'}"
+                    mailPressed="onMailPressed"
+                />
+                <ino:IdentityActionCard
+                    visible="{= ${object>IDENTITY_ID} === 0}"
+                    identityId="{object>IDENTITY_ID}" 
+                    userName="{i18n>IDEA_OBJECT_TIT_IDEA_Anonymity}"
+                    userOrganization="{i18n>IDEA_OBJECT_TIT_IDEA_Anonymity}"
+                    userRole="{ path: 'object>ROLE_CODE', formatter: '.formatter.roleCode' }"
+                    userImageUrl="{ path: 'object>IMAGE_ID', formatter: '.formatter.userImage' }"
+                    actionable="false"
+                    pinnable="{clipboard>/enabled}"
+                    isPinned="{ parts: [{path: 'object>IDENTITY_ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIsUserInClipboard' }"
+                    pinPressed="onUserPinPressed"
+                    identityPress="onOpenIdentityQuickView"
+                    mailable="{path: 'object>IS_VALID_EMAIL', type:'sap.ino.commons.models.types.IntBooleanType'}"
+                    mailPressed="onMailPressed"
+                />
+            </HBox>
+		</l:Grid>
+	</VBox>
+	<VBox width="100%">
+	     <OverflowToolbar width="100%"
+            class="sapInoIdeaExpertToolbar">
+			<Title text="{i18n>CTRL_EXPERTS_GRP_COACH}"/>
+		</OverflowToolbar>
+		<List items="{path: 'object>SubmitterCoach', sorter:[{path: 'ROLE_CODE', descending: true}]}" mode="None" noDataText="{i18n>IDEA_OBJECT_LBL_NO_COACH_ASSIGNED}">
+		    <CustomListItem>
+        		<l:Grid id="ideaDisplayCoach"
+                        hSpacing="0.5" vSpacing="0.5" position="Left" defaultSpan="XL4 L5">
+                    <HBox>
+        				<ino:IdentityActionCard
+        				    visible="{= ${object>IDENTITY_ID} > 0 &amp;&amp; ${object>ROLE_CODE} ==='CAMPAIGN_COACH'}"
+                            identityId="{object>IDENTITY_ID}" 
+                            userName="{object>NAME}"
+                            userOrganization="{object>ORGANIZATION}"
+                            userRole="{ path: 'object>ROLE_CODE', formatter: '.formatter.roleCode' }"
+                            userImageUrl="{ path: 'object>IMAGE_ID', formatter: '.formatter.userImage' }"
+                            actionable="false"
+                            pinnable="{clipboard>/enabled}"
+                            isPinned="{ parts: [{path: 'object>IDENTITY_ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIsUserInClipboard' }"
+                            pinPressed="onUserPinPressed"
+                            identityPress="onOpenIdentityQuickView"
+                            mailable="{path: 'object>IS_VALID_EMAIL', type:'sap.ino.commons.models.types.IntBooleanType'}"
+                            mailPressed="onMailPressed"
+                        />
+                        <ino:IdentityActionCard
+                            visible="{= ${object>IDENTITY_ID} === 0 &amp;&amp; ${object>ROLE_CODE} ==='CAMPAIGN_COACH'}"
+                            identityId="{object>IDENTITY_ID}" 
+                            userName="{i18n>IDEA_OBJECT_TIT_IDEA_Anonymity}"
+                            userOrganization="{i18n>IDEA_OBJECT_TIT_IDEA_Anonymity}"
+                            userRole="{ path: 'object>ROLE_CODE', formatter: '.formatter.roleCode' }"
+                            userImageUrl="{ path: 'object>IMAGE_ID', formatter: '.formatter.userImage' }"
+                            actionable="false"
+                            pinnable="{clipboard>/enabled}"
+                            isPinned="{ parts: [{path: 'object>IDENTITY_ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIsUserInClipboard' }"
+                            pinPressed="onUserPinPressed"
+                            identityPress="onOpenIdentityQuickView"
+                            mailable="{path: 'object>IS_VALID_EMAIL', type:'sap.ino.commons.models.types.IntBooleanType'}"
+                            mailPressed="onMailPressed"
+                        />
+                    </HBox>
+        		</l:Grid>
+    	    </CustomListItem>
+	    </List>
+	</VBox>
+	<VBox width="100%">
+		<OverflowToolbar width="100%"
+            class="sapInoIdeaExpertToolbar sapInoIdeaExpertsTitle">
+			<Title text="{i18n>EXPERTS_TIT_IDEA_EXPERTS}"/>
+			<ToolbarSpacer/>
+			<HBox visible="{object>/property/nodes/Root/customProperties/backofficeChangeExpertPrivilege}">
+    			<Input id="suggestUser" 
+                    type="Text" 
+                    placeholder="{i18n>EXPERTS_INPUT_PLACEHOLDER}" 
+                    tooltip="{i18n>EXPERTS_INPUT_TOOLTIP}" 
+        			displaySecondaryValues="true" 
+        			showSuggestion="true"  
+        			filterSuggests="false"
+        			suggest="onSuggestIdeaExpert" 
+        			suggestionItemSelected="onAddInputExpert">
+    				<layoutData>
+    					<OverflowToolbarLayoutData minWidth="200px" maxWidth="300px" shrinkable="true"/>
+    				</layoutData>
+    			</Input>
+    			<Button text="{i18n>BTN_ADD}" press="onAddInputExpert" visible="{=!${device>/system/phone}}" />
+    			<Button text="{i18n>BTN_ADD_FROM_CLIPBOARD}" 
+                    press="onAddFromClipboard" 
+                    visible="{=!${device>/system/phone}}" 
+                    enabled="{ parts: [{path: 'clipboard>/changed'}], formatter: '.formatHasUsersInClipboard' }"
+                />
+            </HBox>
+		</OverflowToolbar>
+		<List items="{path: 'object>/Experts', sorter:[{path: 'ROLE_CODE', descending: true}]}" mode="None" noDataText="{i18n>IDEA_OBJECT_LBL_NO_EXPERT_ASSIGNED}">
+		    <CustomListItem>
+        		<l:Grid id="ideaExperts"
+                    hSpacing="0.5" vSpacing="0.5" position="Left" defaultSpan="XL4 L5">
+        			<ino:IdentityActionCard 
+                        id="ideaExpert"
+                        identityId="{object>IDENTITY_ID}" 
+                        userName="{object>NAME}"
+                        userOrganization="{object>ORGANIZATION}"
+                        userRole="{ path: 'object>ROLE_CODE', formatter: '.formatter.roleCode' }"
+                        userImageUrl="{ path: 'object>IMAGE_ID', formatter: '.formatter.userImage' }"
+                        actionable="{object>/property/nodes/Root/customProperties/backofficeChangeExpertPrivilege}"
+                        isAdd="false"
+                        addRemovePressed="onAddRemoveExpert"
+                        mailable="{path: 'object>IS_VALID_EMAIL', type:'sap.ino.commons.models.types.IntBooleanType'}"
+                        mailPressed="onMailPressed"
+                        pinnable="{clipboard>/enabled}"
+                        isPinned="{ parts: [{path: 'object>IDENTITY_ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIsUserInClipboard' }"
+                        pinPressed="onUserPinPressed"
+                        identityPress="onOpenIdentityQuickView"
+                    />
+        		</l:Grid>
+        	</CustomListItem>
+	    </List>
+	</VBox>
+	
+	<VBox width="100%">
+		<OverflowToolbar width="100%"
+            class="sapInoIdeaExpertToolbar">
+			<Title text="{i18n>EXPERTS_TIT_CAMPAIGN_EXPERTS}"/>
+		</OverflowToolbar>
+		<l:Grid content="{object>/CampaignExperts}"
+            hSpacing="0.5" vSpacing="0.5" position="Left" defaultSpan="XL4 L5">
+			<ino:IdentityActionCard 
+                identityId="{object>IDENTITY_ID}" 
+                userName="{object>NAME}"
+                userOrganization="{object>ORGANIZATION}"
+                userRole="{ path: 'object>ROLE_CODE', formatter: '.formatter.roleCode' }"
+                userImageUrl="{ path: 'object>IMAGE_ID', formatter: '.formatter.userImage' }"
+                actionable="{parts : [{path: 'object>IDENTITY_ID'}, {path: 'object>/property/nodes/Root/customProperties/backofficeChangeExpertPrivilege'}, {path: 'object>/Experts'}], formatter: '.isExpertActionable'}"
+                isAdd="true"
+                addRemovePressed="onAddRemoveExpert"
+                mailable="{path: 'object>IS_VALID_EMAIL', type:'sap.ino.commons.models.types.IntBooleanType'}"
+                mailPressed="onMailPressed"
+                pinnable="{clipboard>/enabled}"
+                isPinned="{ parts: [{path: 'object>IDENTITY_ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIsUserInClipboard' }"
+                pinPressed="onUserPinPressed"
+                identityPress="onOpenIdentityQuickView"
+            />
+		</l:Grid>
+	</VBox>
+	
+	<VBox width="100%" visible="{= !!${object>/RESP_VALUE_CODE} }">
+		<OverflowToolbar width="100%"
+            class="sapInoIdeaExpertToolbar">
+			<Title text="{parts: [{path:'i18n>EXPERTS_TIT_RESPONSIBILITY_EXPERTS'}, {path:'object>/RESP_NAME'}], formatter: '.respExpertsFormatter'}"/>
+		</OverflowToolbar>
+		<l:Grid content="{object>/RespExperts}"
+            hSpacing="0.5" vSpacing="0.5" position="Left" defaultSpan="XL4 L5">
+			<ino:IdentityActionCard 
+                identityId="{object>IDENTITY_ID}" 
+                userName="{object>NAME}"
+                userOrganization="{object>ORGANIZATION}"
+                userRole="{ path: 'object>ROLE_CODE', formatter: '.formatter.roleCode' }"
+                userImageUrl="{ path: 'object>IMAGE_ID', formatter: '.formatter.userImage' }"
+                actionable="{parts : [{path: 'object>IDENTITY_ID'}, {path: 'object>/property/nodes/Root/customProperties/backofficeChangeExpertPrivilege'}, {path: 'object>/Experts'}], formatter: '.isExpertActionable'}"
+                isAdd="true"
+                mailable="{path: 'object>IS_VALID_EMAIL', type:'sap.ino.commons.models.types.IntBooleanType'}"
+                mailPressed="onMailPressed"
+                addRemovePressed="onAddRemoveExpert"
+                pinnable="{clipboard>/enabled}"
+                isPinned="{ parts: [{path: 'object>IDENTITY_ID'}, {path: 'clipboard>/changed'}], formatter: '.formatIsUserInClipboard' }"
+                pinPressed="onUserPinPressed"
+                identityPress="onOpenIdentityQuickView"
+            />
+		</l:Grid>
+	</VBox>
+	
+	<VBox width="100%">
+		<OverflowToolbar width="100%"
+            class="sapInoIdeaExpertToolbar">
+			<Title text="{i18n>EXPERTS_TIT_PROPOSED_EXPERTS}"/>
+		</OverflowToolbar>
+		<List id="expertList" items="{proposedExperts>/}"
+            noDataText="{i18n>EXPERTS_LBL_NO_EXPERTS_FOUND}">
+			<CustomListItem>
+				<core:Fragment fragmentName="sap.ino.vc.expertfinder.fragments.ExpertDetails" type="XML"/>
+			</CustomListItem>
+		</List>
+	</VBox>
+</mvc:View>

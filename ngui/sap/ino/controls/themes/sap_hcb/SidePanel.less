@@ -1,0 +1,123 @@
+@sapInoSidePanelTransitionTimeLeft: 0.2s;
+@sapInoSidePanelTransitionTimeRight: 0.4s;
+@sapInoSidePanelOpenerWidth: 38px;
+@sapInoSidePanelOpenerHeight: 38px;
+@sapInoSidePanelOpenerTop: 45px;
+@sapInoSidePanelContentTop: 0px; 	/* header */
+@sapInoSidePanelContentBottom: 0px;	/* footer */
+
+/* LESS Mixins */
+.sapInoSidePanel-Animate(@duration) {
+    -webkit-transition: all @duration ease-in-out;
+    -moz-transition: all @duration ease-in-out;
+    -o-transition: all @duration ease-in-out;
+    transition: all @duration ease-in-out;
+}
+
+.animate-delay(@delay) {
+    -webkit-transition: all 0s linear @delay;
+    -moz-transition: all 0s linear @delay;
+    -o-transition: all 0s linear @delay;
+    transition: all 0s linear @delay;
+}
+
+.sapInoSidePanel {
+    background-color: @sapInoBaseBG;
+}
+
+/* right side panel */
+.sapInoSidePanelRight {
+	top: @sapInoSidePanelContentTop;			
+	bottom: @sapInoSidePanelContentBottom;		
+	.sapInoSidePanel-Animate(@sapInoSidePanelTransitionTimeRight);
+}
+
+.sapInoSidePanelRight .sapInoSidePanelOpenerRight .sapUiIcon {
+	padding-top: 1px;
+}
+
+.sapInoSidePanelContentRight.sapInoSidePanelExpandedContent {
+    visibility: visible;    
+}
+
+/* Accessibility: "remove" controls from tabchain */ 
+.sapInoSidePanelContentRight.sapInoSidePanelCollapsedContent {
+    .animate-delay(@sapInoSidePanelTransitionTimeRight);
+    visibility: hidden;
+}
+
+
+.sapInoSidePanelRight .sapInoSidePanelOpenerRight {
+	top: @sapInoSidePanelOpenerTop;
+	width: @sapInoSidePanelOpenerWidth;
+	height: @sapInoSidePanelOpenerHeight;
+	float: right;
+	font-size: 24pt;
+	padding: 1px;
+	background-color: @sapInoBaseBG;
+	border-radius: 0px;
+	box-shadow: rgb(100, 100, 100) 0px 2px 2px -2px;
+	color: @sapInoLightText;
+}
+
+.sapInoSidePanelRight .sapInoSidePanelContentRight {
+	height: 100%;
+	float: right;
+	/*overflow: hidden;*/
+	overflow-y: scroll;
+	background-color: @sapInoBaseBG;
+	box-shadow: rgb(100, 100, 100) 0px 2px 2px -2px;
+}
+
+/* left side panel */
+div.sapInoSidePanelLeft {
+	top: @sapInoSidePanelContentTop;		
+	bottom: @sapInoSidePanelContentBottom;	
+	.sapInoSidePanel-Animate(@sapInoSidePanelTransitionTimeLeft);
+}
+
+.sapInoSidePanelLeft .sapInoSidePanelOpenerLeft {
+	background-color: @sapInoBaseBG;
+	border-radius: 0px;
+	color: @sapInoLightText;
+}
+
+.sapInoSidePanelLeft .sapInoSidePanelContentLeft {
+	/* do not set width here, it is managed by control property panelWidth*/
+	background-color: @sapInoBaseBG;
+	box-shadow: rgb(100, 100, 100) 0px 2px 2px -2px;
+}
+
+.sapInoSidePanelContentLeft.sapInoSidePanelExpandedContent {
+    visibility: visible;    
+}
+
+/* Accessibility: "remove" controls from tabchain */
+.sapInoSidePanelContentLeft.sapInoSidePanelCollapsedContent {
+    .animate-delay(@sapInoSidePanelTransitionTimeLeft);
+    visibility: hidden;    
+    width: 0px;
+}
+
+.sapInoSettingsPanel .sapMPanelHdr.sapMPanelHdrExpandable {
+	color: @sapInoLightText;
+	margin-left: 1rem;	
+}
+
+.sapInoSettingsPanel .sapMPanelExpandableIcon {
+	width: 20px;
+}
+
+.sapInoSettingsPanel .sapUiBtn {
+	margin-right: 3px;
+}
+
+.sapInoSidePanelRight .sapInoSidePanelOpenerRight:focus {
+    background-color: @sapInoBaseBG;;  	
+    color: @sapUiHighlightColor;
+}
+
+.sapInoSidePanelLeft .sapInoSidePanelOpenerLeft:focus {
+    background-color: @sapInoBaseBG;;  	
+    color: @sapUiHighlightColor;
+}

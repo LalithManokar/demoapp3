@@ -1,0 +1,186 @@
+<mvc:View
+    controllerName="sap.ino.vc.evaluation.Modify"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:ino="sap.ino.controls"
+	xmlns:l="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns:template="http://schemas.sap.com/sapui5/extension/sap.ui.core.template/1">
+	<Page id="evaluationModify">
+		<customHeader>
+			<ino:ColorBar backgroundColor="{path: 'object>CAMPAIGN_COLOR', formatter: '.formatter.color'}">
+				<core:Fragment fragmentName="sap.ino.vc.commons.fragments.NavBackButton" type="XML" />
+				<ToolbarSpacer/>
+				<Link
+                    href="{path: 'object>ID', formatter: '.formatter.campaignNavigationLink'}"
+                    press="onCampaignPressed"
+                    text="{object>CAMPAIGN_NAME}"/>
+				<ToolbarSpacer/>
+				<core:Fragment fragmentName="sap.ino.vc.commons.fragments.FullScreenButton" type="XML"/>
+			</ino:ColorBar>
+		</customHeader>
+		<content>
+			<uxap:ObjectPageLayout 
+                    id="evaluationLayout" 
+                    useIconTabBar="true" 
+                    enableLazyLoading="true"
+                    visible="{view>/objectExists}">
+				<uxap:headerTitle>
+					<uxap:ObjectPageHeader
+                        id="ideaLayoutPageHeader"
+                        visible="{= !${device>/system/phone} }"
+                        objectTitle="{object>IDEA_NAME}"
+                        objectSubtitle="{parts: ['i18n>FLD_BY', 'object>EVALUATOR_NAME', 'object>EVALUATOR_NAME', 'object>CHANGED_AT', 'object>CHANGED_AT'],
+                                         formatter:'.formatter.alternativeBy'}"                    
+                        isObjectIconAlwaysVisible="false"
+                        isObjectTitleAlwaysVisible="false"
+                        isObjectSubtitleAlwaysVisible="false"
+                        isActionAreaAlwaysVisible="true"/>
+				</uxap:headerTitle>
+				<uxap:headerContent class="sapUiNoMargin">
+					<core:Fragment
+                        fragmentName="sap.ino.vc.evaluation.fragments.Header"
+                        type="XML"/>
+				</uxap:headerContent>
+				<uxap:sections>
+					<uxap:ObjectPageSection id="ideaLayoutDetails" title="{i18n>MENU_MIT_DETAILS}">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection title="{i18n>MENU_MIT_DETAILS}">
+								<uxap:blocks>
+									<l:Grid
+                                        class="sapUiMediumMarginTop"
+                                        hSpacing="0"
+                                        position="Center">
+										<l:content>
+											<List
+                                                class="sapInoEvalCriteriaList"
+                                                id="criteriaList"
+                                                items="{path: 'object>/criteriaHierarchy/aggregatingCriteria', templateShareable: 'true'}"
+                                                noDataText="{i18n>EVALUATION_LBL_NO_DATA}"
+                                                showSeparators="None">
+												<core:Fragment
+                                                    fragmentName="sap.ino.vc.evaluation.fragments.AggregatingCriterionModify"
+                                                    type="XML"></core:Fragment>
+												<layoutData>
+													<l:GridData
+                                                        indent="{= ${object>IS_MATRIX_AGGREGATION} === '1' ? 'XL0 L0 M0 S0' : 'XL2 L2 M0 S0'}"
+                                                        linebreak="true"
+                                                        span="XL8 L8 M12 S12"/>
+												</layoutData>
+											</List>
+											<ino:EvaluationMatrix
+                                                class="sapInoEvaluationMatrix"
+                                                displayLegend="true"
+                                                height="350"
+                                                id="evaluationMatrix"
+                                                innerCircleText="{:= ${i18n>CTRL_EVALUATION_FLD_MATRIX_INNER_CIRCLE}}"
+                                                itemSelected="onItemSelected"
+                                                legendHeight="50"
+                                                outerCircleText="{:= ${i18n>CTRL_EVALUATION_FLD_MATRIX_OUTER_CIRCLE}}"
+                                                selectedItemName="{object>ID}"
+                                                visible="{= ${object>IS_MATRIX_AGGREGATION} === '1' ? true : false}"
+                                                width="325">
+												<ino:layoutData>
+													<l:GridData
+                                                        span="XL4 L4"
+                                                        visibleS="false"
+                                                        visibleM="false"/>
+												</ino:layoutData>
+											</ino:EvaluationMatrix>
+											<Text
+                                               class="sapInoEvaluationCommentTitle sapMTitle sapUiSmallMarginBegin"
+                                               text="{:= ${i18n>COMMENT_EDIT_OBJECT_LABEL}}"
+                                               textAlign="Begin"
+                                                width="100%">
+                                                <layoutData>
+				                                	<l:GridData 
+				                                	indent="{= ${object>IS_MATRIX_AGGREGATION} === '1' ? 'XL0 L0 M0 S0' : 'XL2 L2 M0 S0'}"
+				                                	linebreak="true"
+				                                	span="XL1 L1 M2 S2"/>
+				                               </layoutData>
+                                            </Text>
+											<TextArea
+											   id="evalComment"
+                                               placeholder="{:= ${i18n>EVALUATION_FLD_COMMENT}}"
+                                               class="sapInoEvaluationComment sapUiTinyMarginTopBottom"
+                                               rows="3"
+                                               textAlign="Begin"
+                                               value="{path: 'object>COMMENT'}"
+                                               width="100%">
+												<layoutData>
+													<l:GridData
+                                                    indent="{= ${object>IS_MATRIX_AGGREGATION} === '1' ? 'XL0 L0 M0 S0' : 'XL2 L2 M0 S0'}"
+                                                    linebreak="true"
+                                                    span="XL8 L8 M8 S12"/>
+												</layoutData>
+											</TextArea>
+											<UploadCollection
+                                            	id="EvalAttachments"
+                                            	uploadUrl="{local>/ATTACHMENT_UPLOAD_URL}"
+                                            	multiple="true"
+                                            	items="{ path : 'object>EvalAttachments', sorter: [{ path: 'CREATED_AT', descending: true }], filters: { path: 'ROLE_TYPE_CODE', operator: 'EQ', value1: 'ATTACHMENT' }, groupId: 'ideaEvalAttach'}"
+                                            	showSeparators="None"
+                                            	change="attachmentMixinOnChange"
+                                            	beforeUploadStarts="attachmentMixinonBeforeUploadStarts"
+                                            	fileDeleted="attachmentMixinonFileDeleted"
+                                            	uploadComplete="attachmentMixinonUploadComplete"
+                                            	uploadEnabled="true">
+												<UploadCollectionItem
+                                              		contributor="{object>CREATED_BY_NAME}"
+                                              		documentId="{object>ID}"
+                                              		fileName="{object>FILE_NAME}"
+                                              		mimeType="{object>MEDIA_TYPE}"
+                                              		thumbnailUrl="{ parts:[{path:'object>MEDIA_TYPE'}, {path:'object>ATTACHMENT_ID'}], formatter:'.formatter.previewUrl' }"
+                                                    url="{ path:'object>ATTACHMENT_ID', formatter:'.formatter.downloadUrl' }"
+                                              		visibleEdit="false"
+                                              		visibleDelete="true" />
+												<layoutData>
+													<l:GridData
+                                                        indent="{= ${object>IS_MATRIX_AGGREGATION} === '1' ? 'XL0 L0 M0 S0' : 'XL2 L2 M0 S0'}"
+                                                        linebreak="true"
+                                                        span="XL8 L8 M12 S12"/>
+												</layoutData>
+											</UploadCollection>
+										</l:content>
+									</l:Grid>
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+				</uxap:sections>
+			</uxap:ObjectPageLayout>
+			<core:Fragment fragmentName="sap.ino.vc.commons.fragments.ObjectNotExists"
+                           type="XML"/>
+		</content>
+		<footer>
+			<OverflowToolbar visible="{view>/objectExists}">
+				<core:Fragment
+                    fragmentName="sap.ino.vc.commons.fragments.MessageLog"
+                    type="XML"/>
+				<ToolbarSpacer/>
+				<Button
+                    id="evaluationSubmitBtn"
+                    visible="{parts: ['object>STATUS_CODE', 'object>/property/actions/submit/enabled', 'object>ID'],
+                              formatter: '.formatter.submitButtonVisible'}"
+                    type="Accept"
+                    text="{i18n>EVALUATION_OBJECT_BTN_SUBMIT}"
+                    press="onSubmit"/>
+				<Button
+                    id="evaluationSaveButton"
+                    visible="{object>/property/actions/modify/enabled}"
+                    text="{=${object>STATUS_CODE} !== 'sap.ino.config.EVAL_DRAFT' ? ${i18n>BTN_SAVE} : ${i18n>BTN_SAVE_DRAFT}}"
+                    type="{=${object>STATUS_CODE} !== 'sap.ino.config.EVAL_DRAFT' ? 'Accept' : 'Default'}"
+                    press="onSave"/>
+				<Button
+                    visible="{object>property/actions/del/enabled}"
+                    type="Reject"
+                    text="{i18n>BTN_DEL}"
+                    press="onDelete"/>
+				<Button
+                    text="{i18n>BTN_CLOSE}"
+                    press="onCancel"/>
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>

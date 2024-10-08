@@ -1,0 +1,23 @@
+schema = "SAP_INO";
+query = "
+    select 
+        status_action.code as status_action_code,
+        status_action.default_text as status_action_name,
+        transition.model_id as status_model_id,
+        transition.status_model_code as status_model_code,
+        model.default_text as status_model_name,
+	    count(status_action.code) as status_action_count
+    from \"sap.ino.db.status::t_status_action_stage\" as status_action
+    	inner join \"sap.ino.db.status::t_status_model_transition_stage\" as transition on transition.status_action_code = status_action.code
+        left outer join \"sap.ino.db.status::t_status_model_stage\" as model on model.id = transition.model_id
+    group by 
+        status_action.code,
+        status_action.default_text,
+        transition.model_id,
+        transition.status_model_code,
+        model.default_text
+    with read only ";
+
+depends_on_table = ["sap.ino.db.status::t_status_action_stage",
+                    "sap.ino.db.status::t_status_model_transition_stage",
+                    "sap.ino.db.status::t_status_model_stage"];

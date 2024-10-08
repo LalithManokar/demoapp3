@@ -1,0 +1,43 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_assign_saml_group" (
+    in  it_user_id                                "SAP_INO"."sap.ino.db.iam::tt_user_id_input",
+    in  it_group_name                             "SAP_INO"."sap.ino.db.iam::tt_group_name",
+    out ov_failed_to_recompute_transitive_closure TINYINT
+)
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    declare lv_principal_id integer;
+
+    -- determine ID for session user
+    --     get null to indicate that session user is not registered with SAP Innovation Management
+    select id into lv_principal_id
+        from
+            "SAP_INO"."sap.ino.db.iam::v_auth_application_user"
+        right outer join dummy on 0 = 0;
+        
+    if(:lv_principal_id is null) then
+       select id into lv_principal_id
+        from
+            "SAP_INO"."sap.ino.db.iam::v_auth_session_user"
+        right outer join dummy on 0 = 0;
+    end if;    
+    
+    -- we execute the same code as in p_user_auto_group_upload but without the input table
+    --get the historic data
+    lt_user =
+        select usr.*
+        from "SAP_INO"."sap.ino.db.iam::t_identity" as usr
+        inner join :it_user_id as input 
+        on input.id = usr.id 
+        where usr.type_code = 'USER';
+        
+    lt_target_group_assignments = 
+    	select u.id as member_id, g.group_name
+    	from :it_user_id as u,
+    		 :it_group_name as g;
+
+    -- update automatic group memberships
+    call "SAP_INO"."sap.ino.db.iam::p_assign_group" (:lv_principal_id, 'IDP', :lt_user, :lt_target_group_assignments, :ov_failed_to_recompute_transitive_closure);
+end;

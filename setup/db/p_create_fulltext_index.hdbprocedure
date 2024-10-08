@@ -1,0 +1,99 @@
+procedure "SAP_INO"."sap.ino.setup.db::p_create_fulltext_index" (
+    -- schema name
+    in iv_schema_name varchar(256),
+    -- name of the fulltext index
+    in iv_index_name varchar(256),
+    -- table name with the text content
+    in iv_table_name varchar(256),
+    -- text content column
+    in iv_column_name varchar(256),
+    -- column containing language identifier values (e.g. "DE")
+    in iv_language_column varchar(256),
+    -- list of auto-detect languages in form "'DE', 'EN', ..." WITH single quotes (language is a supported ISO-639-1 - 2-letter style language)
+    in iv_language_autodetect varchar(256),
+    -- column containing mime type values (e.g. "text/html")
+    in iv_mimetype_column varchar(256),
+    -- package name of configuration (.hdbtextconfig) or one of the predefined configurations (LINGANALYSIS_BASIC, LINGANALYSIS_STEMS, LINGANALYSIS_FULL, EXTRACTION_CORE, EXTRACTION_CORE_VOICEOFCUSTOMER)
+    -- LINGANALYSIS_FULL is default
+    in iv_configuration varchar(256),
+    -- separator characters, uses standard if empty
+    in iv_separators varchar(256),
+    -- flag whether fast preprocess should be off (should nearly always be the case)
+    in iv_fast_preprocess_off tinyint,
+    -- flag whether fuzzy search is enabled
+    in iv_fuzzy_search_index tinyint,
+    -- flag whether textanalysis is enabled
+    in iv_textanalysis tinyint,
+    -- flag whether textmining is enabled
+    in iv_textmining tinyint,
+    -- column of text table's primary key
+    in iv_key_column_name varchar(256),
+    -- flag whether foreign key relation should be set in order to enable cascading deletion
+    in iv_add_ta_foreign_key tinyint,
+    -- overwrite flag - overwrite if index is already existing. Per default, an existing ft-index is *not* replaced
+    in iv_overwrite tinyint
+    ) 
+language sqlscript 
+sql security definer
+as begin
+    declare lv_isexisting integer;
+    declare lv_stmt NVARCHAR(5000);
+    declare lv_stmt2 NVARCHAR(5000);
+    -- check whether index is already existing
+    select count(1) into lv_isexisting from "SYS"."FULLTEXT_INDEXES" where SCHEMA_NAME = :iv_schema_name and INDEX_NAME = :iv_index_name;
+    
+    if (:lv_isexisting = 0 OR :iv_overwrite = 1) then
+        -- first: drop index if already existing
+        if lv_isexisting != 0 then
+            lv_stmt := 'drop fulltext index "' || :iv_schema_name || '"."' || :iv_index_name || '"';
+            exec :lv_stmt;
+        end if;
+    
+	    lv_stmt := ' create fulltext index "' || :iv_index_name || '"' || ' on "' || :iv_schema_name || '"."' || :iv_table_name || '"("' || :iv_column_name || '")';
+	    if iv_language_column <> '' then
+	        lv_stmt := :lv_stmt || ' language column "' || :iv_language_column || '"';
+	    end if;
+	    if iv_language_autodetect <> '' then
+	        lv_stmt := :lv_stmt || ' language detection (' || :iv_language_autodetect || ')'; 
+	    end if;
+	    if iv_mimetype_column <> '' then
+	        lv_stmt := :lv_stmt || ' mime type column "' || :iv_mimetype_column || '"';
+	    end if;
+	    if iv_separators <> '' then
+	        lv_stmt := :lv_stmt || ' token separators ''' || :iv_separators || '''';
+	    end if;
+	    if iv_fuzzy_search_index != 0 then
+	        lv_stmt := :lv_stmt || ' fuzzy search index on';
+	    end if;
+	    if (iv_fast_preprocess_off != 0 OR iv_textanalysis != 0 OR iv_textmining != 0 OR iv_language_column != '' OR iv_language_autodetect != '') then
+	        -- TA, TM and all language parameters enforce disabling fast preprocess
+	        lv_stmt := :lv_stmt || ' fast preprocess off';
+	    end if;
+	    --if iv_textmining != 0 OR iv_textanalysis != 0 then
+	        -- text mining enforces to disable SEARCH ONLY parameter
+        -- you nearly never want to throw away the original data
+        lv_stmt := :lv_stmt || ' search only off';
+	    --end if;
+	    if iv_configuration <> '' then
+	        lv_stmt := :lv_stmt || ' configuration ''' || :iv_configuration || '''';
+	    end if;
+	    if (iv_textanalysis != 0 or iv_configuration <> '' or iv_textmining != 0) then
+	        -- giving a configuration enforces using text analysis, same as enabling text mining
+	        lv_stmt := :lv_stmt || ' text analysis on';
+	    end if;
+	    if iv_textmining != 0 then
+	        lv_stmt := :lv_stmt || ' text mining on';
+	    end if;
+	    exec :lv_stmt;
+	    
+	    -- NOTE: HANA rev 93/94 crash on upserts with fk constraints
+	    -- add delete cascade constraint
+	    --if (:iv_textanalysis != 0 and :iv_add_ta_foreign_key != 0) then
+	    --    lv_stmt2 := 'alter table "' || :iv_schema_name || '"."$TA_' || :iv_index_name || '"';
+	    --    lv_stmt2 := :lv_stmt2 || ' add constraint "' || :iv_index_name || '_fk" foreign key ("' || :iv_key_column_name || '") ';
+	    --    lv_stmt2 := :lv_stmt2 || ' references "' || :iv_schema_name || '"."' || :iv_table_name || '"("' || :iv_key_column_name || '") ';
+	    --    lv_stmt2 := :lv_stmt2 || ' on delete cascade';
+	    --    exec :lv_stmt2;
+	    --end if;
+    end if;
+end;

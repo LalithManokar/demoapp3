@@ -1,0 +1,42 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_auto_group_all" ()
+language sqlscript
+sql security invoker
+default schema sap_ino
+as
+begin
+    declare lv_principal_id                           integer;
+    declare lv_failed_to_recompute_transitive_closure tinyint;
+
+    -- determine ID for session user
+    --     get null to indicate that session user is not registered with SAP Innovation Management
+    select id into lv_principal_id
+        from
+            "SAP_INO"."sap.ino.db.iam::v_auth_application_user"
+        right outer join dummy on 0 = 0;
+        
+    if(:lv_principal_id is null) then
+       select id into lv_principal_id
+        from
+            "SAP_INO"."sap.ino.db.iam::v_auth_session_user"
+        right outer join dummy on 0 = 0;
+    end if;
+    
+    if(:lv_principal_id is null) then
+       select 0 as id into lv_principal_id
+        from dummy;
+    end if;
+
+    lt_user =
+        select * from 
+            "SAP_INO"."sap.ino.db.iam::t_identity"
+        where
+            type_code = 'USER';
+
+    -- update automatic group memberships
+    call "SAP_INO"."sap.ino.db.iam::p_auto_group_calculate" (:lt_user, :lt_target_group_assignments);
+    call "SAP_INO"."sap.ino.db.iam::p_assign_group" (:lv_principal_id, 'AUTOMATIC', :lt_user, :lt_target_group_assignments, :lv_failed_to_recompute_transitive_closure);
+
+   if (:lv_failed_to_recompute_transitive_closure <> 0) then
+       call "SAP_INO"."sap.ino.db.iam::p_update_identity_group_member_transitive" ();
+   end if;
+end;

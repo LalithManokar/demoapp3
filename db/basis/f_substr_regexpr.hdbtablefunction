@@ -1,0 +1,23 @@
+FUNCTION "SAP_INO"."sap.ino.db.basis::f_substr_regexpr" ( iv_regex nvarchar(100), iv_group integer, iv_text nclob ) 
+	RETURNS table ( id integer )
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER AS
+BEGIN
+/***************************** 
+	Write your function logic
+ *****************************/
+  declare lv_index int := 1;
+  declare lv_occurrence int;
+  
+  SELECT OCCURRENCES_REGEXPR( :iv_regex in :iv_text) INTO lv_occurrence FROM DUMMY;
+  lt_id = select null as id from dummy;
+  for lv_index  in 1..lv_occurrence do
+       lt_id = select 
+                 id 
+               from :lt_id union 
+               select 
+                  SUBSTR_REGEXPR( :iv_regex in :iv_text occurrence lv_index group :iv_group ) as id
+               from dummy;
+  end for;
+  return select id from :lt_id where id is not null;
+END;

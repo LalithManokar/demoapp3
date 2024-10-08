@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.description = "Static role action parameters";
+table.columns = [
+    {name = "ID";          sqlType = INTEGER;               nullable = false; comment = "Handle ID";},
+    {name = "IDENTITY_ID"; sqlType = INTEGER;               nullable = true;  comment = "IDENTITY_ID";},
+    {name = "ROLE_CODE";   sqlType = VARCHAR; length =  20; nullable = true;  comment = "Role to which identity IDENTITY_ID is assigned.";},
+    {name = "PRIVILEGE";  sqlType = NVARCHAR; length = 256; nullable = false; unique = true;  comment = "application privilege";},
+    {name = "ROLE_NAME";  sqlType = NVARCHAR; length = 256; nullable = false; unique = false; comment = "static role name";},
+    {name = "ACTION";     sqlType = VARCHAR;  length =   8; nullable = false; unique = false; comment = "GRANT|REVOKE";}
+];

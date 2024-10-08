@@ -1,0 +1,29 @@
+schema = "SAP_INO";
+query = "
+select 
+        idea.id as idea_id,
+        case when aggr_score.group_score <> 0 then aggr_score.group_score else aggr_score.score end as score,
+        case 
+            when aggr_score.group_score <> 0 then aggr_score.group_score
+            when aggr_score.vote_count is null then 0
+            else aggr_score.vote_count
+        end as vote_count,
+        neg_score,
+        pos_score,
+        aggr_score.exp_score,
+        exp_vote_count,
+        exp_neg_score,
+        exp_pos_score,
+        user_score.score as user_score,
+        user_score.id as user_vote_id
+    from \"sap.ino.db.idea::t_idea\" as idea
+        left outer join \"sap.ino.db.idea::t_vote_aggr_score\" as aggr_score
+            on aggr_score.idea_id = idea.id 
+        left outer join \"sap.ino.db.idea::v_vote_user_score\" as user_score
+                on user_score.idea_id = idea.id
+with read only
+";
+
+depends_on_table = ["sap.ino.db.idea::t_idea",
+                    "sap.ino.db.idea::t_vote_aggr_score"];
+depends_on_view = ["sap.ino.db.idea::v_vote_user_score"];

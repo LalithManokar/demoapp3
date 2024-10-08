@@ -1,0 +1,21 @@
+schema = "SAP_INO";
+query = "
+    select 
+        model.code as model_code,
+		phase.campaign_id as campaign_id,
+		txt.name as campaign_name,
+	    phase.phase_code as campaign_phase,
+	    count(distinct phase.phase_code) as phase_count
+    from \"sap.ino.db.status::t_status_model_stage\" as model
+    	inner join \"sap.ino.db.campaign::t_campaign_phase\" as phase on phase.status_model_code = model.code
+    	left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as txt on phase.CAMPAIGN_ID = txt.CAMPAIGN_ID
+    group by 
+        model.code,
+        phase.campaign_id,
+        txt.name,
+        phase.phase_code
+    with read only ";
+
+depends_on_table = ["sap.ino.db.status::t_status_model_stage",
+                    "sap.ino.db.campaign::t_campaign_phase"];
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale"];

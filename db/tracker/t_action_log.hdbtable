@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Tracked Action Logs";
+table.columns = [
+	{name = "IDENTITY_ID"; sqlType = NVARCHAR; nullable = false;length=100;},
+	{name = "ACTION_TYPE"; sqlType = NVARCHAR; nullable = false; length=100;},
+	{name = "OBJECT_ID"; sqlType = INTEGER; nullable = true;},
+	{name = "OBJECT_TYPE"; sqlType = NVARCHAR; nullable = false; length=100;},
+	{name = "ACTED_AT"; sqlType = TIMESTAMP; nullable = false;}
+]; 
+table.primaryKey.pkcolumns = ["OBJECT_ID", "OBJECT_TYPE", "IDENTITY_ID","ACTION_TYPE"]; 

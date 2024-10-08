@@ -1,0 +1,15 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Recorded user view count per day";
+table.columns = [
+	{name = "GLAS_ID"; sqlType = NVARCHAR;length=32; nullable = true;},
+	{name = "EXECUTTION_AT"; sqlType = TIMESTAMP; nullable = true;},
+	{name = "YEAR"; sqlType = INTEGER; nullable = true;},
+	{name = "MONTH"; sqlType = INTEGER; nullable = true;},
+	{name = "WEEK"; sqlType = INTEGER; nullable = true;},
+	{name = "DAY"; sqlType = INTEGER; nullable = true;},
+	{name = "COMMUNITY_USER"; sqlType = INTEGER; nullable = true;},
+	{name = "INNOVATION_OFFICE_USER"; sqlType = INTEGER; nullable = true;},
+	{name = "TOTAL_USER"; sqlType = INTEGER; nullable = true;},
+	{name = "DELETION_USER"; sqlType = INTEGER; nullable = true;}
+]; 

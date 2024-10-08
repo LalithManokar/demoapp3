@@ -1,0 +1,9 @@
+schema = "SAP_INO_EXT";
+query = "
+    select status_transition.* 
+    from \"sap.ino.db.idea::v_idea_possible_status_transition\" as status_transition
+    where status_transition.idea_id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")
+    with read only";
+
+depends_on_view = [ "sap.ino.db.idea::v_idea_possible_status_transition",
+                    "sap.ino.db.idea::v_auth_ideas_read"];

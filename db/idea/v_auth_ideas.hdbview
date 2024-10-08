@@ -1,0 +1,15 @@
+schema = "SAP_INO";
+query = "
+    select * from (
+        select idea_read.idea_id from \"sap.ino.db.idea::v_auth_ideas_read\" as idea_read
+        union distinct
+        select idea_update.idea_id from \"sap.ino.db.idea::v_auth_ideas_update\" as idea_update
+        union distinct
+        select idea_submit.idea_id from \"sap.ino.db.idea::v_auth_ideas_submit\" as idea_submit
+        union distinct
+        select idea_delete.idea_id from \"sap.ino.db.idea::v_auth_ideas_delete\" as idea_delete
+    )
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.idea::v_auth_ideas_read", "sap.ino.db.idea::v_auth_ideas_update", "sap.ino.db.idea::v_auth_ideas_submit", "sap.ino.db.idea::v_auth_ideas_delete"];

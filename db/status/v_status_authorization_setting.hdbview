@@ -1,0 +1,12 @@
+schema = "SAP_INO";
+query = "
+    select  
+            stage.CODE,
+            authorization_stage.*
+    from\"sap.ino.db.status::t_status_authorization_stage\" as authorization_stage
+    left outer join \"sap.ino.db.status::t_status_stage\" as stage
+    on stage.ID = authorization_stage.ID_OF_STATUS_STAGE
+    with read only ";
+
+depends_on_table = ["sap.ino.db.status::t_status_authorization_stage",
+                    "sap.ino.db.status::t_status_stage"];   

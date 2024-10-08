@@ -1,0 +1,6 @@
+schema   = "SAP_INO";
+minvalue = 1;
+cycles   = false;
+reset_by = "select ifnull(max(id), 0) + 1 from \"sap.ino.db.followup::t_follow_up\"";
+
+depends_on_table = "sap.ino.db.followup::t_follow_up";

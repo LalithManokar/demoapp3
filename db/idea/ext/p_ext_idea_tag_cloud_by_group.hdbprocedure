@@ -1,0 +1,87 @@
+procedure "SAP_INO_EXT"."sap.ino.db.idea.ext::p_ext_idea_tag_cloud_by_group" ( 
+    in  iv_searchterm           nvarchar(1024),
+    in  iv_filtername           varchar(25),
+    in  iv_filter_backoffice    tinyint,
+    in  iv_campaign             varchar(25),
+    in  iv_step                 integer,
+    in  iv_status               nvarchar(1024),
+    in  iv_idea_continuing_change varchar(25),
+    --     in  it_tag               SAP_INO_EXT."sap.ino.db.idea.ext::tt_ext_tag_id_input",
+    in  iv_tag_str              nvarchar(4096),
+    --     in  it_excl_status       SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_excl_status_code_input",
+    in  iv_excl_status_str      nvarchar(4096),
+    in iv_sub_status            varchar(2048),
+    in iv_resp_value_code       varchar(500),
+    in iv_vote_number           varchar(10),
+    in iv_vote_operator         varchar(32),
+    in iv_phase                 varchar(2048),
+    in iv_follow_up_date        varchar(32),
+    in iv_authors               varchar(2048),
+    in iv_coaches               varchar(2048),
+    out ov_without_taggroup     nvarchar(1),
+    out ot_ranked_tag           SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_ranked_tag_and_group"
+)
+language sqlscript
+sql security definer
+default schema SAP_INO
+reads sql data as
+begin
+
+    declare lv_tag_group_count int;    
+    declare lv_campaign_id,lv_step integer;
+    declare lv_filter_backoffice tinyint;
+    if(:iv_campaign = '' or :iv_campaign is null) then 
+       lv_campaign_id = -1;
+       else
+       lv_campaign_id = cast(:iv_campaign as integer);
+    end if; 
+    
+    call "sap.ino.db.idea::p_idea_search"(:iv_searchterm, :lt_search_prefiltered);
+    call "sap.ino.db.idea::p_idea_filter"(:iv_filtername, :lt_filter_prefiltered);
+    call "sap.ino.db.idea::p_idea_filter_id"(:iv_campaign,:iv_phase,:iv_sub_status,:iv_status,:iv_idea_continuing_change,:iv_vote_number,:iv_resp_value_code,:iv_vote_operator,:iv_authors,:iv_coaches,:iv_follow_up_date,:lt_ideas_filters);
+    call "sap.ino.db.idea::p_excl_status_string_splitter"(:iv_excl_status_str, ';', :lt_excl_status);
+    call "sap.ino.db.idea::p_tag_string_splitter"(:iv_tag_str, ';', :lt_tag);
+    lt_filter_campaigns =  select distinct id from ( select id 
+                              from "sap.ino.db.campaign::v_my_backoffice_campaign" 
+                              union
+                              select  id  from "sap.ino.db.campaign::v_my_backoffice_responsibility_campaign")
+                              where iv_filter_backoffice = 1;
+    
+    lt_prefiltered_2 =
+        select idea.id
+            from
+                "SAP_INO"."sap.ino.db.idea::t_idea" as idea
+            inner join :lt_search_prefiltered as search_filter
+                on idea.id = search_filter.id
+            inner join :lt_filter_prefiltered as prefilter
+                on idea.id = prefilter.id
+            inner join :lt_ideas_filters as ideaFilters
+                on idea.id = ideaFilters.id
+            inner join "SAP_INO"."sap.ino.db.idea::v_auth_ideas_read" as idea_auth
+                on idea.id = idea_auth.idea_id
+            inner join "SAP_INO"."sap.ino.db.campaign::t_campaign_phase" as campaign_phase
+                on
+                campaign_phase.phase_code  = idea.phase_code and
+                campaign_phase.campaign_id = idea.campaign_id and
+                (length(:iv_campaign) = 0 or idea.campaign_id = lv_campaign_id) and
+                (iv_step = -1 or campaign_phase.sequence_no = iv_step) and
+                --(:iv_status = '' or idea.status_code = :iv_status) and
+--                ((select count(code) from :it_excl_status) = 0 or idea.status_code not in (select code from :it_excl_status))
+                ((select count(code) from :lt_excl_status) = 0 or idea.status_code not in (select code from :lt_excl_status))
+            where idea.campaign_id in (select filterCampaign.id from :lt_filter_campaigns as filterCampaign)
+                or idea.id in (select id from "sap.ino.db.idea::v_my_backoffice_responsibility_idea" as resp_idea)
+                or iv_filter_backoffice = 0;
+
+--    call "SAP_INO"."sap.ino.db.idea::p_tag_filter"(:lt_prefiltered_2, :it_tag, :lt_filtered_3);
+    call "SAP_INO"."sap.ino.db.idea::p_tag_filter"(:lt_prefiltered_2, :lt_tag, :lt_filtered_3);
+    call "SAP_INO"."sap.ino.db.idea::p_tag_relevant_idea_tag"(:lt_filtered_3, :lt_relevant_idea_tag);
+    call "SAP_INO"."sap.ino.db.basis::p_tag_cloud_by_group"(:lt_relevant_idea_tag, :ot_ranked_tag);
+
+    ot_ranked_tag = select * from :ot_ranked_tag order by name asc;
+    
+    ov_without_taggroup = '';
+    select count(*) into lv_tag_group_count from "sap.ino.db.tag::t_group_tag";
+    if lv_tag_group_count <= 0 then
+       ov_without_taggroup = 'X';
+    end if;
+end;

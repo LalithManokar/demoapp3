@@ -1,0 +1,78 @@
+schema = "SAP_INO";
+query = "
+    select
+        oir.identity_id,
+        i.type_code,
+        i.name,
+        i.user_name,
+        oir.role_code,
+        oir.object_id,
+        oir.object_type_code,
+        case oir.object_type_code
+            when 'EVALUATION' then 'ID: ' || eval.id
+            when 'IDEA'       then idea.name
+            when 'ATTACHMENT' then att.file_name
+            when 'COMMENT'    then 'ID: ' || comm.id
+            when 'CAMPAIGN'   then 'ID: ' || camp.id
+            when 'FOLDER'     then fldr.name
+            when 'SHARE'      then 'Folder ID: ' || afs.folder_id
+            else null
+        end as object_name
+    from
+        \"sap.ino.db.iam::v_object_identity_role_transitive\" as oir
+
+    left outer join
+        \"sap.ino.db.iam::t_identity\" as i
+    on
+        oir.identity_id = i.id
+
+    left outer join
+        \"sap.ino.db.idea::t_idea\" as idea
+    on
+        oir.object_id = idea.id
+        
+    left outer join
+        \"sap.ino.db.attachment::t_attachment\" as att
+    on
+        oir.object_id = att.id
+        
+    left outer join
+        \"sap.ino.db.idea::t_comment\" as comm
+    on
+        oir.object_id = comm.id
+        
+    left outer join
+        \"sap.ino.db.campaign::t_campaign\" as camp
+    on
+        oir.object_id = camp.id
+        
+    left outer join
+        \"sap.ino.db.attachment.folder::t_attachment_folder\" as fldr
+    on
+        oir.object_id = fldr.id
+        
+    left outer join
+        \"sap.ino.db.evaluation::t_evaluation\" as eval
+    on
+        oir.object_id = eval.id
+        
+    left outer join
+        \"sap.ino.db.attachment.folder::t_attachment_folder_share\" as afs
+    on
+        oir.object_id = afs.id
+";
+
+depends_on_table = [
+    "sap.ino.db.iam::t_identity",
+    "sap.ino.db.idea::t_idea",
+    "sap.ino.db.campaign::t_campaign",
+    "sap.ino.db.idea::t_comment",
+    "sap.ino.db.evaluation::t_evaluation",
+    "sap.ino.db.attachment::t_attachment",
+    "sap.ino.db.attachment.folder::t_attachment_folder",
+    "sap.ino.db.attachment.folder::t_attachment_folder_share"
+];
+
+depends_on_view =  [
+    "sap.ino.db.iam::v_object_identity_role_transitive"
+];

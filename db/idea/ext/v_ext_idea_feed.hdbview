@@ -1,0 +1,19 @@
+schema = "SAP_INO_EXT";
+query = "select idea_feed.* 
+            from \"sap.ino.db.idea::v_idea_biz_feeds\" as idea_feed
+            inner join \"sap.ino.db.idea::v_auth_ideas_read\" as auth_ideas
+            on auth_ideas.idea_id = idea_feed.object_id and idea_feed.filter_type_code = 'FRONTOFFICE'
+         union all
+         select idea_feed.*
+            from \"sap.ino.db.idea::v_idea_biz_feeds\" as idea_feed
+            inner join \"sap.ino.db.idea::v_auth_ideas_read\" as auth_ideas
+            on auth_ideas.idea_id = idea_feed.object_id 
+            inner join \"sap.ino.db.campaign::v_auth_backoffice_campaign_privilege\" as campaign
+            on idea_feed.campaign_id = campaign.campaign_id and idea_feed.filter_type_code = 'BACKOFFICE'
+            inner join \"sap.ino.db.iam::v_auth_application_user\" as auth_user
+            on campaign.identity_id = auth_user.id
+with read only";
+depends_on_view = ["sap.ino.db.idea::v_auth_ideas_read", 
+                   "sap.ino.db.idea::v_idea_biz_feeds", 
+                   "sap.ino.db.iam::v_auth_application_user",
+                   "sap.ino.db.campaign::v_auth_backoffice_campaign_privilege"]; 

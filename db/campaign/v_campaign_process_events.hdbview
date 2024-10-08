@@ -1,0 +1,40 @@
+schema = "SAP_INO";
+query = "
+select
+    edits.edit_timestamp,
+    campaign_phase_history.*,
+    phase.default_text as phase_name
+from
+(
+select distinct
+    edits.history_at as edit_timestamp,
+    edits.id as campaign_phase_id,
+    max(history.history_at) as last_phase_edit_timestamp
+from
+    (
+    select distinct
+        timestamps.history_at as history_at,
+        ids.id as id
+    from
+        \"sap.ino.db.campaign::t_campaign_phase_h\" as timestamps,
+        \"sap.ino.db.campaign::t_campaign_phase_h\" as ids
+    where 
+        ids.campaign_id=timestamps.campaign_id
+    ) as edits,
+    \"sap.ino.db.campaign::t_campaign_phase_h\" as history
+where
+    edits.history_at >= history.history_at
+and
+    edits.id=history.id
+group by edits.id, edits.history_at
+) as edits
+inner join \"sap.ino.db.campaign::t_campaign_phase_h\" as campaign_phase_history
+  on edits.campaign_phase_id = campaign_phase_history.id
+     and
+     edits.last_phase_edit_timestamp = campaign_phase_history.history_at
+left outer join \"sap.ino.db.campaign::t_phase\" as phase
+        on phase.code = campaign_phase_history.phase_code
+with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_phase_h",
+                    "sap.ino.db.campaign::t_phase"];

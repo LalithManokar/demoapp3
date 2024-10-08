@@ -1,0 +1,22 @@
+schema = "SAP_INO";
+query = "
+        select 
+           report.code as report_template_code,
+           campaign.created_by_id as identity_id,
+           campaign.id as campaign_id,
+           report.config,
+           campaign.short_name as campaign_name,
+           campaign.color_code as campaign_color,
+           campaign.phase_count as campaign_phase_count,
+           0 as order_sequence
+         from \"sap.ino.db.campaign::v_campaign_full\" as campaign
+         inner join \"sap.ino.db.campaign::v_auth_campaigns\" as auth
+             on campaign.id = auth.campaign_id
+         -- Do a cross join as currently all reports can be executed in a campaign context
+         cross join \"sap.ino.db.analytics::t_report_template\" as report
+            where report.is_campaign_report = 1
+";
+
+depends_on_view = ["sap.ino.db.campaign::v_campaign_full", 
+                   "sap.ino.db.campaign::v_auth_campaigns"];
+depends_on_table = ["sap.ino.db.analytics::t_report_template"];

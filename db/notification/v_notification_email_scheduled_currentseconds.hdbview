@@ -1,0 +1,4 @@
+schema = "SAP_INO";
+query = "
+    SELECT SECONDS_BETWEEN(TO_DATE('2017-1-1'),CURRENT_UTCTIMESTAMP) AS VALUE FROM DUMMY
+    with read only";

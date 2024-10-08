@@ -1,0 +1,21 @@
+schema = "SAP_INO";
+query = "select distinct idea.id as id, idea.campaign_id
+	from \"sap.ino.db.evaluation::v_auth_evaluation_create\" as evaluation_create
+	inner join \"sap.ino.db.idea::t_idea\" as idea
+		on evaluation_create.idea_id = idea.id
+	inner join \"sap.ino.db.iam::v_auth_application_user\" as cur_user
+		on evaluation_create.identity_id = cur_user.id
+	where (select count(ID) from \"sap.ino.db.evaluation::t_evaluation\" as evaluation
+				where evaluation.idea_id = idea.id and
+	  				  evaluation.created_by_id = cur_user.id and 
+		   		   	  evaluation.idea_phase_code = idea.phase_code) = 0 and
+		   		   	  idea.status_code <> 'sap.ino.config.DRAFT' and
+		   		   	  idea.status_code <> 'sap.ino.config.COMPLETED' and 
+		   		   	  idea.status_code <> 'sap.ino.config.DISCONTINUED' and 
+		   		   	  idea.status_code <> 'sap.ino.config.MERGED'";
+
+depends_on_table = ["sap.ino.db.idea::t_idea",
+					"sap.ino.db.evaluation::t_evaluation"];
+
+depends_on_view = ["sap.ino.db.evaluation::v_auth_evaluation_create",
+				   "sap.ino.db.iam::v_auth_application_user"];

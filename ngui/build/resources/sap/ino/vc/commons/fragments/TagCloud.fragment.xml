@@ -1,0 +1,116 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:ino="sap.ino.controls">
+    <List
+        items="{
+            path: 'tag>/RANKED_TAG',
+            templateShareable: false
+        }"
+        visible="{= ${view>/List/TAGCLOUD} === true }"
+        width="100%"
+        showSeparators="None">
+        <CustomListItem>
+            <Panel class="sapInoFilterPanel" expandable="{= ${view>/List/TAGCLOUD_EXPABLE} === true }" expanded="{= ${tag>GROUP_EXPANDED} === true}" width="100%">
+                <headerToolbar >
+                    <Toolbar visible = "{= ${view>/List/TAGCLOUD_BAR_VISIBLE} === true }">
+                        <Label tooltip="{path: 'tag>GROUP_DESCRIPTION'}" text="{path : 'tag>GROUP_NAME'}"/>
+                    </Toolbar>
+                </headerToolbar>
+    			<ino:WrappingList
+                    id="tagCloud"
+                    wrapping="true"
+                    width="275px"
+                    items="{
+                        path: 'tag>GROUP_TAGS',
+                        templateShareable: false
+                    }"
+                    class="sapInoTagCloud">
+                    <CustomListItem
+                        type="{
+                            parts : [{
+                                path: 'tag>ID'
+                            }, {
+                                path: 'view>/List/TAGS'
+                            }],
+                            formatter: '.formatter.incativeWhenIncluded'
+                        }"
+                        press="onTagItemSelected">
+                        <content>
+                            <Link
+                                ariaLabelledBy="tagFilterLabel"
+                                text="{tag>NAME}"
+                                press="onTagSelected"
+                                class="sapInoTag"
+                                wrapping="true"
+                                enabled="{
+                                    parts : [{
+                                        path: 'tag>ID'
+                                    }, {
+                                        path: 'view>/List/TAGS'
+                                    }],
+                                    formatter: '.formatter.isIdNotIncluded'
+                                }">
+                                <customData>
+                                    <core:CustomData key="tagrank" value="{path: 'tag>RANK', formatter : '.formatter.toString'}" writeToDom="true" />
+                                    <core:CustomData key="id" value="{tag>ID}" />
+                                    <core:CustomData key="groupid" value="{tag>GROUP_ID}" />
+                                </customData>
+                            </Link>
+                            <core:InvisibleText 
+                                id="tagFilterLabel"
+                                text="{i18n>LIST_EXP_FILTER_LIST_BY_TAG}"/>
+                        </content>
+                    </CustomListItem>
+                </ino:WrappingList>
+        	</Panel>
+    	</CustomListItem>
+    </List>
+    <!--ino:WrappingList
+        id="tagCloud"
+        wrapping="true"
+        width="275px"
+        items="{
+            path: 'tag>/RANKED_TAG/GROUP_TAGS'
+        }"
+        visible="{= (${view>/List/TAGCLOUD} === true && ${tag>/RANKED_TAG}.length === 1) }"
+        class="sapInoTagCloud">
+        <CustomListItem
+            type="{
+                parts : [{
+                    path: 'tag>ID'
+                }, {
+                    path: 'view>/List/TAGS'
+                }],
+                formatter: '.formatter.incativeWhenIncluded'
+            }"
+            press="onTagItemSelected">
+            <content>
+                <Link
+                    ariaLabelledBy="tagFilterLabel"
+                    text="{tag>NAME}"
+                    press="onTagSelected"
+                    class="sapInoTag"
+                    wrapping="true"
+                    enabled="{
+                        parts : [{
+                            path: 'tag>ID'
+                        }, {
+                            path: 'view>/List/TAGS'
+                        }],
+                        formatter: '.formatter.isIdNotIncluded'
+                    }">
+                    <customData>
+                        <core:CustomData key="tagrank" value="{path: 'tag>RANK', formatter : '.formatter.toString'}" writeToDom="true" />
+                        <core:CustomData key="id" value="{tag>ID}" />
+                    </customData>
+                </Link>
+                <core:InvisibleText 
+                    id="tagFilterLabel"
+                    text="{i18n>LIST_EXP_FILTER_LIST_BY_TAG}"/>
+            </content>
+        </CustomListItem>
+    </ino:WrappingList-->
+</core:FragmentDefinition>
+
+

@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = "
+    select register.*
+    from 
+        \"sap.ino.db.campaign::t_registration\" as register
+    inner join
+		\"sap.ino.db.iam::v_auth_application_user\" as user
+	on
+	    register.APPLICANT_ID = user.id
+	where not exists (
+	    select * from \"sap.ino.db.campaign::t_registration\" where APPLICANT_ID = register.APPLICANT_ID
+	    and CAMPAIGN_ID = register.CAMPAIGN_ID
+	    and CHANGED_AT > register.CHANGED_AT
+	)
+	with read only
+";
+
+depends_on_table = ["sap.ino.db.campaign::t_registration"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user"];

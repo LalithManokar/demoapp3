@@ -1,0 +1,514 @@
+procedure "SAP_INO"."sap.ino.db.iam::p_user_log" (
+    in  iv_appl_user_id INTEGER,
+    in  it_users        "SAP_INO"."sap.ino.db.iam::tt_identity_change_log",
+    in  ut_users        "SAP_INO"."sap.ino.db.iam::tt_identity_change_log"
+)
+LANGUAGE SQLSCRIPT
+SQL SECURITY INVOKER
+DEFAULT SCHEMA sap_ino
+AS
+BEGIN
+    CREATE LOCAL TEMPORARY TABLE "#tt_identity_log" (
+        ID INTEGER,
+        CREATED_AT TIMESTAMP,
+        CREATED_BY_ID INTEGER,
+        CHANGED_AT TIMESTAMP,
+        CHANGED_BY_ID INTEGER,
+        IDENTITY_ID INTEGER,
+        CHANGED_ATTRIBUTE VARCHAR(32),
+        CHANGED_ATTRIBUTE_TYPE VARCHAR(8),
+        DATE_NEW_VALUE TIMESTAMP,
+        DATE_OLD_VALUE TIMESTAMP,
+        STRING_NEW_VALUE NVARCHAR(512),
+        STRING_OLD_VALUE NVARCHAR(512),
+        INT_NEW_VALUE INTEGER,
+        INT_OLD_VALUE INTEGER
+    );
+    
+     origin_users = SELECT identity_user.* 
+     FROM "SAP_INO"."sap.ino.db.iam::t_identity" AS identity_user
+     INNER JOIN :ut_users AS  u_users
+     ON identity_user.id = u_users.id;
+     
+    -- insert
+    BEGIN
+        DECLARE CURSOR c_i_user FOR SELECT * FROM :it_users;
+         
+        DECLARE CURSOR c_i_identitysetting FOR SELECT  CODE,IS_LOG FROM "SAP_INO"."sap.ino.db.iam::t_identity_log_setting" ORDER BY ID DESC;
+         
+        FOR cur_i_identitysettingrow AS c_i_identitysetting DO
+            IF cur_i_identitysettingrow.IS_LOG  = 1 THEN
+                FOR cur_i_row AS c_i_user DO
+                    IF cur_i_identitysettingrow.CODE  = 'sap.ino.config.COMPANY' AND cur_i_row.company  is not null  AND LENGTH(cur_i_row.company) > 0  THEN
+                        INSERT INTO "#tt_identity_log"
+                        (
+                            ID,    
+                            CREATED_AT, CREATED_BY_ID,  
+                            CHANGED_AT, CHANGED_BY_ID,  
+                            IDENTITY_ID,
+                            CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                            DATE_NEW_VALUE, DATE_OLD_VALUE,
+                            STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                            INT_NEW_VALUE,  INT_OLD_VALUE
+                        )
+                         SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                             current_utctimestamp,iv_appl_user_id, 
+                             current_utctimestamp,iv_appl_user_id,
+                             cur_i_row.id,
+                             'sap.ino.config.COMPANY','INSERT',
+                            null, null,
+                            cur_i_row.company,null,
+                            null,null 
+                        from dummy;
+                    ELSEIF cur_i_identitysettingrow.CODE  = 'sap.ino.config.COST_CENTER'  AND cur_i_row.cost_center  is not null AND LENGTH(cur_i_row.cost_center) > 0  THEN
+                        INSERT INTO "#tt_identity_log"
+                        (
+                            ID,    
+                            CREATED_AT, CREATED_BY_ID,  
+                            CHANGED_AT, CHANGED_BY_ID,  
+                            IDENTITY_ID,
+                            CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                            DATE_NEW_VALUE, DATE_OLD_VALUE,
+                            STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                            INT_NEW_VALUE,  INT_OLD_VALUE
+                        )
+                         SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                             current_utctimestamp,iv_appl_user_id, 
+                             current_utctimestamp,iv_appl_user_id,
+                             cur_i_row.id,
+                             'sap.ino.config.COST_CENTER','INSERT',
+                            null, null,
+                            cur_i_row.cost_center,null,
+                            null,null 
+                        from dummy;
+                    ELSEIF cur_i_identitysettingrow.CODE  = 'sap.ino.config.OFFICE' AND cur_i_row.office  is not null   AND LENGTH(cur_i_row.office) > 0 THEN
+                        INSERT INTO "#tt_identity_log"
+                        (
+                            ID,    
+                            CREATED_AT, CREATED_BY_ID,  
+                            CHANGED_AT, CHANGED_BY_ID,  
+                            IDENTITY_ID,
+                            CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                            DATE_NEW_VALUE, DATE_OLD_VALUE,
+                            STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                            INT_NEW_VALUE,  INT_OLD_VALUE
+                        )
+                         SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                             current_utctimestamp,iv_appl_user_id, 
+                             current_utctimestamp,iv_appl_user_id,
+                             cur_i_row.id,
+                             'sap.ino.config.OFFICE','INSERT',
+                            null, null,
+                            cur_i_row.office,null,
+                            null,null 
+                        from dummy;
+                    ELSEIF cur_i_identitysettingrow.CODE  = 'sap.ino.config.PHONE'  AND cur_i_row.phone is not null  AND LENGTH(cur_i_row.phone) > 0 THEN
+                        INSERT INTO "#tt_identity_log"
+                        (
+                            ID,    
+                            CREATED_AT, CREATED_BY_ID,  
+                            CHANGED_AT, CHANGED_BY_ID,  
+                            IDENTITY_ID,
+                            CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                            DATE_NEW_VALUE, DATE_OLD_VALUE,
+                            STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                            INT_NEW_VALUE,  INT_OLD_VALUE
+                        )
+                         SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                             current_utctimestamp,iv_appl_user_id, 
+                             current_utctimestamp,iv_appl_user_id,
+                             cur_i_row.id,
+                             'sap.ino.config.PHONE','INSERT',
+                            null, null,
+                            cur_i_row.phone,null,
+                            null,null 
+                        from dummy;
+                    ELSEIF cur_i_identitysettingrow.CODE  = 'sap.ino.config.MOBILE'   AND cur_i_row.mobile is not null AND LENGTH(cur_i_row.mobile) > 0 THEN
+                        INSERT INTO "#tt_identity_log"
+                        (
+                            ID,    
+                            CREATED_AT, CREATED_BY_ID,  
+                            CHANGED_AT, CHANGED_BY_ID,  
+                            IDENTITY_ID,
+                            CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                            DATE_NEW_VALUE, DATE_OLD_VALUE,
+                            STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                            INT_NEW_VALUE,  INT_OLD_VALUE
+                        )
+                         SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                             current_utctimestamp,iv_appl_user_id, 
+                             current_utctimestamp,iv_appl_user_id,
+                             cur_i_row.id,
+                             'sap.ino.config.MOBILE','INSERT',
+                            null, null,
+                            cur_i_row.mobile,null,
+                            null,null 
+                        from dummy;
+                    ELSEIF cur_i_identitysettingrow.CODE  = 'sap.ino.config.EMAIL'    AND cur_i_row.email  is not null  AND LENGTH(cur_i_row.email) > 0 THEN
+                        INSERT INTO "#tt_identity_log"
+                        (
+                            ID,    
+                            CREATED_AT, CREATED_BY_ID,  
+                            CHANGED_AT, CHANGED_BY_ID,  
+                            IDENTITY_ID,
+                            CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                            DATE_NEW_VALUE, DATE_OLD_VALUE,
+                            STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                            INT_NEW_VALUE,  INT_OLD_VALUE
+                        )
+                         SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                             current_utctimestamp,iv_appl_user_id, 
+                             current_utctimestamp,iv_appl_user_id,
+                             cur_i_row.id,
+                             'sap.ino.config.EMAIL','INSERT',
+                            null, null,
+                            cur_i_row.email,null,
+                            null,null 
+                        from dummy;
+                    ELSEIF cur_i_identitysettingrow.CODE  = 'sap.ino.config.STREET'    AND cur_i_row.street  is not null AND LENGTH(cur_i_row.street) > 0 THEN
+                        INSERT INTO "#tt_identity_log"
+                        (
+                            ID,    
+                            CREATED_AT, CREATED_BY_ID,  
+                            CHANGED_AT, CHANGED_BY_ID,  
+                            IDENTITY_ID,
+                            CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                            DATE_NEW_VALUE, DATE_OLD_VALUE,
+                            STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                            INT_NEW_VALUE,  INT_OLD_VALUE
+                        )
+                         SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                             current_utctimestamp,iv_appl_user_id, 
+                             current_utctimestamp,iv_appl_user_id,
+                             cur_i_row.id,
+                             'sap.ino.config.STREET','INSERT',
+                            null, null,
+                            cur_i_row.street,null,
+                            null,null 
+                        from dummy;
+                    ELSEIF cur_i_identitysettingrow.CODE  = 'sap.ino.config.ZIP_CODE'   AND cur_i_row.zip_code  is not null AND LENGTH(cur_i_row.zip_code) > 0  THEN
+                        INSERT INTO "#tt_identity_log"
+                        (
+                            ID,    
+                            CREATED_AT, CREATED_BY_ID,  
+                            CHANGED_AT, CHANGED_BY_ID,  
+                            IDENTITY_ID,
+                            CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                            DATE_NEW_VALUE, DATE_OLD_VALUE,
+                            STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                            INT_NEW_VALUE,  INT_OLD_VALUE
+                        )
+                         SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                             current_utctimestamp,iv_appl_user_id, 
+                             current_utctimestamp,iv_appl_user_id,
+                             cur_i_row.id,
+                             'sap.ino.config.ZIP_CODE','INSERT',
+                            null, null,
+                            cur_i_row.zip_code,null,
+                            null,null 
+                        from dummy;
+                    ELSEIF cur_i_identitysettingrow.CODE  = 'sap.ino.config.CITY'   AND cur_i_row.city  is not null AND LENGTH(cur_i_row.city) > 0 THEN
+                        INSERT INTO "#tt_identity_log"
+                        (
+                            ID,    
+                            CREATED_AT, CREATED_BY_ID,  
+                            CHANGED_AT, CHANGED_BY_ID,  
+                            IDENTITY_ID,
+                            CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                            DATE_NEW_VALUE, DATE_OLD_VALUE,
+                            STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                            INT_NEW_VALUE,  INT_OLD_VALUE
+                        )
+                         SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                             current_utctimestamp,iv_appl_user_id, 
+                             current_utctimestamp,iv_appl_user_id,
+                             cur_i_row.id,
+                             'sap.ino.config.CITY','INSERT',
+                            null, null,
+                            cur_i_row.city,null,
+                            null,null 
+                        from dummy;
+                    ELSEIF cur_i_identitysettingrow.CODE  = 'sap.ino.config.COUNTRY'  AND cur_i_row.country  is not null AND LENGTH(cur_i_row.country) > 0 THEN
+                        INSERT INTO "#tt_identity_log"
+                        (
+                            ID,    
+                            CREATED_AT, CREATED_BY_ID,  
+                            CHANGED_AT, CHANGED_BY_ID,  
+                            IDENTITY_ID,
+                            CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                            DATE_NEW_VALUE, DATE_OLD_VALUE,
+                            STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                            INT_NEW_VALUE,  INT_OLD_VALUE
+                        )
+                         SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                             current_utctimestamp,iv_appl_user_id, 
+                             current_utctimestamp,iv_appl_user_id,
+                             cur_i_row.id,
+                             'sap.ino.config.COUNTRY','INSERT',
+                            null, null,
+                            cur_i_row.country,null,
+                            null,null 
+                        from dummy;
+                    END IF;
+                END FOR;
+            END IF;
+         END FOR;
+    END;
+    
+    -- update 
+    BEGIN
+        DECLARE CURSOR c_u_user FOR SELECT * FROM :ut_users;
+         
+        DECLARE CURSOR c_o_user FOR SELECT * FROM :origin_users;
+         
+        DECLARE CURSOR c_u_identitysetting FOR
+        SELECT  CODE,IS_LOG FROM "SAP_INO"."sap.ino.db.iam::t_identity_log_setting" ORDER BY ID DESC;
+        DECLARE  identitysettingCode varchar(255);
+        FOR cur_u_identitysettingrow AS c_u_identitysetting DO
+            IF cur_u_identitysettingrow.IS_LOG  = 1 THEN
+                identitysettingCode := cur_u_identitysettingrow.CODE;
+                 FOR cur_u_row AS c_u_user DO
+                    FOR cur_o_row AS c_o_user DO
+                        IF cur_o_row.id = cur_u_row.id THEN
+                            IF :identitysettingCode  = 'sap.ino.config.COMPANY'  AND cur_o_row.company <> cur_u_row.company THEN
+                                INSERT INTO "#tt_identity_log"
+                                (
+                                    ID,    
+                                    CREATED_AT, CREATED_BY_ID,  
+                                    CHANGED_AT, CHANGED_BY_ID,  
+                                    IDENTITY_ID,
+                                    CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                                    DATE_NEW_VALUE, DATE_OLD_VALUE,
+                                    STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                                    INT_NEW_VALUE,  INT_OLD_VALUE
+                                )
+                                 SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                                     current_utctimestamp,iv_appl_user_id, 
+                                     current_utctimestamp,iv_appl_user_id,
+                                     cur_u_row.ID,
+                                     'sap.ino.config.COMPANY','UPDATE',
+                                    null, null,
+                                    cur_u_row.company,cur_o_row.company,
+                                    null,null 
+                                from dummy;
+                            ELSEIF :identitysettingCode  = 'sap.ino.config.COST_CENTER'  AND cur_o_row.cost_center <> cur_u_row.cost_center THEN
+                                INSERT INTO "#tt_identity_log"
+                                (
+                                    ID,    
+                                    CREATED_AT, CREATED_BY_ID,  
+                                    CHANGED_AT, CHANGED_BY_ID,  
+                                    IDENTITY_ID,
+                                    CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                                    DATE_NEW_VALUE, DATE_OLD_VALUE,
+                                    STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                                    INT_NEW_VALUE,  INT_OLD_VALUE
+                                )
+                                 SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                                     current_utctimestamp,iv_appl_user_id, 
+                                     current_utctimestamp,iv_appl_user_id,
+                                     cur_u_row.ID,
+                                     'sap.ino.config.COST_CENTER','UPDATE',
+                                    null, null,
+                                    cur_u_row.cost_center,cur_o_row.cost_center,
+                                    null,null 
+                                from dummy;
+                            ELSEIF :identitysettingCode  = 'sap.ino.config.OFFICE'  AND cur_o_row.office <> cur_u_row.office THEN
+                                INSERT INTO "#tt_identity_log"
+                                (
+                                    ID,    
+                                    CREATED_AT, CREATED_BY_ID,  
+                                    CHANGED_AT, CHANGED_BY_ID,  
+                                    IDENTITY_ID,
+                                    CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                                    DATE_NEW_VALUE, DATE_OLD_VALUE,
+                                    STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                                    INT_NEW_VALUE,  INT_OLD_VALUE
+                                )
+                                 SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                                     current_utctimestamp,iv_appl_user_id, 
+                                     current_utctimestamp,iv_appl_user_id,
+                                     cur_u_row.ID,
+                                     'sap.ino.config.OFFICE','UPDATE',
+                                    null, null,
+                                    cur_u_row.office,cur_o_row.office,
+                                    null,null 
+                                from dummy;
+                            ELSEIF :identitysettingCode  = 'sap.ino.config.PHONE'  AND cur_o_row.phone <> cur_u_row.phone THEN
+                                INSERT INTO "#tt_identity_log"
+                                (
+                                    ID,    
+                                    CREATED_AT, CREATED_BY_ID,  
+                                    CHANGED_AT, CHANGED_BY_ID,  
+                                    IDENTITY_ID,
+                                    CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                                    DATE_NEW_VALUE, DATE_OLD_VALUE,
+                                    STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                                    INT_NEW_VALUE,  INT_OLD_VALUE
+                                )
+                                 SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                                     current_utctimestamp,iv_appl_user_id, 
+                                     current_utctimestamp,iv_appl_user_id,
+                                     cur_u_row.ID,
+                                     'sap.ino.config.PHONE','UPDATE',
+                                    null, null,
+                                    cur_u_row.phone,cur_o_row.phone,
+                                    null,null 
+                                from dummy;
+                            ELSEIF :identitysettingCode  = 'sap.ino.config.MOBILE'  AND cur_o_row.mobile <> cur_u_row.mobile THEN
+                                INSERT INTO "#tt_identity_log"
+                                (
+                                    ID,    
+                                    CREATED_AT, CREATED_BY_ID,  
+                                    CHANGED_AT, CHANGED_BY_ID,  
+                                    IDENTITY_ID,
+                                    CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                                    DATE_NEW_VALUE, DATE_OLD_VALUE,
+                                    STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                                    INT_NEW_VALUE,  INT_OLD_VALUE
+                                )
+                                 SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                                     current_utctimestamp,iv_appl_user_id, 
+                                     current_utctimestamp,iv_appl_user_id,
+                                     cur_u_row.ID,
+                                     'sap.ino.config.MOBILE','UPDATE',
+                                    null, null,
+                                    cur_u_row.mobile,cur_o_row.mobile,
+                                    null,null 
+                                from dummy;
+                            ELSEIF :identitysettingCode  = 'sap.ino.config.EMAIL'  AND cur_o_row.email <> cur_u_row.email THEN
+                                INSERT INTO "#tt_identity_log"
+                                (
+                                    ID,    
+                                    CREATED_AT, CREATED_BY_ID,  
+                                    CHANGED_AT, CHANGED_BY_ID,  
+                                    IDENTITY_ID,
+                                    CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                                    DATE_NEW_VALUE, DATE_OLD_VALUE,
+                                    STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                                    INT_NEW_VALUE,  INT_OLD_VALUE
+                                )
+                                 SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                                     current_utctimestamp,iv_appl_user_id, 
+                                     current_utctimestamp,iv_appl_user_id,
+                                     cur_u_row.ID,
+                                     'sap.ino.config.EMAIL','UPDATE',
+                                    null, null,
+                                    cur_u_row.email,cur_o_row.email,
+                                    null,null 
+                                from dummy;
+                            ELSEIF :identitysettingCode  = 'sap.ino.config.STREET'  AND cur_o_row.street <> cur_u_row.street THEN
+                                INSERT INTO "#tt_identity_log"
+                                (
+                                    ID,    
+                                    CREATED_AT, CREATED_BY_ID,  
+                                    CHANGED_AT, CHANGED_BY_ID,  
+                                    IDENTITY_ID,
+                                    CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                                    DATE_NEW_VALUE, DATE_OLD_VALUE,
+                                    STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                                    INT_NEW_VALUE,  INT_OLD_VALUE
+                                )
+                                 SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                                     current_utctimestamp,iv_appl_user_id, 
+                                     current_utctimestamp,iv_appl_user_id,
+                                     cur_u_row.ID,
+                                     'sap.ino.config.STREET','UPDATE',
+                                    null, null,
+                                    cur_u_row.street,cur_o_row.street,
+                                    null,null 
+                                from dummy;
+                            ELSEIF :identitysettingCode  = 'sap.ino.config.ZIP_CODE'  AND cur_o_row.zip_code <> cur_u_row.zip_code THEN
+                                INSERT INTO "#tt_identity_log"
+                                (
+                                    ID,    
+                                    CREATED_AT, CREATED_BY_ID,  
+                                    CHANGED_AT, CHANGED_BY_ID,  
+                                    IDENTITY_ID,
+                                    CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                                    DATE_NEW_VALUE, DATE_OLD_VALUE,
+                                    STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                                    INT_NEW_VALUE,  INT_OLD_VALUE
+                                )
+                                 SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                                     current_utctimestamp,iv_appl_user_id, 
+                                     current_utctimestamp,iv_appl_user_id,
+                                     cur_u_row.ID,
+                                     'sap.ino.config.ZIP_CODE','UPDATE',
+                                    null, null,
+                                    cur_u_row.zip_code,cur_o_row.zip_code,
+                                    null,null 
+                                from dummy;
+                            ELSEIF :identitysettingCode  = 'sap.ino.config.CITY'  AND cur_o_row.city <> cur_u_row.city THEN
+                                INSERT INTO "#tt_identity_log"
+                                (
+                                    ID,    
+                                    CREATED_AT, CREATED_BY_ID,  
+                                    CHANGED_AT, CHANGED_BY_ID,  
+                                    IDENTITY_ID,
+                                    CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                                    DATE_NEW_VALUE, DATE_OLD_VALUE,
+                                    STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                                    INT_NEW_VALUE,  INT_OLD_VALUE
+                                )
+                                 SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                                     current_utctimestamp,iv_appl_user_id, 
+                                     current_utctimestamp,iv_appl_user_id,
+                                     cur_u_row.ID,
+                                     'sap.ino.config.CITY','UPDATE',
+                                    null, null,
+                                    cur_u_row.city,cur_o_row.city,
+                                    null,null 
+                                from dummy;
+                            ELSEIF :identitysettingCode  = 'sap.ino.config.COUNTRY'  AND cur_o_row.country <> cur_u_row.country THEN
+                                INSERT INTO "#tt_identity_log"
+                                (
+                                    ID,    
+                                    CREATED_AT, CREATED_BY_ID,  
+                                    CHANGED_AT, CHANGED_BY_ID,  
+                                    IDENTITY_ID,
+                                    CHANGED_ATTRIBUTE,  CHANGED_ATTRIBUTE_TYPE, 
+                                    DATE_NEW_VALUE, DATE_OLD_VALUE,
+                                    STRING_NEW_VALUE,   STRING_OLD_VALUE,
+                                    INT_NEW_VALUE,  INT_OLD_VALUE
+                                )
+                                 SELECT "SAP_INO"."sap.ino.db.iam::s_identity_log".nextval,
+                                     current_utctimestamp,iv_appl_user_id, 
+                                     current_utctimestamp,iv_appl_user_id,
+                                     cur_u_row.ID,
+                                     'sap.ino.config.COUNTRY','UPDATE',
+                                    null, null,
+                                    cur_u_row.country,cur_o_row.country,
+                                    null,null 
+                                from dummy;
+                            END IF;
+                        END IF;
+                    END FOR;
+                 END FOR;
+            END IF;
+         END FOR;
+    END;
+    
+     INSERT INTO "SAP_INO"."sap.ino.db.iam::t_identity_log"
+    (
+        ID,
+        CREATED_AT,CREATED_BY_ID,
+        CHANGED_AT,CHANGED_BY_ID,
+        IDENTITY_ID,
+        CHANGED_ATTRIBUTE,CHANGED_ATTRIBUTE_TYPE,
+        DATE_NEW_VALUE,DATE_OLD_VALUE,
+        STRING_NEW_VALUE,STRING_OLD_VALUE,
+        INT_NEW_VALUE,INT_OLD_VALUE
+    )
+     SELECT 
+        ID,
+        CREATED_AT,CREATED_BY_ID,
+        CHANGED_AT,CHANGED_BY_ID,
+        IDENTITY_ID,
+        CHANGED_ATTRIBUTE,CHANGED_ATTRIBUTE_TYPE,
+        DATE_NEW_VALUE,DATE_OLD_VALUE,
+        STRING_NEW_VALUE,STRING_OLD_VALUE,
+        INT_NEW_VALUE,INT_OLD_VALUE 
+    FROM "#tt_identity_log";
+    
+    DROP TABLE "#tt_identity_log"; 
+end;

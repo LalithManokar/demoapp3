@@ -1,0 +1,25 @@
+schema = "SAP_INO";
+query = "
+    select 
+        null as id, -- it is just a template
+        case when ( criteria.datatype_code = 'NUMERIC' or criteria.datatype_code = 'INTEGER' ) and criteria.value_option_list_code is null
+            then ifnull(criteria.num_value_min, 0)
+            else null
+        end as num_value,
+        case when criteria.datatype_code = 'BOOLEAN' and criteria.value_option_list_code is null
+            then 0
+            else null 
+        end as bool_value,
+        case when criteria.datatype_code = 'TEXT' and criteria.value_option_list_code is null
+            then ''
+            else null 
+        end as text_value,
+        '' as comment,
+        0 as is_done,
+        criteria.code as criterion_code, -- include to match import structure of of p_evaluation_create and v_criterion_value
+        criteria.*
+    from \"sap.ino.db.evaluation::t_criterion\" as criteria
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.evaluation::t_criterion"];

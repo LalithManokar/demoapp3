@@ -1,0 +1,143 @@
+PROCEDURE "SAP_INO"."sap.ino.db.feed::p_campaign_dates_feed" ( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   default schema sap_ino
+   AS
+BEGIN
+    lt_feeds = 
+    --feeds for campaign submission start date reached
+    select 
+        campaign.id as object_id, 
+        'CAMPAIGN' as object_type_code,
+        campaign.changed_by_ID as actor_id,
+        local.name as object_text,
+        null as sub_text, 
+        null as involved_id,
+        current_utctimestamp as event_at, 
+        'DATE_REACHED_SUBMIT_FROM' as feed_code,
+        null as sub_feed_code,
+        null as  involved_obj_type_code,
+        campaign.id as campaign_id, 
+        campaign.submit_from as campaign_date,
+        'FRONTOFFICE' as filter_type_code
+        from "sap.ino.db.campaign::t_campaign" as campaign
+        inner join "sap.ino.db.campaign::v_campaign_t_locale" as local
+            on campaign.id = local.campaign_id and
+               TO_DATE(campaign.submit_from) >= TO_DATE(current_utctimestamp) and TO_DATE(campaign.submit_from) <= TO_DATE(ADD_DAYS (current_utctimestamp, 3))
+    union all
+    --feeds for campaign submission end date reached
+    select 
+        campaign.id as object_id, 
+        'CAMPAIGN' as object_type_code,
+        campaign.changed_by_ID as actor_id,
+        local.name as object_text,
+        null as sub_text, 
+        null as involved_id,
+        current_utctimestamp as event_at, 
+        'DATE_REACHED_SUBMIT_TO' as feed_code,
+        null as sub_feed_code,
+        null as  involved_obj_type_code,
+        campaign.id as campaign_id, 
+        campaign.submit_to as campaign_date,
+        'FRONTOFFICE' as filter_type_code
+        from "sap.ino.db.campaign::t_campaign" as campaign
+        inner join "sap.ino.db.campaign::v_campaign_t_locale" as local
+            on campaign.id = local.campaign_id and
+               TO_DATE(campaign.submit_to) >= TO_DATE(current_utctimestamp) and TO_DATE(campaign.submit_to) <= TO_DATE(ADD_DAYS (current_utctimestamp, 3))
+    union all
+    --feeds for campaign end date reached
+    select 
+        campaign.id as object_id, 
+        'CAMPAIGN' as object_type_code,
+        campaign.changed_by_ID as actor_id,
+        local.name as object_text,
+        null as sub_text, 
+        null as involved_id,
+        current_utctimestamp as event_at, 
+        'DATE_REACHED_VALID_TO' as feed_code,
+        null as sub_feed_code,
+        null as  involved_obj_type_code,
+        campaign.id as campaign_id, 
+        campaign.valid_to as campaign_date,
+        'FRONTOFFICE' as filter_type_code
+        from "sap.ino.db.campaign::t_campaign" as campaign
+        inner join "sap.ino.db.campaign::v_campaign_t_locale" as local
+            on campaign.id = local.campaign_id and
+               TO_DATE(campaign.valid_to) >= TO_DATE(current_utctimestamp) and TO_DATE(campaign.valid_to) <= TO_DATE(ADD_DAYS (current_utctimestamp, 3))
+    union all
+--feeds for campaign register start date reached
+    select 
+        campaign.id as object_id, 
+        'CAMPAIGN' as object_type_code,
+        campaign.changed_by_ID as actor_id,
+        local.name as object_text,
+        null as sub_text, 
+        null as involved_id,
+        current_utctimestamp as event_at, 
+        'DATE_REACHED_REGISTER_FROM' as feed_code,
+        null as sub_feed_code,
+        null as  involved_obj_type_code,
+        campaign.id as campaign_id, 
+        campaign.register_from as campaign_date,
+        'REGISTRATION' as filter_type_code
+        from "sap.ino.db.campaign::t_campaign" as campaign
+        inner join "sap.ino.db.campaign::v_campaign_t_locale" as local
+            on campaign.id = local.campaign_id and
+               TO_DATE(campaign.register_from) >= TO_DATE(current_utctimestamp) and TO_DATE(campaign.register_from) <= TO_DATE(ADD_DAYS (current_utctimestamp, 3))
+    union all
+--feeds for campaign register end date reached
+    select 
+        campaign.id as object_id, 
+        'CAMPAIGN' as object_type_code,
+        campaign.changed_by_ID as actor_id,
+        local.name as object_text, 
+        null as sub_text, 
+        null as involved_id,
+        current_utctimestamp as event_at, 
+        'DATE_REACHED_REGISTER_TO' as feed_code,
+        null as sub_feed_code,
+        null as  involved_obj_type_code,
+        campaign.id as campaign_id, 
+        campaign.register_to as campaign_date,
+        'REGISTRATION' as filter_type_code
+        from "sap.ino.db.campaign::t_campaign" as campaign
+        inner join "sap.ino.db.campaign::v_campaign_t_locale" as local
+            on campaign.id = local.campaign_id and
+               TO_DATE(campaign.register_to) >= TO_DATE(current_utctimestamp) and TO_DATE(campaign.register_to) <= TO_DATE(ADD_DAYS (current_utctimestamp, 3))
+    ;
+    
+    -- distinct feeds
+    lt_feed_input = 
+        select 
+            "sap.ino.db.feed::s_feed".nextval as feed_id, 
+            object_type_code, object_id, event_at, actor_id, object_text, sub_text, 
+            involved_id, feed_code, sub_feed_code, involved_obj_type_code, campaign_id, campaign_date, filter_type_code
+        from
+            :lt_feeds 
+        group by 
+            object_type_code, object_id, event_at, actor_id, object_text, sub_text, 
+            involved_id, feed_code, sub_feed_code, involved_obj_type_code, campaign_id, campaign_date, filter_type_code;
+    
+    -- this biz event may already been written to the notification table during another history table update
+    lt_count = select history.OBJECT_TYPE_CODE, history.OBJECT_ID, history.feed_code, 
+                history.campaign_date, count(feed.ID) as count  
+        from :lt_feed_input as history 
+        left join "sap.ino.db.feed::t_feed" as feed 
+        on feed.OBJECT_TYPE_CODE = history.OBJECT_TYPE_CODE and 
+              feed.OBJECT_ID = history.OBJECT_ID and 
+              feed.feed_code = history.feed_code and 
+              feed.campaign_date = history.campaign_date and 
+              feed.campaign_date is not null
+        group by history.OBJECT_TYPE_CODE, history.OBJECT_ID, history.feed_code, history.campaign_date;
+
+    insert into "sap.ino.db.feed::t_feed" 
+      select input.feed_id as ID, input.object_type_code, input.object_id, input.event_at, input.feed_code, input.actor_id, input.object_text, input.sub_text, 
+            input.sub_feed_code, input.involved_id, input.involved_obj_type_code, input.campaign_id, input.campaign_date, input.filter_type_code
+            from :lt_feed_input as input,
+                 :lt_count as c 
+            where input.OBJECT_TYPE_CODE = c.OBJECT_TYPE_CODE and 
+                  input.OBJECT_ID = c.OBJECT_ID and 
+                  input.feed_code = c.feed_code and 
+                  input.campaign_date = c.campaign_date and
+                  c.count = 0;
+END

@@ -1,0 +1,22 @@
+<mvc:View
+    controllerName="sap.ino.vc.campaign.CampaignCommentList"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:ino="sap.ino.controls"
+    xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <ino:ColorBar 
+    	    backgroundColor="{= !!${data>COLOR_CODE} ? (${path : 'data>COLOR_CODE', formatter : '.formatter.color'}) : undefined }"
+    	    class="sapMBar" 
+    	    design="Auto">
+    	        <ToolbarSpacer/>
+    	        <Link text="{data>SHORT_NAME}"  href="{path: 'data>ID', formatter: '.formatter.campaignNavigationLink'}"/>
+    	        <ToolbarSpacer/>
+    	        <core:Fragment fragmentName="sap.ino.vc.commons.fragments.FullScreenButton" type="XML" />
+    </ino:ColorBar>
+    <Page id="campaignCommentList" height="inherit" class="sapInoCampaignCommentListBackground" showHeader="false">
+        <content>
+        	<mvc:XMLView id="campaignCommentListComment" viewName="sap.ino.vc.comment.Comment" data:modelObjectType="sap.ino.commons.models.object.CampaignComment"></mvc:XMLView>
+        </content>
+    </Page>
+</mvc:View>

@@ -1,0 +1,18 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+                         xmlns:f="sap.ui.layout.form"
+                         xmlns="sap.m"
+                         xmlns:mvc="sap.ui.core.mvc"
+                         xmlns:action="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <ActionSheet
+		id="eStatusChangeAction"
+		title="{i18n>IDEA_OBJECT_TIT_ASSIGN_GENERAL}"
+		showCancelButton="true"
+		placement="VerticalPreferredTop"
+		buttons="{property>/actions/executeStatusTransition/customProperties/statusTransitions}">
+		<buttons>
+		<Button action:STATUS_ACTION_CODE="{property>STATUS_ACTION_CODE}"
+				text="{path: 'property>STATUS_ACTION_CODE', formatter: '.formatter.statusActionCode'}"
+				press="onExecuteStatusTransition"/>
+		</buttons>
+	</ActionSheet>
+</core:FragmentDefinition>

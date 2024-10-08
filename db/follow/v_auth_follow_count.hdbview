@@ -1,0 +1,40 @@
+schema = "SAP_INO";
+query = "
+        select
+            campaign_follow.object_id as follow_id
+        from 
+            \"sap.ino.db.campaign::v_campaign_follow\" as campaign_follow
+        inner join 
+            \"sap.ino.db.campaign::v_auth_campaigns_and_registrable\" as auth_campaign
+        on
+            campaign_follow.object_id = auth_campaign.campaign_id
+            
+        union all
+        
+        select
+            idea_follow.object_id as follow_id
+        from 
+            \"sap.ino.db.idea::v_idea_follow\" as idea_follow
+        inner join 
+            \"sap.ino.db.idea::v_auth_ideas_read\" as auth_idea
+        on
+            idea_follow.object_id = auth_idea.idea_id
+        
+        union all
+        
+        select
+            tag_follow.object_id as follow_id
+        from 
+            \"sap.ino.db.tag::v_tag_follow\" as tag_follow
+        inner join 
+            \"sap.ino.db.tag::t_tag\" as auth_tag
+        on
+           tag_follow.object_id = auth_tag.id
+        "; 
+
+depends_on_view  = ["sap.ino.db.campaign::v_campaign_follow", 
+                    "sap.ino.db.campaign::v_auth_campaigns_and_registrable",
+                    "sap.ino.db.idea::v_idea_follow",
+                    "sap.ino.db.idea::v_auth_ideas_read",
+                    "sap.ino.db.tag::v_tag_follow"];
+depends_on_table = ["sap.ino.db.tag::t_tag"];

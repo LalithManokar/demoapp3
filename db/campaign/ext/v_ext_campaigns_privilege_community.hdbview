@@ -1,0 +1,8 @@
+schema = "SAP_INO_EXT";
+query = "SELECT ID, 
+	REGISTRATION_PRIVILEGE, 
+	COMMUNITY_PRIVILEGE
+FROM \"sap.ino.db.campaign::v_auth_campaigns_privilege\"
+WHERE REGISTRATION_PRIVILEGE = 1
+	OR COMMUNITY_PRIVILEGE = 1";
+depends_on_view = ["sap.ino.db.campaign::v_auth_campaigns_privilege"];

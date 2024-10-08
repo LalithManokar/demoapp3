@@ -1,0 +1,50 @@
+schema = "SAP_INO";
+query = "
+    select 
+        registration.ID as register_id, 
+        registration.CREATED_AT as register_date,
+        registration.STATUS as register_status,
+        campaign.ID as campaign_id,
+        campaign.SUBMIT_FROM as idea_submit_start,
+        campaign.SUBMIT_TO as idea_submit_end,
+        campaign.VALID_FROM as campaign_start,
+        campaign.VALID_TO as campaign_end,
+        campaign.COLOR_CODE as color_code,
+        campaign.IS_REGISTER_AUTO_APPROVE as IS_REGISTER_AUTO_APPROVE,
+        campaign_descr.short_name as camp_short_name,
+        campaign_descr.name as camp_name,
+        campaign_descr.description as camp_description,
+        attachment.attachment_id as campaign_image_id,
+        identity.ID as requester_id,
+        identity.NAME as requester_name,
+        identity.ORGANIZATION as requester_organization,
+        identity.identity_image_id as identity_image_id,
+        campaign.REGISTER_FROM,
+        campaign.REGISTER_TO
+    from
+        \"sap.ino.db.campaign::t_registration\" as registration
+    inner join
+        \"sap.ino.db.campaign::v_auth_campaigns_manage\" as managed_campaigns    
+        on registration.campaign_id = managed_campaigns.campaign_id
+    left outer join
+        \"sap.ino.db.iam::v_identity\" as identity
+        on
+        registration.APPLICANT_ID = identity.ID
+    inner join
+        \"sap.ino.db.campaign::t_campaign\" as campaign
+        on
+        registration.CAMPAIGN_ID = campaign.ID
+    inner join
+        \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign_descr
+        on
+        registration.CAMPAIGN_ID = campaign_descr.campaign_id
+    left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as attachment 
+        on attachment.owner_id = campaign.id and
+           attachment.owner_type_code = 'CAMPAIGN' and
+           attachment.role_type_code = 'CAMPAIGN_DETAIL_IMG'
+    where registration.STATUS = 'sap.ino.config.REGISTER_NEW' AND register_from <= CURRENT_UTCTIMESTAMP and register_to >= CURRENT_UTCTIMESTAMP 
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.campaign::t_registration", "sap.ino.db.campaign::t_campaign", "sap.ino.db.attachment::t_attachment_assignment"];
+depends_on_view = ["sap.ino.db.campaign::v_auth_campaigns_manage", "sap.ino.db.campaign::v_campaign_t_locale", "sap.ino.db.iam::v_identity"];

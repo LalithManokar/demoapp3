@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_RESPONSIBILITY_VALUE_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="SCRIPT_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="Sub responsibility value usage"/>
+  <metadata changedAt="2019-07-11 17:59:37.204"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="VARCHAR" id="RESP_CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="RESP_VALUE_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="IDEA_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="RESP_VALUE_COUNT"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_AUTHOR_ID"/>
+        <viewAttribute datatype="VARCHAR" id="IDEA_AUTHOR_NAME" length="100"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition> 
+ /********* Begin Procedure Script ************/ 
+ BEGIN 
+ 	 var_out = 
+ 	   select
+ 	     code as resp_code,
+ 	     resp_value_code,
+ 	     campaign_id,
+ 	     campaign_name,
+ 	     idea_id,
+ 	     idea_name,
+ 	     resp_value_count,
+ 	     idea_author_id,
+ 	     idea_author_name
+ 	   from &quot;sap.ino.db.subresponsibility::v_responsibility_value_usage&quot;;
+ 	   
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="RESP_CODE" order="1">
+        <descriptions defaultDescription="RESP_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="RESP_CODE"/>
+      </attribute>
+      <attribute id="RESP_VALUE_CODE" order="2">
+        <descriptions defaultDescription="RESP_VALUE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="RESP_VALUE_CODE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="3" descriptionColumnName="CAMPAIGN_NAME">
+        <descriptions defaultDescription="CAMPAIGN_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="4">
+        <descriptions defaultDescription="CAMPAIGN_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="5">
+        <descriptions defaultDescription="IDEA_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_NAME" order="6" descriptionColumnName="IDEA_NAME">
+        <descriptions defaultDescription="IDEA_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_NAME"/>
+      </attribute>
+      <attribute id="IDEA_AUTHOR_NAME" order="9">
+        <descriptions defaultDescription="IDEA_AUTHOR_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_AUTHOR_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="RESP_VALUE_COUNT" order="7" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="RESP_VALUE_COUNT"/>
+        <measureMapping columnObjectName="Script_View" columnName="RESP_VALUE_COUNT"/>
+      </measure>
+      <measure id="IDEA_AUTHOR_ID" order="8" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="IDEA_AUTHOR_ID"/>
+        <measureMapping columnObjectName="Script_View" columnName="IDEA_AUTHOR_ID"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT";
+query = "select count(eval_re.IDEA_ID) as  COUNT,eval_re.IDEA_ID
+            from \"sap.ino.db.evaluation::v_evaluation_request\"  AS eval_re
+            GROUP BY eval_re.IDEA_ID
+            with read only";
+
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request"];

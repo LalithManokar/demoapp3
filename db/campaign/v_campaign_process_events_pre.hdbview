@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = "
+select distinct
+    campaign_phase_hc.edit_timestamp as edit_timestamp_new,
+    campaign_phase_hb.*
+from
+(
+    select
+        *,
+        lag(edit_timestamp, 1, NULL) over (partition by id order by edit_timestamp asc) as predecessor
+    from
+        \"sap.ino.db.campaign::v_campaign_process_events\"
+) as campaign_phase_hc 
+    left outer join \"sap.ino.db.campaign::v_campaign_process_events\" as campaign_phase_hb
+        on campaign_phase_hc.predecessor = campaign_phase_hb.edit_timestamp and 
+           campaign_phase_hc.id = campaign_phase_hb.id
+with read only";
+
+depends_on_view = ["sap.ino.db.campaign::v_campaign_process_events"];

@@ -1,0 +1,15 @@
+schema = "SAP_INO";
+query = "
+    select  
+        template_text.*,
+        created_by_identity.name as created_by, 
+        changed_by_identity.name as changed_by 
+    from \"sap.ino.db.notification::t_mail_template_t_stage\" as template_text
+        left outer join \"sap.ino.db.iam::t_identity\" as created_by_identity
+            on template_text.created_by_id = created_by_identity.id
+        left outer join \"sap.ino.db.iam::t_identity\" as changed_by_identity
+            on template_text.changed_by_id = changed_by_identity.id
+    with read only";
+
+depends_on_table = ["sap.ino.db.notification::t_mail_template_t_stage",
+                    "sap.ino.db.iam::t_identity"];

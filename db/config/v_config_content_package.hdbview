@@ -1,0 +1,23 @@
+schema = "SAP_INO";
+query = "
+    -- this view makes sure that the content package is the top most package
+    -- in the package vector and that it is is unique
+    select config_content_package.*
+    from \"sap.ino.db.config::t_config_content_package\" as config_content_package
+    inner join \"sap.ino.db.basis::t_package_extension\" as package_ext
+        on config_content_package.package_id = package_ext.ext_package_id
+    inner join ( 
+        select top 1 
+            count(*) as cnt, 
+            layer 
+        from \"sap.ino.db.basis::t_package_extension\" 
+        where base_package_id = 'sap.ino.config'
+        group by layer
+        order by layer desc
+    ) as top_layer
+    on  top_layer.cnt = 1 and 
+        top_layer.layer = package_ext.layer 
+    where base_package_id = 'sap.ino.config'
+";
+
+depends_on_table = ["sap.ino.db.config::t_config_content_package", "sap.ino.db.basis::t_package_extension"];

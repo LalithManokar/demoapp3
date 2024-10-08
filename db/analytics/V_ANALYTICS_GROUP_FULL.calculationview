@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_GROUP_FULL" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="V_ANALYTICS_GROUP_FULL"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="INTEGER" id="GROUP_ID"/>
+        <viewAttribute datatype="NVARCHAR" id="GROUP_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="GROUP_EMAIL" length="256"/>
+        <viewAttribute datatype="INTEGER" id="GROUP_IMAGE_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition>begin
+    var_out = select identity.id as group_id,
+                     identity.name as group_name,
+                     identity.email as group_email,
+                     identity.identity_image_id as group_image_id
+               from
+                   &quot;sap.ino.db.iam::v_identity&quot; as identity
+               where
+                   identity.type_code = 'GROUP';
+end </definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="GROUP_ID" order="1" descriptionColumnName="GROUP_NAME">
+        <descriptions defaultDescription="Group ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="GROUP_ID"/>
+      </attribute>
+      <attribute id="GROUP_NAME" order="2">
+        <descriptions defaultDescription="Group Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="GROUP_NAME"/>
+      </attribute>
+      <attribute id="GROUP_EMAIL" order="3">
+        <descriptions defaultDescription="Group E-Mail Adress"/>
+        <keyMapping columnObjectName="Script_View" columnName="GROUP_EMAIL"/>
+      </attribute>
+      <attribute id="GROUP_IMAGE_ID" order="4">
+        <descriptions defaultDescription="Image ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="GROUP_IMAGE_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

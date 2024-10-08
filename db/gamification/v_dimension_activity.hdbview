@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "SELECT  
+	ID,
+	CODE,
+	DIMENSION_ID,
+	PHASE_CODE,
+	WITHIN_TIME,
+	TIME_UNIT,
+	VALUE 
+FROM \"sap.ino.db.gamification::t_activity\" as activity
+    with read only
+";
+depends_on_table = ["sap.ino.db.gamification::t_activity"];   

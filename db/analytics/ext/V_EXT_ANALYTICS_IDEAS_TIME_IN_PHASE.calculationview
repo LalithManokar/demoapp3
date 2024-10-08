@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_IDEAS_TIME_IN_PHASE" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED">
+  <descriptions defaultDescription="Ideas and their time in phases "/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="21"/>
+  <dataSources>
+    <DataSource id="V_ANALYTICS_IDEA_PHASE" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_PHASE</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="IDEA_PHASE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="PHASE_SEQUENCE_NO"/>
+        <viewAttribute id="DAYS"/>
+        <viewAttribute id="MIN_DAYS"/>
+        <viewAttribute id="MAX_DAYS"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#V_ANALYTICS_IDEA_PHASE">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_SEQUENCE_NO" source="PHASE_SEQUENCE_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DAYS" source="DAYS"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="MIN_DAYS" source="DAYS"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="MAX_DAYS" source="DAYS"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="IDEA_PHASE">
+    <descriptions/>
+    <attributes>
+      <attribute id="PHASE_SEQUENCE_NO" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Phase Number"/>
+        <keyMapping columnObjectName="IDEA_PHASE" columnName="PHASE_SEQUENCE_NO"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="IDEA_PHASE" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="IDEA_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="IDEA_PHASE" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="PHASE_CODE$local">
+        <descriptions/>
+        <keyMapping columnObjectName="IDEA_PHASE" columnName="PHASE_CODE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="SUM_DAYS" order="3" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Days (Sum)"/>
+        <measureMapping columnObjectName="IDEA_PHASE" columnName="DAYS"/>
+      </measure>
+      <measure id="MIN_DAYS" order="4" aggregationType="min" measureType="simple">
+        <descriptions defaultDescription="Days (Min)"/>
+        <measureMapping columnObjectName="IDEA_PHASE" columnName="MIN_DAYS"/>
+      </measure>
+      <measure id="MAX_DAYS" order="5" aggregationType="max" measureType="simple">
+        <descriptions defaultDescription="Days (Max)"/>
+        <measureMapping columnObjectName="IDEA_PHASE" columnName="MAX_DAYS"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures>
+      <measure id="AVERAGE_DAYS" hidden="false" order="1" aggregationType="sum" measureType="simple" datatype="DOUBLE" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Days (Average)"/>
+        <formula>round(&quot;SUM_DAYS&quot;/&quot;IDEA_COUNT&quot;,1)</formula>
+      </measure>
+      <measure id="IDEA_COUNT" hidden="false" order="6" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <descriptions defaultDescription="Number of Ideas"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="IDEA_ID" dimensionUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+    <sharedDimensions>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION">
+        <attributes>
+          <attributeRef>#CAMPAIGN_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>CAMPAIGN_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION">
+        <attributes>
+          <attributeRef>#IDEA_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDEA_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="inner"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_PHASE_DIMENSION">
+        <attributes>
+          <attributeRef>#PHASE_CODE$local</attributeRef>
+          <attributeRef>#CAMPAIGN_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>PHASE_CODE</attributeName>
+          <attributeName>PHASE_CAMPAIGN_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures>
+          <attributeReference attributeName="PHASE_CAMPAIGN_ID" hidden="true"/>
+        </associatedAttributeFeatures>
+      </logicalJoin>
+    </sharedDimensions>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="22" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="IDEA_PHASE" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="239"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape modelObjectName="IDEA_PHASE" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+        <upperLeftCorner x="536" y="121"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="817" y="16"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="69" y="11"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_PHASE_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="24" y="302"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

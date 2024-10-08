@@ -1,0 +1,10 @@
+schema = "SAP_INO_EXT";
+query = "select 
+            permission.*
+        from \"sap.ino.db.wall::v_wall_permission\" as permission 
+            inner join \"sap.ino.db.wall::v_auth_wall\" as auth 
+                on permission.object_id = auth.wall_id 
+         with read only";
+
+depends_on_view = [ "sap.ino.db.wall::v_wall_permission", 
+                    "sap.ino.db.wall::v_auth_wall"];

@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = "
+           select 
+                followed_idea.idea_id
+            from \"sap.ino.db.idea::f_my_followed_ideas\"() as followed_idea
+                 inner join \"sap.ino.db.idea::t_idea\" as idea
+                   on followed_idea.idea_id = idea.id
+	         where idea.status_code in (select * from \"sap.ino.db.idea::v_status_code_for_completed_idea\")
+            with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea"];
+
+depends_on_view = [ "sap.ino.db.idea::f_my_followed_ideas", 
+                    "sap.ino.db.idea::v_status_code_for_completed_idea"];

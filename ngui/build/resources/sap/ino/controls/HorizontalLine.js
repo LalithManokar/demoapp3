@@ -1,0 +1,4 @@
+/*!
+ * SAP Innovation Management (c) Copyright 2014 SAP AG. All rights reserved.
+ */
+sap.ui.define(["sap/ui/core/Control","sap/base/security/sanitizeHTML"],function(C,s){"use strict";return C.extend("sap.ino.controls.HorizontalLine",{metadata:{properties:{"height":{type:"string",defaultValue:"1px"},"width":{type:"string",defaultValue:"100%"}}},renderer:function(r,c){var h=s(c.getHeight());var w=s(c.getWidth());r.write("<div");r.writeControlData(c);r.addStyle("width",w);r.addStyle("overflow","hidden");r.writeStyles();r.addClass("sapInoHorizontalLine");r.writeClasses();r.write(">");r.write("<svg");r.writeAttribute("focusable","false");r.addStyle("width",w);r.addStyle("height",h);r.writeStyles();r.writeClasses();r.write(">");r.write("<rect");r.writeAttributeEscaped("x",0);r.writeAttributeEscaped("y",0);r.writeAttributeEscaped("width",w);r.writeAttributeEscaped("height",h);r.write("/>");r.write("</svg>");r.write("</div>");}});});

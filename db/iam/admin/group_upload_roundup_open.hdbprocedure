@@ -1,0 +1,76 @@
+procedure "SAP_INO"."sap.ino.db.iam.admin::group_upload_roundup_open" (
+    in  it_group         "SAP_INO"."sap.ino.db.iam.admin::tt_group_import_input_open",
+    out ot_group_message "SAP_INO"."sap.ino.db.iam.admin::tt_group_import_output",
+    out ov_successful   integer,
+    out ov_failed       integer
+)
+language sqlscript
+sql security definer
+default schema SAP_INO
+as
+begin
+    call "SAP_INO"."sap.ino.db.iam.admin::group_upload_open" (:it_group, lt_message);
+
+    -- exploit the fact that every successfully uploaded record gives rise to an empty message
+    -- also exploitst that all failures deliver an E message_type
+    select count (*) into ov_successful from :lt_message
+        where type <> 'E';
+        
+    select count(*) - :ov_successful into ov_failed from :it_group;
+            
+    lt_msg_group = select distinct
+            message  as message,
+            count(*) as message_count
+        from
+            :lt_message group by message;
+    
+    -- top 11 messages of each message
+    lt_top11 = select * from (
+                   select *, row_number() over (partition by message order by line_no asc) as n
+                       from :lt_message
+               ) where n <= 11;
+               
+    -- if there are more than 10 messages replace the last one
+    ot_group_message =
+        -- first 10 messages
+        select
+            LINE_NO,
+            GROUP_NAME,
+            MEMBER_TYPE_CODE,
+            MEMBER_NAME,
+            "TYPE",
+            MESSAGE,
+            REF_FIELD,
+            PARAM_0,
+            PARAM_1,
+            PARAM_2,
+            PARAM_3
+        from
+            :lt_top11 as t11
+        where
+            n < 10
+        or
+            n = 10 and (
+                11 not in (select n from :lt_top11 as iq where iq.message = t11.message)
+            )
+        union all
+        -- last message replaced by summary message
+        select
+            10    as LINE_NO,
+            '...' as GROUP_NAME,
+            '...' as MEMBER_TYPE_CODE,
+            '...' as MEMBER_NAME,
+            t.type as "TYPE",
+            t.message || ' (' || g.message_count - 9 || ' more)' as MESSAGE,
+            '...' as REF_FIELD,
+            '...' as PARAM_0,
+            '...' as PARAM_1,
+            '...' as PARAM_2,
+            '...' as PARAM_3
+        from
+            :lt_top11     as t,
+            :lt_msg_group as g
+        where
+            t.message = g.message
+        and n = 11;
+end;

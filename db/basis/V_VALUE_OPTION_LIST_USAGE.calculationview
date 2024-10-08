@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_VALUE_OPTION_LIST_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="SCRIPT_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="Value option lists (Staging Object) and their usage in campaigns"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="VARCHAR" id="VALUE_OPTION_LIST_CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="VALUE_OPTION_LIST_DEFAULT_TEXT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="VALUE_OPTION_LIST_DEFAULT_LONG_TEXT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CRITERION_CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="CRITERION_DEFAULT_TEXT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CRITERION_DEFAULT_LONG_TEXT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="MODEL_CODE" length="500"/>
+        <viewAttribute datatype="VARCHAR" id="MODEL_DEFAULT_TEXT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="MODEL_DEFAULT_LONG_TEXT" length="100"/>
+        <viewAttribute datatype="INTEGER" id="CAMPAIGN_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CAMPAIGN_STATUS_CODE" length="500"/>
+        <viewAttribute datatype="INTEGER" id="IDEA_ID"/>
+        <viewAttribute datatype="VARCHAR" id="IDEA_NAME" length="100"/>
+        <viewAttribute datatype="INTEGER" id="EVALUATION_COUNT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <definition> 
+ /********* Begin Procedure Script ************/ 
+ BEGIN 
+     var_out = 
+        select 
+          vol_usage.value_option_list_code,
+          vol_usage.value_option_list_default_text,
+          vol_usage.value_option_list_default_long_text,
+          vol_usage.criterion_code,
+          vol_usage.criterion_default_text,
+          vol_usage.criterion_default_long_text,
+          vol_usage.model_code,
+          vol_usage.model_default_text,
+          vol_usage.model_default_long_text,
+          vol_usage.campaign_id,
+          vol_usage.campaign_name,
+          vol_usage.campaign_status_code,
+          vol_usage.idea_id,
+          vol_usage.idea_name,
+          vol_usage.evaluation_count
+        from &quot;sap.ino.db.basis::v_value_option_list_usage&quot; 
+        as vol_usage; 
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="VALUE_OPTION_LIST_CODE" order="1" descriptionColumnName="VALUE_OPTION_LIST_DEFAULT_TEXT">
+        <descriptions defaultDescription="Value List"/>
+        <keyMapping columnObjectName="Script_View" columnName="VALUE_OPTION_LIST_CODE"/>
+      </attribute>
+      <attribute id="VALUE_OPTION_LIST_DEFAULT_TEXT" order="2">
+        <descriptions defaultDescription="Value List Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="VALUE_OPTION_LIST_DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="VALUE_OPTION_LIST_DEFAULT_LONG_TEXT" order="3">
+        <descriptions defaultDescription="Value List Description"/>
+        <keyMapping columnObjectName="Script_View" columnName="VALUE_OPTION_LIST_DEFAULT_LONG_TEXT"/>
+      </attribute>
+      <attribute id="CRITERION_CODE" order="4" descriptionColumnName="CRITERION_DEFAULT_TEXT">
+        <descriptions defaultDescription="Criterion"/>
+        <keyMapping columnObjectName="Script_View" columnName="CRITERION_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_DEFAULT_TEXT" order="5">
+        <descriptions defaultDescription="Criterion Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="CRITERION_DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="CRITERION_DEFAULT_LONG_TEXT" order="6">
+        <descriptions defaultDescription="Criterion Description"/>
+        <keyMapping columnObjectName="Script_View" columnName="CRITERION_DEFAULT_LONG_TEXT"/>
+      </attribute>
+      <attribute id="MODEL_CODE" order="7" descriptionColumnName="MODEL_DEFAULT_TEXT">
+        <descriptions defaultDescription="Evaluation Method"/>
+        <keyMapping columnObjectName="Script_View" columnName="MODEL_CODE"/>
+      </attribute>
+      <attribute id="MODEL_DEFAULT_TEXT" order="8">
+        <descriptions defaultDescription="Evaluation Method Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="MODEL_DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="MODEL_DEFAULT_LONG_TEXT" order="9">
+        <descriptions defaultDescription="Evaluation Method Description"/>
+        <keyMapping columnObjectName="Script_View" columnName="MODEL_DEFAULT_LONG_TEXT"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="10" descriptionColumnName="CAMPAIGN_NAME">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="11">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="CAMPAIGN_STATUS_CODE" order="12">
+        <descriptions defaultDescription="Campaign Status"/>
+        <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_STATUS_CODE"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="13" descriptionColumnName="IDEA_NAME">
+        <descriptions defaultDescription="Idea"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_NAME" order="14">
+        <descriptions defaultDescription="Idea Name"/>
+        <keyMapping columnObjectName="Script_View" columnName="IDEA_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="EVALUATION_COUNT" order="15" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Evaluations"/>
+        <measureMapping columnObjectName="Script_View" columnName="EVALUATION_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

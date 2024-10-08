@@ -1,0 +1,28 @@
+schema = "SAP_INO";
+query = "select distinct 
+            campaign.id as campaign_id
+            from \"sap.ino.db.campaign::t_campaign\" as campaign
+            inner join \"sap.ino.db.iam::v_object_identity_role_transitive\" as object_role 
+                on campaign.id = object_role.object_id and object_role.object_type_code = 'CAMPAIGN'
+            inner join \"sap.ino.db.iam::t_role_privilege\" as role 
+                on role.role_code = object_role.role_code
+                    and role.privilege = 'CAMP_IDEA_SUBMIT'
+            inner join \"sap.ino.db.iam::v_auth_application_user\" as suser 
+                on suser.id = object_role.identity_id
+        union
+        select distinct 
+            campaign.id as campaign_id
+            from \"sap.ino.db.campaign::t_campaign\" as campaign
+            inner join \"sap.ino.db.iam::v_object_identity_role_transitive\" as object_role 
+                on campaign.id = object_role.object_id and object_role.object_type_code = 'CAMPAIGN'
+            inner join \"sap.ino.db.iam::t_role_privilege\" as role 
+                on role.role_code = object_role.role_code
+                    and role.privilege = 'CAMP_IDEA_REASSIGN'
+            inner join \"sap.ino.db.iam::v_auth_application_user\" as suser 
+                on suser.id = object_role.identity_id";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign", 
+                    "sap.ino.db.iam::t_role_privilege"];
+
+depends_on_view = [ "sap.ino.db.iam::v_auth_application_user", 
+                    "sap.ino.db.iam::v_object_identity_role_transitive"];

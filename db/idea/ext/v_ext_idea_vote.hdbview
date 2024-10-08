@@ -1,0 +1,31 @@
+schema = "SAP_INO_EXT";
+query = "select 
+            idea_vote.id,
+            idea_vote.idea_id,
+            idea_vote.user_id,
+            idea_vote.score,
+            idea_vote.created_at,
+            idea_vote.changed_at,
+            idea_vote.vote_reason,
+            idea_vote.vote_comment,
+            idea_vote.VOTED_BY_GROUP,
+            case VOTED_BY_GROUP
+                when 'ORG' then idea_vote.ORGANIZATION
+                when 'COM' then idea_vote.company
+                when 'COST' then idea_vote.cost_center
+                when 'OFF' then idea_vote.office
+                else ''
+            end as group_vote_name,
+            idea_vote.NAME,
+            idea_vote.ORGANIZATION,
+            idea_vote.company as user_company,
+            idea_vote.cost_center,
+            idea_vote.office,
+            idea_vote.identity_image_id,
+            idea_vote.company,
+            idea_vote.source_idea_id
+         from \"sap.ino.db.idea::v_vote_user_comment\" as idea_vote
+         where idea_vote.idea_id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")
+         with read only";
+depends_on_view = ["sap.ino.db.idea::v_vote_user_comment", "sap.ino.db.idea::v_auth_ideas_read"];
+

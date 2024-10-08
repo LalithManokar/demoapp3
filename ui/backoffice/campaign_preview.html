@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html> <!-- lang is set dynamically -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>SAP Innovation Management</title>
+    <script src="/sap/ino/ui/ui5/resources/sap-ui-core.js"
+        	id="sap-ui-bootstrap"
+        	data-sap-ui-libs="sap.m"
+            data-sap-ui-compatVersion="edge"
+        	data-sap-ui-theme="sap_bluecrystal">
+    </script>
+    <script type="text/javascript">
+        function createContent(aPageContent, bShowArrows) {
+        	jQuery.sap.require("sap.m.Carousel");
+            jQuery.sap.require("sap.ui.core.HTML");
+            
+            if (aPageContent && aPageContent.length > 0) {
+                var oCarousel = new sap.m.Carousel({
+                    width : "100%",
+                    height : "100%"
+                });
+                for (var ii = 0; ii < aPageContent.length; ++ii) {
+                    var oVBox = new sap.m.VBox({
+                        items : [new sap.ui.core.HTML({
+                        	content : aPageContent[ii],
+                        	sanitizeContent : true 
+                        })]
+                    });
+                    oVBox.addStyleClass("sapUiInoCampaignPage")
+                    oCarousel.addPage(oVBox);
+                }
+            
+                oCarousel.placeAt("content", "only");
+            }
+        }
+    </script>    
+    <style>
+    	.sapUiBodyCampaignPreview {
+			margin: 0;
+			background: none;
+			background-color: white; 
+    	}
+    	.sapUiInoCampaignPage {
+    	    margin-left: 4rem;
+    		margin-right: 4rem;
+    	}
+    	.sapUiInoCampaignPreview {
+    		padding: 20px 0;
+    	}
+    </style>
+</head>
+<body role="application" class="sapUiBody sapUiBodyCampaignPreview" style="overflow-y: scroll;">
+    <section>
+    	<section>
+    		<section>
+    			<section>
+    				<div id="content"></div>
+				</section>
+			</section>
+		</section>
+	</section>
+</body>
+</html>

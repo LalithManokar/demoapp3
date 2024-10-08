@@ -1,0 +1,9 @@
+schema = "SAP_INO";
+query = "select 
+            comment.*
+         from 
+             \"sap.ino.db.comment::v_community_comment\" as comment 
+               where comment.object_type_code = 'IDEA' 
+         with read only"; 
+
+depends_on_view = ["sap.ino.db.comment::v_community_comment"];

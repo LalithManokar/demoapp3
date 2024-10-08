@@ -1,0 +1,27 @@
+schema = "SAP_INO";
+query = "select item_clarify.*,
+           to_identity.name as to_identity_name,
+           to_identity.image_id as to_identity_image_id,
+           created_by.name as created_by_name,
+           created_by.image_id as created_by_image_id,
+           
+           case 
+           when (eval_req_item.expert_id = item_clarify.to_identity
+                    or eval_req_item.expert_id = item_clarify.created_by_id)
+           then cast (1 as TINYINT)
+           else cast (0 as TINYINT)
+           end as clarification_enabled
+           
+         from \"sap.ino.db.evaluation::t_evaluation_request_item_clarification\" as item_clarify
+         inner join \"sap.ino.db.evaluation::v_evaluation_request_item\" as eval_req_item
+            on eval_req_item.id = item_clarify.eval_req_item_id
+         left outer join \"sap.ino.db.iam::v_identity\" as to_identity
+            on item_clarify.to_identity = to_identity.id
+         left outer join \"sap.ino.db.iam::v_identity\" as created_by
+            on item_clarify.created_by_id = created_by.id
+         with read only";
+
+depends_on_table = ["sap.ino.db.evaluation::t_evaluation_request_item_clarification"];
+
+depends_on_view = ["sap.ino.db.iam::v_identity",
+                   "sap.ino.db.evaluation::v_evaluation_request_item"];

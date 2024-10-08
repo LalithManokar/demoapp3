@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT";
+query = "
+    select data.* from 
+        \"sap.ino.db.analytics::v_analytics_static_top_commentators\" as data
+    with read only";
+
+depends_on_view = ["sap.ino.db.analytics::v_analytics_static_top_commentators"];

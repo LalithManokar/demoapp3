@@ -1,0 +1,9 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Personalize setting quick links for individual user";
+table.columns = [
+    {name = "ID";               sqlType = INTEGER;              nullable = false; comment = "Technical record ID";},
+    {name = "LINK_TEXT"; 		sqlType = VARCHAR; length =100;  nullable = true; comment = "Link text for user defined link";},
+    {name = "LINK_URL";         sqlType = VARCHAR; length =4000; nullable = true; comment = "Link URL for user defined link";}
+];
+table.primaryKey.pkcolumns = ["ID"];

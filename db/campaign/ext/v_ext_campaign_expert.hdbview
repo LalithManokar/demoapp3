@@ -1,0 +1,9 @@
+schema = "SAP_INO_EXT";
+query = "
+    select 
+        expert.* 
+    from 
+        \"sap.ino.db.campaign::v_campaign_expert\" as expert
+    inner join \"sap.ino.db.campaign::v_auth_campaigns\" as auth
+    on expert.campaign_id = auth.campaign_id";
+depends_on_view = ["sap.ino.db.campaign::v_campaign_expert", "sap.ino.db.campaign::v_auth_campaigns"];

@@ -1,0 +1,63 @@
+schema = "SAP_INO";
+query = "select camp_task.id, 
+            	camp_task.task_code, 
+            	camp_task.date_type_code, 
+            	camp_task.campaign_id, 
+            	camp_task.sequence_no, 
+            	camp_task.start_date, 
+            	camp_task.end_date, 
+            	camp_task.start_year, 
+            	camp_task.end_year, 
+            	camp_task.start_month_code, 
+            	camp_task.end_month_code, 
+            	camp_task.start_quarter_code, 
+            	camp_task.end_quarter_code, 
+            	camp_task.is_task_display,
+        coalesce(task_text.content, mils_task.default_text) as task_name,
+        start_month_text.content as start_month,
+        end_month_text.content as end_month,
+        start_quar_text.content as start_quarter,
+        end_quar_text.content as end_quarter,
+        count(milestone.id) as milestone_count
+        from \"sap.ino.db.campaign::t_campaign_task\" as camp_task
+            inner join \"sap.ino.db.basis::t_milestone_task_stage\" mils_task
+                on camp_task.task_code = mils_task.code 
+            left outer join \"sap.ino.db.basis::v_resolved_text\" as task_text
+                on mils_task.code = task_text.text_id
+            left outer join \"sap.ino.db.basis::v_resolved_text\" as start_month_text
+                on camp_task.start_month_code = start_month_text.text_id
+            left outer join \"sap.ino.db.basis::v_resolved_text\" as end_month_text
+                on camp_task.end_month_code = end_month_text.text_id
+            left outer join \"sap.ino.db.basis::v_resolved_text\" as start_quar_text
+                on camp_task.start_quarter_code = start_quar_text.text_id
+            left outer join \"sap.ino.db.basis::v_resolved_text\" as end_quar_text
+                on camp_task.end_quarter_code = end_quar_text.text_id
+            left outer join \"sap.ino.db.campaign::t_campaign_milestone\" as milestone
+	            on milestone.campaign_task_id = camp_task.id
+	        group by camp_task.id, 
+                	camp_task.task_code, 
+                	camp_task.date_type_code, 
+                	camp_task.campaign_id, 
+                	camp_task.sequence_no, 
+                	camp_task.start_date, 
+                	camp_task.end_date, 
+                	camp_task.start_year, 
+                	camp_task.end_year, 
+                	camp_task.start_month_code, 
+                	camp_task.end_month_code, 
+                	camp_task.start_quarter_code, 
+                	camp_task.end_quarter_code, 
+                	camp_task.is_task_display, 
+                	task_text.content, 
+                	mils_task.default_text, 
+                	start_month_text.content, 
+                	end_month_text.content, 
+                	start_quar_text.content, 
+                	end_quar_text.content
+        with read only";
+
+depends_on_view = ["sap.ino.db.basis::v_resolved_text"];
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign_task",
+                    "sap.ino.db.basis::t_milestone_task_stage",
+                    "sap.ino.db.campaign::t_campaign_milestone"];

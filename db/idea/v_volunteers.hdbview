@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "
+    select volunteer.*
+    from
+        \"sap.ino.db.idea::t_volunteers\" as volunteer
+    inner join
+        \"sap.ino.db.iam::v_auth_application_user\" as user
+    on
+        volunteer.IDENTITY_ID = user.id
+    with read only";
+
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user"];
+depends_on_table = ["sap.ino.db.idea::t_volunteers"];

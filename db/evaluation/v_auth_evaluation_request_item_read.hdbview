@@ -1,0 +1,39 @@
+schema = "SAP_INO";
+query = 
+"
+select eval_req_item.id as EVAL_REQ_ITEM_ID, eval_req.idea_id
+from \"sap.ino.db.evaluation::t_evaluation_request_item\" as eval_req_item
+inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as role_eval
+    on  role_eval.object_id = eval_req_item.id and
+        role_eval.object_type_code = 'EVAL_REQUEST_ITEM'
+inner join \"sap.ino.db.iam::t_role_privilege\" as role_privilege
+    on  role_privilege.role_code = role_eval.role_code 
+left outer join \"sap.ino.db.evaluation::t_evaluation_request\" as eval_req
+    on eval_req_item.eval_req_id = eval_req.id
+where role_privilege.privilege = 'IDEA_EVAL_REQ_ITEM_READ'
+union 
+select eval_req_item.id as EVAL_REQ_ITEM_ID, eval_req.idea_id
+from \"sap.ino.db.evaluation::t_evaluation_request_item\" as eval_req_item
+left outer join \"sap.ino.db.evaluation::t_evaluation_request\" as eval_req
+  on eval_req_item.eval_req_id = eval_req.id
+inner join \"sap.ino.db.idea::t_idea\" as idea
+    on  idea.id = eval_req.idea_id 
+left outer join \"sap.ino.db.subresponsibility::t_responsibility_value_stage\" as resp_value
+    on resp_value.code = idea.resp_value_code
+inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as role_camp
+    on  (role_camp.object_id = idea.campaign_id and
+        role_camp.object_type_code = 'CAMPAIGN')
+        or (role_camp.object_id = resp_value.id and role_camp.object_type_code = 'RESPONSIBILITY')
+inner join \"sap.ino.db.iam::t_role_privilege\" as role_privilege
+    on  role_privilege.role_code = role_camp.role_code 
+where role_privilege.privilege = 'IDEA_EVAL_REQ_ITEM_READ'
+with read only
+";
+
+depends_on_table = ["sap.ino.db.evaluation::t_evaluation_request",
+                    "sap.ino.db.evaluation::t_evaluation_request_item",
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.subresponsibility::t_responsibility_value_stage",
+                    "sap.ino.db.iam::t_role_privilege"];
+
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];

@@ -1,0 +1,5 @@
+schema   = "SAP_INO";
+minvalue = 1;
+cycles   = false;
+reset_by = "select nextid from \"sap.ino.db.idea::v_idea_seq_reset\"";
+depends_on_view = "sap.ino.db.idea::v_idea_seq_reset";

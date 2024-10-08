@@ -1,0 +1,20 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "URL whitelist";
+table.columns = [
+    {name = "PACKAGE_ID";        sqlType = NVARCHAR; length = 256;  nullable = false; comment = "Package where content is delivered from";},
+    {name = "CODE";              sqlType = VARCHAR;  length = 500;  nullable = false; comment = "URL";},
+    {name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100;  nullable = true;  comment = "Default Text for Vote Type";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300;  nullable = true;  comment = "Default Long Text for Vote Type";},
+    {name = "ID";                sqlType = INTEGER;                 nullable = true;  comment = "ID used for UI maintenance - empty for imported configuration content";},
+    {name = "PLAIN_CODE";        sqlType = VARCHAR;  length = 100;  nullable = true;  comment = "Code key without package and naming prefix for UI maintenance";},
+    {name = "PROTOCOL";          sqlType = VARCHAR;  length = 20;   nullable = false; comment = "Scheme/Protocol of the whitelist URL";},
+    {name = "HOST";              sqlType = NVARCHAR; length = 255;  nullable = true;  comment = "Hostname (can also have special characters)";},
+    {name = "PORT";              sqlType = INTEGER;                 nullable = true;  comment = "Port";},
+    {name = "PATH";              sqlType = NVARCHAR; length = 2000; nullable = true;  comment = "URL path (encoded)";},
+    {name = "CREATED_AT";        sqlType = TIMESTAMP;               nullable = true;  comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID";     sqlType = INTEGER;                 nullable = true;  comment = "Identity by which content has been created.";},
+    {name = "CHANGED_AT";        sqlType = TIMESTAMP;               nullable = true;  comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID";     sqlType = INTEGER;                 nullable = true;  comment = "Identity by which content has been changed.";}
+];
+table.primaryKey.pkcolumns = ["PACKAGE_ID", "CODE"];

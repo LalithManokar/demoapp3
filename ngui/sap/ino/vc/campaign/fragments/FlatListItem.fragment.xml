@@ -1,0 +1,175 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+	xmlns:ino="sap.ino.controls"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<CustomListItem 
+        type="Active"
+        press="onCampaignsListItemPress"
+        class="sapInoHomepageCampaignList"
+        app:aofSmartControl="true"
+        app:aofModel="data"
+        app:aofObject="sap.ino.xs.object.campaign.Campaign">
+		<l:VerticalLayout
+            width="100%">
+			<FlexBox
+                width="100%"
+                alignItems="Stretch">
+				<items>
+					<Label tooltip="{i18n>ACC_EXP_DUMMY_TOOLTIP}"/>
+					<!-- Workaround for accessibility, never read. In IE, JAWS always reads first tooltip for each element in the listitem. -->
+					<ino:ColorRibbon color="{:= ${data>COLOR_CODE}}" class="sapInoCampaignListColor"/>
+					<FlexBox
+                        class="sapInoCampaignListLine"
+                        alignItems="Stretch"
+                        justifyContent="SpaceBetween">
+						<items>
+							<HBox class="sapInoCampaignListSeparatorMargin sapInoCampaignListInfoContainer">
+								<VBox alignItems="Center" class="sapUiTinyMarginBeginEnd sapInoCampaignLisImage" justifyContent="Center">
+									<ino:Campaign
+                                    class="sapInoCampaignListImageBorder"
+                                    color="{path: 'data>COLOR_CODE', formatter: '.formatter.color'}"
+                                    objectId="{path: 'data>ID'}"
+                                    image="{parts: [{path:'data>CAMPAIGN_IMAGE_ID'},{path:'data>CAMPAIGN_LIST_IMAGE_ID'}], formatter: '.formatter.campaignListImageURL'}"
+                                    width="130px"
+                                    height="80px"
+                                    openForSubmission="{= (${data>IS_OPEN_FOR_SUBMISSION} + ${data>SUBMITTABLE} === 2) ? true : false}"
+                                    registrationDate="{= ${path: 'data>REGISTER_FROM', formatter: '.formatter.isFutureDate'} ? ${path: 'data>REGISTER_FROM', formatter: '.formatter.registrationStartsInDays'} : ${path: 'data>REGISTER_TO', formatter: '.formatter.registrationDaysLeft'} }"
+                                    registrationDateTooltip="{= ${path: 'data>REGISTER_FROM', formatter: '.formatter.isFutureDate'} ? ${path: 'data>REGISTER_FROM', formatter: '.formatter.formatInfinityWithTimeFormat'} : ${path: 'data>REGISTER_TO', formatter: '.formatter.formatInfinityWithTimeFormat'} }"
+                                    status="{path: 'data>STATUS_CODE'}"
+                                    type="Small"
+                                    press="onCampaignsListItemPress"
+                                    createIdea="onCreateIdea" ></ino:Campaign>
+								</VBox>
+								<VBox class="sapUiTinyMarginBegin sapUiTinyMarginBottom" justifyContent="Center">
+									<Link 
+									    class="sapUiTinyMarginBottom sapInoCampaignListTitle" 
+									    text="{:= ${data>NAME}}" 
+									    emphasized="true" 
+									    wrapping="false" 
+									    href="{:= ${path: 'data>ID', formatter: '.formatter.campaignNavigationLink'}}"/>
+									<Label
+    							        visible="{= ${data>STATUS_CODE} === 'sap.ino.config.CAMP_DRAFT' }"
+    							        text="{i18n>CAMPAIGN_LIST_MIT_DRAFT_STATUS}"
+    							        class="sapInoCampaignListInfoDraftIndicator"
+    							    />
+									<VBox visible="{= ${data>STATUS_CODE} !== 'sap.ino.config.CAMP_DRAFT' }">
+										<FormattedText 
+                                            visible="{=${path: 'data>SUBMIT_FROM', formatter: '.formatter.isFutureDate'} &amp;&amp; 
+                                            ${data>IS_OPEN_FOR_REGISTRATION} === 0 &amp;&amp; !!${data>SUBMIT_FROM}}"
+                                            htmlText="{path: 'data>SUBMIT_FROM', formatter: '.formatter.submissionStartsInDays'}" 
+                                            tooltip="{path: 'data>SUBMIT_FROM', formatter: '.formatter.formatInfinityWithTimeFormat'}" 
+                                            class="sapInoCampaignListSmallFont sapInoCampaignListLineDateInfo"/>
+										<FormattedText 
+                                            visible="{=!${path: 'data>SUBMIT_FROM', formatter: '.formatter.isFutureDate'} &amp;&amp; 
+                                            ${data>IS_OPEN_FOR_REGISTRATION} === 0 &amp;&amp; !!${data>SUBMIT_FROM}}"
+                                            htmlText="{path: 'data>SUBMIT_TO', formatter: '.formatter.submissionDaysLeft'}" 
+                                            tooltip="{path: 'data>SUBMIT_TO', formatter: '.formatter.formatInfinityWithTimeFormat'}" 
+                                            class="sapInoCampaignListSmallFont sapInoCampaignListLineDateInfo"/>
+										<FormattedText 
+                                            visible="{=${path: 'data>REGISTER_FROM', formatter: '.formatter.isFutureDate'} &amp;&amp; 
+                                            (${data>IS_OPEN_FOR_REGISTRATION} === 1 || !${data>SUBMIT_FROM})}"
+                                            htmlText="{path: 'data>REGISTER_FROM', formatter: '.formatter.registrationStartsInDays'}" 
+                                            tooltip="{path: 'data>REGISTER_FROM', formatter: '.formatter.formatInfinityWithTimeFormat'}" 
+                                            class="sapInoCampaignListSmallFont sapInoCampaignListLineDateInfo"/>
+										<FormattedText 
+                                            visible="{=!${path: 'data>REGISTER_FROM', formatter: '.formatter.isFutureDate'} &amp;&amp; 
+                                            (${data>IS_OPEN_FOR_REGISTRATION} === 1 || !${data>SUBMIT_FROM})}"
+                                            htmlText="{path: 'data>REGISTER_TO', formatter: '.formatter.registrationDaysLeft'}" 
+                                            tooltip="{path: 'data>REGISTER_TO', formatter: '.formatter.formatInfinityWithTimeFormat'}" 
+                                            class="sapInoCampaignListSmallFont sapInoCampaignListLineDateInfo"/>
+										<FormattedText 
+                                            visible="{= !${path: 'data>VALID_FROM', formatter: '.formatter.isFutureDate'} }"
+                                            htmlText="{path: 'data>VALID_TO', formatter: '.formatter.daysLeft'}" 
+                                            tooltip="{path: 'data>VALID_TO', formatter: '.formatter.formatInfinityWithTimeFormat'}" 
+                                            class="sapInoCampaignListSmallFont sapInoCampaignListLineDateInfo"/>
+										<FormattedText 
+                                            visible="{path: 'data>VALID_FROM', formatter: '.formatter.isFutureDate'}"
+                                            htmlText="{path: 'data>VALID_FROM', formatter: '.formatter.campaignStartsInDays'}" 
+                                            tooltip="{path: 'data>VALID_FROM', formatter: '.formatter.formatInfinityWithTimeFormat'}" 
+                                            class="sapInoCampaignListSmallFont sapInoCampaignListLineDateInfo"/>
+										<core:ExtensionPoint name="extension_line_grid1"/>
+									</VBox>
+								</VBox>
+							</HBox>
+							<HBox>
+								<VBox 
+                                alignItems="Center" 
+                                justifyContent="Center" 
+                                class="sapUiSmallMarginEnd sapInoCampaignFlatListIdeasContainer">
+									<core:Icon src="sap-icon://InoIcons/idea" class="sapUiTinyMarginBottom"/>
+									<VBox alignItems="Center" justifyContent="Center" class="sapInoCampaignFlatListIdeasContent">
+										<Text textAlign="Center" class="sapInoCampaignListSmallFont sapInoCampaignListMarginEnd4" text="{:= ${path: 'i18n>LIST_FLD_IDEAS_NUMBER'}}" />
+										<Text textAlign="Center" class="sapInoCampaignListSmallFont" text="{:= ${path: 'data>ALL_IDEAS_COUNT', formatter: '.formatter.count'}}" />
+									</VBox>
+									<core:ExtensionPoint name="extension_line_grid2"/>
+								</VBox>
+								<!--<VBox 
+                                alignItems="Center" 
+                                justifyContent="Center" 
+                                class="sapUiSmallMarginEnd sapInoCampaignFlatListParticipantsContainer">
+									<core:Icon src="sap-icon://InoIcons/active-participates" class="sapUiTinyMarginBottom"/>
+									<VBox alignItems="Center" justifyContent="Center" class="sapInoCampaignFlatListParticipantsContent">
+										<Text textAlign="Center" class="sapInoCampaignListSmallFont sapInoCampaignListMarginEnd4" text="{:= ${path: 'i18n>LIST_FLD_PARTICIPANTS_NUMBER'}}" />
+										<Text textAlign="Center" class="sapInoCampaignListSmallFont" text="{:= ${path: 'data>ACTIVE_PARTICIPANT_COUNT', formatter: '.formatter.count'}}" />
+									</VBox>
+									<core:ExtensionPoint name="extension_line_grid3"/>
+								</VBox>
+								<VBox 
+            		            visible="{:= ${path: 'data>NO', formatter: '.formatter.isUsageReportingActive'}}"
+                                alignItems="Center" 
+                                justifyContent="Center" 
+                                class="sapUiSmallMarginEnd sapInoCampaignFlatListViewsContainer">
+									<core:Icon src="sap-icon://show" class="sapUiTinyMarginBottom"/>
+									<VBox alignItems="Center" justifyContent="Center" class="sapInoCampaignFlatListViewsContent">
+										<Text textAlign="Center" class="sapInoCampaignListSmallFont sapInoCampaignListMarginEnd4" text="{:= ${path: 'i18n>LIST_FLD_VIEWS_NUMBER'}}" />
+										<Text textAlign="Center" class="sapInoCampaignListSmallFont" text="{:= ${path: 'data>VIEW_COUNT', formatter: '.formatter.count'}}" />
+									</VBox>
+									<core:ExtensionPoint name="extension_line_grid4"/>
+								</VBox>-->
+								<VBox 
+            		            visible="{:= ${path: 'data>NO', formatter: '.formatter.isUsageReportingActive'}}"
+                                alignItems="Center" 
+                                justifyContent="Center" 
+                                class="sapUiSmallMarginEnd sapInoCampaignFlatListViewsContainer">
+									<VBox class="sapInoCampaignListSmallFont">
+										<HBox class="sapInoCampaignListIdeainfoLine sapInoCampaignListButtons"  justifyContent="Center" direction="Row">
+											<ino:CampaignFollowButton 
+                                    objectId="{path: 'data>ID'}"
+                                   openForSubmission="{= (${data>IS_OPEN_FOR_SUBMISSION} + ${data>SUBMITTABLE} === 2) ? true : false}"
+                                    openForRegistration="{=${data>IS_OPEN_FOR_REGISTRATION} === 1 || !${data>SUBMIT_FROM}? true : false}"
+                                    type="Normal"
+                                    createIdea="onCreateIdea"
+                                    openSetting="onOpenCampaignSettings" >
+												<ino:followButton>
+													<ino:Follow onlyIcon="true" value="{data>FOLLOW}" objectId="{data>ID}" type="CAMPAIGN" enabled="true" follow="onFollow" styleType="CampaignCardFollow" showType="list"/>
+												</ino:followButton>
+												<ino:registerButton>
+													<Button icon="{ path:'data>REGISTER_STATUS', formatter:'.transIcon' }" tooltip="{ parts : [{path:'data>REGISTER_STATUS'},{path:'data>IS_REGIST_DISABLED'},{path:'data>IS_OPEN_REGISTER_SETTING'}] ,formatter:'.transTooltip' }"  press="Register" visible="{ parts: [{path:'data>ID'},{path:'data>IS_OPEN_FOR_REGISTRATION'},{path:'data>REGISTER_STATUS'}], formatter: '.isVisabledForList'}" enabled="{parts:[{path:'data>REGISTER_STATUS'},{path:'data>IS_REGIST_DISABLED'},{path:'data>IS_OPEN_REGISTER_SETTING'}], formatter:'.isEnabled'}"/>
+												</ino:registerButton>
+											</ino:CampaignFollowButton>
+										</HBox>
+									</VBox>
+									<core:ExtensionPoint name="extension_line_grid4"/>
+								</VBox>
+							</HBox>
+						</items>
+					</FlexBox>
+				</items>
+			</FlexBox>
+		</l:VerticalLayout>
+		<core:InvisibleText
+                class="sapInoItemAriaLabel"
+                text="{parts: [{path: 'data>NAME'}, 
+                               {path: 'data>VALID_TO'},
+                               {path: 'data>UNASSIGNED_IDEAS_COUNT'},
+                               {path: 'data>ALL_IDEAS_COUNT'},
+                               {path: 'data>ACTIVE_PARTICIPANT_COUNT'},
+                               {path: 'data>VIEW_COUNT'},
+                               {path: 'data>IS_OPEN_FOR_SUBMISSION'},
+                               {path: 'data>SUBMITTABLE'},
+                               {path: 'data>IS_OPEN_FOR_REGISTRATION'}
+                               ], formatter: '.formatter.campaignAccessibilityLabelBackOfficeHome'}"></core:InvisibleText>
+	</CustomListItem >
+</core:FragmentDefinition>  

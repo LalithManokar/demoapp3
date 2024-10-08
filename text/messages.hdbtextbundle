@@ -1,0 +1,1844 @@
+# TRANSLATE
+
+# We are not prepared for that error
+# XMSG, 255
+MSG_GENERIC_ERROR=A technical error occurred: {0}
+
+# XMSG, 255
+MSG_GENERIC_AUTH_ERROR=You are not authorized to execute this action.
+# XMSG, 255
+MSG_APPLICATION_LOGOUT_ERROR=An error occurred during logout. Logout was not successful.
+
+# XMSG, 255
+MSG_OBJECT_ALREADY_LOCKED={0} already locked by user {1}.
+
+# Not found
+# XMSG, 255
+MSG_HTTP_ERROR_404=The requested object could not be found.
+# XMSG, 255
+MSG_HTTP_ERROR_GENERAL=The request failed. Please try again later.
+# XMSG, 255
+MSG_HTTP_ERROR_404_CAMP_DETAIL=The campaign details are not available. Please contact the system administrator.
+
+# General Messages for type validations
+# XMSG, 255
+MSG_VALUE_NOT_A_STRING=Field is not a text
+# XMSG, 255
+MSG_VALUE_NOT_A_STRING_LABEL={0} is not a text
+
+# XMSG, 255
+MSG_STRING_TOO_LONG=Field exceeds {0} characters
+# XMSG, 255
+MSG_STRING_TOO_LONG_LABEL={0} exceeds {1} characters
+
+# XMSG, 255
+MSG_VALUE_NOT_A_NUMBER=Field is not a number
+# XMSG, 255
+MSG_VALUE_NOT_A_NUMBER_LABEL={0} is not a number
+
+# XMSG, 255
+MSG_INTEGER_MINIMUM=Field must be an integer number greater than or equal to {0}
+# XMSG, 255
+MSG_INTEGER_MINIMUM_LABEL={0} must be an integer number greater than or equal to {1}
+# XMSG, 255
+MSG_DECIMAL_MINIMUM=Field must be a decimal number greater than or equal to {0}
+# XMSG, 255
+MSG_DECIMAL_MINIMUM_LABEL={0} must be a decimal number greater than or equal to {1}
+# XMSG, 255
+MSG_INTEGER_MAXIMUM=Field must be an integer number less than or equal to {0}
+# XMSG, 255
+MSG_INTEGER_MAXIMUM_LABEL={0} must be an integer number less than or equal to {1}
+# XMSG, 255
+MSG_DECIMAL_MAXIMUM=Field must be a decimal number less than or equal to {0}
+# XMSG, 255
+MSG_DECIMAL_MAXIMUM_LABEL={0} must be a decimal number less or equal to {1}
+# XMSG, 255
+MSG_NUMERIC_INTERVAL={0} must be a number greater or equal to {1} and less or equal to {2}
+
+# XMSG, 255
+MSG_INVALID_VALUE_LABEL=Value
+# XMSG, 255
+MSG_INVALID_VALUE=Field is not valid
+# XMSG, 255
+MSG_INVALID_VALUE_LABEL={0} is not valid
+
+# XMSG, 255
+MSG_MANDATORY_FIELD=Field is mandatory
+# XMSG, 255
+MSG_MANDATORY_FIELD_LABEL={0} is mandatory
+
+# XMSG, 255
+MSG_ATTRIBUTE_NOT_CHANGEABLE=Attribute is not changeable
+
+# XMSG, 255
+MSG_OBJECT_NOT_FOUND=Object {0} not found
+# XMSG, 255
+MSG_INVALID_HANDLE_KEY=Key is not a valid handle
+# XMSG, 255
+MSG_INVALID_OBJECT_KEY=Object key is missing
+# XMSG, 255
+MSG_NO_OBJECT_KEYS=No object keys defined
+# XMSG, 255
+MSG_CONCURRENCY_TOKEN_CONFLICT=Concurrent edit conflict occurred. Object has been changed in the meantime
+# XMSG, 255
+GENERAL_APPPLICATION_MSG_CONCURRENCY_CONFLICT_MERGE_SUCCESS=Latest Version has been merged successfully. Check the result and save afterwards.
+# XMSG, 255
+MSG_CONCURRENCY_TOKEN_NOT_ENABLED=A concurrency token has been supplied, but the object is not enabled for optimistic concurrency control
+# XMSG, 255
+MSG_ATTRIBUTE_REQUIRED=Attribute is required
+# XMSG, 255
+MSG_NODE_UNKNOWN = Node {0} is not known
+# XMSG, 255
+MSG_NODE_INSTANCE_UNKNOWN = Instance with key "{0}" of node {1} is not known
+# XMSG, 255
+MSG_NODE_READ_ONLY=Object node {0} is read-only
+# XMSG, 255
+MSG_NODE_CARDINALITY_ONE_VIOLATION=Node {0} may not exist more than once
+# XMSG, 255
+MSG_ATTRIBUTE_READ_ONLY=Object attribute {0} is read-only
+# XMSG, 255
+MSG_INTERNAL_ACTION_CALLED=Action {0} may not be called externally
+# XMSG, 255
+MSG_BULK_CONDITION_MISSING=Bulk change needs a filter condition
+# XMSG, 255
+MSG_BULK_UNCLEAR_OPERATION_NODE=Leading node for bulk change is unclear
+# XMSG, 255
+MSG_BULK_INVALID_NODE_NAME=Invalid node in bulk change
+# XMSG, 255
+MSG_BULK_INVALID_OPERATION=Type of bulk change is not known
+# XMSG, 255
+MSG_BULK_PK_UPDATE_NOT_ALLOWED=Updating primary key columns is not allowed in bulk changes
+# XMSG, 255
+MSG_BULK_CK_UPDATE_NOT_ALLOWED=Updating constant keys columns is not allowed in bulk changes
+
+#Clipboard
+# XMSG, 255
+MSG_CLIPBOARD_EMPTY_USER_GROUP=Clipboard does not contain users or groups to add
+
+# XMSG, 255
+MSG_IDEA_SAVED=Idea successfully saved
+# XMSG, 255
+MSG_IDEA_SUBMITTED=Idea successfully submitted
+# XMSG, 255
+MSG_IDEA_TITLE_IMAGE_CROPPED=Idea title image was cropped to fit the idea card
+# XMSG, 255
+MSG_EVALUATION_SAVED=Evaluation successfully saved
+# XMSG, 255
+MSG_IDEA_FLD_TAG_LOAD_FAILED=Failed to load the tag with id {0}
+# XMSG, 255
+MSG_IDEA_MARKED_AS_DUPLICATE=Ideas was successfully marked as duplicate
+# XMSG, 255
+MSG_IDEA_MARKED_AS_DUPLICATES=Ideas were successfully marked as duplicates
+# XMSG, 255
+MSG_IDEA_UNMARKED_AS_DUPLICATE=Ideas was successfully unmarked as duplicate
+# XMSG, 255
+MSG_DOUBLE_VOTE_ON_IDEA=Duplicate Vote on Idea
+# XMSG, 255
+MSG_DOUBLE_FOLLOW_UP_ON_IDEA=Duplicate Follow-Up on Idea
+# XMSG, 255
+MSG_DOUBLE_VOLUNTEER_ON_IDEA=Duplicate Volunteer on Idea
+
+# XMSG, 255
+MSG_IDEA_MERGE_OUTCOME_READ_FAILED=Failed to to load required information to merge the requested ideas
+# XMSG, 255
+MSG_IDEA_MERGE_SUCCESS=Ideas successfully merged
+# XMSG, 255
+MSG_IDEA_BULK_DELETE_RELATIONS_PARAMETER_REQUIRED=Parameter required for bulk delete relations of idea
+
+# XMSG, 255
+MSG_INVALID_EMPTY_TAG=The entered tag is not valid
+# XMSG, 255
+MSG_CONTRIBUTOR_NOT_SUBMITTER=Submitter may not be a coauthor
+# XMSG, 255
+MSG_IDEA_DESCRIPTION_MANDATORY=Description is mandatory
+# XMSG, 255
+MSG_DESCRIPTION_CONTAINED_ILLEGAL_TAGS=Description contained illegal tags
+# XMSG, 255
+MSG_IDEA_CAMPAIGN_MANDATORY=Campaign is mandatory
+# XMSG, 255
+MSG_IDEA_NO_MORE_STATUS_TRANSITION=No more status change is possible
+# XMSG, 255
+MSG_IDEA_INVALID_STATUS_TRANSITION=Status change is not allowed
+# XMSG, 255
+MSG_IDEA_INVALID_ACTION_CODE_TRANSITION=This action has already been performed by another user
+# XMSG, 255
+MSG_IDEA_DELETE_STATUS_FAILED=Idea cannot be deleted after it passed the initial status of its first phase
+# XMSG, 255
+MSG_IDEA_DELETED=Idea successfully deleted
+# XMSG, 255
+MSG_IDEA_NO_FURTHER_SUBMIT=Idea can only be submitted once
+# XMSG, 255
+MSG_IDEA_ONLY_ONE_COACH=Idea can only have one coach assigned
+# XMSG, 255
+MSG_IDEA_LINK_INVALID_URL=Entered link URL is forbidden or invalid 
+# XMSG, 255
+MSG_IDEA_INVALID_EMPTY_CONTRIBUTOR=Please choose one or more coauthors from the list
+# XMSG, 255
+MSG_IDEA_INVALID_CONTRIBUTOR=The entered coauthor is not valid, please choose one or more from the list
+# XMSG, 255
+MSG_IDEA_INVALID_EMPTY_EXPERT=Please enter an expert name or select it from the list
+# XMSG, 255
+MSG_IDEA_INVALID_EXPERT=The entered expert name is invalid, please select it from the list
+# XMSG, 255
+MSG_IDEA_ATTACHMENT_NOT_DELETEABLE=In the current phase attachments cannot be deleted any more
+# XMSG, 255
+MSG_IDEA_INTERNAL_ATTACHMENT_TITLE_IMAGE_NOT_ALLOWED=Internal attachment is not allowed as idea title image
+# XMSG, 255
+MSG_BO_IDEA_PERSONS_FLD_REQUIRED_CONTRIBUTORS=Please enter text and choose the contributor from the provided list
+# XMSG, 255
+MSG_BO_IDEA_PERSONS_FLD_REQUIRED_COACH=Please enter text and choose the idea coach from the provided list
+# XMSG, 255
+MSG_BO_IDEA_PERSONS_FLD_REQUIRED_IDEA_EXPERTS=Please enter text and choose the idea expert from the provided list
+# XMSG, 255
+MSG_BO_IDEA_PERSONS_FLD_VALUE_INVALID_CONTRIBUTORS=The chosen contributor is invalid or duplicate
+# XMSG, 255
+MSG_BO_IDEA_PERSONS_FLD_VALUE_INVALID_COACH=The chosen idea coach is invalid or duplicate
+# XMSG, 255
+MSG_BO_IDEA_PERSONS_FLD_VALUE_INVALID_IDEA_EXPERTS=The chosen idea expert is invalid or duplicate
+# XMSG, 255
+MSG_EXPERT_NOT_SUBMITTER_OR_CONTRIBUTOR=Submitter or contributor may not be an expert
+# XMSG, 255
+MSG_IDEA_NO_AUTHORIZATION_CHANGE_DECISION=No authorization to change decision
+
+# XMSG, 255
+MSG_CAMPAIGN_SAVE_SUCCESS=Campaign successfully saved
+# XMSG, 255
+MSG_CAMPAIGN_SUBMIT_SUCCESS=Campaign successfully published
+# XMSG, 255
+MSG_CAMPAIGN_SUBMITTED_UPDATE_SUCCESS=Change successfully performed
+# XMSG, 255
+MSG_CAMPAIGN_ONLY_PUBLISH=Campaign is already published and therefore cannot be saved as draft anymore
+# XMSG, 255
+MSG_CAMPAIGN_STATUS_DRAFT=Campaign in draft
+# XMSG, 255
+MSG_CAMPAIGN_INVALID_COLOR_CODE=Campaign Color ''{0}'' is invalid
+# XMSG, 255
+MSG_CAMPAIGN_INVALID_VOTE_TYPE=Vote Method ''{0}'' is invalid
+# XMSG, 255
+MSG_CAMPAIGN_INVALID_PHASE_CODE=Phase ''{0}'' is invalid
+# XMSG, 255
+MSG_CAMPAIGN_INVALID_STATUS_MODEL_CODE=Status Model ''{0}'' is invalid
+# XMSG, 255
+MS_CAMPAIGN_INVALID_ACTION_CODE=Limitation Action Code ''{0}'' is invalid
+# XMSG, 255
+MSG_CAMPAIGN_VALIDITY=Invalid campaign validity period
+# XMSG, 255
+MSG_CAMPAIGN_SUBMIT_PERIOD=Invalid campaign submit period
+# XMSG, 255
+MSG_CAMPAIGN_REGISTER_PERIOD=Registration period of campaign invalid
+# XMSG, 255
+MSG_CAMPAIGN_VALIDITY_PAST=Campaign validity period is in the past
+# XMSG, 255
+MSG_CAMPAIGN_SUBMIT_PERIOD_PAST=Campaign submit period is in the past
+# XMSG, 255
+MSG_CAMPAIGN_DELETED=Campaign successfully deleted
+# XMSG, 255
+MSG_CAMPAIGN_IMAGE_MANDATORY=A title image is mandatory to publish the campaign 
+# XMSG, 255
+MSG_CAMPAIGN_ONE_PHASE_MANDATORY=At least one phase needs to be maintained to publish the campaign
+# XMSG, 255
+MSG_CAMPAIGN_ONE_REWARD_PHASE_MANDATORY=At least one phase with reward active needs to be maintained to publish the campaign
+# XMSG, 255
+MSG_CAMPAIGN_LANGUAGE_INCOMPLETE_TITLE=Title missing for campaign language ''{0}''
+# XMSG, 255
+MSG_CAMPAIGN_LANGUAGE_INCOMPLETE_SHORT_TITLE=Short title missing for campaign language ''{0}''
+# XMSG, 255
+MSG_CAMPAIGN_DEFAULT_LANGUAGE_MANDATORY=It is mandatory to maintain the language ''{0}'', as it is used as default language
+# XMSG, 255
+MSG_CAMPAIGN_REGISTER_SUBMIT_FROM_MANDATORY=It is mandatory to maintain either Submission Start or Registration Start
+# XMSG, 255
+MSG_CAMPAIGN_REGISTER_TO_MANDATORY=It is mandatory to maintain Registration End
+# XMSG, 255
+MSG_CAMPAIGN_REGISTER_APPLY_ERROR=Register request is invalid.
+# XMSG, 255
+MSG_CAMPAIGN_REGISTER_APPLY_REASON_ERROR=Reason of register request is mandatory.
+# XMSG, 255
+MSG_CAMPAIGN_REGISTER_ERROR=Request is invalid.
+# XMSG, 255
+MSG_CAMPAIGN_SUBMIT_TO_MANDATORY=It is mandatory to maintain Submission End
+# XMSG, 255
+MSG_CAMPAIGN_REWARD_ACTIVE_ALLOWED_MANDATORY=Reward Unit is mandatory if the reward is active
+# XMSG, 255
+MSG_CAMPAIGN_NAME_MANDATORY=The name of the campaign is mandatory
+# XMSG, 255
+MSG_CAMPAIGN_ONE_CAMPAIGN_MANAGER_RECOMMENDED=It is recommended to add at least one person to the group 'Campaign Managers', as this group maintains the campaign
+# XMSG, 255
+MSG_CAMPAIGN_ONE_COACH_RECOMMENDED=It is recommended to add at least one person to the group   'Idea Coaches'  , as this group deals with the ideas of this campaign
+# XMSG, 255
+MSG_CAMPAIGN_ONE_EXPERT_RECOMMENDED=It is recommended to add at least one person to the group 'Experts', as this group creates evaluations for this campaign
+# XMSG, 255
+MSG_CAMPAIGN_ONE_PARTICIPANT_RECOMMENDED=It is recommended to add at least one person to the group 'Participating Users', as this group submit ideas to the campaign
+# XMSG, 255
+MSG_BO_CAMPAIGN_FACET_ROLES_FLD_REQUIRED_CAMP_MANAGER=Please enter text and choose the campaign manager from the provided list
+# XMSG, 255
+MSG_BO_CAMPAIGN_FACET_ROLES_FLD_REQUIRED_COACH=Please enter text and choose the idea coach from the provided list
+# XMSG, 255
+MSG_BO_CAMPAIGN_FACET_ROLES_FLD_REQUIRED_EXPERT=Please enter text and choose the expert from the provided list
+# XMSG, 255
+MSG_BO_CAMPAIGN_FACET_ROLES_FLD_REQUIRED_PARTICIPATE=Please enter text and choose the participating group or user from the provided list
+# XMSG, 255
+MSG_BO_CAMPAIGN_FACET_ROLES_FLD_REQUIRED_REGISTRATION=Please enter text and choose the registration group or user from the provided list
+# XMSG, 255
+MSG_BO_CAMPAIGN_FACET_ROLES_FLD_VALUE_INVALID_CAMP_MANAGER=The chosen campaign manager is invalid or duplicate
+# XMSG, 255
+MSG_BO_CAMPAIGN_FACET_ROLES_FLD_VALUE_INVALID_COACH=The chosen idea coach is invalid or duplicate
+# XMSG, 255
+MSG_BO_CAMPAIGN_FACET_ROLES_FLD_VALUE_INVALID_EXPERT=The chosen expert is invalid or duplicate
+# XMSG, 255
+MSG_BO_CAMPAIGN_FACET_ROLES_FLD_VALUE_INVALID_PARTICIPATE=The chosen participating group or user is invalid or duplicate
+# XMSG, 255
+MSG_CAMPAIGN_PUBLISH_TITLE_IMAGE_ERR=The campaign Title Image is mandatory to publish the campaign 
+# XMSG, 255
+MSG_CAMPAIGN_COPY_FAILURE=Failed to copy campaign
+# XMSG, 255
+MSG_CAMPAIGN_COPIED=Campaign successfully copied and saved
+# XMSG, 255
+MSG_CAMPAIGN_INVALID_HTML=Invalid HTML entered for campaign page "{0}" for language ''{1}''
+# XTXT, 200
+MSG_CAMPAIGN_INVALID_RECEIVER=Please set at least one Email receiver for action "{0}".
+# XMSG, 255
+MSG_CAMPAIGN_DUPLICATE_PHASE_SEQUENCE=An error occurred during phase configuration. To solve, remove all configured phases.
+# XMSG, 255 
+MSG_CAMPAIGN_PHASE_SEQUENCE_INVALID=An error occurred during sequence assignment to phase "{1}". To solve, remove all configured phases.
+# XMSG, 255
+MSG_CAMPAIGN_PHASE_DUPLICATION=The phase ''{0}'' is already used in the Innovation Process of the campaign
+# XMSG, 255
+MSG_CAMPAIGN_PAGE_INCOMPLETE_TITLE=Page title missing for language ''{0}''
+# XMSG, 255
+MSG_CAMPAIGN_PAGE_INCOMPLETE_CONTENT=Page content missing for language ''{0}''
+# XMSG, 255
+MSG_CAMPAIGN_DELETE_NOT_EMPTY=Deletion of campaign is not allowed as ideas exist for this campaign.
+# XMSG, 255
+MSG_CAMPAIGN_PUBLISH_VOTE_ERR=Voting Method cannot be changed anymore due to the campaign has been published
+# XMSG, 255
+MSG_CAMPAIGN_PUBLISH_PHASE_ERR=Phases of Innovation Process cannot be changed anymore due to the campaign has been published
+# XMSG, 255
+MSG_CAMPAIGN_ADVANCE_CHANGE_VOTING_DELETE=When applying the changes, the votes of the affected ideas will be deleted
+# XMSG, 255
+MSG_CAMPAIGN_ADVANCE_CHANGE_PHASE_CODE_CHANGE=When applying the changes, the phase of the affected ideas will be changed from the current phase code to the new phase code.
+# XMSG, 255
+MSG_CAMPAIGN_ADVANCE_CHANGE_STATUS_MODEL_CODE_CHANGE=When applying the changes, the status of the affected ideas will be checked. If the current status of an idea is not included in the new model, the status of the idea will be set to ''{0}''.
+# XMSG, 255
+MSG_CAMPAIGN_ADVANCE_CHANGE_PHASE_DELETE=When applying the changes, the selected phase will be deleted from the process of the campaign. Ideas in this phase will be assigned to the previous phase and will get the status ''{0}''.
+# XMSG, 255
+MSG_CAMPAIGN_ADVANCE_CHANGE_ONLY_PUBLISHED=Advanced Change Options can only be used for published Campaigns
+# XMSG, 255
+MSG_CAMPAIGN_ADVANCE_CHANGE_PARAMETER_REQUIRED=Advanced Change Option requires parameters ''{0}''
+# XMSG, 255
+MSG_CAMPAIGN_ADVANCE_CHANGE_PHASE_NOT_FOUND=Specified Phase Code ''{0}'' not found
+# XMSG, 255
+MSG_CAMPAIGN_VOTE_MISSING_STAR_NO=Max Star No is required
+# XMSG, 255
+MSG_CAMPAIGN_VOTE_MISSING_REASON_LIST=Reason List is required
+# XMSG, 255
+MSG_CAMPAIGN_VOTE_BY_GROUP_ERROR=Vote method of Like is required when Voted by Group selected
+# XMSG, 255
+MSG_CAMPAIGN_VOTE_EMPTY_REASON_LIST=Invalid reason list. The reason list must not be empty
+# XMSG, 255
+MSG_VOTE_ACTIVATION_INVALID_STAR_VOTE=Star vote not in valid range in {0}
+# XMSG, 255
+MSG_VOTE_ACTIVATION_INVALID_VOTE_SCORE=Vote score needs to be integer value in {0}
+# XMSG, 255
+MSG_CAMPAIGN_VOTE_TYPE_UNCHANGEABLE=The Vote Method code {0} must no longer be changed as it is already used
+
+# XMSG, 255
+MSG_CAMPAIGN_TASK_INVALID_DATE=The start date and end date of campaign tasks {0} must be between the campaign start and end date
+# XMSG, 255
+MSG_CAMPAIGN_MILESTONE_INVALID_DATE=The milestone {0} date must be between the campaign task start and end date
+# XMSG, 255
+MSG_TASK_INVALID_DATE=The end date of campaign task {0} must be over the start date
+# XMSG, 255
+MSG_CAMPAIGN_TASK_INVALID_COUNT=Maximum 5 enabled tasks allowed on a campaign
+# XMSG, 255
+MSG_CAMPAIGN_MILESTONE_INVALID_COUNT=Maximum 15 enabled milestones allowed on all campaign tasks
+# XMSG, 255
+MSG_CAMPAIGN_TASK_MILESTONE_INVALID_COUNT=Maximum 9 enabled milestones allowed on a task
+# XMSG, 255
+MSG_CAMPAIGN_MILESTONE_NAME_MISSING=Campaign Milestones is required
+# XMSG, 255
+MSG_CAMPAIGN_DUPLICATE_VANITY_CODE=This code is already used in the campaign ({0}), please choose a different one.
+# XMSG, 255
+MSG_CAMPAIGN_INVALID_VANITY_CODE=Only use letters [a-z], numbers [0-9], hyphen, or underscore.
+
+# XMSG, 255
+MSG_PHASE_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_PHASE_INVALID_VALUE=Invalid value
+# XMSG, 255
+MSG_PHASE_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_PHASE_DUPLICATE_VALUE=Duplicate code value
+# XMSG, 255
+MSG_PHASE_UNCHANGEABLE=Phase {0} may not be changed as it is already used.
+# XMSG, 255
+MSG_PHASE_SAVE_SUCCESS=Phase successfully saved.
+# XMSG, 255
+MSG_PHASE_DELETED=Phase successfully deleted.
+# XMSG, 255
+MSG_PHASE_COPIED=Phase successfully copied and saved.
+# XMSG, 255
+MSG_PHASE_COPY_FAILURE=Failed to copy phase.
+# XMSG, 255
+MSG_CAMP_RESP_LIST_UNCHANGABLE=The Campaign Responsibility List must no longer be changable as it has submitted ideas
+# XMSG, 255
+MSG_CAMP_ANONYMOUS_FUNCTION_UNCHANGEABLE=The Campaign Anonymous Function  can no longer be changable as it has submitted anonymous ideas
+# XMSG, 255
+CAMP_ANONYMOUS_DUPLICATION=The Campaign Anonymous Code is duplication
+# XMSG, 255
+MSG_RESPONSIBILITY_VALUE_INVALID_URL=URL {0} is not allowed or invalid
+ 
+# XMSG, 255
+MSG_AUTH_MISSING_CAMPAIGN_SUBMIT=You are not authorized to publish this campaign
+# XMSG, 255
+MSG_AUTH_MISSING_CAMPAIGN_SUBMIT_UPDATE=You are not authorized to perform changes to this campaign
+
+# XMSG, 255
+MSG_ASSIGN_COACH_INVALID_COACH=User is not allowed as coach in campaign
+# XMSG, 255
+MSG_ASSIGN_COACH_NO_COACH_AVAILABLE=This campaign does not have coaches defined yet
+# XMSG, 255
+MSG_ASSIGN_COACH_NO_COACH_ASSIGNED=This idea does currently not have a coach assigned
+# XMSG, 255
+MSG_IDEA_STATUS_TRANSITION_DECISION_MISSING=Decision documentation of status change is incomplete
+# XMSG, 255
+MSG_IDEA_STATUS_TRANSITION_RESPONSE_MISSING=Decision documentation of status change is incomplete
+# XMSG, 255
+MSG_IDEA_DECISION_CHANGE_DECISION_MISSING=Decision documentation of decision change is incomplete
+# XMSG, 255
+MSG_IDEA_DECISION_CHANGE_RESPONSE_MISSING=Decision documentation of decision change is incomplete
+
+
+# XMSG, 255
+MSG_ADD_EXPERT_NO_EXPERT_AVAILABLE=This idea does currently not allow to add expert
+# XMSG, 255
+MSG_ADD_EXPERT_INVALID_EXPERT=User is not allowed as expert in idea
+# XMSG, 255
+MSG_ADD_EXPERT_NO_EXPERT_ASSIGNED=This idea does currently not have an expert assigned
+
+# XMSG, 255
+MSG_ASSIGN_TAG_NO_TAG_AVAILABLE=This idea does currently not allow to add tag
+# XMSG, 255
+MSG_ASSIGN_TAG_INVALID_TAG=This tag cannot be added to the idea. Please check details before processing
+# XMSG, 255
+MSG_ASSIGN_TAG_NO_TAG_ASSIGNED=This idea does currently not have a tag assigned
+# XMSG, 255
+MSG_REASSIGN_CAMPAIGN_NOT_AVAILABLE=This idea does currently not allow to reassign campaign 
+# XMSG, 255
+MSG_REASSIGN_CAMPAIGN_NOT_AVAILABLE_INTEGRATION_OBJECT = This idea does not allow reassignment of campaign because of integration object existed
+# XMSG, 255
+MSG_IDEA_SUBMIT_TRACKING_LOG_FAILED = Tracking log failed when submit idea.
+# XMSG, 255
+MSG_IDEA_SUBMIT_ANONYMOUS_FAILED = Anonymous setting of this campaign has been closed ,please check it and contact campaign manager .
+
+# XMSG, 255
+MSG_COMMENT_TEXT_MANDATORY=Comment is mandatory
+
+# XMSG, 255
+MSG_INVALID_IDENTITY=Identity is invalid
+# XMSG, 255
+MSG_DUPLICATE_IDENTITY=Identity "{0}" may not be assigned more than once in one role
+
+# XMSG, 255
+MSG_DUPLICATE_TAG=Tag "{0}" already exists (case-insensitive)
+# XMSG, 255
+MSG_DUPLICATE_TAG_GROUP=Tag Group "{0}" already exists (case-insensitive) 
+# XMSG, 255
+MSG_CHECK_TOP_NUMBER=Max Number cannot more than "{0}"
+# XMSG, 255
+MSG_TOP_NUMBER_ERROR=Max Number should be a number
+
+# XMSG, 255
+MSG_DUPLICATE_TAG_ASSIGN=Tag "{0}" may not be assigned more than once (case-insensitive)
+# XMSG, 255
+MSG_SPECIAL_CHARACTER_TAG=Special characters "," or ";" are not allowed to use in Tags
+# XMSG, 255
+MSG_TAG_DOES_NOT_EXIST=Tag {0} does not exist and cannot be merged
+# XMSG, 255
+MSG_TAG_DOES_IS_NOT_VALID=Tag {0} is not valid and cannot be merged
+# XMSG, 255
+MSG_TAG_SAVE_SUCCESS=Tag saved successfully
+# XMSG, 255
+MSG_TAG_DELETED=Tag deleted successfully
+# XMSG, 255
+MSG_TAG_MERGED=Tag merged successfully
+# XMSG, 255
+MSG_TAG_DUPLICATE_VANITY_CODE=This code is already used in another tag; choose a different one.
+# XMSG, 255
+MSG_TAG_INVALID_VANITY_CODE=Only use letters [a-z], numbers [0-9], hyphen, or underscore.
+
+# XMSG, 255
+MSG_LINK_INVALID_TYPE=Type is invalid
+# XMSG, 255
+MSG_LINK_URL_EMPTY=URL is empty
+# XMSG, 255
+MSG_LINK_TARGET_OBJECT_TYPE_CODE_EMPTY=Target Object Type Code is empty
+# XMSG, 255
+MSG_LINK_TARGET_OBJECT_ID_EMPTY=Target Object Id is empty
+
+# XMSG, 255
+MSG_ATTACHMENT_FILE_EXT_NOT_ALLOWED=File extension not allowed. Allowed file extensions are "{0}"
+# XMSG, 255
+MSG_ATTACHMENT_FILE_EXT_NOT_ALLOWED_IMG=File extension not allowed. Only images are allowed
+# XMSG, 255
+MSG_ATTACHMENT_FILE_EXT_NOT_ALLOWED_IMG_VID=File extension not allowed. Only images and videos are allowed
+# XMSG, 255
+MSG_ATTACHMENT_EMPTY_DATA=Data shall not be empty
+# XMSG, 255
+MSG_ATTACHMENT_EXCEED_MAX_SIZE=Size exceeds maximum size of {0} {1} for file extension "{2}"
+# XMSG, 255
+MSG_ATTACHMENT_DUPLICATE_ASSIGNMENT=Duplicate attachment assignment
+# XMSG, 255
+MSG_ATTACHMENT_DUPLICATE_ROLE_TYPE=Duplicate attachment role type
+# XMSG, 255
+MSG_ATTACHMENT_INVALID_MEDIA_TYPE=Invalid media type for attachment role type
+# XMSG, 255
+MSG_ATTACHMENT_INVALID_ROLE_TYPE=Invalid role type for attachment filter type
+# XMSG, 255
+MSG_ATTACHMENT_UNKNOWN_ERROR=An unknown error occurred
+# XMSG, 255
+MSG_ATTACHMENT_UNKNOWN_TYPE=File extension has no media type. File cannot be uploaded as attachment.
+# XMSG, 255
+MSG_ATTACHMENT_VIDEO_NOT_ENABLED=Video media types are not enabled for role type.
+# XMSG, 255
+MSG_ATTACHMENT_FILE_MALICIOUS_SOFT=Upload file was rejected. The error is: {0} 
+# XMSG, 255
+MSG_ATTACHMENT_FILE_MALICIOUS_CONTENT=Uploaded file was rejected as it was rated as malicious. The virus scanner message is: {0} 
+# XMSG, 255
+MSG_ATTACHMENT_FILE_MALWARESCANNING_SERVICE_UNAVAILABLE=Malware scanning service is unavailable, please try again later
+# XMSG, 255
+MSG_ATTACHMENT_FILE_MALWARESCANNING_SERVICE_ERROR==Uploaded file was rejected as it was rated as malicious. The virus scanner message is: {0}   
+# XMSG, 255
+MSG_ATTACHMENT_CUSTOM_PACKAGE_NOT_MAINTAINED=An extension package has not yet been defined
+# XMSG, 255
+MSG_ATTACHMENT_PACKAGE_DOES_NOT_EXIST=The Package "{0}" does not exist in the Repository
+# XMSG, 255
+MSG_ATTACHMENT_USER_NOT_AUTHORIZED=The User is not authorized to upload data to package {0}
+# XMSG, 255
+MSG_ATTACHMENT_FILE_EXISTS=A file with the same name has already been uploaded
+# XMSG, 255
+MSG_ATTACHMENT_FILE_NOT_FOUND_IN_REQUEST=The request does not contain any binary data
+
+
+# XMSG, 255
+MSG_AUTH_MISSING_IDEA_SUBMIT=No authorization to submit idea for campaign
+# XMSG, 255
+MSG_AUTH_CAMP_MUST_NOT_BE_NULL=Missing campaign for idea
+# XMSG, 255
+MSG_AUTH_MISSING_IDEA_DELETE=No authorization to delete idea
+# XMSG, 255
+MSG_AUTH_MISSING_IDEA_UPDATE=No authorization to update idea
+# XMSG, 255
+MSG_AUTH_MISSING_IDEA_COACH=No authorization to change coach
+# XMSG, 255
+MSG_AUTH_MISSING_IDEA_COACH_ASSIGN=No authorization to assign a coach
+# XMSG, 255
+MSG_AUTH_MISSING_IDEA_COACH_UNASSIGN=No authorization to unassign a coach
+# XMSG, 255
+MSG_AUTH_MISSING_IDEA_STATUS_TRANSITION=No authorization to change idea status
+# XMSG, 255
+MSG_AUTH_MISSING_REASSIGN_IDEA=No authorization to reassign idea to current campaign
+# XMSG, 255
+MSG_AUTH_MISSING_REASSIGN_IDEA_SUBMITTER=Reassign to campaign is not possible, since idea submitter has no authorization to campaign
+# XMSG, 255
+MSG_AUTH_MISSING_BACKOFFICE_ATTACHMENT=No authorization to change internal attachments
+# XMSG, 255
+MSG_AUTH_MISSING_BACKOFFICE_WALL=No authorization to change internal walls
+# XMSG, 255
+MSG_AUTH_MISSING_IDEA_EXPERT=No authorization to change idea experts
+# XMSG, 255
+MSG_AUTH_MISSING_COMMENT_CREATE=No authorization to create comment for idea
+# XMSG, 255
+MSG_AUTH_MISSING_COMMENT_UPDATE=No authorization to update comment
+# XMSG, 255
+MSG_AUTH_MISSING_COMMENT_DELETE=No authorization to delete comment
+# XMSG, 255
+MSG_AUTH_MISSING_COMMENT_ATTACHMENT_DELETE=No authorization to delete comment attachment
+# XMSG, 255
+MSG_COMMENT_IDEA_UNCHANGEABLE=Idea comment cannot be changed
+# XMSG, 255
+MSG_COMMENT_CONTAINED_ILLEGAL_TAGS=Idea comment contained illegal tags
+# XMSG, 255
+MSG_COMMENT_IDEA_CHANGED=Idea comment has be changed, please try it again.
+# XMSG, 255
+MSG_AUTH_MISSING_INTERNAL_NOTE_CREATE=No authorization to create internal note for idea
+# XMSG, 255
+MSG_AUTH_MISSING_INTERNAL_NOTE_UPDATE=No authorization to update internal note
+# XMSG, 255
+MSG_AUTH_MISSING_INTERNAL_NOTE_UPDATE=No authorization to update internal note
+# XMSG, 255
+MSG_AUTH_MISSING_INTERNAL_NOTE_DELETE=No authorization to delete internal note
+# XMSG, 255
+MSG_AUTH_MISSING_INTERNAL_NOTE_ATTACHMENT_DELETE=No authorization to delete internal note attachment
+# XMSG, 255
+MSG_INTERNAL_NOTE_IDEA_UNCHANGEABLE=Idea internal note cannot be changed
+# XMSG, 255
+MSG_NOTE_CONTAINED_ILLEGAL_TAGS=Idea internal note contained illegal tags
+# XMSG, 255
+MSG_AUTH_MISSING_ATTACHMENT_CREATE=No authorization to create attachment
+# XMSG, 255
+MSG_AUTH_MISSING_ATTACHMENT_UPDATE=No authorization to update attachment
+# XMSG, 255
+MSG_AUTH_MISSING_ATTACHMENT_DELETE=No authorization to delete attachment
+# XMSG, 255
+MSG_AUTH_MISSING_ATTACHMENT_READ=No authorization to read attachment
+# XMSG, 255
+MSG_AUTH_MISSING_FOLDER_CREATE=No authorization to create folder
+# XMSG, 255
+MSG_AUTH_MISSING_FOLDER_UPDATE=No authorization to update folder
+# XMSG, 255
+MSG_AUTH_MISSING_FOLDER_DELETE=No authorization to delete folder
+# XMSG, 255
+MSG_AUTH_MISSING_FOLDER_READ=No authorization to read folder
+# XMSG, 255
+MSG_AUTH_MISSING_FOLDER_SHARE_CREATE=No authorization to create folder share
+# XMSG, 255
+MSG_AUTH_MISSING_FOLDER_SHARE_UPDATE=No authorization to update folder share
+# XMSG, 255
+MSG_AUTH_MISSING_FOLDER_SHARE_DELETE=No authorization to delete folder share
+# XMSG, 255
+MSG_AUTH_MISSING_FOLDER_SHARE_READ=No authorization to read folder share
+# XMSG, 255
+MSG_DUPLICATE_FOLDER_SHARE=Duplicate folder share for identity
+# XMSG, 255
+MSG_AUTH_MISSING_COMMENT_REPLY=The parent comment has been deleted, so reply can't execute
+
+# XMSG, 255
+MSG_ATTACHMENT_REPOSITORY_FILE_NOT_FOUND=File {0} not found in repository
+# XMSG, 255
+MSG_ATTACHMENT_REPOSITORY_DELETE_NOT_ALLOWED=You are not allowed to delete this file
+# XMSG, 255
+MSG_ATTACHMENT_REPOSITORY_USER_NOT_AUTHORIZED=You are not authorized to edit the repository package {0}
+# XMSG, 255
+MSG_ATTACHMENT_REPOSITORY_DELETE_FAILED=Failed to delete file from repository: {0}
+# XMSG, 255
+MSG_ATTACHMENT_REPOSITORY_SAVE_FAILED=Failed to store file in repository: {0}
+# XMSG, 255
+MSG_ATTACHMENT_REPOSITORY_FILENAME_MISSING=Filename is missing in request
+# XMSG, 255
+MSG_ATTACHMENT_REPOSITORY_MEDIATYPE_MISSING=Mediatype is missing in request
+
+# XMSG, 255
+MSG_AUTH_MISSING_EVALUATION_READ=No authorization to read evaluation
+# XMSG, 255
+MSG_AUTH_MISSING_EVALUATION_CREATE=No authorization to create evaluation
+# XMSG, 255
+MSG_AUTH_MISSING_EVALUATION_UPDATE=No authorization to update evaluation
+# XMSG, 255
+MSG_AUTH_MISSING_EVALUATION_DELETE=No authorization to delete evaluation
+# XMSG, 255
+MSG_EVALUATION_NOT_DELETABLE=Non-draft evaluations may not be deleted
+# XMSG, 255
+MSG_AUTH_MISSING_CAMPAIGN_READ=No authorization to read campaign
+# XMSG, 255
+MSG_AUTH_MISSING_CAMPAIGN_CREATE=No authorization to create campaign
+# XMSG, 255
+MSG_AUTH_MISSING_CAMPAIGN_UPDATE=No authorization to update campaign
+# XMSG, 255
+MSG_AUTH_MISSING_CAMPAIGN_DELETE=No authorization to delete campaign
+# XMSG, 255
+MSG_AUTH_MISSING_CAMPAIGN_REGISTER=No authorization to manage registration 
+# XMSG, 255
+MSG_AUTH_MISSING_REGISTER_PRIVILLEGE=No authorization to register campaign
+# XMSG, 255
+MSG_IDEA_EXISTS_EVALUATION_REQUEST=This idea have any evaluation requests, please kindly concat campaign manager of this idea.
+
+# XMSG, 255
+MSG_USER_RESETPWD_SUCCESS=User password reset successfully
+# XMSG, 255
+MSG_USER_UPDATED=User successfully updated
+# XMSG, 255
+MSG_USER_SAVED=User successfully saved
+# XMSG, 255
+MSG_USER_SAVED_SUCCESS=User data successfully saved, and please kindly remind user the initial password is Welcome123456789
+# XMSG, 255
+MSG_USER_NOT_FOUND=User Persistence is inconsistent, for further information please contact your Administrator
+# XMSG, 255
+MSG_USER_DEACTIVATED=User is deactivated, for further information please contact your Administrator
+
+# XMSG, 255
+MSG_IDENTITY_NAME_MANDATORY=Name is mandatory
+# XMSG, 255
+MSG_IDENTITY_TYPE_MANDATORY=Identity type is mandatory
+# XMSG, 255
+MSG_IDENTITY_WRONG_TYPE=Identity type must be USER or GROUP
+# XMSG, 255
+MSG_IDENTITY_USER_NAME_MANDATORY=User name is mandatory
+# XMSG, 255
+MSG_IDENTITY_GROUP_NAME_MANDATORY=Group name is mandatory
+# XMSG, 255
+MSG_IDENTITY_GROUP_NAME_UNIQUE=Group name is already in use
+# XMSG, 255
+MSG_IDENTITY_USER_NAME_UNKNOWN=User name does not exist
+# XMSG, 255
+MSG_IDENTITY_GROUP_NAME_UNKNOWN=Group name does not exist
+# XMSG, 255
+MSG_IDENTITY_USER_NAME_UNIQUE=User name is already in use
+# XMSG, 255
+MSG_IDENTITY_CREATE_USER_FAIL=Create user fail. Because user name is already in use or some user policy in xsengine can't meet. please check the xsengine log.
+
+# XMSG, 255
+MSG_IDENTITY_USER_CREATE_MAIL_SEND_FAIL=User data saved successfully, but E-mail sent failed, please contact system manager to check it and reset your password.
+# XMSG, 255
+MSG_IDENTITY_USER_CREATE_MAIL_SEND_SUCCESS=User data saved, and E-mail sent successfully. Please check mail config if the user didn't receive mail. 
+
+# XMSG, 255
+MSG_IDENTITY_USER_NAME_ILLEGAL=User name can only include letters or numbers 
+
+# XMSG, 255
+MSG_IDENTITY_USER_NAME_REQUIRE=User name is require
+# XMSG, 255
+MSG_IDENTITY_FIRST_NAME_REQUIRE=First name is require
+# XMSG, 255
+MSG_IDENTITY_LAST_NAME_REQUIRE=Last name is require
+# XMSG, 255
+MSG_IDENTITY_DUPLICATE_GROUP_ASSIGNMENT=Group is already assigned
+# XMSG, 255
+MSG_IDENTITY_DUPLICATE_USER_ASSIGNMENT=User is already assigned
+# XMSG, 255
+MSG_IDENTITY_DUPLICATE_IDENTITY_ASSIGNMENT=Identity is already assigned
+# XMSG, 255
+MSG_IDENTITY_NOT_CHANGEABLE=Identity of source {0} cannot be changed
+# XMSG, 255
+MSG_IDENTITY_NAME_UNIQUE=Name is already in use
+# XMSG, 255
+MSG_IDENTITY_NAME_UNIQUE=Name is already in use
+# XMSG, 255
+MSG_PRINCIPAL_IDENTITY_UNKNOWN="Database user {0} is not a registered application user"
+# XMSG, 255
+MSG_IDENTITY_CREATE_USER_EMAIL_BODY_CONTENT=Dear {0},<br><br>Please reset your default password from here:<br><br>Your password:{1}<br><br>Link:<a href="{2}">{2}</a><br><br>Regards,<br>SAP Innovation Management
+# XMSG, 255
+MSG_IDENTITY_CREATE_USER_EMAIL_SUBJECT=Welcome to system
+# XMSG, 255
+MSG_MUST_NOT_DELETE_OWN_USER="Must not delete own user {0}"
+
+# XMSG, 255
+MSG_GROUP_SAVED=Group successfully saved
+# XMSG, 255
+MSG_GROUP_DELETED=Group successfully deleted
+# XMSG, 255
+MSG_GROUP_IN_USE_DELETE_NOT_POSSIBLE=You cannot delete this group due to it is currently in use 
+# XMSG, 255
+MSG_GROUP_MEMBER_RECURSION=The group {0} cannot be a member of itself 
+
+# XMSG, 255
+BO_GROUPMGMT_MGS_ADD_SUCCESS=Member add successfully.
+# XMSG, 255
+BO_GROUPMGMT_MGS_REMOVE_SUCCESS=Member remove successfully.
+
+# XMSG, 255
+MSG_GROUPMGMT_VALUE_INVALID_MEMBER=The chosen member is invalid or duplicate
+# XMSG, 255
+MSG_GROUPMGMT_REQUIRED_MEMBER=Please enter text and choose the member from the provided list
+
+# XMSG, 255
+MSG_IDENT_VALUE_INVALID_GROUP=The chosen group is invalid or duplicate
+# XMSG, 255
+MSG_IDENT_REQUIRED_GROUP=Please enter text and choose the group from the provided list
+
+# XMSG, 255
+MSG_USER_UPLOAD=Mass user upload started
+# XMSG, 255
+MSG_USER_UPLOAD_DUPLICATE_USER_NAME=Input must contain same USER_NAME at most once
+# XMSG, 255
+MSG_USER_UPLOAD_USER_NOT_FOUND=User does not exist
+# XMSG, 255
+MSG_USER_UPLOAD_NO_IMPLICIT_DROP=User must be explicitly dropped
+# XMSG, 255
+MSG_USER_UPLOAD_DELETE=Mass user delete started
+
+# XMSG, 255
+MSG_USER_ID_INVALID = User is expired. If continue to use, please contact the system administrator
+
+# XMSG, 255
+MSG_GROUP_UPLOAD=Mass group upload started
+# XMSG, 255
+MSG_GROUP_UPLOAD_NO_IMPLICIT_DROP=Group must be explicitly dropped
+
+# XMSG, 255
+MSG_GROUP_MEMBER_UPLOAD=Mass group assignment upload started
+
+# XMSG, 255
+MSG_MAIL_SEND=Send mail to "{0}", subject "{1}"
+# XMSG, 255
+MSG_MAIL_SEND_FAIL=Failed to send mail to user "{0}" with mail exception {1}
+
+# XMSG, 255
+MSG_BATCH_SYSTEM_SETUP_RUNNING_CONFIG=Batch process cannot run because metering service is not open in system setting 
+
+# XMSG, 255
+MSG_BATCH_METERING_SERVICE_FAILED_UNEXPECTEDLY=Unexpected failure of metering service with internal exception {0}
+
+# XMSG, 255
+MSG_BATCH_SYSTEM_SETUP_RUNNING=Batch process cannot run as system is in maintenance 
+# XMSG, 255
+MSG_BATCH_CREATE_DUMMY_USER_NOT_FOUND_ADMIN_USER = Create dummy user failed due to not found admin user.
+# XMSG, 255
+MSG_BATCH_CREATE_DUMMY_USER_FAILED = Create dummy user failed.{0}
+
+# XMSG, 255
+MSG_BATCH_MAIL_STARTED=Batch run for sending mails started
+# XMSG, 255
+MSG_BATCH_MAIL_FAILED_UNEXPECTEDLY=Unexpected failure of batch mail with internal exception {0}
+# XMSG, 255
+MSG_BATCH_NOTIFICATION_DEL_FAILED_UNEXPECTEDLY=Unexpected failure of batch delete notification history data {0}
+# XMSG, 255
+MSG_BATCH_INTEGRATION_DEL_FAILED_UNEXPECTEDLY=Unexpected failure of batch delete integration history data {0}
+# XMSG, 255
+MSG_BATCH_DELETE_ORPHANS_FAILED_UNEXPECTEDLY=Unexpected failure of batch delete orphans with internal exception {0}
+
+# XMSG, 255
+MSG_BATCH_SETUP_HINTS_FAILED_UNEXPECTEDLY=Unexpected failure of setting up query hints with internal exception {0}
+
+# XMSG, 255
+MSG_STATIC_ROLE_DOES_NOT_EXIST=Static role {0} does not exist
+# XMSG, 255
+MSG_STATIC_ROLE_MISSING_PRIVILEGE=Missing privilege {1} for role {0}
+# XMSG, 255
+MSG_STATIC_ROLE_MISSING_AUTH=Unauthorized for assigning role {0}
+
+# XMSG, 255
+MSG_EVALUATION_MODEL_INVALID_FOR_PHASE=Evaluation method is not allowed in current phase
+# XMSG, 255
+MSG_EVALUATION_CRITERION_TWICE=Criterion is contained twice
+# XMSG, 255
+MSG_EVALUATION_INVALID_DATATYPE_COLUMN=Value does not fit to criterion type
+# XMSG, 255
+MSG_EVALUATION_INVALID_STATUS_TRANSITION=Status transition not allowed
+# XMSG, 255
+MSG_EVALUATION_SUBMIT_PHASE_CHANGED=Evaluation has been created for a different phase of the idea and may not be submitted any more.
+# XMSG, 255
+MSG_EVALUATION_NO_STATUS_TRANSITIONS=No status transitions available
+# XMSG, 255
+MSG_EVALUATION_UNCHANGEABLE=Evaluation may not be changed any more as it is finished by the evaluator
+# XMSG, 255
+MSG_EVALUATION_CREATE_NOT_ALLOWED_FOR_IDEA=Evaluations are no allowed to be created for this idea in current phase or status
+
+# XMSG, 255
+MSG_MODEL_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces).
+# XMSG, 255
+MSG_MODEL_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_REQUIRE_CAL_FORMULA=Please input formula
+# XMSG, 255
+MSG_INVALID_CAL_FORMULA=Invalid formula
+# XMSG, 255
+MSG_MODEL_NO_COPY=Evaluation method cannot be copied.
+# XMSG, 255
+MSG_MODEL_SAVED=Evaluation method successfully saved.
+# XMSG, 255
+MSG_MODEL_DELETED=Evaluation method successfully deleted.
+# XMSG, 255
+MSG_MODEL_COPIED=Evaluation method successfully copied and saved.
+# XMSG, 255
+MSG_MODEL_COPY_FAILURE=Failed to copy evaluation method.
+# XMSG, 255
+MSG_EVALUATION_MODEL_UNCHANGEABLE=The Evaluation model must no longer be changed as it is already used
+# XMSG, 255
+MSG_MODEL_CODE_UNCHANGEABLE=The Evaluation method code {0} must no longer be changed as it is already used
+# XMSG, 255
+MSG_CRITERION_UNCHANGEABLE=The Evaluation method {0} and its criteria must no longer be changed as it is already used
+# XMSG, 255
+MSG_CRITERION_INVALID_DATATYPE=Invalid data type for Criterion {0}.
+# XMSG, 255
+MSG_CRITERION_INVALID_SEQUENCE_NO=Invalid sequence number for Criterion {0}.
+# XMSG, 255
+MSG_CRITERION_INVALID_PARENT_CRITERION_CODE=Criterion {0} has an invalid parent criterion code; There is no criterion with the given parent code or the use is not allowed.
+# XMSG, 255
+MSG_CRITERION_NUM_VALUE_MIN_INITIAL=Minimal value for criterion {0} must not be initial.
+# XMSG, 255
+MSG_CRITERION_NUM_VALUE_MAX_INITIAL=Maximum value for criterion {0} must not be initial.
+# XMSG, 255
+MSG_CRITERION_NUM_VALUE_INTERVAL_INVALID=Maximum value for criterion {0} must be greater as minimum value.
+# XMSG, 255
+MSG_CRITERION_NUM_VALUE_STEP_SIZE_NEGATIVE=Step size for criterion {0} must be greater or equal 0.
+# XMSG, 255
+MSG_CRITERION_NUM_VALUE_STEP_SIZE_INVALID=Step size for criterion {0} should not be greater than max value and the difference between  minimum and maximum value a multiple of the step size.
+# XMSG, 255
+MSG_CRITERION_X_AXIS_CRITERION_CODE_INITIAL=Criterion to be used as X axis must not be initial for Criterion {0}.
+# XMSG, 255
+MSG_CRITERION_Y_AXIS_CRITERION_CODE_INITIAL=Criterion to be used as Y axis must not be initial for Criterion {0}.
+# XMSG, 255
+MSG_CRITERION_X_AXIS_SEGMENT_NO_INITIAL=Segments of the X axis must not be initial for Criterion {0}.
+# XMSG, 255
+MSG_CRITERION_Y_AXIS_SEGMENT_NO_INITIAL=Segments of the Y axis must not be initial for Criterion {0}.
+# XMSG, 255
+MSG_CRITERION_X_AXIS_CRITERION_CODE_INVALID=Criterion to be used as X axis is invalid for Criterion {0}; No such criterion exists or the use is not allowed.
+# XMSG, 255
+MSG_CRITERION_Y_AXIS_CRITERION_CODE_INVALID=Criterion to be used as Y axis is invalid for Criterion {0}; No such criterion exists or the use is not allowed.
+# XMSG, 255
+MSG_CRITERION_VIS_PARAM_1_CRITERION_CODE_INVALID=Criterion to be used as inner circle is invalid for Criterion {0}; No such criterion exists or the use is not allowed.
+# XMSG, 255
+MSG_CRITERION_VIS_PARAM_2_CRITERION_CODE_INVALID=Criterion to be used as outer circle is invalid for Criterion {0}; No such criterion exists or the use is not allowed.
+# XMSG, 255
+MSG_CRITERION_IS_OVERALL_RESULT_UNIQUE=There must be only one criterion that is the overall result.
+# XMSG, 255
+MSG_CRITERION_AGGREGATION_TYPE_INITIAL=Aggregation type of Criterion {0} must not be initial.
+# XMSG, 255
+MSG_CRITERION_TEXT_AND_AGGREGATION_TYPE_INITIAL=Aggregation type of Criterion {0} must not be initial but data type 'Text' does not allow aggregation.
+# XMSG, 255
+MSG_CRITERION_VALUE_OPTION_LIST_INVALID=Value list in Criterion {0} does not exist.
+# XMSG, 255
+MSG_CRITERION_VALUE_OPTION_LIST_WRONG_DATATYPE=Value List ''{0}'' must have the same Data Type as the Evaluation Method Criterion ''{1}''.
+# XMSG, 255
+MSG_CRITERION_FORMULA_INVALID=Invalid formula
+
+# XMSG, 255
+MSG_STATUS_MODEL_UNCHANGEABLE=The Status Model code {0} must no longer be changed as it is already used
+# XMSG, 255
+MSG_INVALID_CURRENT_STATUS_MODEL=The status of {0} should have a previous status.
+# XMSG, 255
+MSG_INVALID_NEXT_STATUS_MODEL=The status of {0} should have a next status.
+# XMSG, 255
+MSG_INVALID_INITIAL_STATUS_MODEL=The action of {0} should have a next status of new.
+# XMSG, 255
+MSG_STATUS_MODEL_SAVED=Status Model successfully saved.
+# XMSG, 255
+MSG_STATUS_UNCHANGEABLE=The Status {0} can not be changed as it's already been used.
+# XMSG, 255
+MSG_STATUS_ACTION_UNCHANGEABLE=The Status Action {0} can not be changed as it's already been used.
+# XMSG, 255
+MSG_SYSTEM_STATUS_UNCHANGEABLE=This is a system status that can not be deleted.
+# XMSG, 255
+MSG_SYSTEM_STATUS_ACTION_UNCHANGEABLE=This is a system status action that can not be deleted.
+# XMSG, 255
+MSG_NEED_START_NEXT_PHASE_ACTION=There should be a "start next phase" action in transactions.
+
+# XMSG, 255
+MSG_CONTROL_DATA_TYPE_INVALID_VALUE=Field is invalid
+# XMSG, 255
+MSG_CONTROL_DATA_TYPE_INVALID_VALUE_INT=Field must be an integer
+# XMSG, 255
+MSG_CONTROL_DATA_TYPE_INVALID_VALUE_INT_GE=Field must be an integer number greater or equal than {0}
+# XMSG, 255
+MSG_CONTROL_DATA_TYPE_INVALID_VALUE_INT_LE=Field must be an integer number less or equal than {0}
+# XMSG, 255
+MSG_CONTROL_DATA_TYPE_INVALID_VALUE_NUM=Field must be a decimal
+# XMSG, 255
+MSG_CONTROL_DATA_TYPE_INVALID_VALUE_NUM_GE=Field must be a decimal number greater or equal than {0}
+# XMSG, 255
+MSG_CONTROL_DATA_TYPE_INVALID_VALUE_NUM_LE=Field must be a decimal number less or equal than {0}
+
+# XMSG, 255
+MSG_NOTIFICATION_BODY=Dear {0},<br><br>some changes have been performed recently that might affect your work.<br><br>{1}<br><br>Regards,<br>SAP Innovation Management
+# XMSG, 255
+MSG_NOTIFICATION_SUBJECT=SAP Innovation On Demand Notifications 
+# XMSG, 255
+MSG_NOTIFICATION_SUBJECT_Daily=Daily Notification from SAP Innovation Management 
+# XMSG, 255
+MSG_NOTIFICATION_SUBJECT_Weekly=Weekly Notification from SAP Innovation Management
+
+# XMSG, 255
+MSG_EXPORT_IDEA_EMAIL_SUBJECT=Exported Ideas {0}
+# XMSG, 255
+MSG_EXPORT_IDEA_NO_SELECTED=Please select the ideas to export
+# XMSG, 255
+MSG_EXPORT_IDEA_EMAIL_BODY=Dear {0},<br><br>Please download exported ideas by the link:<br><br><a href="{1}">{1}</a><br><br>Regards,<br>SAP Innovation Management
+
+# XMSG, 255
+MSG_FEED_BODY=Dear {0},<br><br>some changes have been performed recently on campaigns/ideas/tags you followed.<br><br>{1}<br><br>Regards,<br>SAP Innovation Management
+# XMSG, 255
+MSG_FEED_SUBJECT=Summary of Feed Entries from SAP Innovation Management
+# XMSG, 255
+MSG_FEED_SUBJECT_STATUS_ACTION_SUBMIT=New idea submitted to campaign {0}
+# XMSG, 255
+MSG_FEED_SUBJECT_STATUS_CHANGE=Idea {0} status changed.
+# XMSG, 255
+MSG_FEED_SUBJECT_BLOG_MAJORPUBLISH=Campaign blog published.
+# XMSG, 255
+MSG_FEED_SUBJECT_DATE_REACHED_SUBMIT_TO=Campaign {0} submission period is about to end.
+# XMSG, 255
+MSG_FEED_SUBJECT_DATE_REACHED_SUBMIT_FROM=Campaign {0} submission period is about to start.
+# XMSG, 255
+MSG_FEED_SUBJECT_DATE_REACHED_REGISTER_TO=Campaign {0} registration period is about to end.
+# XMSG, 255
+MSG_FEED_SUBJECT_DATE_REACHED_REGISTER_FROM=Campaign {0} registration period is about to start.
+# XMSG, 255
+MSG_FEED_SUBJECT_DATE_REACHED_VALID_TO=Campaign {0} is about to end.
+# XMSG, 255
+MSG_INST_EMAIL_FEED_BODY=Dear {0},<br><br>{1} {2}<br><br>Check {3} for details.<br><br>Regards,<br>SAP Innovation Management
+# XMSG, 255
+MSG_INST_DATE_FEED_BODY=Dear {0},<br><br>{1}<br><br>Check {2} for details.<br><br>Regards,<br>SAP Innovation Management
+# XMSG, 255
+MSG_FEED_INST_MAIL_BODY=Dear {0},<br><br>{1}<br><br>Regards,<br>SAP Innovation Management
+# XMSG, 255
+MSG_FEED_INST_MAIL_BODY_WITH_ABSTRACT=Dear {0},<br><br>{1}<br><br>Description: {2}.<br><br>Regards,<br>SAP Innovation Management
+# XMSG, 255
+MSG_VOTE_IDEA_DRAFT_VALIDITY=Voting not allowed for draft ideas
+# XMSG, 255
+MSG_VOTE_IDEA_DISCONTINUED=Voting not allowed for discontinued ideas
+# XMSG, 255
+MSG_VOTE_IDEA_MERGED=Voting not allowed for merged ideas
+# XMSG, 255
+MSG_VOTE_CAMPAIGN_PHASE_VALIDITY=Voting not allowed in current phase
+# XMSG, 255
+MSG_VOTE_INVALID_STAR_VOTE=Star vote not in valid range
+# XMSG, 255
+MSG_VOTE_INVALID_VOTE_SCORE=Vote score needs to be integer value
+# XMSG, 255
+MSG_VOTE_BULK_DELETE_PARAMETER_REQUIRED=Vote bulk delete requires a parameter: idea id or campaign id
+# XMSG, 255
+MSG_VOTE_BULK_DELETE_TOO_MANY_PARAMETERS=Too many parameters for vote bulk delete
+
+# XMSG, 255
+MSG_AUTH_MISSING_IDEA_MERGE=No authorization to merge idea ''{0}'' in current campaign
+# XMSG, 255
+MSG_IDEA_MERGE_NOT_ALLOWED_FOR_IDEA=Merging idea ''{0}'' is not allowed in current phase or status
+# XMSG, 255
+MSG_IDEA_MERGE_PARAMETER_REQUIRED=Merging ideas requires a parameter: array of unique merging idea ids
+# XMSG, 255
+MSG_IDEA_COPIED=Idea successfully copied and saved
+# XMSG, 255
+MSG_IDEA_DUPLICATE_ALREADY_MARKED_AS_DUPLICATE=Idea is already marked as duplicate to other idea
+# XMSG, 255
+MSG_IDEA_DUPLICATE_NOT_MARKED_AS_DUPLICATE=Idea is not marked as duplicate to other idea
+# XMSG, 255
+MSG_IDEA_DUPLICATE_PARAMETER_REQUIRED=Marking/unmarking duplicate ideas requires a parameter: array of unique idea ids
+# XMSG, 255
+MSG_IDEA_IDEAS_ALREADY_MARKED_AS_DUPLICATE=Some ideas already marked as duplicate
+# XMSG, 255
+MSG_IDEA_SELF_ASSESSMENT=Submit an evaluation as idea self-assessment
+# XMSG, 255
+MSG_IDEA_NOT_CHANGEABLE=Idea is not changeable in current status
+# XMSG, 255
+IDEA_NOT_REPRODUCIABLE=Anonymous Idea is not reproduciable 
+# XMSG, 255
+MSG_IDEA_SUBRESPONSIBILITY_LIST_DISABLED=Responsibility list {0} is disabled
+
+# XMSG, 255
+MSG_UNIT_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_UNIT_INVALID_VALUE=Invalid value
+# XMSG, 255
+MSG_UNIT_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_UNIT_DUPLICATE_VALUE=Duplicate code value
+# XMSG, 255
+MSG_UNIT_UNCHANGEABLE=Unit {0} may not be changed as it is already used.
+# XMSG, 255
+MSG_UNIT_SAVE_SUCCESS=Unit successfully saved.
+# XMSG, 255
+MSG_UNIT_DELETED=Unit successfully deleted.
+# XMSG, 255
+MSG_UNIT_COPIED=Unit successfully copied and saved.
+# XMSG, 255
+MSG_UNIT_COPY_FAILURE=Failed to copy unit.
+
+# XMSG, 255
+MSG_MAIL_TEMPLATE_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_MAIL_TEMPLATE_INVALID_VALUE=Invalid value
+# XMSG, 255
+MSG_MAIL_TEMPLATE_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_MAIL_TEMPLATE_DUPLICATE_VALUE=Duplicate code value
+# XMSG, 255
+MSG_MAIL_TEMPLATE_UNCHANGEABLE=Mail template {0} may not be changed as it is already used.
+# XMSG, 255
+MSG_MAIL_TEMPLATE_SAVE_SUCCESS=Mail template successfully saved.
+# XMSG, 255
+MSG_MAIL_TEMPLATE_DELETED=Mail template successfully deleted.
+# XMSG, 255
+MSG_MAIL_TEMPLATE_COPIED=Mail template successfully copied and saved.
+# XMSG, 255
+MSG_MAIL_TEMPLATE_COPY_FAILURE=Failed to copy mail template.
+
+# XMSG, 255
+MSG_TEXT_MODULE_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_TEXT_MODULE_INVALID_VALUE=Invalid value
+# XMSG, 255
+MSG_TEXT_MODULE_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_VALUE_REWARD_UNIT_CODE_INVALID_VALUE=Invalid Reward Unit Code
+# XMSG, 255
+MSG_TEXT_MODULE_DUPLICATE_VALUE=Duplicate code value
+# XMSG, 255
+MSG_TEXT_MODULE_UNCHANGEABLE=text template {0} may not be changed as it is already used.
+# XMSG, 255
+MSG_TEXT_MODULE_SAVE_SUCCESS=text template successfully saved.
+# XMSG, 255
+MSG_TEXT_MODULE_DELETED=text template successfully deleted.
+# XMSG, 255
+MSG_TEXT_MODULE_COPIED=text template successfully copied and saved.
+# XMSG, 255
+MSG_TEXT_MODULE_COPY_FAILURE=Failed to copy text template.
+
+# XMSG, 255
+MSG_LANGUAGE_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_LANGUAGE_INVALID_VALUE=Invalid value
+# XMSG, 255
+MSG_LANGUAGE_DUPLICATE_CODE=Duplicate code
+
+#****************************TAG_GROUP Message******************************
+# XMSG, 255
+MSG_TAG_GROUP_REQUIRED_TAG=Please enter text and choose the tag from the provided list
+# XMSG, 255
+MSG_TAG_GROUP_VALUE_DUPLICATE_TAG=This tag is already part of the tag group
+# XMSG, 255
+MSG_TAG_GROUP_VALUE_NOT_EXISTS_TAG=This tag does not exist in the system and must be created before it can be added to the group
+# XMSG, 255
+MSG_TAG_GROUP_DELETED=Group successfully deleted
+# XMSG, 255
+MSG_TAG_DUPLICATE_GROUP_ASSIGNMENT=Tag Group is already assigned
+# XMSG, 255
+MSG_TAG_GROUP_REQUIRED_TAG_OR_TAG_GROUP=Please enter text and choose the tag/tag group from the provided list
+# XMSG, 255
+MSG_TAG_GROUP_VALUE_NOT_EXISTS_TAG_OR_TAG_GROUP=This tag/tag group does not exist in the system and must be created before it can be added to the group
+# XMSG, 255
+MSG_TAG_GROUP_VALUE_DUPLICATE_NESTED_GROUP = This tag group is a parent or this tag group contains group which is a parent
+# XMSG, 255
+MSG_TAG_GROUP_NOT_FILL_VALUE = Please fill the value for the new addtional Tag/Group before save
+# XMSG, 255
+MSG_TAG_GROUP_VALUE_DUPLICATE_TAG_AND_GROUP=This tag/tag group is already part of the tag group
+# XMSG, 255
+MSG_TAG_GROUP_VALUE_CAN_NOT_ADD_SELF=Can not add itself to the tag group
+
+
+#****************************Reponsibility List Message******************************
+#XMSG, 255
+MSG_RESPONSIBILITY_LIST_SAVED = Responsibility List saved.
+#XMSG, 255
+MSG_RESPONSIBILITY_LIST_DELETED = Responsibility List deleted.
+#XMSG, 255
+MSG_RESPONSIBILITY_LIST_COPIED = Responsibility List copied.
+#XMSG, 255
+MSG_RESPONSIBILITY_LIST_COPY_FAILURE = Failed to copy Responsibility List.
+# XMSG, 255
+MSG_BO_RESPONSIBILITY_LIST_CRITERIA_FLD_VALUE_INVALID_EXPERT=The chosen expert is invalid or duplicate
+# XMSG, 255
+MSG_BO_RESPONSIBILITY_LIST_CRITERIA_FLD_REQUIRED_COACH=Please enter text and choose the idea coach from the provided list
+# XMSG, 255
+MSG_BO_RESPONSIBILITY_LIST_CRITERIA_FLD_REQUIRED_EXPERT=Please enter text and choose the idea expert from the provided list
+# XMSG, 255
+MSG_BO_RESPONSIBILITY_LIST_CRITERIA_FLD_VALUE_INVALID_COACH=The chosen idea coach is invalid or duplicate
+
+# XMSG, 255
+MSG_RESPONSIBILITY_VALUE_ONE_COACH_MANDATORY=At least one coach needs to be maintained for responsibility value ''{0}''
+# XMSG, 255
+MSG_RESPONSIBILITY_VALUE_ONE_EXPERT_MANDATORY=At least one expert needs to be maintained for responsibility value ''{0}''
+# XMSG, 255
+MSG_RESP_UNDELETEABLE=The Responsibility must no longer be deleted as it is already used
+# XMSG, 255
+MSG_RESP_UPDATE_NOT_EMPTY=Deletion of responsibility is not allowed as ideas submitted for the campaign which use the responsibility.
+# XMSG, 255
+MSG_RESPONSIBILITY_ONE_VALUE_MANDATORY=At least one responsibility value needs to be maintained for responsibility
+# XMSG, 255
+MSG_RESP_DUPLICATE_CODE=The name of the responsibility list cannot be duplicated. Please enter a new name to proceed.
+# XMSG, 255
+MSG_RESPONSIBILITY_ROOT_VALUE_UNDELETEABLE=The Root responsibility value ''{0}'' must no longer be deleted as it is already used
+# XMSG, 255
+MSG_RESPONSIBILITY_PLAIN_CODE_UNCHANGABLE=The Responsibility Technical Name must no longer be changable as it is already used
+# XMSG, 255
+MSG_RESPONSIBILITY_VALUE_PLAIN_CODE_UNCHANGABLE=The responsibility list value code {0} must no longer be changed as it is already used.
+
+#****************************Idea Administration Message******************************
+# XMSG, 255
+MSG_IDEA_FORM_ADMINISTRATION_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces).
+# XMSG, 255
+MSG_IDEA_FORM_ADMINISTRATION_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_IDEA_FORM_ADMINISTRATION_NO_COPY=Idea Form cannot be copied.
+# XMSG, 255
+MSG_IDEA_FORM_ADMINISTRATION_COPY_FAILURE=Idea Form cannot be copied.
+# XMSG, 255
+MSG_IDEA_FORM_ADMINISTRATION_SAVED=Idea Form successfully saved.
+# XMSG, 255
+MSG_IDEA_FORM_ADMINISTRATION_DELETED=Idea Form successfully deleted.
+# XMSG, 255
+MSG_IDEA_FORM_ADMINISTRATION_COPIED=Idea Form successfully copied and saved.
+# XMSG, 255
+MSG_IDEA_FORM_ADMINISTRATION_CODE_UNCHANGEABLE=The Idea Form code {0} must no longer be changed as it is already used
+# XMSG, 255
+MSG_IDEAFORM_UPDATE_NOT_EMPTY=Deletion of ideaform is not allowed as ideas submitted for the campaign which use the form.
+# XMSG, 255
+MSG_FORM_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_FORM_UNDELETEABLE=The IdeaForm must no longer be deleted as it is already used
+# XMSG, 255
+MSG_FORM_PLAIN_CODE_UNCHANGABLE=The IdeaForm Technical Name must no longer be changable as it is already used
+# XMSG, 255
+MSG_FORM_FIELD_UNCHANGEABLE=The Idea Form {0} and its fields must no longer be changed as field values have been created
+# XMSG, 255
+MSG_FORM_FIELD_MANDATORY_UNCHANGEABLE=The Idea Form {0} is already usd, so its new adding fields can not be mandatory
+# XMSG, 255
+MSG_ADMIN_ONLY_UNCHANGEABLE=The Idea Form {0} and its admin only check cannot be modified as the idea form for admin have already been used
+# XMSG, 255
+MSG_FIELD_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces).
+# XMSG, 255
+MSG_FIELD_NUM_VALUE_INTERVAL_INVALID=Maximum value for field {0} must be greater as minimum value.
+# XMSG, 255
+MSG_FIELD_NUM_VALUE_STEP_SIZE_NEGATIVE=Step size for field {0} must be greater or equal 0.
+# XMSG, 255
+MSG_FIELD_NUM_VALUE_STEP_SIZE_INVALID=Step size for field {0} should not be greater than max value and the difference between  minimum and maximum value a multiple of the step size.
+# XMSG, 255
+MSG_FIELD_VALUE_OPTION_LIST_WRONG_DATATYPE=Value List ''{0}'' must have the same Data Type as the Idea From Field ''{1}''.
+# XMSG, 255
+MSG_FIELD_DISPLAY_TEXT_EMPTY = Display text can not be empty.
+
+# XMSG, 255
+MSG_LOCALE_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_LOCALE_INVALID_VALUE=Invalid value
+# XMSG, 255
+MSG_LOCALE_DUPLICATE_CODE=Duplicate code
+
+# XMSG, 255
+MSG_LOCAL_SETTINGS_CODE_MISSING=Settings code is missing.
+# XMSG, 255
+MSG_LOCAL_SETTINGS_WRONG_TYPE=Provided Settings value has wrong type.
+# XMSG, 255
+MSG_LOCAL_SETTINGS_NO_LOCAL_SETTINGS=Settings cannot be changed.
+# XMSG, 255
+MSG_LOCAL_SETTINGS_CODE_NOT_EXISTING=Settings code does not exist.
+# XMSG, 255
+MSG_LOCAL_SETTINGS_CODE_NOT_EXISTING=Settings code does not exist.
+# XMSG, 255
+MSG_LOCAL_SETTINGS_SAVED=Settings saved successfully.
+# XMSG, 255
+MSG_LOCAL_USER_PROFILE_SAVED=User profile saved successfully.
+# XMSG, 255
+MSG_LOCAL_USERLOGSETTING_SAVED=Log change saved successfully.
+
+# XMSG, 255
+MSG_VALUE_OPTION_LIST_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_VALUE_OPTION_LIST_INVALID_DATATYPE=Invalid data type
+# XMSG, 255
+MSG_VALUE_OPTION_LIST_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_VALUE_OPTION_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_VALUE_OPTION_INVALID_VALUE=Invalid value
+# XMSG, 255
+MSG_VALUE_OPTION_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_VALUE_OPTION_DUPLICATE_VALUE=Duplicate code value
+# XMSG, 255
+MSG_VALUE_OPTION_LIST_DATATYPE_UNCHANGEABLE=Data type in value option list {0} may not be changed as it is already in use.
+# XMSG, 255
+MSG_VALUE_OPTION_LIST_UNCHANGEABLE=Value List ''{0}'' cannot be changed or deleted as it is already in use.
+# XMSG, 255
+MSG_VALUE_OPTION_LIST_SAVE_SUCCESS=Value option list successfully saved.
+# XMSG, 255
+MSG_VALUE_OPTION_LIST_DELETED=Value option list successfully deleted.
+# XMSG, 255
+MSG_VALUE_OPTION_LIST_NO_COPY=Value option list cannot be copied.
+# XMSG, 255
+MSG_VALUE_OPTION_LIST_COPIED=Value option list successfully copied and saved.
+# XMSG, 255
+MSG_VALUE_OPTION_LIST_COPY_FAILURE=Failed to copy value option list.
+# XMSG, 255
+MSG_VALUE_OPTION_LIST_PLAIN_CODE_UNCHANGEABLE=The Technical Name of this Value List cannot be changed as it is already in use.
+
+# XMSG, 255
+MSG_UNIT_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_UNIT_INVALID_DATATYPE=Invalid data type
+# XMSG, 255
+MSG_UNIT_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_UNIT_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_UNIT_INVALID_VALUE=Invalid value
+# XMSG, 255
+MSG_UNIT_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_UNIT_DUPLICATE_VALUE=Duplicate code value
+# XMSG, 255
+MSG_UNIT_DATATYPE_UNCHANGEABLE=Data type in unit {0} may not be changed as evaluation already exists
+# XMSG, 255
+MSG_UNIT_UNCHANGEABLE=Unit ''{0}'' cannot be changed or deleted as it is used in an Evaluation Method
+# XMSG, 255
+MSG_UNIT_SAVE_SUCCESS=Unit successfully saved. Please make sure to activate these changes, using the "Activate" button on the "Activation" tab.
+# XMSG, 255
+MSG_UNIT_DELETED=Unit successfully deleted.
+# XMSG, 255
+MSG_UNIT_NO_COPY=Unit cannot be copied.
+# XMSG, 255
+MSG_UNIT_COPIED=Unit successfully copied and saved.
+# XMSG, 255
+MSG_UNIT_COPY_FAILURE=Failed to copy unit.
+# XMSG, 255
+MSG_UNIT_PLAIN_CODE_UNCHANGEABLE=The Technical Name of this Unit cannot be changed as it is already in use.
+
+# XMSG, 255
+MSG_PHASE_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_PHASE_INVALID_DATATYPE=Invalid data type
+# XMSG, 255
+MSG_PHASE_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_PHASE_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_PHASE_INVALID_VALUE=Invalid value
+# XMSG, 255
+MSG_PHASE_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_PHASE_DUPLICATE_VALUE=Duplicate code value
+# XMSG, 255
+MSG_PHASE_DATATYPE_UNCHANGEABLE=Data type in phase {0} may not be changed as evaluation already exists
+# XMSG, 255
+MSG_PHASE_UNCHANGEABLE=Phase ''{0}'' cannot be changed or deleted as it is used in an Evaluation Method
+# XMSG, 255
+MSG_PHASE_SAVE_SUCCESS=Phase successfully saved. Please make sure to activate these changes, using the "Activate" button on the "Activation" tab.
+# XMSG, 255
+MSG_PHASE_DELETED=Phase successfully deleted.
+# XMSG, 255
+MSG_PHASE_NO_COPY=Phase cannot be copied.
+# XMSG, 255
+MSG_PHASE_COPIED=Phase successfully copied and saved.
+# XMSG, 255
+MSG_PHASE_COPY_FAILURE=Failed to copy phase.
+# XMSG, 255
+MSG_PHASE_PLAIN_CODE_UNCHANGEABLE=The Technical Name of this phase cannot be changed as it is already in use.
+
+
+# XMSG, 255
+MSG_INVALID_FOREIGN_KEY=Invalid foreign key "{0}"
+# XMSG, 255
+MSG_INVALID_BOOL_VALUE=Invalid boolean value "{0}"
+# XMSG, 255
+MSG_INVALID_MIN_VALUE={0} is smaller than {1}
+# XMSG, 255
+MSG_INVALID_MAX_VALUE={0} is greater than {1}
+# XMSG, 255
+MSG_INVALID_MAX_LENGTH={0} is longer than {1}
+# XMSG, 255
+MSG_INVALID_VALUE_OPTION={0} is not contained in value option list {1}
+# XMSG, 255
+MSG_INVALID_OBJECT_TYPE=Invalid object type "{0}"
+# XMSG, 255
+MSG_INVALID_OBJECT_REF=Invalid object reference to {0} with key "{1}"
+# XMSG, 255
+MSG_DUPLICATE_ALT_KEY=Duplicate alternative key value "{0}"
+
+# XMSG, 255
+MSG_AUTH_MISSING_FOLLOW_UP_CREATE=No authorization to create follow-up
+# XMSG, 255
+MSG_AUTH_MISSING_FOLLOW_UP_UPDATE=No authorization to update follow-up
+# XMSG, 255
+MSG_AUTH_MISSING_FOLLOW_UP_DELETE=No authorization to delete follow-up
+# XMSG, 255
+MSG_AUTH_MISSING_FOLLOW_UP_READ=No authorization to read follow-up
+# XMSG, 255
+MSG_DUPLICATE_FOLLOW_UP=Duplicate follow-up for {0} with key "{1}"
+# XMSG, 255
+MSG_FOLLOW_UP_OBJECT_TYPE_UNCHANGEABLE=Object type is not changeable
+# XMSG, 255
+MSG_FOLLOW_UP_OBJECT_ID_UNCHANGEABLE=Object id is not changeable
+# XMSG, 255
+MSG_FOLLOW_UP_FOLLOW_UP_NOT_POSSIBLE=Idea is in its final status, follow up is currently not possible
+# XMSG, 255
+MSG_FOLLOW_UP_FOLLOW_DATE_GE_TODAY=Follow-up date should after today
+
+# XMSG, 255
+MSG_AUTH_MISSING_FOLLOW_CREATE=No authorization to create follow
+# XMSG, 255
+MSG_AUTH_MISSING_FOLLOW_UPDATE=No authorization to update follow
+# XMSG, 255
+MSG_AUTH_MISSING_FOLLOW_DELETE=No authorization to delete follow
+# XMSG, 255
+MSG_AUTH_MISSING_FOLLOW_READ=No authorization to read follow
+# XMSG, 255
+MSG_DUPLICATE_FOLLOW=Duplicate follow for {0} with key "{1}"
+# XMSG, 255
+MSG_FOLLOW_OBJECT_TYPE_UNCHANGEABLE=Object type is not changeable
+# XMSG, 255
+MSG_FOLLOW_OBJECT_ID_UNCHANGEABLE=Object id is not changeable
+# XMSG, 255
+MSG_FOLLOW_NOT_DEFINED=Object id is not defined
+
+# XMSG, 255
+MSG_STATUS_MODEL_PHASE_CHANGE_INVALID_NEXT_STATUS=Next status for phase change actions needs to be sap.ino.config.NEW_IN_PHASE
+# XMSG, 255
+MSG_STATUS_MODEL_INVALID_DRAFT_USAGE=Status sap.ino.config.DRAFT may not be used in status models
+# XMSG, 255
+MSG_STATUS_MODEL_NEW_IN_PHASE_MISSING=Status sap.ino.confing.NEW_IN_PHASE needs to be present in status models
+# XMSG, 255
+MSG_STATUS_MODEL_INITIAL_STATUS_MISSING=Status with type 'New' needs to be present in status models
+# XMSG, 255
+MSG_STATUS_MODEL_TOO_MANY_NEW_STATUS=Each status model can have only one status with type 'New'
+
+# Configuration Activation
+# XMSG, 255
+MSG_CONFIG_ACTIVATION_BY_UNKNOWN_USER=User {0} triggering configuration activation is not known in SAP Innovation Management. Thus configuration activation has been aborted.
+# XMSG, 255
+MSG_CONFIG_NOT_ENABLED=Configuration is not (correctly) setup in the system
+# XMSG, 255
+MSG_CONFIG_DIFFERENT_PACKAGE=System configuration package {0} is different from package {1}
+# XMSG, 255
+MSG_CONFIG_INVALID_PLAIN_CODE=Value {0} may not contain spaces, "." or special characters
+# XMSG, 255
+MSG_CONFIG_IMPORT_FILE_HEADER_MISSING=Header for file {0} is missing
+# XMSG, 255
+MSG_CONFIG_NODE_MISSING=Node {0} is missing in configuration object {1}
+# XMSG, 255
+MSG_CONFIG_FILE_MISSING=Import file definition for node {0} is missing
+# XMSG, 255
+MSG_CONFIG_TEXT_BUNDLE_MISSING=Text bundle definition for node {0} is erroneous
+# XMSG, 255
+MSG_CONFIG_IMPORT_PACKAGE_AUTH=Configuration import failed due to missing read authorization for package {0} 
+# XMSG, 255
+MSG_CONF_OBJECT_REC_FK_UNRESOLVED=Unresolved foreign key to (object {0}, node {1}, table {2}, key {3}), from (object {4}, node {5}, table {6}, attribute {7}, id {8})
+# XMSG, 255
+MSG_CONF_OBJECT_REC_PK_UNRESOLVED=Unresolved parent key to (object {0}, node {1}, table {2}), from (node {3}, table {4}, attribute {5}, id {6})
+# XMSG, 255
+MSG_CONF_OBJECT_REC_INSERT_EXCEPTION=DB error {2} when inserting into the conf table {0}, key {1}, statement {3}
+# XMSG, 255
+MSG_CONF_OBJECT_REC_EXT_CHECK_EXCEPTION=Exception in check of configuration object {0}, id {1}, error (name {2}, message {3}, file {4}, line {5}, col {6})
+# XMSG, 255
+MSG_CONF_OBJECT_DELETE_EXCEPTION=DB error {1} when deleting from conf table {0}, statement {2}
+# XMSG, 255
+MSG_CONF_OBJECT_SELECT_EXCEPTION=DB error {0} when executing statement {1}
+# XMSG, 255
+MSG_CONF_OBJECT_LOAD_EXCEPTION=Exception when loading object {0}, error (name {1}, message {2}, file {3}, line {4}, col {5})
+# XMSG, 255
+MSG_CONF_OBJECT_ACTIVATE_EXCEPTION=Exception when activating object {0}, error (name {1}, message {2}, file {3}, line {4}, col {5})
+# XMSG, 255
+MSG_CONF_OBJECT_STAGE_EXCEPTION=Exception when checking the consistency of stage object {0}. Exception is: {1}
+# XMSG, 255
+MSG_CONF_OBJECT_EXTERNAL_FK_UNRESOLVED=Unresolved external foreign key to (object {0}, node {1}, table {2}, key {3}), from (object {4}, node {5}, table {6}, attribute {7}, id {8})
+# XMSG, 255
+MSG_CONF_OBJECT_VETO_EXCEPTION=Veto for object {0}, node {1}, code {2}, attribute {3}, reason {4}
+# XMSG, 255
+MSG_CONF_ACTIVATION_SUCCESS=Configuration was activated successfully. All changes of the configuration are now available in the system. 
+# XMSG, 255
+MSG_CONF_OBJECT_ACTIVATED_OBJECTS=Configuration was activated successfully. The following objects where activated: {0}
+# XMSG, 255
+MSG_CONF_NO_SINGLE_ACTIVATION=Configuration change could not be activated immediately. You need to trigger activation manually.
+
+# Report
+# XMSG, 255
+MSG_REPORT_SAVED=Report successfully saved
+# XMSG, 255
+MSG_REPORT_CREATED=Report successfully created
+# XMSG, 255
+MSG_REPORT_PARAMETER_MISSING=Not all mandatory Parameters have been maintained
+# XMSG, 255
+MSG_REPORT_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_REPORT_AUTH_MISSING_UPDATE=No authorization to update report
+# XMSG, 255
+MSG_REPORT_AUTH_MISSING_DELETE=No authorization to delete report
+# XMSG, 255
+MSG_REPORT_CONFIG_INVALID=Report configuration does not contain a valid JSON object
+
+# Notification
+# XMSG, 255
+MSG_AUTH_MISSING_NOTIFICATION_READ=No authorization to read notification
+# XMSG, 255
+MSG_AUTH_MISSING_NOTIFICATION_UPDATE=No authorization to update notification
+
+# TagFilter
+# XMSG, 255
+MSG_TAGFILTER_FLD_REQUIRED_OR_INVALID=The chosen Tag is invalid. Please enter text and choose the Tag from the provided list.
+# XMSG, 255
+MSG_TAGFILTER_FLD_INVALID=Tag "{0}" is invalid and is not added to the tag list
+# XMSG, 255
+MSG_TAGFILTER_FLD_TAG_LOAD_FAILED=Failed to load the tag
+
+# Expertfinder
+# XMSG, 255
+MSG_EXPERTFINDER_FLD_LOAD_FAILED=Failed to load the chosen Experts
+# XMSG, 255
+MSG_EXPERTFINDER_RESULT_LIMITED=The Result is limited to the best {0} Experts, this might lead to the fact that some not relevant Tags are not displayed anymore
+
+# Wall
+# XMSG, 255
+MSG_WALL_IS_LOCKED=Wall cannot be changed, as it is locked.
+# XMSG, 255
+MSG_WALL_INVALID_BACKGROUND_COLOR=Background color {0} is invalid 
+# XMSG, 255
+MSG_WALL_INVALID_BACKGROUND_SIZE=Invalid background width or height
+# XMSG, 255
+MSG_WALL_INVALID_BACKGROUND_POS=Invalid background position
+# XMSG, 255
+MSG_WALL_INVALID_BACKGROUND_ZOOM=Invalid background zoom
+# XMSG, 255
+MSG_AMBIGUOUS_BACKGROUND_CHANGES=Ambiguous background changes
+# XMSG, 255
+MSG_WALL_ITEM_INVALID_CONTENT=Invalid JSON object
+# XMSG, 255
+MSG_WALL_ITEM_INVALID_CONTENT_FIELD=Invalid content field "{0}" for content type "{1}"
+# XMSG, 255
+MSG_WALL_ITEM_MISSING_CONTENT_FIELD=Missing content field "{0}" for content type "{1}"
+# XMSG, 255
+MSG_WALL_ITEM_INVALID_CONTENT_FIELD_TYPE=Field type "{0}" of field "{1}" is invalid
+# XMSG, 255
+MSG_WALL_ITEM_INVALID_ENUM_VALUE=Invalid enumeration value "{0}" for enumeration "{1}"
+# XMSG, 255
+MSG_WALL_ITEM_INVALID_COLOR=Color is invalid 
+# XMSG, 255
+MSG_WALL_ITEM_INVALID_SIZE=Invalid item width or height
+# XMSG, 255
+MSG_WALL_ITEM_INVALID_IMAGE_ASSIGNMENT=Invalid image attachment assignment for item type
+# XMSG, 255
+MSG_WALL_ITEM_INVALID_ATTACHMENT_ASSIGNMENT=Invalid attachment assignment for item type
+# XMSG, 255
+MSG_WALL_DUPLICATE_ASSIGNMENT=Duplicate wall assignment
+# XMSG, 255
+MSG_WALL_DUPLICATE_ROLE_TYPE=Duplicate wall role assignment
+# XMSG, 255
+MSG_WALL_ASSIGNED_CANNOT_BE_UNLOCKED=Assigned wall cannot be unlocked
+# XMSG, 255
+MSG_WALL_NON_DISTINCT_USER_PERMISSION=One or more users have non-distinct wall permissions
+# XMSG, 255
+MSG_WALL_NO_WALL_SESSION=No Wall Session
+# XMSG, 255
+MSG_AUTH_MISSING_WALL_WRITE=Missing write permissions
+# XMSG, 255
+MSG_AUTH_MISSING_WALL_READ=Missing read permissions
+# XMSG, 255
+MSG_AUTH_MISSING_WALL_ADMIN=Missing admin permissions
+
+# XMSG, 255
+MSG_LANGUAGE_LOCALE_INVALID=The chosen locale "{0}" is invalid
+
+# XMSG, 255
+MSG_FORMFIELD_VALUE_OPTION_LIST_INVALID=Value list in FormField {0} does not exist.
+
+# XMSG, 255
+MSG_VOTE_TYPE_UNCHANGEABLE=The vote method code {0} must no longer be changed as it is already used
+# XMSG, 255
+MSG_VOTE_TYPE_SAVED=Vote method successfully saved.
+# XMSG, 255
+MSG_VOTE_TYPE_DELETED=Vote method successfully deleted.
+# XMSG, 255
+MSG_VOTE_TYPE_COPIED=Vote method successfully copied and saved.
+# XMSG, 255
+MSG_VOTE_TYPE_COPY_FAILURE=Failed to copy vote method.
+
+#***************************Blog******************************
+# XMSG, 255
+MSG_AUTH_MISSING_BLOG_UPDATE=No authorization to update blog
+# XMSG, 255
+MSG_AUTH_MISSING_BLOG_READ=No authorization to read blog
+# XMSG, 255
+MSG_AUTH_MISSING_BLOG_CREATE=No authorization to create blog
+# XMSG, 255
+MSG_AUTH_MISSING_BLOG_DELETE=No authorization to delete blog
+# XMSG, 255
+MSG_CHECK_AUTHOR_LENGTH=Blog can only have one author
+
+# XMSG, 255
+MSG_SIGNIN_SEPARATE_WINDOW=Please use the separate window to sign in. Press to reopen.
+
+#***************************Idea Reward******************************
+# XMSG, 255
+MSG_AUTH_MISSING_REWARD_CREATE=No authorization to create reward
+# XMSG, 255
+MSG_AUTH_MISSING_REWARD_READ = No authorization to read reward
+# XMSG, 255
+MSG_AUTH_MISSING_REWARD_UPDATE = No authorization to update reward
+# XMSG, 255
+MSG_AUTH_MISSING_REWARD_DELETE = No authorization to delete reward
+# XMSG, 255
+MSG_AUTH_MISSING_REWARD_STATUS_TRANS = No authorization to change the reward status
+# XMSG, 255
+MSG_REWARD_UNCHANGEABLE = The reward couldn't be changed after it was submitted
+# XMSG, 255
+MSG_REWARD_IDEA_MISSING = The reward miss an id of the idea
+# XMSG, 255
+MSG_REWARD_INVALID_STATUS_TRANSITION=Status change is not allowed
+# XMSG, 255
+MSG_REWARD_NO_STATUS_TRANSITIONS = No status transitions available
+# XMSG, 255
+MSG_REWARD_BULK_DELETE_PARAMETER_REQUIRED = Reward bulk delete requires parameters: reward id array
+# XMSG, 255
+MSG_REWARD_DOWNLOAD_PARAMETER_REQUIRED = Reward download requires parameters: reward id array
+# XMSG, 255
+MSG_REWARDS_DELETE_FAILURE = Rewards cannot be deleted once they have been downloaded
+# XMSG, 255
+MSG_REWARD_DUPLICATE = Reward should not be created because it has been a reward of the idea
+# XMSG, 255
+MSG_SYSTEM_REWARD_UNACTIVE = The reward system setting is unactive
+# XMSG, 255
+MSG_REWARD_IDEA_CONTRIBUTION_SHARE_MISSING = The Idea miss anthors contribution share node to create a reward
+# XMSG, 255
+MSG_REWARD_ITEM_MISSING = The Reward need at least one item to create
+
+# XMSG, 255
+MSG_IDEA_REWARD_BULK_DELETE_PARAMETER_REQUIRED = Reward bulk delete requires parameters: idea id
+
+# XMSG, 255
+MSG_IDEA_INVALID_CONTRIBUTION_SHARE=The Sum of Contribution Share should be 100%
+
+# XMSG, 255
+MSG_FIELD_VALUE_INVALID_DATA=The Idea Form Field Value is invalid
+
+# XMSG, 255
+MSG_INVALID_REWARD_DISMISS=The idea has been dismissed
+
+# XMSG, 255
+MSG_TAG_GROUP_VALUE_INVALID_GROUP=The chosen group is invalid or duplicate
+# XMSG, 255
+MSG_TAG_GROUP_REQUIRED_GROUP=Please enter text and choose the group from the provided list
+
+#****************************Evaluation Request Message******************************
+# XMSG, 255
+MSG_EVAL_REQ_DUPLICATED_EXPERTS=The experts {0} has been created evaluation request
+# XMSG, 255
+MSG_AUTH_MISSING_EVAL_REQ_CREATE=No authorization to create evaluation request
+# XMSG, 255
+MSG_AUTH_MISSING_EVAL_REQ_UPDATE=No authorization to update evaluation request
+# XMSG, 255
+MSG_AUTH_MISSING_EVAL_REQ_DELETE=No authorization to delete evaluation request
+# XMSG, 255
+MSG_AUTH_MISSING_EVAL_REQ_READ=No authorization to read evaluation request
+
+# XMSG, 255
+MSG_AUTH_MISSING_EVAL_REQ_ITEM_UPDATE=No authorization to update evaluation request item
+# XMSG, 255
+MSG_AUTH_MISSING_EVAL_REQ_ITEM_STATUS_TRANS=No authorization to change evaluation request item status
+# XMSG, 255
+MSG_AUTH_MISSING_EVAL_REQ_ITEM_READ=No authorization to read evaluation request item
+# XMSG, 255
+MSG_SYSTEM_EVAL_REQ_UNACTIVE=The evaluation request system setting is unactive
+
+# XMSG, 255
+MSG_EVAL_REQ_DELETE_FAILURE=The evaluation request couldn't be deleted because one of the items has been accpeted by the expert
+# XMSG, 255
+MSG_EVAL_REQ_ITEM_ONLY_ONE_EXPERT=The evaluation request should only has one expert
+# XMSG, 255
+MSG_EVAL_REQ_UNCHANGEABLE=The evaluation request is unchangeable because one of the items has been accpeted by the expert
+# XMSG, 255
+MSG_EVAL_REQ_EXPERT_UNCHANGEABLE=The evaluation request couldn't be re-assigned bacause the current time is over the accept date
+# XMSG, 255
+MSG_EVAL_REQ_EXPERT_WARNING=The amount of experts in the evaluation request is over 10
+# XMSG, 255
+MSG_EVAL_REQ_EXPERTS_MANDATORY=The expert node is mandatory for the evaluation request
+# XMSG, 255
+MSG_INVALID_EVAL_REQ_DATE=The accept date or the complete date is invalid for the evaluation request
+# XMSG, 255
+MSG_INVALID_EVAL_REQ_PHASE=The idea phase is invalid
+
+# XMSG, 255
+MSG_EVAL_REQ_ITEM_INVALID_STATUS_TRANSITION=Status change is not allowed
+# XMSG, 255
+MSG_EVAL_REQ_ITEM_NO_STATUS_TRANSITIONS=No status transitions available
+# XMSG, 255
+MSG_EVAL_REQ_ITEM_INVALID_FORWARD=Forward is not allowed
+# XMSG, 255
+MSG_EVAL_REQ_ITEM_INVALID_FORWARD_WITH_DUPLICATE_EXPERTS=Forward is not allowed because it has already include this expert
+# XMSG, 255
+MSG_EVAL_REQ_ITEM_INVALID_FORWARD_WITH_INVALID_DATE=Forward is not allowed because it's date
+# XMSG, 255
+MSG_EVAL_REQ_ITEM_INVALID_FORWARD_WITH_INVALID_STATUS=Forward is not allowed because it's status
+# XMSG, 255
+MSG_EVAL_REQ_ITEM_INVALID_CLARIFICATION=Clarification is not allowed
+# XMSG, 255
+MSG_INVALID_EVAL_REQ_CAMP_DATE=The acceptance or completion date must be between campaign start date and end date 
+# XMSG, 255
+MSG_EVAL_REQ_INVALID_EXPERT=You can't add idea author or idea co-authors to experts bucause self-evaluation is inactive in this phase
+# XMSG, 255
+MSG_EVAL_REQ_FOWARD_INVALID_EXPERT=You can't forward the evaluation request to idea author or idea co-authors bucause self-evaluation is inactive in this phase
+
+#-------------------------Status Configuration-------
+# XMSG, 255
+MSG_STATUS_NAME_SAVED=Status successfully saved.
+# XMSG, 255
+MSG_STATUS_NAME_DELETED=Status successfully deleted.
+# XMSG, 255
+MSG_STATUS_ACTION_SAVED=Status action successfully saved.
+# XMSG, 255
+MSG_STATUS_ACTION_DELETED=Status action successfully deleted.
+# XMSG, 255
+MSG_STATUS_MODEL_DELETED=Status model successfully deleted.
+#XMSG, 255
+MSG_STATUS_MODEL_COPY_FAILURE = Failed to copy Status Model.
+#XMSG, 255
+MSG_STATUS_ACTION_COPY_FAILURE = Failed to copy Status Action.
+#XMSG, 255
+MSG_STATUS_NAME_COPY_FAILURE = Failed to copy Status.
+# XMSG, 255
+MSG_STATUS_ACTION_ADMINISTRATION_COPIED=Status action successfully copied and saved.
+# XMSG, 255
+MSG_STATUS_NAME_ADMINISTRATION_COPIED=Status successfully copied and saved.
+# XMSG, 255
+MSG_STATUS_MODEL_ADMINISTRATION_COPIED=Status model successfully copied and saved.
+
+
+#**********************************Campaign Tasks**********************************
+# XMSG, 255
+MSG_CAMPAIGN_TASK_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_CAMPAIGN_TASK_INVALID_VALUE=Invalid value
+# XMSG, 255
+MSG_CAMPAIGN_TASK_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_CAMPAIGN_TASK_DUPLICATE_VALUE=Duplicate code value
+# XMSG, 255
+MSG_CAMPAIGN_TASK_UNCHANGEABLE=Campaign task {0} may not be changed as it is already used.
+# XMSG, 255
+MSG_CAMPAIGN_TASK_SAVE_SUCCESS=Campaign task successfully saved.
+# XMSG, 255
+MSG_CAMPAIGN_TASK_DELETED=Campaign task successfully deleted.
+# XMSG, 255
+MSG_CAMPAIGN_TASK_COPIED=Campaign task successfully copied and saved.
+# XMSG, 255
+MSG_CAMPAIGN_TASK_COPY_FAILURE=Failed to copy Campaign task.
+# XMSG, 255
+MSG_TASK_UNCHANGEABLE=The Milestone task {0} must no longer be changed as it is already used
+
+
+#**********************************URL allowlist**********************************
+# XMSG, 255
+MSG_URL_WHITELIST_INVALID_CODE=Invalid code; The code must not contain "." or " "(spaces). 
+# XMSG, 255
+MSG_URL_WHITELIST_INVALID_VALUE=Invalid value
+# XMSG, 255
+MSG_URL_WHITELIST_DUPLICATE_CODE=Duplicate code
+# XMSG, 255
+MSG_URL_WHITELIST_DUPLICATE_VALUE=Duplicate code value
+# XMSG, 255
+MSG_URL_WHITELIST_UNCHANGEABLE=URL allowlist {0} may not be changed as it is already used.
+# XMSG, 255
+MSG_URL_WHITELIST_SAVE_SUCCESS=URL allowlist successfully saved.
+# XMSG, 255
+MSG_URL_WHITELIST_DELETED=URL allowlist successfully deleted.
+# XMSG, 255
+MSG_URL_WHITELIST_IMPORTED=Legacy URL allowlists successfully imported.
+# XMSG, 255
+MSG_URL_WHITELIST_COPIED=URL allowlist successfully copied and saved.
+# XMSG, 255
+MSG_URL_WHITELIST_COPY_FAILURE=Failed to copy URL allowlist.
+
+#----------------------------- User deletion ----------------------------
+
+# XMSG, 30
+MSG_USER_DELETED_SUCCESS=User deleted successfully 
+# XMSG, 30
+MSG_USER_DELETED_FAIL=User deleted fail 
+
+# XMSG, 60
+MSG_USER_LOG_DELETED_SUCCESS=User's change log deleted successfully 
+# XMSG, 60
+MSG_USER_LOG_DELETED_FAIL=User's change log deleted fail 
+
+#------------------------------ Home page widget -------------------------
+# XMSG, 120
+MSG_INNOOFFICE_HOMEPAGE_SAVED=Innovation office home page saved successfully
+
+# XMSG, 120
+MSG_COMMUNITY_HOMEPAGE_SAVED=Community home page saved successfully
+
+#------------------------------ Integration -----------------------------
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_DELETED=Integration Mapping successfully deleted.
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_SYNCHRONIZED=Integration Mapping successfully synchronized.
+# XMSG, 255
+MSG_INTEGRATION_MONITOR_DELETED=Integration History successfully deleted.
+# XMSG, 255
+MSG_NOTIFICATION_MONITOR_DELETED=Notification successfully deleted.
+# XMSG, 255
+MSG_NOTIFICATION_MONITOR_UPDATED=Notification will be resent.
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_SAVED=Integration Mapping saved successully.
+# XMSG, 255
+MSG_INTEGRATION_TECHNICALNAME_DUPLICATE_WARNING=The technical name of API is duplicated,please provide an unique one.
+# XMSG, 255
+MSG_INTEGRATION_API_REMOVED_FROM_CAMPAIGN=Refresh failed,this query api has been removed from campaign integration.
+# XMSG, 255
+MSG_INTEGRATION_TECHNICALNAME_DELETION_WARNING=You can not delete it because it was used.
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_UNCHANGABLE_WARNING=You can not change mapping because it was used.
+# XMSG, 255
+MSG_INTEGRATION_TECHNICALNAME_UNCHANGABLE_WARNING=You can not change technical name because it was used.
+# XMSG, 255
+MSG_INTEGRATION_API_NO_CREATE_OBJECT_PRIVILEGE=You have no privilege to create object through integration api.
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_FIELD_CONFIG_INVALID=Mapping Configuration in {0} with field {1} is invalid.
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_FIELD_EMPTY_TECHNAME=Empty target system attributes exisit in request mapping, please remove it.
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_FIELD_DUPLICATE_WARNING=The field {0} has been mapped, please choose the other ones.
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_ADD_CHILD_WARNING=Can't add child for a mapped filed.
+# XMSG, 255
+MSG_INTEGRATION_LAYOUT_FIELD_DUPLICATE_WARNING=The field {0} has been used, please choose the other ones.
+
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_IMPORT_CONFIRM=The mapping configuration will be overwrite, confirm it ?
+
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_SYSTEM_DUPLICATE_WARNING=The mapping system {0} has been mapped, please choose the other ones.
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_SYSTEM_EMPTY_WARNING=please choose one mapping system.
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_FIELD_DISPLAY_SEQUENCE_MISS_WARNING=The display sequence number "{0}" is missing in "{1}" of "{2}", please input it.
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_FIELD_DISPLAY_SEQUENCE_DUPLICATE_WARNING=The mapping field(s) "{0}" have same display sequence number in "{1}" of "{2}", please choose the other ones.
+# XMSG, 255
+MSG_INTEGRATION_MAPPING_SYSTEM_NO_INTEGRATION_SELECTED=No integration API selected. Please config in Integration first.
+
+# XMSG, 255
+MSG_CAMPAIGN_INTEGRATION_DISPLAY_ADD_LIMIT=You can only add 11 items for the display layout
+# XMSG, 255
+MSG_CAMPAIGN_INTEGRATION_PREVIEW_NO_DATA= Please config display layout first
+# XMSG, 255
+MSG_CAMPAIGN_INTEGRATION_LAYOUT_FIELD_NULL = Mapping Field Code or Display Name is required
+# XMSG, 255
+MSG_CAMPAIGN_INTEGRATION_LAYOUT_FIELD_BLANK = Mapping Field Code or Display Name can not left it as blank
+
+#------------------------------- Idea Merge Rule ------------------------
+# XMSG, 255
+MSG_IDEA_MERGE_RULE_SAVED=Idea merge rule saved successfully.
+
+#------------------------------- Notification System Setting ---------------------
+# XMSG, 255
+MSG_NOTIFICATION_SETTING_SAVED=Notification setting saved successully.
+# XMSG, 255
+MSG_NOTIFICATION_SETTING_RECEIVERS_EMPTY=E-Mail Receiver list is mandatory
+#------------------------------- Quick Links For Idea/Campaign List ---------------------
+# XMSG, 255
+MSG_QUICK_LINK_STANDARD_NOT_ALLOW_TO_DELETE=Standard quick links are not allowed to delete.
+# XMSG, 255
+MSG_QUICK_LINK_STANDARD_ITEM_EXISTED=Standard quick link item with code "{0}" is already existed.
+# XMSG, 255
+MSG_QUICK_LINK_URL_MAX_LENGTH_VIOLATED=Quick link url's maximum length is 4000 characters.
+
+#-----------------------------gamification ---------
+# XMSG, 255
+MSG_GAMIFICATION_SETTING_SAVED=Gamification setting saved successfully.
+# XMSG, 255
+MSG_GAMIFICATION_DIMENSION_COPIED=Gamification dimension successfully copied and saved.
+# XMSG, 255
+MSG_GAMIFICATION_DIMENSION_COPY_FAILURE=Failed to copy gamification dimension.
+# XMSG, 255
+MSG_GAMIFICATION_DIMENSION_SAVED=Gamification dimension saved successully.
+# XMSG, 255
+MSG_GAMIFICATION_DIMENSION_DELETED=Gamification dimension successfully deleted.
+# XMSG, 255
+MSG_GAMIFICATION_DIMENSION_TECHNICAL_NAME_NOT_CHANGED=Technical name of dimension could not be changed.
+# XMSG, 255
+MSG_GAMIFICATION_DIMENSION_TECHNICAL_NAME_DUPLICATED=Technical name of dimension is duplicated.
+# XMSG, 255
+MSG_GAMIFICATION_DIMENSION_CANNOT_DELETE=This dimension which has already generated some activites cannot be deleted.
+
+# XMSG, 255
+MSG_GAMIFICATION_BADGE_VALUE_INVALID=The value of badge {0} is invalid.
+# XMSG, 255
+MSG_GAMIFICATION_ACTIVITY_VALUE_INVALID=Gamification activity value is invalid.
+# XMSG, 255
+MSG_GAMIFICATION_PHASE_CODE_MISSING=Gamification activity phase code is missing.
+# XMSG, 255
+MSG_GAMIFICATION_WITHIN_TIME_INVALID=Gamification activity within-time is invalid.
+# XMSG, 255
+MSG_GAMIFICATION_ACTIVITY_CODE_MISSING=Gamification activity code is missing.
+# XMSG, 255
+MSG_GAMIFICATION_ACTIVITY_MISSING=Gamification activity is missing.
+# XMSG, 255
+MSG_GAMIFICATION_DIMENSION_ONLY_FIVE_ACTIVE=The maximum active dimensions are 5.
+# XMSG, 255
+MSG_GAMIFICATION_DIMENSION_ACTIVITIES_DUPLICATED=Activity "{0}" is duplicated for this dimension.
+# XMSG, 255
+MSG_GAMIFICATION_DIMENSION_ACTIVITY_AT_LEAST_ONE_EXISTED=Gamification dimension is required to contain at least one activity
+# XMSG, 255
+MSG_GAMIFICATION_DIMENSION_BADGE_DUPLICATED_VALUE=The value of badge "{0}"  is dupidated for this dimension.
+
+# XMSG, 255
+MSG_CUSTOM_REPORTS_IDENTITY_ID_NOT_EXISTED=Idenity id is not existed.
+# XMSG, 255
+MSG_CUSTOM_REPORTS_USER_NOT_INNO_MANAGER=Only Innovation Manager can do this action.

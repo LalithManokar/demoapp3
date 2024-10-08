@@ -1,0 +1,45 @@
+<core:FragmentDefinition
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+        >
+    <ResponsivePopover
+            showHeader="true"
+            horizontalScrolling ="false"
+            placement="Left">
+        <customHeader>
+			<VBox>
+				<Text text="{CommentData>/NAME}" class = "sapUiSmallMarginTop sapUiSmallMarginBegin" />
+				<Text text="{CommentData>/NAME}" class = "sapUiSmallMarginTop sapUiSmallMarginBegin" />
+			</VBox>
+		</customHeader>
+        <content>
+            <VBox>
+                <List
+                    showSeparators="All"
+                    items="{path : 'IdeaComment>/', sorter:[{path: 'CREATED_AT', descending: true}], templateShareable:'false'}"
+                    id="commentList"
+                    noDataText="{i18n>COMMENT_NO_DATA}"
+                    inset="false"
+                    growing="false">
+        			<items>
+        				<CustomListItem class="sapInoNoticeCommentItem">
+        					<content>
+        					    <core:Fragment fragmentName="sap.ino.vc.notice.fragments.CommentListItem" type="XML" />
+        					</content>
+        				</CustomListItem>
+        			</items>
+        		</List>
+        		<FeedInput
+                    id="commentInputField"
+                    post="commentMixinSubmit"
+                    placeholder="{i18n>COMMENT_INPUT_PLACEHOLDER}"
+                    value="{path:'comment>/COMMENT', type:null}"
+                    icon="{ path:'view>/USER_IMAGE_ID', formatter:'.formatter.userIcon' }"
+                    class="sapInoIdeaCommentItemInput"
+                />
+    		</VBox>
+        </content>
+    </ResponsivePopover>
+</core:FragmentDefinition>

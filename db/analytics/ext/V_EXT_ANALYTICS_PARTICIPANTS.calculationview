@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_EXT_ANALYTICS_PARTICIPANTS" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED">
+  <descriptions defaultDescription="Participants"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="V_ANALYTICS_IDEA_ACTOR" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_ACTOR</resourceUri>
+    </DataSource>
+    <DataSource id="Co-Author$$$$V_ANALYTICS_IDEA_ACTOR$$" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_ACTOR</resourceUri>
+    </DataSource>
+    <DataSource id="Commentator$$$$V_ANALYTICS_IDEA_ACTOR$$" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_ACTOR</resourceUri>
+    </DataSource>
+    <DataSource id="Evaluator$$$$V_ANALYTICS_IDEA_ACTOR$$" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_ACTOR</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Author">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="AUTHOR_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="ACTION_DATE_YEAR_MONTH"/>
+        <viewAttribute id="ACTION_DATE_YEAR"/>
+        <viewAttribute id="ACTION_DATE_MONTH"/>
+        <viewAttribute id="ACTION_DATE_MONTH_NUMBER"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#V_ANALYTICS_IDEA_ACTOR">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="AUTHOR_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR_MONTH" source="ACTION_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR" source="ACTION_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH" source="ACTION_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_NUMBER" source="ACTION_DATE_MONTH_NUMBER"/>
+      </input>
+      <filter>&quot;ROLE_CODE&quot; = 'IDEA_SUBMITTER'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Co-Author">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="COAUTHOR_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="ACTION_DATE_YEAR_MONTH"/>
+        <viewAttribute id="ACTION_DATE_YEAR"/>
+        <viewAttribute id="ACTION_DATE_MONTH"/>
+        <viewAttribute id="ACTION_DATE_MONTH_NUMBER"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Co-Author$$$$V_ANALYTICS_IDEA_ACTOR$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COAUTHOR_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR_MONTH" source="ACTION_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR" source="ACTION_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH" source="ACTION_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_NUMBER" source="ACTION_DATE_MONTH_NUMBER"/>
+      </input>
+      <filter>&quot;ROLE_CODE&quot; = 'IDEA_CONTRIBUTOR'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Commentator">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="COMMENTATOR_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="COMMENT_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="ACTION_DATE_YEAR_MONTH"/>
+        <viewAttribute id="ACTION_DATE_YEAR"/>
+        <viewAttribute id="ACTION_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="ACTION_DATE_MONTH"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Commentator$$$$V_ANALYTICS_IDEA_ACTOR$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENTATOR_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_ID" source="COMMENT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR_MONTH" source="ACTION_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR" source="ACTION_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_NUMBER" source="ACTION_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH" source="ACTION_DATE_MONTH"/>
+      </input>
+      <filter>&quot;ROLE_CODE&quot; = 'COMMENT_OWNER'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Evaluator">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="EVALUATOR_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="EVALUATION_ID"/>
+        <viewAttribute id="ACTION_DATE_YEAR_MONTH"/>
+        <viewAttribute id="ACTION_DATE_YEAR"/>
+        <viewAttribute id="ACTION_DATE_MONTH"/>
+        <viewAttribute id="ACTION_DATE_MONTH_NUMBER"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Evaluator$$$$V_ANALYTICS_IDEA_ACTOR$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATOR_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_ID" source="EVALUATION_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR_MONTH" source="ACTION_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR" source="ACTION_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH" source="ACTION_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_NUMBER" source="ACTION_DATE_MONTH_NUMBER"/>
+      </input>
+      <filter>&quot;ROLE_CODE&quot; = 'EVALUATION_OWNER'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:UnionView" id="Union_1">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="ACTION_DATE_MONTH"/>
+        <viewAttribute id="ACTION_DATE_YEAR"/>
+        <viewAttribute id="ACTION_DATE_YEAR_MONTH"/>
+        <viewAttribute id="ACTION_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="AUTHOR_ID"/>
+        <viewAttribute id="COAUTHOR_ID"/>
+        <viewAttribute id="COMMENTATOR_ID"/>
+        <viewAttribute id="EVALUATOR_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="COMMENT_ID"/>
+        <viewAttribute id="EVALUATION_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input emptyUnionBehavior="NO_ROW" node="#Author">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH" source="ACTION_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR" source="ACTION_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR_MONTH" source="ACTION_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_NUMBER" source="ACTION_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="AUTHOR_ID" source="AUTHOR_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COAUTHOR_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMMENTATOR_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVALUATOR_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMMENT_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVALUATION_ID" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Co-Author">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH" source="ACTION_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR" source="ACTION_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR_MONTH" source="ACTION_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_NUMBER" source="ACTION_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="AUTHOR_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COAUTHOR_ID" source="COAUTHOR_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMMENTATOR_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVALUATOR_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMMENT_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVALUATION_ID" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Commentator">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH" source="ACTION_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR" source="ACTION_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR_MONTH" source="ACTION_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_NUMBER" source="ACTION_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="AUTHOR_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COAUTHOR_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENTATOR_ID" source="COMMENTATOR_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVALUATOR_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_ID" source="COMMENT_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVALUATION_ID" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Evaluator">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH" source="ACTION_DATE_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR" source="ACTION_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR_MONTH" source="ACTION_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_NUMBER" source="ACTION_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="AUTHOR_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COAUTHOR_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMMENTATOR_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATOR_ID" source="EVALUATOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMMENT_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_ID" source="EVALUATION_ID"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Union_1">
+    <attributes>
+      <attribute id="AUTHOR_ID" hidden="true" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="AUTHOR_ID"/>
+        <keyMapping columnObjectName="Union_1" columnName="AUTHOR_ID"/>
+      </attribute>
+      <attribute id="COAUTHOR_ID" hidden="true" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="COAUTHOR_ID"/>
+        <keyMapping columnObjectName="Union_1" columnName="COAUTHOR_ID"/>
+      </attribute>
+      <attribute id="COMMENTATOR_ID" hidden="true" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="COMMENTATOR_ID"/>
+        <keyMapping columnObjectName="Union_1" columnName="COMMENTATOR_ID"/>
+      </attribute>
+      <attribute id="EVALUATOR_ID" hidden="true" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="EVALUATOR_ID"/>
+        <keyMapping columnObjectName="Union_1" columnName="EVALUATOR_ID"/>
+      </attribute>
+      <attribute id="COMMENT_ID" hidden="true" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="COMMENT_ID"/>
+        <keyMapping columnObjectName="Union_1" columnName="COMMENT_ID"/>
+      </attribute>
+      <attribute id="EVALUATION_ID" hidden="true" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="EVALUATION_ID"/>
+        <keyMapping columnObjectName="Union_1" columnName="EVALUATION_ID"/>
+      </attribute>
+      <attribute id="ACTION_DATE_MONTH" order="13" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Month"/>
+        <keyMapping columnObjectName="Union_1" columnName="ACTION_DATE_MONTH"/>
+      </attribute>
+      <attribute id="ACTION_DATE_YEAR" order="14" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Year"/>
+        <keyMapping columnObjectName="Union_1" columnName="ACTION_DATE_YEAR"/>
+      </attribute>
+      <attribute id="ACTION_DATE_YEAR_MONTH" order="15" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Year/Month"/>
+        <keyMapping columnObjectName="Union_1" columnName="ACTION_DATE_YEAR_MONTH"/>
+      </attribute>
+      <attribute id="ACTION_DATE_MONTH_NUMBER" order="16" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Month (Number)"/>
+        <keyMapping columnObjectName="Union_1" columnName="ACTION_DATE_MONTH_NUMBER"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID$local">
+        <keyMapping columnObjectName="Union_1" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="IDENTITY_ID$local">
+        <keyMapping columnObjectName="Union_1" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="IDEA_ID$local">
+        <keyMapping columnObjectName="Union_1" columnName="IDEA_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures>
+      <measure id="SUBMITTER_COUNT" hidden="false" order="1" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER">
+        <descriptions defaultDescription="Author Count"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="AUTHOR_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="CONTRIBUTOR_COUNT" hidden="false" order="2" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER">
+        <descriptions defaultDescription="Contributor Count"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="COAUTHOR_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="COMMENTATOR_COUNT" hidden="false" order="3" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER">
+        <descriptions defaultDescription="Commentator Count"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="COMMENTATOR_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="COMMENT_COUNT" hidden="false" order="10" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER">
+        <descriptions defaultDescription="Number of Comments"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="COMMENT_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="EVALUATOR_COUNT" hidden="false" order="11" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER">
+        <descriptions defaultDescription="Number of Evaluators"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="EVALUATOR_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="EVALUATION_COUNT" hidden="false" order="12" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER">
+        <descriptions defaultDescription="Number of Evaluations"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="EVALUATION_ID"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+    <sharedDimensions>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION">
+        <attributes>
+          <attributeRef>#CAMPAIGN_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>CAMPAIGN_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION">
+        <attributes>
+          <attributeRef>#IDENTITY_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDENTITY_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION">
+        <attributes>
+          <attributeRef>#IDEA_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDEA_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="inner"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+    </sharedDimensions>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="false" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="176" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Author" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="20" y="631"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Co-Author" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="176" y="625"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Commentator" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="330" y="631"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Evaluator" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="480" y="631"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Union_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="176" y="460"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape modelObjectName="Union_1" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+        <upperLeftCorner x="472" y="124"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="946" y="209"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="946" y="16"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="16" y="96"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "STATUS AUTHORIZATION USELESS";
+table.columns = [
+    {name = "ID";             sqlType = INTEGER;                nullable = false;},
+    {name = "ID_OF_STATUS_STAGE";  sqlType = INTEGER;          nullable = false;},
+    {name = "SETTING_CODE"; sqlType = VARCHAR; length = 100; nullable = false; comment = "Setting code";},
+    {name = "VALUE"; sqlType = INTEGER;  nullable = false; comment = "0 OR 1";}
+];  
+table.primaryKey.pkcolumns = ["ID_OF_STATUS_STAGE"];  
+    

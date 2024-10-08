@@ -1,0 +1,40 @@
+schema = "SAP_INO";
+query = "select distinct id as campaign_id
+        from \"sap.ino.db.campaign::t_campaign\" as campaign
+        where campaign.status_code = 'sap.ino.config.CAMP_PUBLISHED' 
+            and campaign.register_from is not null
+            and campaign.register_to is not null
+            and campaign.valid_to > current_utctimestamp 
+            and campaign.id not in
+            ( select distinct object_id as campaign_id
+            from \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_identity_role
+            inner join \"sap.ino.db.iam::v_auth_application_user\" as suser 
+                on suser.id = object_identity_role.identity_id and
+                    object_identity_role.object_type_code = 'CAMPAIGN' and
+                    ( object_identity_role.role_code = 'CAMPAIGN_MANAGER' or 
+                      object_identity_role.role_code = 'CAMPAIGN_USER'
+                    )) and (campaign.IS_OPEN_REGISTER_SETTING is null or campaign.IS_OPEN_REGISTER_SETTING = 0)
+        union all 
+        select distinct id as campaign_id
+        from \"sap.ino.db.campaign::t_campaign\" as campaign
+        inner join \"sap.ino.db.iam::v_auth_object_identity_limitation_action\" as limitation
+        on limitation.object_id = campaign.id and limitation.object_type_code = 'CAMPAIGN' and limitation.action_code = 'CAMPAIGN_REGISTER' and limitation.disabled >= 0
+        where campaign.status_code = 'sap.ino.config.CAMP_PUBLISHED' 
+            and campaign.register_from is not null
+            and campaign.register_to is not null
+            and campaign.valid_to > current_utctimestamp 
+            and campaign.id not in
+            ( select distinct object_id as campaign_id
+            from \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_identity_role
+            inner join \"sap.ino.db.iam::v_auth_application_user\" as suser 
+                on suser.id = object_identity_role.identity_id and
+                    object_identity_role.object_type_code = 'CAMPAIGN' and
+                    ( object_identity_role.role_code = 'CAMPAIGN_MANAGER' or 
+                      object_identity_role.role_code = 'CAMPAIGN_USER'
+                    ))
+        with read only";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive",
+                   "sap.ino.db.iam::v_auth_application_user",
+                   "sap.ino.db.iam::v_auth_object_identity_limitation_action"];

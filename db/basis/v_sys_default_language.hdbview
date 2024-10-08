@@ -1,0 +1,10 @@
+schema = "SAP_INO";
+query = "
+    select language.*
+    from \"sap.ino.db.basis::v_languages\" as language
+    inner join \"sap.ino.db.basis::v_local_system_setting_full\" as default_language
+        on language.code = default_language.value
+        and default_language.code = 'sap.ino.config.DEFAULT_SYSTEM_LANGUAGE'
+with read only";
+
+depends_on_view = ["sap.ino.db.basis::v_languages", "sap.ino.db.basis::v_local_system_setting_full"];

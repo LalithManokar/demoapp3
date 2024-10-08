@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_EVALUATION_REQUEST_RESPONSE_TIME" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="V_ANALYTICS_EVALUATION_REQUEST_RESPONSE_TIME"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time">
+    <descriptions/>
+    <attributes>
+      <attribute id="EVAL_REQ_ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="EVAL_REQ_ID"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="EVAL_REQ_ID"/>
+      </attribute>
+      <attribute id="ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ID"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="ID"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_ID"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_PHASE_CODE" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_PHASE_CODE"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="IDEA_PHASE_CODE"/>
+      </attribute>
+      <attribute id="DESCRIPTION" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="DESCRIPTION"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="DESCRIPTION"/>
+      </attribute>
+      <attribute id="ACCEPT_DATE" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ACCEPT_DATE"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="ACCEPT_DATE"/>
+      </attribute>
+      <attribute id="COMPLETE_DATE" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="COMPLETE_DATE"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="COMPLETE_DATE"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="STATUS_CODE"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="ACCEPTED_ON_TIME" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ACCEPTED_ON_TIME"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="ACCEPTED_ON_TIME"/>
+      </attribute>
+      <attribute id="COMPLETED_ON_TIME" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="COMPLETED_ON_TIME"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="COMPLETED_ON_TIME"/>
+      </attribute>
+      <attribute id="OWNER_ID" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="OWNER_ID"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="OWNER_ID"/>
+      </attribute>
+      <attribute id="ACCEPTED_PROCESSING_TIME_SCALE" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ACCEPTED_PROCESSING_TIME_SCALE"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="ACCEPTED_PROCESSING_TIME_SCALE"/>
+      </attribute>
+      <attribute id="COMPLETED_PROCESSING_TIME_SCALE" order="13" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="COMPLETED_PROCESSING_TIME_SCALE"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="COMPLETED_PROCESSING_TIME_SCALE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="15" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CAMPAIGN_ID"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="ACCEPTED_ON_TIME_TEXT" order="16" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ACCEPTED_ON_TIME_TEXT"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="ACCEPTED_ON_TIME_TEXT"/>
+      </attribute>
+      <attribute id="COMPLETED_ON_TIME_TEXT" order="17" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="COMPLETED_ON_TIME_TEXT"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="COMPLETED_ON_TIME_TEXT"/>
+      </attribute>
+      <attribute id="ACCEPTED_PROCESSING_TIME_SCALE_TEXT" order="18" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ACCEPTED_PROCESSING_TIME_SCALE_TEXT"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="ACCEPTED_PROCESSING_TIME_SCALE_TEXT"/>
+      </attribute>
+      <attribute id="COMPLETED_PROCESSING_TIME_SCALE_TEXT" order="19" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="COMPLETED_PROCESSING_TIME_SCALE_TEXT"/>
+        <keyMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="COMPLETED_PROCESSING_TIME_SCALE_TEXT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="COUNT" order="14" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="COUNT"/>
+        <measureMapping schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.evaluation.ext::v_ext_evaluation_request_response_time" columnName="COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

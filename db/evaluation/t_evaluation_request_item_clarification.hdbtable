@@ -1,0 +1,13 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Evaluation Request Item clarification";
+table.columns = [
+    {name = "ID";                   sqlType = INTEGER;   nullable = false;                 comment = "Human readable identifier";},
+    {name = "EVAL_REQ_ID";          sqlType = INTEGER;   nullable = false;                 comment = "Evaluation Request ID";},
+    {name = "EVAL_REQ_ITEM_ID";     sqlType = INTEGER;   nullable = false;                 comment = "Evaluation Request Item ID";},
+    {name = "CONTENT";              sqlType = NVARCHAR;  nullable = false;  length = 1024; comment = "Content for clarification"; },
+    {name = "TO_IDENTITY";          sqlType = INTEGER;   nullable = true;                  comment = "To expert or manager: identity id"; },
+    {name = "CREATED_BY_ID";        sqlType = INTEGER;   nullable = false;                 comment = "Creator"; },
+    {name = "CREATED_AT";           sqlType = TIMESTAMP; nullable = false;                 comment = "creation timestamp";}
+];
+table.primaryKey.pkcolumns = ["ID"];

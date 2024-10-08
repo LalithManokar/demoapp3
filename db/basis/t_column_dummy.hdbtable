@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Columnar Dummy Table";
+table.columns = [
+    {name = "DUMMY"; sqlType = VARCHAR; length = 1; nullable = false; comment = "Dummy";}
+];
+table.primaryKey.pkcolumns = ["DUMMY"];

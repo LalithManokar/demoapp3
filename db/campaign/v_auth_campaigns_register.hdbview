@@ -1,0 +1,26 @@
+schema = "SAP_INO";
+query = "
+	select register.ID as register_id
+	from
+	    \"sap.ino.db.campaign::t_registration\" as register
+	inner join
+	    \"sap.ino.db.iam::v_auth_application_user\" as auth_user
+	on
+	    register.APPLICANT_ID = auth_user.ID
+	inner join
+	    \"sap.ino.db.campaign::t_campaign\" as campaign
+	on
+	    register.CAMPAIGN_ID = campaign.ID
+	and
+	    campaign.IS_REGISTER_AUTO_APPROVE = 1
+	union distinct
+	select register.ID as register_id
+	from
+	    \"sap.ino.db.campaign::t_registration\" as register
+	where exists (
+	        select campaign_id from \"sap.ino.db.campaign::v_auth_campaigns_manage\" as camp_manage where camp_manage.campaign_id = register.CAMPAIGN_ID
+	    )
+";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign", "sap.ino.db.campaign::t_registration"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user", "sap.ino.db.campaign::v_auth_campaigns_manage"];

@@ -1,0 +1,12 @@
+schema = "SAP_INO";
+query = "
+        select distinct object_id as campaign_id, object_identity_role.identity_id
+        from \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_identity_role
+            inner join \"sap.ino.db.iam::t_role_privilege\" as role_privilege
+                on  object_identity_role.role_code = role_privilege.role_code and
+                    object_identity_role.object_type_code = 'CAMPAIGN' and
+                    role_privilege.privilege = 'CAMP_IDEA_BACKOFFICE'
+        with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_role_privilege"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];

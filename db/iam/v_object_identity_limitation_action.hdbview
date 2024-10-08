@@ -1,0 +1,16 @@
+schema = "SAP_INO";
+query = "
+   select people.member_id as identity_id,
+          people.group_id,
+          action.OBJECT_ID,
+          action.OBJECT_TYPE_CODE,
+          action.ACTION_CODE,
+          action.DISABLED
+   from \"sap.ino.db.iam::v_group_member_transitive\" as people
+   inner join \"sap.ino.db.iam::v_object_identity_role_action\" as action
+   on people.group_id = action.identity_id
+   where people.type_code = 'USER'
+        with read only
+";
+
+depends_on_view = ["sap.ino.db.iam::v_group_member_transitive","sap.ino.db.iam::v_object_identity_role_action"];

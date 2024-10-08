@@ -1,0 +1,16 @@
+schema = "SAP_INO";
+query = "
+        select idea.id as idea_id, union_privilege.identity_id 
+        from
+        (select campaign_id, null as resp_value_code, identity_id from \"sap.ino.db.idea::v_auth_backoffice_campaign_privilege\"
+        union
+        select null as campaign_id, resp_value_code, identity_id from \"sap.ino.db.idea::v_auth_backoffice_responsibility_privilege\")
+        as union_privilege
+            inner join \"sap.ino.db.idea::t_idea\" as idea
+                on  union_privilege.campaign_id = idea.campaign_id
+                    or union_privilege.resp_value_code = idea.resp_value_code
+        with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea"];
+depends_on_view = ["sap.ino.db.idea::v_auth_backoffice_campaign_privilege",
+                   "sap.ino.db.idea::v_auth_backoffice_responsibility_privilege"];

@@ -1,0 +1,6 @@
+schema = "SAP_INO";
+query = "select distinct evaluation.idea_id as id
+	from \"sap.ino.db.evaluation::v_auth_evaluation_create\" evaluation
+";
+
+depends_on_view = ["sap.ino.db.evaluation::v_auth_evaluation_create"];

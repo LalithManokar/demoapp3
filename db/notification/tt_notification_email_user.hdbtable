@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE;
+table.temporary = true;
+table.description = "Output userid for email process";
+table.columns = [
+    {name = "USER_ID";           sqlType = INTEGER;                 nullable = false; comment = "Receipient (user) of Notification. Foreign key to t_identity.ID";}
+];

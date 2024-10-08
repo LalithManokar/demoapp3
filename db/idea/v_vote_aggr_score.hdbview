@@ -1,0 +1,75 @@
+schema = "SAP_INO";
+query = "
+select 
+    idea_id,
+    neg_score,
+    pos_score,
+    vote_count,
+    case when type_code = 'STAR' then avg_score else sum_score end as score,
+    exp_neg_score,
+    exp_pos_score,
+    exp_vote_count,
+    case when type_code = 'STAR' then exp_avg_score else exp_sum_score end as exp_score,
+    group_score,
+    type_code
+from (
+    select idea.id as idea_id, 
+           vote_scores.sum_score,
+           vote_scores.avg_score,
+           vote_scores.pos_score,
+           vote_scores.neg_score,
+           vote_scores.vote_count,
+           exp_scores.sum_score as exp_sum_score,
+           exp_scores.avg_score as exp_avg_score,
+           exp_scores.pos_score as exp_pos_score,
+           exp_scores.neg_score as exp_neg_score,
+           exp_scores.vote_count as exp_vote_count,
+           group_scores.sum_score as group_score,
+           vote_type.type_code
+    from \"sap.ino.db.idea::t_idea\" as idea
+        inner join \"sap.ino.db.campaign::t_campaign\" as campaign
+            on campaign.id = idea.campaign_id
+        inner join \"sap.ino.db.campaign::t_vote_type\" as vote_type
+            on vote_type.code = campaign.vote_type_code
+        left outer join  
+            ( select 
+                    idea_id,
+                    sum(score) as sum_score,
+                    avg(score) as avg_score,
+                    sum(pos_score) as pos_score,
+                    sum(neg_score) as neg_score,
+                    count(distinct id) as vote_count
+                    from \"sap.ino.db.idea::v_vote_score\" 
+                    group by idea_id
+            ) as vote_scores
+        on vote_scores.idea_id = idea.id
+        left outer join 
+            ( select 
+                    idea_id,
+                    sum(score) as sum_score,
+                    avg(score) as avg_score,
+                    sum(pos_score) as pos_score,
+                    sum(neg_score) as neg_score,
+                    count(distinct id) as vote_count
+                    from \"sap.ino.db.idea::v_vote_expert_score\"  
+                    group by idea_id
+        ) as exp_scores
+        on exp_scores.idea_id = idea.id
+        left outer join 
+            ( select 
+                    idea_id,
+                    sum(score) as sum_score
+                    from \"sap.ino.db.idea::v_group_vote_score\"  
+                    group by idea_id
+        ) as group_scores
+        on group_scores.idea_id = idea.id
+)
+";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign",
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.campaign::t_vote_type"];
+
+depends_on_view =  ["sap.ino.db.idea::v_vote_score",
+                    "sap.ino.db.idea::v_vote_expert_score",
+                    "sap.ino.db.idea::v_group_vote_score"];

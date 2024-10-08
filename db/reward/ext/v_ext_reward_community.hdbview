@@ -1,0 +1,28 @@
+schema = "SAP_INO_EXT"; 
+query  = " select 
+        reward.EMPLOYEE_ID,
+    	reward.EMPLOYEE_NAME,
+    	(SELECT \"sap.ino.db.iam::f_mask_user_name\"(reward.user_name) FROM DUMMY) AS user_name,
+        reward.ID,
+    	reward.REWARD_LIST_ID,
+    	reward.IDEA_PHASE_CODE,
+    	reward.IDEA_PHASE_TEXT,
+    	reward.STATUS_CODE,
+    	reward.REWARD_STATUS_TEXT,
+    	reward.IDEA_ID,
+    	reward.IDEA_NAME,
+    	reward.CAMPAIGN_ID,
+    	reward.CAMPAIGN_NAME,
+    	reward.REWARD_AMOUNT,
+    	reward.REWARD_UNIT,
+    	reward.REWARD_UNIT_DESCRIPTION,
+    	reward.REWARD_SHARE,
+    	reward.DOWNLOAD_COUNT,
+    	reward.CONTRIBUTION_SHARE,
+    	reward.CREATED_AT,
+    	reward.GROUP_ORDER
+    from \"sap.ino.db.reward::v_reward_community\" as reward 
+    where reward.reward_list_id in (select reward_list_id from \"sap.ino.db.reward::v_auth_rewards_read\")
+    with read only";
+depends_on_view = ["sap.ino.db.reward::v_reward_community",
+                    "sap.ino.db.reward::v_auth_rewards_read"];

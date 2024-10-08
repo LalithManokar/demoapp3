@@ -1,0 +1,21 @@
+schema = "SAP_INO_EXT";
+query = "select 
+            ID,
+            created_at,
+            CREATED_BY_ID,
+            changed_at,
+            CHANGED_BY_ID,
+            object_id,
+            comment,
+            parent_id,
+                         
+            changed_by_name,
+            changed_by_image_id,
+            has_attachments,
+            has_replies,
+            can_update,
+            can_delete
+         from \"sap.ino.db.idea::v_idea_internal_note\" as idea_internal_note
+         where idea_internal_note.parent_id is not null and idea_internal_note.id in (select internal_note_id from \"sap.ino.db.idea::v_auth_internal_note_read\")
+         with read only";
+depends_on_view = ["sap.ino.db.idea::v_idea_internal_note", "sap.ino.db.idea::v_auth_internal_note_read"];

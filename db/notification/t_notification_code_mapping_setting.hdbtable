@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Notification code mapping to personal setting";
+table.columns = [
+    { name = "CODE"; sqlType = VARCHAR;  length = 500;  nullable = false; comment = "Identifier";},
+    { name = "OBJECT_TYPE_CODE"; sqlType = VARCHAR; length = 128; nullable = false; comment = "Object type. Foreign key t_application_object.CODE";},
+    { name = "NOTIFICATION_CODE"; sqlType = VARCHAR; length = 128; nullable = false; comment = "Code that references the executed action";},
+    { name = "MAPPING_SETTING_CODE"; sqlType = VARCHAR; length = 128; nullable = false; comment = "Code that references the object type code in personal setting";},
+    { name = "SUBCATEGORY_CODE"; sqlType = VARCHAR; length = 128; nullable = true; comment = "Code that references the CATEGORY CODE";}
+];
+table.primaryKey.pkcolumns = ["CODE"];

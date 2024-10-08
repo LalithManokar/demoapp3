@@ -1,0 +1,14 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Criterion Values";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Technical key of evaluation criterion value";},
+    {name = "EVALUATION_ID"; sqlType = INTEGER; nullable = false; comment = "Evaluation where this value belongs to. Foreign key reference to t_evaluation.id";},
+    {name = "CRITERION_CODE"; sqlType = VARCHAR; length = 500; nullable = false; comment = "Evaluation where this value belongs to. Foreign key reference to t_evaluation.id";},
+    {name = "NUM_VALUE"; sqlType = DOUBLE; nullable = true; comment = "Value for datatype NUMERIC/INTEGER";},
+    {name = "BOOL_VALUE"; sqlType = TINYINT; nullable = true; comment = "Value for datatype BOOLEAN. 0 = False, 1 = true";},
+    {name = "TEXT_VALUE"; sqlType = NVARCHAR; length = 1024; nullable = true; comment = "Value for datatype TEXT";},
+    {name = "COMMENT"; sqlType = NVARCHAR; length = 1024; nullable = true; comment = "Comment to this specific value";},
+    {name = "IS_DONE"; sqlType = TINYINT; nullable = true; comment = "Marker for evaluator whether the evaluation of this criterion is done already";}
+];
+table.primaryKey.pkcolumns = ["ID"];

@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = "
+    select IDEA_ID1, IDEA_ID2,
+		(2 * MATCHES) / (COUNT1 + COUNT2) as SIM_DICE
+	from (
+		select a.IDEA_ID as IDEA_ID1, b.IDEA_ID as IDEA_ID2, COUNT(1) as MATCHES, a1.COUNT as COUNT1, b1.COUNT as COUNT2
+	    from \"sap.ino.db.idea::v_idea_tag\" a
+	    join (select IDEA_ID, count(1) as COUNT from \"sap.ino.db.idea::v_idea_tag\" group by IDEA_ID) a1
+	    on a.IDEA_ID = a1.IDEA_ID
+	    left outer join \"sap.ino.db.idea::v_idea_tag\" b
+		on a.IDEA_ID != b.IDEA_ID
+			and a.NAME = b.NAME
+	    join (select IDEA_ID, count(1) as COUNT from \"sap.ino.db.idea::v_idea_tag\" group by IDEA_ID) b1
+	    on b.IDEA_ID = b1.IDEA_ID
+	    group by a.IDEA_ID, b.IDEA_ID, a1.COUNT, b1.COUNT
+    )
+	with read only";
+
+depends_on_view = ["sap.ino.db.idea::v_idea_tag"];

@@ -1,0 +1,107 @@
+
+/* ============================================= */
+/* CSS for control WallItemLink.control */
+/* ============================================= */
+
+.sapInoWallWIL{
+    box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+    border: 2px solid #666666;
+    padding: 5px;
+    background: #219ad7; /* Old browsers */
+    background: -moz-linear-gradient(top,  #68c8f4 1%, #219ad7 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#68c8f4), color-stop(100%,#219ad7)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #68c8f4 1%,#219ad7 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #68c8f4 1%,#219ad7 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #68c8f4 1%,#219ad7 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #68c8f4 1%,#219ad7 100%); /* W3C */
+}
+
+.sapInoWallWIL.back {
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dff6ff', endColorstr='#0e5197',GradientType=0 ); /* IE6-9, backside is ok, front side messes up meta data */
+}
+
+/* gradients in combination with background-clip: text are not supported by ie, android < 4.2 or blackberry*/
+html[data-sap-ui-browser*='cr'] .sapInoWallWILIcon,
+html[data-sap-ui-browser*='moz'] .sapInoWallWILIcon {
+	background: -moz-linear-gradient(top,  #FFFFFF 1%, #CCCCCC 70%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#FFFFFF), color-stop(70%,#CCCCCC)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #FFFFFF 1%,#CCCCCC 70%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #FFFFFF 1%,#CCCCCC 70%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #FFFFFF 1%,#CCCCCC 70%); /* IE10+ */
+	background: linear-gradient(to bottom,  #FFFFFF 1%,#CCCCCC 70%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#CCCCCC',GradientType=0 ); /* IE6-9 */
+	-webkit-background-clip: text; /* Chrome & Safari only */
+	-webkit-text-fill-color: transparent; /* Chrome & Safari only */
+}
+
+.sapInoWallWILIcon {
+	line-height: 103px;
+	margin: -5px -5px;
+}
+
+.sapInoWallWIL.front {
+	text-align: center;
+	min-width: 96px;
+	min-height: 96px;
+	width: 96px;
+	height: 96px;
+	max-width: 96px;
+	max-height: 96px;
+	border-radius: 1000px;
+}
+
+.sapInoWallWILMeta {
+	width: 150px;
+	position: relative;
+	left: -27px;
+	top: -15px;
+}
+
+.sapInoWallWIL .sapInoWallWITitle {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	background-color: #009fe2;
+	color: white;
+	border: 2px solid #666666;
+	border-bottom: 0px;
+	box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+	max-width: 150px;
+}
+
+.sapInoWallWILDescription {
+	font-family: Calibri;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	background-color: #68c8f4;
+	color: white;
+	border: 2px solid #666666;
+	border-top: 0px;
+	padding: 2px 5px;
+	box-shadow: 5px 5px 30px rgba(50, 50, 50, 0.7);
+	max-width: 150px;
+}
+
+.sapInoWallWILDescription a,
+.sapInoWallWILDescription a:visited {
+	color: white;
+}
+
+.sapInoWallWILLinkIP input {
+	background-color: rgba(255,255,255,0.7);
+}
+
+.sapUiSizeCompact .sapMInputBase.sapInoWallWILLinkIP .sapMInputBaseInner {
+	height: 40px;
+    padding: 0 12px 0 12px;
+}
+
+/* preview */
+.sapInoWallWIL.sapInoWallWIPreview {
+	padding: 0;
+}
+
+/* selection overrides */
+.sapInoWallWIBSelected .front .sapInoWallWILMeta {
+	border: 2px dashed #006ca7;
+}

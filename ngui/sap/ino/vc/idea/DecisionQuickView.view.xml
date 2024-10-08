@@ -1,0 +1,39 @@
+<mvc:View
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core" controllerName="sap.ino.vc.idea.DecisionQuickView">
+	<QuickView 
+        class="sapInoIdentityCardQuickView"
+        id="decisionCard"
+        placement="HorizontalPreferredRight"
+        width="320px">
+		<pages>
+			<QuickViewPage 
+            header="{i18n>IDEA_OBJECT_FLD_REASON_DETAILS}" 
+            visible="{=${object>decision_reason_list_visible}>0}">
+				<groups>
+					<QuickViewGroup heading="{i18n>IDEA_OBJECT_FLD_REASON_INFORMATION}" >
+						<elements>
+							<QuickViewGroupElement label="{i18n>IDEA_OBJECT_FLD_DECISION_MAKER}" value="{data>DECIDER_NAME}"/>
+							<QuickViewGroupElement label="{i18n>IDEA_OBJECT_FLD_DECISION_DATE}" value="{path:'data>DECISION_DATE', type:'sap.ui.model.type.Date',
+							formatOptions:{ style: 'medium'}}"/>
+						</elements>
+					</QuickViewGroup>
+					<QuickViewGroup heading="{i18n>IDEA_OBJECT_FLD_DECISION_REASON}" >
+						<elements>
+							<QuickViewGroupElement label="{i18n>IDEA_OBJECT_FLD_DECISION_REASON}" value="{path: 'data>REASON_CODE', formatter: '.formatter.valueOption'}"
+							visible="{=${data>REASON_CODE} ? true : false}"/>
+							<QuickViewGroupElement label="{i18n>IDEA_OBJECT_FLD_REASON_COMMENTS}" value="{data>REASON}" visible="{=${data>REASON} ? true : false}"/>
+							<QuickViewGroupElement label="{i18n>IDEA_OBJECT_FLD_REASON_LINK}" value="{ parts : [{path: 'data>LINK_LABEL'}, {path: 'data>LINK_URL'}] , formatter : '.formatter.linkLabel' }" 
+							visible="{path: 'data>LINK_URL', formatter: '.formatter.urlVisible'}"
+                            url="{data>LINK_URL}"
+                            target="_blank"
+                            type="link"/>
+						</elements>
+					</QuickViewGroup>
+				</groups>
+			</QuickViewPage>
+		</pages>
+	</QuickView>
+</mvc:View>

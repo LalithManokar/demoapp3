@@ -1,0 +1,3 @@
+schema = "SAP_INO_EXT";
+query = "select * from \"sap.ino.db.campaign::v_auth_campaigns_privilege\" ";
+depends_on_view = ["sap.ino.db.campaign::v_auth_campaigns_privilege"];

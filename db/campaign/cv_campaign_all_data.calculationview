@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="cv_campaign_all_data" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="cv_campaign_all_data"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="31"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.tag::t_object_tag" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.tag::t_object_tag"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.campaign::t_campaign" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::t_campaign"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.campaign::t_campaign_t" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::t_campaign_t"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.tag::t_tag" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.tag::t_tag"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.subresponsibility::t_responsibility_stage" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.subresponsibility::t_responsibility_stage"/>
+    </DataSource>
+    <DataSource id="cv_campaign_blog_data" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.campaign/calculationviews/cv_campaign_blog_data</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="tag_assign_data" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="TAG_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.tag::t_object_tag">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TAG_ID" source="TAG_ID"/>
+      </input>
+      <filter>&quot;OBJECT_TYPE_CODE&quot;='CAMPAIGN'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="campagin_data" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="NAME"/>
+        <viewAttribute id="SHORT_NAME"/>
+        <viewAttribute id="DESCRIPTION"/>
+        <viewAttribute id="VALID_FROM"/>
+        <viewAttribute id="VALID_TO"/>
+        <viewAttribute id="SUBMIT_FROM"/>
+        <viewAttribute id="SUBMIT_TO"/>
+        <viewAttribute id="IS_BLACK_BOX"/>
+        <viewAttribute id="RESP_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.campaign::t_campaign">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VALID_FROM" source="VALID_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VALID_TO" source="VALID_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMIT_FROM" source="SUBMIT_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMIT_TO" source="SUBMIT_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_BLACK_BOX" source="IS_BLACK_BOX"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE" source="RESP_CODE"/>
+      </input>
+      <input node="#sap.ino.db.campaign::t_campaign_t">
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SHORT_NAME" source="SHORT_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DESCRIPTION" source="DESCRIPTION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="CAMPAIGN_ID"/>
+      </input>
+      <joinAttribute name="ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="tag_assign_data_with_name" cardinality="C1_N" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="OBJECT_ID"/>
+        <viewAttribute id="TAG_ID"/>
+        <viewAttribute id="TAG_NAME"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#tag_assign_data">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TAG_ID" source="TAG_ID"/>
+      </input>
+      <input node="#sap.ino.db.tag::t_tag">
+        <mapping xsi:type="Calculation:AttributeMapping" target="TAG_NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+      </input>
+      <joinAttribute name="ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_2" cardinality="C1_N" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="NAME"/>
+        <viewAttribute id="SHORT_NAME"/>
+        <viewAttribute id="VALID_FROM"/>
+        <viewAttribute id="DESCRIPTION"/>
+        <viewAttribute id="VALID_TO"/>
+        <viewAttribute id="SUBMIT_FROM"/>
+        <viewAttribute id="SUBMIT_TO"/>
+        <viewAttribute id="IS_BLACK_BOX"/>
+        <viewAttribute id="RESP_CODE"/>
+        <viewAttribute id="TAG_NAME"/>
+        <viewAttribute id="TAG_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#campagin_data">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SHORT_NAME" source="SHORT_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VALID_FROM" source="VALID_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DESCRIPTION" source="DESCRIPTION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VALID_TO" source="VALID_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMIT_FROM" source="SUBMIT_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMIT_TO" source="SUBMIT_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_BLACK_BOX" source="IS_BLACK_BOX"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE" source="RESP_CODE"/>
+      </input>
+      <input node="#tag_assign_data_with_name">
+        <mapping xsi:type="Calculation:AttributeMapping" target="TAG_NAME" source="TAG_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TAG_ID" source="TAG_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="OBJECT_ID"/>
+      </input>
+      <joinAttribute name="ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_3" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="NAME"/>
+        <viewAttribute id="VALID_FROM"/>
+        <viewAttribute id="SHORT_NAME"/>
+        <viewAttribute id="VALID_TO"/>
+        <viewAttribute id="DESCRIPTION"/>
+        <viewAttribute id="SUBMIT_FROM"/>
+        <viewAttribute id="SUBMIT_TO"/>
+        <viewAttribute id="IS_BLACK_BOX"/>
+        <viewAttribute id="RESP_CODE"/>
+        <viewAttribute id="DEFAULT_TEXT"/>
+        <viewAttribute id="DEFAULT_LONG_TEXT"/>
+        <viewAttribute id="TAG_NAME"/>
+        <viewAttribute id="TAG_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_2">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VALID_FROM" source="VALID_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SHORT_NAME" source="SHORT_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VALID_TO" source="VALID_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DESCRIPTION" source="DESCRIPTION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMIT_FROM" source="SUBMIT_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMIT_TO" source="SUBMIT_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_BLACK_BOX" source="IS_BLACK_BOX"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE" source="RESP_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TAG_NAME" source="TAG_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TAG_ID" source="TAG_ID"/>
+      </input>
+      <input node="#sap.ino.db.subresponsibility::t_responsibility_stage">
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_TEXT" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_LONG_TEXT" source="DEFAULT_LONG_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE" source="CODE"/>
+      </input>
+      <joinAttribute name="RESP_CODE"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_4" cardinality="C1_N" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="NAME"/>
+        <viewAttribute id="VALID_FROM"/>
+        <viewAttribute id="SHORT_NAME"/>
+        <viewAttribute id="VALID_TO"/>
+        <viewAttribute id="DESCRIPTION"/>
+        <viewAttribute id="SUBMIT_FROM"/>
+        <viewAttribute id="SUBMIT_TO"/>
+        <viewAttribute id="IS_BLACK_BOX"/>
+        <viewAttribute id="RESP_CODE"/>
+        <viewAttribute id="DEFAULT_TEXT"/>
+        <viewAttribute id="DEFAULT_LONG_TEXT"/>
+        <viewAttribute id="BLOG_TITLE"/>
+        <viewAttribute id="BLOG_DESCRIPTION"/>
+        <viewAttribute id="TAG_NAME"/>
+        <viewAttribute id="TAG_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_3">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VALID_FROM" source="VALID_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SHORT_NAME" source="SHORT_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VALID_TO" source="VALID_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DESCRIPTION" source="DESCRIPTION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMIT_FROM" source="SUBMIT_FROM"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMIT_TO" source="SUBMIT_TO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_BLACK_BOX" source="IS_BLACK_BOX"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="RESP_CODE" source="RESP_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_TEXT" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_LONG_TEXT" source="DEFAULT_LONG_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TAG_NAME" source="TAG_NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TAG_ID" source="TAG_ID"/>
+      </input>
+      <input node="#cv_campaign_blog_data">
+        <mapping xsi:type="Calculation:AttributeMapping" target="BLOG_TITLE" source="TITLE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="BLOG_DESCRIPTION" source="DESCRIPTION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="OBJECT_ID"/>
+      </input>
+      <joinAttribute name="ID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_4">
+    <descriptions/>
+    <attributes>
+      <attribute id="ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Human readable identifier "/>
+        <keyMapping columnObjectName="Join_4" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Name of campaign"/>
+        <keyMapping columnObjectName="Join_4" columnName="NAME"/>
+      </attribute>
+      <attribute id="VALID_FROM" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Point in time when campaign starts. From that on it is visible to its target group "/>
+        <keyMapping columnObjectName="Join_4" columnName="VALID_FROM"/>
+      </attribute>
+      <attribute id="SHORT_NAME" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Short name of campaign"/>
+        <keyMapping columnObjectName="Join_4" columnName="SHORT_NAME"/>
+      </attribute>
+      <attribute id="VALID_TO" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Point in time when campaign ends. From that on campaign is not visible any more. NULL == endless campaign "/>
+        <keyMapping columnObjectName="Join_4" columnName="VALID_TO"/>
+      </attribute>
+      <attribute id="DESCRIPTION" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Lengthy description of campaign"/>
+        <keyMapping columnObjectName="Join_4" columnName="DESCRIPTION"/>
+      </attribute>
+      <attribute id="SUBMIT_FROM" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Point in time when idea submissions to campaign start "/>
+        <keyMapping columnObjectName="Join_4" columnName="SUBMIT_FROM"/>
+      </attribute>
+      <attribute id="SUBMIT_TO" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Point in time when no ideas may be submitted any more. From that on no new ideas can be created. If NULL this is an endless campaign "/>
+        <keyMapping columnObjectName="Join_4" columnName="SUBMIT_TO"/>
+      </attribute>
+      <attribute id="RESP_CODE" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="subresponsibility code of campaign "/>
+        <keyMapping columnObjectName="Join_4" columnName="RESP_CODE"/>
+      </attribute>
+      <attribute id="RESP_DEFAULT_TEXT" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Default Text"/>
+        <keyMapping columnObjectName="Join_4" columnName="DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="RESP_DEFAULT_LONG_TEXT" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Default Long Text"/>
+        <keyMapping columnObjectName="Join_4" columnName="DEFAULT_LONG_TEXT"/>
+      </attribute>
+      <attribute id="BLOG_TITLE" order="13" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="BLOG_TITLE"/>
+        <keyMapping columnObjectName="Join_4" columnName="BLOG_TITLE"/>
+      </attribute>
+      <attribute id="BLOG_DESCRIPTION" order="14" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="DESCRIPTION"/>
+        <keyMapping columnObjectName="Join_4" columnName="BLOG_DESCRIPTION"/>
+      </attribute>
+      <attribute id="TAG_NAME" order="15" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Name of the tag"/>
+        <keyMapping columnObjectName="Join_4" columnName="TAG_NAME"/>
+      </attribute>
+      <attribute id="TAG_ID" order="16" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="TAG_ID"/>
+        <keyMapping columnObjectName="Join_4" columnName="TAG_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="IS_BLACK_BOX" order="9" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Black box campaigns are campaigns where ideas are not disclosed to other idea submitters "/>
+        <measureMapping columnObjectName="Join_4" columnName="IS_BLACK_BOX"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>  
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="99" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="tag_assign_data" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="270" y="640"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="campagin_data" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="0" y="570"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="110" y="420"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_3" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="99" y="280"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_4" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="99" y="165"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="tag_assign_data_with_name" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="238" y="530"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>     

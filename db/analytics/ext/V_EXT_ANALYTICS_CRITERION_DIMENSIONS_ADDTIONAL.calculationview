@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_CRITERION_DIMENSIONS_ADDTIONAL" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <origin/>
+  <descriptions defaultDescription="V_EXT_ANALYTICS_CRITERION_DIMENSIONS_ADDTIONAL"/>
+  <metadata changedAt="2021-06-29 13:59:23.996"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="25"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.analytics.ext::v_ext_analytics_criterion_dimensions" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.analytics.ext::v_ext_analytics_criterion_dimensions"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.analytics.ext::V_EXT_ANALYTICS_AXIS_CRITERION" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.analytics.ext::V_EXT_ANALYTICS_AXIS_CRITERION"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.analytics.ext::V_EXT_ANALYTICS_VIS_PARAM_CRITERION" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO_EXT" columnObjectName="sap.ino.db.analytics.ext::V_EXT_ANALYTICS_VIS_PARAM_CRITERION"/>
+    </DataSource>
+    <DataSource id="V_EXT_ANALYTICS_UNIT_DIMENSION" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_UNIT_DIMENSION</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CODE"/>
+        <viewAttribute id="MODEL_CODE"/>
+        <viewAttribute id="DATATYPE_CODE"/>
+        <viewAttribute id="PARENT_CRITERION_CODE"/>
+        <viewAttribute id="SEQUENCE_NO"/>
+        <viewAttribute id="IS_OVERALL_RESULT"/>
+        <viewAttribute id="UOM_CODE"/>
+        <viewAttribute id="VALUE_OPTION_LIST_CODE"/>
+        <viewAttribute id="AGGREGATION_TYPE"/>
+        <viewAttribute id="NUM_VALUE_MIN"/>
+        <viewAttribute id="NUM_VALUE_MAX"/>
+        <viewAttribute id="X_AXIS_CRITERION_CODE"/>
+        <viewAttribute id="X_AXIS_SEGMENT_NO"/>
+        <viewAttribute id="Y_AXIS_CRITERION_CODE"/>
+        <viewAttribute id="Y_AXIS_SEGMENT_NO"/>
+        <viewAttribute id="VIS_PARAM_1_CRITERION_CODE"/>
+        <viewAttribute id="VIS_PARAM_2_CRITERION_CODE"/>
+        <viewAttribute id="DEFAULT_TEXT"/>
+        <viewAttribute id="DEFAULT_LONG_TEXT"/>
+        <viewAttribute id="WEIGHT"/>
+        <viewAttribute id="AXIS_CRITERION"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.analytics.ext::v_ext_analytics_criterion_dimensions">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="MODEL_CODE" source="MODEL_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DATATYPE_CODE" source="DATATYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PARENT_CRITERION_CODE" source="PARENT_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SEQUENCE_NO" source="SEQUENCE_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_OVERALL_RESULT" source="IS_OVERALL_RESULT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="UOM_CODE" source="UOM_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VALUE_OPTION_LIST_CODE" source="VALUE_OPTION_LIST_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="AGGREGATION_TYPE" source="AGGREGATION_TYPE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NUM_VALUE_MIN" source="NUM_VALUE_MIN"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NUM_VALUE_MAX" source="NUM_VALUE_MAX"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="X_AXIS_CRITERION_CODE" source="X_AXIS_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="X_AXIS_SEGMENT_NO" source="X_AXIS_SEGMENT_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="Y_AXIS_CRITERION_CODE" source="Y_AXIS_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="Y_AXIS_SEGMENT_NO" source="Y_AXIS_SEGMENT_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIS_PARAM_1_CRITERION_CODE" source="VIS_PARAM_1_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIS_PARAM_2_CRITERION_CODE" source="VIS_PARAM_2_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_TEXT" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_LONG_TEXT" source="DEFAULT_LONG_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="WEIGHT" source="WEIGHT"/>
+      </input>
+      <input node="#sap.ino.db.analytics.ext::V_EXT_ANALYTICS_AXIS_CRITERION">
+        <mapping xsi:type="Calculation:AttributeMapping" target="AXIS_CRITERION" source="AXIS_CRITERION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="CODE"/>
+      </input>
+      <joinAttribute name="CODE"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_2" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CODE"/>
+        <viewAttribute id="MODEL_CODE"/>
+        <viewAttribute id="DATATYPE_CODE"/>
+        <viewAttribute id="PARENT_CRITERION_CODE"/>
+        <viewAttribute id="SEQUENCE_NO"/>
+        <viewAttribute id="IS_OVERALL_RESULT"/>
+        <viewAttribute id="UOM_CODE"/>
+        <viewAttribute id="VALUE_OPTION_LIST_CODE"/>
+        <viewAttribute id="AGGREGATION_TYPE"/>
+        <viewAttribute id="NUM_VALUE_MIN"/>
+        <viewAttribute id="NUM_VALUE_MAX"/>
+        <viewAttribute id="X_AXIS_CRITERION_CODE"/>
+        <viewAttribute id="X_AXIS_SEGMENT_NO"/>
+        <viewAttribute id="Y_AXIS_CRITERION_CODE"/>
+        <viewAttribute id="Y_AXIS_SEGMENT_NO"/>
+        <viewAttribute id="VIS_PARAM_1_CRITERION_CODE"/>
+        <viewAttribute id="VIS_PARAM_2_CRITERION_CODE"/>
+        <viewAttribute id="DEFAULT_TEXT"/>
+        <viewAttribute id="DEFAULT_LONG_TEXT"/>
+        <viewAttribute id="WEIGHT"/>
+        <viewAttribute id="AXIS_CRITERION"/>
+        <viewAttribute id="VIS_PARAM_CRITERION"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="MODEL_CODE" source="MODEL_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DATATYPE_CODE" source="DATATYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PARENT_CRITERION_CODE" source="PARENT_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SEQUENCE_NO" source="SEQUENCE_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_OVERALL_RESULT" source="IS_OVERALL_RESULT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="UOM_CODE" source="UOM_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VALUE_OPTION_LIST_CODE" source="VALUE_OPTION_LIST_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="AGGREGATION_TYPE" source="AGGREGATION_TYPE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NUM_VALUE_MIN" source="NUM_VALUE_MIN"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NUM_VALUE_MAX" source="NUM_VALUE_MAX"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="X_AXIS_CRITERION_CODE" source="X_AXIS_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="X_AXIS_SEGMENT_NO" source="X_AXIS_SEGMENT_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="Y_AXIS_CRITERION_CODE" source="Y_AXIS_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="Y_AXIS_SEGMENT_NO" source="Y_AXIS_SEGMENT_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIS_PARAM_1_CRITERION_CODE" source="VIS_PARAM_1_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIS_PARAM_2_CRITERION_CODE" source="VIS_PARAM_2_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_TEXT" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_LONG_TEXT" source="DEFAULT_LONG_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="WEIGHT" source="WEIGHT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="AXIS_CRITERION" source="AXIS_CRITERION"/>
+      </input>
+      <input node="#sap.ino.db.analytics.ext::V_EXT_ANALYTICS_VIS_PARAM_CRITERION">
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIS_PARAM_CRITERION" source="VIS_PARAM_CRITERION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="CODE"/>
+      </input>
+      <joinAttribute name="CODE"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_3" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CODE"/>
+        <viewAttribute id="MODEL_CODE"/>
+        <viewAttribute id="DATATYPE_CODE"/>
+        <viewAttribute id="PARENT_CRITERION_CODE"/>
+        <viewAttribute id="SEQUENCE_NO"/>
+        <viewAttribute id="IS_OVERALL_RESULT"/>
+        <viewAttribute id="UOM_CODE"/>
+        <viewAttribute id="UOM_TEXT"/>
+        <viewAttribute id="VALUE_OPTION_LIST_CODE"/>
+        <viewAttribute id="AGGREGATION_TYPE"/>
+        <viewAttribute id="NUM_VALUE_MIN"/>
+        <viewAttribute id="NUM_VALUE_MAX"/>
+        <viewAttribute id="X_AXIS_CRITERION_CODE"/>
+        <viewAttribute id="X_AXIS_SEGMENT_NO"/>
+        <viewAttribute id="Y_AXIS_CRITERION_CODE"/>
+        <viewAttribute id="Y_AXIS_SEGMENT_NO"/>
+        <viewAttribute id="VIS_PARAM_1_CRITERION_CODE"/>
+        <viewAttribute id="VIS_PARAM_2_CRITERION_CODE"/>
+        <viewAttribute id="DEFAULT_TEXT"/>
+        <viewAttribute id="DEFAULT_LONG_TEXT"/>
+        <viewAttribute id="WEIGHT"/>
+        <viewAttribute id="AXIS_CRITERION"/>
+        <viewAttribute id="VIS_PARAM_CRITERION"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_2">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CODE" source="CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="MODEL_CODE" source="MODEL_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DATATYPE_CODE" source="DATATYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PARENT_CRITERION_CODE" source="PARENT_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SEQUENCE_NO" source="SEQUENCE_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_OVERALL_RESULT" source="IS_OVERALL_RESULT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="UOM_CODE" source="UOM_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VALUE_OPTION_LIST_CODE" source="VALUE_OPTION_LIST_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="AGGREGATION_TYPE" source="AGGREGATION_TYPE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NUM_VALUE_MIN" source="NUM_VALUE_MIN"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NUM_VALUE_MAX" source="NUM_VALUE_MAX"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="X_AXIS_CRITERION_CODE" source="X_AXIS_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="X_AXIS_SEGMENT_NO" source="X_AXIS_SEGMENT_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="Y_AXIS_CRITERION_CODE" source="Y_AXIS_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="Y_AXIS_SEGMENT_NO" source="Y_AXIS_SEGMENT_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIS_PARAM_1_CRITERION_CODE" source="VIS_PARAM_1_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIS_PARAM_2_CRITERION_CODE" source="VIS_PARAM_2_CRITERION_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_TEXT" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DEFAULT_LONG_TEXT" source="DEFAULT_LONG_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="WEIGHT" source="WEIGHT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="AXIS_CRITERION" source="AXIS_CRITERION"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VIS_PARAM_CRITERION" source="VIS_PARAM_CRITERION"/>
+      </input>
+      <input node="#V_EXT_ANALYTICS_UNIT_DIMENSION">
+        <mapping xsi:type="Calculation:AttributeMapping" target="UOM_TEXT" source="UOM_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="UOM_CODE" source="UOM_CODE"/>
+      </input>
+      <joinAttribute name="UOM_CODE"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_3">
+    <descriptions/>
+    <attributes>
+      <attribute id="CRITERION_CODE" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Criterion Code"/>
+        <keyMapping columnObjectName="Join_3" columnName="CODE"/>
+      </attribute>
+      <attribute id="CRITERION_MODEL_CODE" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Model the criterion belongs to"/>
+        <keyMapping columnObjectName="Join_3" columnName="MODEL_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_DATATYPE_CODE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Datatype (INTEGER, NUMERIC, TEXT, BOOLEAN). If null criterion is considered as &quot;heading&quot;"/>
+        <keyMapping columnObjectName="Join_3" columnName="DATATYPE_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_PARENT_CRITERION_CODE" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Parent criterion (only 1 level supported!"/>
+        <keyMapping columnObjectName="Join_3" columnName="PARENT_CRITERION_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_SEQUENCE_NO" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Sequence order for display"/>
+        <keyMapping columnObjectName="Join_3" columnName="SEQUENCE_NO"/>
+      </attribute>
+      <attribute id="CRITERION_IS_OVERALL_RESULT" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="This is criterion is to be considered as overall result of this evaluation"/>
+        <keyMapping columnObjectName="Join_3" columnName="IS_OVERALL_RESULT"/>
+      </attribute>
+      <attribute id="CRITERION_UOM_CODE" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Unit of measure code"/>
+        <keyMapping columnObjectName="Join_3" columnName="UOM_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_VALUE_OPTION_LIST_CODE" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="List of possible values for criterion. Foreign key reference to t_value_option_s.CODE"/>
+        <keyMapping columnObjectName="Join_3" columnName="VALUE_OPTION_LIST_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_AGGREGATION_TYPE" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Aggregation function used for this criterion"/>
+        <keyMapping columnObjectName="Join_3" columnName="AGGREGATION_TYPE"/>
+      </attribute>
+      <attribute id="CRITERION_NUM_VALUE_MIN" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Minimal value for criterion of data type NUMERIC"/>
+        <keyMapping columnObjectName="Join_3" columnName="NUM_VALUE_MIN"/>
+      </attribute>
+      <attribute id="CRITERION_NUM_VALUE_MAX" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Maximal value for criterion of data type NUMERIC"/>
+        <keyMapping columnObjectName="Join_3" columnName="NUM_VALUE_MAX"/>
+      </attribute>
+      <attribute id="CRITERION_X_AXIS_CRITERION_CODE" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Criterion to be used as X axis (matrix calculation)"/>
+        <keyMapping columnObjectName="Join_3" columnName="X_AXIS_CRITERION_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_X_AXIS_SEGMENT_NO" order="13" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Number of segments to divide X axis into (matrix calculation)"/>
+        <keyMapping columnObjectName="Join_3" columnName="X_AXIS_SEGMENT_NO"/>
+      </attribute>
+      <attribute id="CRITERION_Y_AXIS_CRITERION_CODE" order="14" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Criterion to be used as Y axis (matrix calculation)"/>
+        <keyMapping columnObjectName="Join_3" columnName="Y_AXIS_CRITERION_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_Y_AXIS_SEGMENT_NO" order="15" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Number of segments to divide Y axis into (matrix calculation)"/>
+        <keyMapping columnObjectName="Join_3" columnName="Y_AXIS_SEGMENT_NO"/>
+      </attribute>
+      <attribute id="CRITERION_VIS_PARAM_1_CRITERION_CODE" order="16" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Criterion code to be used for visualization"/>
+        <keyMapping columnObjectName="Join_3" columnName="VIS_PARAM_1_CRITERION_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_VIS_PARAM_2_CRITERION_CODE" order="17" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Criterion code to be used for visualization"/>
+        <keyMapping columnObjectName="Join_3" columnName="VIS_PARAM_2_CRITERION_CODE"/>
+      </attribute>
+      <attribute id="CRITERION_DEFAULT_TEXT" order="18" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Default Text for Criterion"/>
+        <keyMapping columnObjectName="Join_3" columnName="DEFAULT_TEXT"/>
+      </attribute>
+      <attribute id="CRITERION_DEFAULT_LONG_TEXT" order="19" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Default Long Text for Criterion"/>
+        <keyMapping columnObjectName="Join_3" columnName="DEFAULT_LONG_TEXT"/>
+      </attribute>
+      <attribute id="CRITERION_WEIGHT" order="20" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Weight(%)"/>
+        <keyMapping columnObjectName="Join_3" columnName="WEIGHT"/>
+      </attribute>
+      <attribute id="CRITERION_AXIS_CRITERION" order="21" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Indicator for X Axis/Y Axis"/>
+        <keyMapping columnObjectName="Join_3" columnName="AXIS_CRITERION"/>
+      </attribute>
+      <attribute id="CRITERION_VIS_PARAM_CRITERION" order="22" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Indicator for Inner /Outer Cicrcle"/>
+        <keyMapping columnObjectName="Join_3" columnName="VIS_PARAM_CRITERION"/>
+      </attribute>
+      <attribute id="CRITERION_UOM_TEXT" order="23" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Unit of measure text"/>
+        <keyMapping columnObjectName="Join_3" columnName="UOM_TEXT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="60" y="380"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="80" y="280"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_3" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="70" y="180"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

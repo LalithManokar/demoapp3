@@ -1,0 +1,21 @@
+schema = "SAP_INO";
+query = "select 
+                attachment_assignment_hc.history_db_event,
+                attachment_assignment_hc.history_biz_event,
+                attachment_assignment_hc.history_at,
+                attachment_assignment_hc.history_actor_id,
+                attachment_assignment_hc.id,
+                attachment_assignment_hc.role_type_code as assignment_type, 
+                case attachment_assignment_hc.attachment_id   when attachment_assignment_hb.attachment_id   then null else attachment_assignment_hc.attachment_id   end as attachment_id,
+				attachment_assignment_hc.owner_id,
+				attachment_assignment_hc.owner_type_code,
+				case attachment_assignment_hc.role_type_code  when attachment_assignment_hb.role_type_code  then null else attachment_assignment_hc.role_type_code  end as role_type_code
+from (
+    select *, lag(history_at, 1, NULL) over (partition by id order by history_at asc ) as predecessor
+        from \"sap.ino.db.attachment::t_attachment_assignment_h\") as attachment_assignment_hc 
+    left outer join \"sap.ino.db.attachment::t_attachment_assignment_h\" as attachment_assignment_hb
+        on attachment_assignment_hc.predecessor = attachment_assignment_hb.history_at and 
+            attachment_assignment_hc.id = attachment_assignment_hb.id  with read only";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment_assignment_h"];
+

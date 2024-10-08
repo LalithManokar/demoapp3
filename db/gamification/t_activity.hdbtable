@@ -1,0 +1,13 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "activity of dimension setting table";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+    {name = "DIMENSION_ID"; sqlType = INTEGER; nullable = false; comment = "DIMENSION ID ";},
+	{name = "CODE"; sqlType = NVARCHAR ;length=128 ;nullable = false ; comment = "activity code";},
+	{name = "PHASE_CODE"; sqlType = NVARCHAR ;length=500 ;nullable = true;  comment = "affected phase for current activity";},
+	{name = "WITHIN_TIME"; sqlType = INTEGER; comment = "time range for activity";},
+	{name = "TIME_UNIT"; sqlType = VARCHAR ;length=16 ;nullable = true; comment = "time unit for activity";},
+	{name = "VALUE"; sqlType = DECIMAL ;nullable = false ; comment = "impact scrore for this dimension";}
+];
+table.primaryKey.pkcolumns = ["ID"]; 

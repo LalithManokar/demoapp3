@@ -1,0 +1,18 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Identity - temp for identity change log ";
+table.columns = [
+    {name = "ID";           sqlType = INTEGER;                nullable = false; comment = "technical user identifier - must never be exposed to end users";},
+    {name = "EMAIL";        sqlType = NVARCHAR; length = 256; nullable = true;  comment = "E-Mail address of user";},
+    {name = "PHONE";        sqlType = NVARCHAR; length = 256; nullable = true;  comment = "Phone number";},
+    {name = "MOBILE";       sqlType = NVARCHAR; length = 256; nullable = true;  comment = "Mobile phone number";},    
+    {name = "COST_CENTER";  sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Cost center";},
+    {name = "OFFICE";       sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Office";},
+    {name = "COMPANY";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Company";},
+    {name = "STREET";       sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Street";},
+    {name = "CITY";         sqlType = NVARCHAR; length = 100; nullable = true;  comment = "City";},
+    {name = "COUNTRY";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Country";},
+    {name = "ZIP_CODE";     sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Zip Code";},
+    {name = "VALIDATION_TO"; sqlType = TIMESTAMP;              nullable = true; comment = "Validation to";}
+];
+table.primaryKey.pkcolumns = ["ID"];

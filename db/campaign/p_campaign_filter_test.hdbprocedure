@@ -1,0 +1,69 @@
+procedure "SAP_INO"."sap.ino.db.campaign::p_campaign_filter_test" (
+     in  iv_filter_name nvarchar(1024),
+     out ot_campaign_id  SAP_INO."sap.ino.db.basis::tt_object_id"
+ )
+ language sqlscript
+ sql security invoker
+ default schema SAP_INO
+ reads sql data as
+begin
+        if :iv_filter_name = ''
+        then ot_campaign_id = select id 
+                         from "sap.ino.db.campaign::t_campaign";
+        elseif  :iv_filter_name = 'activeCampaigns'
+        then 
+            ot_campaign_id = select id 
+                         from "sap.ino.db.campaign::t_campaign"
+                         where :iv_filter_name = 'activeCampaigns'
+                             and valid_from <= CURRENT_UTCTIMESTAMP
+                             and valid_to >= CURRENT_UTCTIMESTAMP;
+        elseif :iv_filter_name = 'openCampaigns'
+         then ot_campaign_id =select id
+                         from "sap.ino.db.campaign::t_campaign"
+                         where 
+                             (submit_from <= CURRENT_UTCTIMESTAMP and submit_to >= CURRENT_UTCTIMESTAMP)
+                             or
+                             (register_from <= CURRENT_UTCTIMESTAMP and register_to >= CURRENT_UTCTIMESTAMP);
+        elseif :iv_filter_name = 'draftCampaigns'
+        then  ot_campaign_id = select distinct campaign.id 
+                        from "sap.ino.db.campaign::v_my_backoffice_campaign" as my_campaign
+                        inner join "sap.ino.db.campaign::t_campaign" as campaign
+                        on campaign.id = my_campaign.id
+                        where status_code = 'sap.ino.config.CAMP_DRAFT';
+        elseif  :iv_filter_name = 'futureCampaigns'
+        then  ot_campaign_id =  select id 
+                         from "sap.ino.db.campaign::t_campaign"
+                         where valid_from >= CURRENT_UTCTIMESTAMP;
+        elseif :iv_filter_name = 'pastCampaigns'
+        then ot_campaign_id = select id 
+                         from "sap.ino.db.campaign::t_campaign"
+                         where valid_to <= CURRENT_UTCTIMESTAMP group by id;
+        elseif :iv_filter_name = 'registeredCampaigns'
+        then ot_campaign_id =  select id
+                        from "sap.ino.db.campaign::t_campaign" campaign
+                    inner join
+                        "sap.ino.db.campaign::v_my_registered_campaign" registered_campaign
+                    on
+                        campaign.id = registered_campaign.CAMPAIGN_ID;
+        elseif :iv_filter_name = 'managedCampaigns'
+        then ot_campaign_id =   select distinct campaign.id 
+                        from "sap.ino.db.campaign::v_my_backoffice_campaign" as my_campaign
+                        inner join "sap.ino.db.campaign::t_campaign" as campaign
+                        on campaign.id = my_campaign.id;
+        elseif :iv_filter_name = 'publishCampaigns' 
+        then ot_campaign_id = select distinct campaign.id 
+                        from "sap.ino.db.campaign::v_my_backoffice_campaign" as my_campaign
+                        inner join "sap.ino.db.campaign::t_campaign" as campaign
+                        on campaign.id = my_campaign.id
+                        where campaign.STATUS_CODE != 'sap.ino.config.CAMP_DRAFT';
+        elseif :iv_filter_name = 'submittableCampaigns'
+        then   ot_campaign_id = select distinct campaign.id 
+                        from "sap.ino.db.campaign::v_my_backoffice_campaign" as my_campaign
+                        inner join "sap.ino.db.campaign::t_campaign" as campaign
+                        on campaign.id = my_campaign.id
+                        where
+                             (submit_from <= CURRENT_UTCTIMESTAMP and submit_to >= CURRENT_UTCTIMESTAMP)
+                             or
+                             (register_from <= CURRENT_UTCTIMESTAMP and register_to >= CURRENT_UTCTIMESTAMP);
+        end if;
+end;

@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE;
+table.temporary = true;
+table.description = "Input table for EMAIL TIME UPDATE procedure of foloow table";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "update email time for follow";}
+];

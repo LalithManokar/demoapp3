@@ -1,0 +1,9 @@
+schema = "SAP_INO";
+query = "
+    select item.wall_id,
+       max(item.changed_at) as changed_at
+	from \"sap.ino.db.wall::t_wall_item\" as item
+	group by item.wall_id
+    with read only "; 
+        
+depends_on_table = ["sap.ino.db.wall::t_wall_item"];

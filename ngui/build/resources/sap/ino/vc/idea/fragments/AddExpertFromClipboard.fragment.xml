@@ -1,0 +1,26 @@
+<core:FragmentDefinition 
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns:l="sap.ui.layout"
+        xmlns:f="sap.ui.layout.form"
+        xmlns:ino="sap.ino.controls"
+        xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Dialog 
+        contentWidth="400px"
+        afterClose="onAddExpertAfterClose"
+        title="{i18n>EXPERTS_TIT_ADD_EXPERT}">
+
+        <VBox width="100%">
+            <List id="AddExpertList" mode="None">
+                <!-- see AddExpertFromClipboardListItem.fragment.xml -->
+            </List>
+        </VBox>
+            
+        <buttons>
+            <Button text="{i18n>BTN_OK}" type="Accept" press="onAddFromClipboardDialogOK" />
+            <Button text="{i18n>BTN_SELECT_ALL}" press="onAddFromClipboardDialogSelectAll" />
+            <Button text="{i18n>BTN_CANCEL}" press="onAddFromClipboardDialogCancel" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

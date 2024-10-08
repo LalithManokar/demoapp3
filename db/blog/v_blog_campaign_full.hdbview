@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query  = "
+    select
+        blog_small.*,
+        blog.description,
+        blog.description_mime_type
+    from 
+       \"sap.ino.db.blog::v_blog_campaign_small\" as blog_small
+       inner join \"sap.ino.db.blog::v_blog\" as blog
+         on blog_small.id = blog.id
+     with read only";
+
+depends_on_view = ["sap.ino.db.blog::v_blog_campaign_small",
+                   "sap.ino.db.blog::v_blog"];

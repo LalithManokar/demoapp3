@@ -1,0 +1,33 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+                         xmlns:f="sap.ui.layout.form"
+                         xmlns="sap.m"
+                         xmlns:ino="sap.ino.controls"
+                         xmlns:mvc="sap.ui.core.mvc"
+                        >
+    <Dialog id="assignTagDialog"
+        title="{i18n>IDEA_OBJECT_TIT_ASSIGN_TAGS}">
+       <f:SimpleForm
+            maxContainerCols="2"
+            layout="ResponsiveGridLayout"
+            editable="false">
+			<f:content>
+        <Label class="sapUiSmallMarginEnd" 
+				      text ="{i18n>IDEA_LIST_FLD_ASSIGN_TAG}"
+				      required="true"/>
+        <MultiInput
+                    id="Tags"
+                    change="onTagValueChanged"
+                    tokenChange="onTagChanged"
+                    startSuggestion="1"
+                    showSuggestion="true"
+                    filterSuggests="false"
+                    showValueHelp="false"
+                    enableMultiLineMode="false" />
+        </f:content>
+		</f:SimpleForm>            
+        <buttons>
+			<Button text="{i18n>BTN_OK}" type="Accept" press="onAssignTagDialogOK" />
+			<Button text="{i18n>BTN_CANCEL}" press="onAssignTagDialogCancel" />
+		</buttons>            
+    </Dialog>
+</core:FragmentDefinition>

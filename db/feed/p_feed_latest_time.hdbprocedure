@@ -1,0 +1,11 @@
+procedure "SAP_INO"."sap.ino.db.feed::p_feed_latest_time" (
+)
+    language sqlscript 
+    sql security definer
+    default schema SAP_INO
+    as
+begin
+    UPSERT "sap.ino.db.feed::t_feed_latest_time"(LATEST_EVENT_AT,CODE) 
+    SELECT current_utctimestamp,'sap.ino.config.FEED_EMIA'
+    FROM DUMMY;
+end;

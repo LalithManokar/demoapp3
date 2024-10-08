@@ -1,0 +1,39 @@
+<core:FragmentDefinition
+	xmlns:l="sap.ui.layout"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:ino="sap.ino.controls">
+	<Panel id="CampaignManagers" width="auto" class="sapInoHomeTitledPanel sapInoTopCampaignItem sapInoHomepageBorder">
+		<headerToolbar>
+			<Toolbar height="3rem" class="sapInoHomeTitledPanelHeader" active="true" press="onNavigateToManagers">
+				<Title id="panelTitle" text="{i18n>CAMPAIGN_HOME_PANEL_MANAGERS}"/>
+				<ToolbarSpacer />
+				<Button icon="sap-icon://navigation-right-arrow" id="navigationRightArrowButton" press="onNavigateToManagers"  tooltip="{i18n>CAMPAIGN_HOME_PANEL_MANAGERS_NAVIGATE}"/>
+			</Toolbar>
+		</headerToolbar>
+		<content>
+			<List
+			    id="CampaignManagersList"
+				items="{
+				    path: 'data>Managers',
+				    sorter:[{path: 'NAME', descending: true}],
+				    length: 3
+				}">
+				<CustomListItem>
+					<HBox>
+						<ino:IdentityActionCard 
+		                    identityId="{data>IDENTITY_ID}" 
+		                    userName="{data>NAME}"
+		                    userOrganization="{data>ORGANIZATION}"
+		                    userImageUrl="{ path: 'data>IMAGE_ID', formatter: '.formatter.userImage' }"
+		                	identityPress="onOpenIdentityQuickView"
+		                	imageSize="M"
+		                	mailable="{path: 'data>IS_VALID_EMAIL', type:'sap.ino.commons.models.types.IntBooleanType'}"
+                            mailPressed="onMailPressed"
+		                />
+					</HBox>
+				</CustomListItem>
+			</List>
+		</content>
+	</Panel>
+</core:FragmentDefinition> 

@@ -1,0 +1,54 @@
+FUNCTION "SAP_INO"."sap.ino.db.idea::f_my_followed_ideas" ( ) 
+	RETURNS TABLE ( IDEA_ID INTEGER )
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER
+	DEFAULT SCHEMA SAP_INO	
+	AS
+BEGIN
+/***************************** 
+	Write your function logic
+ *****************************/
+ --My followed ideas 
+ lt_followed_ideas = select 
+                       object_id as idea_id 
+                     from 
+                       "sap.ino.db.follow::v_follow" 
+                     where object_type_code = 'IDEA';
+ --My followed campaigns                     
+ lt_followed_campaigns = select 
+                           object_id as campaign_id 
+                         from 
+                           "sap.ino.db.follow::v_follow" 
+                         where object_type_code = 'CAMPAIGN';
+ --My followed tag                        
+ lt_followed_tag      = select 
+                          object_id as tag_id
+                        from 
+                         "sap.ino.db.follow::v_follow" 
+                        where object_type_code = 'TAG';
+ --My followed tag, and its taged campaigns
+ lt_taged_campaigns   = select
+                          campaign_tag.object_id as campaign_id
+                        from :lt_followed_tag lt_tag,
+                             "sap.ino.db.tag::t_object_tag" as campaign_tag
+                        where lt_tag.tag_id = campaign_tag.tag_id and campaign_tag.object_type_code = 'CAMPAIGN';
+ --My followed tag, and its taged ideas                       
+ lt_taged_ideas       = select
+                          idea_tag.object_id as idea_id
+                        from :lt_followed_tag lt_tag,
+                             "sap.ino.db.tag::t_object_tag" as idea_tag
+                        where lt_tag.tag_id = idea_tag.tag_id and idea_tag.object_type_code = 'IDEA';
+ --Campaigns: both followed and taged
+ lt_campaigns        = select campaign_id from :lt_followed_campaigns
+ 					   union 
+ 					   select campaign_id from :lt_taged_campaigns;
+ 					   
+ -- Ideas: both followed, taged, and those ideas correspond to :lt_campaigns
+ lt_ideas            = select idea_id from :lt_followed_ideas
+                       union
+                       select idea_id from :lt_taged_ideas
+                       union
+                       select id as idea_id from "sap.ino.db.idea::t_idea" where campaign_id in (select * from :lt_campaigns);
+                       
+ return select idea_id from :lt_ideas;
+END;

@@ -1,0 +1,16 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Button 
+        class="sapInoObjectListSortButton"
+        id="sortReverseButton"
+        icon="sap-icon://sort"
+        tooltip="{i18n>EXP_REVERSE_SORT_BUTTON}"
+        visible="{= !${device>/system/desktop} }"
+        press="onListSortReverse"
+        type="Transparent">
+        <layoutData>
+            <OverflowToolbarLayoutData moveToOverflow="false" />
+        </layoutData>
+    </Button>
+</core:FragmentDefinition>

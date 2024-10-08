@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_IDENTITY_SEARCH" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+<origin/>
+  <descriptions defaultDescription="V_SEARCH_IDENTITY"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Free text search token"/>
+      <variableProperties datatype="NVARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <viewAttributes>
+        <viewAttribute datatype="DOUBLE" id="SEARCH_SCORE"/>
+        <viewAttribute datatype="INTEGER" id="ID"/>
+        <viewAttribute datatype="NVARCHAR" id="NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="FIRST_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="LAST_NAME" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="USER_NAME" length="256"/>
+        <viewAttribute datatype="VARCHAR" id="TYPE_CODE" length="20"/>
+        <viewAttribute datatype="NVARCHAR" id="EMAIL" length="256"/>
+        <viewAttribute datatype="INTEGER" id="MEMBERS"/>
+        <viewAttribute datatype="NVARCHAR" id="PHONE" length="256"/>
+        <viewAttribute datatype="NVARCHAR" id="MOBILE" length="256"/>
+        <viewAttribute datatype="NVARCHAR" id="COST_CENTER" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="ORGANIZATION" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="OFFICE" length="100"/>
+        <viewAttribute datatype="NVARCHAR" id="DESCRIPTION" length="256"/>
+        <viewAttribute datatype="VARCHAR" id="SOURCE_TYPE_CODE" length="20"/>
+        <viewAttribute datatype="INTEGER" id="IMAGE_ID"/>
+        <viewAttribute datatype="INTEGER" id="IS_EXTERNAL"/>
+        <viewAttribute datatype="TIMESTAMP" id="CREATED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CREATED_BY_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY_LAST_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY_FIRST_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CREATED_BY_EMAIL" length="256"/>
+        <viewAttribute datatype="TIMESTAMP" id="CHANGED_AT"/>
+        <viewAttribute datatype="INTEGER" id="CHANGED_BY_ID"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY_LAST_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY_FIRST_NAME" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="CHANGED_BY_EMAIL" length="256"/>
+      
+        <viewAttribute id="IS_VALID_EMAIL" datatype="TINYINT"/>
+        <viewAttribute id="VALIDATION_TO" datatype="TIMESTAMP"/>
+        <viewAttribute id="IS_PUBLIC" datatype="TINYINT"/>
+      
+        <viewAttribute id="IS_MANAGER_PUBLIC" datatype="TINYINT"/>
+      
+        <viewAttribute id="LAST_LOGIN" datatype="TIMESTAMP"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <definition>begin
+    search_result =
+        select
+            search_score,
+            id
+        from
+            &quot;sap.ino.db.iam::f_identity_search&quot;(:searchToken);
+
+    var_out =
+        select
+            sr.search_score,
+            sr.id,
+            identity.name,
+            identity.first_name,
+            identity.last_name,
+            identity.user_name,
+            identity.type_code,
+            identity.email,
+            identity.members,
+            identity.phone,
+            identity.mobile,
+            identity.cost_center,
+            identity.organization,
+            identity.office,
+            identity.description,
+            identity.source_type_code,
+            identity.identity_image_id as image_id,
+            identity.is_external,
+			identity.created_at,
+        	identity.created_by_id,
+        	identity.created_by_name,
+        	identity.created_by_last_name,
+        	identity.created_by_first_name,
+        	identity.created_by_email,
+        	identity.changed_at,
+	        identity.changed_by_id,
+        	identity.changed_by_name,
+        	identity.changed_by_last_name,
+	        identity.changed_by_first_name,
+        	identity.changed_by_email,
+        	identity.is_valid_email,
+        	IFNULL(identity.validation_to, TO_TIMESTAMP('9999-12-31')) AS validation_to,
+        	groups.is_public as IS_PUBLIC,
+        	groups.is_manager_public as is_manager_public,
+        	identity.last_login
+        from 
+            &quot;sap.ino.db.iam::v_identity_full&quot; as identity
+        inner join
+            :search_result as sr
+        on 
+            identity.id = sr.id
+        left outer join
+            &quot;sap.ino.db.iam::v_group_attribute&quot; as groups
+        on identity.id = groups.group_id
+        order by search_score desc;
+
+end</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <attributes>
+      <attribute id="ID" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="ID"/>
+      </attribute>
+      <attribute id="NAME" order="3">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="NAME"/>
+      </attribute>
+      <attribute id="FIRST_NAME" order="4">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="FIRST_NAME"/>
+      </attribute>
+      <attribute id="LAST_NAME" order="5">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="LAST_NAME"/>
+      </attribute>
+      <attribute id="USER_NAME" order="6">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="USER_NAME"/>
+      </attribute>
+      <attribute id="TYPE_CODE" order="7">
+        <descriptions defaultDescription="TYPE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="TYPE_CODE"/>
+      </attribute>
+      <attribute id="EMAIL" order="8">
+        <descriptions defaultDescription="EMAIL"/>
+        <keyMapping columnObjectName="Script_View" columnName="EMAIL"/>
+      </attribute>
+      <attribute id="MEMBERS" order="9">
+        <descriptions defaultDescription="MEMBERS"/>
+        <keyMapping columnObjectName="Script_View" columnName="MEMBERS"/>
+      </attribute>
+      <attribute id="PHONE" order="10">
+        <descriptions defaultDescription="PHONE"/>
+        <keyMapping columnObjectName="Script_View" columnName="PHONE"/>
+      </attribute>
+      <attribute id="MOBILE" order="11">
+        <descriptions defaultDescription="MOBILE"/>
+        <keyMapping columnObjectName="Script_View" columnName="MOBILE"/>
+      </attribute>
+      <attribute id="COST_CENTER" order="12">
+        <descriptions defaultDescription="COST_CENTER"/>
+        <keyMapping columnObjectName="Script_View" columnName="COST_CENTER"/>
+      </attribute>
+      <attribute id="ORGANIZATION" order="13">
+        <descriptions defaultDescription="ORGANIZATION"/>
+        <keyMapping columnObjectName="Script_View" columnName="ORGANIZATION"/>
+      </attribute>
+      <attribute id="OFFICE" order="14">
+        <descriptions defaultDescription="OFFICE"/>
+        <keyMapping columnObjectName="Script_View" columnName="OFFICE"/>
+      </attribute>
+      <attribute id="DESCRIPTION" order="15">
+        <descriptions defaultDescription="DESCRIPTION"/>
+        <keyMapping columnObjectName="Script_View" columnName="DESCRIPTION"/>
+      </attribute>
+      <attribute id="SOURCE_TYPE_CODE" order="16">
+        <descriptions defaultDescription="SOURCE_TYPE_CODE"/>
+        <keyMapping columnObjectName="Script_View" columnName="SOURCE_TYPE_CODE"/>
+      </attribute>
+      <attribute id="CREATED_AT" order="19">
+        <descriptions defaultDescription="CREATED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_AT"/>
+      </attribute>
+      <attribute id="CREATED_BY_ID" order="20">
+        <descriptions defaultDescription="CREATED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_ID"/>
+      </attribute>
+      <attribute id="CREATED_BY_NAME" order="21">
+        <descriptions defaultDescription="CREATED_BY_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_NAME"/>
+      </attribute>
+      <attribute id="CREATED_BY_LAST_NAME" order="22">
+        <descriptions defaultDescription="CREATED_BY_LAST_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_LAST_NAME"/>
+      </attribute>
+      <attribute id="CREATED_BY_FIRST_NAME" order="23">
+        <descriptions defaultDescription="CREATED_BY_FIRST_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_FIRST_NAME"/>
+      </attribute>
+      <attribute id="CREATED_BY_EMAIL" order="24">
+        <descriptions defaultDescription="CREATED_BY_EMAIL"/>
+        <keyMapping columnObjectName="Script_View" columnName="CREATED_BY_EMAIL"/>
+      </attribute>
+      <attribute id="CHANGED_AT" order="25">
+        <descriptions defaultDescription="CHANGED_AT"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_AT"/>
+      </attribute>
+      <attribute id="CHANGED_BY_ID" order="26">
+        <descriptions defaultDescription="CHANGED_BY_ID"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_ID"/>
+      </attribute>
+      <attribute id="CHANGED_BY_NAME" order="27">
+        <descriptions defaultDescription="CHANGED_BY_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_NAME"/>
+      </attribute>
+      <attribute id="CHANGED_BY_LAST_NAME" order="28">
+        <descriptions defaultDescription="CHANGED_BY_LAST_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_LAST_NAME"/>
+      </attribute>
+      <attribute id="CHANGED_BY_FIRST_NAME" order="29">
+        <descriptions defaultDescription="CHANGED_BY_FIRST_NAME"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_FIRST_NAME"/>
+      </attribute>
+      <attribute id="CHANGED_BY_EMAIL" order="30">
+        <descriptions defaultDescription="CHANGED_BY_EMAIL"/>
+        <keyMapping columnObjectName="Script_View" columnName="CHANGED_BY_EMAIL"/>
+      </attribute>
+    
+      <attribute id="IS_VALID_EMAIL" order="31">
+    
+        <keyMapping columnObjectName="Script_View" columnName="IS_VALID_EMAIL"/>
+    
+      </attribute>
+      <attribute id="VALIDATION_TO" order="32">
+        <descriptions defaultDescription="VALIDATION_TO"/>
+        <keyMapping columnObjectName="Script_View" columnName="VALIDATION_TO"/>
+      </attribute>
+      <attribute id="IS_PUBLIC" order="33">
+        <descriptions defaultDescription="IS_PUBLIC"/>
+        <keyMapping columnObjectName="Script_View" columnName="IS_PUBLIC"/>
+      </attribute>
+    
+      <attribute id="IS_MANAGER_PUBLIC" order="34">
+        <descriptions defaultDescription="IS_MANAGER_PUBLIC"/>
+    
+        <keyMapping columnObjectName="Script_View" columnName="IS_MANAGER_PUBLIC"/>
+    
+      </attribute>
+    
+      <attribute id="LAST_LOGIN" order="35">
+        <descriptions defaultDescription="LAST_LOGIN"/>
+    
+        <keyMapping columnObjectName="Script_View" columnName="LAST_LOGIN"/>
+    
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="SEARCH_SCORE" order="1" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="SEARCH_SCORE"/>
+        <measureMapping columnObjectName="Script_View" columnName="SEARCH_SCORE"/>
+      </measure>
+      <measure id="IMAGE_ID" order="17" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="IMAGE_ID"/>
+        <measureMapping columnObjectName="Script_View" columnName="IMAGE_ID"/>
+      </measure>
+      <measure id="IS_EXTERNAL" order="18" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="IS_EXTERNAL"/>
+        <measureMapping columnObjectName="Script_View" columnName="IS_EXTERNAL"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

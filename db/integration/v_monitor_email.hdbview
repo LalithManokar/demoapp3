@@ -1,0 +1,27 @@
+schema = "SAP_INO";
+query = "SELECT notification_status.ID,
+        monitor_emailnotification.ACTION_CODE,
+        notification_status.MAIL_STATUS_CODE,
+        notification_status.MAIL_STATUS_REASON,
+        monitor_emailnotification.EVENT_AT as SentAt ,
+        identity.NAME as MailRecipient,
+        monitor_emailnotification.OBJECT_TYPE_CODE,
+        monitor_emailnotification.OBJECT_ID,
+        monitor_emailnotification.CAMPAIGN_ID,        
+        campaign.NAME as CAMPAIGN_NAME,
+        notification_status.ROLE_CODE AS ROLE_CODE
+    FROM \"sap.ino.db.notification::t_notification\" as  monitor_emailnotification
+    inner join \"sap.ino.db.notification::t_notification_status\" as notification_status
+    on monitor_emailnotification.id = notification_status.NOTIFICATION_ID
+    inner join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign
+    on monitor_emailnotification.CAMPAIGN_ID = campaign.CAMPAIGN_ID
+    inner join \"sap.ino.db.iam::t_identity\" as identity
+    on notification_status.USER_ID = identity.ID
+    WHERE notification_status.MAIL_STATUS_CODE != 'UNSENT'
+    with read only
+";
+depends_on_table = ["sap.ino.db.notification::t_notification",
+                    "sap.ino.db.notification::t_notification_status",
+                    "sap.ino.db.campaign::t_campaign_t",
+                    "sap.ino.db.iam::t_identity"];
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale"];   

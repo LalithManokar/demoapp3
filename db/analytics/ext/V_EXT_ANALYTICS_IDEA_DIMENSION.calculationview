@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_IDEA_DIMENSION" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="Idea Dimension"/>
+  <metadata changedAt="2021-07-05 16:10:05.086"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="25"/>
+  <dataSources>
+    <DataSource id="V_ANALYTICS_IDEAS_FULL" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEAS_FULL</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="V_ANALYTICS_IDEAS_FULL">
+    <descriptions/>
+    <attributes>
+      <attribute id="IDEA_ID" key="true" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea ID"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_NAME" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Name"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="IDEA_NAME"/>
+      </attribute>
+      <attribute id="IDEA_COACH_ID" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Coach ID"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="COACH_ID"/>
+      </attribute>
+      <attribute id="IDEA_COACH_NAME" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Coach Name"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="COACH_NAME"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTER_ID" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Author ID"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="SUBMITTER_ID"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTER_NAME" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Author Name"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="SUBMITTER_NAME"/>
+      </attribute>
+      <attribute id="IDEA_PHASE_CODE" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Phase"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="PHASE_CODE"/>
+      </attribute>
+      <attribute id="IDEA_PHASE_SEQUENCE_NUMBER" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Phase Sequence Number"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="PHASE_SEQUENCE_NUMBER"/>
+      </attribute>
+      <attribute id="IDEA_STATUS_CODE" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Status Code"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="IDEA_STATUS_CODE_TEXT" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Status"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="STATUS_CODE_TEXT"/>
+      </attribute>
+      <attribute id="IDEA_SUBMITTED_AT" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Submitted at"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="IDEA_SUBMITTED_AT"/>
+      </attribute>
+      <attribute id="IDEA_CHANGED_AT" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Changed at"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="IDEA_CHANGED_AT"/>
+      </attribute>
+      <attribute id="IDEA_RESPONSIBILITY_CODE" order="13" attributeHierarchyActive="false" descriptionColumnName="IDEA_RESPONSIBILITY_LABEL" displayAttribute="false">
+        <descriptions defaultDescription="Idea Responsibility List Value "/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="IDEA_RESPONSIBILITY_CODE"/>
+      </attribute>
+      <attribute id="IDEA_RESPONSIBILITY_TEXT" order="14" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Responsibility List Value Text"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="IDEA_RESPONSIBILITY_TEXT"/>
+      </attribute>
+      <attribute id="IDEA_RESPONSIBILITY_LABEL" order="15" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Responsibility"/>
+        <keyMapping columnObjectName="V_ANALYTICS_IDEAS_FULL" columnName="IDEA_RESPONSIBILITY_TEXT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

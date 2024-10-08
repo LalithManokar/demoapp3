@@ -1,0 +1,22 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Latest Idea History";
+table.columns = [
+	{name = "HISTORY_DB_EVENT"; sqlType = VARCHAR; length = 8; nullable = false;comment = "Database event: CREATED, UPDATED, DELETED";},
+	{name = "HISTORY_BIZ_EVENT"; sqlType = VARCHAR; length = 600; nullable = false;comment = "Business event: IDEA_LATEST_CREATED, IDEA_LATEST_UPDATED, IDEA_LATEST_DELETED...";},
+    {name = "HISTORY_AT"; sqlType = TIMESTAMP; nullable = false;comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID"; sqlType = INTEGER; nullable = false;comment = "Actor who did the changes";},
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+	{name = "OBJECT_ID"; sqlType = INTEGER; nullable = false; comment = "Object id ";},
+	{name = "OBJECT_TYPE_CODE"; sqlType = NVARCHAR; length = 100; comment = "Object type code to indicate this object";},
+	{name = "INVOLVED_ID"; sqlType = INTEGER; nullable = false; comment = "Involved object id ";},
+	{name = "INVOLVED_OBJECT_TYPE_CODE"; sqlType = NVARCHAR; length = 100; comment = "Involved Object type code to indicate this involved object";},
+	{name = "TYPE_CODE"; sqlType = NVARCHAR; length = 100; nullable = false; comment = "Type code";},
+	{name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";}
+];
+table.indexes = [
+	{name="LOGKEY_IDEA_LATEST_H"; unique = false; indexColumns = ["ID","HISTORY_AT"];}
+];

@@ -1,0 +1,16 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core" >
+    <Button 
+        id="sapInoMassExportBtn"
+        text="{= !!${view>/List/EXPORT_ALL} ? ${i18n>OBJECT_LIST_BTN_EXPORT_All_BUTTON} : ${i18n>OBJECT_LIST_BTN_EXPORT_BUTTON} }"
+        tooltip="{i18n>OBJECT_LIST_EXP_EXPORT_BUTTON}"
+        enabled="false"
+        press="onListExport"
+        visible="{= !!${device>/system/desktop} }"
+        >
+        <layoutData>
+            <OverflowToolbarLayoutData moveToOverflow="true" />
+        </layoutData>
+    </Button>
+</core:FragmentDefinition>

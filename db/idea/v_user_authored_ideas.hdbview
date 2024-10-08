@@ -1,0 +1,7 @@
+schema = "SAP_INO";
+query = "select role.object_id as id, role.identity_id as identity_id 
+	from \"sap.ino.db.iam::t_object_identity_role\" as role
+	where role.object_type_code = 'IDEA' 
+	and (role.role_code = 'IDEA_SUBMITTER' or role.role_code = 'IDEA_CONTRIBUTOR')";
+
+depends_on_table = ["sap.ino.db.iam::t_object_identity_role"];

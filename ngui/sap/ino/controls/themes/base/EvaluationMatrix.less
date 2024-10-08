@@ -1,0 +1,99 @@
+.sapUiInoEvaluationMatrixSvgElement {
+    background: @sapInoWhiteBG;
+    font-size: @sapInoSmallFont;
+    
+    .sapUiInoEvaluationMatrixLabel {
+        font-size: @sapInoSmallFont;
+        fill: @sapInoDarkText;
+    }    
+    
+    .sapUiInoEvaluationMatrixQuadrant {
+    	font-size: @sapInoMediumFont;
+        font-weight: bold;
+        fill: lighten(@sapInoExtraLightText, 40%);
+    }
+
+    .sapUiInoEvaluationMatrixQuadrantSegments1 {
+        font-size: @sapInoNormalFont;
+    }
+    
+    .sapUiInoEvaluationMatrixQuadrantSegments2 {
+        font-size: @sapInoMediumFont;
+    }
+    
+    .sapUiInoEvaluationMatrixQuadrantSegments3 {
+        font-size: @sapInoMediumFont
+    }
+    
+    .sapUiInoEvaluationMatrixQuadrantSegments4 {
+    	font-size: @sapInoSmallFont;
+    }
+    
+    .sapUiInoEvaluationMatrixQuadrantSegments5 {
+    	font-size: @sapInoSmallFont;
+    }
+    
+    .sapUiInoEvaluationMatrixAxis line {
+    	fill: none;
+    	stroke: @sapInoBlackBorder;
+    	shape-rendering: crispEdges;
+    	stroke-width: 2.0px;
+    }
+    
+    .sapUiInoEvaluationMatrixLine line {
+    	fill: none;
+    	stroke: @sapInoExtraDarkBorder;
+    	stroke-width: 1px;
+    	shape-rendering: crispEdges;
+    }
+    
+    .sapUiInoEvaluationMatrixValueLine {
+        fill: none;
+        stroke: @sapInoHighlightBorder;
+        stroke-width: 1px;
+        stroke-dasharray: 5,5;
+        shape-rendering: crispEdges;
+    }
+    
+    .sapUiInoEvaluationMatrixHidden {
+    	stroke-opacity: 0;
+    	opacity: 0;
+    }
+    
+    .sapUiInoEvaluationMatrixInnerCircle {
+        /** currently not used **/
+    	fill: @sapInoLightBG;
+    	cursor: pointer;
+    }
+    
+    .sapUiInoEvaluationMatrixOuterCircle {
+        /** currently not used **/
+    	fill: @sapInoExtraLightBG;
+    	cursor: pointer;
+    }
+ 
+    .sapUiInoEvaluationMatrixInnerCircleHighlight {
+        fill: @sapInoHighlightBG;
+    }
+    
+    .sapUiInoEvaluationMatrixOuterCircleHighlight {
+        fill: mix(@sapInoHighlightBG, @sapInoWhiteBG, 40%);
+    }
+    
+    .sapUiInoEvaluationMatrixCoordinate {
+    	font-size: @sapInoMediumFont;
+    	fill: @sapInoHighlight;
+    }
+    
+    .sapUiInoEvaluationMatrixItemName {
+    	font-size: @sapInoMediumFont;
+    	fill: @sapInoHighlight;
+    	/** hidden, as this is currently only the evaluation id **/
+    	opacity: 0;
+    }
+}
+.sapInoRequestsClarificationSection{
+   div[class*="sapUiRespGrid"]>div[class*="sapUiRespGridSpan"]{
+        float:none;
+    } 
+}

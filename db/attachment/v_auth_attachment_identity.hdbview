@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = " 
+	select distinct attachment.id as attachment_id
+	    from 
+	    	\"sap.ino.db.attachment::t_attachment\" as attachment
+	    inner join 
+	     	\"sap.ino.db.attachment::t_attachment_assignment\" as assignment
+	    	on assignment.attachment_id = attachment.id and
+	    		assignment.owner_type_code = 'IDENTITY' and
+	    		assignment.role_type_code = 'IDENTITY_IMAGE'
+    with read only";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment",
+					"sap.ino.db.attachment::t_attachment_assignment"]; 

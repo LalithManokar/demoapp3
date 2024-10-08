@@ -1,0 +1,11 @@
+schema = "SAP_INO_EXT";
+query = "select
+             user.id as user_id,
+             event_role.role_code 
+         from 
+             \"sap.ino.db.iam::v_auth_application_user\" as user,
+             (select distinct role_code from \"sap.ino.db.notification::t_notification_event_role\") as event_role
+         with read only";
+
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user"];
+depends_on_table = ["sap.ino.db.notification::t_notification_event_role"];

@@ -1,0 +1,18 @@
+schema = "SAP_INO_EXT";
+query = "select distinct
+                evaluation_template.MODEL_CODE,
+            	evaluation_template.MODEL_ENABLE_FORMULA,
+            	evaluation_template.MODEL_CALC_FORMULA,
+            	evaluation_template.IDEA_ID,
+            	evaluation_template.IDEA_NAME,
+            	evaluation_template.IDEA_PHASE_CODE,
+            	evaluation_template.STATUS_CODE,
+            	evaluation_template.AUTO_EVAL_PUB_CODE,
+            	evaluation_template.IS_MATRIX_AGGREGATION
+            from \"sap.ino.db.evaluation::v_evaluation_template\" as evaluation_template
+            inner join \"sap.ino.db.idea::v_auth_ideas_read\" as er
+            on evaluation_template.idea_id = er.idea_id
+            with read only";
+
+depends_on_view = [ "sap.ino.db.evaluation::v_evaluation_template", 
+                    "sap.ino.db.idea::v_auth_ideas_read"];

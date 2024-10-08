@@ -1,0 +1,19 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE; 
+table.temporary = true;
+table.description = "Input table for users";
+table.columns = [
+    {name = "ID";          sqlType = INTEGER;                  nullable = false;               comment = "identifier";},
+    {name = "NAME";        sqlType = NVARCHAR; length = 100;   nullable = true; unique = true; comment = "Group name";},
+    {name = "FIRST_NAME";  sqlType = NVARCHAR; length = 100;   nullable = true;                comment = "First name of user";},
+    {name = "LAST_NAME";   sqlType = NVARCHAR; length = 100;   nullable = true;                comment = "Last name of user";},
+    {name = "EMAIL";       sqlType = NVARCHAR; length = 256;   nullable = true;                comment = "E-Mail address of user";},
+    {name = "USER_NAME";   sqlType = NVARCHAR; length = 256;   nullable = true; unique = true; comment = "DB User Name like in table USERS";},
+    {name = "IS_EXTERNAL"; sqlType = TINYINT;                  nullable = true;                comment = "The identity is company external";},
+    {name = "PHONE";         sqlType = NVARCHAR; length = 256; nullable = true;                comment = "Phone number";},
+    {name = "MOBILE";        sqlType = NVARCHAR; length = 256; nullable = true;                comment = "Mobile phone number";},
+    {name = "COST_CENTER";   sqlType = NVARCHAR; length = 100; nullable = true;                comment = "Cost centerr";},
+    {name = "ORGANIZATION";  sqlType = NVARCHAR; length = 100; nullable = true;                comment = "Organisation";},
+    {name = "OFFICE";        sqlType = NVARCHAR; length = 100; nullable = true;                comment = "Office";}
+ ];
+ 

@@ -1,0 +1,4 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="sap.ino.vc.campaign.Homepage" class="sapInoViewNoBackground">
+    <Page id="campaignHomepage" showHeader="false" showSubHeader="false" enableScrolling="false">
+    </Page>
+</mvc:View>

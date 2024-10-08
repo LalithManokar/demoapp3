@@ -1,0 +1,23 @@
+schema = "SAP_INO";
+query = "
+    select 
+            report.id,
+            report.identity_id,
+            report.campaign_id,
+            report.config,
+            campaign.short_name as campaign_name,
+            --campaign.name as campaign_name,
+            campaign.color_code as campaign_color,
+            campaign.phase_count as campaign_phase_count,
+            report.order_sequence,
+            report.report_template_code,
+            report.is_usage_report
+        from 
+            \"sap.ino.db.analytics::t_custom_report\" as report
+        left outer join
+             \"sap.ino.db.campaign::v_campaign_full\" as campaign
+                on report.campaign_id = campaign.id
+    with read only";
+
+depends_on_table = ["sap.ino.db.analytics::t_custom_report"];
+depends_on_view  = ["sap.ino.db.campaign::v_campaign_full"];

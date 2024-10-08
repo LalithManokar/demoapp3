@@ -1,0 +1,12 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Attachment Data";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Attachment of the data. Foreign key t_attachment.ID";},
+	{name = "DATA"; sqlType = BLOB; nullable = true; comment = "Binary data of attachment";},
+	{name = "MEDIA_TYPE"; sqlType = VARCHAR; length = 100; nullable = true; comment = "Media type of attachment";},
+	{name = "DATA_SMALL"; sqlType = BLOB; nullable = true; comment = "Binary data of attachment";}, 
+	{name = "DATA_LARGE"; sqlType = BLOB; nullable = true; comment = "Binary data of attachment";},
+	{name = "TEST"; sqlType = BLOB; nullable = true; comment = "TEST";}
+]; 
+table.primaryKey.pkcolumns = ["ID"];

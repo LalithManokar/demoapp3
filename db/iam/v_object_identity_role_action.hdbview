@@ -1,0 +1,27 @@
+schema = "SAP_INO";
+query = "
+   select 
+          role.id,
+          role.object_id,
+          role.identity_id,
+          limitation.OBJECT_TYPE_CODE,
+          limitation.ACTION_CODE,
+          limitation.DISABLED
+          from\"sap.ino.db.iam::t_object_identity_limitation_action\" as limitation
+          inner join \"sap.ino.db.iam::t_object_identity_role\" as  role
+          on limitation.OBJECT_ROLE_ID = role.id
+    union all
+    select   
+          limitation.id,
+          limitation.object_id,
+          limitation.identity_id,
+          limitation.OBJECT_TYPE_CODE,
+          limitation.ACTION_CODE,
+          limitation.DISABLED    
+          from\"sap.ino.db.iam::t_object_identity_limitation_action\" as limitation
+        where limitation.action_code = 'CAMPAIGN_REGISTER' and limitation.object_type_code = 'CAMPAIGN'
+        with read only
+";
+
+depends_on_table = ["sap.ino.db.iam::t_object_identity_limitation_action","sap.ino.db.iam::t_object_identity_role"];
+

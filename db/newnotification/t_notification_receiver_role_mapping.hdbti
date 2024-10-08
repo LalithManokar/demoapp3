@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.newnotification::t_notification_receiver_role_mapping";
+    file       = "sap.ino.db.newnotification:t_notification_receiver_role_mapping.csv";
+    header     = true;
+    delimField = ";";
+}];

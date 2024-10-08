@@ -1,0 +1,21 @@
+schema = "SAP_INO";
+query = 
+"select key, value from (
+    select key, value, row_number() over (partition by key order by ord asc) r
+    from (
+        select 
+            ic.key, ic.value, o.ord
+            from sys.m_inifile_contents as ic
+            cross join (
+                select 'HOST' as layer, 0 as ord from dummy
+                    union all
+                select 'SYSTEM' as layer, 1 as ord from dummy
+                    union all
+                select 'DEFAULT' as layer, 2 as ord from dummy
+                
+            ) as o
+            where ic.file_name = 'xsengine.ini' 
+                and ic.section='innovation_management'
+                and o.layer = ic.layer_name
+    )
+) where r = 1";

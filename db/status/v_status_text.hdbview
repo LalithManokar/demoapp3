@@ -1,0 +1,7 @@
+schema = "SAP_INO";
+query = "select coalesce(text.text_id, status.default_text) as text_id, text.content
+			from \"sap.ino.db.basis::v_resolved_text\" as text
+			left outer join \"sap.ino.db.status::t_status\" as status
+				on status.code = text.text_id";
+depends_on_table = ["sap.ino.db.status::t_status"];
+depends_on_view = ["sap.ino.db.basis::v_resolved_text"];

@@ -1,0 +1,12 @@
+table.schemaName = "SAP_INO";
+table.description = "IDEA Ideaform Field value";
+table.columns = [
+    {name = "IDEA_ID";          sqlType = INTEGER;                 nullable = false;                     comment = "technical user identifier - must never be exposed to end users";},
+    {name = "FIELD_CODE";       sqlType = VARCHAR; length = 500;  nullable = false;                     comment = "Field code";},
+    {name = "FIELD_NAME";       sqlType = NVARCHAR; length = 500;  nullable = true;                      comment = "Field text";},
+    {name = "FIELD_VALUE";      sqlType = NVARCHAR; length = 4000; nullable = true;                      comment = "Field Value";},
+    {name = "FORM_CODE"; 			  sqlType = VARCHAR; length = 500;  nullable = false; comment = "Form Code to relate the Idea Form. Foreign key to t_form.PACKAGE_ID";},
+    {name = "IS_ADMIN_FORM";     sqlType = TINYINT;  nullable = true;  comment = "Marked this form whether it is admin form";},
+    {name = "STATE_OF_PUBLISH";       sqlType = TINYINT;                nullable = true;  comment = "Marked this field whether it has already been pubilished in frontend for admin form";}    
+];
+table.primaryKey.pkcolumns = ["IDEA_ID", "FIELD_CODE"];

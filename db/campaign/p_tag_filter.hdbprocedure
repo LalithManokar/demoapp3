@@ -1,0 +1,29 @@
+procedure "SAP_INO"."sap.ino.db.campaign::p_tag_filter" (
+     in  it_campaign_id SAP_INO."sap.ino.db.basis::tt_object_id",
+     in  it_tag_id      SAP_INO."sap.ino.db.basis::tt_object_id",
+     out ot_campaign_id SAP_INO."sap.ino.db.basis::tt_object_id"
+ )
+ language sqlscript
+ sql security invoker
+ default schema SAP_INO
+ reads sql data as
+begin
+    declare lv_tag_count int;
+    select count(*) into lv_tag_count from :it_tag_id;
+
+    ot_campaign_id = 
+        select id from :it_campaign_id 
+            where 
+                lv_tag_count = 0 -- no input tags --> select all ideas, even those without any tags
+        union all
+        select it_campaign.id
+             from :it_campaign_id                       as it_campaign,
+                  :it_tag_id                            as it_tag,
+                  "sap.ino.db.tag::t_object_tag" as campaign_tag
+             where 
+                 lv_tag_count                  > 0              and -- determine all idea_ids for which ALL of the input tags are assigned
+                 campaign_tag.object_id        = it_campaign.id and
+                 campaign_tag.tag_id           = it_tag.id      and
+                 campaign_tag.object_type_code = 'CAMPAIGN'
+             ;
+end;

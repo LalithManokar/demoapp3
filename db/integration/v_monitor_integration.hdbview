@@ -1,0 +1,19 @@
+schema = "SAP_INO";
+query = "SELECT monitor_integration.ID,
+        monitor_integration.STATUS,
+        monitor_integration.RESPONSE_MESSAGE,
+        monitor_integration.OBJECT_ID,
+        monitor_integration.PATH,
+        monitor_integration.DIRECTION_PATH,
+        monitor_integration.INTERFACE_NAME,
+        monitor_integration.OPERATOR_BY_ID,
+        monitor_integration.OPERATOR_AT,
+        identity_change_by.NAME AS OPERATOR_BY,
+        monitor_integration.OBJECT_PAYLOAD_JSON
+    FROM \"sap.ino.db.integration::t_monitor_integration\" as  monitor_integration
+    left outer join \"sap.ino.db.iam::t_identity\" as identity_change_by
+    on identity_change_by.id = monitor_integration.OPERATOR_BY_ID
+    with read only
+";
+depends_on_table = ["sap.ino.db.integration::t_monitor_integration",
+                    "sap.ino.db.iam::t_identity"];   

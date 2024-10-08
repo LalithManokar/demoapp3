@@ -1,0 +1,35 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:ino="sap.ino.controls"
+	xmlns:core="sap.ui.core">
+	<ino:ColorBar 
+	    backgroundColor="{= !!${data>COLOR_CODE} ? (${path : 'data>COLOR_CODE', formatter : '.formatter.color'}) : undefined }"
+	    class="sapMBar" 
+	    design="Auto">
+        <core:Fragment fragmentName="sap.ino.vc.commons.fragments.NavBackButton" type="XML" />
+        <core:Fragment fragmentName="sap.ino.vc.commons.fragments.FilterButton" type="XML"/>
+        <ToolbarSpacer/>
+         <Label id="listTitle"  text="{parts : [{path : 'view>/List/VARIANT'}, {path: 'data>NAME'},{path: 'list>/TITLESELECTQUICKLINK'}], formatter : '.formatter.variantTitle'}" 
+                tooltip="{parts : [{path : 'view>/List/VARIANT'}, {path: 'data>NAME'},{path: 'list>/TITLESELECTQUICKLINK'}], formatter : '.formatter.variantTitle'}"/>
+        <ToolbarSpacer/>
+        <HBox
+            class="sapInoBackofficeToggleButtonInToolbar"
+            alignItems="Center"
+            visible="{= ${user>/privileges/sap.ino.ui::backoffice.access} === true &amp;&amp; (${view>/NAME} === &quot;IDEA_LIST&quot; || ${view>/NAME} === &quot;CAMPAIGN_LIST&quot;)}">
+    		<Label id="backofficeToogleLabel" labelFor="backofficeToogle" text="{i18n>EXP_LABEL_OFFICE_VIEW_BACKOFFICE}" class="sapUiTinyMarginEnd"/> 
+    		<Switch 
+            id="backofficeToogle" 
+            ariaLabelledBy="backofficeToogleLabel"
+            state="{component>/SHOW_BACKOFFICE}" 
+            tooltip="{= ${component>/SHOW_BACKOFFICE} ? ${i18n>EXP_TOGGLE_OFFICE_VIEW_COMMUNITY} : ${i18n>EXP_TOGGLE_OFFICE_VIEW_BACKOFFICE} }" 
+            change="onOfficeToggle"/>
+    	</HBox>
+        <!-- TODO remove dependency to viariants, instead set the enable create proptery in your controller properly -->
+        <Button id="createObject" icon="sap-icon://add"  tooltip="{i18n>EXP_CREATE_BUTTON}" press="onCreateObject" 
+            visible="{= !!${view>/ENABLE_CREATE} &amp;&amp; ( ${view>/List/VARIANT} === &quot;my&quot; || ${view>/List/VARIANT} === &quot;templates&quot;)}" />
+        <core:Fragment fragmentName="sap.ino.vc.commons.fragments.ListOrientationButton" type="XML"/>
+        <core:Fragment fragmentName="sap.ino.vc.commons.fragments.SortReverseButton" type="XML"/>
+        <core:Fragment fragmentName="sap.ino.vc.commons.fragments.RefreshButton" type="XML" />
+        <core:Fragment fragmentName="sap.ino.vc.commons.fragments.FullScreenButton" type="XML" />
+    </ino:ColorBar>
+</core:FragmentDefinition>

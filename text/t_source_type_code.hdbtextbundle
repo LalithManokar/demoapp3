@@ -1,0 +1,18 @@
+# TRANSLATE
+# XTXT, 100
+USER=User created
+# XTXT, 100
+UPLOAD=Upload
+# XTXT, 100
+IDP=Identity Provider
+# XTXT, 100
+AUTOMATIC=Automatically created
+
+# XTXT, 300
+USER_LONG=User created
+# XTXT, 300
+UPLOAD_LONG=Upload
+# XTXT, 300
+IDP_LONG=Identity Provider
+# XTXT, 300
+AUTOMATIC_LONG=Automatically created

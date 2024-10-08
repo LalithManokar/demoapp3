@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_STATUS_MODEL_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="Status model usage"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.status::v_status_model_usage" type="DATA_BASE_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.status::v_status_model_usage"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="sap.ino.db.status::v_status_model_usage">
+    <descriptions/>
+    <attributes>
+      <attribute id="MODEL_CODE" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Model Code"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.status::v_status_model_usage" columnName="MODEL_CODE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_PHASE" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Phase"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.status::v_status_model_usage" columnName="CAMPAIGN_PHASE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.status::v_status_model_usage" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.status::v_status_model_usage" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="PHASE_COUNT" order="5" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="PHASE_COUNT"/>
+        <measureMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.status::v_status_model_usage" columnName="PHASE_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/></shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = "
+select 
+    decision.*, 
+    identity.name as decider_name,
+    identity.first_name as decider_first_name,
+    identity.last_name as decider_last_name
+from \"sap.ino.db.idea::t_decision\" as decision
+    left outer join \"sap.ino.db.iam::t_identity\" as identity
+        on decision.decider_id = identity.id
+with read only
+";
+
+depends_on_table = ["sap.ino.db.idea::t_decision", "sap.ino.db.iam::t_identity"];

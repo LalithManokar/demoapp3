@@ -1,0 +1,17 @@
+schema = "SAP_INO_EXT";
+query = "
+	select 
+		top 1 
+		'X' as has_backoffice_instance_role
+	from 
+		\"sap.ino.db.iam::v_auth_application_user_role_transitive\" as role_transitive
+	inner join \"sap.ino.db.iam::t_role_privilege\" as role_priv
+		on role_priv.role_code = role_transitive.role_code
+	where 
+		( role_transitive.object_type_code = 'CAMPAIGN' or 
+		role_transitive.object_type_code = 'RESPONSIBILITY' )  and 
+		role_priv.privilege = 'CAMP_IDEA_BACKOFFICE'
+";
+ 
+depends_on_table = ["sap.ino.db.iam::t_role_privilege"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];

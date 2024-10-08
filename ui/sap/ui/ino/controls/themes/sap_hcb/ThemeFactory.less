@@ -1,0 +1,734 @@
+.sapUiLblRelevant {
+  font-size: @sapUiFontSize;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.sapUiUx3ShellHeader>hr {
+	background-color: @sapUiHighlightColor;
+}
+
+.sapUiUx3ShellBg {
+	background-color: #000000;
+}
+
+.sapUiUx3ShellCanvasBackground.sapUiUx3ShellCanvasBackgroundOpen,
+.sapUiUx3ShellCanvasBackground.sapUiUx3ShellCanvasBackgroundClosed {
+	border: none;
+}
+
+.sapUiUx3ShellHeader-logout:hover,
+.sapUiUx3ShellHeader-logout:focus {
+	background-color: @sapUiHighlight;
+}
+
+.sapUiUx3ShellHeaderTitleRight>.sapUiHLayout>.sapUiHLayoutChildWrapper>.sapUiLnk {
+	padding-left:10px;
+	padding-right:10px;
+}
+
+:focus {
+	outline: 0;
+}
+
+.sapUiTable :focus {
+    outline-width: 2px;
+    outline-style: solid;
+}
+
+.sapUiTable .sapUiTableCnt :focus {
+    outline-width: 3px;
+}
+
+.sapUiInoCommentField {
+    margin: 7px 0px;
+}
+
+.sapUiInoCampaignProcessNote .sapUiPanel .sapUiPanelCont {
+    border-top-width: 0px;    
+}
+
+.sapUiInoCampaignProcessNote {
+    border: 2px solid @sapUiWhiteBorder;
+}
+
+.sapUiUx3NavBar :focus {
+	outline: 3px solid white;
+}
+
+.sapUiTfDsbl {
+	color: @sapUiText;
+}
+
+a.sapUiLnk {
+    text-decoration: none;
+}
+
+a.sapUiLnk:focus,
+a.sapUiLnk:hover,
+a.sapUiLnk:active {
+    text-decoration: underline;
+    
+}
+
+
+.sapUiCb.sapUiCbStd:focus {
+	outline: 3px solid white;
+}
+
+.sapUiBtnS.sapUiBtnLite.sapUiInoBtnMailing > .sapUiBtnTxt {
+	text-decoration: none;
+}
+
+.sapUiBtnS.sapUiBtnLite.sapUiInoBtnMailing:focus > .sapUiBtnTxt,
+.sapUiBtnS.sapUiBtnLite.sapUiInoBtnMailing:hover > .sapUiBtnTxt,
+.sapUiBtnS.sapUiBtnLite.sapUiInoBtnMailing:active > .sapUiBtnTxt {
+    text-decoration: underline;
+}
+
+.sapUiBtnS.sapUiBtnLite.sapUiInoBtnMailing:focus,
+.sapUiBtnS.sapUiBtnLite.sapUiInoBtnMailing:hover,
+.sapUiBtnS.sapUiBtnLite.sapUiInoBtnMailing:active {
+    background-color: @sapUiButtonBackground;
+}
+.sapUiInoIdeaDetailsMainContentEnd {
+    height: 5px;
+}
+
+/* This file contains application specific styles which only may be used by application views. 
+   These styles SHALL not be used in controls. */
+   
+.sapUiInoBackofficeFullHeight,.sapUiInoBackofficeFullHeight .sapUiVltCell {
+    height: 95%;
+}
+
+.sapUiLbl.sapUiInoBackofficeActivationDescription {
+    line-height: 23px;
+    margin-left: -15px;
+}
+
+.sapUiInoBackofficeFullHeightActivation {
+    height: 100%;
+}
+
+.sapUiInoBackofficeFullHeightActivation .sapUiVltCell:nth-child(1) {
+    height: 80px;
+}
+
+.sapUiInoBackofficeFullHeightActivation .sapUiVltCell:nth-child(2) {
+    height: calc(~"100% - 80px");
+}
+
+.sapUiLbl.sapUiInoBackofficeHighlightContent {
+    font-size: 50px;
+    font-weight: bold;
+    line-height: 50px;
+}
+
+.sapUiLbl.sapUiInoBackofficeMarginLeftAligned {
+    margin-left: 10px;
+}
+
+.sapUiInoBackofficeNavigationLink {
+	margin-left:1px;
+}
+
+a.sapUiInoBackofficeNavigationLink.sapUiLnk:focus,
+a.sapUiInoBackofficeNavigationLink.sapUiLnk:hover,
+a.sapUiInoBackofficeNavigationLink.sapUiLnk:active {
+	background-color: @sapUiHighlightColor;
+  	color: #ffffff;
+  	outline: 1px solid white;
+}
+
+
+/* Vertical layouts are done strangely in SAPUI5 with display:inline-block 
+   this has issues in context with the floating we use on the Inno Page */
+
+.sapUiVlt {
+    display: block;
+}
+
+/* backoffice - marking an error or the follow-up date */
+.markError {
+    color: #ff6347;
+}
+
+.markDisabled,
+.markDisabled.sapUiBtnS.sapUiBtnLite.sapUiBtnStd, 
+.markDisabled.sapUiBtnS.sapUiBtnLite.sapUiBtnStd:hover, 
+.markDisabled.sapUiBtnS.sapUiBtnLite.sapUiBtnStd:focus,
+.markDisabled.sapUiBtnS.sapUiBtnLite.sapUiBtnStd > span.sapUiBtnIco, 
+.markDisabled.sapUiBtnS.sapUiBtnLite.sapUiBtnDsbl > span.sapUiBtnIco {
+    color: @sapUiButtonDisabledBorderColor;
+}
+
+.sapUiBtn.sapUiBtnS.sapUiBtnNorm.sapUiBtnDsbl:focus {
+	outline: 1px dotted #ffffff;
+}
+
+.sapUiTableTr.markErrorCell,
+.sapUiTableTr[data-sap-ui-level="0"].markErrorCell {
+    background-color: #AA0000;
+}
+
+/* remove the alpha slider of the color picker in backoffice */
+.sapUiColorPicker-ColorPickerAlphaSlider.sapUiSli.sapUiSliHori.sapUiSliStd
+    {
+    visibility: hidden;
+    height: 0px;
+}
+
+/* mail button image */
+.sapUiInoBtnMailing .sapUiBtnIco {
+    height: 15px;
+}
+
+/* AboutBox ::TODO:: move to own InnoControl */
+.sapUiInoAboutBox .sapUiDlgCont {
+	background-color: white;
+    padding-top: 16px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    margin-bottom: -12px;
+}
+
+.sapUiInoAboutBox p {
+	color: @sapUiTextInverted;
+} 
+
+.sapUiInoAboutBoxContent p {
+    margin-left: 25px;
+}
+
+.sapUiInoAboutBox .sapUiDlgFooter {
+	height: 40px;
+}
+
+/* space between layout children */
+.sapUiInoMltForm .sapUiHLayoutChildWrapper {
+    padding-right: 5px;
+    display: inline-block;
+}
+
+.sapUiInoMltForm label {
+    margin-top: 7px;
+}
+
+label.sapUiInoMltInlineLabel  {
+    margin-top: 0px;
+    font-weight: normal;
+}
+
+/* create idea button */
+.sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea {
+    background-color: #009ee3;    
+	color: @sapUiTextInverted;
+	font-size: @sapUiFontLargeSize;
+}
+
+
+.sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea img {
+	height: 120px;
+	width: 30px;
+	margin-top: -90px;
+}
+
+.sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea > .sapUiBtnTxt {
+	margin-top: 0px;
+}
+
+.sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea {
+    overflow: hidden;
+}
+
+.sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea:hover,
+.sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea:focus,
+.sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea:active {
+	background-color: @sapUiHighlightColor;
+    color: @sapUiText;
+    background-image: none;     
+}
+
+
+.sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea:focus img,
+.sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea:active img {
+    margin-top: 0px;
+}
+
+.sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea:hover img {
+	margin-top: 2px;
+}
+
+
+.sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea:focus > .sapUiBtnTxt,
+.sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea:active > .sapUiBtnTxt {
+    margin-top: -90px;
+}
+
+.sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea:hover > .sapUiBtnTxt {
+	margin-top: -88px;
+}
+
+
+.sapUiBtn.sapUiBtnEmph.sapUiBtnStd.sapUiInoBtnCreateIdea:focus {
+    border: 3px solid white;
+    outline: 0;    
+    color: @sapUiText;
+}
+
+.sapUiInoPageActionBar .sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea,
+.sapUiInoPageActionBar .sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea:focus,
+.sapUiInoPageActionBar .sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea:hover,
+.sapUiInoPageActionBar .sapUiBtn.sapUiBtnEmph.sapUiInoBtnCreateIdea:active {
+    width: 220px;    
+    height: 36px;
+}
+
+/* remove button w/ icon */
+.sapUiBtnS.sapUiBtnLite.sapUiInoRemoveBtn {
+    padding: 0px;
+    margin: -1px 0px 0px 2px;
+    background-image: url(img/ThemeFactory/remove.png);
+    height: 21px;
+    width: 21px;
+    background-size: contain;     
+}
+
+/* views */
+.sapUiInoIdeaDetailsMainContent {
+	margin-top: 10px;
+}
+
+/* no stroke divider */
+.sapUiCommonsHoriDivNoStroke {
+    visibility: hidden;
+}
+
+
+/* ******************** BACKOFFICE ******************** */
+
+.sapUiNotifierMessageClose {
+    float: right;
+    color: white;
+    margin-right: 10px;
+}
+
+.sapUiNotifierMessageCloseAll {
+    float: right;
+    color: white;
+    margin-right: 20px;
+}
+
+.sapUiNotifierMessageCloseAll:hover {
+    cursor: pointer;
+} 
+
+.sapUiUx3ShellPaneBar .sapUiInoHelpPanel:focus .sapUiPanelHdr,
+.sapUiUx3ShellPaneBar .sapUiInoHelpPanel:focus .sapUiPanelCont {
+	background-color: darken(@sapUiHighlight, 10%);
+}
+
+.sapUiInoHelpPanel .sapUiPanelCont h6 {
+    font-size: 11px;
+}
+
+.sapUiInoIconButton img {
+	height: 18px;
+}
+
+.sapUiInoDisplayNone,
+.sapUiPanel.sapUiInoDisplayNone {
+    display: none;
+}
+
+
+.sapUiInoCampaignImageSidebar {
+    width: 100%;
+    height: 85px;
+    background-size: cover;
+}
+
+.sapUiInoCampaignNoImageContainer {
+    position: static;
+}
+
+.sapUiInoCampaignNoImageText {
+    width: 246px;
+    text-align: center;
+}
+
+.sapUiInoCampaignColorSample {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #bfbfbf;
+    margin-left: 4px;
+}
+
+.sapUiInoCampaignColorSampleContainer {
+    display: table;
+}
+
+.sapUiInoCampaignLandingPageLanguageContainer {
+    width: 436px;
+}
+
+.sapUiInoCampaignLandingPageTableContainer {
+    min-width: 436px;
+    width: 70%;
+}
+
+.sapUiInoCampaignLandingPageTitleContainer {
+    min-width: 436px;
+    width: 70%;
+}
+
+.sapUiInoCampaignLandingPageTextContainer {
+    min-width: 436px;
+    width: 70%;
+    height: 250px;
+    padding-bottom: 13px;
+}
+
+.sapUiInoCampaignLandingPageTextContainer.sapUIInoCampaignHTMLBox > div {
+	background-color: @sapUiReadOnlyBG;
+	border-color: @sapUiFieldReadOnlyBorderColor;
+	padding: 0px 0px 2px 7px;
+	border-width: 1px;
+	border-style: solid;
+	min-height: 250px;
+}
+
+.sapUiImg.sapUiInoCampaignPreviewImage {
+    width: 100%;
+    height: 150px;
+}
+
+#sapUiBusyIndicator.sapUiInoBackofficeBusyIndicator {
+    background-size: auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+#sapUiBusyIndicator.sapUiInoBackofficeBusyIndicator.sapUiBusy:after {
+	display: none;
+}
+
+.sapUiTabSel:focus,
+.sapUiTab:focus {
+  outline: 1px dashed white;
+  outline-offset: -2px;
+}
+
+
+.sapUiInoPeopleTabStrip .sapUiTabPanel {
+	padding: 5px;
+}
+
+.sapUiInoPeopleRemove {
+	margin-left: 8px;
+}
+
+.sapUiDlgHdrBtns > a {
+	text-decoration: none;
+    line-height: 18px;
+}
+
+.sapUiDlgHdrBtns>a:hover {
+    color: @sapUiText;
+    background: @sapUiHighlight;
+}
+
+#myreports .sapUiMltPadRight {
+	padding: 4px;
+}
+
+.sapUiUx3ShellTool:focus,
+.sapUiUx3ShellTool:hover,
+.sapUiUx3ShellTool:active,
+.sapUiUx3ShellPaneEntry:focus,
+.sapUiUx3ShellPaneEntry:hover,
+.sapUiUx3ShellPaneEntry:active {
+	background-color: @sapUiHighlight;
+}
+
+.delay(@delay) {
+    -webkit-transition: all 0s linear @delay;
+    -moz-transition: all 0s linear @delay;
+    -o-transition: all 0s linear @delay;
+    transition: all 0s linear @delay;
+}
+
+.sapUiUx3ShellTool:focus,
+.sapUiUx3ShellPaneEntry:focus {
+    outline: 1px solid white;
+    .delay(0.1s); /* this is part of a WORKAROUND for the RTE focus handling */ 
+}
+
+.sapUiUx3ShellPaneEntrySelected, 
+.sapUiUx3ShellPaneEntrySelected:hover {
+	color: @sapUiText;
+	background-color: @sapUiHighlight;
+}
+
+.sapUiUx3TIContent .sapUiInoRTEContainer {
+    padding-left: 1px;
+    padding-top: 1px;
+}
+
+
+.sapUiTb.sapUiTbStandalone.sapUiInoClipboardToolbar {
+	height: 40px;
+	top: 10px;
+	margin-bottom: -2px;
+}
+
+.sapUiInoClipboard .sapUiPanelHdrEmph {
+    background-color: @sapShellColor;
+    padding-left: 5px;
+}
+
+.sapUiAcd.sapUiInoClipboard {
+	border-top-width: 0px;
+}
+
+.sapUiInoClipboardEntry {
+	width: 100% 
+}
+
+.sapUiInoClipboard .sapUiAcdSection {
+  width: 232px !important;
+  outline: white solid 1px !important;
+  margin-left: 1px;
+  margin-top: 1px;
+}
+
+.sapUiInoClipboard .sapUiAcdSectionHdr {
+    margin-top: 2px;
+    border-bottom: 0;
+}
+
+.sapUiInoClipboard .sapUiAcdSectionCont {
+    border: 0;
+    border-top: white solid 1px;
+}
+
+.sapUiInoClipboard.sapUiAcd {
+    border: 0;
+}
+
+.sapUiBtnS.sapUiBtnLite.sapUiInoClipboardRow,
+.sapUiBtnS.sapUiBtnLite.sapUiInoClipboardRow:active, 
+.sapUiBtnS.sapUiBtnLite.sapUiInoClipboardRow:hover, 
+.sapUiBtnS.sapUiBtnLite.sapUiInoClipboardRow:focus,
+.sapUiBtnS.sapUiBtnLite.sapUiBtnAct.sapUiInoClipboardRow,
+.sapUiBtnS.sapUiBtnLite.sapUiBtnFoc.sapUiInoClipboardRow {
+	padding: 0 0px 1px;
+	font-size: 12px;
+}
+
+.sapUiBtnS.sapUiBtnLite.sapUiInoClipboardRow > span{
+	font-size: 12px;
+	text-overflow: clip;
+}
+
+.sapUiBtnS.sapUiBtnLite.sapUiInoClipboardBtn {
+	padding: 0px;
+	margin: -2px 1px 0px 1px;
+	background-image: url(img/ThemeFactory/remove.png);
+    height: 21px;
+    width: 21px;
+    background-size: contain;
+}
+
+.sapUiBtnS.sapUiBtnLite.sapUiInoClipboardBtn:hover, 
+.sapUiBtnS.sapUiBtnLite.sapUiInoClipboardBtn:focus {
+	background-image: url(img/ThemeFactory/remove_hover.png);
+}
+
+.sapUiBtnS.sapUiBtnLite.sapUiInoClipboardBtn:active {
+	background-image: url(img/ThemeFactory/remove_active.png);
+	background-color: transparent;
+}
+
+.sapUiInoTileContainerCell .sapUiMltCell.sapUiMltPadRight {
+	padding: 0 0 0 0;
+}
+
+.sapUiInoMltRichTextEditorCampaign {
+	display: block;
+	width: 75%;
+	padding-bottom: 13px;
+}
+
+.sapUiInoMltRichTextEditorCampaign.sapUIInoCampaignHTMLBox > div {
+	background-color: @sapUiReadOnlyBG;
+	border-color: @sapUiFieldReadOnlyBorderColor;
+	padding: 0px 0px 2px 7px;
+	border-width: 1px;
+	border-style: solid;
+	min-height: 147px;
+}
+
+.sapUiInoRelatedIdeasInfoIcon.sapUiInoRelatedIdeasTooltipContainer:focus { 
+	outline-color: white;
+    outline-width: 1px;
+    outline-style: solid;
+}
+
+.sapUiTv.sapUiInoRelatedIdeasTitle {
+	margin-top: 3px;
+}
+
+.sapUiInoRelatedIdeasInfoIcon :focus,
+.sapUiInoRelatedIdeasInfoIcon:focus {
+	outline: 0;
+}
+
+.sapUiInoRelatedIdeasInfoIcon {
+    background: url('img/ThemeFactory/info.png') no-repeat;
+    width: 27px;
+	height: 26px;
+    background-position: 0px 0px;
+}
+
+.sapUiInoRelatedIdeasInfoIcon:focus,
+.sapUiInoRelatedIdeasInfoIcon:hover {
+    background-color: @sapUiHighlight;
+}
+
+.sapUiInoRelatedIdeasTooltipContainer {
+	margin-left: 3px;
+}
+
+.sapUiInoRelatedIdeasInfoIcon.sapUiInoRelatedIdeasTooltipContainer:focus {
+	outline-color: white;
+    outline-width: 1px;
+    outline-style: solid;
+}
+
+.sapUiHLayout.sapInoWhiteSpaceNormal {
+    white-space: normal;
+}
+
+.sapInoTagFilterMargin {
+    margin: 1px 4px 2px 2px;
+}
+
+.sapInoTagFilterView {
+	margin-left: 8px;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+.sapInoIdeaRelationSemanticIcon {
+	margin-right: 4px;
+	margin-left: -5px;
+}
+
+.sapUiInoClipboardColumn {
+	margin-left: 1px;
+}
+
+.sapUiTabBar {
+	height: auto;
+}
+
+.sapUiTabBarCnt {
+	margin-bottom: 0px;	
+}
+
+.sapUiNotifierMessageCount.sapUiMessage.sapUiMessageInformation {
+	background-color: #0f5d94;
+	color: #FFFFFF;
+}
+
+.sapUiNotifierMessageCount.sapUiMessage.sapUiMessageSuccess {
+	background-color: #008000;
+	color: #FFFFFF;
+} 
+
+.sapUiNotifierMessageCount.sapUiMessage.sapUiMessageWarning {
+	background-color: #ffff66;
+	color: #000000;
+} 
+
+.sapUiNotifierMessageCount.sapUiMessage.sapUiMessageError {
+	background-color: #8B0000;
+	color: #FFFFFF;
+}
+
+.sapInoUiCommentButton.sapUiBtnS.sapUiBtnNorm {
+	margin-top: 4px;
+}
+
+.sapUiAcdSectionMinArrow:focus,
+.sapUiAcdSectionMinArrow:hover,
+.sapUiAcdSectionHdr:focus a,
+.sapUiAcdSectionHdr:hover a,
+.sapUiAcdSectionCont a:focus,
+.sapUiAcdSectionCont a:hover {
+    background-color: @sapUiHighlight;
+}
+
+.sapUiInoIpeSizeHeader {
+  	border: 1px solid white;
+  	margin-bottom: 2px;
+  	margin-top: 2px;
+  	height: 22px;
+  	margin-left: 0px;
+}
+
+.sapUiInoIpeSizeHeader > span,
+.sapUiInoIpeSizeHeader > input  {
+	font-size: 14px;
+}
+
+.sapUiInoIpeSizeHeader > .sapUiTf:not(.sapUiTfInner) {
+	height: 20px;
+}
+
+.sapUiInoTinyColorPicker .sapUiColorPicker-ColorPickerMatrix {
+    /* we need to overwrite this w/ important, as the original picker sets this programmatically */ 
+    width: 117px !important;
+}
+
+.sapUiInoTinyColorPicker .sapUiColorPicker-ColorPickerMatrix colgroup col:nth-child(2),
+.sapUiInoTinyColorPicker .sapUiColorPicker-ColorPickerMatrix colgroup col:nth-child(3) {
+    /* we need to overwrite this w/ important, as the original picker sets this programmatically */ 
+    width: 0px !important;
+}
+
+.sapUiInoTinyColorPicker .sapUiColorPicker-ColorPickerMatrix tbody tr:first-child td:nth-child(2),
+.sapUiInoTinyColorPicker .sapUiColorPicker-ColorPickerMatrix tbody tr:first-child td:nth-child(3) {
+    display: none;
+}
+
+.sapUiInoTinyColorPicker .sapUiColorPicker-ColorPickerAlphaSlider {
+	display: none;
+}
+
+.sapMSltPicker.sapMPopover {
+	box-shadow: none;
+}
+
+
+.sapMBtn:focus > .sapMBtnInner.sapMFocusable {
+    outline:          2px solid @sapUiFocus;
+    outline-offset:   -1px;
+}
+
+html[data-sap-ui-browser^="ie"] .sapMBtn:focus > .sapMBtnInner.sapMBtnDefault.sapMFocusable:before {
+	border:           2px solid @sapUiFocus;
+}
+
+
+.sapUiPanelTb.sapUiTbDesignFlat>.sapUiBtn.sapUiInoExpertPanelCloseButton {
+    margin-right: -16px;
+}

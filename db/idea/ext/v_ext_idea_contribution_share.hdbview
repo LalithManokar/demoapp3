@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT";
+query = "SELECT contributionShare.*
+            FROM \"sap.ino.db.idea::v_idea_contribution_share\" as contributionShare
+            WHERE contributionShare.idea_id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")
+            with read only";
+
+depends_on_view = ["sap.ino.db.idea::v_idea_contribution_share"];

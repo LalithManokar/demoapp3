@@ -1,0 +1,16 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Language dependend Mail Template";
+table.columns = [
+	{name = "CODE";              sqlType = VARCHAR;  length = 500; nullable = false; comment = "Mail Template Identifier";},
+	{name = "MAIL_TEMPLATE_CODE";sqlType = VARCHAR;  length = 500; nullable = false; comment = "Template the language specific content belongs to. Foreign key to t_mail_template.code";},
+	{name = "LANG";              sqlType = VARCHAR;  length = 5;   nullable = false; comment = "Language. Foreign key to t_lang.CODE";},
+	{name = "TEMPLATE";          sqlType = NCLOB;                  nullable = false; comment = "Template Text";},
+	{name = "DEFAULT_TEXT";      sqlType = NVARCHAR; length = 100; nullable = true;  comment = "Default Text for Unit of Measure";},
+    {name = "DEFAULT_LONG_TEXT"; sqlType = NVARCHAR; length = 300; nullable = true;  comment = "Default Long Text for Unit of Measure";},
+    {name = "CREATED_AT";        sqlType = TIMESTAMP;              nullable = true;  comment = "Creation timestamp";},
+    {name = "CREATED_BY_ID";     sqlType = INTEGER;                nullable = true;  comment = "Identity by which content has been created.";},
+    {name = "CHANGED_AT";        sqlType = TIMESTAMP;              nullable = true;  comment = "Changed timestamp";},
+    {name = "CHANGED_BY_ID";     sqlType = INTEGER;                nullable = true;  comment = "Identity by which content has been changed.";}
+];
+table.primaryKey.pkcolumns = ["CODE"]; 

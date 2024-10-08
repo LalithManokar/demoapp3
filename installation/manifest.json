@@ -1,0 +1,136 @@
+{
+  "_version": "1.1.0",
+  "sap.app": {
+	"id": "sap.ino.installation",
+	"type": "application",
+	"i18n": "i18n/i18n.properties",
+	"title": "{{appTitle}}",
+	"description": "{{appDescription}}",
+	"applicationVersion": {
+	  "version": "2.4.1"
+	}
+  },
+  "sap.ui": {
+	"technology": "UI5",
+	"deviceTypes": {
+		"desktop": true
+	}
+  },
+  "sap.ui5": {
+     "contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+	"rootView": {
+		"viewName": "sap.ino.installation.view.App",
+		"type": "XML",
+		"async": true,
+		"id": "app"
+	},
+	"dependencies": {
+	  "minUI5Version": "1.38.0",
+	  "libs": {
+				"sap.m": {
+					"lazy": false
+				}
+			}
+	},
+	"models": {
+        	
+	},
+	"resources": {
+	  "css": [
+		{
+		  "uri": "style/app.css"
+		}
+	  ]
+	},
+	"routing": {
+	  "config": {
+		"routerClass": "sap.m.routing.Router",
+		"viewType": "XML",
+		"viewPath": "sap.ino.installation.view",
+		"controlId": "app",
+		"controlAggregation": "pages",
+		"async": true
+	  },
+	  "routes": [
+	     {
+		  "pattern": "",
+		  "name": "home",
+		  "target": "home"
+		}, 
+		{
+		  "pattern": "newpage-p",
+		  "name": "newpage",
+		  "target": "newpage"
+		},
+		{
+		  "pattern": "installationCreate",
+		  "name": "installationCreate",
+		  "target": "installationCreate"		    
+		},
+		{
+		  "pattern": "installationCreateProcess",
+		  "name": "installationCreateProcess",
+		  "target": "installationCreateProcess"		    
+		},		
+		{
+		  "pattern": "installationUpgrade",
+		  "name": "installationUpgrade",
+		  "target": "installationUpgrade"		    
+		},
+		{
+		  "pattern": "installationUpgradeProcess",
+		  "name": "installationUpgradeProcess",
+		  "target": "installationUpgradeProcess"		    
+		},
+		{
+		  "pattern": "installationUpgradeSuccess",
+		  "name": "installationUpgradeSuccess",
+		  "target": "installationUpgradeSuccess"		    
+		},
+		{
+		  "pattern": "installationCreateSuccess",
+		  "name": "installationCreateSuccess",
+		  "target": "installationCreateSuccess"		    
+		}		
+		
+	  ],
+	  "targets": {
+		"newpage": {
+		  "viewId": "newpage",
+		  "viewName": "Newpage"
+		},
+		"home":{
+		   "viewId": "mainShell",
+		  "viewName": "MainShell"
+		},
+		"installationCreate": {
+		  "viewId": "installationCreate",
+		  "viewName": "InstallationCreate"		    
+		},
+		"installationCreateProcess": {
+		  "viewId": "installationCreateProcess",
+		  "viewName": "InstallationCreateProcess"		    
+		},
+		"installationUpgrade": {
+		  "viewId": "installationUpgrade",
+		  "viewName": "InstallationUpgrade"		    
+		},
+		"installationUpgradeProcess": {
+		  "viewId": "installationUpgradeProcess",
+		  "viewName": "InstallationUpgradeProcess"		    
+		},
+		"installationUpgradeSuccess": {
+		  "viewId": "installationUpgradeSuccess",
+		  "viewName": "InstallationUpgradeSuccess"		    
+		},
+		"installationCreateSuccess":{
+		  "viewId": "installationCreateSuccess",
+		  "viewName": "InstallationCreateSuccess"			    
+		}
+	  }
+	}
+  }
+}

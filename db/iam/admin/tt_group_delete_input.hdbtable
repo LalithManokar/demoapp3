@@ -1,0 +1,8 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE; 
+table.temporary = true;
+table.description = "Input Table User Import";
+table.columns = [
+    {name = "LINE_NO";    sqlType = INTEGER;                nullable = true;                comment = "Line in the input file";},
+    {name = "GROUP_NAME"; sqlType = NVARCHAR; length = 100; nullable = true; unique = true; comment = "Group Name";}
+];

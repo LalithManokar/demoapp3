@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "application privileges for manipulation of static roles";
+table.columns = [
+    {name = "PRIVILEGE"; sqlType = NVARCHAR; length = 256; nullable = false; unique = true;  comment = "application privilege";},
+    {name = "ROLE_NAME"; sqlType = NVARCHAR; length = 256; nullable = false; unique = false; comment = "static role name";},
+    {name = "ACTION";    sqlType = VARCHAR;  length =   8; nullable = false; unique = false; comment = "GRANT|REVOKE";},
+    {name = "CODE";      sqlType = VARCHAR;  length =  20; nullable = false; unique = false; comment = "role code (sap.ino.db.iam::t_role)";}
+];
+table.primaryKey.pkcolumns = ["PRIVILEGE"];

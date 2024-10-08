@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = " 
+	select follow.id as follow_id
+	    from  
+	    	\"sap.ino.db.follow::t_follow\" as follow
+    	inner join
+    		\"sap.ino.db.iam::v_auth_application_user\" as user
+    	on follow.created_by_id = user.id
+    with read only";
+				
+				
+depends_on_table = ["sap.ino.db.follow::t_follow"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user"];

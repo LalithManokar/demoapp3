@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "
+    select * from \"sap.ino.db.status::t_status_model\"
+        where OBJECT_TYPE_CODE = 'IDEA'
+    with read only
+";
+
+depends_on_table = ["sap.ino.db.status::t_status_model"];

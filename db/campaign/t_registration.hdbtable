@@ -1,0 +1,16 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Registration for campaigns";
+table.columns = [
+    {name = "ID";                       sqlType = INTEGER;               nullable = false; comment = "Human readable identifier ";},
+    {name = "APPLICANT_ID";             sqlType = INTEGER;               nullable = false; comment = "Identity ID of applicant ";},
+    {name = "APPROVER_ID";              sqlType = INTEGER;               nullable = true;  comment = "Identity ID of approver ";},
+    {name = "CAMPAIGN_ID";              sqlType = INTEGER;               nullable = false; comment = "Campaign ID ";},
+    {name = "STATUS";                   sqlType = VARCHAR; length=50;    nullable = false; comment = "Stautus of a registration record (new, approved, rejected, leaved) ";},
+    {name = "CREATED_AT";               sqlType = TIMESTAMP;             nullable = false; comment = "Creation timestamp ";},
+    {name = "CREATED_BY_ID";            sqlType = INTEGER;               nullable = false; comment = "Identity by which an identity has been created. Foreign key to t_identity.ID ";},
+    {name = "CHANGED_AT";               sqlType = TIMESTAMP;             nullable = false; comment = "Changed timestamp ";},
+    {name = "CHANGED_BY_ID";            sqlType = INTEGER;               nullable = false; comment = "Identity by which an identity has been changed. Foreign key t_identity.ID ";},
+    {name = "REASON";                   sqlType = VARCHAR; length=512;    nullable = true; comment = "Reason of status";}
+];
+table.primaryKey.pkcolumns = ["ID"];

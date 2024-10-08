@@ -1,0 +1,47 @@
+procedure "SAP_INO"."sap.ino.db.blog::p_blog_search" (
+    in iv_search_term  nvarchar(1024),
+    out ot_blog_score  SAP_INO."sap.ino.db.basis::tt_object_score")
+language sqlscript
+sql security invoker
+default schema SAP_INO reads sql data as
+begin
+    ot_blog_score = 
+                    select
+                            id, 
+                            1 as score
+                        from 
+                            "sap.ino.db.blog::t_blog"
+                        where length(:iv_search_term) = 0 
+                    union all 
+                    select
+                            id, 
+                            1 as score
+                        from 
+                            "sap.ino.db.blog::t_blog"                    
+                        where length(:iv_search_term) > 0
+                        and length(ltrim(:iv_search_term,'0123456789')) <=0   and cast (id as nvarchar) = :iv_search_term
+                    union all
+                        select
+                                id,
+                                sum(score) / count(score) as score
+                            from (
+                                select 
+                                        blog.id,
+                                        score() as score
+                                    from 
+                                        "sap.ino.db.blog::t_blog" as blog
+                                    left outer join  "sap.ino.db.tag::t_object_tag" as blog_tag
+                                    on   (blog_tag.object_id = blog.id and blog_tag.object_type_code = 'BLOG')
+                                    left outer join    "sap.ino.db.tag::t_tag" as tag
+                                    on   tag.id = blog_tag.tag_id
+                                    where length(:iv_search_term) > 0 and (contains(title, :iv_search_term, fuzzy(0.85,'similarCalculationMode=search'), weight(1.0))
+                                    /* As DESCRIPTION is a BLOB the contains operator only is allowed when a fulltext index exists.
+               Fulltext indices are created after import and thus the following line is "activated" by the 
+               after import method "sap.ino.setup.02_activate_p_blog_search" after the fulltext index has been created */
+                     or contains(description, :iv_search_term, fuzzy(0.85,'similarCalculationMode=search'), weight(0.5)) 
+                                     or contains(tag.name, :iv_search_term, fuzzy(0.9,'similarCalculationMode=search'), weight(1.0))
+                                    )
+                            )
+                            where length(:iv_search_term) > 0
+                            group by id;
+end;

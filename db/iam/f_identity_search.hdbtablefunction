@@ -1,0 +1,42 @@
+function "SAP_INO"."sap.ino.db.iam::f_identity_search" ( searchToken nvarchar(100) ) 
+    returns table ( search_score double, id integer )
+    language sqlscript
+    sql security invoker as
+begin
+    return 
+        select max(search_score) as search_score, id from (
+            select
+                1 as search_score,
+                id
+            from
+                "sap.ino.db.iam::t_identity"
+            where
+                length(:searchToken) > 0 and 
+                length(ltrim(:searchToken,'0123456789')) <=0 and             
+                cast(id as nvarchar) = :searchToken
+            union all
+            select
+                score() as search_score,
+                id
+            from
+                "sap.ino.db.iam::t_identity"
+            where
+                contains((name), :searchToken, fuzzy(0.8,'similarCalculationMode=search')) OR
+                contains((first_name), :searchToken, fuzzy(0.8,'similarCalculationMode=search')) OR
+                contains((last_name), :searchToken, fuzzy(0.8,'similarCalculationMode=search')) OR
+                contains((user_name), :searchToken, fuzzy(0.8,'similarCalculationMode=search')) OR
+                contains((email), :searchToken, fuzzy(0.8,'similarCalculationMode=search'))
+            union all
+            select
+                1 as search_score,
+                id
+            from
+                "sap.ino.db.iam::t_identity"
+            where
+                lcase(name) like lcase(:searchToken) || '%' OR
+                lcase(first_name) like lcase(:searchToken) || '%' OR
+                lcase(last_name) like lcase(:searchToken) || '%' OR
+                lcase(user_name) like lcase(:searchToken) || '%' OR
+                lcase(email) like lcase(:searchToken) || '%' 
+        ) group by id order by search_score desc;
+end;

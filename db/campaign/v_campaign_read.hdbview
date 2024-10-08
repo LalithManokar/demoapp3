@@ -1,0 +1,16 @@
+schema = "SAP_INO";
+query = "select campaign.id as campaign_id, object_role.identity_id, resp_value.resp_code
+			from \"sap.ino.db.campaign::t_campaign\" as campaign
+			left outer join \"sap.ino.db.subresponsibility::t_responsibility_value_stage\" as resp_value
+                on resp_value.resp_code = campaign.resp_code
+			inner join \"sap.ino.db.iam::v_object_identity_role_transitive\" as object_role 
+				on (campaign.id = object_role.object_id and object_role.object_type_code = 'CAMPAIGN')
+				    or (resp_value.id = object_role.object_id and object_role.object_type_code = 'RESPONSIBILITY')
+			inner join \"sap.ino.db.iam::t_role_privilege\" as role 
+				on role.role_code = object_role.role_code
+					and role.privilege = 'CAMP_READ'";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign", 
+                    "sap.ino.db.iam::t_role_privilege",
+                    "sap.ino.db.subresponsibility::t_responsibility_value_stage"];
+depends_on_view = ["sap.ino.db.iam::v_object_identity_role_transitive"];             

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="v_ext_identity_disclose_data_view" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="2.3" defaultClient="$$client$$" visibility="reportingEnabled" outputViewType="Aggregation" calculationScenarioType="TREE_BASED" enforceSqlExecution="false">
+<descriptions defaultDescription="v_ext_identity_disclose_data_view"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="sap.ino.db.iam::v_identity_disclose_data_view" type="DATA_BASE_VIEW">
+    <viewAttributes allViewAttributes="true"/>
+    <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_identity_disclose_data_view"/>
+  </DataSource>
+</dataSources>
+<calculationViews/>
+<logicalModel id="sap.ino.db.iam::v_identity_disclose_data_view">
+  <attributes>
+    <attribute id="OBJECT_TYPE_CODE" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="OBJECT_TYPE_CODE"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_identity_disclose_data_view" columnName="OBJECT_TYPE_CODE"/>
+    </attribute>
+    <attribute id="OBJECT_ID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="OBJECT_ID"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_identity_disclose_data_view" columnName="OBJECT_ID"/>
+    </attribute>
+    <attribute id="CORR_OBJECT_NAME" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CORR_OBJECT_NAME"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_identity_disclose_data_view" columnName="CORR_OBJECT_NAME"/>
+    </attribute>
+    <attribute id="IDENTITY_ID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="IDENTITY_ID"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_identity_disclose_data_view" columnName="IDENTITY_ID"/>
+    </attribute>
+    <attribute id="NAME" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="NAME"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_identity_disclose_data_view" columnName="NAME"/>
+    </attribute>
+    <attribute id="CORR_OBJECT_ID" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CORR_OBJECT_ID"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_identity_disclose_data_view" columnName="CORR_OBJECT_ID"/>
+    </attribute>
+    <attribute id="ROLE_CODE" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ROLE_CODE"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_identity_disclose_data_view" columnName="ROLE_CODE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="OBJECT_COUNT" order="8" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="OBJECT_COUNT"/>
+      <measureMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::v_identity_disclose_data_view" columnName="OBJECT_COUNT"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

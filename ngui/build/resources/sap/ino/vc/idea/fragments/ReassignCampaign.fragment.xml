@@ -1,0 +1,58 @@
+<core:FragmentDefinition
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.ui.layout.form"
+	xmlns="sap.m"
+	xmlns:ino="sap.ino.controls"
+	xmlns:mvc="sap.ui.core.mvc" >
+	<Dialog id="reassignCampaignDialog"
+        title="{i18n>IDEA_OBJECT_TIT_REASSIGN_CAMPAIGN}">
+		<content>
+			<f:SimpleForm
+            maxContainerCols="2"
+            layout="ResponsiveGridLayout"
+            editable="true">
+				<f:content>
+					<Label class="sapUiSmallMarginEnd" 
+				           text ="{i18n>IDEA_OBJECT_LBL_REASSIGN_CAMPAIGN}"
+				           required="true"/>
+					<Input 
+                        id="reassignCampaignList"
+                        width="100%"
+                        showValueHelp="true"
+                        showSuggestion="true"
+                        suggest="onReassignCampaignSuggestion"
+                        suggestionItems = "{assignment>/campaignSuggestion}"
+                        valueHelpRequest = "onHandleReassignCampaignHelp"
+                        suggestionItemSelected ="onReassignCampaignChange"
+                        submit="onClearCampaignFilter">
+						<suggestionItems>
+							<core:Item text="{assignment>SHORT_NAME}" key="{assignment>ID}"/>
+						</suggestionItems>
+					</Input>
+					<Label id="lblreassignCampaignResp"  
+						       visible = "{view>/DISPLAY_RESP_LIST}"
+						       required="true" text ="{assignment>/RESP_NAME}"  />
+					<!---ComboBox   id ="reassignCampaignRespList"
+						            visible = "{view>/DISPLAY_RESP_LIST}"
+				                    selectionChange = "onRespValueChange"/ -->
+					<Input id="reassignCampaignRespList"
+                   visible = "{view>/DISPLAY_RESP_LIST}"
+                   showValueHelp="true"
+                   showSuggestion="true"
+                   suggest="onRespListSuggestion"
+                   suggestionItems = "{assignment>/Resp_Value}"
+                   suggestionItemSelected ="onSuggestionSelected"
+                   valueHelpRequest = "onHandleRespListValueHelp">
+						<suggestionItems>
+							<core:Item text="{assignment>NAME}" key="{assignment>CODE}"/>
+						</suggestionItems>
+					</Input>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<buttons>
+			<Button text="{i18n>BTN_OK}" type="Accept" press="onReassignCampaignDialogOK" />
+			<Button text="{i18n>BTN_CANCEL}" press="onReassignCampaignDialogCancel" />
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

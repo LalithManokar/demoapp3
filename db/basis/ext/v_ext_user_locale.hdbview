@@ -1,0 +1,14 @@
+schema = "SAP_INO_EXT";
+query = "select
+             locale.user_id,
+             locale.locale 
+         from 
+             \"sap.ino.db.iam::v_auth_application_user\" as user
+         inner join
+             \"sap.ino.db.basis::v_user_locale\" as locale
+         on
+             user.id = locale.user_id
+         with read only";
+
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user",
+                   "sap.ino.db.basis::v_user_locale"];

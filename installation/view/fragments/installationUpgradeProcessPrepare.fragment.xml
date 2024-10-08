@@ -1,0 +1,38 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+                         xmlns:f="sap.ui.layout.form"
+                         xmlns="sap.m"
+                         xmlns:ino="sap.ino.controls"
+                         xmlns:mvc="sap.ui.core.mvc"
+                        >
+                           <Panel>
+				            <content >
+                                <VBox>
+                                <MessageStrip class="sapUiSmallMarginBottom"
+								text="{installation>/setSystemConfig/message}"
+								type="Error"
+								visible="{parts:['installation>/setSystemConfig/status'],formatter:'.visibleUpgradePrepareMsgStrip'}"
+								showIcon="true"/>
+                                <HBox class="sapInoInstallationUpgradeJoblineBox">
+                                <Text    class="sapInoInstallationUpgradeJobText" text="{i18n>PROCESS_UPGRADE_PREPARE_INACTIVE_JOB}"/>
+                        	     <Switch state="false" change="onDisableJob" enabled="false">
+                        	      <layoutData>
+				                	<FlexItemData growFactor="1" />
+				                     </layoutData>
+                			       </Switch>
+                                </HBox>
+                                <Text class="sapInoInstallationUpgradeJobTextDesc" text="{i18n>PROCESS_UPGRADE_PREPARE_JOB_DES}"/>
+                                <HBox class="sapInoInstallationUpgradeMainlineBox">
+                                <Text class="sapInoInstallationUpgradeJobText" text="{i18n>PROCESS_UPGRADE_PREPARE_MAIN_MODE}"/>
+                                <Text text="{i18n>PROCESS_UPGRADE_PREPARE_MAIN_MODE_YES}"/>
+                                </HBox>
+                                </VBox>
+
+			                </content>
+			            </Panel>
+				<Toolbar  class="sapInoInstallToolBar" visible="{parts:['installation>/STEP_TO_INSTALLDU'],formatter:'.visbileUpgradeButtonToolbar'}">
+				<ToolbarSpacer/>
+			            <Button text="{i18n>UPGRADE_NEXT_BUTTON}" press="onPressPrepareNextButton"/>
+			            <Button text="{i18n>BTN_CANCEL}" press="onPressCancel"/>
+		     	</Toolbar>	
+			            
+</core:FragmentDefinition>

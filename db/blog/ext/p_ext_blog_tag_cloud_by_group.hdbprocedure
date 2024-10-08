@@ -1,0 +1,55 @@
+procedure "SAP_INO_EXT"."sap.ino.db.blog.ext::p_ext_blog_tag_cloud_by_group"(
+    in   iv_searchterm       nvarchar(1024),
+    in   iv_filtername       nvarchar(1024),
+    in   iv_campaign         integer,
+    --in   it_tag              SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_tag_id_input"
+    in   iv_tag_str            nvarchar(4096),
+    --in   it_excl_status      SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_excl_status_code_input",
+    in   iv_excl_status_str    nvarchar(4096),
+    out  ov_without_taggroup nvarchar(1),
+    out  ot_ranked_tag       SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_ranked_tag_and_group"
+)
+language sqlscript
+sql security definer
+default schema SAP_INO
+reads sql data as
+begin
+    declare lv_tag_group_count int;
+    call "SAP_INO"."sap.ino.db.blog::p_blog_search"(:iv_searchterm, :lt_search_prefiltered);
+    call "SAP_INO"."sap.ino.db.blog::p_blog_filter"(:iv_filtername, :lt_filter_prefiltered);
+    call "sap.ino.db.idea::p_excl_status_string_splitter"(:iv_excl_status_str, ';', :lt_excl_status);
+    call "sap.ino.db.idea::p_tag_string_splitter"(:iv_tag_str, ';', :lt_tag);
+    lt_filtered_2 =
+        select blog.id
+            from
+                "sap.ino.db.blog::v_auth_blogs_read" as auth
+            inner join
+                "sap.ino.db.blog::t_blog"       as blog
+            on 
+                auth.blog_id = blog.id and 
+                (:iv_campaign = -1 or (blog.object_id = :iv_campaign and blog.object_type_code = 'CAMPAIGN')) and 
+               -- ((select count(*) from :it_excl_status) = 0 or blog.status_code not in (select code from :it_excl_status))
+                ((select count(*) from :lt_excl_status) = 0 or blog.status_code not in (select code from :lt_excl_status))
+            inner join
+                :lt_search_prefiltered                  as prefilter
+            on 
+                auth.blog_id = prefilter.id
+            inner join
+                :lt_filter_prefiltered                  as prefilter2
+            on
+                auth.blog_id = prefilter2.id;
+
+    --call "SAP_INO"."sap.ino.db.blog::p_tag_filter"(:lt_filtered_2, :it_tag, :lt_filtered_3);
+    call "SAP_INO"."sap.ino.db.blog::p_tag_filter"(:lt_filtered_2, :lt_tag, :lt_filtered_3);
+    call "SAP_INO"."sap.ino.db.blog::p_blog_tag"(:lt_filtered_3, :lt_blog_tag);
+    call "SAP_INO"."sap.ino.db.basis::p_tag_cloud_by_group"(:lt_blog_tag, :ot_ranked_tag);
+
+    ot_ranked_tag = select * from :ot_ranked_tag order by name asc;
+    
+    select count(*) into lv_tag_group_count from "sap.ino.db.tag::t_group_tag";
+    if lv_tag_group_count <= 0 then
+       ov_without_taggroup = 'X';
+    else
+       ov_without_taggroup = '';
+    end if;
+end;

@@ -1,0 +1,9 @@
+schema = "SAP_INO";
+query = "select distinct evaluated.id as id, idea.campaign_id from \"sap.ino.db.idea::t_idea\" as idea
+    inner join \"sap.ino.db.idea::v_evaluated_ideas\" as evaluated on evaluated.id = idea.id
+    inner join \"sap.ino.db.campaign::v_my_backoffice_campaign\" as campaign
+        on idea.campaign_id = campaign.id";
+
+depends_on_table = ["sap.ino.db.idea::t_idea"];
+depends_on_view = ["sap.ino.db.idea::v_evaluated_ideas",
+				   "sap.ino.db.campaign::v_my_backoffice_campaign"];

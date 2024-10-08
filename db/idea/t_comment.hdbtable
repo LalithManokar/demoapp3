@@ -1,0 +1,14 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Comment";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+	{name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which a comment has been created. Foreign key to t_identity.ID";},
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which a comment has been changed. Foreign key t_identity.ID";},
+	{name = "IDEA_ID"; sqlType = INTEGER; nullable = false; comment = "Human-readable identifier of idea";},
+	{name = "COMMENT"; sqlType = NVARCHAR; length = 500; nullable = false; comment = "Name of the idea";}
+	
+];
+table.primaryKey.pkcolumns = ["ID"];

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_RESPONSIBILITY_VALUE_USAGE" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="Sub responsibility value usage in campaigns"/>
+  <metadata changedAt="2019-07-12 13:55:08.161"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="V_RESPONSIBILITY_VALUE_USAGE" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.subresponsibility/calculationviews/V_RESPONSIBILITY_VALUE_USAGE</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="V_RESPONSIBILITY_VALUE_USAGE">
+    <descriptions/>
+    <attributes>
+      <attribute id="RESP_CODE" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Responsibility Code"/>
+        <keyMapping columnObjectName="V_RESPONSIBILITY_VALUE_USAGE" columnName="RESP_CODE"/>
+      </attribute>
+      <attribute id="RESP_VALUE_CODE" order="2" attributeHierarchyActive="false" displayAttribute="false" keepFlag="false" transparentFilter="true">
+        <descriptions defaultDescription="Responsibility Value cODE"/>
+        <keyMapping columnObjectName="V_RESPONSIBILITY_VALUE_USAGE" columnName="RESP_VALUE_CODE"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID" order="3" attributeHierarchyActive="false" descriptionColumnName="CAMPAIGN_NAME" displayAttribute="false">
+        <descriptions defaultDescription="Campaign ID"/>
+        <keyMapping columnObjectName="V_RESPONSIBILITY_VALUE_USAGE" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_NAME" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Campaign Name"/>
+        <keyMapping columnObjectName="V_RESPONSIBILITY_VALUE_USAGE" columnName="CAMPAIGN_NAME"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="5" attributeHierarchyActive="false" descriptionColumnName="IDEA_NAME" displayAttribute="false">
+        <descriptions defaultDescription="Idea ID"/>
+        <keyMapping columnObjectName="V_RESPONSIBILITY_VALUE_USAGE" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_NAME" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Name"/>
+        <keyMapping columnObjectName="V_RESPONSIBILITY_VALUE_USAGE" columnName="IDEA_NAME"/>
+      </attribute>
+      <attribute id="IDEA_AUTHOR_NAME" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Idea Author Name"/>
+        <keyMapping columnObjectName="V_RESPONSIBILITY_VALUE_USAGE" columnName="IDEA_AUTHOR_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="RESP_VALUE_COUNT" order="7" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Usage in Idea"/>
+        <measureMapping columnObjectName="V_RESPONSIBILITY_VALUE_USAGE" columnName="RESP_VALUE_COUNT"/>
+      </measure>
+      <measure id="IDEA_AUTHOR_ID" order="8" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Idea Author ID"/>
+        <measureMapping columnObjectName="V_RESPONSIBILITY_VALUE_USAGE" columnName="IDEA_AUTHOR_ID"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

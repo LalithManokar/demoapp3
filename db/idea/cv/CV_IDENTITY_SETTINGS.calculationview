@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:AccessControl="http://www.sap.com/ndb/SQLCoreModelAccessControl.ecore" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="CV_IDENTITY_SETTINGS" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <origin/>
+  <descriptions defaultDescription="CV_IDENTITY_SETTINGS"/>
+  <metadata changedAt="2021-05-11 15:14:30.534"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="37"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.iam::t_identity" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_identity"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.attachment::t_attachment_assignment" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.attachment::t_attachment_assignment"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:AggregationView" id="attachment_assign">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IMAGE_ID"/>
+        <viewAttribute id="OWNER_ID"/>
+        <viewAttribute id="OWNER_TYPE_CODE">
+          <filter xsi:type="AccessControl:SingleValueFilter" including="true" value="IDENTITY"/>
+        </viewAttribute>
+        <viewAttribute id="ROLE_TYPE_CODE">
+          <filter xsi:type="AccessControl:SingleValueFilter" including="true" value="IDENTITY_IMAGE"/>
+        </viewAttribute>
+        <viewAttribute id="ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.attachment::t_attachment_assignment">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IMAGE_ID" source="ATTACHMENT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OWNER_ID" source="OWNER_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OWNER_TYPE_CODE" source="OWNER_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_TYPE_CODE" source="ROLE_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_2" joinOrder="OUTSIDE_IN" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ID"/>
+        <viewAttribute id="IMAGE_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.iam::t_identity">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="ID"/>
+      </input>
+      <input node="#attachment_assign">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IMAGE_ID" source="IMAGE_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ID" source="OWNER_ID"/>
+      </input>
+      <joinAttribute name="ID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_2">
+    <descriptions/>
+    <attributes>
+      <attribute id="ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="technical user identifier - must never be exposed to end users"/>
+        <keyMapping columnObjectName="Join_2" columnName="ID"/>
+      </attribute>
+      <attribute id="IMAGE_ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Attachment of the data. Foreign key t_attachment.ID"/>
+        <keyMapping columnObjectName="Join_2" columnName="IMAGE_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="80" y="270"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="attachment_assign" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="80" y="500"/>
+        <rectangleSize height="93" width="151"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

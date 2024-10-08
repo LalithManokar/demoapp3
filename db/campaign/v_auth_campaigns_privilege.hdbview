@@ -1,0 +1,22 @@
+schema = "SAP_INO";
+query = "select distinct campaign.id, 
+            case
+                when campaign.id in (
+                    select campaign_id from \"sap.ino.db.campaign::v_auth_registration_campaigns_read\"
+                )
+                then 1
+                else 0
+            end as registration_privilege,
+            case
+                when campaign.id in (
+                    select campaign_id from \"sap.ino.db.campaign::v_auth_campaigns_read\"
+                )
+                then 1
+                else 0
+            end as community_privilege
+			from \"sap.ino.db.campaign::t_campaign\" as campaign
+			";
+
+depends_on_table = ["sap.ino.db.campaign::t_campaign"];
+depends_on_view = ["sap.ino.db.campaign::v_auth_registration_campaigns_read",
+                   "sap.ino.db.campaign::v_auth_campaigns_read"];                

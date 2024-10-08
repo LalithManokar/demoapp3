@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="V_EXT_STATUS_ACTION_USAGE" applyPrivilegeType="NONE" dataCategory="CUBE" dimensionType="STANDARD" schemaVersion="2.3" defaultClient="$$client$$" visibility="reportingEnabled" outputViewType="Aggregation" calculationScenarioType="TREE_BASED" enforceSqlExecution="false">
+<descriptions defaultDescription="Status Action Usage"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="sap.ino.db.status::v_status_action_usage" type="DATA_BASE_VIEW">
+    <viewAttributes allViewAttributes="true"/>
+    <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.status::v_status_action_usage"/>
+  </DataSource>
+</dataSources>
+<calculationViews/>
+<logicalModel id="sap.ino.db.status::v_status_action_usage">
+  <attributes>
+    <attribute id="STATUS_ACTION_NAME" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Status Action Name"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.status::v_status_action_usage" columnName="STATUS_ACTION_NAME"/>
+    </attribute>
+    <attribute id="STATUS_ACTION_CODE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Status Action Code"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.status::v_status_action_usage" columnName="STATUS_ACTION_CODE"/>
+    </attribute>
+    <attribute id="STATUS_MODEL_ID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Status Model ID"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.status::v_status_action_usage" columnName="STATUS_MODEL_ID"/>
+    </attribute>
+    <attribute id="STATUS_MODEL_CODE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Status Model Code"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.status::v_status_action_usage" columnName="STATUS_MODEL_CODE"/>
+    </attribute>
+    <attribute id="STATUS_MODEL_NAME" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Status Model Name"/>
+      <keyMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.status::v_status_action_usage" columnName="STATUS_MODEL_NAME"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="STATUS_ACTION_COUNT" order="6" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Status Action Count"/>
+      <measureMapping schemaName="SAP_INO" columnObjectName="sap.ino.db.status::v_status_action_usage" columnName="STATUS_ACTION_COUNT"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

@@ -1,0 +1,46 @@
+schema = "SAP_INO";
+query = "
+        select idea_id,identity_id from(
+        select  idea.id as idea_id, object_role.identity_id
+			from \"sap.ino.db.idea::t_idea\" as idea
+			inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role 
+				on idea.id = object_role.object_id and 
+				   object_role.object_type_code = 'IDEA'
+			inner join \"sap.ino.db.iam::t_role_privilege\" as role 
+				on role.role_code = object_role.role_code
+					and role.privilege = 'IDEA_UPDATE'
+		union
+		select  idea.id as idea_id, object_role.identity_id
+			from \"sap.ino.db.idea::t_idea\" as idea
+			left outer join \"sap.ino.db.subresponsibility::t_responsibility_value_stage\" as resp_value
+                on idea.resp_value_code = resp_value.code
+			inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role 
+				on (idea.campaign_id = object_role.object_id and 
+				   object_role.object_type_code = 'CAMPAIGN')
+				   or (resp_value.id = object_role.object_id and object_role.object_type_code = 'RESPONSIBILITY')
+			inner join \"sap.ino.db.iam::t_role_privilege\" as role 
+				on role.role_code = object_role.role_code
+					and role.privilege = 'CAMP_IDEA_UPDATE')
+		 where idea_id not in (select distinct idea_id  from\"sap.ino.db.status::v_auth_campaign_authorization_underStatus\" as campaign_underStatus
+                where campaign_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and campaign_underStatus.VALUE = 1
+                and campaign_underStatus.action_code = 'IDEA_EDIT' and campaign_underStatus.can_do_action = 0
+                union all 
+                select distinct idea_id  from\"sap.ino.db.status::v_auth_idea_authorization_underStatus\" as idea_underStatus
+                where idea_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and idea_underStatus.VALUE = 1
+                and idea_underStatus.action_code = 'IDEA_EDIT' and idea_underStatus.can_do_action = 0)	
+        union all 
+            select distinct idea_id,identity_id  from\"sap.ino.db.status::v_auth_campaign_authorization_underStatus\" as campaign_underStatus
+                where campaign_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and campaign_underStatus.VALUE = 1
+                and campaign_underStatus.action_code = 'IDEA_EDIT' and campaign_underStatus.can_do_action = 1
+        union all 
+            select distinct idea_id,identity_id  from\"sap.ino.db.status::v_auth_idea_authorization_underStatus\" as idea_underStatus
+                where idea_underStatus.SETTING_CODE = 'OPEN_STATUS_AUTHORIZATION' and idea_underStatus.VALUE = 1
+                and idea_underStatus.action_code = 'IDEA_EDIT' and idea_underStatus.can_do_action = 1
+		with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea", 
+                    "sap.ino.db.iam::t_role_privilege",
+                    "sap.ino.db.subresponsibility::t_responsibility_value_stage"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive",
+                   "sap.ino.db.status::v_auth_idea_authorization_underStatus",
+                   "sap.ino.db.status::v_auth_campaign_authorization_underStatus"];

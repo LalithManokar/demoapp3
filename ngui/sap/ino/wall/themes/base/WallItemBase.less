@@ -1,0 +1,431 @@
+
+/* ============================================= */
+/* CSS for control WallItemBase.control */
+/* ============================================= */
+
+.sapInoWallWIB {
+	position: absolute;
+	-webkit-perspective: 1000;
+	-moz-perspective: 1000;
+	perspective: 1000;
+}
+
+/* exclude ie9 as he does not properly support this */
+html:not([data-sap-ui-browser='ie9']) .sapInoWallWIB:not(.sapInoWallWIBChild).flipped > .flippable {
+	-webkit-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+	filter: FlipH;
+ 	-ms-filter: "FlipH";
+}
+
+.sapInoWallWIB, .front, .back {
+	min-width: 150px;
+	min-height: 150px;
+	max-width: 5000px;
+	max-height: 5000px;
+}
+
+/* fix for ie10 to display flip container back side correctly */
+html[data-sap-ui-browser*='ie'] .sapUiWalWIB:not(.sapInoWallWIBChild) > .flipped .back {
+	backface-visibility: visible;
+}
+
+/* ie9: does not support backface visibility, we switch it manually in setFlipped */
+html[data-sap-ui-browser='ie9'] .back {
+	display: none;
+}
+
+.front, .back {
+	/*width: 100%;
+	height: 100%;*/
+}
+
+.sapInoWallWIB > .flippable {
+	-webkit-transition: 0.6s;
+	-webkit-transform-style: preserve-3d;
+	-moz-transition: 0.6s;
+	-moz-transform-style: preserve-3d;
+	transition: 0.6s;
+	transform-style: preserve-3d;
+	position: relative;
+}
+
+/*.back {
+	-moz-user-select: text;
+	-khtml-user-select: text;
+	-webkit-user-select: initial;
+	-ms-user-select: text;
+	user-select: text;
+}*/
+
+.front, .back {
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	backface-visibility: hidden;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* fix for ie10 to hide flip container front side correctly */
+/* fix for ie10 to hide flip container front side correctly */
+html[data-sap-ui-browser*='ie'] .front {
+	opacity: 1;
+}
+
+html[data-sap-ui-browser*='ie'] .flipped > .front {
+	opacity: 0;
+}
+
+html[data-sap-ui-browser*='ie'] .front {
+	transition: opacity 0.4s cubic-bezier(1,.01,0,1);
+}
+
+.front {
+	z-index: 2;
+}
+
+.back {
+	-webkit-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+	z-index: 1;
+}
+
+/* styles for children handling */
+.sapInoWallWIBChilds {
+	position: absolute;
+	left: 140px;
+	top: 30px;
+	width: 300px;
+}
+
+/* child zoom */
+html[data-sap-ui-browser*='cr'] .sapInoWallWIBChilds {
+	zoom: 0.7;
+}
+
+/* child scale */
+html[data-sap-ui-browser*='ie'] .sapInoWallWIBChilds {
+	-ms-transform: scale(0.7);	
+}
+html[data-sap-ui-browser*='ff'] .sapInoWallWIBChilds {
+	-moz-transform: scale(0.7);
+}
+html[data-sap-ui-browser*='sf'] .sapInoWallWIBChilds {
+	-webkit-transform: scale(0.7);
+}
+
+/* the first child is indented 46px * 1 / 0.7 (the back button) */
+/* TODO: check this for all browsers, should not be needed anymore
+/*html[data-sap-ui-browser*='cr'] .sapInoWallWIBChilds > .sapInoWallWIB:first-child {
+	margin-left: -66px;
+}
+
+html[data-sap-ui-browser*='ie'] .sapInoWallWIBChilds > .sapInoWallWIB:first-child,
+html[data-sap-ui-browser*='ff'] .sapInoWallWIBChilds > .sapInoWallWIB:first-child,
+html[data-sap-ui-browser*='sf'] .sapInoWallWIBChilds > .sapInoWallWIB:first-child {
+	margin-left: -46px;
+}*/
+
+/* bugfix for internet explorer z-index weirdness */
+html[data-sap-ui-browser*='ie'] .sapInoWallWIB > .flippable {
+	z-index: 0;
+}
+
+.sapInoWallWIBChilds > .sapInoWallWIB {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.sapInoWallWIB.flipped > .sapInoWallWIBChilds {
+    display: none;
+}
+
+.sapInoWallWIFlipBackButton .sapUiIcon {
+	/* icon overrides for zooming */
+	line-height: 38px;
+	width: inherit;
+	font-size: 1.375rem;
+}
+
+.sapInoWallWIBChilds .sapInoWallWIResizeHandle {
+	display: none;
+}
+
+.sapInoWallWIResizeHandle.sapInoWallWIResizeHandleHidden {
+	opacity: 0;
+}
+
+/** back button **/
+
+.sapInoWallWIFlipBackButton {
+	visibility: hidden;
+	position: relative;
+	float: left;
+	left: -37px;
+	top: 16px;
+	opacity: 0;
+	z-index: -100;
+	-webkit-transition: opacity 0.4s ease-in-out;
+	-moz-transition: opacity 0.4s ease-in-out;
+	transition: opacity 0.4s ease-in-out;
+	clear: both;
+	/* button overrides for zooming */
+	width: 38px;
+	min-width: inherit;
+	height: 36px;
+}
+
+.sapUiSizeCompact .sapInoWallWIFlipBackButton.sapMBtn {
+	height: 40px;
+}
+
+.sapInoWallWIFlipBackButtonGroup {
+	position: relative;
+}
+
+/* override of rem values to px values for zoom */
+.sapMBtnDefault.sapInoWallWIFlipBackButton .sapMBtnInner,
+.sapInoWallWIFlipBackButton .sapMBtnInner {
+	height: 36px;
+	min-height: 36px;
+	width: 38px;
+	min-width: 38px;
+	padding: 0;
+}
+	
+.sapUiSizeCompact .sapInoWallWIFlipBackButton .sapMBtnIcon {
+	margin: 0;
+}
+	
+.sapInoWallWIB  .sapMInputBase {
+	/* input px measure overrides for zooming */
+	height: 48px;
+	padding: 4px 0;
+}
+
+.sapInoWallWOuter .sapMInputBaseInner {
+	/* input overrides for zooming */
+	height: 40px;
+	padding: 0 12px 0 12px;
+}
+
+.flipped > div .sapInoWallWIFlipBackButton {
+	opacity: 1;
+	visibility: visible;
+}
+
+html[data-sap-ui-browser*='ie'] .flipped > div > .sapInoWallWIFlipBackButton {
+    overflow: visible;
+}
+
+.sapInoWallWIBDisabled {
+	border: 2px dotted #cccccc;
+	background-color: rgba(100,100,100,0.5);
+}
+
+.sapInoWallWIBDisabled > * {
+	display: none;
+}
+
+.sapInoWallWIBSelected .front,
+.sapInoWallWIBSelected .back {
+	border: 2px dashed #006ca7;
+}
+
+/* TODO: doesnt look good
+.sapInoWallWIBUnsnap .front,
+.sapInoWallWIBUnsnap .back {
+	border: 2px dotted #FF2600;
+}*/
+
+/* sap.m.Select: override for pixel dimensions and transparency */
+.sapInoWallWIBSelect,
+.sapMSlt.sapInoWallWIBSelect {
+	background-color: rgba(255, 255, 255, 0.7);
+	height: 40px;
+	margin: 4px 0 4px 0;
+}
+
+.sapInoWallWIBSelect.sapMSlt>.sapMSltLabel {
+	line-height: 40px;
+}
+
+.sapInoWallWIBSelect.sapMSlt>.sapMSltArrow {
+	width: 30px;
+	line-height: 40px;
+}
+
+/* override with px values for zooming */
+.sapInoWallWIBSelect.sapMSltWithArrow>.sapMSltLabel, .sapMSltWithArrow>.sapMSltNative {
+	padding: 0 48px 0 10px;
+}
+
+.sapUiSizeCompact .sapInoInnoMgmtMShell .sapInoWallWIBSelect, 
+.sapUiSizeCompact .sapInoInnoMgmtMShell .sapMSlt.sapMSltDefault.sapInoWallWIBSelect {
+	margin: 4px 0 4px 0;
+}
+
+/* override with px values for zooming */
+.sapInoWallWIB .sapMTextAreaInner {
+	padding: 12px;
+}
+
+/***** DEBUG CLASSES *****/
+.sapInoWallWIBNeighbourBox {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border: 2px dashed #ffcc00;
+}
+
+.sapInoWallWIBIntersectionBox {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border: 2px dashed red;
+	padding: 5px;
+}
+
+/* sync animations*/
+@keyframes sapInoWallWIBBounce {
+	0% {
+		-webkit-transform: scale(1.2) rotate(3deg);
+		-moz-transform: scale(1.2) rotate(3deg);
+		-o-transform: scale(1.2) rotate(3deg);
+		-ms-transform: scale(1.2) rotate(3deg);
+		transform: scale(1.2) rotate(3deg);
+	}
+	50% {
+		-webkit-transform: scale(0.9) rotate(1deg);
+		-moz-transform: scale(0.9) rotate(1deg);
+		-o-transform: scale(0.9) rotate(1deg);
+		-ms-transform: scale(0.9) rotate(1deg);
+		transform: scale(0.9) rotate(1deg);
+	}
+	75% {
+		-webkit-transform: scale(1.1) rotate(2deg);
+		-moz-transform: scale(1.1) rotate(2deg);
+		-o-transform: scale(1.1) rotate(2deg);
+		-ms-transform: scale(1.1) rotate(2deg);
+		transform: scale(1.1) rotate(2deg);
+	}
+	100% {
+		-webkit-transform: scale(1) rotate(0deg);
+		-moz-transform: scale(1) rotate(0deg);
+		-o-transform: scale(1) rotate(0deg);
+		-ms-transform: scale(1) rotate(0deg);
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+@keyframes sapInoWallWIBRemove{
+	0% {
+		-webkit-transform: scale(1) rotate(0deg);
+		-moz-transform: scale(1) rotate(0deg);
+		-o-transform: scale(1) rotate(0deg);
+		-ms-transform: scale(1) rotate(0deg);
+		transform: scale(1) rotate(0deg);
+		opacity: 1;
+	}
+	100% {
+		-webkit-transform: scale(0.5) rotate(3deg);
+		-moz-transform: scale(0.5) rotate(3deg);
+		-o-transform: scale(0.5) rotate(3deg);
+		-ms-transform: scale(0.5) rotate(3deg);
+		transform: scale(0.5) rotate(3deg);
+		opacity: 0;
+		display: none;
+	}
+}
+
+@keyframes sapInoWallWIBAdd{
+	0% {
+		-webkit-transform: scale(0.5) rotate(3deg);
+		-moz-transform: scale(0.5) rotate(3deg);
+		-o-transform: scale(0.5) rotate(3deg);
+		-ms-transform: scale(0.5) rotate(3deg);
+		transform: scale(0.5) rotate(3deg);
+		opacity: 0;
+	}
+	100% {
+		-webkit-transform: scale(1) rotate(0deg);
+		-moz-transform: scale(1) rotate(0deg);
+		-o-transform: scale(1) rotate(0deg);
+		-ms-transform: scale(1) rotate(0deg);
+		transform: scale(1) rotate(0deg);
+		opacity: 1;
+	}
+}
+
+.sapInoWallWIBSyncBounceEffect {
+	-webkit-animation: sapInoWallWIBBounce 0.6s ease-in;
+	-moz-animation: sapInoWallWIBBounce 0.6s ease-in;
+	-o-animation: sapInoWallWIBBounce 0.6s ease-in;
+	-ms-animation: sapInoWallWIBBounce 0.6s ease-in;
+	animation: sapInoWallWIBBounce 0.6s ease-in;
+}
+
+.sapInoWallWIBSyncRemoveEffect {
+	-webkit-animation: sapInoWallWIBRemove 0.5s ease-in;
+	-moz-animation: sapInoWallWIBRemove 0.5s ease-in;
+	-o-animation: sapInoWallWIBRemove 0.5s ease-in;
+	-ms-animation: sapInoWallWIBRemove 0.5s ease-in;
+	animation: sapInoWallWIBRemove 0.5s ease-in;
+}
+
+.sapInoWallWIBSyncAddEffect {
+	-webkit-animation: sapInoWallWIBAdd 0.6s ease-in;
+	-moz-animation: sapInoWallWIBAdd 0.6s ease-in;
+	-o-animation: sapInoWallWIBAdd 0.6s ease-in;
+	-ms-animation: sapInoWallWIBAdd 0.6s ease-in;
+	animation: sapInoWallWIBAdd 0.6s ease-in;
+}
+
+.sapInoWallWIBTitle input {
+	background-color: rgba(255,255,255,0.7);
+}
+
+.sapUiSizeCompact .sapInoWallWIBTitle .sapMInputBaseInner {
+	height: 40px;
+    padding: 0 12px 0 12px;	
+}
+
+
+.sapInoWallWIResizeHandle {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	opacity: 0.5;
+} 
+
+.sapInoWallWIResizeHandle,
+.sapInoWallWIResizeHandle .sapUiIcon {
+	cursor: nwse-resize !important;
+}
+
+/* enable resizing on tablets => increase touchable area */
+.sap-tablet .sapInoWallWIResizeHandle .sapUiIcon {
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.sapInoWallWIBreakWord {
+	word-break: break-all; /* to break all words even browser does not know the width */
+	word-break: break-word; /* non standard for old webkits */
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	-ms-hyphens: auto;
+	hyphens: auto;
+}
+
+/* rich text editor styles for wall items */
+.sapInoWallWIRichText ol,
+.sapInoWallWIRichText ul {
+	margin: 0;
+	margin-left: 8px;
+}

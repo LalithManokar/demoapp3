@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT"; 
+query="select activity_feed.* from
+   \"sap.ino.db.idea::v_idea_activity_feed\" as activity_feed 
+   where activity_feed.id in (select idea_id from \"sap.ino.db.idea::v_auth_ideas_read\")
+ with read only";
+
+depends_on_view=["sap.ino.db.idea::v_idea_activity_feed","sap.ino.db.idea::v_auth_ideas_read"];

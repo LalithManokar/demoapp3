@@ -1,0 +1,27 @@
+procedure "SAP_INO"."sap.ino.db.blog::p_blog_filter"(
+    in   iv_filter_name varchar(1024),
+    out  ot_blog_id     SAP_INO."sap.ino.db.basis::tt_object_id"
+)
+language sqlscript
+sql security invoker
+default schema SAP_INO
+reads sql data as
+begin
+    ot_blog_id = select id
+                   from "sap.ino.db.blog::t_blog" as blog
+                   where :iv_filter_name <> 'myBlogs'         and
+                         :iv_filter_name <> 'draftBlogs'      and
+                         :iv_filter_name <> 'publishedBlogs'
+                 union all
+                 select blog_id as id
+                    from "sap.ino.db.blog::v_my_blog" as blog
+                    where :iv_filter_name = 'myBlogs'
+                 union all
+                 select blog_id as id
+                    from "sap.ino.db.blog::v_draft_blog" as blog
+                    where :iv_filter_name = 'draftBlogs'
+                 union all
+                 select blog_id as id
+                    from "sap.ino.db.blog::v_published_blog" as blog
+                    where :iv_filter_name = 'publishedBlogs';
+end;

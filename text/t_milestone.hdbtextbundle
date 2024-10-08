@@ -1,0 +1,27 @@
+# TRANSLATE
+# XTXT, 100
+CAMP_START=Campaign Start
+# XTXT, 100
+CAMP_END=Campaign End
+# XTXT, 100
+CAMP_REGISTER_START=Campaign Registration Start
+# XTXT, 100
+CAMP_REGISTER_END=Campaign Registration End
+# XTXT, 100
+IDEA_SUBMIT_START=Idea Submission Start
+# XTXT, 100
+IDEA_SUBMIT_END=Idea Submission End
+
+# XTXT, 300
+CAMP_START_LONG=Campaign Start
+# XTXT, 300
+CAMP_END_LONG=Campaign End
+# XTXT, 300
+CAMP_REGISTER_START_LONG=Campaign Registration Start
+# XTXT, 300
+CAMP_REGISTER_END_LONG=Campaign Registration End
+# XTXT, 300
+IDEA_SUBMIT_START_LONG=Idea Submission Start
+# XTXT, 300
+IDEA_SUBMIT_END_LONG=Idea Submission End
+

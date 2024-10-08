@@ -1,0 +1,59 @@
+schema = "SAP_INO_EXT";
+query = "
+    select  field_value.ID,
+            field_value.IDEA_ID,
+            field_value.FIELD_CODE,
+            case 
+                when field_value.ID not in (select id from\"sap.ino.db.ideaform::v_auth_admin_field_value\") and field_value.NUM_VALUE is not null   then  cast('00000000' as VARCHAR) 
+            else field_value.NUM_VALUE
+            end as NUM_VALUE, 
+            case 
+                when field_value.ID not in (select id from\"sap.ino.db.ideaform::v_auth_admin_field_value\") and field_value.BOOL_VALUE is not null  then 0 
+            else field_value.BOOL_VALUE
+            end as BOOL_VALUE, 
+            case 
+                when field_value.ID not in (select id from\"sap.ino.db.ideaform::v_auth_admin_field_value\") and field_value.TEXT_VALUE is not null  then  cast('XXXXXXXX' as VARCHAR) 
+            else field_value.TEXT_VALUE
+            end as TEXT_VALUE, 
+            case 
+                when field_value.ID not in (select id from\"sap.ino.db.ideaform::v_auth_admin_field_value\") and field_value.RICH_TEXT_VALUE is not null  then  cast('XXXXXXXX' as VARCHAR) 
+            else cast(field_value.RICH_TEXT_VALUE as VARCHAR)
+            end as RICH_TEXT_VALUE, 
+            case 
+                when field_value.ID not in (select id from\"sap.ino.db.ideaform::v_auth_admin_field_value\") and field_value.DATE_VALUE is not null then   CURRENT_DATE
+            else field_value.DATE_VALUE
+            end as DATE_VALUE, 
+            case 
+                when field_value.ID not in (select id from\"sap.ino.db.ideaform::v_auth_admin_field_value\") and field_value.COMMENT is not null  then  cast('XXXXXXXX' as VARCHAR) 
+            else field_value.COMMENT
+            end as COMMENT,
+            field_value.STATE_OF_PUBLISH,
+            field_value.FIELD_TYPE_CODE,
+            field_value.CODE,
+            field_value.FORM_CODE,
+            field_value.SEQUENCE_NO,
+            field_value.DEFAULT_TEXT,
+            field_value.DEFAULT_LONG_TEXT,
+            field_value.MANDATORY,
+            field_value.DATATYPE_CODE,
+            field_value.VALUE_OPTION_LIST_CODE,
+            field_value.NUM_VALUE_MIN,
+            field_value.NUM_VALUE_MAX,
+            field_value.NUM_VALUE_STEP_SIZE,
+            field_value.UOM_CODE,
+            field_value.IS_PUBLISH,
+            case 
+                when field_value.ID  in (select id from\"sap.ino.db.ideaform::v_auth_admin_field_value\")  then  0
+            else field_value.IS_HIDDEN
+            end as IS_HIDDEN,
+            field_value.IS_HIDDEN as IS_HIDDEN_SETTING,
+            field_value.VALUE_LIST_DEFAULT_TEXT,
+            field_value.VALUE_LIST_DEFAULT_LONG_TEXT,
+            field_value.IS_ADMIN_FORM,
+            field_value.CAMPAIGN_ID
+    from \"sap.ino.db.ideaform::v_field_value\"  as field_value 
+    where field_value.IS_ADMIN_FORM = 1
+    with read only
+";
+
+depends_on_view = ["sap.ino.db.ideaform::v_field_value","sap.ino.db.ideaform::v_auth_admin_field_value"];

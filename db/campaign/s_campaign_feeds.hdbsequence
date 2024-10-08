@@ -1,0 +1,4 @@
+schema     = "SAP_INO";
+start_with = 1;
+minvalue   = 1;
+cycles     = false;

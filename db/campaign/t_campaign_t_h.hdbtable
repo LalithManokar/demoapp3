@@ -1,0 +1,19 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "History for language dependent text table for t_campaign";
+table.columns = [
+	{name = "HISTORY_DB_EVENT";          sqlType = VARCHAR;   length = 8;   nullable = false; comment = "Database event: CREATED, UPDATED, DELETED";},
+    {name = "HISTORY_BIZ_EVENT";         sqlType = VARCHAR;   length = 600; nullable = false; comment = "Business event: CAMPAIGN_CREATED, ...";},
+    {name = "HISTORY_AT";                sqlType = TIMESTAMP;               nullable = false; comment = "Timestamp when event occurred";},
+    {name = "HISTORY_ACTOR_ID";          sqlType = INTEGER;                 nullable = false; comment = "Actor who did the changes";},
+    {name = "ID";                        sqlType = INTEGER;                 nullable = false; comment = "Technical record ID";},
+	{name = "CAMPAIGN_ID";               sqlType = INTEGER;                 nullable = false; comment = "Foreign key to t_campaign.ID";},
+	{name = "LANG";                      sqlType = VARCHAR;  length = 5;    nullable = false; comment = "Language. Foreign key to t_lang.CODE";},
+	{name = "NAME";                      sqlType = NVARCHAR; length = 100;  nullable = false; comment = "Name of campaign";},
+	{name = "SHORT_NAME";                sqlType = NVARCHAR; length = 40;                     comment = "Short name of campaign";},
+	{name = "DESCRIPTION";               sqlType = NVARCHAR; length = 5000; nullable = true;  comment = "Lengthy description of campaign";},
+	{name = "IDEA_DESCRIPTION_TEMPLATE"; sqlType = NCLOB;                   nullable = true;  comment = "Optional template for the description of the campaign ideas";}
+];
+table.indexes = [
+    {name="LOGKEY_CAMPAIGN_T_H"; unique = false; indexColumns = ["ID","HISTORY_AT"];}
+];

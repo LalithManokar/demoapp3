@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "
+select a.activated_at, i.user_name, a.status from \"sap.ino.db.config::t_activation_history\" as a
+	join \"sap.ino.db.iam::t_identity\" as i 
+		on i.id = a.activated_by_id
+";
+
+depends_on_table = ["sap.ino.db.iam::t_identity", "sap.ino.db.config::t_activation_history"];

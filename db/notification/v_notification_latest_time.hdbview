@@ -1,0 +1,9 @@
+schema = "SAP_INO";
+query = "select max(event_at) as latest from (
+        select latest_event_at as event_at
+            from \"sap.ino.db.notification::t_notification_latest_time\"
+        union all
+        select to_timestamp('2000-01-01 00:00.001','YYYY-MM-DD HH:SS.FF3') as event_at 
+            from dummy)     
+        "; 
+depends_on_table = ["sap.ino.db.notification::t_notification_latest_time"];

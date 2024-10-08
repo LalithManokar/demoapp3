@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_IDEA_REWARD" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED">
+  <descriptions defaultDescription="V_EXT_ANALYTICS_IDEA_REWARD"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="14"/>
+  <dataSources>
+    <DataSource id="V_ANALYTICS_IDEA_REWARD" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_IDEA_REWARD</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:AggregationView" id="Reward">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="AUTHOR_ID"/>
+        <viewAttribute id="REWARD_STATUS_CODE"/>
+        <viewAttribute id="REWARD_AMOUNT"/>
+        <viewAttribute id="IDEA_PHASE_CODE"/>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="REWARD_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#V_ANALYTICS_IDEA_REWARD">
+        <mapping xsi:type="Calculation:AttributeMapping" target="AUTHOR_ID" source="AUTHOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_AMOUNT" source="REWARD_AMOUNT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_PHASE_CODE" source="IDEA_PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_ID" source="REWARD_ID"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Reward">
+    <descriptions/>
+    <attributes>
+      <attribute id="CAMPAIGN_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Reward" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="IDEA_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Reward" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_PHASE_CODE$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Reward" columnName="IDEA_PHASE_CODE"/>
+      </attribute>
+      <attribute id="AUTHOR_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Reward" columnName="AUTHOR_ID"/>
+      </attribute>
+      <attribute id="REWARD_STATUS_CODE$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Reward" columnName="REWARD_STATUS_CODE"/>
+      </attribute>
+      <attribute id="REWARD_ID$local">
+        <descriptions/>
+        <keyMapping columnObjectName="Reward" columnName="REWARD_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="REWARD_AMOUNT" order="1" semanticType="quantity" aggregationType="sum" measureType="quantity">
+        <descriptions defaultDescription="Reward amount"/>
+        <unitCurrencyAttribute attributeName="REWARD_UNIT_TEXT" dimensionUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_REWARD_DIMENSION"/>
+        <measureMapping columnObjectName="Reward" columnName="REWARD_AMOUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+    <sharedDimensions>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION">
+        <attributes>
+          <attributeRef>#CAMPAIGN_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>CAMPAIGN_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures>
+          <attributeReference alias="CAMPAIGN_RESP_CODE" attributeName="RESP_CODE">
+            <descriptions defaultDescription="Responsibility List "/>
+          </attributeReference>
+        </associatedAttributeFeatures>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION">
+        <attributes>
+          <attributeRef>#IDEA_ID$local</attributeRef>
+          <attributeRef>#IDEA_PHASE_CODE$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDEA_ID</attributeName>
+          <attributeName>IDEA_PHASE_CODE</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION">
+        <attributes>
+          <attributeRef>#AUTHOR_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDENTITY_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures>
+          <attributeReference alias="AUTHOR_NAME" attributeName="IDENTITY_NAME">
+            <descriptions defaultDescription="Author Name"/>
+          </attributeReference>
+          <attributeReference alias="AUTHOR_FIRST_NAME" attributeName="IDENTITY_FIRST_NAME">
+            <descriptions defaultDescription="Author first name"/>
+          </attributeReference>
+          <attributeReference alias="AUTHOR_LAST_NAME" attributeName="IDENTITY_LAST_NAME">
+            <descriptions defaultDescription="Author Last name"/>
+          </attributeReference>
+          <attributeReference alias="AUTHOR_USER_NAME" attributeName="IDENTITY_USER_NAME" hidden="true">
+            <descriptions defaultDescription="Author User name"/>
+          </attributeReference>
+          <attributeReference alias="AUTHOR_EMAIL" attributeName="IDENTITY_EMAIL">
+            <descriptions defaultDescription="Author Email"/>
+          </attributeReference>
+          <attributeReference alias="AUTHOR_ORG" attributeName="IDENTITY_ORG">
+            <descriptions defaultDescription="Organization of author"/>
+          </attributeReference>
+          <attributeReference attributeName="IDENTITY_IMAGE_ID" hidden="true"/>
+          <attributeReference attributeName="IDENTITY_IS_EXTERNAL" hidden="true"/>
+          <attributeReference attributeName="IDENTITY_ID" hidden="true"/>
+        </associatedAttributeFeatures>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_STATUS_DIMENSION">
+        <attributes>
+          <attributeRef>#REWARD_STATUS_CODE$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>STATUS_CODE</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures>
+          <attributeReference alias="REWARD_STATUS_CODE" attributeName="STATUS_CODE">
+            <descriptions defaultDescription="Reward Status code"/>
+          </attributeReference>
+          <attributeReference alias="REWARD_STATUS_LABEL" attributeName="STATUS_TEXT">
+            <descriptions defaultDescription="Reward status"/>
+          </attributeReference>
+          <attributeReference attributeName="STATUS_DEFAULT_LONG_TEXT" hidden="true"/>
+          <attributeReference attributeName="STATUS_DEFAULT_TEXT" hidden="true"/>
+        </associatedAttributeFeatures>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_REWARD_DIMENSION">
+        <attributes>
+          <attributeRef>#REWARD_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>REWARD_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures>
+          <attributeReference alias="REWARD_IDEA_ID" attributeName="IDEA_ID" hidden="true">
+            <descriptions defaultDescription="REWARD_IDEA_ID"/>
+          </attributeReference>
+          <attributeReference alias="REWARD_IDEA_PHASE_CODE" attributeName="IDEA_PHASE_CODE" hidden="true">
+            <descriptions defaultDescription="REWARD_IDEA_PHASE_CODE"/>
+          </attributeReference>
+          <attributeReference attributeName="STATUS_CODE" hidden="true"/>
+        </associatedAttributeFeatures>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_PHASE_DIMENSION">
+        <attributes>
+          <attributeRef>#CAMPAIGN_ID$local</attributeRef>
+          <attributeRef>#IDEA_PHASE_CODE$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>PHASE_CAMPAIGN_ID</attributeName>
+          <attributeName>PHASE_CODE</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures>
+          <attributeReference attributeName="PHASE_CAMPAIGN_ID" hidden="true"/>
+          <attributeReference attributeName="PHASE_DEFAULT_LONG_TEXT" hidden="true"/>
+          <attributeReference attributeName="PHASE_TEXT" hidden="true"/>
+        </associatedAttributeFeatures>
+      </logicalJoin>
+    </sharedDimensions>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="10" y="100"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Reward" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="275"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape modelObjectName="Reward" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+        <upperLeftCorner x="528" y="223"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="47" y="12"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="58" y="312"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="979" y="3"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_STATUS_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="960" y="279"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDEA_REWARD_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="914" y="542"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_PHASE_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="993" y="376"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

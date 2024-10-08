@@ -1,0 +1,9 @@
+schema   = "SAP_INO";
+minvalue = 1;
+cycles   = false;
+reset_by = "select ifnull(max(id),0) + 1 as nextid from 
+        (select max(id) as id from \"sap.ino.db.idea::t_decision\" 
+         union all 
+         select max(id) as id from \"sap.ino.db.idea::t_decision_h\" )";
+
+depends_on_table = "sap.ino.db.idea::t_decision_h";

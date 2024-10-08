@@ -1,0 +1,7 @@
+schema = "SAP_INO_EXT";
+query = "SELECT 
+    SETTING.ID,CONF.CODE,IFNULL(SETTING.IS_LOG,0) AS IS_LOG  
+FROM \"sap.ino.db.iam::t_identity_log_config\" AS CONF
+LEFT OUTER JOIN \"sap.ino.db.iam::t_identity_log_setting\" AS SETTING
+    ON CONF.CODE = SETTING.CODE";
+depends_on_table = ["sap.ino.db.iam::t_identity_log_config","sap.ino.db.iam::t_identity_log_setting"];

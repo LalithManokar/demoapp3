@@ -1,0 +1,87 @@
+schema = "SAP_INO";
+query = "select distinct feed.*,
+            follow.id as follow_id, 
+            follow.created_by_id as followed_by_id, 
+            follow.CREATED_AT as followed_at,
+            follow.EMAIL_AT as email_at,
+            follow.INST_EMAIL_AT as inst_email_at
+         from 
+             \"sap.ino.db.feed::v_biz_feeds\" as feed
+         inner join
+             \"sap.ino.db.follow::t_follow\" as follow   
+             on feed.object_id = follow.object_id and feed.object_type_code = follow.object_type_code
+             and feed.event_at >= follow.CREATED_AT
+         inner join \"sap.ino.db.campaign::v_backoffice_campaign_privilege\" as auth_campaign
+            on feed.campaign_id = auth_campaign.campaign_id and follow.created_by_id = auth_campaign.identity_id
+         where feed.filter_type_code = 'BACKOFFICE'
+         union all   
+         select distinct feed.*,
+         follow.id as follow_id, 
+            follow.created_by_id as followed_by_id,
+            follow.CREATED_AT as followed_at,
+            follow.EMAIL_AT as email_at,
+            follow.INST_EMAIL_AT as inst_email_at
+         from 
+             \"sap.ino.db.feed::v_biz_feeds\" as feed
+         inner join
+             \"sap.ino.db.follow::t_follow\" as follow   
+             on feed.object_id = follow.object_id and feed.object_type_code = follow.object_type_code
+             and feed.event_at >= follow.CREATED_AT
+         inner join \"sap.ino.db.campaign::v_registration_campaign_privilege\" as auth_campaign
+            on feed.campaign_id = auth_campaign.campaign_id and follow.created_by_id = auth_campaign.user_id
+         where feed.filter_type_code = 'REGISTRATION'
+         
+         union all
+         select distinct feed.*,follow.id as follow_id, 
+            follow.created_by_id as followed_by_id,
+            follow.CREATED_AT as followed_at,
+            follow.EMAIL_AT as email_at,
+            follow.INST_EMAIL_AT as inst_email_at
+         from 
+             \"sap.ino.db.feed::v_biz_feeds\" as feed
+         inner join
+             \"sap.ino.db.follow::t_follow\" as follow   
+             on feed.object_id = follow.object_id and feed.object_type_code = follow.object_type_code
+             and feed.event_at >= follow.CREATED_AT
+         inner join \"sap.ino.db.campaign::v_campaign_read\" as auth_campaign
+            on feed.object_id = auth_campaign.campaign_id and follow.created_by_id = auth_campaign.identity_id
+         where feed.filter_type_code = 'FRONTOFFICE' and feed.object_type_code = 'CAMPAIGN'
+         
+         union all
+         select distinct feed.*,follow.id as follow_id, 
+            follow.created_by_id as followed_by_id,
+            follow.CREATED_AT as followed_at,
+            follow.EMAIL_AT as email_at,
+            follow.INST_EMAIL_AT as inst_email_at
+         from 
+             \"sap.ino.db.feed::v_biz_feeds\" as feed
+         inner join
+             \"sap.ino.db.follow::t_follow\" as follow   
+             on feed.object_id = follow.object_id and feed.object_type_code = follow.object_type_code
+             and feed.event_at >= follow.CREATED_AT
+         inner join \"sap.ino.db.campaign::v_campaign_read\" as auth_campaign
+            on feed.campaign_id = auth_campaign.campaign_id and follow.created_by_id = auth_campaign.identity_id
+         where feed.filter_type_code = 'FRONTOFFICE' and feed.object_type_code = 'IDEA'
+         union all
+         select distinct feed.*,follow.id as follow_id, 
+            follow.created_by_id as followed_by_id,
+            follow.CREATED_AT as followed_at,
+            follow.EMAIL_AT as email_at,
+            follow.INST_EMAIL_AT as inst_email_at
+         from 
+             \"sap.ino.db.feed::v_biz_feeds\" as feed
+         inner join
+             \"sap.ino.db.follow::t_follow\" as follow   
+             on feed.object_id = follow.object_id and feed.object_type_code = follow.object_type_code
+             and feed.event_at >= follow.CREATED_AT
+         inner join \"sap.ino.db.campaign::v_campaign_read\" as auth_campaign
+            on feed.campaign_id = auth_campaign.campaign_id and follow.created_by_id = auth_campaign.identity_id
+         where feed.filter_type_code = 'FRONTOFFICE' and feed.object_type_code = 'TAG'
+         with read only"; 
+
+depends_on_table = ["sap.ino.db.follow::t_follow"];
+
+depends_on_view  = ["sap.ino.db.feed::v_biz_feeds",
+                    "sap.ino.db.campaign::v_backoffice_campaign_privilege",
+                    "sap.ino.db.campaign::v_registration_campaign_privilege",
+                    "sap.ino.db.campaign::v_campaign_read"];

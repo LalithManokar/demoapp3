@@ -1,0 +1,478 @@
+@sapInoIdeaCardShowFace: rotateY(0deg);
+
+@sapInoIdeaCardShowBack: rotateY(180deg);
+
+@sapInoIdeaCardMoveBack: rotateY(-180deg);
+
+@sapInoIdeaCardTextHorizontalMargin: 8px;
+
+/*
+ * Card font sizes
+*/
+@sapInoIdeaCardTextFontSize: @sapInoMediumFont;
+
+@sapInoIdeaCardTextFontSizeSmall: @sapInoSmallFont;
+
+@sapInoIdeaCardTextFontSizeLarge: 2 * @sapInoIdeaCardTextFontSize;
+
+@sapInoIdeaCardRadius: 3px;
+
+@sapInoIdeaCardRibbonRadius: 1px;
+
+@sapInoIdeaCardBackgroundColor: @sapInoWhiteBG;
+
+@sapInoIdeaCardSideBackgroundColor: @sapInoWhiteBG;
+
+.sapInoIdeaCardTopRibbon {
+    border-top-left-radius: @sapInoIdeaCardRibbonRadius;
+    border-top-right-radius: @sapInoIdeaCardRibbonRadius;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.sapInoIdeaCardBottomRibbon {
+    border-bottom-left-radius: @sapInoIdeaCardRibbonRadius;
+    border-bottom-right-radius: @sapInoIdeaCardRibbonRadius;
+}
+
+.sapInoIdeaCardCampaignLinkTooltip {
+    display: inline;
+}
+
+
+
+.sapInoIdeaCard {
+    /*
+     * Styles for card flipping
+    */
+    .sapInoIdeaCardFlipContainer {
+        -webkit-perspective: 1000;
+        -moz-perspective: 1000;
+        -ms-perspective: 1000;
+        perspective: 1000;
+
+        -ms-transform: perspective(1000px);
+        -moz-transform: perspective(1000px);
+
+        -moz-transform-style: preserve-3d;
+        -ms-transform-style: preserve-3d;
+
+        &.flip .sapInoIdeaCardFront {
+            -webkit-transform: @sapInoIdeaCardShowBack;
+            -moz-transform: @sapInoIdeaCardShowBack;
+            -o-transform: @sapInoIdeaCardShowBack;
+            -ms-transform: @sapInoIdeaCardShowBack;
+            transform: @sapInoIdeaCardShowBack;
+        }
+        &.flip .sapInoIdeaCardBack {
+            -webkit-transform: @sapInoIdeaCardShowFace;
+            -moz-transform: @sapInoIdeaCardShowFace;
+            -o-transform: @sapInoIdeaCardShowFace;
+            -ms-transform: @sapInoIdeaCardShowFace;
+            transform: @sapInoIdeaCardShowFace;
+        }
+
+        height: 370px;
+        width: 216px;
+        margin: 0 auto;
+        
+       // width: 100px;
+        .sapInoIdeaCardFlipper {
+            -webkit-transition: 0.6s;
+            -webkit-transform-style: preserve-3d;
+            -ms-transition: 0.6s;
+            transition: 0.6s;
+
+            -moz-transition: 0.6s;
+            -moz-transform: perspective(1000px);
+            -moz-transform-style: preserve-3d;
+            -ms-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+
+            position: relative;
+
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .sapInoIdeaCardFront, .sapInoIdeaCardBack {
+        -webkit-backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        -ms-backface-visibility: hidden;
+        backface-visibility: hidden;
+
+        -webkit-transition: 0.6s;
+        -moz-transition: 0.6s;
+        -o-transition: 0.6s;
+        -ms-transition: 0.6s;
+        transition: 0.6s;
+
+        -webkit-transform-style: preserve-3d;
+        -moz-transform-style: preserve-3d;
+        -o-transform-style: preserve-3d;
+        -ms-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+
+        -webkit-transform: @sapInoIdeaCardShowFace;
+        -moz-transform: @sapInoIdeaCardShowFace;
+        -o-transform: @sapInoIdeaCardShowFace;
+        -ms-transform: @sapInoIdeaCardShowFace;
+        transform: @sapInoIdeaCardShowFace;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        border: 1px solid @sapInoMediumBorder;
+
+        background-color: @sapInoIdeaCardSideBackgroundColor;
+
+        border-radius: @sapInoIdeaCardRadius;
+    }
+
+    .sapInoIdeaCardFront {
+        -webkit-transform: @sapInoIdeaCardShowFace;
+        -ms-transform: @sapInoIdeaCardShowFace;
+        /* TODO: -o and -moz transform missing - why? */
+        z-index: 2;
+
+        .sapInoIdeaCardIdeaLink {
+            margin-top: 8px;
+        }
+    }
+
+    .sapInoIdeaCardBack {
+        -webkit-transform: @sapInoIdeaCardMoveBack;
+        -moz-transform: @sapInoIdeaCardMoveBack;
+        -o-transform: @sapInoIdeaCardMoveBack;
+        -ms-transform: @sapInoIdeaCardMoveBack;
+        transform: @sapInoIdeaCardMoveBack;
+    }
+    // End of card flipping styles
+
+    .sapInoIdeaCardRibbon {
+        width: 216px;
+        height: 30px;
+        background-color: @sapInoLightBG;
+    }
+
+    .sapInoIdeaCardBottomRibbon {
+        border-bottom: 1px solid @sapInoMediumBorder; // duplication of border due to browser rendering
+
+        .sapMBtnIcon {
+            font-size: 1.25rem;
+            margin: 0;
+        }
+    }
+
+    .sapInoIdeaCardIdeaMoreLinkTooltip, .sapInoIdeaCardIdeaLinkTooltip, .sapInoIdeaCardBottomRibbonContent {
+        display: inline;
+    }
+
+    .sapInoIdeaCardBottomRibbonContent div, .sapInoIdeaCardBottomRibbonContent button {
+        padding-bottom: 0px;
+        max-height: 29px;
+    }
+    
+    .sapInoIdeaCardBottomRibbonContent button {
+        .sapMBtnInner{
+            min-width: 1.5rem;
+        }
+    }
+
+    .sapInoIdeaCardCampaignLink {
+        margin-left: 5px;
+        margin-right: 5px;
+
+        &.sapInoIdeaCardCampaignTitleLight {
+            .sapMLnk:focus:not(.sapMLnkDsbl) {
+                /* IE requires the definition of outline instead of outline-color */
+                outline: 1px dotted @sapInoTextInverted;
+            }
+            a, a:hover {
+                color: @sapInoTextInverted;
+            }
+        }
+
+        &.sapInoIdeaCardCampaignTitleDark {
+            a, a:hover {
+                color: @sapInoText;
+            }
+        }
+
+        a {
+            font-size: @sapInoIdeaCardTextFontSize;
+            max-width: 170px;
+            position: relative;
+            top: 50%;
+            margin-top: 6px;
+        }
+
+    }
+
+    .sapInoIdeaCardIdeaLink {
+        height: 61px;
+        overflow: hidden;
+        margin: 4px @sapInoIdeaCardTextHorizontalMargin 4px @sapInoIdeaCardTextHorizontalMargin;
+        display: block;
+        font-size: @sapInoIdeaCardTextFontSize;
+        line-height: 20px;
+        max-height: 64px;
+        max-width: 200px;
+
+        a {
+            white-space: normal;
+        }
+        
+        .sapInoIdeaCardIdeaLinkTooltip {
+            display: inline-block;
+            line-height: normal;
+            margin-right: 2px;
+        }
+        
+        .sapUiIcon {
+            font-size: .8rem;
+            border-radius: 4px;
+            padding: 2px 4px;
+            width: 1.1rem;
+            height: .8rem;
+            line-height: 1rem;
+        }
+    }
+
+    .sapInoIdeaCardTopPlaceholder {
+        width: 100%;
+        height: 20px;
+        background-color: @sapInoLightBG;
+
+        div {
+            max-height: 10px;
+        }
+
+        .sapInoLabelledIcon, .sapInoVoteDisplay {
+            display: inline-block;
+        }
+    }
+
+    .sapInoIdeaCardBottomPlaceholder > div {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .sapInoIdeaCardBottomPlaceholder {
+        width: 100%;
+        height: 48px;
+        max-height: 48px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+
+        .sapMLabel,
+        .sapMText {
+            font-size: 0.75rem;
+            line-height: 0.75rem;
+        }
+
+        .sapInoProcessIndicatorPhaseLabel,
+        .sapInoProcessIndicatorStatusLabel{
+            margin-top: 4px;
+        }
+
+        .sapInoProcessIndicatorStatus {
+            margin-top: -4px;
+        }
+    }
+    
+    .sapInoIdeaNoticeIconPlaceholder > div {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .sapInoIdeaNoticeIconPlaceholder {
+        width: 100%;
+        height: 24px;
+        max-height: 48px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+    .ideaNoticeReadButton{
+        float:right;
+    }
+    
+    .sapInoIdeaCardBottomRibbonContent .ideaNoticeReadButton .sapMBtnInner{
+        min-width: 2rem;
+    }
+    
+    .ideaNoticeStatusIcon{
+        color:#e97227;
+        margin-left:0.5rem;
+    }
+    
+    .ideaNoticeCommentIcon{
+        color:#e97227;
+        margin-left:0.5rem;
+    }
+    
+    .ideaNoticeUpdateIcon{
+        color:#e97227;
+        margin-left:0.5rem;
+    }
+    
+    .ideaNoticeCreateIcon{
+        color:#e97227;
+        margin-left:0.5rem;
+    }
+    
+    .sapInoIdeaCardDraftLabel {
+        text-align: center;
+
+        label {
+            font-size: @sapInoIdeaCardTextFontSizeLarge;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+    }
+    /*
+     * Styles for the button that controls the flip
+     */
+    .sapInoIdeaCardFlipButton {
+        max-height: 30px;
+        max-width: 30px;
+
+        .sapMBtnIcon {
+            // transform: rotateZ(135deg);
+        }
+    }
+    /*
+     * End of styles for the flipping button
+     */
+
+    .sapInoIdeaCardIdeaSubmitter {
+        margin: 0 @sapInoIdeaCardTextHorizontalMargin 0 @sapInoIdeaCardTextHorizontalMargin;
+
+        .sapMLnk {
+            width: 100%;
+            font-size: @sapInoIdeaCardTextFontSizeSmall;
+        }
+        
+        a{
+            max-width: 200px;
+        }
+    }
+
+    .sapInoIdeaCardIdeaDescription {
+        width: 200px;
+        height: 190px;
+        max-height: 190px;
+        margin: 0 @sapInoIdeaCardTextHorizontalMargin 0 @sapInoIdeaCardTextHorizontalMargin;
+        overflow-y: hidden;
+
+        color: @sapInoText;
+
+        span {
+            max-width: 200px;
+            height: 154px;
+            //width: 200px;
+            font-size: @sapInoIdeaCardTextFontSizeSmall;
+            word-wrap: break-word;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            font-weight: normal;
+            display: block;
+        }
+
+        .sapMText, sapMText div {
+            color: @sapInoText;
+        }
+    }
+    
+    .sapInoIdeaCardIdeaMoreLink {
+        height: 30px;
+        line-height: 30px;
+        width: 100%;
+        text-align: right;
+        vertical-align: middle;
+
+        .sapMLnk {
+            margin-right: @sapInoIdeaCardTextHorizontalMargin;
+            font-size: @sapInoIdeaCardTextFontSizeSmall;
+        }
+    }
+
+    .sapInoLabelledIcon {
+        .sapInoLabelledIconIcon {
+            color: @sapInoExtraLightText;
+            vertical-align: middle;
+        }
+
+        .sapInoLabelledIconLabel {
+            color: @sapInoLightText;
+            font-size: @sapInoSmallFont;
+            vertical-align: middle;
+        }
+    }
+
+    .sapInoProcessIndicatorText label{
+    	font-size: @sapInoSmallFont;
+    }
+}
+
+
+
+
+
+.sapMLIBActive .sapInoIdeaCard {
+    .sapInoIdeaCardIdeaDescription {
+        color: @sapInoText;
+
+        .sapMText, .sapMText div {
+            color: @sapInoText;
+        }
+    }
+
+    .sapInoIdeaCardCampaignLink .sapMLnk {
+        text-decoration: none;
+    }
+
+    .sapInoIdeaCardIdeaLink .sapMLnk {
+        text-decoration: none;
+        color: @sapInoLink;
+
+        &:visited {
+            color: @sapInoLinkVisited;
+        }
+    }
+
+    .sapInoIdeaCardIdeaSubmitter .sapMLnk {
+        text-decoration: none;
+        color: @sapInoLink;
+
+        &:visited {
+            color: @sapInoLinkVisited;
+        }
+    }
+
+    .sapInoIdeaCardIdeaMoreLink .sapMLnk {
+        text-decoration: none;
+        color: @sapInoLink;
+
+        &:visited {
+            color: @sapInoLinkVisited;
+        }
+    }
+}
+
+/* Firefox specific */
+html[data-sap-ui-browser*='ff'] .sapInoIdeaCard {
+    .sapInoIdeaCardBack .sapInoIdeaCardIdeaLink {
+        margin-top: 3px;
+    }
+
+    .sapInoIdeaCardBottomPlaceholder {
+        margin-top: 4px;
+        margin-bottom: 12px;
+    }
+}
+
+li[data-style-idealatestupdate-class=LATESTUPDATE_BACKGROUND] .sapInoIdeaCard .sapInoIdeaCardFront, .sapInoIdeaCard .sapInoIdeaCardBack {
+  background-color: rgb(240, 240, 240);
+}

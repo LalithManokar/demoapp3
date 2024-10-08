@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_EXT_ANALYTICS_IDEA_REWARD_DIMENSION" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="V_EXT_ANALYTICS_IDEA_REWARD_DIMENSION"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="22"/>
+  <dataSources>
+    <DataSource id="sap.ino.db.reward::t_reward_list" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.reward::t_reward_list"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.reward::t_reward" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.reward::t_reward"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.reward::t_contribution_share" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.reward::t_contribution_share"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.basis::t_unit" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.basis::t_unit"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:JoinView" id="Rewards" cardinality="C1_N" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="IDEA_PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="REWARD_UNIT"/>
+        <viewAttribute id="AUTHOR_ID"/>
+        <viewAttribute id="REWARD_ID"/>
+        <viewAttribute id="REWARD_AMOUNT"/>
+        <viewAttribute id="REWARD_SHARE"/>
+        <viewAttribute hidden="true" id="JOIN$ID$REWARD_LIST_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.reward::t_reward_list">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_PHASE_CODE" source="IDEA_PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_UNIT" source="REWARD_UNIT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ID$REWARD_LIST_ID" source="ID"/>
+      </input>
+      <input node="#sap.ino.db.reward::t_reward">
+        <mapping xsi:type="Calculation:AttributeMapping" target="AUTHOR_ID" source="AUTHOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_AMOUNT" source="REWARD_AMOUNT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_SHARE" source="REWARD_SHARE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ID$REWARD_LIST_ID" source="REWARD_LIST_ID"/>
+      </input>
+      <joinAttribute name="JOIN$ID$REWARD_LIST_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Reward_contribution_share" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="IDEA_PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="REWARD_UNIT"/>
+        <viewAttribute id="AUTHOR_ID"/>
+        <viewAttribute id="REWARD_ID"/>
+        <viewAttribute id="REWARD_AMOUNT"/>
+        <viewAttribute id="REWARD_SHARE"/>
+        <viewAttribute id="CONTRIBUTION_SHARE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Rewards">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_PHASE_CODE" source="IDEA_PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_UNIT" source="REWARD_UNIT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="AUTHOR_ID" source="AUTHOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_ID" source="REWARD_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_AMOUNT" source="REWARD_AMOUNT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_SHARE" source="REWARD_SHARE"/>
+      </input>
+      <input node="#sap.ino.db.reward::t_contribution_share">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CONTRIBUTION_SHARE" source="PERCENTAGE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="AUTHOR_ID" source="AUTHOR_ID"/>
+      </input>
+      <joinAttribute name="IDEA_ID"/>
+      <joinAttribute name="AUTHOR_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Reward_Unit" joinType="leftOuter">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CONTRIBUTION_SHARE"/>
+        <viewAttribute id="REWARD_SHARE"/>
+        <viewAttribute id="REWARD_ID"/>
+        <viewAttribute id="AUTHOR_ID"/>
+        <viewAttribute id="REWARD_UNIT_TEXT"/>
+        <viewAttribute id="IDEA_PHASE_CODE"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="REWARD_UNIT_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Reward_contribution_share">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CONTRIBUTION_SHARE" source="CONTRIBUTION_SHARE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_SHARE" source="REWARD_SHARE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_ID" source="REWARD_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="AUTHOR_ID" source="AUTHOR_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_PHASE_CODE" source="IDEA_PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_UNIT_CODE" source="REWARD_UNIT"/>
+      </input>
+      <input node="#sap.ino.db.basis::t_unit">
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_UNIT_TEXT" source="DEFAULT_TEXT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="REWARD_UNIT_CODE" source="CODE"/>
+      </input>
+      <joinAttribute name="REWARD_UNIT_CODE"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Reward_Unit">
+    <descriptions/>
+    <attributes>
+      <attribute id="STATUS_CODE" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="STATUS_CODE"/>
+        <keyMapping columnObjectName="Reward_Unit" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_ID"/>
+        <keyMapping columnObjectName="Reward_Unit" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IDEA_PHASE_CODE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_PHASE_CODE"/>
+        <keyMapping columnObjectName="Reward_Unit" columnName="IDEA_PHASE_CODE"/>
+      </attribute>
+      <attribute id="AUTHOR_ID" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Author ID"/>
+        <keyMapping columnObjectName="Reward_Unit" columnName="AUTHOR_ID"/>
+      </attribute>
+      <attribute id="REWARD_ID" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Reward ID"/>
+        <keyMapping columnObjectName="Reward_Unit" columnName="REWARD_ID"/>
+      </attribute>
+      <attribute id="REWARD_SHARE" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Reward share(%)"/>
+        <keyMapping columnObjectName="Reward_Unit" columnName="REWARD_SHARE"/>
+      </attribute>
+      <attribute id="CONTRIBUTION_SHARE" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Contribution share(%)"/>
+        <keyMapping columnObjectName="Reward_Unit" columnName="CONTRIBUTION_SHARE"/>
+      </attribute>
+      <attribute id="REWARD_UNIT_CODE" order="8" attributeHierarchyActive="false" descriptionColumnName="REWARD_UNIT_LABEL" displayAttribute="false">
+        <descriptions defaultDescription="REWARD_UNIT_CODE"/>
+        <keyMapping columnObjectName="Reward_Unit" columnName="REWARD_UNIT_CODE"/>
+      </attribute>
+      <attribute id="REWARD_UNIT_TEXT" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Reward Unit"/>
+        <keyMapping columnObjectName="Reward_Unit" columnName="REWARD_UNIT_TEXT"/>
+      </attribute>
+      <attribute id="REWARD_UNIT_LABEL" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="REWARD_UNIT_LABEL"/>
+        <keyMapping columnObjectName="Reward_Unit" columnName="REWARD_UNIT_TEXT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="22" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Rewards" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="357"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Reward_contribution_share" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="261"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Reward_Unit" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="165"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

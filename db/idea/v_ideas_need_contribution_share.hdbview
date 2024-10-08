@@ -1,0 +1,14 @@
+schema = "SAP_INO";
+query = 
+    "select idea.id as idea_id, idea.campaign_id from \"sap.ino.db.idea::t_idea\" as idea 
+        left outer join \"sap.ino.db.reward::t_contribution_share\" as ctrb_share
+            on ctrb_share.idea_id = idea.id
+        where ctrb_share.id is null
+            and idea.status_code <> 'sap.ino.config.DRAFT'
+            and idea.status_code <> 'sap.ino.config.DISCONTINUED'
+            and idea.status_code <> 'sap.ino.config.COMPLETED'
+            and idea.status_code <> 'sap.ino.config.MERGED'
+            with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea",
+                    "sap.ino.db.reward::t_contribution_share"];

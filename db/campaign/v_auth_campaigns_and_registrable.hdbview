@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "
+	select campaign_id from \"sap.ino.db.campaign::v_auth_campaigns\"
+	union distinct
+	select campaign_id from \"sap.ino.db.campaign::v_auth_registration_campaigns_read\"
+";
+
+depends_on_view = ["sap.ino.db.campaign::v_auth_campaigns", "sap.ino.db.campaign::v_auth_registration_campaigns_read"];

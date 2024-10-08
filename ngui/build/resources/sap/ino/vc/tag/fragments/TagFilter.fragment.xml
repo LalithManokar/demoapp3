@@ -1,0 +1,75 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:ino="sap.ino.controls"
+	xmlns:l="sap.ui.layout">
+	<NavContainer
+        class="sapInoFilterSidePanelNavContainer"
+        id="navContainer"
+        height="100%"
+        width="100%">
+		<Page
+            id="main"
+            showHeader="false">
+			<customHeader>
+				<Bar>
+					<contentLeft>
+						<Label 
+                            id="showHeader"
+                            class="sapUiSmallMarginBegin"
+                            text="{i18n>LIST_TIT_SHOW_HEADER}"/>
+					</contentLeft>
+					<contentRight>
+						<Button 
+                            tooltip="{i18n>LIST_EXP_SHOW_MORE_FILTER}"
+                            icon="sap-icon://navigation-right-arrow" 
+                            visible="false"
+                            type="Transparent" 
+                            press="onFilterPageChange"></Button>
+					</contentRight>
+				</Bar>
+			</customHeader>
+			<!-- height: 99% to avoid unneccessary scrollbars during zoom -->
+			<VBox
+                class="sapInoFilterSidePanelContent"
+                width="100%"
+                alignItems="Start"
+                justifyContent="SpaceBetween">
+				<VBox class="sapInoFilterSidePanelItemsMainSection" width="100%">
+					<Bar>
+						<contentLeft>
+							<Label 
+					class="sapUiSmallMarginBegin"
+                     text="{path : 'list>/NAME', formatter : '.formatter.text'}"/>
+						</contentLeft>
+					</Bar>
+						<Tree
+                			id="TagTree"
+                		 	items="{path: 'list>/Variants/Values/'}"
+                		 	mode="SingleSelectMaster"
+                		 	selectionChange="onVariantBasePress"
+                		 	rememberSelections = "true"
+                			includeItemInSelection="true">
+                		    <StandardTreeItem
+                			    title="{path : 'list>NAME', formatter : '.formatter.text'}"
+                			    selected="{= ${list>ACTION} === ${view>/List/VARIANT} || ${list>ACTION} === ${view>/Search/VARIANT}}"/>
+                		</Tree>
+					</VBox>
+			</VBox>
+		</Page>
+		<Page
+            id="sub">
+			<customHeader>
+				<Bar>
+					<contentLeft>
+						<Button 
+                            tooltip="{i18n>LIST_EXP_SHOW_FILTER_BACK}"
+                            icon="sap-icon://navigation-left-arrow" 
+                            type="Transparent" 
+                            press="onFilterPageChange"></Button>
+					</contentLeft>
+				</Bar>
+			</customHeader>
+		</Page>
+	</NavContainer>
+</core:FragmentDefinition>

@@ -1,0 +1,10 @@
+schema = "SAP_INO_EXT";
+query = "
+    select
+            -ROW_NUMBER() over (partition by campaign_id order by code) as id,
+            report_template.*
+        from
+            \"sap.ino.db.analytics::v_report_template\" as report_template
+    with read only";
+
+depends_on_view = ["sap.ino.db.analytics::v_report_template"];

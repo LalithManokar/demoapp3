@@ -1,0 +1,68 @@
+schema = "SAP_INO";
+query = "
+    select
+        tag.id,
+        tag.name,
+        tag.created_at,
+        tag.created_by_id,
+        tag.changed_at,
+        tag.changed_by_id,
+        created_by_identity.name as created_by, 
+        changed_by_identity.name as changed_by,
+        object_tag.object_type_code,
+        object.name as object_type_name,
+        object.description as object_type_description,
+        object_tag.object_id,
+        case object_tag.object_type_code
+             when 'IDEA'     then coalesce(idea.name, not_authorized.content)
+             when 'CAMPAIGN' then campaign_text.name
+        end as object_name,
+        count(object_tag.object_id) as usage_count
+    from \"sap.ino.db.tag::t_tag\" as tag
+        left outer join \"sap.ino.db.iam::t_identity\" as created_by_identity
+            on tag.created_by_id = created_by_identity.id
+        left outer join \"sap.ino.db.iam::t_identity\" as changed_by_identity
+            on tag.changed_by_id = changed_by_identity.id
+        left outer join \"sap.ino.db.tag::t_object_tag\" as object_tag
+            on tag.id = object_tag.tag_id
+        left outer join \"sap.ino.db.aof::t_application_object\" as object
+            on object_tag.object_type_code = object.code
+        left outer join (select distinct idea_id from \"sap.ino.db.idea::v_auth_ideas_read\") as idea_auth
+            on object_tag.object_type_code = 'IDEA' and
+               object_tag.object_id = idea_auth.idea_id
+        left outer join \"sap.ino.db.idea::t_idea\" as idea
+            on idea_auth.idea_id = idea.id
+        left outer join \"sap.ino.db.campaign::v_auth_campaigns\" as campaign_auth
+            on object_tag.object_type_code = 'CAMPAIGN' and
+               object_tag.object_id = campaign_auth.campaign_id
+        left outer join \"sap.ino.db.campaign::v_campaign_t_locale\" as campaign_text 
+            on campaign_auth.campaign_id = campaign_text.campaign_id,
+        (select content from \"sap.ino.db.basis::v_resolved_text\" where object_name = 'uitexts' and text_id = 'BO_COMMON_NOT_AUTHORIZED') as not_authorized
+     group by
+        tag.id,
+        tag.name,
+        tag.created_at,
+        tag.created_by_id,
+        tag.changed_at,
+        tag.changed_by_id,
+        created_by_identity.name, 
+        changed_by_identity.name,
+        object_tag.object_type_code,
+        object.name,
+        object.description,
+        object_tag.object_id,
+        idea.name,
+        campaign_text.name,
+        not_authorized.content
+    with read only";
+
+depends_on_table = ["sap.ino.db.tag::t_tag",
+                    "sap.ino.db.idea::t_idea",
+                    "sap.ino.db.iam::t_identity",
+                    "sap.ino.db.tag::t_object_tag",
+                    "sap.ino.db.aof::t_application_object"];
+                    
+depends_on_view = ["sap.ino.db.campaign::v_campaign_t_locale",
+                    "sap.ino.db.idea::v_auth_ideas_read",
+                    "sap.ino.db.campaign::v_auth_campaigns",
+                    "sap.ino.db.basis::v_resolved_text"];

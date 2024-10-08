@@ -1,0 +1,6 @@
+schema     = "SAP_INO";
+start_with = 1;
+minvalue   = 1;
+cycles     = false;
+reset_by= "select nextid from \"sap.ino.db.campaign::v_campaign_seq_reset\"";
+depends_on_view = "sap.ino.db.campaign::v_campaign_seq_reset";

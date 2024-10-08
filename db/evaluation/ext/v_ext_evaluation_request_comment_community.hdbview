@@ -1,0 +1,9 @@
+schema = "SAP_INO_EXT";
+query = "select eval_req_comment.*
+         from \"sap.ino.db.evaluation::v_evaluation_request_comment_community\" as eval_req_comment
+         where eval_req_comment.object_id in (select eval_req_id from \"sap.ino.db.evaluation::v_auth_evaluation_request_read\")
+         with read only";
+         
+depends_on_view = ["sap.ino.db.evaluation::v_evaluation_request_comment_community", 
+                   "sap.ino.db.evaluation::v_auth_evaluation_request_read"];
+

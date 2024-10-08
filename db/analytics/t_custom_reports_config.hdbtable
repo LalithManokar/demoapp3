@@ -1,0 +1,13 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "custom report content";
+table.columns = [
+	{name = "ID";           sqlType = INTEGER;                 nullable = false; comment = "Human-readable identifier of widget page";},
+	{name = "CONTENT"; sqlType = NCLOB;                   nullable = true;  comment = "content of custom report";},
+	{name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Creation timestamp";},
+	{name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been created. Foreign key to t_identity.ID";},
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "Changed timestamp";},
+	{name = "CHANGED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "Identity by which an identity has been changed. Foreign key t_identity.ID";}
+	
+];
+table.primaryKey.pkcolumns = ["ID"]; 

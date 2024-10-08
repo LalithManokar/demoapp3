@@ -1,0 +1,104 @@
+FUNCTION "SAP_INO"."sap.ino.db.feed::f_biz_feeds" ( ) 
+	RETURNS TABLE (
+	    KEY NVARCHAR(5000),OBJECT_ID INTEGER, OBJECT_TYPE_CODE VARCHAR(100),OBJECT_TEXT NVARCHAR(100),ACTOR_ID INTEGER,ACTOR_NAME NVARCHAR(100),
+        ACTOR_IMAGE_ID INTEGER, INVOLVED_ID INTEGER, INVOLVED_OBJ_TYPE_CODE VARCHAR(100), INVOLVED_OBJ_TEXT NVARCHAR(5000), EVENT_AT TIMESTAMP,
+        FEED_CODE VARCHAR(100), CAMPAIGN_ID INTEGER, FIELD1_NAME NVARCHAR(500), FIELD1_TEXT NVARCHAR(500), FIELD1_VALUE NVARCHAR(500),
+        FIELD1_VALUE_OPTION NVARCHAR(100), FIELD2_NAME NVARCHAR(500), FIELD2_TEXT NVARCHAR(500), FIELD2_VALUE NVARCHAR(500),
+        FIELD2_VALUE_OPTION NVARCHAR(100), FILTER_TYPE_CODE VARCHAR(20),CONTENT NVARCHAR(5000) , SUB_TEXT NVARCHAR(5000), SUB_FEED_CODE VARCHAR(1), 
+        CAMPAIGN_DATE TIMESTAMP
+	)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER
+	DEFAULT SCHEMA SAP_INO	
+	AS 
+BEGIN
+/***************************** 
+	Write your function logic
+ *****************************/
+    return select 
+            replace(object_id || object_type_code || event_at || feed_code || TO_NVARCHAR(IFNULL(involved_id, 0)),  ' ','_') as key,
+            feed.object_id,
+            feed.object_type_code,
+            feed.object_text,
+            feed.actor_id,
+            feed.actor_name,
+            feed.actor_image_id,
+            feed.involved_id,
+            feed.involved_obj_type_code,
+            feed.involved_obj_text,
+            feed.event_at,
+            feed.feed_code, 
+            feed.campaign_id,
+            feed.field_name as field1_name,
+            feed.field_text as field1_text,
+            feed.field_value as field1_value,
+            feed.field_value_option as field1_value_option,
+            null as field2_name,
+            null as field2_text,
+            null as field2_value,
+            null as field2_value_option,
+            feed.filter_type_code, 
+            feed.content,
+            involved_obj_text as sub_text,
+            null as sub_feed_code,
+            null as campaign_date
+        from "sap.ino.db.idea::v_idea_feeds" as feed
+    union 
+        select
+            replace(object_id || object_type_code || event_at || feed_code || TO_NVARCHAR(IFNULL(involved_id, 0)),  ' ','_') as key,
+            feed.object_id,
+            feed.object_type_code,
+            feed.object_text,
+            feed.actor_id,
+            feed.actor_name,
+            feed.actor_image_id,
+            feed.involved_id,
+            feed.involved_obj_type_code,
+            feed.involved_obj_text,
+            feed.event_at,
+            feed.feed_code, 
+            feed.campaign_id,
+            feed.field1_name,
+            feed.field1_text,
+            feed.field1_value,
+            feed.field1_value_option,
+            feed.field2_name,
+            feed.field2_text,
+            feed.field2_value,
+            feed.field2_value_option,
+            feed.filter_type_code, 
+            feed.content,
+            involved_obj_text as sub_text,
+            null as sub_feed_code,
+            feed.campaign_date
+        from "sap.ino.db.campaign::v_campaign_feeds" as feed
+    union
+        select
+            replace(object_id || object_type_code || event_at || feed_code || TO_NVARCHAR(IFNULL(involved_id, 0)),  ' ','_') as key,
+            feed.object_id,
+            feed.object_type_code,
+            feed.object_text,
+            feed.actor_id,
+            feed.actor_name,
+            feed.identity_image_id as actor_image_id,
+            feed.involved_id,
+            feed.involved_obj_type_code,
+            feed.sub_text as involved_obj_text,
+            feed.event_at,
+            feed.feed_code, 
+            feed.campaign_id,
+            null as field1_name,
+            null as field1_text,
+            null as field1_value,
+            null as field1_value_option,
+            null as field2_name,
+            null as field2_text,
+            null as field2_value,
+            null as field2_value_option,
+            feed.filter_type_code, 
+            null as content,
+            feed.sub_text,
+            null as sub_feed_code,
+            null as campaign_date
+        from "sap.ino.db.tag::v_tag_biz_feeds" as feed;  
+END;

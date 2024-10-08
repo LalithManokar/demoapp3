@@ -1,0 +1,56 @@
+schema = "SAP_INO";
+query = "
+-- this view is used by activity feed and decisions and returns the current user's max level of authorization for each idea id
+-- note that the typical binary count stages 1,2,4 are used
+select 
+    idea_id, 
+    max(auth_level) as auth_level
+from ( 
+	-- stage 1: everybody having campaign read privileges may see this history item
+	select idea.id as idea_id, 1 as auth_level 
+	from \"sap.ino.db.idea::t_idea\" as idea 
+	inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role 
+	    on idea.campaign_id = object_role.object_id 
+		    and object_role.object_type_code = 'CAMPAIGN' 
+	inner join \"sap.ino.db.iam::t_role_privilege\" as role 
+	    on role.role_code = object_role.role_code 
+		    and role.privilege = 'CAMP_IDEA_PUBLIC_READ' 
+	inner join \"sap.ino.db.campaign::t_campaign_phase\" as phase 
+	    on idea.campaign_id = phase.campaign_id 
+		    and idea.phase_code = phase.phase_code 
+		    and phase.show_idea_in_community = 1 
+
+	union all 
+
+    -- stage 2: everybody having update privileges to idea (submitter & contributors)
+    select idea.id as idea_id, 2 as auth_level
+    from \"sap.ino.db.idea::t_idea\" as idea 
+    inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role 
+        on idea.id = object_role.object_id 
+            and object_role.object_type_code = 'IDEA' 
+    inner join \"sap.ino.db.iam::t_role_privilege\" as role 
+        on role.role_code = object_role.role_code 
+            and role.privilege = 'IDEA_UPDATE'
+            
+    union all
+    
+	-- stage 4: everybody with camp_idea_protected_read privileges
+	select idea.id as idea_id, 4 as auth_level 
+	from \"sap.ino.db.idea::t_idea\" as idea 
+	left outer join \"sap.ino.db.subresponsibility::t_responsibility_value_stage\" as resp_value
+                on idea.resp_value_code = resp_value.code
+	inner join \"sap.ino.db.iam::v_auth_application_user_role_transitive\" as object_role on (idea.campaign_id = object_role.object_id 
+		and object_role.object_type_code = 'CAMPAIGN')
+		or (resp_value.id = object_role.object_id and object_role.object_type_code = 'RESPONSIBILITY')
+	inner join \"sap.ino.db.iam::t_role_privilege\" as role on role.role_code = object_role.role_code 
+		and role.privilege = 'CAMP_IDEA_PROTECTED_READ' 
+	where idea.phase_code is not null 
+)
+group by idea_id
+with read only";
+
+depends_on_table = ["sap.ino.db.idea::t_idea", 
+                    "sap.ino.db.iam::t_role_privilege", 
+                    "sap.ino.db.campaign::t_campaign_phase",
+                    "sap.ino.db.subresponsibility::t_responsibility_value_stage"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];

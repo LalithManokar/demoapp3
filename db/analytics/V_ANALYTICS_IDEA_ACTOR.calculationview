@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="V_ANALYTICS_IDEA_ACTOR" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DEFAULT" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="V_ANALYTICS_IDEA"/>
+  <defaultSchema schemaName="SAP_INO"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="sap.ino.db.idea::t_idea" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_idea"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.analytics_V_ANALYTICS_COMMUNITY_COMMENT" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_COMMUNITY_COMMENT</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.iam::t_object_identity_role" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.iam::t_object_identity_role"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.evaluation::t_evaluation" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.evaluation::t_evaluation"/>
+    </DataSource>
+    <DataSource id="Contributor_Idea$$$$sap.ino.db.idea::t_idea$$" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_idea"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.campaign::t_campaign_phase" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.campaign::t_campaign_phase"/>
+    </DataSource>
+    <DataSource id="sap.ino.db.analytics_V_ANALYTICS_RESOLVED_TEXT_WRAPPER" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_RESOLVED_TEXT_WRAPPER</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Idea">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="CHANGED_AT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.idea::t_idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CHANGED_AT" source="CHANGED_AT"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Commentator">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="COMMENT_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="CREATED_AT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="ROLE_CODE" length="20" expressionLanguage="COLUMN_ENGINE">
+          <formula>'COMMENT_OWNER'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="DATE" id="ACTION_DATE" expressionLanguage="COLUMN_ENGINE">
+          <formula>date(&quot;CREATED_AT&quot;)</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.analytics_V_ANALYTICS_COMMUNITY_COMMENT">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="CREATED_BY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CREATED_AT" source="CREATED_AT"/>
+      </input>
+      <filter>&quot;OBJECT_TYPE_CODE&quot; = 'IDEA'</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Contributor">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="OBJECT_TYPE_CODE"/>
+        <viewAttribute id="ROLE_CODE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.iam::t_object_identity_role">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="OBJECT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="OBJECT_TYPE_CODE" source="OBJECT_TYPE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+      </input>
+      <filter>&quot;OBJECT_TYPE_CODE&quot; = 'IDEA' and (&quot;ROLE_CODE&quot; = 'IDEA_CONTRIBUTOR' or &quot;ROLE_CODE&quot; = 'IDEA_SUBMITTER')</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Evaluator">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="EVALUATION_ID"/>
+        <viewAttribute id="CREATED_AT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="ROLE_CODE" length="20" expressionLanguage="COLUMN_ENGINE">
+          <formula>'EVALUATION_OWNER'</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="DATE" id="ACTION_DATE" expressionLanguage="COLUMN_ENGINE">
+          <formula>date(&quot;CREATED_AT&quot;)</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.evaluation::t_evaluation">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="CREATED_BY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_ID" source="ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CREATED_AT" source="CREATED_AT"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Contributor_Idea" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="CREATED_AT"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="DATE" id="ACTION_DATE" expressionLanguage="COLUMN_ENGINE">
+          <formula>date(&quot;CREATED_AT&quot;)</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#Contributor">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+      </input>
+      <input node="#Contributor_Idea$$$$sap.ino.db.idea::t_idea$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CREATED_AT" source="CREATED_AT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="ID"/>
+      </input>
+      <joinAttribute name="IDEA_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:UnionView" id="Actor">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="ACTION_DATE"/>
+        <viewAttribute id="COMMENT_ID"/>
+        <viewAttribute id="EVALUATION_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input emptyUnionBehavior="NO_ROW" node="#Commentator">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE" source="ACTION_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_ID" source="COMMENT_ID"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVALUATION_ID" null="true" value=""/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Evaluator">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE" source="ACTION_DATE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMMENT_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_ID" source="EVALUATION_ID"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Contributor_Idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE" source="ACTION_DATE"/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMMENT_ID" null="true" value=""/>
+        <mapping xsi:type="Calculation:ConstantAttributeMapping" target="EVALUATION_ID" null="true" value=""/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Idea_Phase" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="PHASE_SEQUENCE_NO"/>
+        <viewAttribute id="NEXT_PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="IDEA_CHANGED_AT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Idea">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_CHANGED_AT" source="CHANGED_AT"/>
+      </input>
+      <input node="#sap.ino.db.campaign::t_campaign_phase">
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_SEQUENCE_NO" source="SEQUENCE_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NEXT_PHASE_CODE" source="NEXT_PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+      </input>
+      <joinAttribute name="CAMPAIGN_ID"/>
+      <joinAttribute name="PHASE_CODE"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Idea_Actor" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="PHASE_SEQUENCE_NO"/>
+        <viewAttribute id="NEXT_PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="ACTION_DATE"/>
+        <viewAttribute id="COMMENT_ID"/>
+        <viewAttribute id="EVALUATION_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="ACTION_DATE_MONTH_NUMBER" length="2" expressionLanguage="COLUMN_ENGINE">
+          <formula>component(&quot;ACTION_DATE&quot;,2)</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="ACTION_DATE_YEAR_MONTH" length="7" expressionLanguage="COLUMN_ENGINE">
+          <formula>if(int(&quot;ACTION_DATE_MONTH_NUMBER&quot;) &lt; 10, &quot;ACTION_DATE_YEAR&quot; + '-0' + &quot;ACTION_DATE_MONTH_NUMBER&quot;, &quot;ACTION_DATE_YEAR&quot; + '-' + &quot;ACTION_DATE_MONTH_NUMBER&quot;)</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="ACTION_DATE_YEAR" length="4" expressionLanguage="COLUMN_ENGINE">
+          <formula>component(&quot;ACTION_DATE&quot;,1)</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="VARCHAR" id="ACTION_DATE_MONTH_TEXT_CODE" length="40" expressionLanguage="COLUMN_ENGINE">
+          <formula>'BO_ANA_FLD_CHAR_MONTH_' + &quot;ACTION_DATE_MONTH_NUMBER&quot;</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#Actor">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE" source="ACTION_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_ID" source="COMMENT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_ID" source="EVALUATION_ID"/>
+      </input>
+      <input node="#Idea_Phase">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_SEQUENCE_NO" source="PHASE_SEQUENCE_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NEXT_PHASE_CODE" source="NEXT_PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+      </input>
+      <joinAttribute name="IDEA_ID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Month_Text" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDEA_ID"/>
+        <viewAttribute id="PHASE_CODE"/>
+        <viewAttribute id="PHASE_SEQUENCE_NO"/>
+        <viewAttribute id="NEXT_PHASE_CODE"/>
+        <viewAttribute id="STATUS_CODE"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="ROLE_CODE"/>
+        <viewAttribute id="ACTION_DATE"/>
+        <viewAttribute id="COMMENT_ID"/>
+        <viewAttribute id="EVALUATION_ID"/>
+        <viewAttribute id="ACTION_DATE_MONTH_NUMBER"/>
+        <viewAttribute id="ACTION_DATE_YEAR_MONTH"/>
+        <viewAttribute id="ACTION_DATE_YEAR"/>
+        <viewAttribute id="ACTION_DATE_MONTH_TEXT_CODE"/>
+        <viewAttribute id="ACTION_DATE_MONTH"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Idea_Actor">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_CODE" source="PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PHASE_SEQUENCE_NO" source="PHASE_SEQUENCE_NO"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NEXT_PHASE_CODE" source="NEXT_PHASE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="STATUS_CODE" source="STATUS_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ROLE_CODE" source="ROLE_CODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE" source="ACTION_DATE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENT_ID" source="COMMENT_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATION_ID" source="EVALUATION_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_NUMBER" source="ACTION_DATE_MONTH_NUMBER"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR_MONTH" source="ACTION_DATE_YEAR_MONTH"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_YEAR" source="ACTION_DATE_YEAR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_TEXT_CODE" source="ACTION_DATE_MONTH_TEXT_CODE"/>
+      </input>
+      <input node="#sap.ino.db.analytics_V_ANALYTICS_RESOLVED_TEXT_WRAPPER">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH" source="CONTENT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTION_DATE_MONTH_TEXT_CODE" source="TEXT_ID"/>
+      </input>
+      <joinAttribute name="ACTION_DATE_MONTH_TEXT_CODE"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Month_Text">
+    <descriptions/>
+    <attributes>
+      <attribute id="CAMPAIGN_ID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CAMPAIGN_ID"/>
+        <keyMapping columnObjectName="Month_Text" columnName="CAMPAIGN_ID"/>
+      </attribute>
+      <attribute id="IDEA_ID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDEA_ID"/>
+        <keyMapping columnObjectName="Month_Text" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="PHASE_CODE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="PHASE_CODE"/>
+        <keyMapping columnObjectName="Month_Text" columnName="PHASE_CODE"/>
+      </attribute>
+      <attribute id="PHASE_SEQUENCE_NO" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="PHASE_SEQUENCE_NO"/>
+        <keyMapping columnObjectName="Month_Text" columnName="PHASE_SEQUENCE_NO"/>
+      </attribute>
+      <attribute id="NEXT_PHASE_CODE" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="NEXT_PHASE_CODE"/>
+        <keyMapping columnObjectName="Month_Text" columnName="NEXT_PHASE_CODE"/>
+      </attribute>
+      <attribute id="STATUS_CODE" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="STATUS_CODE"/>
+        <keyMapping columnObjectName="Month_Text" columnName="STATUS_CODE"/>
+      </attribute>
+      <attribute id="IDENTITY_ID" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="IDENTITY_ID"/>
+        <keyMapping columnObjectName="Month_Text" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="ROLE_CODE" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ROLE_CODE"/>
+        <keyMapping columnObjectName="Month_Text" columnName="ROLE_CODE"/>
+      </attribute>
+      <attribute id="COMMENT_ID" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="COMMENT_ID"/>
+        <keyMapping columnObjectName="Month_Text" columnName="COMMENT_ID"/>
+      </attribute>
+      <attribute id="EVALUATION_ID" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="EVALUATION_ID"/>
+        <keyMapping columnObjectName="Month_Text" columnName="EVALUATION_ID"/>
+      </attribute>
+      <attribute id="ACTION_DATE_YEAR_MONTH" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ACTION_DATE_YEAR_MONTH"/>
+        <keyMapping columnObjectName="Month_Text" columnName="ACTION_DATE_YEAR_MONTH"/>
+      </attribute>
+      <attribute id="ACTION_DATE_YEAR" order="12" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ACTION_DATE_YEAR"/>
+        <keyMapping columnObjectName="Month_Text" columnName="ACTION_DATE_YEAR"/>
+      </attribute>
+      <attribute id="ACTION_DATE_MONTH" order="13" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CONTENT"/>
+        <keyMapping columnObjectName="Month_Text" columnName="ACTION_DATE_MONTH"/>
+      </attribute>
+      <attribute id="ACTION_DATE_MONTH_NUMBER" order="14" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="ACTION_DATE_MONTH_NUMBER"/>
+        <keyMapping columnObjectName="Month_Text" columnName="ACTION_DATE_MONTH_NUMBER"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="169" y="-1"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Idea" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="10" y="440"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Commentator" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="169" y="519"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Contributor" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="10" y="620"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Evaluator" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="320" y="519"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Contributor_Idea" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="10" y="519"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Actor" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="169" y="330"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Idea_Phase" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="10" y="330"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Idea_Actor" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="169" y="200"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Month_Text" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="169" y="90"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

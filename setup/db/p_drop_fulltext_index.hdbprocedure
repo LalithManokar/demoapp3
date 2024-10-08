@@ -1,0 +1,20 @@
+procedure "SAP_INO"."sap.ino.setup.db::p_drop_fulltext_index" (
+    -- schema name
+    in iv_schema_name varchar(256),
+    -- name of the fulltext index
+    in iv_index_name varchar(256)
+    ) 
+language sqlscript 
+sql security definer
+as begin
+    declare lv_isexisting integer;
+    declare lv_stmt NVARCHAR(5000);
+    -- check whether index is already existing
+    select count(1) into lv_isexisting from "PUBLIC"."FULLTEXT_INDEXES" where SCHEMA_NAME = :iv_schema_name and INDEX_NAME = :iv_index_name;
+    
+    if :lv_isexisting != 0 then
+        -- drop index if already existing
+        lv_stmt := 'drop fulltext index "' || :iv_schema_name || '"."' || :iv_index_name || '"';
+        exec :lv_stmt;
+    end if;
+end;

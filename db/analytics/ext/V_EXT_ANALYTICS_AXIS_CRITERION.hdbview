@@ -1,0 +1,19 @@
+schema = "SAP_INO_EXT";
+query = "
+    SELECT al.CODE, 
+    	'X' AS AXIS_CRITERION
+    FROM \"sap.ino.db.evaluation::t_criterion\" AS al
+    	INNER JOIN \"sap.ino.db.evaluation::t_criterion\" AS x
+    	ON al.code = x.X_AXIS_CRITERION_CODE
+    		AND x.AGGREGATION_TYPE = 'MATRIX'
+    
+    UNION
+    
+    SELECT al.CODE, 
+        'Y' AS AXIS_CRITERION
+    FROM \"sap.ino.db.evaluation::t_criterion\" AS al
+    INNER JOIN \"sap.ino.db.evaluation::t_criterion\" AS Y
+    ON al.code = Y.Y_AXIS_CRITERION_CODE
+    	AND Y.AGGREGATION_TYPE = 'MATRIX'
+";
+

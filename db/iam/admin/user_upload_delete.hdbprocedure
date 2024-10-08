@@ -1,0 +1,41 @@
+procedure "SAP_INO"."sap.ino.db.iam.admin::user_upload_delete" (
+    in  it_user         "SAP_INO"."sap.ino.db.iam.admin::tt_user_delete_input",
+    out ot_user_message "SAP_INO"."sap.ino.db.iam.admin::tt_user_delete_output"
+)
+language sqlscript
+sql security definer
+default schema SAP_INO
+as
+begin
+    declare lv_principal_id integer;
+
+    -- determine ID for session user
+    --     get null to indicate that session user is not registered with SAP Innovation Management
+    select id into lv_principal_id
+        from
+            "SAP_INO"."sap.ino.db.iam::v_auth_application_user"
+        right outer join dummy on 0 = 0;
+
+    if (:lv_principal_id is null ) then
+        -- session user is not registered
+        ot_user_message =
+            select
+                 0  as "LINE_NO",
+                '?' as "USER_NAME",
+                'E' as "TYPE",
+                'MSG_PRINCIPAL_IDENTITY_UNKNOWN' as "MESSAGE",
+                '?' as "REF_FIELD",
+                session_user as "PARAM_0",
+                '' as "PARAM_1",
+                '' as "PARAM_2",
+                '' as "PARAM_3"
+            from dummy;
+    else
+        -- session user found in t_identity
+        call "SAP_INO"."sap.ino.db.iam::p_user_upload_delete" (
+            :lv_principal_id,
+            :it_user,
+            :ot_user_message
+       );
+    end if;
+end;

@@ -1,0 +1,10 @@
+table.schemaName = "SAP_INO";
+table.tableType = ROWSTORE;
+table.temporary = true;
+table.description = "Input table for MODIFY procedures of ideas identities";
+table.columns = [
+    {name = "ID";          sqlType = INTEGER;              nullable = false; comment = "ID Negative number for temporary handles";},
+    {name = "IDEA_ID";     sqlType = INTEGER;              nullable = true;},
+    {name = "IDENTITY_ID"; sqlType = INTEGER;              nullable = true;},
+    {name = "ACTION";      sqlType = VARCHAR; length = 10; nullable = true; defaultValue = "0";}
+];

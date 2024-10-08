@@ -1,0 +1,191 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:ino="sap.ino.controls"
+	xmlns:l="sap.ui.layout">
+	<NavContainer
+        class="sapInoFilterSidePanelNavContainer"
+        id="navContainer"
+        height="100%"
+        width="100%">
+		<Page
+            id="main"
+            showHeader="false">
+			<customHeader>
+				<Bar>
+					<contentLeft>
+						<Label 
+                            id="showHeader"
+                            class="sapUiSmallMarginBegin"
+                            text="{i18n>LIST_TIT_SHOW_HEADER}"/>
+					</contentLeft>
+					<contentRight>
+						<Button 
+                            tooltip="{i18n>LIST_EXP_SHOW_MORE_FILTER}"
+                            icon="sap-icon://navigation-right-arrow" 
+                            visible="false"
+                            type="Transparent" 
+                            press="onFilterPageChange"></Button>
+					</contentRight>
+				</Bar>
+			</customHeader>
+			<!-- height: 99% to avoid unneccessary scrollbars during zoom -->
+			<VBox
+                class="sapInoFilterSidePanelContent"
+                width="100%"
+                alignItems="Start"
+                justifyContent="SpaceBetween">
+				<VBox class="sapInoFilterSidePanelItemsMainSection" width="100%" visible = "{=!${component>/SHOW_BACKOFFICE} }">
+					<Bar>
+						<contentLeft>
+							<Label 
+					class="sapUiSmallMarginBegin"
+                    text="{path : 'list>/NAME', formatter : '.formatter.text'}"/>
+						</contentLeft>
+					</Bar>
+					<List
+                        class="sapUiTinyMarginBottom sapUiSmallMarginTop"
+                        mode="SingleSelectMaster"
+                        itemPress="onVariantBasePress"
+                        items="{
+                            path: 'list>/Variants/Values'
+                        }"
+                        width="100%"
+                        showSeparators="None">
+						<CustomListItem
+                            ariaLabelledBy="showHeader"
+                            type="Active"
+                            visible="{= ${path:'list>ACTION', formatter: '.formatter.checkVisibleText'} &amp;&amp; ${list>VISIBLE}}"
+                            selected="{= ${list>ACTION} === ${view>/List/VARIANT} || ${list>ACTION} === ${view>/Search/VARIANT}}">
+							<content>
+								<Label
+									width="70%"
+                                    text="{path : 'list>TEXT', formatter : '.formatter.text'}"
+                                    class="sapUiSmallMarginBegin sapUiTinyMarginTopBottom sapInoHierarchyLabel">
+									<customData>
+										<core:CustomData key="object" value="{list>OBJECT}"/>
+									</customData>
+								</Label>
+								<Label
+								visible="{=${path : 'list>/NAME', formatter : '.formatter.checkList'}}"
+                                    text="{path: 'list>COUNT'}"
+                                    textAlign="End"
+                                    class="sapUiSmallMarginBegin sapUiTinyMarginTopBottom sapInoHierarchyLabel"></Label>
+							</content>
+						</CustomListItem>
+					</List>
+				</VBox>
+				<VBox class="sapInoFilterSidePanelItemsMainSection" width="100%"
+						visible = "{=${path : 'list>/NAME', formatter : '.formatter.checkList'} &amp;&amp; ${list>/Variants/Values/7/VISIBLE} &amp;&amp; ${component>/SHOW_BACKOFFICE} }">
+					<Bar>
+						<contentLeft>
+							<Label 
+        					class="sapUiSmallMarginBegin"
+        					text="{path : 'list>/MANAGEDNAME', formatter : '.formatter.text'}"
+                           />
+						</contentLeft>
+					</Bar>
+					<List
+                        class="sapUiTinyMarginBottom sapUiSmallMarginTop"
+                        mode="SingleSelectMaster"
+                        itemPress="onVariantBasePress"
+                        items="{
+                            path: 'list>/Variants/Values'
+                        }"
+                        width="100%"
+                        showSeparators="None">
+						<CustomListItem
+                            ariaLabelledBy="showHeader"
+                            type="Active"
+                            visible="{= ${path:'list>ACTION', formatter: '.formatter.checkVisibleText2'} &amp;&amp; ${list>VISIBLE}}"
+                            selected="{= ${list>ACTION} === ${view>/List/VARIANT} || ${list>ACTION} === ${view>/Search/VARIANT} }">
+							<content>
+								<Label
+									width="70%"
+                                    text="{path : 'list>TEXT', formatter : '.formatter.text'}"
+                                    class="sapUiSmallMarginBegin sapUiTinyMarginTopBottom sapInoHierarchyLabel">
+									<customData>
+										<core:CustomData key="object" value="{list>OBJECT}"/>
+									</customData>
+								</Label>
+								<Label
+                                    text="{path: 'list>COUNT'}"
+                                    textAlign="End"
+                                    class="sapUiSmallMarginBegin sapUiTinyMarginTopBottom sapInoHierarchyLabel"></Label>
+							</content>
+						</CustomListItem>
+					</List>
+				</VBox>
+			</VBox>
+			<VBox class="sapInoFilterSidePanelItemsMainSection" width="100%">
+				<Bar
+                        visible="{= ${view>/List/TAGCLOUD} === true}"
+                        class="sapInoNoBoxShadow sapUiSmallMarginTop"
+                        design="Header">
+					<contentLeft>
+						<Label text="{i18n>LIST_TIT_FILTER_TAG_HEADER}"
+                			    class="sapUiSmallMarginBegin"/>
+					</contentLeft>
+				</Bar>
+				<core:Fragment fragmentName="sap.ino.vc.commons.fragments.TagGroupList" type="XML" />
+				<l:VerticalLayout
+                        visible="{= ${view>/List/TAGCLOUD} === true }"
+                        class="sapInoFilterSidePanelTagSelection"
+                        width="100%">
+					<Bar
+                            class="sapInoNoBoxShadow sapUiSmallMarginTop sapUiTinyMarginBottom sapInoFilterSidePanelFilterTagSelectionsBar"
+                            design="Header"
+                            visible="{= ${view>/List/IS_TAGS_SELECTION}}">
+						<contentLeft>
+							<Label 
+                    		        text="{i18n>LIST_TIT_FILTER_TAG_SELECTION}"
+                    		        class="sapUiSmallMarginBegin"/>
+						</contentLeft>
+					</Bar>
+					<core:Fragment fragmentName="sap.ino.vc.commons.fragments.TagSelection" type="XML" />
+				</l:VerticalLayout>
+			</VBox>
+			<!-- dummy element to achieve correct layout -->
+			<l:VerticalLayout
+                visible="{= ${view>/List/TAGCLOUD} !== true }"/>
+			<l:VerticalLayout
+                visible="{= ${view>/List/TAGCLOUD} !== true }"
+                class="sapInoFilterSidePanelTagSelection"
+                width="100%"/>
+			<VBox id="btnContainer">
+				<l:VerticalLayout
+                    class="sapUiContentPadding sapInoFilterSidePanelFilterButtons"
+                    width="100%">
+					<Button 
+                        visible="{= ${view>/List/IS_SHOW_MORE_FILTER} === false}"
+                        icon="sap-icon://add-filter" 
+                        class="sapInoFilterSideFilterButtonBottom"
+                        type="Emphasized" 
+                        width="100%"
+                        text="{i18n>LIST_BTN_MORE_FILTERS}"
+                        press="onMoreFilterChange"></Button>
+					<Button 
+                        visible="{= ${view>/List/IS_FILTER_SUBPAGE} === true || ${view>/List/TAGCLOUD} === true}"
+                        icon="sap-icon://sys-cancel"
+                        width="100%"
+                        text="{i18n>LIST_BTN_RESET_FILTERS}"
+                        press="onFilterReset"></Button>
+				</l:VerticalLayout>
+			</VBox>
+		</Page>
+		<Page
+            id="sub">
+			<customHeader>
+				<Bar>
+					<contentLeft>
+						<Button 
+                            tooltip="{i18n>LIST_EXP_SHOW_FILTER_BACK}"
+                            icon="sap-icon://navigation-left-arrow" 
+                            type="Transparent" 
+                            press="onFilterPageChange"></Button>
+					</contentLeft>
+				</Bar>
+			</customHeader>
+		</Page>
+	</NavContainer>
+</core:FragmentDefinition>

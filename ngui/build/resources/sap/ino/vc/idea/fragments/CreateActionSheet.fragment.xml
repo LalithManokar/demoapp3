@@ -1,0 +1,50 @@
+<core:FragmentDefinition
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.ui.layout.form"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+                        >
+	<ActionSheet
+		showCancelButton="true"
+		placement="VerticalPreferredTop">
+		<buttons>
+			<Button text="{i18n>IDEA_OBJECT_BTN_CREATE_WALL}"
+                    press="onCreateWall"/>
+			<Button text="{parts:[{path:'object>ID'},{path:'object>PHASE'},{path:'object>STATUS'}], formatter: '.formatter.selfEvaluationButtonLabel'}"
+            		visible="{parts:[{path:'object>ID'},{path:'object>PHASE'},{path:'object>STATUS'}], formatter: '.formatter.createEvaluationDynamicFormatter'}"
+                    press="onCreateEvaluation"/>
+			<Button text="{i18n>IDEA_LIST_BTN_CREATE_REWARD}"
+                    visible="{= ${parts:[{path:'object>ID'},{path:'object>SUBMITTER_ID'}],formatter: '.formatter.createRewardEnabled'}}"
+                    press="onCreateReward"
+                    type="Transparent">
+				<customData>
+					<core:CustomData key="IdeaId" value="{data>ID}" />
+					<core:CustomData key="IdeaPhaseCode" value="{data>PHASE}" />
+					<core:CustomData key="IdeaName" value="{data>NAME}" />
+					<core:CustomData key="UnitCode" value="{data>CAMPAIGN_REWARD_UNIT_CODE}" />
+					<core:CustomData key="UnitText" value="{data>CAMPAIGN_REWARD_UNIT_TEXT}" />					
+				</customData>
+			</Button>
+            <Button text="{i18n>IDEA_OBJECT_BTN_CREATE_EVALUATION_REQUEST}"
+                    visible= "{= ${parts:[{path:'object>ID'},{path:'object>PHASE'},{path:'object>STATUS'}], formatter: '.formatter.createEvaluationRequestEnabled'}}"
+                    press="onCreateEvaluationRequest">	
+            </Button>
+			<Button text="{i18n>IDEA_OBJECT_BTN_CREATE_AVERAGE_EVALUATION}"
+                    enabled="{objectContext>/CreateAverageEvaluationEnabled}"
+                    visible="{= ${object>/property/nodes/Root/customProperties/backofficeCampaignPrivilege} &amp;&amp; ${view>/objectPageSection} === 'sectionEvaluations' }"
+                    press="onCreateAverageEvaluation"/>
+			<Button text="{i18n>IDEA_OBJECT_BTN_CREATE_TOTAL_EVALUATION}"
+                    enabled="{objectContext>/CreateTotalEvaluationEnabled}"
+                    visible="{= ${object>/property/nodes/Root/customProperties/backofficeCampaignPrivilege} &amp;&amp; ${view>/objectPageSection} === 'sectionEvaluations' }"
+                    press="onCreateTotalEvaluation"/>
+            <Button 
+                    visible="{= ${object>/property/actions/createObject/enabled} &amp;&amp; ${object>/property/nodes/Root/customProperties/backofficeCampaignPrivilege}}"
+                    text="{i18n>IDEA_OBJECT_BTN_CREATE_INTEGRATION_OBJECT}"
+					press="onCreateIntegrationObject"/>
+			<Button 
+                    visible="{= ${object>/property/actions/linkExistedObject/enabled} &amp;&amp; ${object>/property/nodes/Root/customProperties/backofficeCampaignPrivilege}}"
+                    text="{i18n>IDEA_OBJECT_BTN_LINK_EXTERNAL_OBJECT}"
+					press="onLinkExternalObject"/>
+		</buttons>
+	</ActionSheet>
+</core:FragmentDefinition>

@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.2" id="V_EXT_ANALYTICS_PARTICIPANTS_SHARE" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="crossClient" defaultLanguage="$$language$$" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED">
+  <descriptions defaultDescription="Share of Participants"/>
+  <defaultSchema schemaName="SAP_INO_EXT"/>
+  <localVariables/>
+  <variableMappings/>
+  <dataSources>
+    <DataSource id="sap.ino.db.analytics_V_ANALYTICS_CAMPAIGN_ACTIVE_PARTICIPANTS" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_CAMPAIGN_ACTIVE_PARTICIPANTS</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.analytics_V_ANALYTICS_CAMPAIGN_INACTIVE_PARTICIPANTS" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.analytics/calculationviews/V_ANALYTICS_CAMPAIGN_INACTIVE_PARTICIPANTS</resourceUri>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_1">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="CAMP_ACTIVE_PARTICIPANT"/>
+        <viewAttribute id="CAMP_AUTHOR"/>
+        <viewAttribute id="CAMP_COAUTHOR"/>
+        <viewAttribute id="CAMP_COMMENTATOR"/>
+        <viewAttribute id="CAMP_EVALUATOR"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.ino.db.analytics_V_ANALYTICS_CAMPAIGN_ACTIVE_PARTICIPANTS">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_ACTIVE_PARTICIPANT" source="CAMP_ACTIVE_PARTICIPANT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_AUTHOR" source="CAMP_AUTHOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_COAUTHOR" source="CAMP_COAUTHOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_COMMENTATOR" source="CAMP_COMMENTATOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_EVALUATOR" source="CAMP_EVALUATOR"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_2">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="INTEGER" id="CAMP_ACTIVE_PARTICIPANT">
+          <formula>0</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="INTEGER" id="CAMP_AUTHOR">
+          <formula>0</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="INTEGER" id="CAMP_COAUTHOR">
+          <formula>0</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="INTEGER" id="CAMP_COMMENTATOR">
+          <formula>0</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="INTEGER" id="CAMP_EVALUATOR">
+          <formula>0</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.analytics_V_ANALYTICS_CAMPAIGN_INACTIVE_PARTICIPANTS">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:UnionView" id="Union_1">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute id="CAMP_ACTIVE_PARTICIPANT"/>
+        <viewAttribute id="CAMP_AUTHOR"/>
+        <viewAttribute id="CAMP_COAUTHOR"/>
+        <viewAttribute id="CAMP_COMMENTATOR"/>
+        <viewAttribute id="CAMP_EVALUATOR"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input emptyUnionBehavior="NO_ROW" node="#Aggregation_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_ACTIVE_PARTICIPANT" source="CAMP_ACTIVE_PARTICIPANT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_AUTHOR" source="CAMP_AUTHOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_COAUTHOR" source="CAMP_COAUTHOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_COMMENTATOR" source="CAMP_COMMENTATOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_EVALUATOR" source="CAMP_EVALUATOR"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Aggregation_2">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_ACTIVE_PARTICIPANT" source="CAMP_ACTIVE_PARTICIPANT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_AUTHOR" source="CAMP_AUTHOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_COAUTHOR" source="CAMP_COAUTHOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_COMMENTATOR" source="CAMP_COMMENTATOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMP_EVALUATOR" source="CAMP_EVALUATOR"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_3">
+      <viewAttributes>
+        <viewAttribute id="CAMPAIGN_ID"/>
+        <viewAttribute id="IDENTITY_ID"/>
+        <viewAttribute aggregationType="max" id="PARTICIPANT_FLAG"/>
+        <viewAttribute aggregationType="max" id="SUBMITTER_FLAG"/>
+        <viewAttribute aggregationType="max" id="CONTRIBUTOR_FLAG"/>
+        <viewAttribute aggregationType="max" id="COMMENTATOR_FLAG"/>
+        <viewAttribute aggregationType="max" id="EVALUATOR_FLAG"/>
+        <viewAttribute aggregationType="sum" id="ACTIVE_PARTICIPANT_COUNT"/>
+        <viewAttribute aggregationType="sum" id="SUBMITTER_COUNT"/>
+        <viewAttribute aggregationType="sum" id="CONTRIBUTOR_COUNT"/>
+        <viewAttribute aggregationType="sum" id="COMMENTATOR_COUNT"/>
+        <viewAttribute aggregationType="sum" id="EVALUATOR_COUNT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Union_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CAMPAIGN_ID" source="CAMPAIGN_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDENTITY_ID" source="IDENTITY_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PARTICIPANT_FLAG" source="CAMP_ACTIVE_PARTICIPANT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMITTER_FLAG" source="CAMP_AUTHOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CONTRIBUTOR_FLAG" source="CAMP_COAUTHOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENTATOR_FLAG" source="CAMP_COMMENTATOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATOR_FLAG" source="CAMP_EVALUATOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ACTIVE_PARTICIPANT_COUNT" source="CAMP_ACTIVE_PARTICIPANT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="SUBMITTER_COUNT" source="CAMP_AUTHOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CONTRIBUTOR_COUNT" source="CAMP_COAUTHOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMMENTATOR_COUNT" source="CAMP_COMMENTATOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EVALUATOR_COUNT" source="CAMP_EVALUATOR"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Aggregation_3">
+    <attributes>
+      <attribute id="PARTICIPANT_FLAG" hidden="false" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Participated in Campaigns"/>
+        <keyMapping columnObjectName="Aggregation_3" columnName="PARTICIPANT_FLAG"/>
+      </attribute>
+      <attribute id="SUBMITTER_FLAG" order="8" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Created Ideas in Campaigns"/>
+        <keyMapping columnObjectName="Aggregation_3" columnName="SUBMITTER_FLAG"/>
+      </attribute>
+      <attribute id="CONTRIBUTOR_FLAG" order="9" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Contributed in Campaigns"/>
+        <keyMapping columnObjectName="Aggregation_3" columnName="CONTRIBUTOR_FLAG"/>
+      </attribute>
+      <attribute id="COMMENTATOR_FLAG" order="10" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Commented in Campaigns"/>
+        <keyMapping columnObjectName="Aggregation_3" columnName="COMMENTATOR_FLAG"/>
+      </attribute>
+      <attribute id="EVALUATOR_FLAG" order="11" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Evaluated Ideas in Campaigns"/>
+        <keyMapping columnObjectName="Aggregation_3" columnName="EVALUATOR_FLAG"/>
+      </attribute>
+      <attribute id="IDENTITY_ID$local">
+        <keyMapping columnObjectName="Aggregation_3" columnName="IDENTITY_ID"/>
+      </attribute>
+      <attribute id="CAMPAIGN_ID$local">
+        <keyMapping columnObjectName="Aggregation_3" columnName="CAMPAIGN_ID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes>
+      <calculatedAttribute id="PARTICIPANT_TYPE" hidden="false" order="1" semanticType="empty" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Participant Type"/>
+        <keyCalculation datatype="NVARCHAR" length="50">
+          <formula>if(&quot;PARTICIPANT_FLAG&quot; > 0, 'Active Participants', 'Other')</formula>
+        </keyCalculation>
+      </calculatedAttribute>
+      <calculatedAttribute id="COMMENTATOR_TYPE" hidden="false" order="2" semanticType="empty" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Participant Type"/>
+        <keyCalculation datatype="NVARCHAR" length="50">
+          <formula>if(&quot;COMMENTATOR_FLAG&quot; > 0, 'Commentator', 'Other')</formula>
+        </keyCalculation>
+      </calculatedAttribute>
+      <calculatedAttribute id="SUBMITTER_TYPE" hidden="false" order="3" semanticType="empty" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Participant Type"/>
+        <keyCalculation datatype="NVARCHAR" length="50">
+          <formula>if(&quot;SUBMITTER_FLAG&quot; > 0, 'Author', 'Other')</formula>
+        </keyCalculation>
+      </calculatedAttribute>
+      <calculatedAttribute id="EVALUATOR_TYPE" hidden="false" order="4" semanticType="empty" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Participant Type"/>
+        <keyCalculation datatype="NVARCHAR" length="50">
+          <formula>if(&quot;EVALUATOR_FLAG&quot; > 0, 'Evaluator', 'Other')</formula>
+        </keyCalculation>
+      </calculatedAttribute>
+      <calculatedAttribute id="CONTRIBUTOR_TYPE" hidden="false" order="5" semanticType="empty" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="Participant Type"/>
+        <keyCalculation datatype="NVARCHAR" length="50">
+          <formula>if(&quot;CONTRIBUTOR_FLAG&quot; > 0, 'Co-Author', 'Other')</formula>
+        </keyCalculation>
+      </calculatedAttribute>
+    </calculatedAttributes>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="ACTIVE_PARTICIPANT_COUNT" order="12" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Active Participants"/>
+        <measureMapping columnObjectName="Aggregation_3" columnName="ACTIVE_PARTICIPANT_COUNT"/>
+      </measure>
+      <measure id="SUBMITTER_COUNT" order="13" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Authors"/>
+        <measureMapping columnObjectName="Aggregation_3" columnName="SUBMITTER_COUNT"/>
+      </measure>
+      <measure id="CONTRIBUTOR_COUNT" order="14" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Contributors"/>
+        <measureMapping columnObjectName="Aggregation_3" columnName="CONTRIBUTOR_COUNT"/>
+      </measure>
+      <measure id="COMMENTATOR_COUNT" order="15" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Commentators"/>
+        <measureMapping columnObjectName="Aggregation_3" columnName="COMMENTATOR_COUNT"/>
+      </measure>
+      <measure id="EVALUATOR_COUNT" order="16" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="Number of Experts"/>
+        <measureMapping columnObjectName="Aggregation_3" columnName="EVALUATOR_COUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures>
+      <measure id="IDENTITY_COUNT" hidden="false" order="6" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="INTEGER">
+        <descriptions defaultDescription="Identity Count"/>
+        <exceptionAggregation exceptionAggregationType="countDistinct">
+          <attribute attributeName="IDENTITY_ID" dimensionUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION"/>
+        </exceptionAggregation>
+        <formula>1</formula>
+      </measure>
+      <measure id="ACTIVE_PARTICIPANT_RATIO" hidden="false" order="17" aggregationType="sum" measureType="simple" datatype="DOUBLE">
+        <descriptions defaultDescription="Ratio of Active Participants"/>
+        <formula>if(&quot;IDENTITY_COUNT&quot; > 0, (1 / &quot;IDENTITY_COUNT&quot; * &quot;ACTIVE_PARTICIPANT_COUNT&quot;), 0)</formula>
+      </measure>
+      <measure id="SUBMITTER_RATIO" hidden="false" order="18" aggregationType="sum" measureType="simple" datatype="DOUBLE">
+        <descriptions defaultDescription="Ratio of Submitters"/>
+        <formula>if(&quot;IDENTITY_COUNT&quot; > 0, (1 / &quot;IDENTITY_COUNT&quot; * &quot;SUBMITTER_COUNT&quot;), 0)</formula>
+      </measure>
+      <measure id="COMMENTATOR_RATIO" hidden="false" order="19" aggregationType="sum" measureType="simple" datatype="DOUBLE">
+        <descriptions defaultDescription="Ratio of Commentators"/>
+        <formula>if(&quot;IDENTITY_COUNT&quot; > 0, (1 / &quot;IDENTITY_COUNT&quot; * &quot;COMMENTATOR_COUNT&quot;), 0)</formula>
+      </measure>
+      <measure id="CONTRIBUTOR_RATIO" hidden="false" order="20" aggregationType="sum" measureType="simple" datatype="DOUBLE">
+        <descriptions defaultDescription="Ratio of Coauthors"/>
+        <formula>if(&quot;IDENTITY_COUNT&quot; > 0, (1 / &quot;IDENTITY_COUNT&quot; * &quot;CONTRIBUTOR_COUNT&quot;), 0)</formula>
+      </measure>
+      <measure id="EVALUATOR_RATIO" hidden="false" order="21" aggregationType="sum" measureType="simple" datatype="DOUBLE">
+        <descriptions defaultDescription="Ratio of Coauthors"/>
+        <formula>if(&quot;IDENTITY_COUNT&quot; > 0, (1 / &quot;IDENTITY_COUNT&quot; * &quot;EVALUATOR_COUNT&quot;), 0)</formula>
+      </measure>
+    </calculatedMeasures>
+    <restrictedMeasures/>
+    <localDimensions/>
+    <sharedDimensions>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION">
+        <attributes>
+          <attributeRef>#IDENTITY_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>IDENTITY_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+      <logicalJoin associatedObjectUri="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION">
+        <attributes>
+          <attributeRef>#CAMPAIGN_ID$local</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>CAMPAIGN_ID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+    </sharedDimensions>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="22" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Aggregation_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="380"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Aggregation_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="190" y="380"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Union_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="285"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Aggregation_3" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="222"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape modelObjectName="Aggregation_3" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+        <upperLeftCorner x="502" y="265"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_IDENTITY_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="945" y="32"/>
+      </shape>
+      <shape modelObjectName="/sap.ino.db.analytics.ext/calculationviews/V_EXT_ANALYTICS_CAMPAIGN_DIMENSION" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+        <upperLeftCorner x="16" y="16"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

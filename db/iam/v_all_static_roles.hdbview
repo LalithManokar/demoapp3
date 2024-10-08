@@ -1,0 +1,13 @@
+schema = "SAP_INO";
+query = "
+    select 
+       ino_role.logical_role_name,
+       ino_role.technical_role_name,
+       ext_package.ext_package_id || '::' || ino_role.technical_role_name as qualified_role_name,
+       ext_package.layer as layer
+    from \"sap.ino.db.iam::t_static_role\" as ino_role
+    cross join \"sap.ino.db.basis::t_package_extension\" as ext_package
+    where ext_package.base_package_id = 'sap.ino.authorizations'
+with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_static_role", "sap.ino.db.basis::t_package_extension"];

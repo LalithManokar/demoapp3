@@ -1,0 +1,6 @@
+import = [ {
+    hdbtable   = "sap.ino.db.basis::t_idea_export_fields";
+    file       = "sap.ino.db.basis:t_idea_export_fields.csv";
+    header     = false;
+    delimField = ";";
+}];

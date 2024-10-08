@@ -1,0 +1,39 @@
+procedure "SAP_INO_EXT"."sap.ino.db.idea.ext::p_ext_idea_tag_cloud" ( 
+     in  iv_searchterm    nvarchar(1024),
+     in  iv_campaign      integer,
+     in  iv_step          integer,
+     in  iv_status        nvarchar(1024),
+     in  it_tag           SAP_INO_EXT."sap.ino.db.idea.ext::tt_ext_tag_id_input",
+     in  it_excl_status   SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_excl_status_code_input",
+     out ot_ranked_tag    SAP_INO_EXT."sap.ino.db.basis.ext::tt_ext_ranked_tag"
+)
+language sqlscript
+sql security definer
+default schema SAP_INO
+reads sql data as
+begin
+    call "sap.ino.db.idea::p_idea_search"(:iv_searchterm, :lt_search_prefiltered);
+
+    lt_prefiltered_2 =
+        select idea.id
+            from
+                "SAP_INO"."sap.ino.db.idea::t_idea" as idea
+            inner join :lt_search_prefiltered as search_filter
+                on idea.id = search_filter.id
+            inner join "SAP_INO"."sap.ino.db.idea::v_auth_ideas_read" as idea_auth
+                on idea.id = idea_auth.idea_id
+            inner join "SAP_INO"."sap.ino.db.campaign::t_campaign_phase" as campaign_phase
+                on
+                campaign_phase.phase_code  = idea.phase_code and
+                campaign_phase.campaign_id = idea.campaign_id and
+                (:iv_campaign = -1 or idea.campaign_id = :iv_campaign) and
+                (:iv_step = -1 or campaign_phase.sequence_no = :iv_step) and
+                (:iv_status = '' or idea.status_code = :iv_status) and
+                ((select count(code) from :it_excl_status) = 0 or idea.status_code not in (select code from :it_excl_status));
+
+    call "SAP_INO"."sap.ino.db.idea::p_tag_filter"(:lt_prefiltered_2, :it_tag, :lt_filtered_3);
+    call "SAP_INO"."sap.ino.db.idea::p_tag_relevant_idea_tag"(:lt_filtered_3, :lt_relevant_idea_tag);
+    call "SAP_INO"."sap.ino.db.basis::p_tag_cloud"(:lt_relevant_idea_tag, :ot_ranked_tag);
+
+    ot_ranked_tag = select * from :ot_ranked_tag order by name asc;
+end;

@@ -1,0 +1,96 @@
+schema = "SAP_INO_EXT";
+query = "select 1 as NO, 
+            auth.campaign_id, 
+            case when uncoached_ideas is null then 0 else uncoached_ideas end as unassigned_ideas_count,
+            case when follow_ups is null then 0 else follow_ups end as follow_up_ideas,
+            case when eval_ideas is null then 0 else eval_ideas end as evaluated_ideas,
+            case when coached_by_me is null then 0 else coached_by_me end as ideas_coached_by_me,
+            case when managed_by_me is null then 0 else managed_by_me end as ideas_managed_by_me,
+            case when submitted_count is null then 0 else submitted_count end as submitted_idea_count,
+            case when OPEN_VOTING_IDEAS_COUNT is null then 0 else OPEN_VOTING_IDEAS_COUNT end as OPEN_VOTING_IDEAS_COUNT,
+            case when COMPLETED_IDEA_COUNT is null then 0 else COMPLETED_IDEA_COUNT end as COMPLETED_IDEA_COUNT,
+            case when QUALIFIED_FOR_REWARDS_COUNT is null then 0 else  QUALIFIED_FOR_REWARDS_COUNT  end as QUALIFIED_IDEAS_FOR_REWARDS,
+            case when my_pending_appr_count is null then 0 else my_pending_appr_count end as my_pending_appr_count
+        from 
+            \"sap.ino.db.campaign::v_auth_campaigns\" as auth
+        left join
+            (select count(id) as uncoached_ideas, campaign_id
+                from \"sap.ino.db.idea::v_my_uncoached_ideas\" 
+                group by campaign_id
+            ) uncoached
+        on auth.campaign_id = uncoached.campaign_id
+        left join
+            (SELECT count(follow.id) as follow_ups, 
+            	idea.campaign_id
+            FROM \"sap.ino.db.idea::v_followed_up_ideas\" AS follow
+            	INNER JOIN \"sap.ino.db.idea::t_idea\" AS idea
+            	ON follow.id = idea.id
+            GROUP BY idea.campaign_id
+            ) follow_up
+        on auth.campaign_id = follow_up.campaign_id
+        left join
+            (select count(id) as eval_ideas, campaign_id
+            	from \"sap.ino.db.idea::v_my_backoffice_evaluated_ideas\" 
+                group by campaign_id
+            ) evals
+        on auth.campaign_id = evals.campaign_id    
+        left join
+            (select count(id) as coached_by_me, campaign_id
+            	from \"sap.ino.db.idea::v_my_coached_ideas\"
+                group by campaign_id
+            ) my_coached
+        on auth.campaign_id = my_coached.campaign_id
+        left join
+             (select count(id) as managed_by_me, campaign_id
+                 from \"sap.ino.db.idea::v_my_managed_ideas\"
+                 group by campaign_id
+             ) my_managed
+        on auth.campaign_id = my_managed.campaign_id
+        left join 
+            (select count(id) as submitted_count, campaign_id 
+        		from \"sap.ino.db.idea::t_idea\" 
+        		where status_code <> 'sap.ino.config.DRAFT' 
+        		group by campaign_id 
+    		) all_ideas_count
+		on auth.campaign_id = all_ideas_count.campaign_id
+		
+        LEFT JOIN (
+            SELECT COUNT(idea.ID) AS OPEN_VOTING_IDEAS_COUNT, 
+            	idea.campaign_id
+            FROM \"sap.ino.db.idea::t_idea\" AS idea
+            	INNER JOIN \"sap.ino.db.idea::v_vote_ideas\" AS open_vote
+            	ON idea.id = open_vote.id
+            WHERE idea.status_code <> 'sap.ino.config.DRAFT'
+            GROUP BY idea.campaign_id
+        ) AS OPEN_FOR_VOTE
+        ON auth.campaign_id = OPEN_FOR_VOTE.campaign_id
+        
+        LEFT JOIN (
+            SELECT COUNT(idea.ID) AS COMPLETED_IDEA_COUNT, 
+            	idea.campaign_id
+            FROM \"sap.ino.db.idea::t_idea\" AS idea
+            	INNER JOIN \"sap.ino.db.idea.ext::v_ext_completed_ideas\" AS completed_idea
+            	ON idea.id = completed_idea.id
+            WHERE idea.status_code <> 'sap.ino.config.DRAFT'
+            GROUP BY idea.campaign_id
+        ) AS COMPLETED_IDEAS
+        ON auth.campaign_id = COMPLETED_IDEAS.campaign_id
+        left join (select count(reward_idea.id) as QUALIFIED_FOR_REWARDS_COUNT, reward_idea.CAMPAIGN_ID 
+            FROM \"sap.ino.db.idea::v_qualified_idea_for_reward\" reward_idea  GROUP BY reward_idea.campaign_id ) as QUALIFIED_FOR_REWARDS
+            ON auth.campaign_id = QUALIFIED_FOR_REWARDS.campaign_id
+        LEFT JOIN (select count(my_pending_apprs.register_id) AS my_pending_appr_count, my_pending_apprs.CAMPAIGN_ID FROM \"sap.ino.db.campaign::v_campaign_register\" 
+                  as my_pending_apprs where my_pending_apprs.IS_REGISTER_AUTO_APPROVE <> 1 or my_pending_apprs.IS_REGISTER_AUTO_APPROVE is null group by my_pending_apprs.CAMPAIGN_ID)
+                  AS PENDING_APPROVALS ON auth.campaign_id = PENDING_APPROVALS.campaign_id
+        with read only";
+         
+depends_on_view = ["sap.ino.db.campaign::v_auth_campaigns",
+                   "sap.ino.db.idea::v_my_backoffice_evaluated_ideas",
+                   "sap.ino.db.idea::v_my_due_ideas",
+        	       "sap.ino.db.idea::v_my_coached_ideas",
+        	       "sap.ino.db.idea::v_my_managed_ideas",
+                   "sap.ino.db.idea::v_my_uncoached_ideas",
+                   "sap.ino.db.idea::v_followed_up_ideas",
+                   "sap.ino.db.idea::v_vote_ideas",
+                   "sap.ino.db.idea.ext::v_ext_completed_ideas",
+                   "sap.ino.db.idea::v_qualified_idea_for_reward"];
+depends_on_table = ["sap.ino.db.idea::t_idea"];                  

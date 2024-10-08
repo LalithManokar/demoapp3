@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "volunteers";
+table.columns = [
+    {name = "ID"; sqlType = INTEGER; nullable = false; comment = "primary key";},
+    {name = "IDEA_ID"; sqlType = INTEGER; nullable = false; comment = "ideas id";},
+    {name = "IDENTITY_ID"; sqlType = INTEGER; nullable = false; comment = "volunteers' identity id";},
+    {name = "CREATED_BY_ID"; sqlType = INTEGER; nullable = false; comment = "who created this object";},
+    {name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = false; comment = "created timestamp";}
+];
+table.primaryKey.pkcolumns = ["ID"]; 

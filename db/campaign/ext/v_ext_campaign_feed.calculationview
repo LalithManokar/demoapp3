@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="v_ext_campaign_feed" applyPrivilegeType="NONE" dataCategory="DEFAULT" schemaVersion="2.3" defaultClient="$$client$$" visibility="internal" calculationScenarioType="SCRIPT_BASED" scriptParametersCaseSensitive="true" enforceSqlExecution="false">
+<descriptions defaultDescription="v_campaign_feeds"/>
+<localVariables/>
+<variableMappings/>
+<dataSources/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+    <viewAttributes>
+      <viewAttribute id="ID" datatype="NVARCHAR" length="5000"/>
+      <viewAttribute id="OBJECT_ID" datatype="INTEGER"/>
+      <viewAttribute id="OBJECT_TYPE_CODE" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="OBJECT_TEXT" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="ACTOR_ID" datatype="INTEGER"/>
+      <viewAttribute id="ACTOR_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="ACTOR_IMAGE_ID" datatype="INTEGER"/>
+      <viewAttribute id="INVOLVED_ID" datatype="INTEGER"/>
+      <viewAttribute id="INVOLVED_OBJ_TYPE_CODE" datatype="VARCHAR" length="16"/>
+      <viewAttribute id="INVOLVED_OBJ_TEXT" datatype="NVARCHAR" length="5000"/>
+      <viewAttribute id="EVENT_AT" datatype="TIMESTAMP"/>
+      <viewAttribute id="FEED_CODE" datatype="NVARCHAR" length="600"/>
+      <viewAttribute id="CAMPAIGN_ID" datatype="INTEGER"/>
+      <viewAttribute id="CAMPAIGN_DATE" datatype="TIMESTAMP"/>
+      <viewAttribute id="FIELD1_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="FIELD1_TEXT" datatype="NVARCHAR" length="500"/>
+      <viewAttribute id="FIELD1_VALUE" datatype="NVARCHAR" length="500"/>
+      <viewAttribute id="FIELD1_VALUE_OPTION" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="FIELD2_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="FIELD2_TEXT" datatype="NVARCHAR" length="500"/>
+      <viewAttribute id="FIELD2_VALUE" datatype="NVARCHAR" length="500"/>
+      <viewAttribute id="FIELD2_VALUE_OPTION" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="FILTER_TYPE_CODE" datatype="VARCHAR" length="20"/>
+      <viewAttribute id="CONTENT" datatype="NVARCHAR" length="5000"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+--    lt_campaign = select id from &quot;sap.ino.db.campaign::t_campaign&quot; as campaign
+--                inner join &quot;sap.ino.db.campaign::v_auth_campaigns_and_registrable&quot; as auth_campaign
+  --                  on campaign.id = auth_campaign.campaign_id
+    --            where campaign.status_code &lt;&gt; 'sap.ino.config.CAMP_DRAFT'
+      --          and campaign.id = :campaignID;
+                             
+    lt_campaign_feeds = select feeds.*,
+                            case filter_type_code
+                                when 'BACKOFFICE' then backoffice.campaign_id
+                                when 'FRONTOFFICE' then frontoffice.campaign_id   
+                                when 'REGISTRATION' then registration.campaign_id   
+                                else null
+                            end as object_privilege,
+                            case involved_obj_type_code
+                                when 'CAMPAIGN' then involved_campaign.campaign_id
+                                when 'IDEA' then involved_idea.idea_id   
+                                else 1
+                            end as involved_obj_privilege
+                        from &quot;sap.ino.db.campaign::v_auth_campaigns_and_registrable&quot; as auth_campaign        
+                        inner join &quot;sap.ino.db.campaign::v_campaign_feeds&quot; as feeds
+                            on auth_campaign.campaign_id = feeds.object_id
+                            --inner join :lt_campaign as campaigns 
+                            --    on feeds.object_id = campaigns.id
+                            left outer join &quot;sap.ino.db.campaign::v_auth_backoffice_campaign_privilege&quot; as backoffice
+                                on feeds.campaign_id = backoffice.campaign_id and feeds.filter_type_code = 'BACKOFFICE'
+                            left outer join &quot;sap.ino.db.campaign::v_auth_campaigns&quot; as frontoffice
+                                on feeds.object_id = frontoffice.campaign_id and filter_type_code = 'FRONTOFFICE'
+                            left outer join &quot;sap.ino.db.campaign::v_auth_registration_campaign_privilege&quot; as registration
+                                on feeds.object_id = registration.campaign_id and filter_type_code = 'REGISTRATION'
+                            left outer join &quot;sap.ino.db.campaign::v_auth_campaigns_and_registrable&quot; as involved_campaign
+                                on feeds.involved_id = involved_campaign.campaign_id and involved_obj_type_code = 'CAMPAIGN'
+                            left outer join &quot;sap.ino.db.idea::v_auth_ideas_read&quot; as involved_idea
+                                on feeds.involved_id = involved_idea.idea_id and involved_obj_type_code = 'IDEA';
+   var_out = select 
+            replace(object_id || object_type_code || event_at || feed_code || TO_NVARCHAR(IFNULL(involved_id, 0)),  ' ','_') as ID,
+            feed.object_id,
+            feed.object_type_code,
+            feed.object_text,
+             case 
+            when setting.IS_ANONYMOUS = 'true' then  cast(0 as INTEGER) 
+            else feed.actor_id
+            end as actor_id, 
+             case 
+            when setting.IS_ANONYMOUS = 'true' then  cast('Anonymity' as VARCHAR) 
+            else feed.actor_name
+            end as actor_name, 
+             case 
+            when setting.IS_ANONYMOUS = 'true' then  cast(0 as INTEGER) 
+            else feed.actor_image_id
+            end as actor_image_id, 
+            feed.involved_id,
+            feed.involved_obj_type_code,
+            feed.involved_obj_text,
+            feed.event_at,
+            feed.feed_code, 
+            feed.campaign_id,
+            feed.campaign_date,
+            feed.field1_name,
+            feed.field1_text,
+            feed.field1_value,
+            feed.field1_value_option,
+            feed.field2_name,
+            feed.field2_text,
+            feed.field2_value,
+            feed.field2_value_option,
+            feed.filter_type_code, 
+            feed.content
+                from :lt_campaign_feeds as feed 
+                left outer join &quot;sap.ino.db.idea::v_idea_settings_test&quot; as setting
+                on setting.idea_id = feed.involved_id
+                where object_privilege is not null and involved_obj_privilege is not null; 
+
+END /********* End Procedure Script ************/</definition>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Script_View">
+  <attributes>
+    <attribute id="ID" order="1">
+      <keyMapping columnObjectName="Script_View" columnName="ID"/>
+    </attribute>
+    <attribute id="OBJECT_ID" order="2" semanticType="empty">
+      <descriptions defaultDescription="OBJECT_ID"/>
+      <keyMapping columnObjectName="Script_View" columnName="OBJECT_ID"/>
+    </attribute>
+    <attribute id="OBJECT_TYPE_CODE" order="3">
+      <descriptions defaultDescription="OBJECT_TYPE_CODE"/>
+      <keyMapping columnObjectName="Script_View" columnName="OBJECT_TYPE_CODE"/>
+    </attribute>
+    <attribute id="OBJECT_TEXT" order="4">
+      <descriptions defaultDescription="OBJECT_TEXT"/>
+      <keyMapping columnObjectName="Script_View" columnName="OBJECT_TEXT"/>
+    </attribute>
+    <attribute id="ACTOR_ID" order="5" semanticType="empty">
+      <descriptions defaultDescription="ACTOR_ID"/>
+      <keyMapping columnObjectName="Script_View" columnName="ACTOR_ID"/>
+    </attribute>
+    <attribute id="ACTOR_NAME" order="6">
+      <descriptions defaultDescription="ACTOR_NAME"/>
+      <keyMapping columnObjectName="Script_View" columnName="ACTOR_NAME"/>
+    </attribute>
+    <attribute id="ACTOR_IMAGE_ID" order="7" semanticType="empty">
+      <descriptions defaultDescription="ACTOR_IMAGE_ID"/>
+      <keyMapping columnObjectName="Script_View" columnName="ACTOR_IMAGE_ID"/>
+    </attribute>
+    <attribute id="INVOLVED_ID" order="8" semanticType="empty">
+      <descriptions defaultDescription="INVOLVED_ID"/>
+      <keyMapping columnObjectName="Script_View" columnName="INVOLVED_ID"/>
+    </attribute>
+    <attribute id="INVOLVED_OBJ_TYPE_CODE" order="9">
+      <descriptions defaultDescription="INVOLVED_OBJ_TYPE_CODE"/>
+      <keyMapping columnObjectName="Script_View" columnName="INVOLVED_OBJ_TYPE_CODE"/>
+    </attribute>
+    <attribute id="INVOLVED_OBJ_TEXT" order="10">
+      <descriptions defaultDescription="INVOLVED_OBJ_TEXT"/>
+      <keyMapping columnObjectName="Script_View" columnName="INVOLVED_OBJ_TEXT"/>
+    </attribute>
+    <attribute id="EVENT_AT" order="11" semanticType="empty">
+      <descriptions defaultDescription="EVENT_AT"/>
+      <keyMapping columnObjectName="Script_View" columnName="EVENT_AT"/>
+    </attribute>
+    <attribute id="FEED_CODE" order="12">
+      <descriptions defaultDescription="FEED_CODE"/>
+      <keyMapping columnObjectName="Script_View" columnName="FEED_CODE"/>
+    </attribute>
+    <attribute id="CAMPAIGN_ID" order="13" semanticType="empty">
+      <descriptions defaultDescription="CAMPAIGN_ID"/>
+      <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+    </attribute>
+    <attribute id="CAMPAIGN_DATE" order="14" semanticType="empty">
+      <descriptions defaultDescription="CAMPAIGN_DATE"/>
+      <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_DATE"/>
+    </attribute>
+    <attribute id="FIELD1_NAME" order="15">
+      <descriptions defaultDescription="FIELD1_NAME"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD1_NAME"/>
+    </attribute>
+    <attribute id="FIELD1_TEXT" order="16">
+      <descriptions defaultDescription="FIELD1_TEXT"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD1_TEXT"/>
+    </attribute>
+    <attribute id="FIELD1_VALUE" order="17">
+      <descriptions defaultDescription="FIELD1_VALUE"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD1_VALUE"/>
+    </attribute>
+    <attribute id="FIELD1_VALUE_OPTION" order="18">
+      <descriptions defaultDescription="FIELD1_VALUE_OPTION"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD1_VALUE_OPTION"/>
+    </attribute>
+    <attribute id="FIELD2_NAME" order="19">
+      <descriptions defaultDescription="FIELD2_NAME"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD2_NAME"/>
+    </attribute>
+    <attribute id="FIELD2_TEXT" order="20">
+      <descriptions defaultDescription="FIELD2_TEXT"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD2_TEXT"/>
+    </attribute>
+    <attribute id="FIELD2_VALUE" order="21">
+      <descriptions defaultDescription="FIELD2_VALUE"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD2_VALUE"/>
+    </attribute>
+    <attribute id="FIELD2_VALUE_OPTION" order="22">
+      <descriptions defaultDescription="FIELD2_VALUE_OPTION"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD2_VALUE_OPTION"/>
+    </attribute>
+    <attribute id="FILTER_TYPE_CODE" order="23">
+      <descriptions defaultDescription="FILTER_TYPE_CODE"/>
+      <keyMapping columnObjectName="Script_View" columnName="FILTER_TYPE_CODE"/>
+    </attribute>
+    <attribute id="CONTENT" order="24">
+      <descriptions defaultDescription="CONTENT"/>
+      <keyMapping columnObjectName="Script_View" columnName="CONTENT"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/></logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

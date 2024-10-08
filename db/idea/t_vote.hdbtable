@@ -1,0 +1,15 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Vote";
+table.columns = [
+	{name = "ID"; sqlType = INTEGER; nullable = false; comment = "Human readable identifier";},
+	{name = "IDEA_ID"; sqlType = INTEGER; nullable = false; comment = "Idea where the vote belongs to. Foreign key to t_idea.ID";},
+	{name = "SOURCE_IDEA_ID"; sqlType = INTEGER; nullable = true; comment = "Indicated this vote came from idea merge";},
+	{name = "USER_ID"; sqlType = INTEGER; nullable = false; comment = "User who votes. Foreign key to t_identity.ID";},
+	{name = "SCORE"; sqlType = INTEGER; nullable = false; comment = "Score for vote";},
+	{name = "VOTE_REASON";  sqlType = VARCHAR; length = 500; nullable = true; comment = "Reason for vote";},
+    {name = "VOTE_COMMENT"; sqlType = VARCHAR; length = 500; nullable = true; comment = "Comment for vote";},
+    {name = "CREATED_AT"; sqlType = TIMESTAMP; nullable = true; comment = "Creation timestamp";},
+	{name = "CHANGED_AT"; sqlType = TIMESTAMP; nullable = true; comment = "Changed timestamp";} 
+];
+table.primaryKey.pkcolumns = ["ID"];    

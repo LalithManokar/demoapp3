@@ -1,0 +1,12 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Recorded Views for applications per hour";
+table.columns = [
+	{name = "YEAR"; sqlType = INTEGER; nullable = false;},
+	{name = "MONTH"; sqlType = INTEGER; nullable = false;},
+	{name = "WEEK"; sqlType = INTEGER; nullable = false;},
+	{name = "DAY"; sqlType = INTEGER; nullable = false;},
+	{name = "HOUR"; sqlType = INTEGER; nullable = false;},
+	{name = "VIEWS"; sqlType = INTEGER; nullable = false;},
+	{name = "APPLICATION"; sqlType = NVARCHAR; nullable = true; length=100;}
+]; 

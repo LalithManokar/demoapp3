@@ -1,0 +1,11 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE;
+table.description = "Recorded View Logs";
+table.columns = [
+	{name = "ACCESSED_AT"; sqlType = TIMESTAMP; nullable = false;},
+	{name = "SESSION_ID"; sqlType = NVARCHAR; nullable = false; length=100;},
+	{name = "USER_NAME"; sqlType = NVARCHAR; nullable = false;length=100;},
+	{name = "EVENT_TYPE"; sqlType = NVARCHAR; nullable = false; length=100;},
+	{name = "OBJECT_ID"; sqlType = INTEGER; nullable = true;},
+	{name = "URL_PATH"; sqlType = NVARCHAR; nullable = true; length=500;}
+]; 

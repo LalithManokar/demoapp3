@@ -1,0 +1,17 @@
+schema = "SAP_INO";
+query = "
+    select  report_template.code as code,
+            report_template.default_text,
+            report_template.default_long_text,
+            0 as identity_id,
+            0 as campaign_id,
+            null as campaign_name,
+            null as campaign_color,
+            0 as campaign_phase_count,
+            report_template.config,
+            0 as order_sequence,
+            report_template.is_usage_report
+        from \"sap.ino.db.analytics::t_report_template\" as report_template
+    with read only";
+
+depends_on_table = ["sap.ino.db.analytics::t_report_template"];

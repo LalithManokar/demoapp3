@@ -1,0 +1,6 @@
+schema = "SAP_INO_EXT";
+query = "select idea.* from \"sap.ino.db.idea::v_idea_small\" as idea 
+";
+
+depends_on_view =  ["sap.ino.db.idea::v_idea_small", 
+                    "sap.ino.db.idea::v_auth_ideas_read"];

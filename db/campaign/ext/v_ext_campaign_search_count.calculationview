@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="v_ext_campaign_search_count" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="SCRIPT_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="v_ext_campaign_search_count"/>
+  <metadata changedAt="2019-08-08 16:36:27.249"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="Token for Free Text Search"/>
+      <variableProperties datatype="VARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="resp_code" parameter="true">
+      <descriptions defaultDescription="resp_code"/>
+      <variableProperties datatype="VARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="has_camp_blog" parameter="true">
+      <descriptions defaultDescription="has_camp_blog"/>
+      <variableProperties datatype="NVARCHAR" length="1" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken" parameter="true">
+      <descriptions defaultDescription="tagsToken"/>
+      <variableProperties datatype="VARCHAR" length="2048" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken1" parameter="true">
+      <descriptions defaultDescription="tagsToken1"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken2" parameter="true">
+      <descriptions defaultDescription="tagsToken2"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken3" parameter="true">
+      <descriptions defaultDescription="tagsToken3"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken4" parameter="true">
+      <descriptions defaultDescription="tagsToken4"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="VARCHAR" id="AMOUNT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="FILTER_NAME" length="100"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <localVariable>#resp_code</localVariable>
+      <localVariable>#has_camp_blog</localVariable>
+      <localVariable>#tagsToken</localVariable>
+      <localVariable>#tagsToken1</localVariable>
+      <localVariable>#tagsToken2</localVariable>
+      <localVariable>#tagsToken3</localVariable>
+      <localVariable>#tagsToken4</localVariable>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+ if length(:tagsToken) = 0 then
+     
+        lt_tags_campaigns = 
+        select id 
+        from &quot;sap.ino.db.campaign::t_campaign&quot; 
+        where length(:tagsToken) = 0;
+        else
+        --                 union all
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken, ',', :lt_tag_id_strings);
+        lt_tags_campaigns=
+        select tag.object_id as id
+        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+        where  tag.tag_id in (select STRING from :lt_tag_id_strings) and
+              tag.object_type_code = 'CAMPAIGN'
+              group by tag.object_id;
+    end if;
+    
+    if length(:tagsToken1) = 0 then
+     
+        lt_tags_campaigns1 = 
+        select id 
+        from &quot;sap.ino.db.campaign::t_campaign&quot; 
+        where length(:tagsToken1) = 0;
+        else
+        --                 union all
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken1, ',', :lt_tag_id_strings1);
+        lt_tags_campaigns1=
+        select tag.object_id as id
+        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+        where  tag.tag_id in (select STRING from :lt_tag_id_strings1) and
+              tag.object_type_code = 'CAMPAIGN'
+              group by tag.object_id;
+    end if;
+    
+    if length(:tagsToken2) = 0 then
+     
+        lt_tags_campaigns2 = 
+        select id 
+        from &quot;sap.ino.db.campaign::t_campaign&quot; 
+        where length(:tagsToken2) = 0;
+        else
+        --                 union all
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken2, ',', :lt_tag_id_strings2);
+        lt_tags_campaigns2=
+        select tag.object_id as id
+        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+        where  tag.tag_id in (select STRING from :lt_tag_id_strings2) and
+              tag.object_type_code = 'CAMPAIGN'
+              group by tag.object_id;
+    end if;
+    
+    if length(:tagsToken3) = 0 then
+     
+        lt_tags_campaigns3 = 
+        select id 
+        from &quot;sap.ino.db.campaign::t_campaign&quot; 
+        where length(:tagsToken3) = 0;
+        else
+        --                 union all
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken3, ',', :lt_tag_id_strings3);
+        lt_tags_campaigns3=
+        select tag.object_id as id
+        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+        where  tag.tag_id in (select STRING from :lt_tag_id_strings3) and
+              tag.object_type_code = 'CAMPAIGN'
+              group by tag.object_id;
+    end if;
+    
+    if length(:tagsToken4) = 0 then
+     
+        lt_tags_campaigns4 = 
+        select id 
+        from &quot;sap.ino.db.campaign::t_campaign&quot; 
+        where length(:tagsToken4) = 0;
+        else
+        --                 union all
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken4, ',', :lt_tag_id_strings4);
+        lt_tags_campaigns4=
+        select tag.object_id as id
+        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+        where  tag.tag_id in (select STRING from :lt_tag_id_strings4) and
+              tag.object_type_code = 'CAMPAIGN'
+              group by tag.object_id;
+    end if;
+    
+    final_tags_campaign = select distinct res_0.id from:lt_tags_campaigns as res_0
+    						inner join :lt_tags_campaigns1 as res_1
+    						on res_0.id = res_1.id
+    						inner join :lt_tags_campaigns2 as res_2
+    						on res_0.id = res_2.id
+    						inner join :lt_tags_campaigns3 as res_3
+    						on res_0.id = res_3.id
+    						inner join :lt_tags_campaigns4 as res_4
+    						on res_0.id = res_4.id;
+    
+  if length(:resp_code) &gt; 0 then
+      resp_filter = select id from &quot;sap.ino.db.campaign::t_campaign&quot; 
+      where resp_code = :resp_code;
+    else 
+     resp_filter = select  id from &quot;sap.ino.db.campaign::t_campaign&quot;;
+end if;
+if length(:has_camp_blog) &gt; 0 then
+    if cast(:has_camp_blog as int) = 0 then
+      blog_filter = select campaign.id  as campaign_id from &quot;sap.ino.db.campaign::t_campaign&quot; as campaign
+      where id not in ( select campaign_id from &quot;sap.ino.db.campaign::V_CAMPAIGN_BLOG_COUNTS&quot; where status_code ='sap.ino.config.BLOG_PUBLISHED');
+        else 
+    blog_filter = select campaign_id from &quot;sap.ino.db.campaign::V_CAMPAIGN_BLOG_COUNTS&quot; 
+      where blog_counts &gt;= 1 and status_code ='sap.ino.config.BLOG_PUBLISHED';   
+    end if;
+    else
+    blog_filter = select  id as campaign_id from &quot;sap.ino.db.campaign::t_campaign&quot;;
+end if;
+    if length(:searchToken) = 0 then
+    lt_search_campaigns =  select id,1 as score
+        from &quot;sap.ino.db.campaign::t_campaign&quot; ;
+    else 
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.campaign::p_campaign_search_full&quot;(:searchToken, :lt_search_campaigns);
+    end if;
+    -- call &quot;SAP_INO&quot;.&quot;sap.ino.db.campaign::p_campaign_search_full&quot;(:searchToken, :lt_search_campaigns);
+    
+   var_out =  select CAST(COUNT(*) AS VARCHAR) as AMOUNT ,'ALL' FILTER_NAME 
+                         from &quot;sap.ino.db.campaign::t_campaign&quot; as campaign
+                          inner join :final_tags_campaign as tags 
+                            on campaign.id = tags.id
+                            inner join &quot;sap.ino.db.campaign::v_auth_campaigns_and_registrable&quot; as auth
+                           on campaign.id = auth.campaign_id
+                             inner join :lt_search_campaigns as search
+                            on campaign.id = search.id
+                           inner join  :resp_filter as resp
+                            on resp.id = campaign.id
+                            inner join :blog_filter as blog
+                            on blog.campaign_id = campaign.id
+                            where  campaign.STATUS_CODE != 'sap.ino.config.CAMP_DRAFT'
+                     union all
+                     select  CAST(COUNT(*) AS VARCHAR) as AMOUNT,'ACTIVE' FILTER_NAME  
+                         from &quot;sap.ino.db.campaign::t_campaign&quot; as campaign
+                         inner join :final_tags_campaign as tags 
+                            on campaign.id = tags.id
+                            inner join &quot;sap.ino.db.campaign::v_auth_campaigns_and_registrable&quot; as auth
+                           on campaign.id = auth.campaign_id
+                             inner join :lt_search_campaigns as search
+                    on campaign.id = search.id
+                      left outer join :resp_filter as resp
+                            on resp.id = campaign.id
+                              left outer join :blog_filter as blog
+                            on blog.campaign_id = campaign.id
+                         where  campaign.valid_from &lt;= CURRENT_UTCTIMESTAMP
+                             and campaign.valid_to &gt;= CURRENT_UTCTIMESTAMP
+                             and campaign.status_code != 'sap.ino.config.CAMP_DRAFT'   and resp.id = campaign.id and blog.campaign_id = campaign.id
+                     union all
+                     select CAST(COUNT(*) AS VARCHAR) as AMOUNT,'OPEN' FILTER_NAME
+                         from &quot;sap.ino.db.campaign::t_campaign&quot; as campaign
+                         inner join :final_tags_campaign as tags 
+                            on campaign.id = tags.id
+                            inner join &quot;sap.ino.db.campaign::v_auth_campaigns_and_registrable&quot; as auth
+                           on campaign.id = auth.campaign_id
+                             inner join :lt_search_campaigns as search
+                    on campaign.id = search.id
+                      left outer join :resp_filter as resp
+                            on resp.id = campaign.id
+                              left outer join :blog_filter as blog
+                            on blog.campaign_id = campaign.id
+                         where (
+                             (campaign.submit_from &lt;= CURRENT_UTCTIMESTAMP and campaign.submit_to &gt;= CURRENT_UTCTIMESTAMP)
+                             or
+                             (campaign.register_from &lt;= CURRENT_UTCTIMESTAMP and campaign.register_to &gt;= CURRENT_UTCTIMESTAMP))
+                              and campaign.status_code != 'sap.ino.config.CAMP_DRAFT' and resp.id = campaign.id and blog.campaign_id = campaign.id
+                         
+                     union all
+                     select CAST(COUNT(*) AS VARCHAR) as AMOUNT,'FUTURE' FILTER_NAME 
+                         from &quot;sap.ino.db.campaign::t_campaign&quot; as campaign
+                         inner join :final_tags_campaign as tags 
+                            on campaign.id = tags.id
+                          inner join &quot;sap.ino.db.campaign::v_auth_campaigns&quot; as v_campaign
+                           on campaign.ID = v_campaign.CAMPAIGN_ID
+                             inner join :lt_search_campaigns as search
+                    on campaign.id = search.id
+                      left outer join :resp_filter as resp
+                            on resp.id = campaign.id
+                              left outer join :blog_filter as blog
+                            on blog.campaign_id = campaign.id
+                           where  valid_from &gt;= CURRENT_UTCTIMESTAMP and   STATUS_CODE != 'sap.ino.config.CAMP_DRAFT'  and resp.id = campaign.id and blog.campaign_id = campaign.id
+                     union all
+                     select CAST(COUNT(distinct campaign.id) AS VARCHAR) as AMOUNT,'CLOSED' FILTER_NAME 
+                         from &quot;sap.ino.db.campaign::t_campaign&quot; as campaign
+                         inner join :final_tags_campaign as tags 
+                            on campaign.id = tags.id
+                         inner join &quot;sap.ino.db.campaign::v_auth_campaigns&quot; as v_campaign
+                           on campaign.ID = v_campaign.CAMPAIGN_ID
+                             inner join :lt_search_campaigns as search
+                    on campaign.id = search.id
+                      left outer join :resp_filter as resp
+                            on resp.id = campaign.id
+                              left outer join :blog_filter as blog
+                            on blog.campaign_id = campaign.id
+                         where  valid_to &lt;= CURRENT_UTCTIMESTAMP and status_code != 'sap.ino.config.CAMP_DRAFT' and resp.id = campaign.id and blog.campaign_id = campaign.id
+                    union all
+                    select   CAST(COUNT(*) AS VARCHAR) as AMOUNT,'REGISTERED' FILTER_NAME
+                        from &quot;sap.ino.db.campaign::t_campaign&quot; as campaign
+                        inner join :final_tags_campaign as tags 
+                            on campaign.id = tags.id
+                    inner join
+                        &quot;sap.ino.db.campaign::v_my_registered_campaign&quot; as registered_campaign
+                    on
+                        campaign.id = registered_campaign.CAMPAIGN_ID
+                          inner join :lt_search_campaigns as search
+                    on campaign.id = search.id
+                      left outer join :resp_filter as resp
+                            on resp.id = campaign.id
+                              left outer join :blog_filter as blog
+                            on blog.campaign_id = campaign.id
+                            where   resp.id = campaign.id and blog.campaign_id = campaign.id
+                    union all
+                    select  CAST(COUNT(distinct campaign.id) AS VARCHAR) as AMOUNT,'MANAGED' FILTER_NAME
+                        from &quot;sap.ino.db.campaign::v_managed_campaign&quot; as my_campaign
+                        inner join :final_tags_campaign as tags 
+                            on my_campaign.id = tags.id
+                        inner join &quot;sap.ino.db.campaign::t_campaign&quot; as campaign
+                        on campaign.id = my_campaign.id
+                            inner join &quot;sap.ino.db.campaign::v_auth_campaigns_and_registrable&quot; as auth
+                           on campaign.id = auth.campaign_id
+                             inner join :lt_search_campaigns as search
+                    on my_campaign.id = search.id
+                      left outer join :resp_filter as resp
+                            on resp.id = campaign.id
+                              left outer join :blog_filter as blog
+                            on blog.campaign_id = campaign.id
+                            where   resp.id = campaign.id and blog.campaign_id = campaign.id
+                        union all
+                     select CAST(COUNT(distinct campaign.id) AS VARCHAR) as AMOUNT,'DRAFT' FILTER_NAME
+                        from &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; as my_campaign
+                        inner join :final_tags_campaign as tags 
+                            on my_campaign.id = tags.id
+                        inner join &quot;sap.ino.db.campaign::t_campaign&quot; as campaign
+                        on campaign.id = my_campaign.id
+                          inner join :lt_search_campaigns as search
+                    on my_campaign.id = search.id
+                      left outer join :resp_filter as resp
+                            on resp.id = campaign.id
+                              left outer join :blog_filter as blog
+                            on blog.campaign_id = campaign.id
+                        where  status_code = 'sap.ino.config.CAMP_DRAFT' and resp.id = my_campaign.id and blog.campaign_id = campaign.id
+                    union all
+                    select CAST(COUNT(distinct campaign.id) AS VARCHAR) as AMOUNT,'PUBLISHED' FILTER_NAME
+                        from &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; as my_campaign
+                        inner join :final_tags_campaign as tags 
+                            on my_campaign.id = tags.id
+                        inner join &quot;sap.ino.db.campaign::t_campaign&quot; as campaign
+                        on campaign.id = my_campaign.id
+                          inner join :lt_search_campaigns as search
+                    on my_campaign.id = search.id
+                      left outer join :resp_filter as resp
+                            on resp.id = campaign.id
+                              left outer join :blog_filter as blog
+                            on blog.campaign_id = campaign.id
+                        where campaign.STATUS_CODE != 'sap.ino.config.CAMP_DRAFT' and resp.id = my_campaign.id and blog.campaign_id = campaign.id
+                    union all
+                    select CAST(COUNT(distinct campaign.id) AS VARCHAR) as AMOUNT,'SUBMITTABLE' FILTER_NAME
+                        from &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; as my_campaign
+                        inner join :final_tags_campaign as tags 
+                            on my_campaign.id = tags.id
+                        inner join &quot;sap.ino.db.campaign::t_campaign&quot; as campaign
+                        on campaign.id = my_campaign.id
+                          inner join :lt_search_campaigns as search
+                    on my_campaign.id = search.id
+                      left outer join :resp_filter as resp
+                            on resp.id = campaign.id
+                              left outer join :blog_filter as blog
+                            on blog.campaign_id = campaign.id
+                        where 
+                             ((submit_from &lt;= CURRENT_UTCTIMESTAMP and submit_to &gt;= CURRENT_UTCTIMESTAMP)
+                             or
+                             (register_from &lt;= CURRENT_UTCTIMESTAMP and register_to &gt;= CURRENT_UTCTIMESTAMP)) and status_code != 'sap.ino.config.CAMP_DRAFT' 
+                             and resp.id = my_campaign.id and blog.campaign_id = campaign.id;
+
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="FILTER_NAME" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="FILTER_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="AMOUNT" order="1" aggregationType="count" measureType="simple">
+        <descriptions defaultDescription="COL"/>
+        <measureMapping columnObjectName="Script_View" columnName="AMOUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

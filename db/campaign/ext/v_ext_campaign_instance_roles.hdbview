@@ -1,0 +1,66 @@
+schema = "SAP_INO_EXT";
+query = "SELECT DISTINCT CAMPAIGN_ID, 
+			SUM(MAP(
+					ROLE_CODE, 
+					'CAMPAIGN_MANAGER', 
+					1, 
+					0
+				)) AS \"camp_instance_mgr_role\", 
+			SUM(MAP(
+					ROLE_CODE, 
+					'CAMPAIGN_COACH', 
+					1, 
+					0
+				)) AS \"camp_instance_coach_role\", 
+			SUM(MAP(
+					ROLE_CODE, 
+					'CAMPAIGN_EXPERT', 
+					1, 
+					0
+				)) AS \"camp_instance_expert_role\", 
+			SUM(MAP(
+					ROLE_CODE, 
+					'CAMPAIGN_USER', 
+					1, 
+					0
+				)) AS \"camp_instance_part_role\", 
+			SUM(MAP(
+					ROLE_CODE, 
+					'RESP_COACH', 
+					1, 
+					0
+				)) AS \"camp_instance_resp_coach_role\", 
+			SUM(MAP(
+					ROLE_CODE, 
+					'RESP_EXPERT', 
+					1, 
+					0
+				)) AS \"camp_instance_resp_expert_role\"
+		FROM (
+				SELECT DISTINCT ROLE_CODE, 
+					ORT.OBJECT_ID AS CAMPAIGN_ID
+				FROM \"sap.ino.db.iam::v_auth_application_user_role_transitive\" AS ORT
+				WHERE ROLE_CODE = 'CAMPAIGN_MANAGER'
+					OR ROLE_CODE = 'CAMPAIGN_COACH'
+					OR ROLE_CODE = 'CAMPAIGN_EXPERT'
+					OR ROLE_CODE = 'CAMPAIGN_USER'
+
+				UNION ALL
+
+				SELECT DISTINCT ORT.ROLE_CODE, 
+					CAMP.ID AS CAMPAIGN_ID
+				FROM \"sap.ino.db.iam::v_auth_application_user_role_transitive\" AS ORT
+					INNER JOIN \"sap.ino.db.subresponsibility::t_responsibility_value_stage\" AS RESP_V
+					ON ORT.OBJECT_ID = RESP_V.ID
+						AND ORT.OBJECT_TYPE_CODE = 'RESPONSIBILITY'
+					INNER JOIN \"sap.ino.db.subresponsibility::t_responsibility_stage\" AS RESP
+					ON RESP.ID = RESP_V.RESP_ID
+					INNER JOIN \"sap.ino.db.campaign::t_campaign\" AS CAMP
+					ON RESP.CODE = CAMP.RESP_CODE
+				WHERE ORT.ROLE_CODE = 'RESP_COACH'
+					OR ORT.ROLE_CODE = 'RESP_EXPERT'
+			)
+		GROUP BY CAMPAIGN_ID";
+		
+depends_on_table = ["sap.ino.db.subresponsibility::t_responsibility_value_stage","sap.ino.db.subresponsibility::t_responsibility_stage","sap.ino.db.campaign::t_campaign"];
+depends_on_view = ["sap.ino.db.iam::v_auth_application_user_role_transitive"];

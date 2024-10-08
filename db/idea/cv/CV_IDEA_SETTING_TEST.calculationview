@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:AccessControl="http://www.sap.com/ndb/SQLCoreModelAccessControl.ecore" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="CV_IDEA_SETTING_TEST" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <origin/>
+  <descriptions defaultDescription="CV_IDEA_SETTING_TEST"/>
+  <metadata changedAt="2021-05-12 11:27:53.357"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="50"/>
+  <dataSources>
+    <DataSource id="CV_IDEA_ANONYMOUS_FOR_ALL" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.cv/calculationviews/CV_IDEA_ANONYMOUS_FOR_ALL</resourceUri>
+    </DataSource>
+    <DataSource id="CV_IDEA_ANONYMOUS_FOR_COACH" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.cv/calculationviews/CV_IDEA_ANONYMOUS_FOR_COACH</resourceUri>
+    </DataSource>
+    <DataSource id="CV_IDEA_ANONYMOUS_FOR_COACH_POOL" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.cv/calculationviews/CV_IDEA_ANONYMOUS_FOR_COACH_POOL</resourceUri>
+    </DataSource>
+    <DataSource id="CV_IDEA_ANONYMOUS_FOR_EXPERT_POOL" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.cv/calculationviews/CV_IDEA_ANONYMOUS_FOR_EXPERT_POOL</resourceUri>
+    </DataSource>
+    <DataSource id="CV_IDEA_ANONYMOUS_FOR_COACH_EXPERT_POOL" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.cv/calculationviews/CV_IDEA_ANONYMOUS_FOR_COACH_EXPERT_POOL</resourceUri>
+    </DataSource>
+    <DataSource id="CV_IDEA_ANONYMOUS_FOR_COACH_EXPERT" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.cv/calculationviews/CV_IDEA_ANONYMOUS_FOR_COACH_EXPERT</resourceUri>
+    </DataSource>
+    <DataSource id="CV_IDEA_ANONYMOUS_FOR_EXPERT" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.cv/calculationviews/CV_IDEA_ANONYMOUS_FOR_EXPERT</resourceUri>
+    </DataSource>
+    <DataSource id="CV_IDEA_ANONYMOUS_FOR_PARTICIPANT" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.cv/calculationviews/CV_IDEA_ANONYMOUS_FOR_PARTICIPANT</resourceUri>
+    </DataSource>
+    <DataSource id="CV_IDEA_ANONYMOUS_FOR_PARTLY" type="CALCULATION_VIEW">
+      <viewAttributes allViewAttributes="true"/>
+      <resourceUri>/sap.ino.db.idea.cv/calculationviews/CV_IDEA_ANONYMOUS_FOR_PARTLY</resourceUri>
+    </DataSource>
+    <DataSource id="sap.ino.db.idea::t_ideas_setting" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_INO" columnObjectName="sap.ino.db.idea::t_ideas_setting"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="ANONYMOUS_FOR">
+          <filter xsi:type="AccessControl:SingleValueFilter" including="true" value="NONE"/>
+        </viewAttribute>
+        <viewAttribute id="IDEA_ID"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="IS_ANONYMOUS" length="10" expressionLanguage="COLUMN_ENGINE">
+          <formula>'false'</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.ino.db.idea::t_ideas_setting">
+        <mapping xsi:type="Calculation:AttributeMapping" target="ANONYMOUS_FOR" source="ANONYMOUS_FOR"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:UnionView" id="Union_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="IDEA_ID" transparentFilter="false"/>
+        <viewAttribute id="IS_ANONYMOUS" transparentFilter="false"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input emptyUnionBehavior="NO_ROW" node="#CV_IDEA_ANONYMOUS_FOR_ALL">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_ANONYMOUS" source="IS_ANONYMOUS"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#CV_IDEA_ANONYMOUS_FOR_COACH">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_ANONYMOUS" source="IS_ANONYMOUS"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#CV_IDEA_ANONYMOUS_FOR_COACH_POOL">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_ANONYMOUS" source="IS_ANONYMOUS"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#CV_IDEA_ANONYMOUS_FOR_EXPERT_POOL">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_ANONYMOUS" source="IS_ANONYMOUS"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#CV_IDEA_ANONYMOUS_FOR_COACH_EXPERT_POOL">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_ANONYMOUS" source="IS_ANONYMOUS"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#CV_IDEA_ANONYMOUS_FOR_COACH_EXPERT">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_ANONYMOUS" source="IS_ANONYMOUS"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#CV_IDEA_ANONYMOUS_FOR_EXPERT">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_ANONYMOUS" source="IS_ANONYMOUS"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#CV_IDEA_ANONYMOUS_FOR_PARTICIPANT">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_ANONYMOUS" source="IS_ANONYMOUS"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#CV_IDEA_ANONYMOUS_FOR_PARTLY">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_ANONYMOUS" source="IS_ANONYMOUS"/>
+      </input>
+      <input emptyUnionBehavior="NO_ROW" node="#Projection_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="IDEA_ID" source="IDEA_ID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="IS_ANONYMOUS" source="IS_ANONYMOUS"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Union_1">
+    <descriptions/>
+    <attributes>
+      <attribute id="IDEA_ID" order="1" attributeHierarchyActive="false" displayAttribute="false" transparentFilter="false">
+        <descriptions defaultDescription="Human readable identifier"/>
+        <keyMapping columnObjectName="Union_1" columnName="IDEA_ID"/>
+      </attribute>
+      <attribute id="IS_ANONYMOUS" order="2" attributeHierarchyActive="false" displayAttribute="false" transparentFilter="false">
+        <descriptions defaultDescription="IS_ANONYMOUS"/>
+        <keyMapping columnObjectName="Union_1" columnName="IS_ANONYMOUS"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize/>
+      </shape>
+      <shape expanded="true" modelObjectName="Union_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="54" y="410"/>
+        <rectangleSize height="102" width="351"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="160" y="750"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

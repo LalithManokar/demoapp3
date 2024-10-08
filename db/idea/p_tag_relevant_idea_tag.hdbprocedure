@@ -1,0 +1,21 @@
+procedure "SAP_INO"."sap.ino.db.idea::p_tag_relevant_idea_tag" (
+    in  it_idea_id  SAP_INO."sap.ino.db.basis::tt_object_id",
+    out ot_idea_tag SAP_INO."sap.ino.db.basis::tt_object_tag"
+ )
+language sqlscript
+sql security invoker
+default schema SAP_INO
+reads sql data as
+begin
+    -- determine all relevant tag / idea combinations
+    ot_idea_tag =
+        select
+            tag.object_id as id,
+            tag.tag_id
+        from
+            "sap.ino.db.tag::t_object_tag" as tag,
+            :it_idea_id                    as idea
+        where
+            tag.object_id        = idea.id
+        and tag.object_type_code = 'IDEA';
+end;

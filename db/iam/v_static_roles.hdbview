@@ -1,0 +1,16 @@
+schema = "SAP_INO";
+query = "
+select * from (
+    select 
+        all_possible_roles.logical_role_name,
+        all_possible_roles.qualified_role_name,
+        all_possible_roles.layer,
+        row_number() over (partition by all_possible_roles.technical_role_name order by layer desc) as row_number
+    from \"sap.ino.db.iam::v_all_static_roles\" as all_possible_roles
+    inner join \"sap.ino.db.iam::v_sys_roles\" as sys_roles
+        on sys_roles.role_name = all_possible_roles.qualified_role_name )
+where row_number = 1
+with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_static_role", "sap.ino.db.basis::t_package_extension"];
+depends_on_view = ["sap.ino.db.iam::v_all_static_roles", "sap.ino.db.iam::v_sys_roles"];

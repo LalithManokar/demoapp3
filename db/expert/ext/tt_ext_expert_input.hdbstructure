@@ -1,0 +1,7 @@
+table.schemaName = "SAP_INO_EXT";
+table.description = "Input table for expert data service / expert finder";
+table.columns = [
+    {name = "IDEA_ID";      sqlType = INTEGER; nullable = false; comment = "Idea ID as start point for identifying experts"; },
+    {name = "TAG_ID";       sqlType = INTEGER; nullable = true;  comment = "Tag ID for deriving connected experts - used for expert finder by tags"; },
+    {name = "SIMSCORE";     sqlType = DOUBLE;  nullable = false; comment = "Similarity score of ideas to the start idea - used for expert finder by idea"; }
+];

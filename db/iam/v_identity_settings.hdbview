@@ -1,0 +1,42 @@
+schema = "SAP_INO";
+query = "
+    select
+        identity.id as identity_id,
+        locale.locale,
+        attachment_assign.id as image_assign_id,
+        attachment_assign.attachment_id as image_id,
+		attachment.media_type as image_media_type,
+		attachment.changed_at as image_changed_at,
+        theme_param.value as theme,
+        mail_settings.value as mail,
+        tracking_settings.value as tracking
+    from
+        \"sap.ino.db.iam::t_identity\" as identity
+    left outer join \"sap.ino.db.basis::v_user_locale\" as locale
+        on locale.user_id = identity.id
+    left outer join \"sap.ino.db.attachment::t_attachment_assignment\" as attachment_assign
+        on attachment_assign.owner_id = identity.id and
+           attachment_assign.owner_type_code = 'IDENTITY' and
+           attachment_assign.role_type_code = 'IDENTITY_IMAGE'
+	left outer join \"sap.ino.db.attachment::t_attachment\" as attachment
+        on attachment.id = attachment_assign.attachment_id
+    left outer join \"sap.ino.db.basis::t_user_parameter\" as theme_param
+        on theme_param.user_id = identity.id and
+           theme_param.section = 'ui' and
+           theme_param.key = 'theme'
+    left outer join \"sap.ino.db.notification::v_mail_notification_settings\" as mail_settings
+        on mail_settings.user_id = identity.id
+    left outer join \"sap.ino.db.basis::t_user_parameter\" as tracking_settings
+        on tracking_settings.user_id = identity.id and
+            tracking_settings.section = 'usage_reporting' and
+            tracking_settings.key = 'tracking'
+    where
+        identity.erased = 0
+    with read only";
+
+depends_on_table = ["sap.ino.db.iam::t_identity",
+                    "sap.ino.db.attachment::t_attachment_assignment",
+                    "sap.ino.db.attachment::t_attachment",
+                    "sap.ino.db.basis::t_user_parameter"];
+depends_on_view = ["sap.ino.db.basis::v_user_locale",
+                   "sap.ino.db.notification::v_mail_notification_settings"];

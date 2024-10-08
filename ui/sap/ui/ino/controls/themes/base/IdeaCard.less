@@ -1,0 +1,611 @@
+.sapUiIdeaCard {
+    width: 216px;
+    height: 334px;
+    position: relative;
+    border: 1px solid @sapUiLightBorder;
+}
+
+.sapUiInoIdeaCardAccessibleLabel {
+	height: 0px;
+	width: 0px;
+	overflow: hidden;
+	display: none;
+}
+
+.sapUiIdeaCardRibbon {
+    width: 216px;
+    height: 20px;
+    background-color: @sapUiLightBG;
+    margin-left: -1px;
+    border-left: 1px solid @sapUiLightBorder;
+    border-right: 1px solid @sapUiLightBorder;
+}
+
+.sapUiIdeaCardTopRibbon {
+    margin-top: -1px;
+    border-top: 1px solid @sapUiLightBorder;
+}
+
+.sapUiIdeaCardBottomRibbon {
+    width: 100%;
+    height: 20px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    overflow: hidden;
+    margin-bottom: -1px;
+    border-bottom: 1px solid @sapUiLightBorder;
+}
+
+.sapUiIdeaCardTopRibbon,
+.sapUiIdeaCardBottomRibbon {
+	vertical-align: middle;
+	text-align: center;
+}
+
+.sapUiIdeaCardCampaignCenter {
+	display: inline-block;
+}
+
+.sapUiIdeaCardCampaignSection {
+	float: left;
+}
+
+.sapUiIdeaCardCampaignLock {
+    background-repeat: no-repeat;    
+    background-size: 12px 12px;
+    width: 12px;
+    height: 12px;
+    margin-top: 3px;
+	margin-left: -6px;
+}
+
+.sapUiIdeaCardFlipFrontMediaTextContainer {
+    /* the following is one "image" use the same color for all components */
+    height: 121px;
+    color: @sapUiExtraLightText;
+}
+
+.sapUiIdeaCardFlipFrontMedia {
+    width: 216px;
+    height: 121px;
+    overflow: hidden;
+    position: relative;
+}
+
+html[data-sap-ui-browser*="ff"] .sapUiIdeaCardFlipFrontMedia {
+    border-right: 1px solid @sapUiLightBorder;
+}
+
+.sapUiIdeaCardFlipFrontMediaText {
+    width: inherit - 10px;
+    margin: -5px;
+    font-size: 80px;
+    font-weight: normal;
+    text-transform: uppercase;
+    text-align: 300px;
+    max-width: 300px;
+    line-height: 0.8em;
+    width: 100px;
+    text-decoration: none;
+}
+
+.sapUiIdeaCardFlipFrontMediaImage {
+    background-color : @sapUiExtraLightBG;
+    background-size : cover;
+    background-repeat : no-repeat;
+    width: 100%;
+    height: 100%;
+}
+
+div.sapUiIdeaCardTagsDots {
+    margin-left: 2px;
+    display: inline-block;
+}
+
+.sapUiIdeaCardFlipFrontMediaVideo {
+    width: 100%;
+    z-index: 0;
+}
+
+.sapUiIdeaCardFlipFileUploader {
+    position: absolute;
+    top: 0px;    
+}
+
+.sapUiIdeaCardFlipFrontMediaVideoOverlay {
+    position: absolute;
+    top: 44px;
+    left: 94px;
+    width: 32px;
+    height: 32px;
+    z-index: 1;
+    background-repeat: no-repeat;    
+    background-size: 32px 32px;
+}
+
+.sapUiIdeaCardFlipFrontMediaVideoOverlayError {
+    display: none;
+    position:absolute;
+    top: 44px;
+    left: 94px;
+    width: 32px;
+    height: 32px;
+    z-index: 1;
+    background-repeat: no-repeat;    
+    background-size: 32px 32px;
+}
+
+.sapUiIdeaCardHeader {
+    overflow: hidden;
+    height: 71px;
+}
+
+html[data-sap-ui-browser*="ff"] .sapUiIdeaCardHeader {
+    border-right: 1px solid @sapUiLightBorder;
+    width: 100%
+}
+
+.sapUiIdeaCardTitle {
+    margin: 5px 8px 5px 8px;
+    display: block;
+    font-size: @sapUiFontHeader5Size;
+    font-weight: normal;
+    line-height: 20px;
+    max-height: 65px;
+    overflow: hidden;
+    color: @sapUiLink;
+}
+
+.sapUiIdeaCardTitleLink {
+    text-decoration: underline;
+    white-space: normal;
+}
+
+a.sapUiIdeaCardMediaTextLink {
+    text-decoration: none;
+}
+
+.sapUiIdeaCardBackPreDescLine {
+    font-size: @sapUiFontSmallSize;
+    font-weight: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    color: @sapUiLightText;
+}
+
+.sapUiIdeaCardLineSeparator {
+    width: 100%;
+    height: 1px;
+    clear: both;
+    background: #999999;    
+}
+
+.sapUiIdeaCardCampaignTitle {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 0px;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 170px; /* limit the campaign title to match the card ribbon, incl. the lock icon */    
+}
+
+.sapUiIdeaCardCampaignTitle.sapUiIdeaCardCampaignTitleDark, 
+.sapUiIdeaCardCampaignLink.sapUiIdeaCardCampaignTitleDark {
+    color: @sapUiText;
+}
+
+.sapUiIdeaCardCampaignTitle.sapUiIdeaCardCampaignTitleLight,
+.sapUiIdeaCardCampaignLink.sapUiIdeaCardCampaignTitleLight {
+    color: @sapUiTextInverted;
+}
+
+.sapUiIdeaCardCampaignLink {
+    color: @sapUiText;
+    text-decoration: underline;
+    display: block;
+    max-width: 170px;
+    overflow: hidden;
+}
+
+.sapUiIdeaCardCampaignLink:hover {
+	text-decoration: underline;
+}
+
+.sapUiIdeaCardBackDescription {
+    margin: 0px 8px 5px 8px;
+}
+
+.sapUiIdeaCardBackTextCutted {
+    visibility: hidden;
+}
+
+.sapUiIdeaCardFlipFrontLikes {
+    text-align: center;
+}
+
+.sapUiIdeaCardFlipFrontLikesHeart {
+    width: 25px;
+    height: 25px;
+    margin: 5px 8px 0px 0px;
+}
+
+.sapUiIdeaCardFlipFrontLikesHeartRate {
+    margin: 0px 8px 5px 0px;
+}
+
+html[data-sap-ui-browser*="ff"] .sapUiIdeaCardFlipFrontProcessContainer {
+	height: 60px;
+    margin-top: -5px;
+    padding-top: 5px;
+    width: 100%;border-right: 1px solid @sapUiLightBorder;    
+}
+
+.sapUiIdeaCardFlipFrontProcess {
+    margin: 5px 10px 0px 10px;
+    position: relative;
+}
+
+.sapUiIdeaCardFlipFrontProcess svg {
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+.sapUiIdeaCardFlipFrontMedia {
+    background-color: @sapUiExtraLightBG;
+}
+
+.sapUiIdeaCardFlipFrontProcessPhase {
+    margin: 7px 0px -4px 0px;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    color: @sapUiText;
+}
+
+.sapUiIdeaCardFlipFrontProcessPhaseText {
+	font-style: normal;
+}
+
+.sapUiIdeaCardFlipFrontProcessStatus {
+    margin: 8px 0px 0px 0px;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    color: @sapUiText;
+}
+
+.sapUiIdeaCardFlipFrontProcessStatusText {
+	font-style: normal;
+}
+
+.sapUiIdeaCardDraftIdentifier {
+    font-size: @sapUiFontHeader2Size;
+    margin-top: 5px;
+    line-height: 21px;
+}
+
+.sapUiIdeaCardFlipFrontProcessIndicator {
+    height: 35px;    
+    margin: 0px 8px 5px 8px;
+}
+
+.sapUiIdeaCardButtonGroup {
+    margin: 0 auto;
+    float: left;
+    left: 50%;
+    position: relative;
+}
+
+.sapUiIdeaCardButtonGroupInner {
+    height: 35px;
+    margin-top: 4px;
+    margin-bottom: 2px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    float: left;
+    position: relative;
+    right: 50%;
+}
+
+.sapUiIdeaCardButtonGroupEntry {
+    display: inline-block;
+    margin: -2px 10px;
+}
+
+.sapUiIdeaCardFooter1 {
+    height: 63px;
+}
+
+html[data-sap-ui-browser*="ff"] .sapUiIdeaCardFooter1 {
+    border-right: 1px solid @sapUiLightBorder;    
+}
+
+.sapUiIdeaCardFooter2 {
+    height: 82px;
+}
+
+.sapUiIdeaCardFooter1, 
+.sapUiIdeaCardFooter2 {
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    overflow: hidden;
+}
+
+.sapUiIdeaCardFrontFooterTags {
+    overflow: hidden;
+    margin-top: 0px;
+    height: 100%;
+}
+
+.sapUiIdeaCardFrontFooterTag {
+    font-size: @sapUiFontSize;
+    padding-left: 3px;
+    padding-right: 3px;
+    white-space: nowrap;
+    float: left;
+}
+
+.sapUiIdeaCardBackLabel {
+    font-size: @sapUiFontLargeSize;
+    font-weight:bold;
+    color: @sapUiText;
+}
+
+.sapUiIdeaCardBackText {
+    margin-top: 2px;
+    font-size: @sapUiFontSize;
+    font-weight: normal;
+    word-wrap: break-word;
+    text-align: left;
+    overflow: hidden;
+    max-height: 137px;
+    width: 200px;
+    color: @sapUiText;
+    max-width: 200px; /* this is a required style for calculating if the text needs to be cut */
+}
+
+.sapUiIdeaCardBackText:after {
+    width: 200px;
+    height: @sapUiFontSize;
+    position: absolute;
+    top: 228px;
+    right: 0;
+    background-image: linear-gradient(left , rgba(255,255,255, 0) 0%, rgba(255,255,255, 1) 75%, rgba(255,255,255, 1) 100%);
+    background-image: -o-linear-gradient(left , rgba(255,255,255, 0) 0%, rgba(255,255,255, 1) 75%, rgba(255,255,255, 1) 100%);
+    background-image: -moz-linear-gradient(left , rgba(255,255,255, 0) 0%, rgba(255,255,255, 1) 75%, rgba(255,255,255, 1) 100%);
+    background-image: -webkit-linear-gradient(left , rgba(255,255,255, 0) 0%, rgba(255,255,255, 1) 75%, rgba(255,255,255, 1) 100%);
+    background-image: -ms-linear-gradient(left , rgba(255,255,255, 0) 0%, rgba(255,255,255, 1) 75%, rgba(255,255,255, 1) 100%);
+    background-image: -webkit-gradient(linear, left bottom, right bottom, color-stop(0, rgba(255,255,255,0)), color-stop(0.75, rgba(255,255,255,1)), color-stop(1, rgba(255,255,255,1)));
+}
+
+.sapUiIdeaCardContainerScaleHalf {
+    -webkit-transform: scale(0.5);
+    -webkit-transform-origin: 0 0;
+    -moz-transform: scale(0.5);
+    -moz-transform-origin: 0 0;
+    -ms-transform: scale(0.5);
+    transform: scale(0.5);
+    transform-origin: 0 0;
+    width: 130px;
+    height: 200px;    
+}
+
+html[data-sap-ui-browser="ie9"] .sapUiIdeaCardContainerScaleHalf {  
+    /* -ms-tranform-origin does not work */
+    margin-left: -32px;
+    margin-top: -50px;
+}
+
+.sapUiIdeaCardRepeaterMargin {
+	margin-bottom: 10px;
+	margin-right: 1px;
+}
+
+.sapUiIdeaCardFlipContainer {
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -moz-transform: perspective(1000px);
+    -moz-transform-style: preserve-3d;
+    -o-perspective: 1000;
+    perspective: 1000;    
+}
+
+.sapUiIdeaCardFlipContainer.sapUiIdeaCardIconMode {
+	margin-top: 0px;
+}
+
+html[data-sap-ui-browser="ie9"] .sapUiIdeaCardFlipTurn .sapUiIdeaCardFlip .sapUiIdeaCardFlipFront {
+    display: none;
+}
+
+html[data-sap-ui-browser="ie9"] .sapUiIdeaCardFlipTurn .sapUiIdeaCardFlip .sapUiIdeaCardFlipBack {
+    display: block;
+}
+
+/* required to display back of ideacard in IE10+ */
+html[data-sap-ui-browser*='ie'] .sapUiIdeaCardFlipBack {
+    backface-visibility : visible;
+}
+
+.sapUiIdeaCardFlipTurn .sapUiIdeaCardFlip {
+    -webkit-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+    transform: rotateY(-180deg);
+}
+
+.sapUiIdeaCardFlip {
+    -webkit-transition: all 0.6s;
+    -webkit-transform-style: preserve-3d;
+    -moz-transition: all 0.6s;
+    -moz-transform-style: preserve-3d;
+    transition: all 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.sapUiIdeaCardFlipFront, .sapUiIdeaCardFlipBack {
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background:  @sapUiExtraLightBG;
+}
+
+.sapUiIdeaCardFlipFront {
+    z-index: 2;
+    -webkit-transform: rotateY(0deg);
+    -webkit-transition: all 0s linear 0.2s;
+    -moz-transition: all 0s linear 0.2s;
+    -o-transition: all 0s linear 0.2s;
+    transition: all 0s linear 0.2s;  
+}
+
+.sapUiIdeaCardFlipTurn .sapUiIdeaCardFlipFront {
+    visibility : hidden;
+}
+
+.sapUiIdeaCardFlipInit .sapUiIdeaCardFlipFront {
+    visibility : visible;
+}
+
+.sapUiIdeaCardFlipTurnDelay .sapUiIdeaCardFlipBack {
+    z-index: 5;
+}
+
+.sapUiIdeaCardFlipBack {
+    -webkit-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+    transform: rotateY(-180deg);
+    overflow: hidden;    
+    -webkit-transition: all 0s linear 0.2s;
+    -moz-transition: all 0s linear 0.2s;
+    -o-transition: all 0s linear 0.2s;
+    transition: all 0s linear 0.2s;    
+}
+
+.sapUiIdeaCardFlipButton {
+    float: right;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    margin-top: 1px;
+    background-size: contain;
+    background-color: transparent;
+}
+
+.sapUiIdeaCardMoreButton {
+    font-size: 10px;
+    float: right;
+    margin-right: 10px;
+    margin-bottom: 6px;
+    color: @sapUiLightText;
+}
+
+.sapUiIdeaCardCurl {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 40px;
+}
+
+.sapUiIdeaCardCommentLink {
+    text-align: center;
+    text-decoration: none;
+    color: @sapUiLightText;
+    background-color: transparent;
+}
+
+.sapUiIdeaCardCommentImage {
+    background-repeat: no-repeat;
+    width: 26px;
+    height: 26px;
+}
+
+.sapUiIdeaCardCommentCount {
+    font-size: @sapUiFontSize;
+    font-weight: normal;
+    color: @sapUiLightText;
+    text-align: center;
+}
+
+.sapUiIdeaCardStarDescription {
+    font-size: @sapUiFontSize;
+    font-weight: normal;
+    color: @sapUiLightText;
+    text-align: center;
+    margin-top: -3px;
+}
+
+.sapUiIdeaCardTagsTitle {
+    font-weight: bold;
+    font-size: 10px; 
+}
+
+.sapUiIdeaCardTags {
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 2px;
+    padding-bottom: 6px;
+    
+    overflow: hidden;
+    max-height: 35px; /* need to be px */
+}
+
+.sapUiIdeaCardTagLink {
+    text-decoration: underline;
+}
+
+.sapUiIdeaCardTag {
+    display: inline-block;
+    margin-left: 2px;
+    font-size: @sapUiFontSmallSize;
+    margin-top: 2px;
+}
+
+.sapUiIdeaCardTag:hover {
+	text-decoration: underline;
+}
+
+.sapUiIdeaCardStarVoting {
+    line-height: 12px;
+    margin-top: -3px;
+}
+
+/********************** NO DATA **********************/
+
+.sapUiIdeaCardNoData {
+
+}
+
+.sapUiIdeaCardFlipContainer.sapUiIdeaCardNoData {
+    -webkit-perspective: none;
+    -moz-perspective: none;
+    -moz-transform: none;
+    -moz-transform-style: flat;
+    -o-perspective: none;
+    perspective: none;    
+}
+
+.sapUiIdeaCardFlipContainer.sapUiIdeaCardNoData.sapUiIdeaCardFlipTurn .sapUiIdeaCardFlip {
+    -webkit-transform: none;
+    -moz-transform: none;
+    transform: none;
+}
+
+.sapUiIdeaCardNoData .sapUiIdeaCardFlipFront,
+.sapUiIdeaCardNoData .sapUiIdeaCardFlipBack {
+    visibility: hidden;
+}

@@ -1,0 +1,11 @@
+schema="SAP_INO_EXT";
+
+query = "
+	select top 1 'X' as has_bo_privilege
+		from \"SYS\".\"EFFECTIVE_PRIVILEGES\"
+		where user_name=session_context('APPLICATIONUSER') 			and
+        	object_type = 'APPLICATIONPRIVILEGE' 					and
+        	privilege   = 'sap.ino.ui::backoffice.access'      		and
+        	is_valid    = 'TRUE'
+        with read only
+";

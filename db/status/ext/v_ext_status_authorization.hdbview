@@ -1,0 +1,18 @@
+schema = "SAP_INO_EXT";
+query = "
+    select  authorization_stage.ID,
+            authorization_stage.ID_OF_STATUS_STAGE,
+            authorization.action_code,
+            authorization.role_code,
+            authorization.can_do_action
+    from\"sap.ino.db.status::t_status_authorization_stage\" as authorization_stage
+    left outer join \"sap.ino.db.status::t_status_authorization\" as authorization
+    on authorization_stage.ID = authorization.ID_OF_STATUS_AUTHORIZATION_STAGE
+    left outer join \"sap.ino.db.status::t_status_stage\" as stage
+    on stage.ID = authorization_stage.ID_OF_STATUS_STAGE
+    with read only ";
+    
+depends_on_table = ["sap.ino.db.status::t_status_authorization",
+                    "sap.ino.db.status::t_status_authorization_stage",
+                    "sap.ino.db.status::t_status_stage"];   
+depends_on_view = ["sap.ino.db.status::v_status_authorization"];    

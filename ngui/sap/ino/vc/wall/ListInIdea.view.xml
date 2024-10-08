@@ -1,0 +1,17 @@
+<mvc:View
+    controllerName="sap.ino.vc.wall.ListInIdea"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:ino="sap.ino.controls">
+	<Button id="walllistinideaadd" icon="sap-icon://add" text="{i18n>WALL_BUT_WALL_PICKER_ADD_WALL}" press="onWallAdd" 
+	    visible="{view>/EDITABLE}"/>
+    <ino:WrappingList id="walllistinidea"
+        growing="true"
+        growingThreshold="{path : 'device>/system', formatter: '.formatter.listThreshold'}"
+        growingScrollToLoad="true"
+        itemPress="onItemPress"
+        showNoData="{= !${view>/EDITABLE}}"
+        wrapping="true">
+    </ino:WrappingList>
+</mvc:View>

@@ -1,0 +1,15 @@
+table.schemaName = "SAP_INO";
+table.tableType = COLUMNSTORE; 
+table.temporary = true;
+table.description = "Input table User Import";
+table.columns = [
+    {name = "LINE_NO";   sqlType = INTEGER;                nullable = true;                comment = "Line in the input file";},
+    {name = "USER_NAME"; sqlType = NVARCHAR; length = 256; nullable = true; unique = true; comment = "DB User Name like in table USERS";},
+    {name = "TYPE";      sqlType = VARCHAR;  length = 1;   nullable = true;                comment = "Type: E (Error), W (Warning), I(Information) ";},
+    {name = "MESSAGE";   sqlType = VARCHAR;  length = 100; nullable = true;},
+    {name = "REF_FIELD"; sqlType = VARCHAR;  length = 100; nullable = true;},
+    {name = "PARAM_0";   sqlType = NVARCHAR; length = 100; nullable = true;},
+    {name = "PARAM_1";   sqlType = NVARCHAR; length = 100; nullable = true;},
+    {name = "PARAM_2";   sqlType = NVARCHAR; length = 100; nullable = true;},
+    {name = "PARAM_3";   sqlType = NVARCHAR; length = 100; nullable = true;}
+];

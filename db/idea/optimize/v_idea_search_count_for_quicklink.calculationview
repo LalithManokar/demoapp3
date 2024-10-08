@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="v_idea_search_count_for_quicklink" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="SCRIPT_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" scriptParametersCaseSensitive="true">
+  <descriptions defaultDescription="v_ext_idea_search_count"/>
+  <metadata changedAt="2019-08-20 15:03:46.51"/>
+  <localVariables>
+    <variable id="searchToken" parameter="true">
+      <descriptions defaultDescription="searchToken"/>
+      <variableProperties datatype="VARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="campaign_id" parameter="true">
+      <descriptions defaultDescription="campaign_id"/>
+      <variableProperties datatype="VARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="phase" parameter="true">
+      <descriptions defaultDescription="phase"/>
+      <variableProperties datatype="VARCHAR" length="2048" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="status" parameter="true">
+      <descriptions defaultDescription="status"/>
+      <variableProperties datatype="VARCHAR" length="2048" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="resp_code" parameter="true">
+      <descriptions defaultDescription="resp_code"/>
+      <variableProperties datatype="VARCHAR" length="2048" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="dueFrom" parameter="true">
+      <descriptions defaultDescription="dueFrom"/>
+      <variableProperties datatype="VARCHAR" length="20" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="vote_count" parameter="true">
+      <descriptions defaultDescription="vote_count"/>
+      <variableProperties datatype="VARCHAR" length="10" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="vote_operator" parameter="true">
+      <descriptions defaultDescription="vote_operator"/>
+      <variableProperties datatype="VARCHAR" length="10" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="authorsToken" parameter="true">
+      <descriptions defaultDescription="authorsToken"/>
+      <variableProperties datatype="NVARCHAR" length="2048" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="coachsToken" parameter="true">
+      <descriptions defaultDescription="coachsToken"/>
+      <variableProperties datatype="NVARCHAR" length="2048" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="status_type" parameter="true">
+      <descriptions defaultDescription="status_type"/>
+      <variableProperties datatype="VARCHAR" length="100" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken" parameter="true">
+      <descriptions defaultDescription="Concatenated, comma separated list of tags"/>
+      <variableProperties datatype="VARCHAR" length="2048" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="oIdeaFilterChange" parameter="true">
+      <descriptions defaultDescription="oIdeaFilterChange"/>
+      <variableProperties datatype="VARCHAR" defaultValue="false" length="25" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="dueTo" parameter="true">
+      <descriptions defaultDescription="dueTo"/>
+      <variableProperties datatype="VARCHAR" defaultValue="undefined" length="20" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="firstFormCode" parameter="true">
+      <descriptions defaultDescription="firstFormCode"/>
+      <variableProperties datatype="VARCHAR" defaultValue="undefined" length="512" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="firstFormOp" parameter="true">
+      <descriptions defaultDescription="firstFormOperator"/>
+      <variableProperties datatype="INTEGER" defaultValue="undefined" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="firstFormValue" parameter="true">
+      <descriptions defaultDescription="firstFormValue"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="undefined" length="128" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="secondFormCode" parameter="true">
+      <descriptions defaultDescription="secondFormCode"/>
+      <variableProperties datatype="VARCHAR" defaultValue="undefined" length="512" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="secondFormOp" parameter="true">
+      <descriptions defaultDescription="secondFormOp"/>
+      <variableProperties datatype="INTEGER" defaultValue="undefined" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="secondFormValue" parameter="true">
+      <descriptions defaultDescription="secondFormValue"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="undefined" length="128" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="thirdFormCode" parameter="true">
+      <descriptions defaultDescription="thirdFormCode"/>
+      <variableProperties datatype="VARCHAR" defaultValue="undefined" length="512" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="thirdFormOp" parameter="true">
+      <descriptions defaultDescription="thirdFormOp"/>
+      <variableProperties datatype="INTEGER" defaultValue="undefined" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="thirdFormValue" parameter="true">
+      <descriptions defaultDescription="thirdFormValue"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="undefined" length="128" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="ideaFormCode" parameter="true">
+      <descriptions defaultDescription="ideaFormCode"/>
+      <variableProperties datatype="VARCHAR" defaultValue="&apos;&apos;" length="512" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken1" parameter="true">
+      <descriptions defaultDescription="tagsToken1"/>
+      <variableProperties datatype="NVARCHAR" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken2" parameter="true">
+      <descriptions defaultDescription="tagsToken2"/>
+      <variableProperties datatype="NVARCHAR" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken3" parameter="true">
+      <descriptions defaultDescription="tagsToken3"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+    <variable id="tagsToken4" parameter="true">
+      <descriptions defaultDescription="tagsToken4"/>
+      <variableProperties datatype="NVARCHAR" defaultValue="&apos;&apos;" length="256" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false" type="SingleValue"/>
+      </variableProperties>
+    </variable>
+  
+    <variable id="latestUpdate" parameter="true">
+      <descriptions defaultDescription="latestUpdate"/>
+      <variableProperties datatype="VARCHAR" length="2048" mandatory="false">
+        <valueDomain type="empty"/>
+        <selection multiLine="false"/>
+        <defaultRange/>
+      </variableProperties>
+    </variable>
+  
+    <variable id="filter_name" parameter="true">
+      <descriptions defaultDescription="bShowBackoffice"/>
+      <variableProperties datatype="VARCHAR" mandatory="false" length="100">
+        <valueDomain type="empty"/>
+        <selection multiLine="false"/>
+        <defaultRange/>
+      </variableProperties>
+    </variable>
+  </localVariables>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources/>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute datatype="VARCHAR" id="AMOUNT" length="100"/>
+        <viewAttribute datatype="VARCHAR" id="FILTER_NAME" length="100"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <localVariable>#searchToken</localVariable>
+      <localVariable>#campaign_id</localVariable>
+      <localVariable>#phase</localVariable>
+      <localVariable>#status</localVariable>
+      <localVariable>#resp_code</localVariable>
+      <localVariable>#dueFrom</localVariable>
+      <localVariable>#vote_count</localVariable>
+      <localVariable>#vote_operator</localVariable>
+      <localVariable>#authorsToken</localVariable>
+      <localVariable>#coachsToken</localVariable>
+      <localVariable>#status_type</localVariable>
+      <localVariable>#tagsToken</localVariable>
+      <localVariable>#oIdeaFilterChange</localVariable>
+      <localVariable>#dueTo</localVariable>
+      <localVariable>#firstFormCode</localVariable>
+      <localVariable>#firstFormOp</localVariable>
+      <localVariable>#firstFormValue</localVariable>
+      <localVariable>#secondFormCode</localVariable>
+      <localVariable>#secondFormOp</localVariable>
+      <localVariable>#secondFormValue</localVariable>
+      <localVariable>#thirdFormCode</localVariable>
+      <localVariable>#thirdFormOp</localVariable>
+      <localVariable>#thirdFormValue</localVariable>
+      <localVariable>#ideaFormCode</localVariable>
+      <localVariable>#tagsToken1</localVariable>
+      <localVariable>#tagsToken2</localVariable>
+      <localVariable>#tagsToken3</localVariable>
+      <localVariable>#tagsToken4</localVariable>
+      <localVariable>#latestUpdate</localVariable>
+      <localVariable>#filter_name</localVariable>
+      <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+    if length(:searchToken) = 0 then
+    lt_search_ideas = select id,1 as score from&quot;sap.ino.db.idea::t_idea&quot;;
+    else 
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.idea::p_idea_search&quot;(:searchToken, :lt_search_ideas);
+    end if; 
+    
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken, ',', :lt_tag_id_strings);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken1, ',', :lt_tag_id_strings1);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken2, ',', :lt_tag_id_strings2);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken3, ',', :lt_tag_id_strings3);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:tagsToken4, ',', :lt_tag_id_strings4);
+    
+    if length(:tagsToken) = 0 then
+        lt_tags_ideas = select id 
+                        from &quot;sap.ino.db.idea::t_idea&quot;
+                        where length(:tagsToken) = 0;
+    else
+        lt_tags_ideas = select tag.object_id as id
+                        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+                        where length(:tagsToken) &gt; 0 and 
+                               tag.tag_id in (select STRING from :lt_tag_id_strings) and
+                               tag.object_type_code = 'IDEA' 
+                        group by tag.object_id;
+    end if;
+     if length(:tagsToken1) = 0 then
+        lt_tags_ideas1 = select id 
+                        from &quot;sap.ino.db.idea::t_idea&quot;
+                        where length(:tagsToken1) = 0;
+    else
+        lt_tags_ideas1 = select tag.object_id as id
+                        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+                        where length(:tagsToken1) &gt; 0 and 
+                               tag.tag_id in (select STRING from :lt_tag_id_strings1) and
+                               tag.object_type_code = 'IDEA' 
+                        group by tag.object_id;
+    end if;
+     if length(:tagsToken2) = 0 then
+        lt_tags_ideas2 = select id 
+                        from &quot;sap.ino.db.idea::t_idea&quot;
+                        where length(:tagsToken2) = 0;
+    else
+        lt_tags_ideas2 = select tag.object_id as id
+                        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+                        where length(:tagsToken2) &gt; 0 and 
+                               tag.tag_id in (select STRING from :lt_tag_id_strings2) and
+                               tag.object_type_code = 'IDEA' 
+                        group by tag.object_id;
+    end if;
+    if length(:tagsToken3) = 0 then
+        lt_tags_ideas3 = select id 
+                        from &quot;sap.ino.db.idea::t_idea&quot;
+                        where length(:tagsToken3) = 0;
+    else
+        lt_tags_ideas3 = select tag.object_id as id
+                        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+                        where length(:tagsToken3) &gt; 0 and 
+                               tag.tag_id in (select STRING from :lt_tag_id_strings3) and
+                               tag.object_type_code = 'IDEA' 
+                        group by tag.object_id;
+    end if;
+    if length(:tagsToken4) = 0 then
+        lt_tags_ideas4 = select id 
+                        from &quot;sap.ino.db.idea::t_idea&quot;
+                        where length(:tagsToken4) = 0;
+    else
+        lt_tags_ideas4 = select tag.object_id as id
+                        from &quot;sap.ino.db.tag::t_object_tag&quot; tag 
+                        where length(:tagsToken4) &gt; 0 and 
+                               tag.tag_id in (select STRING from :lt_tag_id_strings4) and
+                               tag.object_type_code = 'IDEA' 
+                        group by tag.object_id;
+    end if;
+    
+    lt_final_tags_idea = select distinct group_0.id from:lt_tags_ideas  as group_0
+                        inner join :lt_tags_ideas1    as group_1
+                        on group_0.id = group_1.id
+                        inner join :lt_tags_ideas2    as group_2
+                        on group_0.id = group_2.id
+                        inner join :lt_tags_ideas3    as group_3
+                        on group_0.id = group_3.id
+                        inner join :lt_tags_ideas4    as group_4
+                        on group_0.id = group_4.id;
+    
+    
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:authorsToken, ',', :lt_author_ids);
+    author_filter = select distinct object_id from &quot;sap.ino.db.iam::t_object_identity_role&quot;
+                      where object_type_code = 'IDEA' and 
+                      length(:authorsToken) &gt; 0 and role_code = 'IDEA_SUBMITTER' and 
+                      identity_id in (select string from :lt_author_ids);
+                      
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:coachsToken, ',', :lt_coach_ids);
+    coach_filter = select distinct object_id from &quot;sap.ino.db.iam::t_object_identity_role&quot;
+                      where object_type_code = 'IDEA' and 
+                      length(:coachsToken) &gt; 0 and role_code = 'IDEA_COACH' and 
+                      identity_id in (select string from :lt_coach_ids);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:status, ',', :lt_status_ids);
+    status_filter = select distinct id as idea_id from &quot;sap.ino.db.idea::t_idea&quot;
+                      where length(:status) &gt; 0 and 
+                      status_code in (select string from :lt_status_ids);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:phase, ',', :lt_phase_ids);
+    phase_filter = select distinct id as idea_id from &quot;sap.ino.db.idea::t_idea&quot;
+                      where length(:phase) &gt; 0 and 
+                      phase_code in (select string from :lt_phase_ids);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:resp_code, ',', :lt_resp_ids);
+    resp_filter = select distinct id as idea_id from &quot;sap.ino.db.idea::t_idea&quot;
+                      where length(:resp_code) &gt; 0 and 
+                      RESP_VALUE_CODE in (select string from :lt_resp_ids);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:status_type, ',', :lt_status_type);
+    call &quot;SAP_INO&quot;.&quot;sap.ino.db.basis::p_string_splitter&quot;(:latestUpdate, ',', :lt_latestUpdate);
+    
+    latestUpdate_filter = select distinct id as idea_id from &quot;sap.ino.db.idea::v_idea_latest_for_view_type&quot;
+                          where length(:latestUpdate) &gt; 0 and view_type in (select string from :lt_latestUpdate);
+                      
+    idea_filter = select idea.id,
+        idea.status_code,
+        idea.CAMPAIGN_ID,
+        TO_DATE(follow_up.DATE) as follow_up_date
+    from&quot;sap.ino.db.idea::t_idea&quot; as idea 
+         inner join :lt_search_ideas as search
+         on idea.id = search.id
+        inner join :lt_final_tags_idea as tags
+         on tags.id = idea.id
+        inner join &quot;sap.ino.db.idea::v_auth_ideas_read&quot; as auth_ideas
+    	on idea.id = auth_ideas.idea_id
+        left outer join &quot;sap.ino.db.followup::v_follow_up&quot; as follow_up
+        on idea.id = follow_up.object_id and follow_up.object_type_code = 'IDEA'
+        left outer join &quot;sap.ino.db.idea::v_vote_idea_score&quot; as vote
+        on vote.idea_id = idea.id
+        left outer join &quot;sap.ino.db.status::t_status&quot; as status
+        on idea.status_code = status.code
+        where 
+            (length(:phase) = 0 or idea.id in (select idea_id from :phase_filter)) and 
+             (length(:latestUpdate) = 0 or idea.id in (select idea_id from :latestUpdate_filter)) and 
+            (length(:status) = 0 or idea.id in (select idea_id from :status_filter)) and 
+            (length(:resp_code) = 0 or idea.id in (select idea_id from :resp_filter)) and
+            (length(:campaign_id) = 0 or campaign_id = :campaign_id) and
+            (length(:vote_count) = 0 or (:vote_operator = 'GE' and vote.vote_count &gt;= :vote_count) or
+             (:vote_operator = 'EQ' and vote.vote_count = :vote_count) or (:vote_operator = 'LE' and vote.vote_count &lt;= :vote_count)) and
+            (length(:authorsToken) = 0 or idea.id in (select object_id from :author_filter)) and
+            (length(:coachsToken) = 0 or idea.id in (select object_id from :coach_filter)) and 
+            ( length(:status_type) = 0 or 
+                ('NEW' in (select string from :lt_status_type) and (status_code = 'sap.ino.config.NEW_IN_PHASE' or status_type = 'NEW')) or
+                ('COMPLETED' in (select string from :lt_status_type) and (status_code = 'sap.ino.config.COMPLETED' or status_type = 'COMPLETED')) or
+                ('NODISCONTINUED' in (select string from :lt_status_type) and (
+                    ((status_type = '' or status_type is null) and status_code not in ('sap.ino.config.DISCONTINUED', 'sap.ino.config.MERGED')) 
+                    or (SUBSTRING (status,1,14) &lt;&gt; 'sap.ino.config' and status_type not in ( 'DISCONTINUED') )
+                )) or
+                ('DISCONTINUED' in (select string from :lt_status_type) and (status_code in ('sap.ino.config.DISCONTINUED', 'sap.ino.config.MERGED') or status_type = 'DISCONTINUED')) or
+                ('ACTIVE' in (select string from :lt_status_type) and (
+                    ((status_type = '' or status_type is null) and status_code not in ('sap.ino.config.DISCONTINUED', 'sap.ino.config.MERGED', 'sap.ino.config.COMPLETED', 'sap.ino.config.NEW_IN_PHASE')) 
+                    or (SUBSTRING (status,1,14) &lt;&gt; 'sap.ino.config' and status_type not in ('COMPLETED', 'DISCONTINUED', 'NEW') )
+                ))
+            );  
+  
+  idea_filter_manage = select idea.id,
+    idea.status_code,
+    idea.CAMPAIGN_ID,
+    follow_up.DATE AS follow_up_date
+    from&quot;sap.ino.db.idea::t_idea&quot; as idea 
+         inner join :lt_search_ideas as search
+         on idea.id = search.id
+        inner join :lt_final_tags_idea as tags
+         on tags.id = idea.id
+        inner join &quot;sap.ino.db.idea::v_auth_ideas_read&quot; as auth_ideas
+    	on idea.id = auth_ideas.idea_id
+        left outer join &quot;sap.ino.db.followup::v_follow_up&quot; as follow_up
+        on idea.id = follow_up.object_id and follow_up.object_type_code = 'IDEA'
+        left outer join &quot;sap.ino.db.idea::v_vote_idea_score&quot; as vote
+        on vote.idea_id = idea.id
+        left outer join &quot;sap.ino.db.status::t_status&quot; as status
+        on idea.status_code = status.code
+        where 
+            (length(:phase) = 0 or idea.id in (select idea_id from :phase_filter)) and 
+            (length(:latestUpdate) = 0 or idea.id in (select idea_id from :latestUpdate_filter)) and             
+            (length(:status) = 0 or idea.id in (select idea_id from :status_filter)) and 
+            (length(:resp_code) = 0 or idea.id in (select idea_id from :resp_filter)) and
+            (length(:campaign_id) = 0 or campaign_id = :campaign_id) and
+            (length(:vote_count) = 0 or (:vote_operator = 'GE' and vote.vote_count &gt;= :vote_count) or
+             (:vote_operator = 'EQ' and vote.vote_count = :vote_count) or (:vote_operator = 'LE' and vote.vote_count &lt;= :vote_count)) and
+            (length(:authorsToken) = 0 or idea.id in (select object_id from :author_filter)) and
+            (length(:coachsToken) = 0 or idea.id in (select object_id from :coach_filter)) and 
+            (:oIdeaFilterChange = 'false' or 
+                (:oIdeaFilterChange = 'true' and 
+                   (status_code is null or status_code not in ('sap.ino.config.DISCONTINUED' , 'sap.ino.config.MERGED' , 'sap.ino.config.COMPLETED'))
+                   and (status_type is null or status_type not in ('COMPLETED', 'DISCONTINUED'))
+                )
+            ) and       
+            ( length(:status_type) = 0 or 
+                ('NEW' in (select string from :lt_status_type) and (status_code = 'sap.ino.config.NEW_IN_PHASE' or status_type = 'NEW')) or
+                ('COMPLETED' in (select string from :lt_status_type) and (status_code = 'sap.ino.config.COMPLETED' or status_type = 'COMPLETED')) or
+                ('NODISCONTINUED' in (select string from :lt_status_type) and (status_code not in ('sap.ino.config.DISCONTINUED' , 'sap.ino.config.MERGED'))) or
+                ('DISCONTINUED' in (select string from :lt_status_type) and (status_code in ('sap.ino.config.DISCONTINUED', 'sap.ino.config.MERGED') or status_type = 'DISCONTINUED')) or
+                ('ACTIVE' in (select string from :lt_status_type) and (
+                    ((status_type = '' or status_type is null) and status_code not in ('sap.ino.config.DISCONTINUED', 'sap.ino.config.MERGED', 'sap.ino.config.COMPLETED', 'sap.ino.config.NEW_IN_PHASE')) 
+                    or (SUBSTRING (status,1,14) &lt;&gt; 'sap.ino.config' and status_type not in ('COMPLETED', 'DISCONTINUED', 'NEW') )
+                ))
+            );
+  
+                    
+    IF(length(:dueFrom)&gt;0 AND length(:dueTo) &gt; 0) THEN
+        idea_filter = SELECT * FROM :idea_filter WHERE follow_up_date &gt;= TO_DATE(:dueFrom) AND follow_up_date &lt;= TO_DATE(:dueTo);
+        idea_filter_manage = SELECT * FROM :idea_filter_manage WHERE follow_up_date &gt;= TO_DATE(:dueFrom) AND follow_up_date &lt;= TO_DATE(:dueTo);
+    ELSEIF(length(:dueFrom)&gt;0) THEN
+        idea_filter = SELECT * FROM :idea_filter WHERE follow_up_date = TO_DATE(:dueFrom);
+        idea_filter_manage = SELECT * FROM :idea_filter_manage WHERE follow_up_date = TO_DATE(:dueFrom);
+    ELSEIF(length(:dueTo)&gt;0) THEN
+        idea_filter = SELECT * FROM :idea_filter WHERE follow_up_date = TO_DATE(:dueTo);
+        idea_filter_manage = SELECT * FROM :idea_filter_manage WHERE follow_up_date = TO_DATE(:dueTo);
+    END IF;
+    
+    IF(LENGTH(:ideaFormCode)&gt;0) THEN
+        idea_filter = SELECT DISTINCT idea.* FROM &quot;sap.ino.db.campaign::t_campaign&quot; AS camp
+                            INNER JOIN :idea_filter AS idea
+                            ON camp.id = idea.campaign_id
+                            WHERE camp.form_code = :ideaFormCode OR camp.admin_form_code = :ideaFormCode;
+        idea_filter_manage = SELECT DISTINCT idea.* FROM &quot;sap.ino.db.campaign::t_campaign&quot; AS camp
+                            INNER JOIN :idea_filter_manage AS idea
+                            ON camp.id = idea.campaign_id
+                            WHERE camp.form_code = :ideaFormCode OR camp.admin_form_code = :ideaFormCode;
+    END IF;
+    
+    IF(LENGTH(:firstFormCode)&gt;0  AND LENGTH(:firstFormValue) &gt; 0) THEN
+        call &quot;SAP_INO&quot;.&quot;sap.ino.db.idea.ext::p_idea_filter_form&quot;(:firstFormCode,:firstFormOp,:firstFormValue,:secondFormCode,:secondFormOp,:secondFormValue,:thirdFormCode,:thirdFormOp,:thirdFormValue, :lt_filter_ideaform);
+        idea_filter = SELECT DISTINCT idea.* FROM :lt_filter_ideaform AS form
+                            INNER JOIN :idea_filter AS idea
+                            ON form.id = idea.id;
+        idea_filter_manage = SELECT DISTINCT idea.* FROM :lt_filter_ideaform AS form
+                            INNER JOIN :idea_filter_manage AS idea
+                            ON form.id = idea.id;
+    END IF;
+    
+    IF :filter_name = 'manage' THEN
+    var_out = 
+                select COUNT(distinct idea.id) as AMOUNT ,'IdeaTobeManaged' as FILTER_NAME  
+               from &quot;sap.ino.db.idea::t_idea&quot; as idea
+               inner join :idea_filter_manage as idea_filter
+                  on idea_filter.id = idea.id
+                  left outer join &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; as my_backoffice_campaign
+                    on idea.campaign_id = my_backoffice_campaign.id
+                  left outer join &quot;sap.ino.db.idea::v_my_backoffice_responsibility_idea&quot; as my_backoffice_responsibility_idea
+                    on idea.id = my_backoffice_responsibility_idea.id
+                  where (
+                 		idea.campaign_id = my_backoffice_campaign.id or 
+                       	idea.campaign_id is null or 
+                       	idea.campaign_id &lt;= 0 or
+                        idea.id = my_backoffice_responsibility_idea.id
+                        ) and idea.status_code &lt;&gt; 'sap.ino.config.DRAFT'; 
+    elseif  :filter_name = 'managedcompleted' THEN
+    var_out =            select COUNT(distinct idea.id) as AMOUNT ,'ManagedCompletedIdeas' as FILTER_NAME  
+                from &quot;sap.ino.db.idea::t_idea&quot; as idea
+               inner join :idea_filter_manage as idea_filter
+                  on idea_filter.id = idea.id
+                  inner join &quot;sap.ino.db.idea::v_completed_ideas&quot; as filter
+                   on filter.ID = idea.id
+                  left outer join &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; as my_backoffice_campaign
+                    on idea.campaign_id = my_backoffice_campaign.id
+                  left outer join &quot;sap.ino.db.idea::v_my_backoffice_responsibility_idea&quot; as my_backoffice_responsibility_idea
+                    on idea.id = my_backoffice_responsibility_idea.id
+                  where (
+                 		idea.campaign_id = my_backoffice_campaign.id or 
+                       	idea.campaign_id is null or 
+                       	idea.campaign_id &lt;= 0 or
+                        idea.id = my_backoffice_responsibility_idea.id
+                        ) and idea.status_code &lt;&gt; 'sap.ino.config.DRAFT'; 
+     elseif  :filter_name = 'follow' THEN
+     var_out =           select COUNT(idea.id) as AMOUNT ,'followedupIdeas' as FILTER_NAME  
+                from &quot;sap.ino.db.idea::v_followed_up_ideas&quot; as idea
+                inner join :idea_filter_manage as idea_filter
+                  on idea_filter.id = idea.id;
+     elseif  :filter_name = 'unassigned' THEN
+     var_out =          select COUNT(distinct idea.id) as AMOUNT ,'unassignedCoach' as FILTER_NAME  
+                   from &quot;sap.ino.db.idea::t_idea&quot; as idea
+                   inner join :idea_filter_manage as idea_filter
+                  on idea_filter.id = idea.id
+                   left outer join &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; as backoffice_campaign
+                   on backoffice_campaign.ID = idea.CAMPAIGN_ID
+                   left outer join &quot;sap.ino.db.idea::v_my_backoffice_responsibility_idea&quot; as responsibility_idea
+                   on responsibility_idea.ID = idea.ID
+                   where idea.id not in (select object_id from &quot;sap.ino.db.iam::t_object_identity_role&quot; where
+                                                             object_type_code = 'IDEA' and 
+                                                             role_code = 'IDEA_COACH')  and (
+                                                              
+                 		idea.campaign_id = backoffice_campaign.id or 
+                       	idea.campaign_id is null or 
+                       	idea.campaign_id &lt;= 0 or
+                        idea.id = responsibility_idea.id
+                 ) and idea.status_code &lt;&gt; 'sap.ino.config.DRAFT'; 
+     elseif  :filter_name = 'coachme' THEN
+     var_out =           select COUNT(distinct idea.id) as AMOUNT ,'coachedIdeasByMe' as FILTER_NAME 
+                    from :idea_filter_manage as idea
+                        inner join &quot;sap.ino.db.idea::v_my_coached_ideas&quot;  as filter
+                   on filter.ID = idea.ID
+                        left outer join &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; as backoffice_campaign
+                   on backoffice_campaign.ID = idea.CAMPAIGN_ID
+                   left outer join &quot;sap.ino.db.idea::v_my_backoffice_responsibility_idea&quot; as responsibility_idea
+                   on responsibility_idea.ID = idea.ID
+                   where 
+                 		idea.campaign_id = backoffice_campaign.id or 
+                       	idea.campaign_id is null or 
+                       	idea.campaign_id &lt;= 0 or
+                        idea.id = responsibility_idea.id;
+                   
+     elseif  :filter_name = 'evaldone' THEN
+     var_out =                  select COUNT(distinct idea.id)as AMOUNT ,'evaluatedIdeas' as FILTER_NAME 
+                       from :idea_filter_manage as idea
+                         inner join &quot;sap.ino.db.idea::v_evaluated_ideas&quot;  as filter
+                   on filter.ID = idea.ID
+                        left outer join &quot;sap.ino.db.campaign::v_my_backoffice_campaign&quot; as backoffice_campaign
+                   on backoffice_campaign.ID = idea.CAMPAIGN_ID
+                   left outer join &quot;sap.ino.db.idea::v_my_backoffice_responsibility_idea&quot; as responsibility_idea
+                   on responsibility_idea.ID = idea.ID
+                   where   
+                 		idea.campaign_id = backoffice_campaign.id or 
+                       	idea.campaign_id is null or 
+                       	idea.campaign_id &lt;= 0 or
+                        idea.id = responsibility_idea.id;
+                   
+                
+               
+    
+    elseif  :filter_name = 'all' THEN
+    
+   var_out = select COUNT(idea.id) as AMOUNT ,'all' as  FILTER_NAME  
+                  from :idea_filter as idea
+                  where idea.status_code &lt;&gt; 'sap.ino.config.DRAFT'; 
+    elseif  :filter_name = 'my' THEN
+    var_out =            select COUNT(idea.id) as AMOUNT ,'myAuthoredIdeas' as FILTER_NAME  
+                   from &quot;sap.ino.db.idea::v_my_authored_ideas&quot; as idea
+                   inner join :idea_filter as idea_filter
+                  on idea_filter.id = idea.id;
+    elseif  :filter_name = 'voted' THEN
+    var_out =            select COUNT(idea.idea_id) as AMOUNT ,'myVotedIdeas' as  FILTER_NAME 
+               		from &quot;sap.ino.db.idea::v_my_voted_ideas&quot; as idea
+               		inner join :idea_filter as idea_filter
+                  on idea_filter.id = idea.idea_id;
+     elseif  :filter_name = 'commented' THEN
+     var_out =           select COUNT(idea.idea_id) as AMOUNT ,'myCommentedIdeas' as FILTER_NAME 
+               from &quot;sap.ino.db.idea::f_my_commented_ideas&quot;()  as idea
+               inner join :idea_filter as idea_filter
+                  on idea_filter.id = idea.idea_id;
+     elseif  :filter_name = 'vote' THEN
+     var_out =        select COUNT(idea.id) as AMOUNT ,'ideasIcanVoteFor' as FILTER_NAME  
+                   from  :idea_filter as idea
+                  inner join  &quot;sap.ino.db.idea::v_vote_ideas&quot; as filter
+                  on idea.id = filter.id
+                  where  idea.status_code &lt;&gt; 'sap.ino.config.DRAFT';
+    elseif  :filter_name = 'completed' THEN
+    var_out =       select COUNT(distinct idea.id) as  AMOUNT ,'completedIdeas' as  FILTER_NAME 
+                   from :idea_filter as idea
+                   inner join &quot;sap.ino.db.idea::v_completed_ideas&quot; as filter
+                   on filter.ID = idea.ID;
+     elseif  :filter_name = 'eval' THEN
+     var_out =            select COUNT(idea.id) as AMOUNT ,'myEvaluatedIdeas' as  FILTER_NAME  
+                   from &quot;sap.ino.db.idea::v_my_evaluated_ideas&quot; as idea
+                   inner join :idea_filter as idea_filter
+                  on idea_filter.id = idea.id;
+    elseif  :filter_name = 'evalpending' THEN
+    var_out =     select COUNT(idea.id) as AMOUNT ,'myEvaluatableIdeas' as  FILTER_NAME  
+                   from &quot;sap.ino.db.idea::v_my_evaluation_pending&quot; as idea
+                   inner join :idea_filter as idea_filter
+                  on idea_filter.id = idea.id;
+     elseif  :filter_name = 'evalopen' THEN
+     var_out =                    select COUNT(distinct idea.id)as AMOUNT ,'openForEvaluation' as FILTER_NAME 
+                       from :idea_filter as idea
+                        inner join &quot;sap.ino.db.idea::v_my_evaluation_open&quot;  as filter
+                   on filter.ID = idea.ID
+                 ; 
+    END IF;
+END /********* End Procedure Script ************/</definition>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Script_View">
+    <descriptions/>
+    <attributes>
+      <attribute id="FILTER_NAME" order="2">
+        <descriptions/>
+        <keyMapping columnObjectName="Script_View" columnName="FILTER_NAME"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="AMOUNT" order="1" aggregationType="count" measureType="simple">
+        <descriptions defaultDescription="COL"/>
+        <measureMapping columnObjectName="Script_View" columnName="AMOUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

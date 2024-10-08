@@ -1,0 +1,699 @@
+/* NOTE: This file was generated as an optimized version of "library.source.less" for the Theme Designer. */
+
+/*!
+ * SAP UI development toolkit for HTML5 (SAPUI5)
+ *
+ * (c) Copyright 2009-2024 SAP SE. All rights reserved
+ */
+
+@import "../base/library.less";
+@import "../../../../../../Base/baseLib/sap_bluecrystal/base.less"; /* ORIGINAL IMPORT PATH: "../../../../../sap/ui/core/themes/sap_bluecrystal/base.less" */
+
+@import "../../../../../sap/ui/core/themes/sap_bluecrystal/global.less";
+
+/* START "Campaign.less" */
+
+.sapInoIdentityProfile {
+    background-color:#fff;
+}
+
+
+.sapCampaignHomePage{
+    .sapMPanelContent{
+        border:1px solid #f2f2f2;
+    }
+    .sapInoIdentityProfile {
+        border:none;
+       
+        .createIdeaButton {
+
+            .sapMBtnInner.sapMBtnEmphasized{
+                background-color:#5F95C2;
+                border:1px solid #4d89bb;
+            }
+            .sapMBtnInner:hover.sapMBtnHoverable{
+                background-color:#507ea4;
+            }
+            .sapMBtnInner:focus.sapMFocusable{
+                background-color:#436989;
+            }
+        }
+    }
+
+    .sapMBtn.isRegisted{
+        .sapMBtnInner{
+            background-color:#F0F0F0;
+        }
+        & .sapMBtnTransparent{
+            color:#666;
+            background-color:#F0F0F0;
+            border:1px solid #bfbfbf;
+        }
+        
+        &:hover .sapMBtnHoverable{
+            color:#fff;
+            background-color:#d1445a;
+        }
+        &:focus .sapMFocusable {
+            color:#fff;
+            background-color:#b63c4f;
+        }
+        
+        &:hover .sapMBtnIcon{
+            color:#fff;
+        }
+    }
+}
+
+.sapRegistrationHomePage{
+    .sapMPanelContent{
+        border:1px solid #f2f2f2;
+    }
+    .sapInoIdentityProfile {
+        border:none;
+    }
+    .sapMBtn.registerButton{
+        .sapMBtnDefault{
+            background-color:#F0F0F0;
+        }
+        .sapMBtnHoverable{
+            color:#666;
+            background-color:#F0F0F0;
+            border:1px solid #bfbfbf;
+        }
+        
+    }
+}
+
+.indentityProfile.sapInoIdentityProfile {
+    border:none;
+    .createIdeaButton {
+        .sapMBtnInner.sapMBtnEmphasized{
+            background-color:#5F95C2;
+            border:1px solid #4d89bb;
+        }
+        .sapMBtnInner:hover.sapMBtnHoverable{
+            background-color:#507ea4;
+        }
+        .sapMBtnInner:focus.sapMFocusable{
+            background-color:#436989;
+        }
+    }
+    .createBlogButton{
+        .sapMBtnInner.sapMBtnEmphasized{
+            background-color:#5F95C2;
+            border:1px solid #4d89bb;
+        }
+        .sapMBtnInner:hover.sapMBtnHoverable{
+            background-color:#507ea4;
+        }
+        .sapMBtnInner:focus.sapMFocusable{
+            background-color:#436989;
+        }
+    }
+}
+
+/* END "Campaign.less" */
+
+/* START "ColorPicker.less" */
+.sapInoColorPicker-ColorPickerSlider.sapInoSliHori .sapInoSliBar,
+.sapInoColorPicker-ColorPickerSlider.sapInoSliHori .sapInoSliBar .sapInoSliHiLi
+	{
+	border: none;
+	background-color: transparent;
+}
+
+.sapInoColorPicker-ColorPickerAlphaSlider.sapInoSliHori .sapInoSliBar,
+.sapInoColorPicker-ColorPickerAlphaSlider.sapInoSliHori .sapInoSliBar .sapInoSliHiLi
+	{
+	border: none;
+	background-color: transparent;
+}
+
+html[data-sap-ui-browser="ie9"] .sapInoColorPicker-ColorPickerAlphaSlider.sapInoSliHori .sapInoSliBar {
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/ColorPicker/Alphaslider_BG.png') progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#FF000000',GradientType=1 );
+}
+/* END "ColorPicker.less" */
+
+/* START "EvaluationMatrix.less" */
+.sapUiInoEvaluationMatrixLabel {
+    font-size: @sapUiDesktopFontSize;
+}
+
+.sapUiInoEvaluationMatrixCoordinate {
+    font-size: @sapUiDesktopFontSize;
+}
+/* END "EvaluationMatrix.less" */
+
+/* START "follow.less" */
+// Class fro campaign
+
+.sapInoCampaignFollowButton{
+    .CampaignCardFollow{
+        .sapMBtnInner{
+            border:1px solid #bfbfbf;
+            background:#F6F6F6;
+        }
+        .sapMBtnHoverable:hover{
+            background-color:#e7e7e7;
+        }
+        .sapMBtnHoverable:focus,
+        .sapMBtnHoverable:focus {
+            background-color:#e7e7e7;
+        }
+ 
+    }
+    .CampaignCardFollow.isActive {
+        .sapMBtnInner{
+            border:1px solid #bfbfbf;
+        }
+        .sapMBtnTransparent{
+            color:#666;
+        }
+        .sapMBtnInner{
+            background-color:#F0F0F0;
+        }
+        .sapMBtn:hover>.sapMBtnInner{
+            background-color:#F0F0F0;
+        }
+        
+        .sapMBtn:hover.isHover>.sapMBtnInner{
+            background-color:#d1445a;
+        }
+        .sapMBtn:focus.isHover>.sapMBtnInner{
+            background-color:#b63c4f;
+        }
+        
+        .sapMBtn:focus.isHover .sapMBtnIcon,
+        .sapMBtn:hover.isHover .sapMBtnIcon{
+            color:#fff;
+        }
+        
+        .sapMBtnInner>.sapMBtnIcon {
+            color:#92C73A ;
+        }
+        .sapMToggleBtnPressed{
+           // border:none;
+        }  
+    }
+}
+
+// Class for idea list 
+.ideaListFollow{
+    .sapMBtnInner{
+        border:1px solid #bfbfbf;
+    }
+    .sapMBtn {
+        background-color:#F6F6F6;
+    }
+    
+    .sapMBtn:hover,
+    .sapMBtn:hover>.sapMBtnTransparent.sapMBtnHoverable{
+        background-color:#e7e7e7;
+    }
+    .sapMBtn:focus,
+    .sapMBtn:focus>.sapMBtnTransparent.sapMFocusable {
+        background-color:#e7e7e7;
+    }
+}
+.ideaListFollow.isActive{
+    .sapMBtnInner{
+        border:1px solid #bfbfbf;
+    }
+    .sapMBtn {
+        background-color:#F0F0F0;
+        border-radius: 100%;
+    }
+
+    .sapMBtnTransparent{
+        color:#666;
+    }
+    
+    .sapMBtn:hover ,
+    .sapMBtn:hover>.sapMBtnTransparent.sapMBtnHoverable{
+        background-color:#F0F0F0;
+    }
+    .sapMBtn:hover.isHover,
+    .sapMBtn:hover.isHover>.sapMBtnTransparent.sapMBtnHoverable{
+        background-color:#d1445a;
+    }
+    .sapMBtn:focus,
+    .sapMBtn:focus>.sapMBtnTransparent.sapMFocusable {
+        background-color:#b63c4f;
+    }
+    
+    .sapMBtn:focus>.sapMBtnTransparent,
+    .sapMBtn:hover.isHover>.sapMBtnTransparent,
+    .sapMBtn:focus>.sapMBtnTransparent>.sapMBtnIcon,
+    .sapMBtn:hover.isHover>.sapMBtnTransparent>.sapMBtnIcon{
+        color:#fff;
+    }
+    
+    .sapMBtn>.sapMBtnTransparent>.sapMBtnIcon {
+        color:#92C73A ;
+    }
+    .sapMToggleBtnPressed{
+        //border:none;
+        background:none;
+    }    
+} 
+
+//class for tag list
+.tagListFollow {
+    color:#fff;
+
+    .sapMBtn>.sapMBtnTransparent{
+        color:#fff;
+        background-color:#5F95C2;
+        border:1px solid #4d89bb;
+    }
+    .sapMBtn:hover>.sapMBtnTransparent.sapMBtnHoverable{
+        background-color:#507ea4;
+    }
+    .sapMBtn:focus>.sapMBtnTransparent.sapMFocusable {
+        background-color:#436989;
+    }
+    .sapMBtn>.sapMBtnTransparent>.sapMBtnIcon {
+        color:#fff;
+    }
+}
+.tagListFollow.isActive{
+
+    .sapMBtnInner{
+        background-color:#F0F0F0;
+    }
+    .sapMBtn>.sapMBtnTransparent{
+        color:#666;
+        background-color:#F0F0F0;
+        border:1px solid #bfbfbf;
+    }
+    
+    .sapMBtn:hover>.sapMBtnTransparent.sapMBtnHoverable{
+        color:#666;
+        background-color:#F0F0F0;
+    }
+    
+    .sapMBtn:hover.isHover>.sapMBtnTransparent.sapMBtnHoverable{
+        color:#fff;
+        background-color:#d1445a;
+    }
+    .sapMBtn:focus.isHover>.sapMBtnTransparent.sapMFocusable {
+        color:#fff;
+        background-color:#b63c4f;
+    }
+    
+    .sapMBtn:hover.isHover>.sapMBtnTransparent>.sapMBtnIcon{
+        color:#fff;
+    }
+    
+    .sapMBtn>.sapMBtnTransparent>.sapMBtnIcon {
+        color:#666;
+    }
+    .sapMBtn>.sapMBtnInner.sapMToggleBtnPressed{
+        background-color:none;
+    } 
+}
+.ideaDetailFollow{
+    .sapMToggleBtnPressed{
+        background:none;
+        border:none;
+    }    
+}
+.ideaDetailFollow.isActive{
+    .sapMBtn>.sapMBtnTransparent>.sapMBtnIcon {
+        color:#f0ab00 !important;
+    }
+    .sapMToggleBtnPressed{
+        background:none;
+        border:none;
+    }
+    .sapMBtn:focus>.sapMBtnTransparent,
+    .sapMBtn:hover>.sapMBtnTransparent,
+    .sapMBtn:focus>.sapMBtnTransparent>.sapMBtnIcon,
+    .sapMBtn:hover>.sapMBtnTransparent>.sapMBtnIcon{
+        background:none;
+    }
+}
+.campaignHomeFollow{
+    color:#fff;
+    .sapMBtn>.sapMBtnTransparent{
+        color:#fff;
+        background-color:#5F95C2;
+        border:1px solid #4d89bb;
+    }
+    .sapMBtn:hover>.sapMBtnTransparent.sapMBtnHoverable{
+        background-color:#507ea4;
+    }
+    .sapMBtn:focus>.sapMBtnTransparent.sapMFocusable {
+        background-color:#436989;
+    }
+    .sapMBtn>.sapMBtnTransparent>.sapMBtnIcon {
+        color:#fff;
+    }
+}
+.campaignHomeFollow.isActive{
+    .sapMBtnInner{
+        background-color:#F0F0F0;
+    }
+    .sapMBtn>.sapMBtnTransparent{
+        color:#666;
+        background-color:#F0F0F0;
+        border:1px solid #bfbfbf;
+    }
+    
+      .sapMbtn:focus>.sapMBtnTransparent.sapMFocusable,
+    .sapMBtn:hover>.sapMBtnTransparent.sapMBtnHoverable{
+        color:#666;
+        background-color:#F0F0F0;
+    }
+    
+    .sapMBtn:hover.isHover>.sapMBtnTransparent.sapMBtnHoverable{
+        color:#fff;
+        background-color:#d1445a;
+    }
+    .sapMBtn:focus.isHover>.sapMBtnTransparent.sapMFocusable {
+        color:#fff;
+        background-color:#b63c4f;
+    }
+    
+    .sapMBtn:focus.isHover>.sapMBtnTransparent>.sapMBtnIcon,
+    .sapMBtn:hover.isHover>.sapMBtnTransparent>.sapMBtnIcon{
+        color:#fff;
+    }
+    
+    .sapMBtn>.sapMBtnTransparent>.sapMBtnIcon {
+        color:#666;
+    }
+    .sapMBtn>.sapMBtnInner.sapMToggleBtnPressed{
+        background-color:none;
+    } 
+}
+
+/* END "follow.less" */
+
+/* START "GenericStyle.less" */
+
+
+.sapInoColorLightGray,
+.sapInoInnoMgmtMShell .sapMObjLIconDiv>.sapMObjLIcon {
+    color: darken(@sapInoGroupContentBackground, 25);
+}
+
+/* ************** Icon for FeedEntry ************** */
+.sapInoInnoMgmtMShell .sapMFeedListItemFigure> .sapMFeedListItemImage {
+    background-color: darken(@sapInoGroupContentBackground, 5);
+}
+
+/* search field positioning */
+.sapInoInnoMgmtShell .sapUiUfdShellSearch {
+    position: absolute;
+    right: 0px;
+    width: initial;
+}
+
+.sapUiSizeCozy .sapInoInnoMgmtShell .sapUiUfdShellSearch {
+    bottom: 2px;
+}
+
+.sapInoEvaluationOverallResultText {
+    color: @sapInoNeutralElement;
+    background-color: @sapInoActiveBG;
+}
+
+/**********MOBILE CANCEL BUTTON********************/
+
+.sapInoMobileCancel .sapMActionSheetCancelButton .sapMBtnReject{
+    background-color: #007cc0;
+    border-color: #007cc0;
+}
+
+div.sapInoMobileCancel .sapMActionSheetCancelButton .sapMBtnReject.sapMBtnActive{
+    background-color: #007cc0;
+    border-color: #007cc0;
+}
+
+/**********LIST********************/
+
+.sapInoListToolbar.sapMTB-Solid-CTX.sapMTB {
+    background-color: transparent;
+    border-bottom: 0;
+}
+
+/***************************Navigation Bar*************************************/
+
+.sapInoNavigation .sapInoActiveNavigationListItem,
+.sapInoNavigation .sapInoActiveNavigationListItem:hover{
+  background-color: @sapInoBelizeDarkBackground;
+  color: @sapInoTextInverted;
+  border: none;
+}
+
+.sapInoInnoMgmtShell .sapTntToolPageAsideContent,
+.sapInoInnoMgmtShell .sapTntSideNavigation,
+.sapInoNavigation .sapTntNavLIGroup.sapTntNavLIItem {
+    background-color: @sapInoBelizeBackground;
+}
+
+.sapInoNavigation .sapTntNavLIGroup.sapTntNavLIItem:hover,
+.sapInoNavigation .sapInoNavigationListSelect .sapInoNavLIItemSelected .sapTntNavLIGroup.sapTntNavLIItem {
+    background-color: @sapInoBelizeLightBackground;
+}
+
+.sapInoNavigation .sapTntNavLIGroup.sapTntNavLIItem:hover,
+.sapInoNavigation .sapTntNavLIGroup.sapTntNavLIItem:active,
+.sapInoNavigation .sapTntNavLIGroup {
+    border-bottom: 1px solid @sapInoBelizeBorderColor;
+}
+
+.sapInoNavigation .sapTntNavLIGroup.sapTntNavLIItem:hover > .sapUiIcon {
+    color: @sapUiWhite;
+}
+
+
+.sapInoNavigation .sapInoNavigationListSelect .sapInoNavLIItemSelected .sapTntNavLIGroup.sapTntNavLIItem .sapUiIcon {
+    color: @sapUiWhite;
+}
+
+.sapInoNavigation .sapTntNavLIGroup.sapTntNavLIItem .sapTntNavLIText {
+    color: @sapLightestBackground;
+}
+
+.sapInoNavigation .sapUiIcon,
+.sapInoNavigation .sapTntNavLIItemSelected .sapTntNavLIGroup>.sapUiIcon,
+.sapInoActiveNavigationListItemButton.sapMBtn .sapMBtnTransparent>.sapMBtnIcon {
+	color: @sapInoBelizeIconColor;
+}
+
+.sapInoNavigation .sapTntNavLI li:focus::before, 
+.sapInoNavigation .sapTntNavLIItem:focus::before {
+    border: 0.125rem dotted @sapLightestBackground;
+    position: absolute;
+    content: " ";
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    left: 1px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/**************************** CAMPAIGN COMMENTS ************************************/
+.sapInoCampaignCommentBubbleDialog {
+    background: @sapInoWhiteBG;
+ }
+
+.sapInoCampaignCommentBubbleDialog:after {
+    border-color: transparent @sapInoWhiteBG;
+ }
+
+.sapInoCampaignCommentBubbleDialog:before {
+    border-color: transparent @sapInoLightBorder;
+ }
+ 
+ /*************************** IDEA **************************************************/
+ .sapInoIdeaHeaderContainer {
+    .sapUxAPObjectPageHeaderObjectImageContainer .sapUiIcon {
+        color: white;
+        background-color: #679ac5;
+    }
+ }
+ 
+ .sapInoIdeaCardIdeaLink .sapUiIcon {
+    color: white;
+    background-color: #679ac5;
+ }
+//
+.sapInoInnoMgmtShell .sapUiUfdShellHeadBegin .sapUiUfdShellHeadContainer a:nth-of-type(3) .sapInoLogoTextInfo {
+    color:#000;
+}
+
+.sapMPanelWrappingDivTbExpanded .sapInoIdentityBox{
+	border: solid 1px #cccccc;
+}
+
+/* END "GenericStyle.less" */
+
+/* START "GenericWallStyle.less" */
+/* ************** WALL REMOTE ************** */
+
+.sapInoMobileDescriptionEditWallRemote {
+    background-color: @sapInoLightestBG;
+}
+
+/* END "GenericWallStyle.less" */
+
+/* START "InoColors.less" */
+/** specific bluecrystal colors for sapIno
+Mostly aliases to SAP standard colors (cf. https://wiki.wdf.sap.corp/wiki/display/visualcore/Colors)
+**/
+
+/** redefinitions to standard blue crystal styles **/
+@sapInoCriticalText: @sapUiCriticalText;
+
+@sapInoHeaderBG: @sapUiHeaderBG;
+@sapInoActiveBG: @sapUiActiveBG;
+@sapInoHeaderBG: @sapUiHeaderBG;
+@sapInoFooterBG: @sapUiFooterBG;
+
+@sapInoSuccessBorder: @sapUiSuccessBorder;
+
+/** new styles **/
+@sapInoGroupContentBackground: @sapUiGroupContentBackground; /** sap.m.feeditem bg **/
+
+/** Accent colors, redefined on bluecrystal **/
+@sapInoAccent1: @sapUiAccent1; /** used for rating indicator **/
+@sapInoAccent2: @sapUiAccent2;
+@sapInoAccent3: @sapUiAccent3;
+@sapInoAccent4: @sapUiAccent4;
+@sapInoAccent5: @sapUiAccent5;
+@sapInoAccent6: @sapUiAccent6;
+@sapInoAccent7: @sapUiAccent7;
+@sapInoAccent8: @sapUiAccent8;
+
+/** redefinition because sapWarningColor only exists in bluecrystal **/
+@sapInoWarningColor: @sapWarningColor;
+
+/** Belize Colors for Navigation Bar **/
+@sapInoBelizeDarkBackground: #394958;
+@sapInoBelizeBackground: #3f5161;
+@sapInoBelizeLightBackground: #416b8e;
+@sapInoBelizeBorderColor: #4d6376;
+@sapInoBelizeIconColor: #b4cde2;
+/* END "InoColors.less" */
+
+/* START "SidePanel.less" */
+@sapInoSidePanelTransitionTimeLeft: 0.2s;
+@sapInoSidePanelTransitionTimeRight: 0.4s;
+@sapInoSidePanelOpenerWidth: 38px;
+@sapInoSidePanelOpenerHeight: 38px;
+@sapInoSidePanelOpenerTop: 45px;
+@sapInoSidePanelContentTop: 0px; 	/* header */
+@sapInoSidePanelContentBottom: 0px;	/* footer */
+@sapInoSidePanelOpenerFontSize: 22pt;
+
+/* LESS Mixins */
+.sapInoSidePanel-Animate(@duration) {
+    -webkit-transition: all @duration ease-in-out;
+    -moz-transition: all @duration ease-in-out;
+    -o-transition: all @duration ease-in-out;
+    transition: all @duration ease-in-out;
+}
+
+.animate-delay(@delay) {
+    -webkit-transition: all 0s linear @delay;
+    -moz-transition: all 0s linear @delay;
+    -o-transition: all 0s linear @delay;
+    transition: all 0s linear @delay;
+}
+
+/* right side panel */
+.sapInoSidePanelRight {
+	top: @sapInoSidePanelContentTop;			
+	bottom: @sapInoSidePanelContentBottom;		
+	.sapInoSidePanel-Animate(@sapInoSidePanelTransitionTimeRight);
+}
+
+.sapInoSidePanelContentRight.sapInoSidePanelExpandedContent {
+    visibility: visible;    
+}
+
+/* Accessibility: "remove" controls from tabchain */ 
+.sapInoSidePanelContentRight.sapInoSidePanelCollapsedContent {
+    .animate-delay(@sapInoSidePanelTransitionTimeRight);
+    visibility: hidden;
+}
+
+
+.sapInoSidePanelRight .sapInoSidePanelOpenerRight {
+	top: @sapInoSidePanelOpenerTop;
+	width: @sapInoSidePanelOpenerWidth;
+	height: @sapInoSidePanelOpenerHeight;
+	float: right;
+	font-size: @sapInoSidePanelOpenerFontSize;
+	padding: 1px;
+	background-color: rgba(255,255,255,0.9);
+	border-radius: 3px 0px 0px 3px; 
+	box-shadow: rgb(100, 100, 100) 0px 2px 2px -2px;
+}
+
+.sapInoSidePanelRight .sapInoSidePanelContentRight {
+	float: right;
+	/*overflow: hidden;*/
+	overflow-y: scroll;
+	background-color: rgba(255,255,255,0.9);
+	box-shadow: rgb(100, 100, 100) 0px 2px 2px -2px;
+}
+
+/* left side panel */
+div.sapInoSidePanelLeft {
+	top: @sapInoSidePanelContentTop;		
+	bottom: @sapInoSidePanelContentBottom;	
+	.sapInoSidePanel-Animate(@sapInoSidePanelTransitionTimeLeft);
+}
+
+.sapInoSidePanelLeft .sapInoSidePanelOpenerLeft {
+	/*background-color: rgba(0, 0, 0, 0.15);*/
+	background-color: rgba(255,255,255,0.9);
+	border-radius: 0px 3px 3px 0px;
+}
+
+.sapInoSidePanelLeft .sapInoSidePanelContentLeft {
+	/* do not set width here, it is managed by control property panelWidth*/
+	/*background-color: rgba(0, 0, 0, 0.15);*/
+	background-color: rgba(255,255,255,0.9);
+	box-shadow: rgb(100, 100, 100) 0px 2px 2px -2px;
+}
+
+.sapInoSidePanelContentLeft.sapInoSidePanelExpandedContent {
+    visibility: visible;    
+}
+
+/* Accessibility: "remove" controls from tabchain */
+.sapInoSidePanelContentLeft.sapInoSidePanelCollapsedContent {
+    .animate-delay(@sapInoSidePanelTransitionTimeLeft);
+    visibility: hidden;    
+    width: 0px;
+}
+/* END "SidePanel.less" */
+
+/* START "TagCard.less" */
+.tagContentText {
+    color: darken(@sapInoGroupContentBackground, 45);
+}
+
+div.data ul > li:nth-child(2).split {
+    background-color: #D2D2D2;
+}
+
+.splitH {
+    background-color: #D2D2D2;
+}
+/* END "TagCard.less" */
+
+/* START "Vote.less" */
+.sapInoVote .sapMBtn .sapMToggleBtnPressed .sapMBtnIcon {
+    color: @sapInoAccent1;
+}
+
+/* END "Vote.less" */
+

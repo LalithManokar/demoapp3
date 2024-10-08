@@ -1,0 +1,13 @@
+table.schemaName  = "SAP_INO";
+table.tableType   = COLUMNSTORE;
+table.description = "Term accept history";
+table.columns = [
+    {name = "ID";               sqlType = INTEGER;                nullable = false; comment = "technical user identifier - must never be exposed to end users";},
+    {name = "TERM_CODE";        sqlType = VARCHAR;  length = 500; nullable = false; comment = "Text Module Identifier";},
+    {name = "TERM_ID";          sqlType = INTEGER;                nullable = true;  comment = "ID used for UI maintenance - empty for imported configuration content";},
+    {name = "TERM_CHANGED_AT";  sqlType = TIMESTAMP;              nullable = true;  comment = "Term changed at timestamp";},
+    {name = "USER_ID";          sqlType = INTEGER;                nullable = false; comment = "Who accept this term";},
+    {name = "TERM_ACCEPTED_AT"; sqlType = TIMESTAMP;              nullable = false; comment = "Accepted at timestamp";},
+    {name = "TERM_ACTION_CODE"; sqlType = INTEGER;                nullable = true; comment = "0|null--Accept;1--revoke";}
+];
+table.primaryKey.pkcolumns = ["ID"];

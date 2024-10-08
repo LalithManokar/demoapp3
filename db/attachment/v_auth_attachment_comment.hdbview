@@ -1,0 +1,22 @@
+schema = "SAP_INO";
+query = " 
+    SELECT DISTINCT attachment.id AS attachment_id
+    FROM 
+        \"sap.ino.db.attachment::t_attachment\" AS attachment
+    INNER JOIN  \"sap.ino.db.attachment::t_attachment_assignment\" AS assignment
+        ON assignment.owner_type_code = 'COMMENT'
+	    AND assignment.attachment_id = attachment.id
+    INNER JOIN \"sap.ino.db.comment::t_comment\" AS comm
+       ON assignment.owner_type_code = 'COMMENT'
+	    AND assignment.owner_id = comm.id
+	INNER JOIN \"sap.ino.db.idea::v_auth_ideas_read\" as auth
+	   		ON comm.object_id = auth.idea_id AND comm.object_type_code='IDEA'
+    WHERE (assignment.filter_type_code is null or
+		  assignment.filter_type_code = 'FRONTOFFICE' )
+	with read only";
+
+depends_on_table = ["sap.ino.db.attachment::t_attachment",
+					"sap.ino.db.comment::t_comment",
+					"sap.ino.db.attachment::t_attachment_assignment"];
+					
+depends_on_view = ["sap.ino.db.idea::v_auth_ideas_read"];

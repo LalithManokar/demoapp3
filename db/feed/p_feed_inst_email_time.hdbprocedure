@@ -1,0 +1,12 @@
+procedure "SAP_INO"."sap.ino.db.feed::p_feed_inst_email_time" (
+    in  iv_id integer
+)
+    language sqlscript 
+    sql security definer
+    default schema SAP_INO
+    as
+begin
+   update "sap.ino.db.follow::t_follow" 
+        set inst_email_at = current_utctimestamp
+        where id = :iv_id;
+end;

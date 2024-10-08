@@ -1,0 +1,19 @@
+procedure "SAP_INO"."sap.ino.db.config.admin::set_config_package" (
+    in  iv_package_id nvarchar(256)
+ ) 
+    language sqlscript
+    sql security definer 
+    default schema SAP_INO
+    as
+begin
+	declare invalid_package condition for sql_error_code 10000;
+	
+	-- sap.ino.config is reserved for SAP and may not be used
+	if :iv_package_id = 'sap.ino.config' then
+		signal invalid_package set message_text = 'sap.ino.config is owned by SAP and cannot be used for customer configuration content';
+	end if;
+
+    -- there is only one entry allowed
+    delete from "sap.ino.db.config::t_config_content_package";
+    insert into "sap.ino.db.config::t_config_content_package" (package_id) values(:iv_package_id);
+end;

@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="v_campaign_feeds" applyPrivilegeType="NONE" dataCategory="DEFAULT" schemaVersion="2.3" defaultClient="crossClient" visibility="internal" calculationScenarioType="SCRIPT_BASED" scriptParametersCaseSensitive="true" enforceSqlExecution="false">
+<descriptions defaultDescription="v_campaign_feeds"/>
+<localVariables/>
+<variableMappings/>
+<dataSources/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:SqlScriptView" id="Script_View">
+    <viewAttributes>
+      <viewAttribute id="OBJECT_ID" datatype="INTEGER"/>
+      <viewAttribute id="OBJECT_TYPE_CODE" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="OBJECT_TEXT" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="ACTOR_ID" datatype="INTEGER"/>
+      <viewAttribute id="ACTOR_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="ACTOR_IMAGE_ID" datatype="INTEGER"/>
+      <viewAttribute id="INVOLVED_ID" datatype="INTEGER"/>
+      <viewAttribute id="INVOLVED_OBJ_TYPE_CODE" datatype="VARCHAR" length="63"/>
+      <viewAttribute id="INVOLVED_OBJ_TEXT" datatype="NVARCHAR" length="5000"/>
+      <viewAttribute id="EVENT_AT" datatype="TIMESTAMP"/>
+      <viewAttribute id="FEED_CODE" datatype="NVARCHAR" length="600"/>
+      <viewAttribute id="CAMPAIGN_ID" datatype="INTEGER"/>
+      <viewAttribute id="CAMPAIGN_DATE" datatype="TIMESTAMP"/>
+      <viewAttribute id="FIELD1_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="FIELD1_TEXT" datatype="NVARCHAR" length="500"/>
+      <viewAttribute id="FIELD1_VALUE" datatype="NVARCHAR" length="500"/>
+      <viewAttribute id="FIELD1_VALUE_OPTION" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="FIELD2_NAME" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="FIELD2_TEXT" datatype="NVARCHAR" length="500"/>
+      <viewAttribute id="FIELD2_VALUE" datatype="NVARCHAR" length="500"/>
+      <viewAttribute id="FIELD2_VALUE_OPTION" datatype="NVARCHAR" length="100"/>
+      <viewAttribute id="FILTER_TYPE_CODE" datatype="VARCHAR" length="20"/>
+      <viewAttribute id="CONTENT" datatype="NVARCHAR" length="5000"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <definition>/********* Begin Procedure Script ************/ 
+BEGIN 
+   lt_campaign = select id from &quot;sap.ino.db.campaign::t_campaign&quot; 
+                where status_code &lt;&gt; 'sap.ino.config.CAMP_DRAFT';
+                
+   --call &quot;SAP_INO&quot;.&quot;sap.ino.db.campaign::p_campaign_major_change&quot;(:lt_major_changes);
+   
+   lt_campaign_feeds = select 
+                change.id as object_id,
+                change.change_object as object_type_code,
+                change.history_actor_id as actor_id,
+                case change.change_event
+                    when 'ACTION_PHASE_SEQUENCE_NO_CHANGED' then TO_INTEGER(change.field2_value)
+                    when 'ACTION_PHASE_UPDATED' then TO_INTEGER(change.field2_value)
+                    else null 
+                end as involved_id,
+                null as involved_obj_type_code,
+                null as involved_obj_text,
+                change.changed_at as event_at,
+                change.change_event as feed_code, 
+                change.id as campaign_id,
+                null as campaign_date,
+                change.field1_name as field1_name,
+                change.field1_text as field1_text,
+                change.field1_value as field1_value,
+                change.field1_value_option as field1_value_option,
+                change.field2_name as field2_name,
+                change.field2_text as field2_text,
+                change.field2_value as field2_value,
+                change.field2_value_option as field2_value_option,
+                'FRONTOFFICE' as filter_type_code,
+                null as content
+            from 
+                &quot;sap.ino.db.campaign.ext::f_campaign_changes&quot;() as change
+            inner join
+                &quot;sap.ino.db.iam::v_identity&quot; as actor
+                on change.history_actor_id = actor.id
+                
+                --Idea submit
+    		union all
+            select
+                idea.campaign_id as object_id, 
+                'CAMPAIGN' as object_type_code,
+                idea.history_actor_id as actor_id,
+                idea.id as involved_id,
+                'IDEA' as involved_obj_type_code,
+                idea.name as involved_obj_text,
+                idea.history_at as event_at, 
+                idea.history_biz_event as feed_code, 
+                idea.campaign_id as campaign_id, 
+                null as campaign_date,
+                null as field1_name,
+                null as field1_text,
+                null as field1_value,
+                null as field1_value_option,
+                null as field2_name,
+                null as field2_text,
+                null as field2_value,
+                null as field2_value_option,
+                'FRONTOFFICE' as filter_type_code,
+                idea.SHORT_DESCRIPTION as content
+            from
+                &quot;sap.ino.db.idea::t_idea_h&quot; as idea
+            where 
+                idea.history_biz_event = 'STATUS_ACTION_SUBMIT'     
+                
+            --campaign comments create
+            union all
+            select
+                comment.object_id as object_id, 
+                'CAMPAIGN' as object_type_code,
+                comment.history_actor_id as actor_id,
+                null as involved_id,
+                'COMMENT' as involved_obj_type_code,
+                comment.comment as involved_obj_text,
+                comment.history_at as event_at, 
+                comment.history_biz_event as feed_code,
+                comment.object_id as campaign_id, 
+                null as campaign_date,
+                null as field1_name,
+                null as field1_text,
+                null as field1_value,
+                null as field1_value_option,
+                null as field2_name,
+                null as field2_text,
+                null as field2_value,
+                null as field2_value_option,
+                'FRONTOFFICE' as filter_type_code,
+                comment.comment as content
+            from
+                &quot;sap.ino.db.comment::v_community_comment_h&quot; as comment
+            where
+                comment.history_biz_event = 'COMMENT_CREATED' 
+                and comment.object_type_code = 'CAMPAIGN'    
+                
+            --campaign blog publish
+            union all
+            select
+                blog.object_id, 
+                blog.object_type_code,
+                blog.history_actor_id as actor_id,
+                blog.id as involved_id,
+                'BLOG' as involved_obj_type_code,
+                blog.title as involved_obj_text,
+                blog.history_at as event_at, 
+                blog.history_biz_event as feed_code,
+                blog.object_id as campaign_id, 
+                null as campaign_date,
+                null as field1_name,
+                null as field1_text,
+                null as field1_value,
+                null as field1_value_option,
+                null as field2_name,
+                null as field2_text,
+                null as field2_value,
+                null as field2_value_option,
+                'FRONTOFFICE' as filter_type_code,
+                blog.SHORT_DESCRIPTION as content
+            from
+                &quot;sap.ino.db.blog::t_blog_h&quot; as blog
+            where
+                blog.history_biz_event = 'BLOG_MAJORPUBLISH' and blog.object_type_code = 'CAMPAIGN'    
+                
+            --campaign date notifications
+            union all
+            select 
+                feed.object_id as object_id, 
+                feed.object_type_code as object_type_code,
+                feed.actor_id as actor_id,
+                null as involved_id,
+                null as involved_obj_type_code,
+                null as involved_obj_text,
+                feed.event_at as event_at, 
+                feed.feed_code as feed_code,
+                feed.campaign_id as campaign_id, 
+                feed.campaign_date as campaign_date,
+                null as field1_name,
+                null as field1_text,
+                null as field1_value,
+                null as field1_value_option,
+                null as field2_name,
+                null as field2_text,
+                null as field2_value,
+                null as field2_value_option,
+                feed.filter_type_code as filter_type_code,
+                null as content
+            from
+                &quot;sap.ino.db.feed::t_feed&quot; as feed
+                
+            --Campaign tag changes
+            union all
+            select 
+                assign.object_id as object_id, 
+                'CAMPAIGN' as object_type_code,
+                assign.history_actor_id as actor_id,
+                assign.tag_id as involved_id,
+                'TAG' as involved_obj_type_code,
+                tag.name as involved_obj_text,
+                history_at as event_at, 
+                'TAG_' || history_db_event as feed_code,
+                assign.object_id as campaign_id, 
+                null as campaign_date,
+                null as field1_name,
+                null as field1_text,
+                null as field1_value,
+                null as field1_value_option,
+                null as field2_name,
+                null as field2_text,
+                null as field2_value,
+                null as field2_value_option,
+                'FRONTOFFICE' as filter_type_code,
+                null as content
+            from 
+                &quot;sap.ino.db.tag::t_object_tag_h&quot; as assign
+            inner join 
+                &quot;sap.ino.db.tag::t_tag&quot; as tag
+                on assign.tag_id = tag.id 
+            where assign.object_type_code = 'CAMPAIGN' 
+                and assign.history_biz_event = 'CAMP_MAJOR_PUBLISH'   
+                
+            --Campaign title image/background image
+            union all
+            select
+                attachment.owner_id as object_id, 
+                attachment.owner_type_code as object_type_code,
+                attachment.history_actor_id as actor_id,
+                attachment.id as involved_id,
+                case attachment.role_type_code when 'CAMPAIGN_DETAIL_IMG' then 'TITLE_IMAGE'  when 'CAMPAIGN_LIST_IMG' then 'CAMPAIGN_LIST_IMAGE' else 'BACKGROUND_IMAGE' end as involved_obj_type_code,
+                null as involved_obj_text,
+                attachment.history_at as event_at, 
+                attachment.history_biz_event || '_' || attachment.role_type_code as feed_code,
+                attachment.owner_id as campaign_id, 
+                null as campaign_date,
+                null as field1_name,
+                null as field1_text,
+                null as field1_value,
+                null as field1_value_option,
+                null as field2_name,
+                null as field2_text, 
+                null as field2_value,
+                null as field2_value_option,
+                ifnull(attachment.filter_type_code, 'FRONTOFFICE') as filter_type_code,
+                TO_NVARCHAR(attachment.id) as content
+            from
+                &quot;sap.ino.db.attachment::t_attachment_assignment_h&quot; as attachment
+            where attachment.owner_type_code = 'CAMPAIGN' and 
+                ( attachment.role_type_code = 'CAMPAIGN_DETAIL_IMG' or
+                attachment.role_type_code = 'CAMPAIGN_LIST_IMG' or
+                attachment.role_type_code like '%BACKGROUND_IMG'
+                )and
+                attachment.history_db_event = 'CREATED' and 
+                attachment.history_biz_event = 'CAMP_MAJOR_PUBLISH'  
+                    
+            --4 type of campaign changes refers to vote type, phase and status mode
+            union all
+            select 
+                history.id as object_id, 
+                'CAMPAIGN' as object_type_code,
+                history.history_actor_id as actor_id,
+                null as involved_id,
+                null as involved_obj_type_code,
+                null as involved_obj_text,
+                history.history_at as event_at, 
+                history.history_biz_event as feed_code,
+                history.id as campaign_id, 
+                null as campaign_date,
+                null as field1_name, 
+                'CAMPAIGN_PHASE' as field1_text,
+        		phase.code as field1_value,
+        		'sap.ino.xs.object.campaign.Phase.Root' as field1_value_option,
+                null as field2_name,
+                case history.history_biz_event when 'CAMP_SUBMITTED_STATUS_CODE_REPLACED' then 'STATUS_MODEL_CODE' else null end as field2_text,
+                case history.history_biz_event when 'CAMP_SUBMITTED_STATUS_CODE_REPLACED' then phase_h.STATUS_MODEL_CODE else null end as field2_value,
+                case history.history_biz_event 
+                    when 'CAMP_SUBMITTED_STATUS_CODE_REPLACED' then 'sap.ino.xs.object.status.Model.Root'
+                    else null 
+                end as field2_value_option,
+                'FRONTOFFICE' as filter_type_code,
+                null as content
+            from
+                &quot;sap.ino.db.campaign::t_campaign_h&quot; as history
+            inner join &quot;sap.ino.db.campaign::v_campaign_phase_h&quot; as phase_h
+                on history.history_at = phase_h.history_at
+                and history.history_biz_event = phase_h.history_biz_event 
+            inner join &quot;sap.ino.db.campaign::t_phase&quot; as phase
+                on phase_h.phase_code = phase.code
+            where 
+            (history.history_biz_event = 'CAMP_SUBMITTED_PHASE_CODE_REPLACED' and phase_h.next_phase_code &lt;&gt; phase_h.next_phase_code_old) or
+            history.history_biz_event = 'CAMP_SUBMITTED_STATUS_CODE_REPLACED' or
+            (history.history_biz_event = 'CAMP_SUBMITTED_PHASE_DELETED' and phase_h.history_db_event = 'DELETED')
+            
+            union all
+            select 
+                history.id as object_id, 
+                'CAMPAIGN' as object_type_code,
+                history.history_actor_id as actor_id,
+                null as involved_id,
+                null as involved_obj_type_code,
+                null as involved_obj_text,
+                history.history_at as event_at, 
+                history.history_biz_event as feed_code,
+                history.id as campaign_id, 
+                null as campaign_date,
+                null as field1_name,  
+                'CAMPAIGN_VOTE_TYPE_CODE' as field1_text,
+                history.VOTE_TYPE_CODE as field1_value,
+                'sap.ino.xs.object.campaign.VoteType.Root' as field1_value_option,
+                null as field2_name,
+                null as field2_text, 
+                null as field2_value,
+                null as field2_value_option,
+                'FRONTOFFICE' as filter_type_code,
+                null as content
+            from
+                &quot;sap.ino.db.campaign::t_campaign_h&quot; as history
+            where history.history_biz_event = 'CAMP_SUBMITTED_VOTING_REPLACED';
+   
+   var_out = select 
+                object_id,
+                object_type_code, 
+                campaign.name as object_text,
+                actor_id,
+                actor.name as actor_name,
+                actor.identity_image_id as actor_image_id,
+                involved_id,
+                involved_obj_type_code,
+                involved_obj_text,
+                event_at,
+                feed_code, 
+                feed.campaign_id,
+                campaign_date,
+                field1_name,
+                field1_text,
+                field1_value,
+                field1_value_option,
+                field2_name,
+                field2_text,
+                field2_value,
+                field2_value_option,
+                filter_type_code,
+                content 
+            from :lt_campaign_feeds as feed
+            inner join &quot;sap.ino.db.campaign::v_campaign_t_locale&quot; as campaign
+                on feed.object_id = campaign.campaign_id 
+            left outer join &quot;sap.ino.db.iam::v_identity&quot; as actor
+            on feed.actor_id = actor.id    ;
+
+END /********* End Procedure Script ************/</definition>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Script_View">
+  <attributes>
+    <attribute id="OBJECT_ID" order="1" semanticType="empty">
+      <descriptions defaultDescription="OBJECT_ID"/>
+      <keyMapping columnObjectName="Script_View" columnName="OBJECT_ID"/>
+    </attribute>
+    <attribute id="OBJECT_TYPE_CODE" order="2">
+      <descriptions defaultDescription="OBJECT_TYPE_CODE"/>
+      <keyMapping columnObjectName="Script_View" columnName="OBJECT_TYPE_CODE"/>
+    </attribute>
+    <attribute id="OBJECT_TEXT" order="3">
+      <descriptions defaultDescription="OBJECT_TEXT"/>
+      <keyMapping columnObjectName="Script_View" columnName="OBJECT_TEXT"/>
+    </attribute>
+    <attribute id="ACTOR_ID" order="4" semanticType="empty">
+      <descriptions defaultDescription="ACTOR_ID"/>
+      <keyMapping columnObjectName="Script_View" columnName="ACTOR_ID"/>
+    </attribute>
+    <attribute id="ACTOR_NAME" order="5">
+      <descriptions defaultDescription="ACTOR_NAME"/>
+      <keyMapping columnObjectName="Script_View" columnName="ACTOR_NAME"/>
+    </attribute>
+    <attribute id="ACTOR_IMAGE_ID" order="6" semanticType="empty">
+      <descriptions defaultDescription="ACTOR_IMAGE_ID"/>
+      <keyMapping columnObjectName="Script_View" columnName="ACTOR_IMAGE_ID"/>
+    </attribute>
+    <attribute id="INVOLVED_ID" order="7" semanticType="empty">
+      <descriptions defaultDescription="INVOLVED_ID"/>
+      <keyMapping columnObjectName="Script_View" columnName="INVOLVED_ID"/>
+    </attribute>
+    <attribute id="INVOLVED_OBJ_TYPE_CODE" order="8">
+      <descriptions defaultDescription="INVOLVED_OBJ_TYPE_CODE"/>
+      <keyMapping columnObjectName="Script_View" columnName="INVOLVED_OBJ_TYPE_CODE"/>
+    </attribute>
+    <attribute id="INVOLVED_OBJ_TEXT" order="9">
+      <descriptions defaultDescription="INVOLVED_OBJ_TEXT"/>
+      <keyMapping columnObjectName="Script_View" columnName="INVOLVED_OBJ_TEXT"/>
+    </attribute>
+    <attribute id="EVENT_AT" order="10" semanticType="empty">
+      <descriptions defaultDescription="EVENT_AT"/>
+      <keyMapping columnObjectName="Script_View" columnName="EVENT_AT"/>
+    </attribute>
+    <attribute id="FEED_CODE" order="11">
+      <descriptions defaultDescription="FEED_CODE"/>
+      <keyMapping columnObjectName="Script_View" columnName="FEED_CODE"/>
+    </attribute>
+    <attribute id="CAMPAIGN_ID" order="12" semanticType="empty">
+      <descriptions defaultDescription="CAMPAIGN_ID"/>
+      <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_ID"/>
+    </attribute>
+    <attribute id="CAMPAIGN_DATE" order="13" semanticType="empty">
+      <descriptions defaultDescription="CAMPAIGN_DATE"/>
+      <keyMapping columnObjectName="Script_View" columnName="CAMPAIGN_DATE"/>
+    </attribute>
+    <attribute id="FIELD1_NAME" order="14">
+      <descriptions defaultDescription="FIELD1_NAME"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD1_NAME"/>
+    </attribute>
+    <attribute id="FIELD1_TEXT" order="15">
+      <descriptions defaultDescription="FIELD1_TEXT"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD1_TEXT"/>
+    </attribute>
+    <attribute id="FIELD1_VALUE" order="16">
+      <descriptions defaultDescription="FIELD1_VALUE"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD1_VALUE"/>
+    </attribute>
+    <attribute id="FIELD1_VALUE_OPTION" order="17">
+      <descriptions defaultDescription="FIELD1_VALUE_OPTION"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD1_VALUE_OPTION"/>
+    </attribute>
+    <attribute id="FIELD2_NAME" order="18">
+      <descriptions defaultDescription="FIELD2_NAME"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD2_NAME"/>
+    </attribute>
+    <attribute id="FIELD2_TEXT" order="19">
+      <descriptions defaultDescription="FIELD2_TEXT"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD2_TEXT"/>
+    </attribute>
+    <attribute id="FIELD2_VALUE" order="20">
+      <descriptions defaultDescription="FIELD2_VALUE"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD2_VALUE"/>
+    </attribute>
+    <attribute id="FIELD2_VALUE_OPTION" order="21">
+      <descriptions defaultDescription="FIELD2_VALUE_OPTION"/>
+      <keyMapping columnObjectName="Script_View" columnName="FIELD2_VALUE_OPTION"/>
+    </attribute>
+    <attribute id="FILTER_TYPE_CODE" order="22">
+      <descriptions defaultDescription="FILTER_TYPE_CODE"/>
+      <keyMapping columnObjectName="Script_View" columnName="FILTER_TYPE_CODE"/>
+    </attribute>
+    <attribute id="CONTENT" order="23">
+      <descriptions defaultDescription="CONTENT"/>
+      <keyMapping columnObjectName="Script_View" columnName="CONTENT"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/></logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

@@ -1,0 +1,8 @@
+schema = "SAP_INO";
+query = "select contribution_share.*, 
+        identity.name as author_name
+    from \"sap.ino.db.reward::t_contribution_share\" as contribution_share
+    left outer join \"sap.ino.db.iam::t_identity\" as identity 
+        on identity.id = contribution_share.author_id";
+depends_on_table = ["sap.ino.db.reward::t_contribution_share",
+                    "sap.ino.db.iam::t_identity"]; 
